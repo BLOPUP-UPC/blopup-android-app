@@ -55,6 +55,10 @@ class Encounter : Resource(), Serializable {
     @Expose
     var orders: List<Any> = ArrayList()
 
+    @SerializedName("diagnoses")
+    @Expose
+    var diagnoses: List<Diagnosis> = ArrayList()
+
     @SerializedName("voided")
     @Expose
     var voided: Boolean? = null

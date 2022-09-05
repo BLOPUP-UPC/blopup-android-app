@@ -34,10 +34,9 @@ class PatientDashboardDiagnosisViewModel @Inject constructor(
     private fun loadDiagnosesFromEncounters(encounters: List<Encounter>): List<String> {
         val diagnoses = ArrayList<String>()
         for (encounter in encounters) {
-            for (obs in encounter.observations) {
-                if (!obs.diagnosisList.isNullOrEmpty() && !diagnoses.contains(obs.diagnosisList!!)) {
-                    diagnoses.add(obs.diagnosisList!!)
-                }
+            for (diagnosis in encounter.diagnoses) {
+                if(diagnosis.display != null)
+                    diagnoses.add(diagnosis.display!!)
             }
         }
         return diagnoses
