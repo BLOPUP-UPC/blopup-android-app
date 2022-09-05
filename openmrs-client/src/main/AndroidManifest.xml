@@ -29,6 +29,7 @@
         android:required="false" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:name=".application.OpenMRS"
         android:allowBackup="true"
         android:icon="@drawable/ic_openmrs"
