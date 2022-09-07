@@ -25,8 +25,10 @@ import android.content.Context;
 import com.openmrs.android_sdk.library.OpenmrsAndroid;
 import com.openmrs.android_sdk.library.databases.AppDatabase;
 import com.openmrs.android_sdk.library.databases.AppDatabaseHelper;
+import com.openmrs.android_sdk.library.databases.entities.DiagnosisEntity;
 import com.openmrs.android_sdk.library.databases.entities.ObservationEntity;
 import com.openmrs.android_sdk.library.databases.entities.VisitEntity;
+import com.openmrs.android_sdk.library.models.Diagnosis;
 import com.openmrs.android_sdk.library.models.Encounter;
 import com.openmrs.android_sdk.library.models.Observation;
 import com.openmrs.android_sdk.library.models.Visit;
@@ -49,6 +51,10 @@ public class VisitDAO {
      * The Visit room dao.
      */
     VisitRoomDAO visitRoomDAO = AppDatabase.getDatabase(context).visitRoomDAO();
+    /**
+     * The Diagnosis room dao.
+     */
+    DiagnosisRoomDAO diagnosisRoomDAO = AppDatabase.getDatabase(context).diagnosisRoomDAO();
 
     @Inject
     public VisitDAO() { }
@@ -86,6 +92,10 @@ public class VisitDAO {
                 for (Observation obs : encounter.getObservations()) {
                     ObservationEntity observationEntity = AppDatabaseHelper.convert(obs, encounterID);
                     observationRoomDAO.addObservation(observationEntity);
+                }
+                for (Diagnosis diagnosis : encounter.getDiagnoses()){
+                    DiagnosisEntity diagnosisEntity = AppDatabaseHelper.convert(diagnosis, encounterID);
+                    diagnosisRoomDAO.addDiagnosis(diagnosisEntity);
                 }
             }
         }

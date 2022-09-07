@@ -312,4 +312,15 @@ object AppDatabaseHelper {
         return Observable.fromCallable(func)
                 .subscribeOn(Schedulers.io())
     }
+
+    @JvmStatic
+    fun convert(diagnosis: Diagnosis, encounterID: Long): DiagnosisEntity {
+        val diagnosisEntity = DiagnosisEntity()
+        diagnosisEntity.uuid = diagnosis.uuid
+        diagnosisEntity.display = diagnosis.display
+        diagnosisEntity.links = diagnosis.links
+        diagnosisEntity.encounterId = encounterID
+
+        return diagnosisEntity
+    }
 }
