@@ -55,6 +55,10 @@ public class VisitDAO {
      * The Diagnosis room dao.
      */
     DiagnosisRoomDAO diagnosisRoomDAO;
+    /**
+     * The Diagnosis room dao.
+     */
+    DiagnosisRoomDAO diagnosisRoomDAO = AppDatabase.getDatabase(context).diagnosisRoomDAO();
 
     @Inject
     public VisitDAO() {
