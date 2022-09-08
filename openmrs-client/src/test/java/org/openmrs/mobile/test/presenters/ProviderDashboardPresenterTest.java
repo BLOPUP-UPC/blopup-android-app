@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.openmrs.mobile.activities.providerdashboard.ProviderDashboardContract;
 import org.openmrs.mobile.activities.providerdashboard.ProviderDashboardPresenter;
 import com.openmrs.android_sdk.library.api.RestApi;
@@ -24,9 +25,17 @@ import org.openmrs.mobile.test.ACUnitTestBase;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+
+import android.content.Context;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({NetworkUtils.class, ToastUtil.class, OpenMRS.class, OpenMRSLogger.class, OpenmrsAndroid.class})
@@ -42,11 +51,19 @@ public class ProviderDashboardPresenterTest extends ACUnitTestBase {
     @Mock
     private OpenMRS openMRS;
     private ProviderDashboardPresenter providerDashboardPresenter;
-    private ProviderRepository providerRepository;
+
+    @Spy
+    private ProviderRepository providerRepository = new ProviderRepository(restApi, openMRSLogger);
+
+    @Mock
+    private Context context;
 
     @Before
     public void setup() {
         this.providerRepository = new ProviderRepository(restApi, openMRSLogger);
+        when(context.getString(anyInt())).thenReturn("dummy");
+        Whitebox.setInternalState(providerRepository, "context", context);
+
         ProviderRoomDAO providerRoomDao = Mockito.mock(ProviderRoomDAO.class);
         ProviderRoomDAO spyProviderRoomDao = spy(providerRoomDao);
         doNothing().when(spyProviderRoomDao).updateProviderByUuid(Mockito.anyString(), Mockito.anyLong(), Mockito.any(), Mockito.anyString(), Mockito.anyString());
