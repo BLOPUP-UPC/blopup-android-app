@@ -3,6 +3,7 @@ package org.openmrs.mobile.test.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.openmrs.android_sdk.library.dao.EncounterDAO
+import com.openmrs.android_sdk.library.models.Diagnosis
 import com.openmrs.android_sdk.library.models.Encounter
 import com.openmrs.android_sdk.library.models.Observation
 import com.openmrs.android_sdk.library.models.Result
@@ -20,7 +21,6 @@ import org.mockito.Mockito
 import org.openmrs.mobile.activities.patientdashboard.diagnosis.PatientDashboardDiagnosisViewModel
 import org.openmrs.mobile.test.ACUnitTestBaseRx
 import rx.Observable
-import java.util.ArrayList
 
 @RunWith(JUnit4::class)
 class PatientDashboardDiagnosisViewModelTest : ACUnitTestBaseRx() {
@@ -50,14 +50,27 @@ class PatientDashboardDiagnosisViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchDiagnoses_success() {
-        val encounters = createEncounters(observations, false)
+        val encounters: List<Encounter> = listOf(
+                Encounter(
+                        diagnoses = listOf(
+                                Diagnosis(display = "Covid"),
+                                Diagnosis(display = "Cough")
+                        )
+                ),
+                Encounter(
+                        diagnoses = listOf(
+                                Diagnosis(display = "Headache")
+                        )
+                )
+        )
+
         Mockito.`when`(encounterDAO.getAllEncountersByType(eq(PATIENT_ID.toLong()), any()))
                 .thenReturn(Observable.just(encounters))
 
         viewModel.fetchDiagnoses()
 
         val actualResult = (viewModel.result.value as Result.Success).data
-        assertIterableEquals(diagnosisList, actualResult)
+        assertIterableEquals(listOf("Covid", "Cough", "Headache"), actualResult)
     }
 
     @Test

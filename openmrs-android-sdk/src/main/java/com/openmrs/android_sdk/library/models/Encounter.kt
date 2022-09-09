@@ -22,7 +22,11 @@ import java.io.Serializable
  * <p> More on Encounters https://rest.openmrs.org/#encounters </p>
  * @constructor Create empty Encounter
  */
-class Encounter : Resource(), Serializable {
+class Encounter constructor() : Resource(), Serializable {
+
+    constructor(diagnoses: List<Diagnosis>): this() {
+        this.diagnoses = diagnoses
+    }
 
     override var id: Long? = null
 
