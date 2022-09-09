@@ -5,11 +5,13 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.openmrs.android_sdk.library.databases.entities.DiagnosisEntity;
+import com.openmrs.android_sdk.library.databases.entities.ObservationEntity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import kotlin.Unit;
 
 /**
@@ -28,5 +30,6 @@ public interface DiagnosisRoomDAO {
     long addDiagnosis(DiagnosisEntity diagnosis);
 
     @Query("SELECT * FROM diagnoses WHERE encounter_id = :encounterId")
-    List<DiagnosisEntity> findDiagnosesByEncounterID(@NotNull Long encounterId);
+    Single<List<DiagnosisEntity>> findDiagnosesByEncounterID(@NotNull Long encounterId);
+
 }
