@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.2"
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -72,6 +72,12 @@ android {
         // Work Manager
         implementation "androidx.work:work-runtime:2.3.4"
 
+        // Test Implementations
+        androidTestImplementation 'org.mockito:mockito-core:2.8.9'
+        testImplementation 'org.mockito:mockito-core:2.8.9'
+        testImplementation 'org.mockito:mockito-inline:2.13.0'
+        testImplementation 'org.powermock:powermock-api-mockito2:2.0.2'
+        testImplementation 'org.powermock:powermock-module-junit4:2.0.2'
 
         // test implementation
         testImplementation 'junit:junit:4.+'

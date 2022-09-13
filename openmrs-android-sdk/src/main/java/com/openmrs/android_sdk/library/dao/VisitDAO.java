@@ -42,22 +42,34 @@ public class VisitDAO {
     /**
      * The Context.
      */
-    Context context = OpenmrsAndroid.getInstance().getApplicationContext();
+    Context context;
     /**
      * The Observation room dao.
      */
-    ObservationRoomDAO observationRoomDAO = AppDatabase.getDatabase(context).observationRoomDAO();
+    ObservationRoomDAO observationRoomDAO;
     /**
      * The Visit room dao.
      */
-    VisitRoomDAO visitRoomDAO = AppDatabase.getDatabase(context).visitRoomDAO();
+    VisitRoomDAO visitRoomDAO;
     /**
      * The Diagnosis room dao.
      */
-    DiagnosisRoomDAO diagnosisRoomDAO = AppDatabase.getDatabase(context).diagnosisRoomDAO();
+    DiagnosisRoomDAO diagnosisRoomDAO;
 
     @Inject
-    public VisitDAO() { }
+    public VisitDAO() {
+        context = OpenmrsAndroid.getInstance().getApplicationContext();
+        observationRoomDAO = AppDatabase.getDatabase(context).observationRoomDAO();
+        visitRoomDAO = AppDatabase.getDatabase(context).visitRoomDAO();
+        diagnosisRoomDAO = AppDatabase.getDatabase(context).diagnosisRoomDAO();
+    }
+
+    public VisitDAO(Context context, ObservationRoomDAO observationRoomDAO, VisitRoomDAO visitRoomDAO, DiagnosisRoomDAO diagnosisRoomDAO) {
+        this.context = context;
+        this.observationRoomDAO = observationRoomDAO;
+        this.visitRoomDAO = visitRoomDAO;
+        this.diagnosisRoomDAO = diagnosisRoomDAO;
+    }
 
     /**
      * Save or update observable.
