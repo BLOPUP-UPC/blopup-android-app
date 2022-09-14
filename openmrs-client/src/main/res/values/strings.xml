@@ -223,6 +223,9 @@
     <string name="visit_ending_error">Error ending this visit</string>
     <string name="patient_not_yet_registered">Patient not yet registered, cannot create encounter.</string>
 
+    <string name="treatment_label" translatable="false">Treatment</string>
+    <string name="diagnosis_label" translatable="false">Diagnosis</string>
+
     <!-- Capture Vitals activity -->
     <string name="action_delete_patient">Delete Patient</string>
     <string name="action_register_patient">Register Patient</string>

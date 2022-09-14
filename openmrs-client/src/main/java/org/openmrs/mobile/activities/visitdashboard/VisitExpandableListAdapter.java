@@ -28,6 +28,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.openmrs.android_sdk.library.models.Diagnosis;
 import com.openmrs.android_sdk.library.models.Encounter;
 import com.openmrs.android_sdk.library.models.EncounterType;
 import com.openmrs.android_sdk.library.models.Observation;
@@ -68,7 +69,7 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
             switch (encounter.getEncounterType().getDisplay()) {
                 case EncounterType.VITALS:
                     for (Observation obs : encounter.getObservations()) {
-                        convertView = openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(), obs.getDisplayValue());
+                        openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(), obs.getDisplayValue());
                     }
                     layouts.add(convertView);
                     break;
@@ -77,35 +78,39 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
                         //checking the type of observation, to extract the relevant data from it to add to the layout
                         if (obs.getDiagnosisNote() != null && !obs.getDiagnosisNote().equals(ApplicationConstants.EMPTY_STRING)) {
                             //if the observation is a Diagnosis Note, i.e. it contains a value for diagnosisNote
-                            convertView = openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.diagnosis_note_label), obs.getDiagnosisNote());
+                            openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.treatment_label), obs.getDiagnosisNote());
                         } else if (obs.getDiagnosisOrder() != null && obs.getShortDiagnosisCertainty() != null && obs.getDiagnosisList() != null) {
                             //if the observation is a Diagnosis Order
-                            convertView = openMRSInflater.addKeyValueStringView(contentLayout, obs.getDiagnosisOrder(),
+                            openMRSInflater.addKeyValueStringView(contentLayout, obs.getDiagnosisOrder(),
                                 "(" + obs.getShortDiagnosisCertainty() + ") " + obs.getDiagnosisList());
                         } else if (obs.getDisplay() != null && obs.getDisplayValue() != null) {
                             if (obs.getDisplay().contains(mContext.getString(R.string.hiv_yes))) {
-                                convertView = openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(),
+                                openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(),
                                     mContext.getString(R.string.hiv_yes));
                             } else if (obs.getDisplay().contains(mContext.getString(R.string.hiv_no))) {
-                                convertView = openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(),
+                                openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(),
                                     mContext.getString(R.string.hiv_no));
                             } else if (obs.getDisplay().contains(mContext.getString(R.string.hiv_unknown))) {
-                                convertView = openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(),
+                                openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(),
                                     mContext.getString(R.string.hiv_unknown));
                             } else {
                                 //miscellaneous, for all other cases that have a Display - Value pair
-                                convertView = openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(), obs.getDisplayValue());
+                                openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.treatment_label), obs.getDisplayValue());
                             }
                         }
+                    }
+
+                    for (Diagnosis diagnosis : encounter.getDiagnoses()) {
+                        openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.diagnosis_label), diagnosis.getDisplay());
                     }
                     layouts.add(convertView);
                     break;
                 case EncounterType.DISCHARGE:
-                    convertView = openMRSInflater.addSingleStringView(contentLayout, mContext.getString(R.string.discharge_location_in_list, encounter.getLocation().getDisplay()));
+                    openMRSInflater.addSingleStringView(contentLayout, mContext.getString(R.string.discharge_location_in_list, encounter.getLocation().getDisplay()));
                     layouts.add(convertView);
                     break;
                 case EncounterType.ADMISSION:
-                    convertView = openMRSInflater.addSingleStringView(contentLayout, mContext.getString(R.string.admission_location_in_list, encounter.getLocation().getDisplay()));
+                    openMRSInflater.addSingleStringView(contentLayout, mContext.getString(R.string.admission_location_in_list, encounter.getLocation().getDisplay()));
                     layouts.add(convertView);
                     break;
                 default:
