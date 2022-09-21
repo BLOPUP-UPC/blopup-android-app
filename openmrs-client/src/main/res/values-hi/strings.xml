@@ -28,9 +28,6 @@
     <string name="req_star"><![CDATA[<font color=\'#616161\'> * </font>]]></string>
     <string name="warning_dialog_title">चेतावनी</string>
     <string name="warning_lost_data_dialog">URL, उपयोगकर्ता नाम या पासवर्ड बदलने से सारा डेटा मिट जाएगा। क्या आपको यकीन है?</string>
-    <string name="forgot_button_ok">खारिज</string>
-    <string name="login_offline">ऑफ़लाइन</string>
-    <string name="login_online">ऑनलाइन</string>
 
     <!-- AddEditPatient -->
     <string name="emptyerror">अपेक्षित</string>
@@ -104,7 +101,6 @@
 
     <!-- Buttons -->
     <string name="dialog_button_cancel">रद्द करें</string>
-    <string name="dialog_button_ok">ठीक</string>
     <string name="dialog_button_confirm"> पुष्टि करें</string>
     <string name="dialog_button_register_new">नया रजिस्टर करें</string>
     <string name="dialog_button_merge">मर्ज</string>
@@ -112,7 +108,7 @@
     <string name="dialog_button_select_location">स्थान का चयन करें</string>
 
     <!-- Settings activity -->
-    <string name="settings_logs">लॉग्स</string>
+    <string name="settings_logs">ॉग्स</string>
     <string name="settings_concepts_in_db">DB में अवधारणाएँ:</string>
     <string name="settings_no_concepts_toast">DB में कोई अवधारणाएँ नहीं हैं!</string>
 

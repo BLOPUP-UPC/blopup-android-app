@@ -32,7 +32,7 @@
     <string name="warning_dialog_title">Warning</string>
     <string name="warning_lost_data_dialog">Changing the URL, username or password will erase all the data. Are you sure?</string>
     <string name="forgot_button_ok">Dismiss</string>
-    <string name="login_offline">Offline</string>
+    <string name="login_offline" translatable="false">Offline</string>
     <string name="login_online">Online</string>
 
     <!-- AddEditPatient -->
@@ -102,7 +102,7 @@
 
     <!-- Buttons -->
     <string name="dialog_button_cancel">Cancel</string>
-    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_ok" translatable="false">OK</string>
     <string name="dialog_button_confirm">Confirm</string>
     <string name="dialog_button_register_new">Register new</string>
     <string name="dialog_button_merge">Merge</string>
@@ -110,7 +110,7 @@
     <string name="dialog_button_select_location">Select Location</string>
 
     <!-- Settings activity -->
-    <string name="settings_logs">Logs</string>
+    <string name="settings_logs" translatable="false">Logs</string>
     <string name="settings_concepts_in_db">Concepts in DB:</string>
     <string name="settings_no_concepts_toast">There are no concepts in DB!</string>
 
