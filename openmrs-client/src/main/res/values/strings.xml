@@ -33,7 +33,7 @@
     <string name="warning_lost_data_dialog">Changing the URL, username or password will erase all the data. Are you sure?</string>
     <string name="forgot_button_ok">Dismiss</string>
     <string name="login_offline" translatable="false">Offline</string>
-    <string name="login_online">Online</string>
+    <string name="login_online" translatable="false">Online</string>
 
     <!-- AddEditPatient -->
     <string name="emptyerror">Required</string>
@@ -163,7 +163,7 @@
     <string name="patient_photo_update_unsuccessful">Patient photo cannot be synced due to server error:  %1$s</string>
 
     <!-- fragment_patient_details layout -->
-    <string name="patient_identifier"># %1$s</string>
+    <string name="patient_identifier" translatable="false"># %1$s</string>
     <string name="patient_details_photo_label">PATIENT\’S PHOTO</string>
     <string name="patient_details_birth_date_label">Birth date</string>
     <string name="patient_contact_info_label">Contact Information</string>

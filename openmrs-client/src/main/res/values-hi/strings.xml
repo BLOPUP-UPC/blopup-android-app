@@ -155,7 +155,6 @@
     <string name="visit_start_error">विज़िट प्रारंभ करने में विफल</string>
 
     <!-- fragment_patient_details layout -->
-    <string name="patient_identifier"># %1$s</string>
     <string name="patient_details_photo_label">फोटो</string>
     <string name="patient_details_birth_date_label">जन्म तिथि</string>
     <string name="patient_contact_info_label">संपर्क जानकारी</string>
