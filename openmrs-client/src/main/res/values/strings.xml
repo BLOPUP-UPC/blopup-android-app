@@ -110,7 +110,7 @@
     <string name="dialog_button_select_location">Select Location</string>
 
     <!-- Settings activity -->
-    <string name="settings_logs" translatable="false">Logs</string>
+    <string name="settings_logs">Logs</string>
     <string name="settings_concepts_in_db">Concepts in DB:</string>
     <string name="settings_no_concepts_toast">There are no concepts in DB!</string>
 

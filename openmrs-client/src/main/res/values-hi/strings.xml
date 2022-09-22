@@ -269,7 +269,6 @@
     <string name="snackbar_edit">संपादित</string>
 
     <!--Activity Logs-->
-    <string name="title_activity_logs">लॉग्स</string>
 
     <!--App Crash Dialog-->
     <string name="crash_dialog_title">त्रुटि हुई</string>
