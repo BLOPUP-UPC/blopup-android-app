@@ -234,7 +234,7 @@
 
     <!-- Form Entry Activity -->
     <string name="empty_visits_list">Patient has no visits yet.</string>
-    <string name="title_activity_form_create">FormCreateActivity</string>
+    <string name="title_activity_form_create" translatable="false">FormCreateActivity</string>
 
     <!--Similar patient card strings-->
     <string name="gender_hint">gender:</string>

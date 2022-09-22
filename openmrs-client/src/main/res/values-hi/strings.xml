@@ -108,7 +108,6 @@
     <string name="dialog_button_select_location">स्थान का चयन करें</string>
 
     <!-- Settings activity -->
-    <string name="settings_logs">ॉग्स</string>
     <string name="settings_concepts_in_db">DB में अवधारणाएँ:</string>
     <string name="settings_no_concepts_toast">DB में कोई अवधारणाएँ नहीं हैं!</string>
 
@@ -222,7 +221,6 @@
 
     <!-- Form Entry Activity -->
     <string name="empty_visits_list">रोगी का अभी तक कोई दौरा नहीं है। .</string>
-    <string name="title_activity_form_create">FormCreateActivity</string>
 
     <!--Similar patient card strings-->
     <string name="gender_hint">लिंग:</string>
