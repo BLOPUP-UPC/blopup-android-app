@@ -40,6 +40,9 @@ modules/odk.collect/android/*
 # Java class files
 *.class
 
+# Idea files
+/.idea/
+
 # Generated files
 bin/
 gen/
