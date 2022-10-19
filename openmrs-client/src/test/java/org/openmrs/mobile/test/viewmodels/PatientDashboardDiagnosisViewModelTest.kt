@@ -90,6 +90,7 @@ class PatientDashboardDiagnosisViewModelTest : ACUnitTestBaseRx() {
         if (withDuplicates) observations.addAll(observations)
         val encounter = Encounter()
         encounter.observations = observations
+        encounter.diagnoses = diagnosisList.map { Diagnosis(it) }
         return listOf(encounter)
     }
 

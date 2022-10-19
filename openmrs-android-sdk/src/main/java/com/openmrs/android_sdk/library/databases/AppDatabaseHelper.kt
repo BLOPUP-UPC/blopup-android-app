@@ -22,6 +22,7 @@ import com.openmrs.android_sdk.library.dao.ObservationDAO
 import com.openmrs.android_sdk.library.dao.PatientDAO
 import com.openmrs.android_sdk.library.databases.entities.AllergyEntity
 import com.openmrs.android_sdk.library.databases.entities.ConceptEntity
+import com.openmrs.android_sdk.library.databases.entities.DiagnosisEntity
 import com.openmrs.android_sdk.library.databases.entities.EncounterEntity
 import com.openmrs.android_sdk.library.databases.entities.LocationEntity
 import com.openmrs.android_sdk.library.databases.entities.ObservationEntity
@@ -29,6 +30,7 @@ import com.openmrs.android_sdk.library.databases.entities.PatientEntity
 import com.openmrs.android_sdk.library.databases.entities.VisitEntity
 import com.openmrs.android_sdk.library.models.Allergen
 import com.openmrs.android_sdk.library.models.Allergy
+import com.openmrs.android_sdk.library.models.Diagnosis
 import com.openmrs.android_sdk.library.models.Encounter
 import com.openmrs.android_sdk.library.models.EncounterType
 import com.openmrs.android_sdk.library.models.Observation

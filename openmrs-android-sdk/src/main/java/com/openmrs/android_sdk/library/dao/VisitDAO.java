@@ -14,12 +14,6 @@
 
 package com.openmrs.android_sdk.library.dao;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
-
-import rx.Observable;
 import android.content.Context;
 
 import com.openmrs.android_sdk.library.OpenmrsAndroid;
@@ -32,6 +26,14 @@ import com.openmrs.android_sdk.library.models.Diagnosis;
 import com.openmrs.android_sdk.library.models.Encounter;
 import com.openmrs.android_sdk.library.models.Observation;
 import com.openmrs.android_sdk.library.models.Visit;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import rx.Observable;
 
 /**
  * The type Visit dao.
@@ -55,10 +57,6 @@ public class VisitDAO {
      * The Diagnosis room dao.
      */
     DiagnosisRoomDAO diagnosisRoomDAO;
-    /**
-     * The Diagnosis room dao.
-     */
-    DiagnosisRoomDAO diagnosisRoomDAO = AppDatabase.getDatabase(context).diagnosisRoomDAO();
 
     @Inject
     public VisitDAO() {
