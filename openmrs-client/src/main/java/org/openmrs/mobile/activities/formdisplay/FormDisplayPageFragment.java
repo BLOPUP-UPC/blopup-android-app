@@ -295,6 +295,20 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     }
 
     @Override
+    public LinearLayout createQuestionGroupLayoutForVitals(String questionLabel) {
+        LinearLayout questionLinearLayout = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams layoutParams = getAndAdjustLinearLayoutParams(questionLinearLayout);
+
+        TextView tv = new TextView(getActivity());
+        tv.setText(questionLabel);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+        questionLinearLayout.addView(tv, layoutParams);
+
+        return questionLinearLayout;
+    }
+
+    @Override
     public LinearLayout createSectionLayout(String sectionLabel) {
         LinearLayout sectionLinearLayout = new LinearLayout(getActivity());
         LinearLayout.LayoutParams layoutParams = getAndAdjustLinearLayoutParams(sectionLinearLayout);

@@ -14,6 +14,7 @@
 
 package org.openmrs.mobile.test.presenters;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
@@ -76,6 +77,26 @@ public class FormDisplayPagePresenterTest extends ACUnitTestBase {
         presenter.subscribe();
         verify(mFormDisplayPageView).createSectionLayout(sectionList.get(0).getLabel());
         verify(mFormDisplayPageView).attachSectionToView(sectionLayout);
+        verify(mFormDisplayPageView).createQuestionGroupLayout(any());
+        verify(mFormDisplayPageView).attachQuestionToSection(sectionLayout, questionLayout);
+    }
+
+    @Test
+    public void subscribe_renderGroupVitals() {
+        String questionLabel = "Vitals";
+        List<Section> sectionList = getSectionList(sectionLabel, questionLabel, "group");
+        Mockito.lenient().when(mPage.getSections()).thenReturn(sectionList);
+
+        LinearLayout sectionLayout = new LinearLayout(openMRS.getApplicationContext());
+        Mockito.lenient().when(mFormDisplayPageView.createSectionLayout(sectionLabel)).thenReturn(sectionLayout);
+
+        LinearLayout questionLayout = new LinearLayout(openMRS.getApplicationContext());
+        Mockito.lenient().when(mFormDisplayPageView.createQuestionGroupLayoutForVitals(questionLabel)).thenReturn(questionLayout);
+
+        presenter.subscribe();
+        verify(mFormDisplayPageView).createSectionLayout(sectionList.get(0).getLabel());
+        verify(mFormDisplayPageView).attachSectionToView(sectionLayout);
+        verify(mFormDisplayPageView).createQuestionGroupLayoutForVitals(any());
         verify(mFormDisplayPageView).attachQuestionToSection(sectionLayout, questionLayout);
     }
 

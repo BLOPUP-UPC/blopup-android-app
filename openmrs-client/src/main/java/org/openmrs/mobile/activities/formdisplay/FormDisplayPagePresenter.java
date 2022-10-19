@@ -62,7 +62,12 @@ public class FormDisplayPagePresenter extends BasePresenter implements FormDispl
 
     private void addQuestion(Question question, LinearLayout sectionLinearLayout) {
         if (question.getQuestionOptions().getRendering().equals("group")) {
-            LinearLayout questionLinearLayout = mFormDisplayPageView.createQuestionGroupLayout(question.getLabel());
+            LinearLayout questionLinearLayout;
+            if("Vitals".equals(question.getLabel())){
+                questionLinearLayout = mFormDisplayPageView.createQuestionGroupLayoutForVitals(question.getLabel());
+            } else {
+                questionLinearLayout = mFormDisplayPageView.createQuestionGroupLayout(question.getLabel());
+            }
             mFormDisplayPageView.attachQuestionToSection(sectionLinearLayout, questionLinearLayout);
 
             for (Question subquestion : question.getQuestions()) {

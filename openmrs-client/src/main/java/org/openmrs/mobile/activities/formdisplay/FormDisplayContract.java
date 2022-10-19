@@ -46,6 +46,8 @@ public interface FormDisplayContract {
 
             LinearLayout createQuestionGroupLayout(String questionLabel);
 
+            LinearLayout createQuestionGroupLayoutForVitals(String questionLabel);
+
             LinearLayout createSectionLayout(String sectionLabel);
 
             List<SelectOneField> getSelectOneFields();
