@@ -34,6 +34,8 @@ public interface FormDisplayContract {
         }
 
         interface PageView extends BaseView<Presenter.PagePresenter> {
+            String getSectionLabel();
+
             void attachSectionToView(LinearLayout linearLayout);
 
             void attachQuestionToSection(LinearLayout section, LinearLayout question);

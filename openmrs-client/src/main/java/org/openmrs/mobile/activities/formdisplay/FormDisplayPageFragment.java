@@ -8,6 +8,10 @@
  */
 package org.openmrs.mobile.activities.formdisplay;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
@@ -19,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -26,6 +31,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
@@ -48,13 +55,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.Presenter.PagePresenter> implements FormDisplayContract.View.PageView {
+
+    private String mSectionLabel;
     private FragmentFormDisplayBinding binding = null;
     private List<InputField> inputFields = new ArrayList<>();
     private List<SelectOneField> selectOneFields = new ArrayList<>();
     private LinearLayout parent;
+    private final ActivityResultLauncher<Intent> activityRequest = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent intent = result.getData();
+                if (intent != null && result.getResultCode() == RESULT_OK) {
+                    int systolic = intent.getExtras().getInt("systolic");
+                    int diastolic = intent.getExtras().getInt("diastolic");
+                    int heartRate = intent.getExtras().getInt("heartRate");
+
+                    fillVital("5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", systolic);
+                    fillVital("5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", diastolic);
+                    fillVital("5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", heartRate);
+                }
+            }
+    );
+
+    private void fillVital(String concept, int value) {
+        InputField f = getInputField(concept);
+        View view = getActivity().findViewById(f.id);
+        if (view != null && view instanceof DiscreteSeekBar) {
+            DiscreteSeekBar seekbar = (DiscreteSeekBar) view;
+            seekbar.setProgress(Double.valueOf(value).intValue());
+            f.value = value;
+        }
+    }
 
     public static FormDisplayPageFragment newInstance() {
         return new FormDisplayPageFragment();
+    }
+
+    @Override
+    public String getSectionLabel() {
+        return mSectionLabel == null ? "" : mSectionLabel;
     }
 
     @Override
@@ -305,11 +343,32 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
         tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
         questionLinearLayout.addView(tv, layoutParams);
 
+        Button button = new Button(getActivity());
+        button.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+        );
+
+        button.setText("button");
+        questionLinearLayout.addView(button);
+
+        button.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            try {
+                activityRequest.launch(intent);
+            } catch (ActivityNotFoundException ex) {
+                ToastUtil.error("No activity found for receiving bluetooth data");
+            }
+        });
+
         return questionLinearLayout;
     }
 
     @Override
     public LinearLayout createSectionLayout(String sectionLabel) {
+        mSectionLabel = sectionLabel;
+
         LinearLayout sectionLinearLayout = new LinearLayout(getActivity());
         LinearLayout.LayoutParams layoutParams = getAndAdjustLinearLayoutParams(sectionLinearLayout);
 
