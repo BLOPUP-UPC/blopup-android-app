@@ -52,7 +52,7 @@ public class FormDisplayPagePresenter extends BasePresenter implements FormDispl
     }
 
     private void addSection(Section section) {
-        if (mFormDisplayPageView.getSectionLabel().equals(section.getLabel())) {
+        if (mFormDisplayPageView.isSectionAlreadyCreated(section.getLabel())) {
             return;
         }
 
@@ -67,6 +67,7 @@ public class FormDisplayPagePresenter extends BasePresenter implements FormDispl
     private void addQuestion(Question question, LinearLayout sectionLinearLayout) {
         if (question.getQuestionOptions().getRendering().equals("group")) {
             LinearLayout questionLinearLayout;
+            // ugly hack for making get vitals from bluetooth device
             if ("Vitals".equals(question.getLabel())) {
                 questionLinearLayout = mFormDisplayPageView.createQuestionGroupLayoutForVitals(question.getLabel());
             } else {

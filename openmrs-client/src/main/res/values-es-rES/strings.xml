@@ -352,4 +352,6 @@
     <string name="edit_provider_success_msg">Proveedor editado con éxito.</string>
     <string name="dialog_button_stay">Permanecer</string>
     <string name="intro_manage_desc">Puedes administrar los proveedores usando nuestra aplicación.</string>
+    <string name="receive_vitals_from_bluetooth_button_text">Recibir datos desde el dispositivo bluetooth</string>
+    <string name="receive_vitals_from_bluetooth_button_error_message">No se encontró ninguna app para tomar los datos bluetooth</string>
 </resources>

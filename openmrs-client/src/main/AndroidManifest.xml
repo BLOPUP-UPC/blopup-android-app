@@ -22,17 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Openmrs">
         <activity
-            android:name="org.openmrs.mobile.activities.formdisplay.BluetoothDataActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".activities.community.contact.AboutActivity"
             android:label="@string/action_about_activity"
             android:theme="@style/AppThemeOrig" />

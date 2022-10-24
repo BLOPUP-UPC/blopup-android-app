@@ -54,6 +54,11 @@ object ToastUtil {
     }
 
     @JvmStatic
+    fun error(message: String, length: Int) {
+        showToast(OpenmrsAndroid.getInstance()!!, ToastType.ERROR, message, length)
+    }
+
+    @JvmStatic
     fun showShortToast(context: Context, type: ToastType, textId: Int) {
         showToast(context, type, context.resources.getString(textId), Toast.LENGTH_SHORT)
     }

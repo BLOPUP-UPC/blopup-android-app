@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OpenMRS Android Client</string>
+    <string name="receive_vitals_from_bluetooth_button_text">Rebeu les dades des del dispositiu bluetooth</string>
+    <string name="receive_vitals_from_bluetooth_button_error_message">No s\'ha trobat cap aplicació per obtenir les dades bluetooth</string>
 </resources>

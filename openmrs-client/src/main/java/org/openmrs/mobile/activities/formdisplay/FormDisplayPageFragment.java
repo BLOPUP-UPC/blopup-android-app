@@ -30,6 +30,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -56,6 +57,10 @@ import java.util.List;
 
 public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.Presenter.PagePresenter> implements FormDisplayContract.View.PageView {
 
+    private static final String SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static final String DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static final String HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
     private String mSectionLabel;
     private FragmentFormDisplayBinding binding = null;
     private List<InputField> inputFields = new ArrayList<>();
@@ -69,9 +74,10 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                     int diastolic = intent.getExtras().getInt("diastolic");
                     int heartRate = intent.getExtras().getInt("heartRate");
 
-                    fillVital("5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", systolic);
-                    fillVital("5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", diastolic);
-                    fillVital("5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", heartRate);
+                    // we know this is ugly as hell, best shot we had with this way of constructing forms :(
+                    fillVital(SYSTOLIC_FIELD_CONCEPT, systolic);
+                    fillVital(DIASTOLIC_FIELD_CONCEPT, diastolic);
+                    fillVital(HEART_RATE_FIELD_CONCEPT, heartRate);
                 }
             }
     );
@@ -91,8 +97,8 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     }
 
     @Override
-    public String getSectionLabel() {
-        return mSectionLabel == null ? "" : mSectionLabel;
+    public boolean isSectionAlreadyCreated(String sectionLabel) {
+        return sectionLabel.equals(mSectionLabel);
     }
 
     @Override
@@ -334,14 +340,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
 
     @Override
     public LinearLayout createQuestionGroupLayoutForVitals(String questionLabel) {
-        LinearLayout questionLinearLayout = new LinearLayout(getActivity());
-        LinearLayout.LayoutParams layoutParams = getAndAdjustLinearLayoutParams(questionLinearLayout);
-
-        TextView tv = new TextView(getActivity());
-        tv.setText(questionLabel);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
-        questionLinearLayout.addView(tv, layoutParams);
+        LinearLayout questionLinearLayout = createQuestionGroupLayout(questionLabel);
 
         Button button = new Button(getActivity());
         button.setLayoutParams(
@@ -350,15 +349,17 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                 )
         );
 
-        button.setText("button");
+        button.setText(R.string.receive_vitals_from_bluetooth_button_text);
         questionLinearLayout.addView(button);
 
         button.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_SEND);
             try {
-                activityRequest.launch(intent);
+                activityRequest.launch(new Intent(Intent.ACTION_SEND));
             } catch (ActivityNotFoundException ex) {
-                ToastUtil.error("No activity found for receiving bluetooth data");
+                ToastUtil.error(
+                        getString(R.string.receive_vitals_from_bluetooth_button_error_message),
+                        Toast.LENGTH_LONG
+                );
             }
         });
 

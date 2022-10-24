@@ -34,7 +34,7 @@ public interface FormDisplayContract {
         }
 
         interface PageView extends BaseView<Presenter.PagePresenter> {
-            String getSectionLabel();
+            boolean isSectionAlreadyCreated(String sectionLabel);
 
             void attachSectionToView(LinearLayout linearLayout);
 
