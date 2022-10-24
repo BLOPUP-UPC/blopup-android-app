@@ -51,6 +51,7 @@ import org.openmrs.mobile.activities.ACBaseFragment;
 import org.openmrs.mobile.application.OpenMRS;
 import org.openmrs.mobile.bundle.FormFieldsWrapper;
 import org.openmrs.mobile.databinding.FragmentFormDisplayBinding;
+import org.openmrs.mobile.utilities.LanguageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,21 +67,22 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     private List<InputField> inputFields = new ArrayList<>();
     private List<SelectOneField> selectOneFields = new ArrayList<>();
     private LinearLayout parent;
-    private final ActivityResultLauncher<Intent> activityRequest = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                Intent intent = result.getData();
-                if (intent != null && result.getResultCode() == RESULT_OK) {
-                    int systolic = intent.getExtras().getInt("systolic");
-                    int diastolic = intent.getExtras().getInt("diastolic");
-                    int heartRate = intent.getExtras().getInt("heartRate");
+    private final ActivityResultLauncher<Intent> bluetoothDataLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        Intent intent = result.getData();
+                        if (intent != null && result.getResultCode() == RESULT_OK) {
+                            int systolic = intent.getExtras().getInt("systolic");
+                            int diastolic = intent.getExtras().getInt("diastolic");
+                            int heartRate = intent.getExtras().getInt("heartRate");
 
-                    // we know this is ugly as hell, best shot we had with this way of constructing forms :(
-                    fillVital(SYSTOLIC_FIELD_CONCEPT, systolic);
-                    fillVital(DIASTOLIC_FIELD_CONCEPT, diastolic);
-                    fillVital(HEART_RATE_FIELD_CONCEPT, heartRate);
-                }
-            }
-    );
+                            // we know this is ugly as hell, best shot we had with this way of constructing forms :(
+                            fillVital(SYSTOLIC_FIELD_CONCEPT, systolic);
+                            fillVital(DIASTOLIC_FIELD_CONCEPT, diastolic);
+                            fillVital(HEART_RATE_FIELD_CONCEPT, heartRate);
+                        }
+                    }
+            );
 
     private void fillVital(String concept, int value) {
         InputField f = getInputField(concept);
@@ -353,8 +355,10 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
         questionLinearLayout.addView(button);
 
         button.setOnClickListener(view -> {
+            Intent input = new Intent(Intent.ACTION_SEND);
+            input.putExtra("language", LanguageUtils.getLanguage());
             try {
-                activityRequest.launch(new Intent(Intent.ACTION_SEND));
+                bluetoothDataLauncher.launch(input);
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(
                         getString(R.string.receive_vitals_from_bluetooth_button_error_message),
