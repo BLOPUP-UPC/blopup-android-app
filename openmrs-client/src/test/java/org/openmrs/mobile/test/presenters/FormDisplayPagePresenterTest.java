@@ -15,6 +15,7 @@
 package org.openmrs.mobile.test.presenters;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
@@ -68,6 +69,8 @@ public class FormDisplayPagePresenterTest extends ACUnitTestBase {
         List<Section> sectionList = getSectionList(sectionLabel, questionLabel, "group");
         Mockito.lenient().when(mPage.getSections()).thenReturn(sectionList);
 
+        Mockito.lenient().when(mFormDisplayPageView.isSectionAlreadyCreated(any())).thenReturn(false);
+
         LinearLayout sectionLayout = new LinearLayout(openMRS.getApplicationContext());
         Mockito.lenient().when(mFormDisplayPageView.createSectionLayout(sectionLabel)).thenReturn(sectionLayout);
 
@@ -82,10 +85,25 @@ public class FormDisplayPagePresenterTest extends ACUnitTestBase {
     }
 
     @Test
+    public void subscribe_notRenderAlreadyExistingGroup() {
+        List<Section> sectionList = getSectionList(sectionLabel, questionLabel, "group");
+        Mockito.lenient().when(mPage.getSections()).thenReturn(sectionList);
+
+        Mockito.lenient().when(mFormDisplayPageView.isSectionAlreadyCreated(any())).thenReturn(true);
+
+        presenter.subscribe();
+        verify(mFormDisplayPageView, times(0)).createSectionLayout(any());
+        verify(mFormDisplayPageView, times(0)).attachSectionToView(any());
+    }
+
+
+    @Test
     public void subscribe_renderGroupVitals() {
         String questionLabel = "Vitals";
         List<Section> sectionList = getSectionList(sectionLabel, questionLabel, "group");
         Mockito.lenient().when(mPage.getSections()).thenReturn(sectionList);
+
+        Mockito.lenient().when(mFormDisplayPageView.isSectionAlreadyCreated(any())).thenReturn(false);
 
         LinearLayout sectionLayout = new LinearLayout(openMRS.getApplicationContext());
         Mockito.lenient().when(mFormDisplayPageView.createSectionLayout(sectionLabel)).thenReturn(sectionLayout);
@@ -105,6 +123,8 @@ public class FormDisplayPagePresenterTest extends ACUnitTestBase {
         List<Section> sectionList = getSectionList(sectionLabel, questionLabel, "number");
         Mockito.lenient().when(mPage.getSections()).thenReturn(sectionList);
 
+        Mockito.lenient().when(mFormDisplayPageView.isSectionAlreadyCreated(any())).thenReturn(false);
+
         LinearLayout sectionLayout = new LinearLayout(openMRS.getApplicationContext());
         Mockito.lenient().when(mFormDisplayPageView.createSectionLayout(sectionLabel)).thenReturn(sectionLayout);
 
@@ -123,6 +143,8 @@ public class FormDisplayPagePresenterTest extends ACUnitTestBase {
         List<Section> sectionList = getSectionList(sectionLabel, questionLabel, "select");
         Mockito.lenient().when(mPage.getSections()).thenReturn(sectionList);
 
+        Mockito.lenient().when(mFormDisplayPageView.isSectionAlreadyCreated(any())).thenReturn(false);
+
         LinearLayout sectionLayout = new LinearLayout(openMRS.getApplicationContext());
         Mockito.lenient().when(mFormDisplayPageView.createSectionLayout(sectionLabel)).thenReturn(sectionLayout);
 
@@ -140,6 +162,8 @@ public class FormDisplayPagePresenterTest extends ACUnitTestBase {
     public void subscribe_renderRadio() {
         List<Section> sectionList = getSectionList(sectionLabel, questionLabel, "radio");
         Mockito.lenient().when(mPage.getSections()).thenReturn(sectionList);
+
+        Mockito.lenient().when(mFormDisplayPageView.isSectionAlreadyCreated(any())).thenReturn(false);
 
         LinearLayout sectionLayout = new LinearLayout(openMRS.getApplicationContext());
         Mockito.lenient().when(mFormDisplayPageView.createSectionLayout(sectionLabel)).thenReturn(sectionLayout);

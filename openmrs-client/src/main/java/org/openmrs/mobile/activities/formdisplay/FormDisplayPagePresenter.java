@@ -55,7 +55,6 @@ public class FormDisplayPagePresenter extends BasePresenter implements FormDispl
         if (mFormDisplayPageView.isSectionAlreadyCreated(section.getLabel())) {
             return;
         }
-
         LinearLayout sectionLinearLayout = mFormDisplayPageView.createSectionLayout(section.getLabel());
         mFormDisplayPageView.attachSectionToView(sectionLinearLayout);
 
