@@ -542,6 +542,6 @@
     <string name="about_openmrs_2">OpenMRS is a platform that countries and implementers use to create a customized EMR system in response to actual needs on the ground.</string>
     <string name="more_about_openmrs"><![CDATA[more]]></string>
     <string name="receive_vitals_from_bluetooth_button_text">Receive vitals from bluetooth device</string>
-    <string name="receive_vitals_from_bluetooth_button_error_message">No activity found for receiving bluetooth data</string>
+    <string name="receive_vitals_from_bluetooth_button_error_message">No app was found for receiving bluetooh data</string>
 
 </resources>
