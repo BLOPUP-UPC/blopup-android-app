@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-debug
-          path: app/build/outputs/apk/debug/openmrs-client-debug.apk
+          path: openmrs-client/build/outputs/apk/debug/openmrs-client-debug.apk
 
   notify:
     needs: release-debug
