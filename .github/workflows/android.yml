@@ -59,7 +59,7 @@ jobs:
         uses: BLOPUP-UPC/notify-on-workflow-failure@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          workflow-file: android.yaml
+          workflow-file: android.yml
           job-status: ${{ needs.release-debug.result }}
           webhook: ${{ secrets.NOTIFICATION_WEBHOOK }}
           actor: ${{ github.actor }}

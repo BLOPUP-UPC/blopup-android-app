@@ -5,8 +5,8 @@ buildscript {
     System.properties['com.android.build.gradle.overrideVersionCheck'] = 'true'
     repositories {
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
