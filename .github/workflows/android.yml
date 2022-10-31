@@ -1,36 +1,65 @@
-name: Android CI
+name: Release debug
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
-  build:
-
+  release-debug:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Create APK
-      run: ./gradlew assembleDebug
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
 
-    - name: Generate release tag
-      id: tag
-      run: |
-        echo "::set-output name=release_tag::UserBuild_$(date +"%Y.%m.%d_%H-%M")"
-    
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: openmrs-client/build/outputs/apk/debug/openmrs-client-debug.apk
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
+      - name: Cache gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run tests
+        run: ./gradlew :openmrs-client:testDebugUnitTest
+
+      - name: Build debug artifact
+        run: ./gradlew :openmrs-client:assembleDebug
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/openmrs-client-debug.apk
+
+  notify:
+    needs: release-debug
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check status and notify
+        uses: BLOPUP-UPC/notify-on-workflow-failure@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          workflow-file: android.yaml
+          job-status: ${{ needs.release-debug.result }}
+          webhook: ${{ secrets.NOTIFICATION_WEBHOOK }}
+          actor: ${{ github.actor }}

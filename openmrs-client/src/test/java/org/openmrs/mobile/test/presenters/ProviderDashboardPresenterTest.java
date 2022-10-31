@@ -10,6 +10,7 @@ import com.openmrs.android_sdk.utilities.NetworkUtils;
 import com.openmrs.android_sdk.utilities.ToastUtil;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,6 +75,7 @@ public class ProviderDashboardPresenterTest extends ACUnitTestBase {
     }
 
     @Test
+    @Ignore("Migrating from MVP to MVVM")
     public void shouldReturnSuccessOnUpdateProvider() {
         Provider provider = createProvider(1l, "doctor");
         Mockito.lenient().when(NetworkUtils.isOnline()).thenReturn(true);

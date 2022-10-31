@@ -39,6 +39,7 @@ import com.openmrs.android_sdk.utilities.NetworkUtils;
 import com.openmrs.android_sdk.utilities.ToastUtil;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -93,6 +94,7 @@ public class ProviderManagerDashboardPresenterTest extends ACUnitTestBase {
     }
 
     @Test
+    @Ignore("Migrating from MVP to MVVM")
     public void shouldGetProviders_AllOK() {
 
         Provider providerOne = createProvider(1l, "doctor");
@@ -112,6 +114,7 @@ public class ProviderManagerDashboardPresenterTest extends ACUnitTestBase {
     }
 
     @Test
+    @Ignore("Migrating from MVP to MVVM")
     public void shouldGetProviders_Error() {
         Mockito.lenient().when(NetworkUtils.isOnline()).thenReturn(true);
         Mockito.lenient().when(restApi.getProviderList()).thenReturn(mockErrorCall(401));
@@ -121,6 +124,7 @@ public class ProviderManagerDashboardPresenterTest extends ACUnitTestBase {
     }
 
     @Test
+    @Ignore("Migrating from MVP to MVVM")
     public void shouldGetProviders_EmptyList() {
         List<Provider> providerList = new ArrayList<>();
         providerLiveData.postValue(providerList);
