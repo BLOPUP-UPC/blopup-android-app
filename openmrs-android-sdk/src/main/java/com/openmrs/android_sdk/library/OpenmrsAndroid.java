@@ -30,6 +30,8 @@ import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import rx.android.BuildConfig;
+
 /**
  * The type Openmrs android.
  */
@@ -235,7 +237,9 @@ public class OpenmrsAndroid {
      */
     public static String getServerUrl() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.SERVER_URL, ApplicationConstants.DEFAULT_OPEN_MRS_URL);
+        return BuildConfig.DEBUG ?
+                prefs.getString(ApplicationConstants.SERVER_URL, ApplicationConstants.DEFAULT_OPEN_MRS_URL) :
+                prefs.getString(ApplicationConstants.SERVER_URL, ApplicationConstants.PROD_OPEN_MRS_URL);
     }
 
     /**
@@ -478,7 +482,6 @@ public class OpenmrsAndroid {
         editor.putString(ApplicationConstants.AUTHORIZATION_TOKEN, authorization);
         editor.apply();
     }
-
 
 
 }
