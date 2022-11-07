@@ -277,6 +277,44 @@
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutPhoneNumber"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp">
+
+                            <EditText
+                                android:id="@+id/phoneNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="true"
+                                android:hint="@string/reg_phone_number_hint"
+                                android:imeOptions="actionNext"
+                                android:inputType="phone|textCapWords"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutDocumentId"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp">
+
+                            <EditText
+                                android:id="@+id/documentId"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="true"
+                                android:hint="@string/reg_document_id_hint"
+                                android:imeOptions="actionNext"
+                                android:inputType="textPersonName|textCapWords"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -319,6 +357,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/female" />
+
+                            <RadioButton
+                                android:id="@+id/nonBinary"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/non_binary" />
 
                         </RadioGroup>
 
@@ -497,6 +541,76 @@
                         android:textSize="14sp"
                         android:visibility="gone" />
 
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:baselineAligned="false"
+                        android:weightSum="2">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutContactFirstName"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/contactFirstName"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="true"
+                                android:hint="@string/reg_firstname_hint"
+                                android:imeOptions="actionNext"
+                                android:inputType="textPersonName|textCapWords"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutContactLastName"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/contactLastName"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="true"
+                                android:hint="@string/last_name_hint"
+                                android:imeOptions="actionNext"
+                                android:inputType="textPersonName|textCapWords"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayoutContactPhoneNumber"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp">
+
+                        <EditText
+                            android:id="@+id/contactPhoneNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:hint="@string/reg_phone_number_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -504,7 +618,6 @@
                         android:text="@string/reg_ques_address"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputLayoutAddress"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

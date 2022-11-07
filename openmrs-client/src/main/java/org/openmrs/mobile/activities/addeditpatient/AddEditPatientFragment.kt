@@ -81,6 +81,7 @@ import com.openmrs.android_sdk.utilities.ToastUtil
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCrop.REQUEST_CROP
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_patient_info.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -247,6 +248,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                 binding.gender.check(R.id.male)
             } else if (StringValue.FEMALE == gender) {
                 binding.gender.check(R.id.female)
+            }else if ( StringValue.NON_BINARY == gender){
+                binding.gender.check(R.id.nonBinary)
             }
             binding.addressOne.setText(address.address1)
             binding.addressTwo.setText(address.address2)
@@ -288,7 +291,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             }
 
             /* Gender */
-            val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE)
+            val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
             val index = gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
             if (index == -1) {
                 gendererror.makeVisible()
@@ -870,6 +873,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         companion object {
             const val FEMALE = "F"
             const val MALE = "M"
+            const val NON_BINARY = "N"
         }
     }
 

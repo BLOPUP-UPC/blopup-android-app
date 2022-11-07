@@ -43,6 +43,8 @@
     <string name="reg_firstname_hint">First Name*</string>
     <string name="reg_midname_hint">Middle Name</string>
     <string name="reg_surname_hint">Family Name*</string>
+    <string name="reg_document_id_hint">Document ID</string>
+    <string name="reg_phone_number_hint">Phone Number</string>
     <string name="reg_ques_name">Patient\’s Name</string>
     <string name="reg_ques_gender">Patient\'s gender*</string>
     <string name="reg_ques_dob">Patient\'s birth date*</string>
@@ -54,6 +56,7 @@
     <string name="atleastone">Fill at least one address field</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="non_binary">Non Binary</string>
     <string name="dob_hint">Date of Birth (dd/MM/yyyy)</string>
     <string name="estyr">Estimated Years</string>
     <string name="estmonth">Estimated Months</string>
