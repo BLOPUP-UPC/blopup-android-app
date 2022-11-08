@@ -138,10 +138,10 @@ object AppDatabaseHelper {
         encounter.diagnoses = DiagnosisDAO().findDiagnosesByEncounterID(entity.id!!)
         val location: LocationEntity? = try {
             AppDatabase
-                    .getDatabase(OpenmrsAndroid.getInstance()?.applicationContext)
-                    .locationRoomDAO()
-                    .findLocationByUUID(entity.locationUuid)
-                    .blockingGet()
+                .getDatabase(OpenmrsAndroid.getInstance()?.applicationContext)
+                .locationRoomDAO()
+                .findLocationByUUID(entity.locationUuid)
+                .blockingGet()
         } catch (e: Exception) {
             null
         }
@@ -159,10 +159,10 @@ object AppDatabaseHelper {
         visit.visitType = VisitType(visitEntity.visitType)
         try {
             val locationEntity = AppDatabase
-                    .getDatabase(OpenmrsAndroid.getInstance()?.applicationContext)
-                    .locationRoomDAO()
-                    .findLocationByName(visitEntity.visitPlace)
-                    .blockingGet()
+                .getDatabase(OpenmrsAndroid.getInstance()?.applicationContext)
+                .locationRoomDAO()
+                .findLocationByName(visitEntity.visitPlace)
+                .blockingGet()
             visit.location = locationEntity
         } catch (e: Exception) {
             visit.location = LocationEntity(visitEntity.visitPlace)
@@ -192,6 +192,18 @@ object AppDatabaseHelper {
         val patient = Patient(patientEntity.id, patientEntity.encounters, null)
         patient.display = patientEntity.display
         patient.uuid = patientEntity.uuid
+        patient.documentId = patientEntity.documentId
+        patient.phoneNumber = patientEntity.phoneNumber
+
+        //#region -- Contact Details --
+        val contactNames = PersonName()
+        contactNames.givenName = patientEntity.givenName
+        contactNames.middleName = patientEntity.middleName
+        contactNames.familyName = patientEntity.familyName
+        patient.contactNames.add(contactNames)
+        patient.contactPhoneNumber = patientEntity.contactPhoneNumber
+        //#endregion
+
         val patientIdentifier = PatientIdentifier()
         patientIdentifier.identifier = patientEntity.identifier
         if (patient.identifiers == null) {
@@ -218,7 +230,12 @@ object AppDatabaseHelper {
         personAddress.cityVillage = patientEntity.city
         patient.addresses.add(personAddress)
         if (patientEntity.causeOfDeath != null) {
-            patient.causeOfDeath = Resource(ApplicationConstants.EMPTY_STRING, patientEntity.causeOfDeath, ArrayList(), 0)
+            patient.causeOfDeath = Resource(
+                ApplicationConstants.EMPTY_STRING,
+                patientEntity.causeOfDeath,
+                ArrayList(),
+                0
+            )
         }
         patient.isDeceased = patientEntity.deceased == "true"
         return patient
@@ -229,6 +246,15 @@ object AppDatabaseHelper {
         val patientEntity = PatientEntity()
         patientEntity.display = patient.name.nameString
         patientEntity.uuid = patient.uuid
+        patientEntity.phoneNumber = patient.phoneNumber
+        patientEntity.documentId = patient.documentId
+
+        //#region -- Contact Details --
+        patientEntity.contactPhoneNumber = patient.contactPhoneNumber
+        patientEntity.contactFirstName = patient.contact.givenName
+        patientEntity.contactLastName = patient.contact.familyName
+        //#endregion
+
         patientEntity.isSynced = patient.isSynced
         if (patient.identifier != null) {
             patientEntity.identifier = patient.identifier.identifier
@@ -309,10 +335,16 @@ object AppDatabaseHelper {
         }
         val allergen = Allergen()
         allergen.allergenType = allergyEntity.allergenType
-        allergen.codedAllergen = Resource(allergyEntity.allergenUUID!!, allergyEntity.allergenDisplay!!, ArrayList(), 1)
+        allergen.codedAllergen =
+            Resource(allergyEntity.allergenUUID!!, allergyEntity.allergenDisplay!!, ArrayList(), 1)
         allergy.allergen = allergen
         if (allergyEntity.severityDisplay != null) {
-            allergy.severity = Resource(allergyEntity.severityUUID!!, allergyEntity.severityDisplay!!, ArrayList(), 1)
+            allergy.severity = Resource(
+                allergyEntity.severityUUID!!,
+                allergyEntity.severityDisplay!!,
+                ArrayList(),
+                1
+            )
         }
         return allergy
     }
@@ -331,7 +363,7 @@ object AppDatabaseHelper {
     @JvmStatic
     fun <T> createObservableIO(func: Callable<T>?): Observable<T> {
         return Observable.fromCallable(func)
-                .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
     }
 
     @JvmStatic
