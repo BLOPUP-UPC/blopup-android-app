@@ -606,7 +606,7 @@
                             android:focusable="true"
                             android:hint="@string/reg_phone_number_hint"
                             android:imeOptions="actionNext"
-                            android:inputType="textCapWords"
+                            android:inputType="phone"
                             android:maxLines="1"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
