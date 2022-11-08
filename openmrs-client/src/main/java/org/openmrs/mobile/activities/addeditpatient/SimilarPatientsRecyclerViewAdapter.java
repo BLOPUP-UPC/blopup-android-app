@@ -17,6 +17,7 @@ package org.openmrs.mobile.activities.addeditpatient;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -36,6 +37,7 @@ import com.openmrs.android_sdk.library.dao.PatientDAO;
 import com.openmrs.android_sdk.library.models.Patient;
 import com.openmrs.android_sdk.utilities.ApplicationConstants;
 import com.openmrs.android_sdk.utilities.DateUtils;
+import com.openmrs.android_sdk.utilities.StringUtils;
 
 import org.openmrs.mobile.R;
 import org.openmrs.mobile.activities.patientdashboard.PatientDashboardActivity;
@@ -64,8 +66,10 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
 
         setPatientName(holder, patient);
         setGender(holder, patient);
+        setPhoneNumber(holder, patient);
         setBirthdate(holder, patient);
-        setPatientAdres(holder, patient);
+        setPatientAddress(holder, patient);
+        setPatientContactDetails(holder, patient);
 
         holder.mRowLayout.setOnClickListener(view -> {
             if (!(new PatientDAO().isUserAlreadySaved(patient.getUuid()))) {
@@ -92,12 +96,17 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
         private TextView mGivenName;
         private TextView mMiddleName;
         private TextView mFamilyName;
+        private TextView mPhoneNumber;
+        private TextView mDocumentId;
         private TextView mGender;
         private TextView mBirthDate;
         private TextView mAddres;
         private TextView mPostalCode;
         private TextView mCity;
         private TextView mCountry;
+        private TextView mContactFirstName;
+        private TextView mContactLastName;
+        private TextView mContactPhoneNumber;
 
         public PatientViewHolder(View itemView) {
             super(itemView);
@@ -105,8 +114,17 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
             mGivenName = itemView.findViewById(R.id.patientGivenName);
             mMiddleName = itemView.findViewById(R.id.patientMiddleName);
             mFamilyName = itemView.findViewById(R.id.patientFamilyName);
+
+            mPhoneNumber = itemView.findViewById(R.id.phoneNumber);
+            mDocumentId = itemView.findViewById(R.id.documentId);
+
             mGender = itemView.findViewById(R.id.patientGender);
             mBirthDate = itemView.findViewById(R.id.patientBirthDate);
+
+            mContactFirstName = itemView.findViewById(R.id.contactFirstName);
+            mContactLastName = itemView.findViewById(R.id.contactLastName);
+            mContactPhoneNumber = itemView.findViewById(R.id.contactPhoneNumber);
+
             mAddres = itemView.findViewById(R.id.patientAddres);
             mPostalCode = itemView.findViewById(R.id.patientPostalCode);
             mCity = itemView.findViewById(R.id.patientCity);
@@ -116,11 +134,11 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
 
     private void downloadPatient(Patient patient) {
         new PatientDAO().savePatient(patient)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(id -> {
-                new VisitRepository().syncVisitsData(patient);
-                new VisitRepository().syncLastVitals(patient.getUuid());
-            });
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(id -> {
+                    new VisitRepository().syncVisitsData(patient);
+                    new VisitRepository().syncLastVitals(patient.getUuid());
+                });
     }
 
     private void setBirthdate(PatientViewHolder holder, Patient patient) {
@@ -143,7 +161,16 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
         }
     }
 
-    private void setPatientAdres(PatientViewHolder holder, Patient patient) {
+    private void setPhoneNumber(PatientViewHolder holder, Patient patient) {
+        if (StringUtils.notEmpty(patient.getPhoneNumber())) {
+            holder.mPhoneNumber.setText(patient.getPhoneNumber());
+            if (Objects.equal(patient.getPhoneNumber(), newPatient.getPhoneNumber())) {
+                setStyleForMatchedPatientFields(holder.mPhoneNumber);
+            }
+        }
+    }
+
+    private void setPatientAddress(PatientViewHolder holder, Patient patient) {
         if (null != patient.getAddress().getAddress1()) {
             holder.mAddres.setText(patient.getAddress().getAddress1());
             if (Objects.equal(patient.getAddress().getAddress1(), newPatient.getAddress().getAddress1())) {
@@ -187,6 +214,27 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
             holder.mFamilyName.setText(patient.getName().getFamilyName());
             if (Objects.equal(patient.getName().getFamilyName(), newPatient.getName().getFamilyName())) {
                 setStyleForMatchedPatientFields(holder.mFamilyName);
+            }
+        }
+    }
+
+    private void setPatientContactDetails(PatientViewHolder holder, Patient patient) {
+        if (StringUtils.notEmpty(patient.getContact().getGivenName())) {
+            holder.mContactFirstName.setText(patient.getContact().getGivenName());
+            if (Objects.equal(patient.getContact().getGivenName(), newPatient.getContact().getGivenName())) {
+                setStyleForMatchedPatientFields(holder.mContactFirstName);
+            }
+        }
+        if (StringUtils.notEmpty(patient.getContact().getFamilyName())) {
+            holder.mContactLastName.setText(patient.getContact().getFamilyName());
+            if (Objects.equal(patient.getContact().getMiddleName(), newPatient.getContact().getMiddleName())) {
+                setStyleForMatchedPatientFields(holder.mContactLastName);
+            }
+        }
+        if (StringUtils.notEmpty(patient.getContactPhoneNumber())) {
+            holder.mContactPhoneNumber.setText(patient.getContactPhoneNumber());
+            if (Objects.equal(patient.getContactPhoneNumber(), newPatient.getContactPhoneNumber())) {
+                setStyleForMatchedPatientFields(holder.mContactPhoneNumber);
             }
         }
     }
