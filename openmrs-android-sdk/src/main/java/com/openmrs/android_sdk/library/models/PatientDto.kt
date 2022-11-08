@@ -10,8 +10,10 @@
 
 package com.openmrs.android_sdk.library.models
 
+import androidx.room.TypeConverters
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.openmrs.android_sdk.library.models.typeConverters.PersonNameConverter
 import java.util.*
 
 /**
@@ -30,6 +32,28 @@ open class PatientDto {
     @Expose
     private var identifiers: List<PatientIdentifier> = ArrayList()
 
+
+    //Phone Number
+    @SerializedName("phoneNumber")
+    @Expose
+    private var phoneNumber: String? = null
+
+    //Contact Number
+    @SerializedName("contactPhoneNumber")
+    @Expose
+    private var contactPhoneNumber: String? = null
+
+    //DocumentId
+    @SerializedName("documentId")
+    @Expose
+    private val documentId: String? = null
+
+    //Contact Names
+    @TypeConverters(PersonNameConverter::class)
+    @SerializedName("contactNames")
+    @Expose
+    private val contactNames: List<PersonName> = ArrayList()
+
     @SerializedName("person")
     @Expose
     var person: Person? = null
@@ -43,9 +67,24 @@ open class PatientDto {
     val patient: Patient
         get() {
             val person = person
-            val patient = Patient(null, "", identifiers,
-                    person!!.names, person.gender!!, person.birthdate!!, person.birthdateEstimated, person.addresses, person.attributes, person.photo, person.causeOfDeath, person.isDeceased)
-
+            val patient = Patient(
+                null,
+                "",
+                identifiers,
+                person!!.names,
+                person.gender!!,
+                person.birthdate!!,
+                person.birthdateEstimated,
+                person.addresses,
+                person.attributes,
+                person.photo,
+                person.causeOfDeath,
+                person.isDeceased,
+                phoneNumber,
+                contactPhoneNumber,
+                documentId,
+                contactNames
+            )
             patient.uuid = uuid.toString()
 
             return patient

@@ -18,15 +18,17 @@ import java.util.Map;
 
 import android.graphics.Bitmap;
 
+import androidx.room.TypeConverters;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.openmrs.android_sdk.library.models.typeConverters.PersonNameConverter;
 import com.openmrs.android_sdk.utilities.StringUtils;
 
 /**
  * The type Patient.
  *
  * <p>More on Type Patient https://rest.openmrs.org/#patients </p>
- *
  */
 public class Patient extends Person implements Serializable {
     private Long id;
@@ -34,6 +36,24 @@ public class Patient extends Person implements Serializable {
     @SerializedName("identifiers")
     @Expose
     private List<PatientIdentifier> identifiers = new ArrayList<>();
+
+    //DocumentId
+    @SerializedName("documentId")
+    @Expose
+    private String documentId;
+    //Phone Number
+    @SerializedName("phoneNumber")
+    @Expose
+    private String phoneNumber;
+
+    @TypeConverters(PersonNameConverter.class)
+    @SerializedName("contactNames")
+    @Expose
+    private List<PersonName> contactNames = new ArrayList<>();
+    //Phone Number
+    @SerializedName("contactPhoneNumber")
+    @Expose
+    private String contactPhoneNumber;
 
     /**
      * Instantiates a new Patient.
@@ -78,6 +98,36 @@ public class Patient extends Person implements Serializable {
         this.id = id;
         this.encounters = encounters;
         this.identifiers = identifiers;
+    }
+
+    /**
+     * Instantiates a new Patient.
+     *
+     * @param id                 the id
+     * @param encounters         the encounters
+     * @param identifiers        the identifiers
+     * @param names              the names
+     * @param gender             the gender
+     * @param birthdate          the birthdate
+     * @param birthdateEstimated the birthdate estimated
+     * @param addresses          the addresses
+     * @param attributes         the attributes
+     * @param photo              the photo
+     * @param causeOfDeath       the cause of death
+     * @param dead               the dead
+     */
+    /*Constructor to initialize values of current class as well as parent class*/
+    public Patient(Long id, String encounters, List<PatientIdentifier> identifiers,
+                   List<PersonName> names, String gender, String birthdate, boolean birthdateEstimated, List<PersonAddress> addresses, List<PersonAttribute> attributes,
+                   Bitmap photo, Resource causeOfDeath, boolean dead, String phoneNumber, String contactPhoneNumber, String documentId, List<PersonName> contactNames) {
+        super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead);
+        this.id = id;
+        this.encounters = encounters;
+        this.identifiers = identifiers;
+        this.phoneNumber = phoneNumber;
+        this.contactPhoneNumber = contactPhoneNumber;
+        this.contactNames = contactNames;
+        this.documentId = documentId;
     }
 
     public Long getId() {
@@ -225,5 +275,45 @@ public class Patient extends Person implements Serializable {
         if (StringUtils.notNull(value)) {
             map.put(key, value);
         }
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
+
+    public List<PersonName> getContactNames() {
+        return contactNames;
+    }
+
+    public PersonName getContact() {
+        if (!contactNames.isEmpty()) {
+            return contactNames.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public void setContactNames(List<PersonName> contactNames) {
+        this.contactNames = contactNames;
+    }
+
+    public String getContactPhoneNumber() {
+        return contactPhoneNumber;
+    }
+
+    public void setContactPhoneNumber(String contactPhoneNumber) {
+        this.contactPhoneNumber = contactPhoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
