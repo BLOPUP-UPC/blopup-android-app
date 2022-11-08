@@ -121,9 +121,11 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     private val pickPhoto = registerForActivityResult(GetContent()) { uri ->
         if (uri == null) return@registerForActivityResult
-        val destinationUri = Uri.fromFile(File(
+        val destinationUri = Uri.fromFile(
+            File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
-                ImageUtils.createUniqueImageFileName())
+                ImageUtils.createUniqueImageFileName()
+            )
         )
         startCropActivity(uri, destinationUri)
     }
@@ -134,7 +136,11 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         startCropActivity(sourceUri, sourceUri)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentPatientInfoBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
@@ -153,17 +159,17 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     private fun setupPermissionsHandler() {
         cameraAndStoragePermissions = constructPermissionsRequest(
-                Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                onShowRationale = ::showCameraPermissionRationale,
-                onPermissionDenied = { showSnackbarLong(R.string.permissions_camera_storage_denied) },
-                onNeverAskAgain = { showSnackbarLong(R.string.permissions_camera_storage_neverask) },
-                requiresPermission = ::capturePhoto
+            Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            onShowRationale = ::showCameraPermissionRationale,
+            onPermissionDenied = { showSnackbarLong(R.string.permissions_camera_storage_denied) },
+            onNeverAskAgain = { showSnackbarLong(R.string.permissions_camera_storage_neverask) },
+            requiresPermission = ::capturePhoto
         )
         storageWritePermission = constructPermissionsRequest(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                onShowRationale = { request -> request.proceed() },
-                onNeverAskAgain = { showSnackbarLong(R.string.permission_storage_neverask) },
-                requiresPermission = ::pickPhoto
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            onShowRationale = { request -> request.proceed() },
+            onNeverAskAgain = { showSnackbarLong(R.string.permission_storage_neverask) },
+            requiresPermission = ::pickPhoto
         )
     }
 
@@ -208,7 +214,12 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             val patientName = viewModel.patient.name.nameString
             when (it) {
                 ResultType.PatientUpdateSuccess -> {
-                    ToastUtil.success(String.format(getString(R.string.update_patient_success), patientName))
+                    ToastUtil.success(
+                        String.format(
+                            getString(R.string.update_patient_success),
+                            patientName
+                        )
+                    )
                     finishActivity()
                 }
                 ResultType.PatientUpdateLocalSuccess -> {
@@ -216,7 +227,12 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                     finishActivity()
                 }
                 else -> {
-                    ToastUtil.error(String.format(getString(R.string.update_patient_error), patientName))
+                    ToastUtil.error(
+                        String.format(
+                            getString(R.string.update_patient_error),
+                            patientName
+                        )
+                    )
                     hideLoading()
                 }
             }
@@ -238,17 +254,30 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             binding.firstName.setText(name.givenName)
             binding.middlename.setText(name.middleName)
             binding.surname.setText(name.familyName)
+            binding.phoneNumber.setText(phoneNumber)
+            binding.documentId.setText(documentId)
+
+            binding.contactFirstName.setText(viewModel.patient.contact.givenName)
+            binding.contactLastName.setText(viewModel.patient.contact.familyName)
+            binding.contactPhoneNumber.setText(viewModel.patient.contactPhoneNumber)
 
             if (notNull(birthdate) || notEmpty(birthdate)) {
                 viewModel.dateHolder = convertTimeString(birthdate)
-                binding.dobEditText.setText(convertTime(convertTime(viewModel.dateHolder.toString(), DateUtils.OPEN_MRS_REQUEST_FORMAT)!!,
-                        DateUtils.DEFAULT_DATE_FORMAT))
+                binding.dobEditText.setText(
+                    convertTime(
+                        convertTime(
+                            viewModel.dateHolder.toString(),
+                            DateUtils.OPEN_MRS_REQUEST_FORMAT
+                        )!!,
+                        DateUtils.DEFAULT_DATE_FORMAT
+                    )
+                )
             }
             if (StringValue.MALE == gender) {
                 binding.gender.check(R.id.male)
             } else if (StringValue.FEMALE == gender) {
                 binding.gender.check(R.id.female)
-            }else if ( StringValue.NON_BINARY == gender){
+            } else if (StringValue.NON_BINARY == gender) {
                 binding.gender.check(R.id.nonBinary)
             }
             binding.addressOne.setText(address.address1)
@@ -284,15 +313,21 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             } else {
                 dobError.makeGone()
                 viewModel.patient.birthdateEstimated = true
-                val yearDiff = if (isEmpty(estimatedYear)) 0 else estimatedYear.text.toString().toInt()
-                val monthDiff = if (isEmpty(estimatedMonth)) 0 else estimatedMonth.text.toString().toInt()
+                val yearDiff =
+                    if (isEmpty(estimatedYear)) 0 else estimatedYear.text.toString().toInt()
+                val monthDiff =
+                    if (isEmpty(estimatedMonth)) 0 else estimatedMonth.text.toString().toInt()
                 viewModel.dateHolder = getDateTimeFromDifference(yearDiff, monthDiff)
-                viewModel.patient.birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT).print(viewModel.dateHolder)
+                viewModel.patient.birthdate =
+                    DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
+                        .print(viewModel.dateHolder)
             }
 
             /* Gender */
-            val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
-            val index = gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
+            val genderChoices =
+                arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
+            val index =
+                gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
             if (index == -1) {
                 gendererror.makeVisible()
                 viewModel.patient.gender = null
@@ -301,7 +336,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                 gendererror.makeGone()
                 viewModel.patient.gender = genderChoices[index]
             }
-
+            Log.i("payload", viewModel.patient.toString())
             return
         }
 
@@ -348,8 +383,15 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             familyName = getInput(surname)
         })
 
+        viewModel.patient.contactPhoneNumber = getInput(contactPhoneNumber)
+        viewModel.patient.phoneNumber = getInput(phoneNumber)
+        viewModel.patient.documentId = getInput(documentId)
+        viewModel.patient.contactNames = listOf(PersonName().apply {
+            givenName = getInput(contactFirstName)
+            familyName = getInput(contactLastName)
+        })
         /* Gender */
-        val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE)
+        val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
         val index = gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
         if (index == -1) {
             gendererror.makeVisible()
@@ -361,19 +403,31 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         }
 
         /* Addresses */
-        if (isEmpty(addressOne) && isEmpty(addressTwo) || isCountryCodePickerEmpty(countryCodeSpinner)) {
+        if (isEmpty(addressOne) && isEmpty(addressTwo) || isCountryCodePickerEmpty(
+                countryCodeSpinner
+            )
+        ) {
             addressError.makeVisible()
             addressError.text = getString(R.string.atleastone)
             textInputLayoutAddress.error = getString(R.string.atleastone)
             scrollToTop()
         } else if (!validateText(getInput(addressOne), ILLEGAL_ADDRESS_CHARACTERS)
-                || !validateText(getInput(addressTwo), ILLEGAL_ADDRESS_CHARACTERS)) {
+            || !validateText(getInput(addressTwo), ILLEGAL_ADDRESS_CHARACTERS)
+        ) {
             addressError.makeVisible()
             addressError.text = getString(R.string.addr_invalid_error)
             scrollToTop()
-            if (!validateText(getInput(addressOne), ILLEGAL_ADDRESS_CHARACTERS)) textInputLayoutAddress.error = getString(R.string.addr_invalid_error)
+            if (!validateText(
+                    getInput(addressOne),
+                    ILLEGAL_ADDRESS_CHARACTERS
+                )
+            ) textInputLayoutAddress.error = getString(R.string.addr_invalid_error)
             else textInputLayoutAddress.isErrorEnabled = false
-            if (!validateText(getInput(addressTwo), ILLEGAL_ADDRESS_CHARACTERS)) textInputLayoutAddress2.error = getString(R.string.addr_invalid_error)
+            if (!validateText(
+                    getInput(addressTwo),
+                    ILLEGAL_ADDRESS_CHARACTERS
+                )
+            ) textInputLayoutAddress2.error = getString(R.string.addr_invalid_error)
             else textInputLayoutAddress2.isErrorEnabled = false
         } else {
             addressError.makeGone()
@@ -397,16 +451,19 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             if (isBlank(getInput(estimatedYear)) && isBlank(getInput(estimatedMonth))) {
                 val dateTimeFormatter = DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT)
                 val minimumDate = DateTime.now().minusYears(
-                        ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE)
-                        .toString(dateTimeFormatter)
+                    ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
+                )
+                    .toString(dateTimeFormatter)
                 val maximumDate = DateTime.now().toString(dateTimeFormatter)
                 dobError.text = getString(R.string.dob_error, minimumDate, maximumDate)
                 dobError.makeVisible()
                 scrollToTop()
             } else {
                 viewModel.patient.birthdateEstimated = true
-                val yearDiff = if (isEmpty(estimatedYear)) 0 else estimatedYear.text.toString().toInt()
-                val monthDiff = if (isEmpty(estimatedMonth)) 0 else estimatedMonth.text.toString().toInt()
+                val yearDiff =
+                    if (isEmpty(estimatedYear)) 0 else estimatedYear.text.toString().toInt()
+                val monthDiff =
+                    if (isEmpty(estimatedMonth)) 0 else estimatedMonth.text.toString().toInt()
                 viewModel.dateHolder = getDateTimeFromDifference(yearDiff, monthDiff)
                 dobError.makeGone()
             }
@@ -414,7 +471,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             viewModel.patient.birthdateEstimated = false
             val insertedDate = dobEditText.text.toString().trim { it <= ' ' }
             val minDateOfBirth = DateTime.now().minusYears(
-                    ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE)
+                ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
+            )
             val maxDateOfBirth = DateTime.now()
             if (validateDate(insertedDate, minDateOfBirth, maxDateOfBirth)) {
                 val dateTimeFormatter = DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT)
@@ -422,7 +480,9 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             }
             dobError.makeGone()
         }
-        viewModel.patient.birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT).print(viewModel.dateHolder)
+        viewModel.patient.birthdate =
+            DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
+                .print(viewModel.dateHolder)
     }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
@@ -436,7 +496,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             newPatient = patient
         }.let {
             (requireActivity() as AddEditPatientActivity)
-                    .createAndShowDialog(it, ApplicationConstants.DialogTAG.SIMILAR_PATIENTS_TAG)
+                .createAndShowDialog(it, ApplicationConstants.DialogTAG.SIMILAR_PATIENTS_TAG)
         }
     }
 
@@ -466,7 +526,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                 // Auto-add slash before entering month (e.g. "17/*") and before entering year (e.g. "17/10/*")
                 dobEditText.text.toString().let {
                     if ((it.length == 3 && !it.contains("/")) ||
-                            (it.length == 6 && !it.substring(3).contains("/"))) {
+                        (it.length == 6 && !it.substring(3).contains("/"))
+                    ) {
                         dobEditText.setText(StringBuilder(it).insert(it.length - 1, "/").toString())
                         dobEditText.setSelection(dobEditText.text.length)
                     }
@@ -498,11 +559,18 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             estimatedMonth.text.clear()
             estimatedYear.text.clear()
 
-            val dateSetListener = { _: DatePicker?, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
-                val adjustedMonth = selectedMonth + 1
-                dobEditText.setText(String.format("%02d", selectedDay) + "/" + String.format("%02d", adjustedMonth) + "/" + selectedYear)
-                viewModel.dateHolder = LocalDate(selectedYear, adjustedMonth, selectedDay).toDateTimeAtStartOfDay()
-            }
+            val dateSetListener =
+                { _: DatePicker?, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
+                    val adjustedMonth = selectedMonth + 1
+                    dobEditText.setText(
+                        String.format(
+                            "%02d",
+                            selectedDay
+                        ) + "/" + String.format("%02d", adjustedMonth) + "/" + selectedYear
+                    )
+                    viewModel.dateHolder =
+                        LocalDate(selectedYear, adjustedMonth, selectedDay).toDateTimeAtStartOfDay()
+                }
             DatePickerDialog(requireActivity(), dateSetListener, cYear, cMonth, cDay).apply {
                 datePicker.maxDate = System.currentTimeMillis()
                 setTitle(getString(R.string.date_picker_title))
@@ -516,28 +584,49 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
         capturePhoto.setOnClickListener {
             val dialogList = mutableListOf(
-                    CustomDialogModel(getString(R.string.dialog_take_photo), R.drawable.ic_photo_camera),
-                    CustomDialogModel(getString(R.string.dialog_choose_photo), R.drawable.ic_photo_library)
+                CustomDialogModel(
+                    getString(R.string.dialog_take_photo),
+                    R.drawable.ic_photo_camera
+                ),
+                CustomDialogModel(
+                    getString(R.string.dialog_choose_photo),
+                    R.drawable.ic_photo_library
+                )
             )
             if (viewModel.patient.photo != null) {
-                dialogList.add(CustomDialogModel(getString(R.string.dialog_remove_photo), R.drawable.ic_photo_delete))
+                dialogList.add(
+                    CustomDialogModel(
+                        getString(R.string.dialog_remove_photo),
+                        R.drawable.ic_photo_delete
+                    )
+                )
             }
             CustomPickerDialog(dialogList)
-                    .apply { setTargetFragment(this@AddEditPatientFragment, 1000) }
-                    .show(requireFragmentManager(), "tag")
+                .apply { setTargetFragment(this@AddEditPatientFragment, 1000) }
+                .show(requireFragmentManager(), "tag")
         }
 
         patientPhoto.setOnClickListener {
             if (viewModel.capturedPhotoFile != null) {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.setDataAndType(Uri.fromFile(viewModel.capturedPhotoFile), ApplicationConstants.IMAGE_JPEG)
+                i.setDataAndType(
+                    Uri.fromFile(viewModel.capturedPhotoFile),
+                    ApplicationConstants.IMAGE_JPEG
+                )
                 startActivity(i)
             } else if (viewModel.patient.photo != null) {
-                viewModel.patient.run { ImageUtils.showPatientPhoto(requireContext(), photo, name.nameString) }
+                viewModel.patient.run {
+                    ImageUtils.showPatientPhoto(
+                        requireContext(),
+                        photo,
+                        name.nameString
+                    )
+                }
             }
         }
 
-        stateAutoComplete.onFocusChangeListener = View.OnFocusChangeListener { _, _ -> addSuggestionsToCities() }
+        stateAutoComplete.onFocusChangeListener =
+            View.OnFocusChangeListener { _, _ -> addSuggestionsToCities() }
 
         // Check for cities available on searching
         cityAutoComplete.addTextChangedListener(object : TextWatcher {
@@ -547,46 +636,56 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                 val cityList = mutableListOf<String>()
                 val token = AutocompleteSessionToken.newInstance()
                 val request = FindAutocompletePredictionsRequest.builder()
-                        .setCountry(countryCodeSpinner.selectedCountryNameCode.toLowerCase())
-                        .setTypeFilter(TypeFilter.CITIES)
-                        .setSessionToken(token)
-                        .setQuery(cityAutoComplete.text.toString())
-                        .build()
-                viewModel.placesClient?.findAutocompletePredictions(request)?.addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
-                    cityProgressBar.makeGone()
-                    for (autocompletePrediction in response.autocompletePredictions) {
-                        cityList.add(autocompletePrediction.getFullText(null).toString())
-                    }
-
-                    // Creating an array from ArrayList to create adapter
-                    val address = arrayOfNulls<String>(cityList.size)
-                    for (`in` in cityList.indices) address[`in`] = cityList[`in`]
-                    val adapter = ArrayAdapter(requireContext(), android.R.layout.select_dialog_item, address)
-                    cityAutoComplete.setAdapter(adapter)
-                    cityAutoComplete.onItemClickListener = AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
-                        val primary_text = response.autocompletePredictions[position].getPrimaryText(null).toString()
-                        val secondary_text = response.autocompletePredictions[position].getSecondaryText(null).toString()
-                        cityAutoComplete.setText(primary_text)
-                        /*
-                         * if it is a city , then format received will be :
-                         * CITY, STATE, COUNTRY
-                         * else it is a union territory, then it will show :
-                         * CITY, COUNTRY
-                         */
-                        if (secondary_text.contains(",")) {
-                            val index = secondary_text.indexOf(',')
-                            val state = secondary_text.substring(0, index)
-                            stateAutoComplete.setText(state)
-                        } else {
-                            stateAutoComplete.setText(primary_text)
+                    .setCountry(countryCodeSpinner.selectedCountryNameCode.toLowerCase())
+                    .setTypeFilter(TypeFilter.CITIES)
+                    .setSessionToken(token)
+                    .setQuery(cityAutoComplete.text.toString())
+                    .build()
+                viewModel.placesClient?.findAutocompletePredictions(request)
+                    ?.addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
+                        cityProgressBar.makeGone()
+                        for (autocompletePrediction in response.autocompletePredictions) {
+                            cityList.add(autocompletePrediction.getFullText(null).toString())
                         }
+
+                        // Creating an array from ArrayList to create adapter
+                        val address = arrayOfNulls<String>(cityList.size)
+                        for (`in` in cityList.indices) address[`in`] = cityList[`in`]
+                        val adapter = ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.select_dialog_item,
+                            address
+                        )
+                        cityAutoComplete.setAdapter(adapter)
+                        cityAutoComplete.onItemClickListener =
+                            AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+                                val primary_text =
+                                    response.autocompletePredictions[position].getPrimaryText(null)
+                                        .toString()
+                                val secondary_text =
+                                    response.autocompletePredictions[position].getSecondaryText(null)
+                                        .toString()
+                                cityAutoComplete.setText(primary_text)
+                                /*
+                                 * if it is a city , then format received will be :
+                                 * CITY, STATE, COUNTRY
+                                 * else it is a union territory, then it will show :
+                                 * CITY, COUNTRY
+                                 */
+                                if (secondary_text.contains(",")) {
+                                    val index = secondary_text.indexOf(',')
+                                    val state = secondary_text.substring(0, index)
+                                    stateAutoComplete.setText(state)
+                                } else {
+                                    stateAutoComplete.setText(primary_text)
+                                }
+                            }
+                    }?.addOnFailureListener { exception: Exception? ->
+                        if (exception is ApiException) {
+                            Log.i("Place API", "Place not found: " + exception.statusCode)
+                        }
+                        cityProgressBar.makeGone()
                     }
-                }?.addOnFailureListener { exception: Exception? ->
-                    if (exception is ApiException) {
-                        Log.i("Place API", "Place not found: " + exception.statusCode)
-                    }
-                    cityProgressBar.makeGone()
-                }
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -630,9 +729,15 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             answerDisplays[i] = answers[i].display
         }
 
-        deceasedSpinner.adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, answerDisplays)
+        deceasedSpinner.adapter =
+            ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, answerDisplays)
         deceasedSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, pos: Int, l: Long) {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View,
+                pos: Int,
+                l: Long
+            ) {
                 val display = deceasedSpinner.selectedItem.toString()
                 for (i in answers.indices) {
                     if (display == answers[i].display) {
@@ -648,7 +753,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     private fun initPlaces() {
         if (viewModel.placesClient != null) return
         with(requireActivity()) {
-            val applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+            val applicationInfo =
+                packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
             val placesApiKey = applicationInfo.metaData.getString("com.google.android.geo.API_KEY")
             if (!Places.isInitialized() && placesApiKey != null) {
                 Places.initialize(applicationContext, placesApiKey)
@@ -665,10 +771,15 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         countryName = countryName.replace("-", "_")
         countryName = countryName.replace(".", "")
         countryName = countryName.replace("'", "")
-        val resourceId = resources.getIdentifier(countryName.toLowerCase(), "array", requireContext().packageName)
+        val resourceId = resources.getIdentifier(
+            countryName.toLowerCase(),
+            "array",
+            requireContext().packageName
+        )
         if (resourceId != 0) {
             val states = resources.getStringArray(resourceId)
-            val stateAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, states)
+            val stateAdapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, states)
             binding.stateAutoComplete.setAdapter(stateAdapter)
         }
     }
@@ -703,14 +814,17 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     private fun showCameraPermissionRationale(request: PermissionRequest) {
         AlertDialog.Builder(requireActivity())
-                .setMessage(R.string.permissions_camera_storage_rationale)
-                .setPositiveButton(R.string.button_allow) { _: DialogInterface?, _: Int -> request.proceed() }
-                .setNegativeButton(R.string.button_deny) { _: DialogInterface?, _: Int -> request.cancel() }
-                .show()
+            .setMessage(R.string.permissions_camera_storage_rationale)
+            .setPositiveButton(R.string.button_allow) { _: DialogInterface?, _: Int -> request.proceed() }
+            .setNegativeButton(R.string.button_deny) { _: DialogInterface?, _: Int -> request.cancel() }
+            .show()
     }
 
     private fun showLoading() {
-        requireActivity().window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        requireActivity().window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
         binding.transpScreenScreen.makeVisible()
         binding.progressBar.makeVisible()
     }
@@ -725,11 +839,11 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     private fun showSnackbarLong(stringId: Int) {
         Snackbar.make(binding.addEditConstraintLayout, stringId, Snackbar.LENGTH_LONG)
-                .apply {
-                    view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-                            .setTextColor(Color.WHITE)
-                }
-                .show()
+            .apply {
+                view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                    .setTextColor(Color.WHITE)
+            }
+            .show()
     }
 
     private fun submitAction() = with(viewModel) {
@@ -741,17 +855,17 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         // Existing patient updating
         if (patient.isDeceased && !patient.causeOfDeath.uuid.isNullOrEmpty()) {
             alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
-                    .setTitle(R.string.mark_patient_deceased)
-                    .setMessage(R.string.mark_patient_deceased_notice)
-                    .setCancelable(false)
-                    .setPositiveButton(R.string.mark_patient_deceased_proceed) { _, _ ->
-                        alertDialog?.cancel()
-                        updatePatient()
-                    }
-                    .setNegativeButton(R.string.dialog_button_cancel) { _, _ ->
-                        alertDialog?.cancel()
-                    }
-                    .create()
+                .setTitle(R.string.mark_patient_deceased)
+                .setMessage(R.string.mark_patient_deceased_notice)
+                .setCancelable(false)
+                .setPositiveButton(R.string.mark_patient_deceased_proceed) { _, _ ->
+                    alertDialog?.cancel()
+                    updatePatient()
+                }
+                .setNegativeButton(R.string.dialog_button_cancel) { _, _ ->
+                    alertDialog?.cancel()
+                }
+                .create()
             alertDialog?.show()
         } else {
             updatePatient()
@@ -789,7 +903,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     private fun hideSoftKeys() {
         requireActivity().let {
             val view = it.currentFocus ?: View(it)
-            val inputMethodManager = it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager =
+                it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
@@ -804,8 +919,11 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     private fun startCropActivity(sourceUri: Uri, destinationUri: Uri) {
         UCrop.of(sourceUri, destinationUri)
-                .withAspectRatio(ApplicationConstants.ASPECT_RATIO_FOR_CROPPING, ApplicationConstants.ASPECT_RATIO_FOR_CROPPING)
-                .start(requireActivity(), this@AddEditPatientFragment)
+            .withAspectRatio(
+                ApplicationConstants.ASPECT_RATIO_FOR_CROPPING,
+                ApplicationConstants.ASPECT_RATIO_FOR_CROPPING
+            )
+            .start(requireActivity(), this@AddEditPatientFragment)
     }
 
     private fun startPatientDashboardActivity() {
@@ -823,7 +941,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                 data?.let { UCrop.getOutput(it) }?.path?.let {
                     viewModel.patient.photo = ImageUtils.getResizedPortraitImage(it)
                     with(binding.patientPhoto) {
-                        val bitmap = ThumbnailUtils.extractThumbnail(viewModel.patient.photo, width, height)
+                        val bitmap =
+                            ThumbnailUtils.extractThumbnail(viewModel.patient.photo, width, height)
                         setImageBitmap(bitmap)
                         invalidate()
                     }
@@ -852,11 +971,11 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             android.R.id.home -> requireActivity().onBackPressed()
             R.id.actionSubmit -> submitAction()
             R.id.actionReset -> AlertDialog.Builder(requireActivity())
-                    .setTitle(R.string.dialog_title_reset_patient)
-                    .setMessage(R.string.reset_dialog_message)
-                    .setPositiveButton(R.string.dialog_button_ok) { dialogInterface: DialogInterface?, i: Int -> resetAction() }
-                    .setNegativeButton(R.string.dialog_button_cancel, null)
-                    .show()
+                .setTitle(R.string.dialog_title_reset_patient)
+                .setMessage(R.string.reset_dialog_message)
+                .setPositiveButton(R.string.dialog_button_ok) { dialogInterface: DialogInterface?, i: Int -> resetAction() }
+                .setNegativeButton(R.string.dialog_button_cancel, null)
+                .show()
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -878,11 +997,12 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     }
 
     companion object {
-        fun newInstance(patientID: String?, countries: List<String>) = AddEditPatientFragment().apply {
-            arguments = bundleOf(
+        fun newInstance(patientID: String?, countries: List<String>) =
+            AddEditPatientFragment().apply {
+                arguments = bundleOf(
                     Pair(PATIENT_ID_BUNDLE, patientID),
                     Pair(COUNTRIES_BUNDLE, countries)
-            )
-        }
+                )
+            }
     }
 }

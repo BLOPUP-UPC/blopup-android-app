@@ -138,7 +138,7 @@ ACUnitTestBase {
     }
 
     protected Person createPerson(Long id) {
-        return new Person(Collections.singletonList(createPersonName(id)), "M", "25-02-2016", false, Collections.singletonList(createPersonAddress(id)), Collections.singletonList(createPersonAttributes(id)), null, new Resource(), false);
+        return new Person(Collections.singletonList(createPersonName(id)), "M", "25-02-2016", false, Collections.singletonList(createPersonAddress(id)), Collections.singletonList(createPersonAttributes(id)), null, new Resource(), false,"645464444");
     }
 
     private PersonAttribute createPersonAttributes(Long id) {

@@ -45,7 +45,11 @@ class PatientDetailsFragment : BaseFragment() {
 
     private val viewModel: PatientDashboardDetailsViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentPatientDetailsBinding.inflate(inflater, null, false)
 
         setupObserver()
@@ -87,17 +91,29 @@ class PatientDetailsFragment : BaseFragment() {
         with(binding) {
             setMenuTitle(patient.name.nameString, patient.identifier.identifier!!)
             if (isAdded) {
-                if ("M" == patient.gender) {
-                    patientDetailsGender.text = getString(R.string.male)
-                } else {
-                    patientDetailsGender.text = getString(R.string.female)
+                when (patient.gender) {
+                    "M" -> {
+                        patientDetailsGender.text = getString(R.string.male)
+                    }
+                    "F" -> {
+                        patientDetailsGender.text = getString(R.string.female)
+                    }
+                    else -> {
+                        patientDetailsGender.text = getString(R.string.non_binary)
+                    }
                 }
             }
             if (patient.photo != null) {
                 val photo = patient.resizedPhoto
                 val patientName = patient.name.nameString
                 patientPhoto.setImageBitmap(photo)
-                patientPhoto.setOnClickListener { showPatientPhoto(requireContext(), photo, patientName) }
+                patientPhoto.setOnClickListener {
+                    showPatientPhoto(
+                        requireContext(),
+                        photo,
+                        patientName
+                    )
+                }
             }
             patientDetailsName.text = patient.name.nameString
             val longTime = convertTime(patient.birthdate)
@@ -106,19 +122,42 @@ class PatientDetailsFragment : BaseFragment() {
             }
             patient.address?.let {
                 addressDetailsStreet.text = it.addressString
-                showAddressDetailsViewElement(addressDetailsStateLabel, addressDetailsState, it.stateProvince)
-                showAddressDetailsViewElement(addressDetailsCountryLabel, addressDetailsCountry, it.country)
-                showAddressDetailsViewElement(addressDetailsPostalCodeLabel, addressDetailsPostalCode, it.postalCode)
-                showAddressDetailsViewElement(addressDetailsCityLabel, addressDetailsCity, it.cityVillage)
+                showAddressDetailsViewElement(
+                    addressDetailsStateLabel,
+                    addressDetailsState,
+                    it.stateProvince
+                )
+                showAddressDetailsViewElement(
+                    addressDetailsCountryLabel,
+                    addressDetailsCountry,
+                    it.country
+                )
+                showAddressDetailsViewElement(
+                    addressDetailsPostalCodeLabel,
+                    addressDetailsPostalCode,
+                    it.postalCode
+                )
+                showAddressDetailsViewElement(
+                    addressDetailsCityLabel,
+                    addressDetailsCity,
+                    it.cityVillage
+                )
             }
             if (patient.isDeceased) {
                 deceasedView.makeVisible()
-                deceasedView.text = getString(R.string.marked_patient_deceased_successfully, patient.causeOfDeath.display)
+                deceasedView.text = getString(
+                    R.string.marked_patient_deceased_successfully,
+                    patient.causeOfDeath.display
+                )
             }
         }
     }
 
-    private fun showAddressDetailsViewElement(detailsViewLabel: TextView, detailsView: TextView, detailsText: String?) {
+    private fun showAddressDetailsViewElement(
+        detailsViewLabel: TextView,
+        detailsView: TextView,
+        detailsText: String?
+    ) {
         if (notNull(detailsText) && notEmpty(detailsText)) {
             detailsView.text = detailsText
         } else {
@@ -127,7 +166,7 @@ class PatientDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setMenuTitle(nameString: String, identifier: String) {
+    private fun setMenuTitle(nameString: String, identifier: String?) {
         (activity as PatientDashboardActivity).supportActionBar?.apply {
             title = nameString
             subtitle = "#$identifier"
