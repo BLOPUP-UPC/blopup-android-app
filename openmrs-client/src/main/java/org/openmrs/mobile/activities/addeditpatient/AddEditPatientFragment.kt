@@ -505,7 +505,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             if (isChecked) {
                 linearLayoutName.makeGone()
                 constraintLayoutDOB.makeGone()
-                linearLayoutContactInfo.makeGone()
+                //linearLayoutContactInfo.makeGone()
                 viewModel.isPatientUnidentified = true
             } else {
                 linearLayoutName.makeVisible()
