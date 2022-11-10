@@ -26,6 +26,7 @@ import com.openmrs.android_sdk.library.models.Patient
 import com.openmrs.android_sdk.library.models.Result
 import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import com.openmrs.android_sdk.utilities.DateUtils.convertTime
+import com.openmrs.android_sdk.utilities.StringUtils
 import com.openmrs.android_sdk.utilities.StringUtils.notEmpty
 import com.openmrs.android_sdk.utilities.StringUtils.notNull
 import com.openmrs.android_sdk.utilities.ToastUtil.error
@@ -120,6 +121,15 @@ class PatientDetailsFragment : BaseFragment() {
             if (longTime != null) {
                 patientDetailsBirthDate.text = convertTime(longTime)
             }
+            if (notEmpty(patient.phoneNumber)) {
+                patientDetailsPhoneNumber.text = patient.phoneNumber
+                patientDetailsPhoneNumber.visibility = View.VISIBLE
+            }
+
+            contactFirstName.text = patient.contact.givenName
+            contactLastName.text = patient.contact.familyName
+            contactPhoneNumber.text = patient.contactPhoneNumber
+
             patient.address?.let {
                 addressDetailsStreet.text = it.addressString
                 showAddressDetailsViewElement(
