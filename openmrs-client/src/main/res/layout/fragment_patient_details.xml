@@ -18,11 +18,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/patientAddressDetailsLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/deceasedView"
@@ -86,19 +88,35 @@
             tools:ignore="RtlSymmetry" />
 
         <TextView
+            android:id="@+id/patientDetailsPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/patientPhotoCardView"
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsGender"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
             android:id="@+id/patientDetailsBirthDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="10dp"
             android:paddingStart="10dp"
             android:paddingLeft="10dp"
             android:text="@string/patient_details_birth_date_label"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/patientDetailsGender"
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsPhoneNumber"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -246,6 +264,102 @@
             app:layout_constraintTop_toBottomOf="@+id/addressDetailsState" />
 
         <View
+            android:id="@+id/view4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="@dimen/padding_16"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rectangle_shape_with_primary_text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsCountry" />
+
+        <TextView
+            android:id="@+id/contactDetailsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/patient_contact_label"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
+            app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+        <TextView
+            android:id="@+id/contactFirstNameLabel"
+            style="@style/TextLabel.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_short"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/first_name_hint"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
+            app:layout_constraintTop_toBottomOf="@+id/contactDetailsLabel" />
+
+        <TextView
+            android:id="@+id/contactFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_short"
+            android:fontFamily="@font/montserrat"
+            android:textAllCaps="true"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
+            app:layout_constraintTop_toBottomOf="@+id/contactDetailsLabel" />
+
+        <TextView
+            android:id="@+id/contactLastNameLabel"
+            style="@style/TextLabel.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/last_name_hint"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
+            app:layout_constraintTop_toBottomOf="@+id/contactFirstName" />
+
+        <TextView
+            android:id="@+id/contactLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat"
+            android:textAllCaps="true"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
+            app:layout_constraintTop_toBottomOf="@+id/contactFirstName" />
+
+        <TextView
+            android:id="@+id/contactPhoneNumberLabel"
+            style="@style/TextLabel.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/reg_phone_number_hint"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
+            app:layout_constraintTop_toBottomOf="@+id/contactLastName" />
+
+        <TextView
+            android:id="@+id/contactPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat"
+            android:textAllCaps="true"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
+            app:layout_constraintTop_toBottomOf="@+id/contactLastName" />
+
+        <View
+            android:id="@+id/view5"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginHorizontal="@dimen/padding_16"
@@ -254,7 +368,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsCountry" />
+            app:layout_constraintTop_toBottomOf="@+id/contactPhoneNumber" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

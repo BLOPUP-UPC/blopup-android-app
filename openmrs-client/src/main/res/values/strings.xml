@@ -169,6 +169,7 @@
     <string name="patient_details_photo_label">PATIENT\’S PHOTO</string>
     <string name="patient_details_birth_date_label">Birth date</string>
     <string name="patient_contact_info_label">Contact Information</string>
+    <string name="patient_contact_label">Contact</string>
     <string name="patient_address_label">Address</string>
     <string name="patient_city_label">City</string>
     <string name="patient_postal_label">Postal Code</string>
