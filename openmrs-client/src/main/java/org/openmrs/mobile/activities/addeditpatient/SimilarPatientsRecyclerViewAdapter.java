@@ -219,19 +219,19 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
     }
 
     private void setPatientContactDetails(PatientViewHolder holder, Patient patient) {
-        if (StringUtils.notEmpty(patient.getContact().getGivenName())) {
+        if (patient.getContact() != null && StringUtils.notEmpty(patient.getContact().getGivenName())) {
             holder.mContactFirstName.setText(patient.getContact().getGivenName());
             if (Objects.equal(patient.getContact().getGivenName(), newPatient.getContact().getGivenName())) {
                 setStyleForMatchedPatientFields(holder.mContactFirstName);
             }
         }
-        if (StringUtils.notEmpty(patient.getContact().getFamilyName())) {
+        if (patient.getContact() != null && StringUtils.notEmpty(patient.getContact().getFamilyName())) {
             holder.mContactLastName.setText(patient.getContact().getFamilyName());
             if (Objects.equal(patient.getContact().getMiddleName(), newPatient.getContact().getMiddleName())) {
                 setStyleForMatchedPatientFields(holder.mContactLastName);
             }
         }
-        if (StringUtils.notEmpty(patient.getContactPhoneNumber())) {
+        if (patient.getContact() != null && StringUtils.notEmpty(patient.getContactPhoneNumber())) {
             holder.mContactPhoneNumber.setText(patient.getContactPhoneNumber());
             if (Objects.equal(patient.getContactPhoneNumber(), newPatient.getContactPhoneNumber())) {
                 setStyleForMatchedPatientFields(holder.mContactPhoneNumber);
