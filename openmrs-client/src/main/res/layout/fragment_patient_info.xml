@@ -561,7 +561,7 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:focusable="true"
-                                android:hint="@string/reg_firstname_hint"
+                                android:hint="@string/reg_contact_firstname_hint"
                                 android:imeOptions="actionNext"
                                 android:inputType="textPersonName|textCapWords"
                                 android:maxLines="1"

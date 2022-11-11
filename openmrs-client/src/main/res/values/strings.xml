@@ -41,6 +41,7 @@
     <string name="lname_invalid_error">Family name cannot contain symbols or numbers</string>
     <string name="dob_error">Date should be between %1$s and %2$s</string>
     <string name="reg_firstname_hint">First Name*</string>
+    <string name="reg_contact_firstname_hint">First Name</string>
     <string name="reg_midname_hint">Middle Name</string>
     <string name="reg_surname_hint">Family Name*</string>
     <string name="reg_document_id_hint">Document ID</string>
