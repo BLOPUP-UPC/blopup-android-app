@@ -694,7 +694,10 @@
                                 app:ccpDialog_textColor="?android:attr/textColorPrimary"
                                 app:ccp_showFullName="true"
                                 app:ccp_showNameCode="false"
-                                app:ccp_showPhoneCode="false" />
+                                app:ccp_showPhoneCode="false"
+                                app:ccp_autoDetectCountry="true"
+                                app:ccp_countryAutoDetectionPref="SIM_NETWORK_LOCALE"
+                                app:ccp_rememberLastSelection="true"/>
                         </LinearLayout>
 
                         <EditText
