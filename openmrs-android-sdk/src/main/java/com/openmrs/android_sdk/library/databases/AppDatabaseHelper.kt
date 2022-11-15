@@ -251,8 +251,10 @@ object AppDatabaseHelper {
 
         //#region -- Contact Details --
         patientEntity.contactPhoneNumber = patient.contactPhoneNumber
-        patientEntity.contactFirstName = patient.contact.givenName
-        patientEntity.contactLastName = patient.contact.familyName
+        if (patient.contact !=null){
+            patientEntity.contactFirstName = patient.contact.givenName
+            patientEntity.contactLastName = patient.contact.familyName
+        }
         //#endregion
 
         patientEntity.isSynced = patient.isSynced
