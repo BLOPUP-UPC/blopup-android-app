@@ -7,6 +7,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- BLOPUP -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -20,6 +28,7 @@
         android:icon="@drawable/ic_openmrs"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:fullBackupContent="@xml/backup_rules"
         android:theme="@style/Theme.Openmrs">
         <activity
             android:name=".activities.community.contact.AboutActivity"
@@ -259,6 +268,19 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name="edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivity"
+            android:exported="false" />
+        <activity
+            android:name="edu.upc.blopup.tensiometer.showTensiometerMeasurement.ShowTensiometerMeasurementActivity"
+            android:exported="false" />
+        <activity
+            android:name="edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity"
+            android:exported="false" />
+        <activity
+            android:name="edu.upc.blopup.scale.showScaleMeasurement.ShowScaleMeasurementActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

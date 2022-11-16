@@ -201,6 +201,13 @@ dependencies {
     // LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle_version}")
 
+    // Microlife dependencies
+    implementation('com.ideabus.ideabus_structure:ideabuslibrary:2.0.2') {
+        exclude group: 'com.android.support', module: 'support-compat'
+    }
+    implementation files('libs/scale-sdk_v1.1.6_1907291543.aar')
+    implementation files('libs/sdk-release.aar')
+
     // Test Implementations
     androidTestImplementation(
             'androidx.test.ext:junit:1.1.1',

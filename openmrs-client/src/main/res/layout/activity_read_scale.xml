@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".scale.readScaleMeasurement.ReadScaleActivity">
+
+        <include
+            android:id="@+id/toolbar_include"
+            layout="@layout/toolbar" />
+
+        <ImageView
+            android:id="@+id/scale_diagram"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/scale_img"
+            android:contentDescription="@string/scale_diagram_content_description"
+            android:cropToPadding="false" />
+
+        <TextView
+            android:id="@+id/scale_connection_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/bluetooth_scale_instructions"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

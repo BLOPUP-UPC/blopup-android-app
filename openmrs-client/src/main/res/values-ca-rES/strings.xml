@@ -3,4 +3,26 @@
     <string name="app_name">OpenMRS Android Client</string>
     <string name="receive_vitals_from_bluetooth_button_text">Rebeu les dades des del dispositiu bluetooth</string>
     <string name="receive_vitals_from_bluetooth_button_error_message">No s\'ha trobat cap aplicació per obtenir les dades bluetooth</string>
+
+    <!-- BLOPUP -->
+    <string name="toolbar_read_measurement_title">Estableix Connexió</string>
+    <string name="toolbar_show_measurement_title">Última Mesura</string>
+    <string name="toolbar_read_weight_title">Llegint pes</string>
+    <string name="systolic">Sistòlica:</string>
+    <string name="diastolic">Diastòlica:</string>
+    <string name="heartRate">Pulsacions:</string>
+    <string name="bluetooth_instructions">Per activar manualment el Bluetooth, premeu START/STOP (14) durant 5–6 segons fins que el símbol de Bluetooth comenci a centellejar (29)</string>
+    <string name="tensiometer_diagram_content_description">Diagrama del tensiòmetre</string>
+    <string name="save_measurements_button_text">Guarda les mesures</string>
+    <string name="bt_exception_scan_message">No s\'ha trobat el dispositiu</string>
+    <string name="bt_exception_disconnect_message">No s’ha pogut desconnectar</string>
+    <string name="bt_exception_connection_message">La connexió amb el dispositiu ha fallat</string>
+    <string name="bt_exception_read_data_message">Error de lectura</string>
+    <string name="bt_exception_pairing_message">L\'emparellament ha fallat</string>
+    <string name="bt_exception_header">Error Bluetooth: %s</string>
+    <string name="bt_exception_try_again">Reintentar</string>
+    <string name="weight_kg">Kg</string>
+    <string name="scale_diagram_content_description">Scale image content</string>
+    <string name="bluetooth_scale_instructions">1.-Activeu el bluetooth del telèfon\n2.-Pugeu a la balança\n3.-Espereu fins que el resultat aparegui a la pantalla del telèfon</string>
+    <string name="weight_name_text">Weight:</string>
 </resources>

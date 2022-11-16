@@ -354,4 +354,26 @@
     <string name="intro_manage_desc">Puedes administrar los proveedores usando nuestra aplicación.</string>
     <string name="receive_vitals_from_bluetooth_button_text">Recibir datos desde el dispositivo bluetooth</string>
     <string name="receive_vitals_from_bluetooth_button_error_message">No se encontró ninguna app para tomar los datos bluetooth</string>
+
+    <!-- BLOPUP -->
+    <string name="toolbar_read_measurement_title">Establece Conexión</string>
+    <string name="toolbar_show_measurement_title">Última Medición</string>
+    <string name="toolbar_read_weight_title">Leyendo peso</string>
+    <string name="systolic">Sistólica:</string>
+    <string name="diastolic">Diastólica:</string>
+    <string name="heartRate">Pulsaciones:</string>
+    <string name="bluetooth_instructions">Para activar manualmente el Bluetooth, presione START/STOP (14) durante 5–6 segundos hasta que el símbolo de Bluetooth comience a destellar (29)</string>
+    <string name="tensiometer_diagram_content_description">Diagrama del tensiómetro</string>
+    <string name="save_measurements_button_text">Guarda las mediciones</string>
+    <string name="bt_exception_scan_message">Dispositivo no encontrado</string>
+    <string name="bt_exception_disconnect_message">No se puede desconectar</string>
+    <string name="bt_exception_connection_message">La conexión con el dispositivo ha fallado</string>
+    <string name="bt_exception_read_data_message">Error de lectura</string>
+    <string name="bt_exception_pairing_message">Emparejamiento fallido</string>
+    <string name="bt_exception_header">Error Bluetooth: %s</string>
+    <string name="bt_exception_try_again">Reintentar</string>
+    <string name="weight_kg">Kg</string>
+    <string name="scale_diagram_content_description">Scale image content</string>
+    <string name="bluetooth_scale_instructions">1.-Activar el bluetooth del teléfono\n2.-Subir a la balanza\n3.-Esperar hasta que el resultado aparezca en la pantalla del teléfono</string>
+    <string name="weight_name_text">Weight:</string>
 </resources>

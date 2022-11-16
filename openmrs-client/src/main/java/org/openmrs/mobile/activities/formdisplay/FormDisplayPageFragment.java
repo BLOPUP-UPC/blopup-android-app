@@ -61,6 +61,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     private static final String SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     private static final String DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     private static final String HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static final String WEIGHT_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     private String mSectionLabel;
     private FragmentFormDisplayBinding binding = null;
@@ -80,6 +81,18 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                             fillVital(SYSTOLIC_FIELD_CONCEPT, systolic);
                             fillVital(DIASTOLIC_FIELD_CONCEPT, diastolic);
                             fillVital(HEART_RATE_FIELD_CONCEPT, heartRate);
+                        }
+                    }
+            );
+
+    private final ActivityResultLauncher<Intent> bluetoothScaleDataLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        Intent intent = result.getData();
+                        if (intent != null && result.getResultCode() == RESULT_OK) {
+                            int weight = intent.getExtras().getInt("weight");
+                            // we know this is ugly as hell, best shot we had with this way of constructing forms :(
+                            fillVital(WEIGHT_FIELD_CONCEPT, weight);
                         }
                     }
             );
@@ -344,17 +357,40 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     public LinearLayout createQuestionGroupLayoutForVitals(String questionLabel) {
         LinearLayout questionLinearLayout = createQuestionGroupLayout(questionLabel);
 
-        Button button = new Button(getActivity());
-        button.setLayoutParams(
+        Button tensiometerButton = new Button(getActivity());
+        tensiometerButton.setLayoutParams(
                 new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
                 )
         );
 
-        button.setText(R.string.receive_vitals_from_bluetooth_button_text);
-        questionLinearLayout.addView(button);
+        tensiometerButton.setText(R.string.receive_vitals_from_bluetooth_button_text);
+        questionLinearLayout.addView(tensiometerButton);
 
-        button.setOnClickListener(view -> {
+        tensiometerButton.setOnClickListener(view -> {
+            Intent input = new Intent(Intent.ACTION_SEND);
+            input.putExtra("language", LanguageUtils.getLanguage());
+            try {
+                bluetoothScaleDataLauncher.launch(input);
+            } catch (ActivityNotFoundException ex) {
+                ToastUtil.error(
+                        getString(R.string.receive_vitals_from_bluetooth_button_error_message),
+                        Toast.LENGTH_LONG
+                );
+            }
+        });
+
+        Button scaleButton = new Button(getActivity());
+        scaleButton.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+        );
+
+        scaleButton.setText("Receive weight from scale");
+        questionLinearLayout.addView(scaleButton);
+
+        scaleButton.setOnClickListener(view -> {
             Intent input = new Intent(Intent.ACTION_SEND);
             input.putExtra("language", LanguageUtils.getLanguage());
             try {
@@ -366,6 +402,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                 );
             }
         });
+
 
         return questionLinearLayout;
     }

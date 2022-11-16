@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/green"
+    app:logo="@drawable/ic_openmrs"
+    app:titleMarginStart="30dp"
+    app:titleTextColor="@color/white">
+
+    <ImageView
+        android:id="@+id/bluetooth_icon"
+        android:layout_width="30dp"
+        android:layout_height="55dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="14dp"
+        android:contentDescription="@string/toolbar_bluetooth_icon_content_description"
+        android:src="@drawable/ic_bluetooth_is_disconnected" />
+
+</androidx.appcompat.widget.Toolbar>

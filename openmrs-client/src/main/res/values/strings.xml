@@ -549,4 +549,28 @@
     <string name="receive_vitals_from_bluetooth_button_text">Receive vitals from bluetooth device</string>
     <string name="receive_vitals_from_bluetooth_button_error_message">No app was found for receiving bluetooh data</string>
 
+    <!-- BLOPUP -->
+    <string name="toolbar_read_measurement_title">Enable Connection</string>
+    <string name="toolbar_read_weight_title">Reading weight</string>
+    <string name="toolbar_show_measurement_title">Last Measurement</string>
+    <string name="toolbar_bluetooth_icon_content_description" translatable="false">Bluetooth connection status icon</string>
+    <string name="systolic">Systolic:</string>
+    <string name="diastolic">Diastolic:</string>
+    <string name="heartRate">Heart rate:</string>
+    <string name="bluetooth_instructions">To manually activate the Bluetooth, press START/STOP (14) for 5–6 seconds until the Bluetooth symbol starts flashing (29)</string>
+    <string name="tensiometer_diagram_content_description">Tensiometer diagram</string>
+    <string name="save_measurements_button_text">Save measurements</string>
+    <string name="bt_exception_scan_message">Scanning of devices failed</string>
+    <string name="bt_exception_disconnect_message">Failed to disconnect device</string>
+    <string name="bt_exception_connection_message">Connection to the device failed</string>
+    <string name="bt_exception_read_data_message">Failed to read data from device</string>
+    <string name="bt_exception_pairing_message">Pairing with the device failed</string>
+    <string name="bt_exception_header">Bluetooth error: %s</string>
+    <string name="bt_exception_try_again">Try again</string>
+    <string name="bpm_button_text" translatable="false">Calculate BPM</string>
+    <string name="weight_button_text" translatable="false">Calculate weight</string>
+    <string name="weight_kg">Kg</string>
+    <string name="scale_diagram_content_description">Scale image content</string>
+    <string name="bluetooth_scale_instructions">1.-Turn on the mobile bluetooth\n2.-Get on the scale\n3.-Wait until the result appears on the mobile screen</string>
+    <string name="weight_name_text">Weight: </string>
 </resources>
