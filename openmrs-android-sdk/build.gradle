@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 30
+        minSdkVersion 24
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -77,9 +77,9 @@ android {
         androidTestImplementation 'androidx.test.ext:junit:1.1.1'
         androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-        // http request Chucker Library
-        debugImplementation "com.github.chuckerteam.chucker:library:3.4.0"
-        releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.4.0"
+//        // http request Chucker Library
+//        debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+//        releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
         // Hilt Dependency Injection
         implementation 'com.google.dagger:hilt-android:2.36'

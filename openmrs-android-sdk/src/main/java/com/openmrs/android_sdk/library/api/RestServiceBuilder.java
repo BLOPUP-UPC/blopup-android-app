@@ -12,7 +12,7 @@ package com.openmrs.android_sdk.library.api;
 
 import android.util.Base64;
 
-import com.chuckerteam.chucker.api.ChuckerInterceptor;
+//import com.chuckerteam.chucker.api.ChuckerInterceptor;
 import com.openmrs.android_sdk.library.OpenmrsAndroid;
 import com.openmrs.android_sdk.library.models.Observation;
 import com.openmrs.android_sdk.library.models.Resource;
@@ -70,7 +70,7 @@ public class RestServiceBuilder {
                 return chain.proceed(request);
             });
 
-            httpClient.addInterceptor(new ChuckerInterceptor(OpenmrsAndroid.getInstance()));
+            //httpClient.addInterceptor(new ChuckerInterceptor(OpenmrsAndroid.getInstance()));
         }
         OkHttpClient client = httpClient.build();
         Retrofit retrofit = builder.client(client).build();

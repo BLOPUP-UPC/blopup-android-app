@@ -181,7 +181,9 @@ object AppDatabaseHelper {
         visitEntity.uuid = visit.uuid
         visitEntity.patientKeyID = visit.patient.id!!
         visitEntity.visitType = visit.visitType.display
-        visitEntity.visitPlace = visit.location.display
+        if (visit.location != null) {
+            visitEntity.visitPlace = visit.location.display
+        }
         visitEntity.isStartDate = visit.startDatetime
         visitEntity.stopDate = visit.stopDatetime
         return visitEntity
@@ -251,7 +253,7 @@ object AppDatabaseHelper {
 
         //#region -- Contact Details --
         patientEntity.contactPhoneNumber = patient.contactPhoneNumber
-        if (patient.contact !=null){
+        if (patient.contact != null) {
             patientEntity.contactFirstName = patient.contact.givenName
             patientEntity.contactLastName = patient.contact.familyName
         }

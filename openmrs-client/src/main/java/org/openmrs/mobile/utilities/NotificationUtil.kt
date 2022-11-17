@@ -38,7 +38,7 @@ object NotificationUtil {
         stackBuilder.addNextIntent(resultIntent)
         val resultPendingIntent = stackBuilder.getPendingIntent(
                 0,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_MUTABLE
         )
         mBuilder.setContentIntent(resultPendingIntent)
         mBuilder.setAutoCancel(true)

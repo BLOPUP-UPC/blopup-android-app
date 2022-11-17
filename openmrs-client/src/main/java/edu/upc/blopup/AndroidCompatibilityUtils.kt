@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.os.Parcelable
 
 inline fun <reified T : Parcelable> Intent.getParcelable(key: String): T? = when {
-    SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+    SDK_INT >= 33 -> getParcelableExtra(key)
     else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
 }
 
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
-    SDK_INT >= 33 -> getParcelable(key, T::class.java)
+    SDK_INT >= 33 -> getParcelable(key)
     else -> @Suppress("DEPRECATION") getParcelable(key) as? T
 }

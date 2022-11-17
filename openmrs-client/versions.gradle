@@ -1,6 +1,6 @@
 ext.versions = [:]
 
-versions.compileSdk = 31
+versions.compileSdk = 33
 versions.minSdk = 24
 versions.targetSdk = 33
 versions.appVersion = "3.0.0"
@@ -45,7 +45,7 @@ versions.jodaTime = '2.10.6'
 versions.kxml2 = '2.3.0'
 versions.permissionsdispatcher = '4.8.0'
 
-versions.leakcanary = '2.4'
+versions.leakcanary = '2.10'
 versions.placesAPI = '2.3.0'
 
 versions.navfragment = '2.3.0'

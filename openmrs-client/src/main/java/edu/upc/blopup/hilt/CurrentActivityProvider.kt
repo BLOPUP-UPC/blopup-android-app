@@ -4,6 +4,7 @@ import android.app.Activity
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import dagger.hilt.internal.GeneratedComponentManagerHolder
+import edu.upc.blopup.scale.showScaleMeasurement.ShowScaleMeasurementActivity
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -16,7 +17,7 @@ class CurrentActivityProvider @Inject constructor() {
             block: CurrentActivityProvider.() -> Unit
         ) {
             if (this is GeneratedComponentManagerHolder) {
-                val entryPoint: ActivityProviderEntryPoint = EntryPointAccessors.fromActivity(this)
+                val entryPoint: ActivityProviderEntryPoint = EntryPointAccessors.fromActivity(this, ActivityProviderEntryPoint::class.java)
                 val provider = entryPoint.activityProvider
                 provider.block()
             }

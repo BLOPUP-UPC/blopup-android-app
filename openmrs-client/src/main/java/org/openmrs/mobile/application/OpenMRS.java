@@ -14,6 +14,7 @@
 
 package org.openmrs.mobile.application;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 
@@ -28,6 +29,7 @@ import org.openmrs.mobile.services.AuthenticateCheckService;
 import java.io.File;
 
 import dagger.hilt.android.HiltAndroidApp;
+import edu.upc.blopup.hilt.CurrentActivityProvider;
 
 @HiltAndroidApp
 public class OpenMRS extends MultiDexApplication {
@@ -55,6 +57,7 @@ public class OpenMRS extends MultiDexApplication {
         startService(i);
         Intent intent = new Intent(this, AuthenticateCheckService.class);
         startService(intent);
+
     }
 
     @Override
