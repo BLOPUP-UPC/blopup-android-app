@@ -19,6 +19,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,12 +37,13 @@ import dagger.hilt.android.HiltAndroidApp;
 import edu.upc.blopup.hilt.CurrentActivityProvider;
 
 @HiltAndroidApp
-public class OpenMRS extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
+public class OpenMRS extends MultiDexApplication {
     private static final String OPENMRS_DIR_NAME = "OpenMRS";
     private static final String OPENMRS_DIR_PATH = File.separator + OPENMRS_DIR_NAME;
     private static String mExternalDirectoryPath;
     private static OpenMRS instance;
     private OpenMRSLogger mLogger;
+    private final MBCActivityLifecycleCallbacks mCallbacks = new MBCActivityLifecycleCallbacks();
 
     public static OpenMRS getInstance() {
         return instance;
@@ -50,6 +52,9 @@ public class OpenMRS extends MultiDexApplication implements Application.Activity
     @Override
     public void onCreate() {
         super.onCreate();
+
+        registerActivityLifecycleCallbacks(mCallbacks);
+
         instance = this;
         OpenmrsAndroid.initializeSdk(this);
 
@@ -72,38 +77,36 @@ public class OpenMRS extends MultiDexApplication implements Application.Activity
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
-    @Override
-    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-        CurrentActivityProvider.Companion.onActivityCreated(activity);
-    }
+    public static class MBCActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {
 
-    @Override
-    public void onActivityStarted(@NonNull Activity activity) {
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            CurrentActivityProvider.Companion.onActivityCreated(activity);
+        }
 
-    }
+        @Override
+        public void onActivityStarted(Activity activity) {
+        }
 
-    @Override
-    public void onActivityResumed(@NonNull Activity activity) {
+        @Override
+        public void onActivityResumed(Activity activity) {
+        }
 
-    }
+        @Override
+        public void onActivityPaused(Activity activity) {
+        }
 
-    @Override
-    public void onActivityPaused(@NonNull Activity activity) {
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        }
 
-    }
+        @Override
+        public void onActivityStopped(Activity activity) {
+        }
 
-    @Override
-    public void onActivityStopped(@NonNull Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-
-    }
-
-    @Override
-    public void onActivityDestroyed(@NonNull Activity activity) {
-        CurrentActivityProvider.Companion.onActivityDestroyed(activity);
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+            CurrentActivityProvider.Companion.onActivityDestroyed(activity);
+        }
     }
 }
