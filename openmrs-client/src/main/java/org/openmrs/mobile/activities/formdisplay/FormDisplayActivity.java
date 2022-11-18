@@ -38,6 +38,9 @@ import org.openmrs.mobile.databinding.ActivityFormDisplayBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class FormDisplayActivity extends ACBaseActivity implements FormDisplayContract.View.MainView {
     private ActivityFormDisplayBinding binding = null;
     private ViewPager viewPager;
@@ -172,8 +175,8 @@ public class FormDisplayActivity extends ACBaseActivity implements FormDisplayCo
             mDots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.nonselecteditem_dot));
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
             );
 
             pagerIndicator.addView(mDots[i], params);

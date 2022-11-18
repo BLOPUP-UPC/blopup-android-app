@@ -25,4 +25,5 @@
     <string name="scale_diagram_content_description">Scale image content</string>
     <string name="bluetooth_scale_instructions">1.-Activeu el bluetooth del telèfon\n2.-Pugeu a la balança\n3.-Espereu fins que el resultat aparegui a la pantalla del telèfon</string>
     <string name="weight_name_text">Weight:</string>
+    <string name="receive_vitals_from_scale_button_text" />
 </resources>

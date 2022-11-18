@@ -546,7 +546,7 @@
     <string name="about_openmrs_1">OpenMRS is a global community of truly dedicated, talented, and generous contributors who build and maintain the OpenMRS platform and other, foundational OpenMRS technical products.</string>
     <string name="about_openmrs_2">OpenMRS is a platform that countries and implementers use to create a customized EMR system in response to actual needs on the ground.</string>
     <string name="more_about_openmrs"><![CDATA[more]]></string>
-    <string name="receive_vitals_from_bluetooth_button_text">Receive vitals from bluetooth device</string>
+    <string name="receive_vitals_from_bluetooth_button_text">Receive vitals from tensiometer</string>
     <string name="receive_vitals_from_bluetooth_button_error_message">No app was found for receiving bluetooh data</string>
 
     <!-- BLOPUP -->
@@ -573,4 +573,5 @@
     <string name="scale_diagram_content_description">Scale image content</string>
     <string name="bluetooth_scale_instructions">1.-Turn on the mobile bluetooth\n2.-Get on the scale\n3.-Wait until the result appears on the mobile screen</string>
     <string name="weight_name_text">Weight: </string>
+    <string name="receive_vitals_from_scale_button_text"> Receive weight from Scale </string>
 </resources>

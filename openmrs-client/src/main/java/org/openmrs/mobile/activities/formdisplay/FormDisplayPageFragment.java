@@ -56,6 +56,10 @@ import org.openmrs.mobile.utilities.LanguageUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleActivityKt;
+import edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity;
+import edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivity;
+
 public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.Presenter.PagePresenter> implements FormDisplayContract.View.PageView {
 
     private static final String SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -368,10 +372,8 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
         questionLinearLayout.addView(tensiometerButton);
 
         tensiometerButton.setOnClickListener(view -> {
-            Intent input = new Intent(Intent.ACTION_SEND);
-            input.putExtra("language", LanguageUtils.getLanguage());
             try {
-                bluetoothScaleDataLauncher.launch(input);
+                startActivity(new Intent(getActivity(), ReadTensiometerActivity.class));
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(
                         getString(R.string.receive_vitals_from_bluetooth_button_error_message),
@@ -387,14 +389,12 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                 )
         );
 
-        scaleButton.setText("Receive weight from scale");
+        scaleButton.setText(R.string.receive_vitals_from_scale_button_text);
         questionLinearLayout.addView(scaleButton);
 
         scaleButton.setOnClickListener(view -> {
-            Intent input = new Intent(Intent.ACTION_SEND);
-            input.putExtra("language", LanguageUtils.getLanguage());
             try {
-                bluetoothDataLauncher.launch(input);
+                startActivity(new Intent(getActivity(), ReadWeightActivity.class));
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(
                         getString(R.string.receive_vitals_from_bluetooth_button_error_message),

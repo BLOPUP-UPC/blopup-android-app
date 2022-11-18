@@ -15,9 +15,13 @@
 package org.openmrs.mobile.application;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.multidex.MultiDexApplication;
 
 import com.openmrs.android_sdk.library.OpenMRSLogger;
@@ -32,7 +36,7 @@ import dagger.hilt.android.HiltAndroidApp;
 import edu.upc.blopup.hilt.CurrentActivityProvider;
 
 @HiltAndroidApp
-public class OpenMRS extends MultiDexApplication {
+public class OpenMRS extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
     private static final String OPENMRS_DIR_NAME = "OpenMRS";
     private static final String OPENMRS_DIR_PATH = File.separator + OPENMRS_DIR_NAME;
     private static String mExternalDirectoryPath;
@@ -57,7 +61,6 @@ public class OpenMRS extends MultiDexApplication {
         startService(i);
         Intent intent = new Intent(this, AuthenticateCheckService.class);
         startService(intent);
-
     }
 
     @Override
@@ -67,5 +70,40 @@ public class OpenMRS extends MultiDexApplication {
 
     public boolean isRunningKitKatVersionOrHigher() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    @Override
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        CurrentActivityProvider.Companion.onActivityCreated(activity);
+    }
+
+    @Override
+    public void onActivityStarted(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityResumed(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityPaused(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityStopped(@NonNull Activity activity) {
+
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+
+    }
+
+    @Override
+    public void onActivityDestroyed(@NonNull Activity activity) {
+        CurrentActivityProvider.Companion.onActivityDestroyed(activity);
     }
 }
