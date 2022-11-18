@@ -64,7 +64,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     private static final String SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     private static final String DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     private static final String HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    private static final String WEIGHT_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static final String WEIGHT_FIELD_CONCEPT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     private String mSectionLabel;
     private FragmentFormDisplayBinding binding = null;
@@ -96,9 +96,6 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                             float weight = intent.getExtras().getFloat("weight");
                             // we know this is ugly as hell, best shot we had with this way of constructing forms :(
                             fillVital(WEIGHT_FIELD_CONCEPT, weight);
-                            fillVital(SYSTOLIC_FIELD_CONCEPT, 10);
-                            fillVital(DIASTOLIC_FIELD_CONCEPT, 20);
-                            fillVital(HEART_RATE_FIELD_CONCEPT, 30);
                         }
                     }
             );
