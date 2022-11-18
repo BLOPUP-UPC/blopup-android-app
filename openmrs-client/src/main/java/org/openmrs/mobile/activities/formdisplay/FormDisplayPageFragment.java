@@ -56,7 +56,6 @@ import org.openmrs.mobile.utilities.LanguageUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleActivityKt;
 import edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity;
 import edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivity;
 
@@ -373,7 +372,10 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
 
         tensiometerButton.setOnClickListener(view -> {
             try {
-                startActivity(new Intent(getActivity(), ReadTensiometerActivity.class));
+                Intent input = new Intent(getActivity(), ReadTensiometerActivity.class);
+                input.putExtra("language", LanguageUtils.getLanguage());
+                bluetoothScaleDataLauncher.launch(input);
+
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(
                         getString(R.string.receive_vitals_from_bluetooth_button_error_message),
@@ -394,7 +396,9 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
 
         scaleButton.setOnClickListener(view -> {
             try {
-                startActivity(new Intent(getActivity(), ReadWeightActivity.class));
+                Intent input = new Intent(getActivity(), ReadWeightActivity.class);
+                input.putExtra("language", LanguageUtils.getLanguage());
+                bluetoothDataLauncher.launch(input);
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(
                         getString(R.string.receive_vitals_from_bluetooth_button_error_message),
