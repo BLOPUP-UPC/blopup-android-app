@@ -93,14 +93,17 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                     result -> {
                         Intent intent = result.getData();
                         if (intent != null && result.getResultCode() == RESULT_OK) {
-                            int weight = intent.getExtras().getInt("weight");
+                            float weight = intent.getExtras().getFloat("weight");
                             // we know this is ugly as hell, best shot we had with this way of constructing forms :(
                             fillVital(WEIGHT_FIELD_CONCEPT, weight);
+                            fillVital(SYSTOLIC_FIELD_CONCEPT, 10);
+                            fillVital(DIASTOLIC_FIELD_CONCEPT, 20);
+                            fillVital(HEART_RATE_FIELD_CONCEPT, 30);
                         }
                     }
             );
 
-    private void fillVital(String concept, int value) {
+    private void fillVital(String concept, float value) {
         InputField f = getInputField(concept);
         View view = getActivity().findViewById(f.id);
         if (view != null && view instanceof DiscreteSeekBar) {
@@ -373,7 +376,6 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
         tensiometerButton.setOnClickListener(view -> {
             try {
                 Intent input = new Intent(getActivity(), ReadTensiometerActivity.class);
-                input.putExtra("language", LanguageUtils.getLanguage());
                 bluetoothScaleDataLauncher.launch(input);
 
             } catch (ActivityNotFoundException ex) {
@@ -397,8 +399,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
         scaleButton.setOnClickListener(view -> {
             try {
                 Intent input = new Intent(getActivity(), ReadWeightActivity.class);
-                input.putExtra("language", LanguageUtils.getLanguage());
-                bluetoothDataLauncher.launch(input);
+                bluetoothScaleDataLauncher.launch(input);
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(
                         getString(R.string.receive_vitals_from_bluetooth_button_error_message),

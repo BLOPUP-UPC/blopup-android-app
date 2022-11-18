@@ -17,13 +17,14 @@ import edu.upc.blopup.scale.showScaleMeasurement.ShowScaleMeasurementActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import org.openmrs.mobile.R
+import org.openmrs.mobile.activities.ACBaseActivity
 import org.openmrs.mobile.databinding.ActivityReadScaleBinding
 
 const val EXTRAS_MEASUREMENT = "weightMeasurement"
 const val LOCATION_REQUEST = 1
 
 @AndroidEntryPoint
-class ReadWeightActivity : AppCompatActivity() {
+class ReadWeightActivity : ACBaseActivity() {
 
     private lateinit var mBinding: ActivityReadScaleBinding
     private lateinit var mToolbar: Toolbar
@@ -96,6 +97,7 @@ class ReadWeightActivity : AppCompatActivity() {
     }
 
     private fun startReading() {
+//        showProgressDialog(R.string.action_connecting_to_the_hardware)
         readScaleViewModel.startListeningBluetoothConnection()
         readScaleViewModel.connectionViewState.observe(this) { state ->
             val icon = when (state) {
@@ -103,6 +105,7 @@ class ReadWeightActivity : AppCompatActivity() {
                 ConnectionViewState.Pairing -> R.drawable.ic_bluetooth_is_searching
             }
             mToolbar.findViewById<ImageView>(R.id.bluetooth_icon).setImageResource(icon)
+//            dismissCustomFragmentDialog()
         }
         readScaleViewModel.viewState.observe(this) { state ->
             when (state) {
@@ -111,7 +114,11 @@ class ReadWeightActivity : AppCompatActivity() {
                     val intent = Intent(this, ShowScaleMeasurementActivity::class.java).apply {
                         putExtra(EXTRAS_MEASUREMENT, state.weightMeasurement)
                     }
-                    showWeightLauncher.launch(intent)
+                    val result = Intent().apply {
+                        putExtra("weight", state.weightMeasurement.weight)
+                    }
+                    setResult(RESULT_OK, result)
+                    finish()
                 }
             }
         }

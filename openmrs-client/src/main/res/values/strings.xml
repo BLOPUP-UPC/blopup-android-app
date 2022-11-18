@@ -141,6 +141,7 @@
 
     <!-- Patient Dashboard Activity -->
     <string name="action_synchronize_patients">Synchronizing patient</string>
+    <string name="action_connecting_to_the_hardware">Connecting to the hardware...</string>
     <string name="action_update_patient_data">Update Patient</string>
     <string name="synchronize_patient_successful">Successfully synchronized patient data.</string>
     <string name="synchronize_patient_error">Synchronizing patient data was unsuccessful</string>
