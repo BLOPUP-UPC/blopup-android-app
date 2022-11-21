@@ -229,7 +229,8 @@ dependencies {
             'org.powermock:powermock-api-mockito2:2.0.2',
             'org.powermock:powermock-module-junit4:2.0.2',
             "com.google.dagger:hilt-android-testing:${versions.hilt}",
-            "androidx.arch.core:core-testing:${versions.arch_version}"
+            "androidx.arch.core:core-testing:${versions.arch_version}",
+            'io.mockk:mockk:1.10.2'
     )
     testImplementation "android.arch.core:core-testing:${versions.coreTesting}"
     kaptTest "com.google.dagger:hilt-compiler:${versions.hilt}"
