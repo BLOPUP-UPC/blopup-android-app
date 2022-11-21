@@ -4,7 +4,6 @@ import android.app.Activity
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import dagger.hilt.internal.GeneratedComponentManagerHolder
-import edu.upc.blopup.scale.showScaleMeasurement.ShowScaleMeasurementActivity
 import javax.inject.Inject
 
 @ActivityRetainedScoped

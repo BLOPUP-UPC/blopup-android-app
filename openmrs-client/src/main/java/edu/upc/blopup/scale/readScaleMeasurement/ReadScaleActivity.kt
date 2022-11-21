@@ -13,7 +13,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.observe
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.blopup.scale.showScaleMeasurement.ShowScaleMeasurementActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import org.openmrs.mobile.R
@@ -111,9 +110,6 @@ class ReadWeightActivity : ACBaseActivity() {
             when (state) {
                 is ScaleViewState.Error -> handleError(state.exception)
                 is ScaleViewState.Content -> {
-                    val intent = Intent(this, ShowScaleMeasurementActivity::class.java).apply {
-                        putExtra(EXTRAS_MEASUREMENT, state.weightMeasurement)
-                    }
                     val result = Intent().apply {
                         putExtra("weight", state.weightMeasurement.weight)
                     }

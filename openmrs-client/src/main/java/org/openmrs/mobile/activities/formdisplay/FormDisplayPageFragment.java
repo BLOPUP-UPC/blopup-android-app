@@ -106,6 +106,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
         if (view != null && view instanceof DiscreteSeekBar) {
             DiscreteSeekBar seekbar = (DiscreteSeekBar) view;
             seekbar.setProgress(Double.valueOf(value).intValue());
+            seekbar.setPressed(true);
             f.value = value;
         }
     }
