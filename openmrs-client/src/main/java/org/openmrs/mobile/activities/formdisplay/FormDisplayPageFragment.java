@@ -51,7 +51,6 @@ import org.openmrs.mobile.activities.ACBaseFragment;
 import org.openmrs.mobile.application.OpenMRS;
 import org.openmrs.mobile.bundle.FormFieldsWrapper;
 import org.openmrs.mobile.databinding.FragmentFormDisplayBinding;
-import org.openmrs.mobile.utilities.LanguageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +70,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     private List<InputField> inputFields = new ArrayList<>();
     private List<SelectOneField> selectOneFields = new ArrayList<>();
     private LinearLayout parent;
-    private final ActivityResultLauncher<Intent> bluetoothDataLauncher =
+    private final ActivityResultLauncher<Intent> bluetoothTensiometerDataLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                     result -> {
                         Intent intent = result.getData();
@@ -79,7 +78,6 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                             int systolic = intent.getExtras().getInt("systolic");
                             int diastolic = intent.getExtras().getInt("diastolic");
                             int heartRate = intent.getExtras().getInt("heartRate");
-
                             // we know this is ugly as hell, best shot we had with this way of constructing forms :(
                             fillVital(SYSTOLIC_FIELD_CONCEPT, systolic);
                             fillVital(DIASTOLIC_FIELD_CONCEPT, diastolic);
@@ -374,8 +372,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
         tensiometerButton.setOnClickListener(view -> {
             try {
                 Intent input = new Intent(getActivity(), ReadTensiometerActivity.class);
-                bluetoothScaleDataLauncher.launch(input);
-
+                bluetoothTensiometerDataLauncher.launch(input);
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(
                         getString(R.string.receive_vitals_from_bluetooth_button_error_message),
@@ -405,8 +402,6 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                 );
             }
         });
-
-
         return questionLinearLayout;
     }
 

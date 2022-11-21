@@ -13,7 +13,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.observe
 import edu.upc.blopup.changeLocale
-import edu.upc.blopup.tensiometer.showTensiometerMeasurement.ShowTensiometerMeasurementActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.blopup.exceptions.BluetoothConnectionException
@@ -112,11 +111,13 @@ class ReadTensiometerActivity : AppCompatActivity() {
             when (state) {
                 is TensiometerViewState.Error -> handleError(state.exception)
                 is TensiometerViewState.Content -> {
-                    val intent =
-                        Intent(this, ShowTensiometerMeasurementActivity::class.java).apply {
-                            putExtra(EXTRAS_MEASUREMENT, state.measurement)
-                        }
-                    showMeasurementsLauncher.launch(intent);
+                    val result = Intent().apply {
+                        putExtra("systolic", state.measurement.systolic)
+                        putExtra("diastolic", state.measurement.diastolic)
+                        putExtra("heartRate", state.measurement.heartRate)
+                    }
+                    setResult(RESULT_OK, result)
+                    finish()
                 }
             }
         }
