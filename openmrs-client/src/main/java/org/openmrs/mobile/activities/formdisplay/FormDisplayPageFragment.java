@@ -105,6 +105,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
             DiscreteSeekBar seekbar = (DiscreteSeekBar) view;
             seekbar.setProgress(Double.valueOf(value).intValue());
             seekbar.setPressed(true);
+            seekbar.setTag(f.id, value);
             f.value = value;
         }
     }
@@ -150,6 +151,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                 if (v != null && v instanceof DiscreteSeekBar) {
                     DiscreteSeekBar sb = (DiscreteSeekBar) v;
                     sb.setProgress(Double.valueOf(field.value).intValue());
+                    sb.setTag(field.id, field.value);
                 }
                 if (field.isRed) {
                     RangeEditText ed = getActivity().findViewById(field.id);
@@ -457,7 +459,8 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                 }
             } catch (ClassCastException e) {
                 DiscreteSeekBar dsb = getActivity().findViewById(field.id);
-                field.value = (double) dsb.getProgress();
+//                field.value = (double) dsb.getProgress();
+                field.value = Double.valueOf(dsb.getTag(field.id).toString());
             }
         }
 
@@ -495,6 +498,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                 }
             } catch (ClassCastException e) {
                 DiscreteSeekBar dsb = getActivity().findViewById(field.id);
+                dsb.setTag(field.id, field.value);
                 if (dsb.getProgress() > dsb.getMin()) {
                     allEmpty = false;
                 }
