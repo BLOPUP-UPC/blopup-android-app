@@ -92,7 +92,9 @@ public class FormDisplayMainPresenter extends BasePresenter implements FormDispl
                     LocalDateTime localDateTime = new LocalDateTime();
                     obscreate.setObsDatetime(localDateTime.toString());
                     obscreate.setPerson(mPatient.getUuid());
-                    observations.add(obscreate);
+                    if (input.value != 0) {
+                        observations.add(obscreate);
+                    }
                 }
             }
 
