@@ -2,7 +2,6 @@ package edu.upc.blopup.scale.bluetooth
 
 import android.bluetooth.BluetoothDevice
 import com.ideabus.model.data.EBodyMeasureData
-import com.ideabus.model.protocol.EBodyProtocol
 import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
@@ -20,19 +19,19 @@ class EBodyMicrolifeBluetoothConnectorTest {
     private lateinit var subjectUnderTest: EBodyMicrolifeBluetoothConnector
 
     private lateinit var eBodyProtocolFactory: EBodyProtocolFactory
-    private lateinit var eBodyProtocol: EBodyProtocol
+    private lateinit var eBodyProtocolFacade: EBodyProtocolFacade
 
     private lateinit var updateMeasurementState: (ScaleViewState) -> Unit
 
     @Before
     fun setUp() {
         eBodyProtocolFactory = mockk(relaxed = true)
-        eBodyProtocol = mockk(relaxed = true)
+        eBodyProtocolFacade = mockk(relaxed = true)
         updateMeasurementState = mockk(relaxed = true)
 
         every {
-            eBodyProtocolFactory.getEBodyProtocol()
-        } returns eBodyProtocol
+            eBodyProtocolFactory.getEBodyProtocol(any())
+        } returns eBodyProtocolFacade
 
         subjectUnderTest = EBodyMicrolifeBluetoothConnector(
             eBodyProtocolFactory
@@ -46,7 +45,7 @@ class EBodyMicrolifeBluetoothConnectorTest {
 
         subjectUnderTest.onScanResult(bluetoothDevice)
 
-        verify { eBodyProtocol.connect(bluetoothDevice) }
+        verify { eBodyProtocolFacade.connect() }
     }
 
     @Test
@@ -66,7 +65,7 @@ class EBodyMicrolifeBluetoothConnectorTest {
 
     @Test
     fun `given the bluetooth connection fails at disconnect then we manage the error`() {
-        every { eBodyProtocol.stopScan() }.throws(IllegalArgumentException())
+        every { eBodyProtocolFacade.stopScan() }.throws(IllegalArgumentException())
 
         subjectUnderTest.disconnect()
 
@@ -76,7 +75,7 @@ class EBodyMicrolifeBluetoothConnectorTest {
     @Test
     fun `given the bluetooth connection fails at trying to scan the results then we manage the error`() {
         val bluetoothDevice: BluetoothDevice = mockk(relaxed = true)
-        every { eBodyProtocol.connect(bluetoothDevice) }.throws(IllegalArgumentException())
+        every { eBodyProtocolFacade.connect() }.throws(IllegalArgumentException())
 
         subjectUnderTest.onScanResult(bluetoothDevice)
 

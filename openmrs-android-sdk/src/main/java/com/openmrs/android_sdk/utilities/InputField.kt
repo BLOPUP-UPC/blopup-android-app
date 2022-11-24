@@ -15,8 +15,10 @@ package com.openmrs.android_sdk.utilities
 
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
+@Parcelize
 class InputField(@JvmField var concept: String?) : Serializable, Parcelable {
     @JvmField
     var id: Int
@@ -31,34 +33,9 @@ class InputField(@JvmField var concept: String?) : Serializable, Parcelable {
         id = Math.abs(concept.hashCode())
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeInt(id)
-        dest.writeString(concept)
-        dest.writeDouble(value)
-        dest.writeInt(if (isRed) 1 else 0)
-    }
-
-
     constructor(parcel: Parcel) : this(parcel.readString()) {
         id = parcel.readInt()
         value = parcel.readDouble()
         isRed = parcel.readInt() == 1
-    }
-
-    companion object {
-        @JvmField
-        val CREATOR: Parcelable.Creator<InputField?> = object : Parcelable.Creator<InputField?> {
-            override fun createFromParcel(source: Parcel): InputField? {
-                return InputField(source)
-            }
-
-            override fun newArray(size: Int): Array<InputField?> {
-                return arrayOfNulls(size)
-            }
-        }
     }
 }
