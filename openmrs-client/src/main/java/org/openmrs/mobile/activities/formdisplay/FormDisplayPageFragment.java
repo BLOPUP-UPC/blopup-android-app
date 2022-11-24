@@ -9,6 +9,10 @@
 package org.openmrs.mobile.activities.formdisplay;
 
 import static android.app.Activity.RESULT_OK;
+import static edu.upc.blopup.scale.readScaleMeasurement.ReadScaleActivityKt.EXTRAS_WEIGHT;
+import static edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivityKt.EXTRAS_DIASTOLIC;
+import static edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivityKt.EXTRAS_HEART_RATE;
+import static edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivityKt.EXTRAS_SYSTOLIC;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -75,10 +79,9 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                     result -> {
                         Intent intent = result.getData();
                         if (intent != null && result.getResultCode() == RESULT_OK) {
-                            int systolic = intent.getExtras().getInt("systolic");
-                            int diastolic = intent.getExtras().getInt("diastolic");
-                            int heartRate = intent.getExtras().getInt("heartRate");
-                            // we know this is ugly as hell, best shot we had with this way of constructing forms :(
+                            int systolic = intent.getExtras().getInt(EXTRAS_SYSTOLIC);
+                            int diastolic = intent.getExtras().getInt(EXTRAS_DIASTOLIC);
+                            int heartRate = intent.getExtras().getInt(EXTRAS_HEART_RATE);
                             fillVital(SYSTOLIC_FIELD_CONCEPT, systolic);
                             fillVital(DIASTOLIC_FIELD_CONCEPT, diastolic);
                             fillVital(HEART_RATE_FIELD_CONCEPT, heartRate);
@@ -91,21 +94,20 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                     result -> {
                         Intent intent = result.getData();
                         if (intent != null && result.getResultCode() == RESULT_OK) {
-                            float weight = intent.getExtras().getFloat("weight");
-                            // we know this is ugly as hell, best shot we had with this way of constructing forms :(
+                            float weight = intent.getExtras().getFloat(EXTRAS_WEIGHT);
                             fillVital(WEIGHT_FIELD_CONCEPT, weight);
                         }
                     }
             );
 
+    // we know this is ugly as hell, best shot we had with this way of constructing forms :(
     private void fillVital(String concept, float value) {
-        InputField f = getInputField(concept);
-        View view = getActivity().findViewById(f.id);
-        if (view != null && view instanceof DiscreteSeekBar) {
+        InputField inputField = getInputField(concept);
+        View view = getActivity().findViewById(inputField.id);
+        if (view instanceof DiscreteSeekBar) {
             DiscreteSeekBar seekbar = (DiscreteSeekBar) view;
             seekbar.setProgress(Double.valueOf(value).intValue());
-            seekbar.setPressed(true);
-            f.value = value;
+            inputField.value = value;
         }
     }
 
@@ -371,7 +373,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
 
         tensiometerButton.setOnClickListener(view -> {
             try {
-                Intent input = new Intent(getActivity(), ReadTensiometerActivity.class);
+                Intent input = new Intent(getContext(), ReadTensiometerActivity.class);
                 bluetoothTensiometerDataLauncher.launch(input);
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(
@@ -393,7 +395,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
 
         scaleButton.setOnClickListener(view -> {
             try {
-                Intent input = new Intent(getActivity(), ReadWeightActivity.class);
+                Intent input = new Intent(getContext(), ReadWeightActivity.class);
                 bluetoothScaleDataLauncher.launch(input);
             } catch (ActivityNotFoundException ex) {
                 ToastUtil.error(

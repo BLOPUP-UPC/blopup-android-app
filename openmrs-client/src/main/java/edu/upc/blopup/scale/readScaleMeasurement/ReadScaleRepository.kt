@@ -8,13 +8,9 @@ class ReadScaleRepository @Inject constructor(
 ) {
 
     fun start(
-        updateStateCallback: (ConnectionViewState) -> Unit,
         updateMeasurementStateCallback: (ScaleViewState) -> Unit
     ) {
-        connector.connect(
-            { state: ConnectionViewState -> updateStateCallback(state) },
-            { state: ScaleViewState -> updateMeasurementStateCallback(state) }
-        )
+        connector.connect { state: ScaleViewState -> updateMeasurementStateCallback(state) }
     }
 
     fun disconnect() {

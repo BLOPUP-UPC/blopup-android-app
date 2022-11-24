@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothDevice
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.blopup.scale.readScaleMeasurement.ConnectionViewState
 import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
 import io.mockk.every
@@ -23,14 +22,12 @@ class EBodyMicrolifeBluetoothConnectorTest {
     private lateinit var eBodyProtocolFactory: EBodyProtocolFactory
     private lateinit var eBodyProtocol: EBodyProtocol
 
-    private lateinit var updateConnectionState: (ConnectionViewState) -> Unit
     private lateinit var updateMeasurementState: (ScaleViewState) -> Unit
 
     @Before
     fun setUp() {
         eBodyProtocolFactory = mockk(relaxed = true)
         eBodyProtocol = mockk(relaxed = true)
-        updateConnectionState = mockk(relaxed = true)
         updateMeasurementState = mockk(relaxed = true)
 
         every {
@@ -40,10 +37,7 @@ class EBodyMicrolifeBluetoothConnectorTest {
         subjectUnderTest = EBodyMicrolifeBluetoothConnector(
             eBodyProtocolFactory
         )
-        subjectUnderTest.connect(
-            updateConnectionState,
-            updateMeasurementState
-        )
+        subjectUnderTest.connect(updateMeasurementState)
     }
 
     @Test
@@ -53,13 +47,6 @@ class EBodyMicrolifeBluetoothConnectorTest {
         subjectUnderTest.onScanResult(bluetoothDevice)
 
         verify { eBodyProtocol.connect(bluetoothDevice) }
-    }
-
-    @Test
-    fun `given a device is disconnected then the eBodyProtocol disconnects to the device`() {
-        subjectUnderTest.disconnect()
-
-        verify { updateConnectionState(ConnectionViewState.Disconnected) }
     }
 
     @Test

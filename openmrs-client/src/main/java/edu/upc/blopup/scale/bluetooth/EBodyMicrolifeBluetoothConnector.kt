@@ -1,14 +1,13 @@
 package edu.upc.blopup.scale.bluetooth
 
 import android.bluetooth.BluetoothDevice
-import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.blopup.hilt.CurrentActivityProvider
-import edu.upc.blopup.scale.readScaleMeasurement.ConnectionViewState
-import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
-import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
 import com.ideabus.model.protocol.EBodyProtocol.ConnectState
+import edu.upc.blopup.exceptions.BluetoothConnectionException
+import edu.upc.blopup.hilt.CurrentActivityProvider
+import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
+import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
 import javax.inject.Inject
 
 class EBodyMicrolifeBluetoothConnector @Inject constructor(
@@ -19,7 +18,6 @@ class EBodyMicrolifeBluetoothConnector @Inject constructor(
 
     private val eBodyProtocol: EBodyProtocol
 
-    private lateinit var updateStateCallback: (ConnectionViewState) -> Unit
     private lateinit var updateMeasurementStateCallback: (ScaleViewState) -> Unit
 
     init {
@@ -29,10 +27,8 @@ class EBodyMicrolifeBluetoothConnector @Inject constructor(
     }
 
     override fun connect(
-        updateConnectionState: (ConnectionViewState) -> Unit,
         updateMeasurementState: (ScaleViewState) -> Unit
     ) {
-        this.updateStateCallback = updateConnectionState
         this.updateMeasurementStateCallback = updateMeasurementState
         this.startScan()
     }
@@ -43,7 +39,6 @@ class EBodyMicrolifeBluetoothConnector @Inject constructor(
             if (eBodyProtocol.isConnected) {
                 eBodyProtocol.disconnect()
             }
-            updateStateCallback(ConnectionViewState.Disconnected)
         } catch (ignore: Exception) {
             updateMeasurementStateCallback(ScaleViewState.Error(BluetoothConnectionException.OnDisconnect))
         }
@@ -51,7 +46,6 @@ class EBodyMicrolifeBluetoothConnector @Inject constructor(
 
     override fun onScanResult(bluetoothDevice: BluetoothDevice) {
         try {
-            updateStateCallback(ConnectionViewState.Pairing)
             eBodyProtocol.connect(bluetoothDevice)
         } catch (ignore: Exception) {
             updateMeasurementStateCallback(ScaleViewState.Error(BluetoothConnectionException.OnScanResult))

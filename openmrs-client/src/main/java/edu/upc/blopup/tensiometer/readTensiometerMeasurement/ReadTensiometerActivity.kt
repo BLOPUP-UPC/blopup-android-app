@@ -6,20 +6,20 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.observe
-import edu.upc.blopup.changeLocale
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.blopup.exceptions.BluetoothConnectionException
 import org.openmrs.mobile.R
 import org.openmrs.mobile.databinding.ActivityReadTensiometerBinding
 
-const val EXTRAS_MEASUREMENT = "measurement"
+const val EXTRAS_SYSTOLIC = "systolic"
+const val EXTRAS_DIASTOLIC = "diastolic"
+const val EXTRAS_HEART_RATE = "heartRate"
 const val LOCATION_REQUEST = 1
 
 @AndroidEntryPoint
@@ -29,11 +29,6 @@ class ReadTensiometerActivity : AppCompatActivity() {
     private lateinit var mToolbar: Toolbar
 
     private val viewModel: ReadTensiometerViewModel by viewModels()
-    private val showMeasurementsLauncher =
-        registerForActivityResult(StartActivityForResult()) { result ->
-            setResult(RESULT_OK, result.data)
-            finish()
-        }
     private val locationPermission = arrayOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION
@@ -44,10 +39,6 @@ class ReadTensiometerActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val defaultLocale = resources.configuration.locales[0].language
-        val language = intent?.extras?.getString("language") ?: defaultLocale
-        changeLocale(baseContext, language)
-
         super.onCreate(savedInstanceState)
 
         mBinding = ActivityReadTensiometerBinding.inflate(layoutInflater)
@@ -112,9 +103,9 @@ class ReadTensiometerActivity : AppCompatActivity() {
                 is TensiometerViewState.Error -> handleError(state.exception)
                 is TensiometerViewState.Content -> {
                     val result = Intent().apply {
-                        putExtra("systolic", state.measurement.systolic)
-                        putExtra("diastolic", state.measurement.diastolic)
-                        putExtra("heartRate", state.measurement.heartRate)
+                        putExtra(EXTRAS_SYSTOLIC, state.measurement.systolic)
+                        putExtra(EXTRAS_DIASTOLIC, state.measurement.diastolic)
+                        putExtra(EXTRAS_HEART_RATE, state.measurement.heartRate)
                     }
                     setResult(RESULT_OK, result)
                     finish()
