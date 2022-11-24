@@ -1,8 +1,6 @@
 package edu.upc.blopup.tensiometer.bluetooth
 
 import com.ideabus.model.protocol.BPMProtocol
-import edu.upc.blopup.tensiometer.bluetooth.BpmProtocolFacade
-import edu.upc.blopup.tensiometer.bluetooth.BpmProtocolListener
 
 class MicrolifeBpmProtocol(
     override val listener: BpmProtocolListener,

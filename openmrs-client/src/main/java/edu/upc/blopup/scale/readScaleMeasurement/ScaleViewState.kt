@@ -1,8 +1,8 @@
 package edu.upc.blopup.scale.readScaleMeasurement
 
 import android.os.Parcelable
-import edu.upc.blopup.exceptions.BluetoothConnectionException
 import com.ebelter.sdks.bean.scale.ScaleMeasureResult
+import edu.upc.blopup.exceptions.BluetoothConnectionException
 import kotlinx.android.parcel.Parcelize
 
 sealed class ScaleViewState {

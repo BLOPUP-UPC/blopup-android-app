@@ -1,12 +1,16 @@
 package edu.upc.blopup.tensiometer.bluetooth
 
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.ConnectionViewState
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.Measurement
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.TensiometerViewState
-import com.ideabus.model.data.*
+import com.ideabus.model.data.CurrentAndMData
+import com.ideabus.model.data.DRecord
+import com.ideabus.model.data.DeviceInfo
+import com.ideabus.model.data.User
+import com.ideabus.model.data.VersionData
 import com.ideabus.model.protocol.BPMProtocol
 import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.hilt.CurrentActivityProvider
+import edu.upc.blopup.tensiometer.readTensiometerMeasurement.ConnectionViewState
+import edu.upc.blopup.tensiometer.readTensiometerMeasurement.Measurement
+import edu.upc.blopup.tensiometer.readTensiometerMeasurement.TensiometerViewState
 import javax.inject.Inject
 
 class MicrolifeBluetoothConnector @Inject constructor(

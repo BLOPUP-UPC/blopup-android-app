@@ -38,7 +38,6 @@ class CurrentActivityProvider @Inject constructor() {
     }
 
     fun <T> withActivity(block: Activity.() -> T): T {
-//        checkMainThread()
         val activity = currentActivity
         check(activity != null) {
             "Don't call this after the activity is finished!"

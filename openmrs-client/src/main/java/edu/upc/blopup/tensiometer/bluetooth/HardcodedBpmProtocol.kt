@@ -2,8 +2,6 @@ package edu.upc.blopup.tensiometer.bluetooth
 
 import com.ideabus.model.data.CurrentAndMData
 import com.ideabus.model.data.DRecord
-import edu.upc.blopup.tensiometer.bluetooth.BpmProtocolFacade
-import edu.upc.blopup.tensiometer.bluetooth.BpmProtocolListener
 
 /**
  * This implementation of the protocol is meant to be used as a mean to simulate bluetooth
