@@ -14,6 +14,7 @@ import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.blopup.exceptions.BluetoothConnectionException
+import org.openmrs.mobile.BuildConfig
 import org.openmrs.mobile.R
 import org.openmrs.mobile.databinding.ActivityReadScaleBinding
 
@@ -91,6 +92,13 @@ class ReadWeightActivity : AppCompatActivity() {
     }
 
     private fun startReading() {
+        if (BuildConfig.DEBUG) {
+            val result = Intent().apply {
+                putExtra(EXTRAS_WEIGHT, 56.6f)
+            }
+            setResult(RESULT_OK, result)
+            finish()
+        }
         viewModel.startListeningBluetoothConnection()
         viewModel.viewState.observe(this) { state ->
             when (state) {

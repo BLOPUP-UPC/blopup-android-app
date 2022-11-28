@@ -15,12 +15,14 @@ class EBodyMicrolifeBluetoothConnector @Inject constructor(
 ) : BluetoothConnectorInterface,
     EBodyProtocolListener {
 
-    private val eBodyProtocol: EBodyProtocolFacade
+    private val eBodyProtocol: EBodyProtocol
 
     private lateinit var updateMeasurementStateCallback: (ScaleViewState) -> Unit
 
     init {
-        eBodyProtocol = eBodyProtocolFactory.getEBodyProtocol(this)
+        eBodyProtocol = eBodyProtocolFactory.getEBodyProtocol()
+        eBodyProtocol.setOnDataResponseListener(this)
+        eBodyProtocol.setOnConnectStateListener(this)
     }
 
     override fun connect(
@@ -33,7 +35,7 @@ class EBodyMicrolifeBluetoothConnector @Inject constructor(
     override fun disconnect() {
         try {
             eBodyProtocol.stopScan()
-            if (eBodyProtocol.isConnected()) {
+            if (eBodyProtocol.isConnected) {
                 eBodyProtocol.disconnect()
             }
         } catch (ignore: Exception) {
@@ -43,7 +45,7 @@ class EBodyMicrolifeBluetoothConnector @Inject constructor(
 
     override fun onScanResult(bluetoothDevice: BluetoothDevice) {
         try {
-            eBodyProtocol.connect()
+            eBodyProtocol.connect(bluetoothDevice)
         } catch (ignore: Exception) {
             updateMeasurementStateCallback(ScaleViewState.Error(BluetoothConnectionException.OnScanResult))
         }
@@ -74,13 +76,12 @@ class EBodyProtocolFactory @Inject constructor(private val activityProvider: Cur
 
     private lateinit var eBodyProtocol: EBodyProtocol
 
-    fun getEBodyProtocol(eBodyProtocolListener: EBodyProtocolListener): EBodyProtocolFacade {
+    fun getEBodyProtocol(): EBodyProtocol {
         activityProvider.withActivity {
             this.runOnUiThread {
                 eBodyProtocol = EBodyProtocol.getInstance(this, false, false, API_KEY_WEIGHT)
             }
         }
-        return EBodyBpmProtocol(eBodyProtocolListener, eBodyProtocol)
-//        return HardcodedEBodyProtocol(eBodyProtocolListener)
+        return eBodyProtocol
     }
 }

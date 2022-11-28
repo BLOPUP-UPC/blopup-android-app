@@ -14,6 +14,8 @@ import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.blopup.exceptions.BluetoothConnectionException
+import edu.upc.blopup.scale.readScaleMeasurement.EXTRAS_WEIGHT
+import org.openmrs.mobile.BuildConfig
 import org.openmrs.mobile.R
 import org.openmrs.mobile.databinding.ActivityReadTensiometerBinding
 
@@ -90,6 +92,15 @@ class ReadTensiometerActivity : AppCompatActivity() {
     }
 
     private fun startReading() {
+        if (BuildConfig.DEBUG) {
+            val result = Intent().apply {
+                putExtra(EXTRAS_SYSTOLIC, 127)
+                putExtra(EXTRAS_DIASTOLIC, 64)
+                putExtra(EXTRAS_HEART_RATE, 62)
+            }
+            setResult(RESULT_OK, result)
+            finish()
+        }
         viewModel.startListeningBluetoothConnection()
         viewModel.connectionViewState.observe(this) { state ->
             val icon = when (state) {

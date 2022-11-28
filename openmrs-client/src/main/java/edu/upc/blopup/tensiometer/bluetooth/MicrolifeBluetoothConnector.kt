@@ -18,7 +18,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
 ) : BluetoothConnectorInterface,
     BpmProtocolListener {
 
-    private val bpmProtocol: BpmProtocolFacade
+    private val bpmProtocol: BPMProtocol
 
     private lateinit var updateConnectionState: (ConnectionViewState) -> Unit
     private lateinit var updateMeasurementState: (TensiometerViewState) -> Unit
@@ -26,7 +26,11 @@ class MicrolifeBluetoothConnector @Inject constructor(
     private var isConnecting = false
 
     init {
-        bpmProtocol = bpmProtocolFactory.getBpmProtocol(this)
+        bpmProtocol = bpmProtocolFactory.getBpmProtocol()
+        bpmProtocol.setOnConnectStateListener(this)
+        bpmProtocol.setOnDataResponseListener(this)
+        bpmProtocol.setOnNotifyStateListener(this)
+        bpmProtocol.setOnWriteStateListener(this)
     }
 
     override fun connect(
@@ -164,15 +168,12 @@ class BpmProtocolFactory @Inject constructor(private val activityProvider: Curre
 
     private lateinit var bpmProtocol: BPMProtocol
 
-    fun getBpmProtocol(
-        bpmProtocolListener: BpmProtocolListener
-    ): BpmProtocolFacade {
+    fun getBpmProtocol(): BPMProtocol {
         activityProvider.withActivity {
             this.runOnUiThread {
                 bpmProtocol = BPMProtocol.getInstance(this, false, true, API_KEY)
             }
         }
-        return MicrolifeBpmProtocol(bpmProtocolListener, bpmProtocol)
-//        return HardcodedBpmProtocol(bpmProtocolListener)
+        return bpmProtocol
     }
 }

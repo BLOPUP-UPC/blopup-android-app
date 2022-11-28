@@ -22,7 +22,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
     private lateinit var subjectUnderTest: MicrolifeBluetoothConnector
 
     private lateinit var bpmProtocolFactory: BpmProtocolFactory
-    private lateinit var bpmProtocolFacade: BpmProtocolFacade
+    private lateinit var bpmProtocol: BPMProtocol
 
     private lateinit var updateConnectionState: (ConnectionViewState) -> Unit
     private lateinit var updateMeasurementState: (TensiometerViewState) -> Unit
@@ -30,13 +30,13 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
     @Before
     fun setUp() {
         bpmProtocolFactory = mockk(relaxed = true)
-        bpmProtocolFacade = mockk(relaxed = true)
+        bpmProtocol = mockk(relaxed = true)
         updateConnectionState = mockk(relaxed = true)
         updateMeasurementState = mockk(relaxed = true)
 
         every {
-            bpmProtocolFactory.getBpmProtocol(any())
-        } returns bpmProtocolFacade
+            bpmProtocolFactory.getBpmProtocol()
+        } returns bpmProtocol
 
         subjectUnderTest = MicrolifeBluetoothConnector(
             bpmProtocolFactory
@@ -55,7 +55,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
         subjectUnderTest.onScanResult(mac, name, rssi)
 
-        verify { bpmProtocolFacade.connect(mac) }
+        verify { bpmProtocol.connect(mac) }
         verify { updateConnectionState(ConnectionViewState.Pairing) }
     }
 
@@ -78,7 +78,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
         subjectUnderTest.onResponseReadHistory(dRecord)
 
-        verify { bpmProtocolFacade.stopScan() }
+        verify { bpmProtocol.stopScan() }
         verify { updateConnectionState(ConnectionViewState.Disconnected) }
         verify {
             updateMeasurementState(
@@ -99,7 +99,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
         subjectUnderTest.onResponseReadHistory(dRecord)
 
-        verify { bpmProtocolFacade.stopScan() }
+        verify { bpmProtocol.stopScan() }
         verify { updateConnectionState(ConnectionViewState.Disconnected) }
         verify { updateMeasurementState(any()) }
     }
@@ -108,12 +108,12 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
     fun `given the bluetooth device is connected then we ask for last data`() {
         subjectUnderTest.onResponseReadUserAndVersionData(null, null)
 
-        verify { bpmProtocolFacade.readHistorysOrCurrDataAndSyncTiming() }
+        verify { bpmProtocol.readHistorysOrCurrDataAndSyncTiming() }
     }
 
     @Test
     fun `given the bluetooth connection fails at start then we manage the error`() {
-        every { bpmProtocolFacade.startScan(any()) }.throws(IllegalArgumentException())
+        every { bpmProtocol.startScan(any()) }.throws(IllegalArgumentException())
 
         subjectUnderTest.connect(
             updateConnectionState,
@@ -125,7 +125,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
     @Test
     fun `given the bluetooth connection fails at disconnect then we manage the error`() {
-        every { bpmProtocolFacade.stopScan() }.throws(IllegalArgumentException())
+        every { bpmProtocol.stopScan() }.throws(IllegalArgumentException())
 
         subjectUnderTest.disconnect()
 
@@ -134,7 +134,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
     @Test
     fun `given the bluetooth connection fails at receiving the scan results then we manage the error`() {
-        every { bpmProtocolFacade.stopScan() }.throws(IllegalArgumentException())
+        every { bpmProtocol.stopScan() }.throws(IllegalArgumentException())
 
         subjectUnderTest.onScanResult(null, null, 0)
 
@@ -143,7 +143,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
     @Test
     fun `given the bluetooth connection fails at changing the state then we manage the error`() {
-        every { bpmProtocolFacade.startScan(any()) }.throws(IllegalArgumentException())
+        every { bpmProtocol.startScan(any()) }.throws(IllegalArgumentException())
 
         subjectUnderTest.onConnectionState(BPMProtocol.ConnectState.Disconnect)
 
@@ -159,7 +159,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
     @Test
     fun `given the bluetooth connection fails at reading response then we manage the error`() {
-        every { bpmProtocolFacade.readHistorysOrCurrDataAndSyncTiming() }.throws(
+        every { bpmProtocol.readHistorysOrCurrDataAndSyncTiming() }.throws(
             IllegalArgumentException()
         )
 
