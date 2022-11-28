@@ -458,8 +458,7 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
                     field.value = -1.0;
                 }
             } catch (ClassCastException e) {
-                DiscreteSeekBar dsb = getActivity().findViewById(field.id);
-                field.value = (double) dsb.getProgress();
+                field.value = Math.round(field.value * 100.0) / 100.0;
             }
         }
 
