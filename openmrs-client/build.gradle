@@ -68,9 +68,9 @@ android {
     signingConfigs {
         release {
             storeFile rootProject.file('release.keystore')
-            storePassword System.getenv("KEYSTORE_PASSWORD")
-            keyAlias System.getenv("KEYSTORE_ALIAS_NAME")
-            keyPassword System.getenv("KEYSTORE_ALIAS_PASS")
+            storePassword System.getenv("KEYSTORE_PASSWORD") ?: "Admin123"
+            keyAlias System.getenv("KEYSTORE_ALIAS_NAME") ?: "blopup-key-alias"
+            keyPassword System.getenv("KEYSTORE_ALIAS_PASS") ?: "Admin123"
         }
     }
 

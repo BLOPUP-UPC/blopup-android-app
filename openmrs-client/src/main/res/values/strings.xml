@@ -19,6 +19,16 @@
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
     <string name="action_location">Location</string>
+    <string name="allergy_heading">New Allergy</string>
+    <string name="snackbar_nonvisitting_patients">Vital signs can only be captured in patients with an active visit.</string>
+    <string name="permission_camera_rationale">Camera permissions are required to take photo.</string>
+    <string name="permission_camera_denied">Camera permissions were denied. Please consider granting them to access the camera.</string>
+    <string name="permission_camera_neverask">Camera permissions were refused with never ask again.</string>
+    <string name="mark_patient_deceased_concept_has_no_answer">No possible causes of death were found for this search.</string>
+    <string name="mark_patient_deceased_invalid_uuid">Please add a valid UUID on the server</string>
+    <string name="no_death_concepts_in_server">Please, add the possible causes of death on the server</string>
+    <string name="admission_provider_role">Provider role:</string>
+    <string name="form_data_will_be_synced_later_error_message">" \"Patient not yet registered. No internet connection. Form data is saved locally and will be synced when internet connection is restored\"."</string>
 
     <string name="alphanumeric_postal_code">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 </string>
 

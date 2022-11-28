@@ -277,13 +277,7 @@
             android:name="edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivity"
             android:exported="false" />
         <activity
-            android:name="edu.upc.blopup.tensiometer.showTensiometerMeasurement.ShowTensiometerMeasurementActivity"
-            android:exported="false" />
-        <activity
             android:name="edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity"
-            android:exported="false" />
-        <activity
-            android:name="edu.upc.blopup.scale.showScaleMeasurement.ShowScaleMeasurementActivity"
             android:exported="false" />
 
         <meta-data
