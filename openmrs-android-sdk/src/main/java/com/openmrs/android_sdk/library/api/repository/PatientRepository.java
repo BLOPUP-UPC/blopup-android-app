@@ -18,6 +18,7 @@ import static com.openmrs.android_sdk.utilities.ApplicationConstants.PRIMARY_KEY
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import rx.Observable;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -247,6 +249,13 @@ public class PatientRepository extends BaseRepository {
 
                 Bitmap photo = downloadPatientPhotoByUuid(newPatientDto.getUuid()).toBlocking().first();
                 if (photo != null) newPatientDto.getPerson().setPhoto(photo);
+
+                //#region  -- Update Database --
+                Patient previous = patientDAO.findPatientByUUID(uuid);
+                Patient patient = newPatientDto.getPatient();
+                patient.setId(previous.getId());
+                patientDAO.updatePatient(patient.getId(), patient);
+                //endregion
 
                 return newPatientDto.getPatient();
             } else {

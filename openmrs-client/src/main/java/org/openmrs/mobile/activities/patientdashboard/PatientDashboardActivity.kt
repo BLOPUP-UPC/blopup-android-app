@@ -124,7 +124,13 @@ class PatientDashboardActivity : ACBaseActivity() {
             pager.adapter = adapter
             tabhost.setupWithViewPager(pager)
             pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
+
                 override fun onPageSelected(position: Int) {
                     actionsFab.activityDashboardActionFab.apply {
                         if (position == 1) {
@@ -145,8 +151,8 @@ class PatientDashboardActivity : ACBaseActivity() {
             activityDashboardActionFab.setOnClickListener {
                 if (binding.pager.currentItem == 1) {
                     Intent(this@PatientDashboardActivity, AddEditAllergyActivity::class.java)
-                            .putExtra(PATIENT_ID_BUNDLE, patientId)
-                            .apply { startActivity(this) }
+                        .putExtra(PATIENT_ID_BUNDLE, patientId)
+                        .apply { startActivity(this) }
                 } else {
                     if (!isActionFABOpen) openFABs()
                     else closeFABs()
@@ -162,8 +168,10 @@ class PatientDashboardActivity : ACBaseActivity() {
         with(binding.actionsFab) {
             customFabDeleteLl.makeVisible()
             customFabUpdateLl.makeVisible()
-            customFabDeleteLl.animate().translationY(-resources!!.getDimension(R.dimen.custom_fab_bottom_margin_55))
-            customFabUpdateLl.animate().translationY(-resources!!.getDimension(R.dimen.custom_fab_bottom_margin_105))
+            customFabDeleteLl.animate()
+                .translationY(-resources!!.getDimension(R.dimen.custom_fab_bottom_margin_55))
+            customFabUpdateLl.animate()
+                .translationY(-resources!!.getDimension(R.dimen.custom_fab_bottom_margin_105))
         }
         isActionFABOpen = true
     }
@@ -184,23 +192,28 @@ class PatientDashboardActivity : ACBaseActivity() {
             if (!isActionFABOpen) {
                 ObjectAnimator.ofFloat(this, "rotation", 0f, 180f).setDuration(500).start()
                 handler.postDelayed(
-                        { setImageDrawable(resources.getDrawable(R.drawable.ic_close_white_24dp)) },
-                        400
+                    { setImageDrawable(resources.getDrawable(R.drawable.ic_close_white_24dp)) },
+                    400
                 )
             } else {
                 ObjectAnimator.ofFloat(this, "rotation", 180f, 0f).setDuration(500).start()
                 handler.postDelayed(
-                        { setImageDrawable(resources.getDrawable(R.drawable.ic_edit_white_24dp)) },
-                        400
+                    { setImageDrawable(resources.getDrawable(R.drawable.ic_edit_white_24dp)) },
+                    400
                 )
             }
         }
     }
 
+    override fun onResume() {
+        super.onResume();
+        initViewPager()
+    }
+
     private fun startPatientUpdateActivity(patientId: Long) {
         Intent(this, AddEditPatientActivity::class.java)
-                .putExtra(PATIENT_ID_BUNDLE, patientId.toString())
-                .apply { startActivity(this) }
+            .putExtra(PATIENT_ID_BUNDLE, patientId.toString())
+            .apply { startActivity(this) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
