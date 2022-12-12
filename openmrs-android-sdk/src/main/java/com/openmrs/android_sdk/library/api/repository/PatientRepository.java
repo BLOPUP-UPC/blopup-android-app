@@ -253,10 +253,14 @@ public class PatientRepository extends BaseRepository {
                 //#region  -- Update Database --
                 Patient previous = patientDAO.findPatientByUUID(uuid);
                 Patient patient = newPatientDto.getPatient();
-                patient.setId(previous.getId());
-                patientDAO.updatePatient(patient.getId(), patient);
-                //endregion
 
+                if (previous == null) {
+                    patientDAO.updatePatient(patient.getUuid(), patient);
+                } else {
+                    patient.setId(previous.getId());
+                    patientDAO.updatePatient(patient.getId(), patient);
+                }
+                //endregion
                 return newPatientDto.getPatient();
             } else {
                 throw new IOException("Error with downloading patient: " + response.message());
