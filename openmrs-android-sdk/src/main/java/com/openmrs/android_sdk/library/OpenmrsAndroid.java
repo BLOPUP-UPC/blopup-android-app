@@ -260,7 +260,7 @@ public class OpenmrsAndroid {
      */
     public static String getLastLoginServerUrl() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.LAST_LOGIN_SERVER_URL, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.LAST_LOGIN_SERVER_URL, OpenmrsAndroid.getServerUrl());
     }
 
     /**

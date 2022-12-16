@@ -20,11 +20,13 @@ import com.openmrs.android_sdk.library.OpenmrsAndroid;
 import com.openmrs.android_sdk.library.databases.AppDatabase;
 import com.openmrs.android_sdk.library.databases.AppDatabaseHelper;
 import com.openmrs.android_sdk.library.databases.entities.DiagnosisEntity;
+import com.openmrs.android_sdk.library.databases.entities.LocationEntity;
 import com.openmrs.android_sdk.library.databases.entities.ObservationEntity;
 import com.openmrs.android_sdk.library.databases.entities.VisitEntity;
 import com.openmrs.android_sdk.library.models.Diagnosis;
 import com.openmrs.android_sdk.library.models.Encounter;
 import com.openmrs.android_sdk.library.models.Observation;
+import com.openmrs.android_sdk.library.models.Patient;
 import com.openmrs.android_sdk.library.models.Visit;
 
 import java.util.ArrayList;
@@ -54,6 +56,10 @@ public class VisitDAO {
      */
     VisitRoomDAO visitRoomDAO;
     /**
+     * The Encounter room dao.
+     */
+    EncounterDAO encounterDAO;
+    /**
      * The Diagnosis room dao.
      */
     DiagnosisRoomDAO diagnosisRoomDAO;
@@ -64,6 +70,7 @@ public class VisitDAO {
         observationRoomDAO = AppDatabase.getDatabase(context).observationRoomDAO();
         visitRoomDAO = AppDatabase.getDatabase(context).visitRoomDAO();
         diagnosisRoomDAO = AppDatabase.getDatabase(context).diagnosisRoomDAO();
+        encounterDAO = new EncounterDAO();
     }
 
     public VisitDAO(Context context, ObservationRoomDAO observationRoomDAO, VisitRoomDAO visitRoomDAO, DiagnosisRoomDAO diagnosisRoomDAO) {
@@ -98,6 +105,7 @@ public class VisitDAO {
     private long saveVisit(Visit visit, long patientID) {
         EncounterDAO encounterDAO = new EncounterDAO();
         visit.setPatient(new PatientDAO().findPatientByID(String.valueOf(patientID)));
+        visit.location = new LocationEntity(OpenmrsAndroid.getLocation());
         VisitEntity visitEntity = AppDatabaseHelper.convert(visit);
         long visitID = visitRoomDAO.addVisit(visitEntity);
         if (visit.getEncounters() != null) {
@@ -107,7 +115,7 @@ public class VisitDAO {
                     ObservationEntity observationEntity = AppDatabaseHelper.convert(obs, encounterID);
                     observationRoomDAO.addObservation(observationEntity);
                 }
-                for (Diagnosis diagnosis : encounter.getDiagnoses()){
+                for (Diagnosis diagnosis : encounter.getDiagnoses()) {
                     DiagnosisEntity diagnosisEntity = AppDatabaseHelper.convert(diagnosis, encounterID);
                     diagnosisRoomDAO.addDiagnosis(diagnosisEntity);
                 }
@@ -138,6 +146,7 @@ public class VisitDAO {
 
                 for (Observation obs : encounter.getObservations()) {
                     ObservationEntity observationEntity = AppDatabaseHelper.convert(obs, encounterID);
+                    //Check if encounter exist -> then update else addObservation
                     observationRoomDAO.addObservation(observationEntity);
                 }
             }
@@ -249,15 +258,21 @@ public class VisitDAO {
         });
     }
 
+
     /**
-     * Delete visits by patient id observable.
+     * Delete all visits by patient observable.
      *
-     * @param id the id
+     * @param patient the patient
      * @return the observable
      */
-    public Observable<Boolean> deleteVisitsByPatientId(Long id) {
+    public Observable<Boolean> deleteVisitPatient(Patient patient) {
         return AppDatabaseHelper.createObservableIO(() -> {
-            visitRoomDAO.deleteVisitsByPatientId(id);
+
+            //Delete Visit By Patient Id
+            visitRoomDAO.deleteVisitsByPatientId(patient.getId());
+
+            //delete encounter by Patient UUID
+            encounterDAO.deleteEncounterByPatientUUID(patient.getUuid());
             return true;
         });
     }

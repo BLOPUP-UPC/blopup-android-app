@@ -20,12 +20,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardMainViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val visitDAO: VisitDAO,
-        private val patientRepository: PatientRepository,
-        private val visitRepository: VisitRepository,
-        private val allergyRepository: AllergyRepository,
-        private val savedStateHandle: SavedStateHandle
+    private val patientDAO: PatientDAO,
+    private val visitDAO: VisitDAO,
+    private val patientRepository: PatientRepository,
+    private val visitRepository: VisitRepository,
+    private val allergyRepository: AllergyRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Unit>() {
 
     val patientId: String = savedStateHandle.get<Long>(PATIENT_ID_BUNDLE)?.toString()!!
@@ -37,12 +37,12 @@ class PatientDashboardMainViewModel @Inject constructor(
     fun deletePatient() {
         setLoading(PatientDeleting)
         patientDAO.deletePatient(patientId.toLong())
-        addSubscription(visitDAO.deleteVisitsByPatientId(patientId.toLong())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { setContent(Unit, PatientDeleting) },
-                        { setError(it, PatientDeleting) }
-                )
+        addSubscription(visitDAO.deleteVisitPatient(patient)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { setContent(Unit, PatientDeleting) },
+                { setError(it, PatientDeleting) }
+            )
         )
     }
 
@@ -57,43 +57,43 @@ class PatientDashboardMainViewModel @Inject constructor(
     private fun syncDetails() {
         runningSyncs++
         addSubscription(patientRepository.downloadPatientByUuid(patientUuid)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { setContent(Unit, PatientSynchronizing) },
-                        { setError(it, PatientSynchronizing) }
-                )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { setContent(Unit, PatientSynchronizing) },
+                { setError(it, PatientSynchronizing) }
+            )
         )
     }
 
     private fun syncVisits() {
         runningSyncs++
         addSubscription(visitRepository.syncVisitsData(patient)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { setContent(Unit, PatientSynchronizing) },
-                        { setError(it, PatientSynchronizing) }
-                ))
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { setContent(Unit, PatientSynchronizing) },
+                { setError(it, PatientSynchronizing) }
+            ))
     }
 
     private fun syncAllergies() {
         runningSyncs++
         addSubscription(allergyRepository.syncAllergies(patient)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { setContent(Unit, PatientSynchronizing) },
-                        { setError(it, PatientSynchronizing) }
-                )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { setContent(Unit, PatientSynchronizing) },
+                { setError(it, PatientSynchronizing) }
+            )
         )
     }
 
     private fun syncVitals() {
         runningSyncs++
         addSubscription(visitRepository.syncLastVitals(patient.uuid)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { setContent(Unit, PatientSynchronizing) },
-                        { setError(it, PatientSynchronizing) }
-                )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { setContent(Unit, PatientSynchronizing) },
+                { setError(it, PatientSynchronizing) }
+            )
         )
     }
 
