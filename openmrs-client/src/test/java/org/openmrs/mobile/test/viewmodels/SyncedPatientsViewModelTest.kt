@@ -113,11 +113,12 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     fun deleteSyncedPatient_success() {
         val patientToDelete = patientList[0]
         val patientId = patientToDelete.id!!
-        Mockito.`when`(visitDAO.deleteVisitsByPatientId(patientId)).thenReturn(Observable.just(true))
+        Mockito.`when`(visitDAO.deleteVisitPatient(patientToDelete))
+            .thenReturn(Observable.just(true))
 
         viewModel.deleteSyncedPatient(patientToDelete)
 
         verify(patientDAO).deletePatient(patientId)
-        verify(visitDAO).deleteVisitsByPatientId(patientId)
+        verify(visitDAO).deleteVisitPatient(patientToDelete)
     }
 }
