@@ -56,6 +56,14 @@ public interface ObservationRoomDAO {
     void deleteObservation(ObservationEntity observationEntity);
 
     /**
+     * Delete observation by visitId.
+     *
+     * @param encounterId the observation id
+     */
+    @Query("DELETE FROM observations WHERE encounter_id = :encounterId")
+    void deleteObservationByEncounterId(long encounterId);
+
+    /**
      * Find observation by encounter id single.
      *
      * @param encounterID the encounter id

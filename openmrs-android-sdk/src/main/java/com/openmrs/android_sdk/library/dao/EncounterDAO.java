@@ -16,6 +16,7 @@ package com.openmrs.android_sdk.library.dao;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,8 @@ public class EncounterDAO {
     EncounterTypeRoomDAO encounterTypeRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).encounterTypeRoomDAO();
 
     @Inject
-    public EncounterDAO() { }
+    public EncounterDAO() {
+    }
 
     /**
      * Save encounter long.
@@ -51,8 +53,7 @@ public class EncounterDAO {
      */
     public long saveEncounter(Encounter encounter, Long visitID) {
         EncounterEntity encounterEntity = AppDatabaseHelper.convert(encounter, visitID);
-        long id = encounterRoomDAO.addEncounter(encounterEntity);
-        return id;
+        return encounterRoomDAO.addEncounter(encounterEntity);
     }
 
     /**
@@ -183,4 +184,23 @@ public class EncounterDAO {
             return 0;
         }
     }
+
+
+    /**
+     * Delete encounter type by visit id.
+     *
+     * @param patientUuid the form name
+     * @return the encounter type by form name
+     */
+    public void deleteEncounterByPatientUUID(String patientUuid) {
+        List<EncounterEntity> encounterList = encounterRoomDAO.getAllEncountersByPatientUUID(patientUuid).blockingGet();
+
+        //delete encounter by patient uuid
+        encounterRoomDAO.deleteEncounterByPatientUUID(patientUuid);
+
+        //delete observations by encounter id
+        for (EncounterEntity encounter : encounterList)
+            observationRoomDAO.deleteObservationByEncounterId(encounter.getId());
+    }
+
 }

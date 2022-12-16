@@ -102,12 +102,28 @@ public interface EncounterRoomDAO {
     void deleteEncounterByID(long id);
 
     /**
+     * Delete encounter by visitId.
+     *
+     * @param patientUUID the patient UUID
+     */
+    @Query("DELETE FROM encounters WHERE patient_uuid = :patientUUID or patient_uuid is null")
+    void deleteEncounterByPatientUUID(String patientUUID);
+
+    /**
      * Gets all encounters.
      *
      * @return the all encounters
      */
     @Query("SELECT * FROM encounters")
     Single<List<EncounterEntity>> getAllEncounters();
+
+    /**
+     * Gets all encounters.
+     *
+     * @return the all encounters
+     */
+    @Query("SELECT * FROM encounters WHERE patient_uuid = :patientUUID or patient_uuid is null")
+    Single<List<EncounterEntity>> getAllEncountersByPatientUUID(String patientUUID);
 
     /**
      * Update encounter int.
