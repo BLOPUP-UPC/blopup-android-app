@@ -19,6 +19,7 @@ import static com.openmrs.android_sdk.utilities.DateUtils.convertTime;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -97,7 +98,9 @@ public class VisitRepository extends BaseRepository {
 
             if (response.isSuccessful()) {
                 List<Visit> visits = response.body().getResults();
-                visitDAO.deleteVisitsByPatientId(patient.getId()).toBlocking().subscribe();
+
+                visitDAO.deleteVisitPatient(patient).toBlocking().subscribe();
+
                 for (Visit visit : visits) {
                     visitDAO.saveOrUpdate(visit, patient.getId()).toBlocking().subscribe();
                 }
@@ -194,8 +197,7 @@ public class VisitRepository extends BaseRepository {
             visit.setStartDatetime(DateUtils.convertTime(System.currentTimeMillis(), DateUtils.OPEN_MRS_REQUEST_FORMAT));
             visit.setPatient(patient);
             visit.setLocation(locationDAO.findLocationByName(OpenmrsAndroid.getLocation()));
-
-            VisitType visitType = new VisitType("Outpatient", OpenmrsAndroid.getVisitTypeUUID());
+            VisitType visitType = new VisitType("FACILITY", OpenmrsAndroid.getVisitTypeUUID());
             visit.setVisitType(visitType);
 
             Call<Visit> call = restApi.startVisit(visit);
