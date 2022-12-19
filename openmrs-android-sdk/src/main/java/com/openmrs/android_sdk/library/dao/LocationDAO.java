@@ -48,8 +48,11 @@ public class LocationDAO {
     /**
      * Delete all locations.
      */
-    public void deleteAllLocations() {
-        locationRoomDAO.deleteAllLocations();
+    public Observable<Boolean> deleteAllLocations() {
+        return AppDatabaseHelper.createObservableIO(() -> {
+            locationRoomDAO.deleteAllLocations();
+            return true;
+        });
     }
 
     /**
