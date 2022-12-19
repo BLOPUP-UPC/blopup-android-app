@@ -12,54 +12,33 @@
   ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
   -->
 
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/appintro_indicator_size">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/keyValueDataRowTextLabel"
+        style="@style/TextLabel.Bold"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/treatment_label"
+        android:textAlignment="textStart"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="22sp" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="40">
-
-            <TextView
-                android:id="@+id/keyValueDataRowTextLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:textStyle="bold"
-                android:gravity="center_vertical|end" />
-        </RelativeLayout>
-
-        <View style="@style/Divider.Horizontal" />
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="60">
-
-            <TextView
-                android:id="@+id/keyValueDataRowTextData"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|top"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <View style="@style/Divider.Vertical" />
+    <TextView
+        android:id="@+id/keyValueDataRowTextData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="35dp"
+        android:text="@string/about_openmrs_1"
+        style="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintTop_toBottomOf="@id/keyValueDataRowTextLabel" />
 </LinearLayout>
+
