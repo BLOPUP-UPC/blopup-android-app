@@ -35,6 +35,7 @@ import com.openmrs.android_sdk.utilities.ApplicationConstants.EncounterTypes.ENC
 import com.openmrs.android_sdk.utilities.NetworkUtils
 import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_visit_dashboard.*
 import org.openmrs.mobile.R
 import org.openmrs.mobile.activities.BaseFragment
 import org.openmrs.mobile.activities.dialog.CustomFragmentDialog
@@ -49,13 +50,18 @@ import org.openmrs.mobile.utilities.observeOnce
 class VisitDashboardFragment : BaseFragment() {
     private var _binding: FragmentVisitDashboardBinding? = null
     private val binding get() = _binding!!
+    private var visitExpandableListAdapter: VisitExpandableListAdapter? = null
 
     private val viewModel: VisitDashboardViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-
+        visitExpandableListAdapter = VisitExpandableListAdapter(requireContext(), emptyList())
         setupAdapter()
         setupObserver()
 
@@ -71,7 +77,7 @@ class VisitDashboardFragment : BaseFragment() {
 
     private fun setupAdapter() = with(binding) {
         visitDashboardExpList.emptyView = visitDashboardEmpty
-        visitDashboardExpList.setAdapter(VisitExpandableListAdapter(requireContext(), emptyList()))
+        visitDashboardExpList.setAdapter(visitExpandableListAdapter)
         visitDashboardExpList.setGroupIndicator(null)
         visitDashboardEmpty.makeGone()
     }
@@ -90,14 +96,15 @@ class VisitDashboardFragment : BaseFragment() {
                 else -> throw IllegalStateException()
             }
         })
+
     }
 
     private fun updateEncountersList(visitEncounters: List<Encounter>) = with(binding) {
         val possibleEncounterTypes = ENCOUNTER_TYPES_DISPLAYS.toHashSet()
-        val displayableEncounters = visitEncounters.filter { possibleEncounterTypes.contains(it.encounterType?.display) }
+        val displayableEncounters =
+            visitEncounters.filter { possibleEncounterTypes.contains(it.encounterType?.display) }
 
-        (visitDashboardExpList.expandableListAdapter as VisitExpandableListAdapter)
-                .updateList(displayableEncounters)
+        visitExpandableListAdapter?.updateList(displayableEncounters)
 
         if (displayableEncounters.isEmpty()) {
             visitDashboardEmpty.makeVisible()
@@ -125,12 +132,15 @@ class VisitDashboardFragment : BaseFragment() {
             // Select action button text
             findViewById<TextView>(R.id.snackbar_action_button).apply {
                 setText(R.string.snackbar_select)
-                typeface = Typeface.createFromAsset(requireActivity().assets,
-                        ApplicationConstants.TypeFacePathConstants.ROBOTO_MEDIUM)
+                typeface = Typeface.createFromAsset(
+                    requireActivity().assets,
+                    ApplicationConstants.TypeFacePathConstants.ROBOTO_MEDIUM
+                )
                 setOnClickListener { startEncounter() }
             }
         }.let {
-            val snackBar = Snackbar.make(root, ApplicationConstants.EMPTY_STRING, Snackbar.LENGTH_INDEFINITE)
+            val snackBar =
+                Snackbar.make(root, ApplicationConstants.EMPTY_STRING, Snackbar.LENGTH_INDEFINITE)
             val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
             snackBarLayout.setPadding(0, 0, 0, 0)
             snackBarLayout.addView(it, 0)
@@ -152,7 +162,10 @@ class VisitDashboardFragment : BaseFragment() {
 
     private fun startFormListActivity() {
         Intent(requireActivity(), FormListActivity::class.java).apply {
-            putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, viewModel.visit?.patient?.id)
+            putExtra(
+                ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                viewModel.visit?.patient?.id
+            )
             startActivity(this)
         }
     }
@@ -179,7 +192,7 @@ class VisitDashboardFragment : BaseFragment() {
                 leftButtonText = getString(R.string.dialog_button_cancel)
             }.let {
                 (requireActivity() as VisitDashboardActivity)
-                        .createAndShowDialog(it, ApplicationConstants.DialogTAG.END_VISIT_DIALOG_TAG)
+                    .createAndShowDialog(it, ApplicationConstants.DialogTAG.END_VISIT_DIALOG_TAG)
             }
             else -> return super.onOptionsItemSelected(item)
         }
