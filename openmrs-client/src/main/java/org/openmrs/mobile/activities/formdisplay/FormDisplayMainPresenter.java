@@ -23,6 +23,7 @@ import com.openmrs.android_sdk.utilities.SelectOneField;
 
 import org.joda.time.LocalDateTime;
 import org.openmrs.mobile.activities.BasePresenter;
+
 import com.openmrs.android_sdk.library.api.services.EncounterService;
 import com.openmrs.android_sdk.library.api.repository.VisitRepository;
 import com.openmrs.android_sdk.library.listeners.retrofitcallbacks.DefaultResponseCallback;
@@ -92,9 +93,7 @@ public class FormDisplayMainPresenter extends BasePresenter implements FormDispl
                     LocalDateTime localDateTime = new LocalDateTime();
                     obscreate.setObsDatetime(localDateTime.toString());
                     obscreate.setPerson(mPatient.getUuid());
-                    if (input.value != 0) {
-                        observations.add(obscreate);
-                    }
+                    observations.add(obscreate);
                 }
             }
 
@@ -114,6 +113,7 @@ public class FormDisplayMainPresenter extends BasePresenter implements FormDispl
             encountercreate.setFormname(mFormname);
             encountercreate.setPatientId(mPatientID);
             encountercreate.setFormUuid(getFormResourceByName(mFormname).getUuid());
+
             encountercreate.setId(visitRepository.addEncounterCreated(encountercreate));
 
             if (!mPatient.isSynced()) {

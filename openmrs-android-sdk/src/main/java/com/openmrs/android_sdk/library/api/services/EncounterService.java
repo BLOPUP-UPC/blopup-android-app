@@ -16,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import rx.android.schedulers.AndroidSchedulers;
+
 import android.app.IntentService;
 import android.content.Intent;
 
@@ -36,6 +37,7 @@ import com.openmrs.android_sdk.library.models.Encounter;
 import com.openmrs.android_sdk.library.models.EncounterType;
 import com.openmrs.android_sdk.library.models.Encountercreate;
 import com.openmrs.android_sdk.utilities.NetworkUtils;
+import com.openmrs.android_sdk.utilities.StringUtils;
 import com.openmrs.android_sdk.utilities.ToastUtil;
 
 /**
@@ -172,10 +174,6 @@ public class EncounterService extends IntentService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(visit -> {
                     encounter.setEncounterType(new EncounterType(formname));
-                    for (int i = 0; i < encountercreate.getObservations().size(); i++) {
-                        encounter.getObservations().get(i).setDisplayValue
-                                (encountercreate.getObservations().get(i).getValue());
-                    }
                     List<Encounter> encounterList = visit.getEncounters();
                     encounterList.add(encounter);
                     visitDAO.saveOrUpdate(visit, patientid)
