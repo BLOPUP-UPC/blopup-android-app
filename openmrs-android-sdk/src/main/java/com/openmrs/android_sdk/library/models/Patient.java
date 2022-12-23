@@ -55,6 +55,10 @@ public class Patient extends Person implements Serializable {
     @Expose
     private String contactPhoneNumber;
 
+    @SerializedName("voided")
+    @Expose
+    private Boolean voided;
+
     /**
      * Instantiates a new Patient.
      */
@@ -93,11 +97,12 @@ public class Patient extends Person implements Serializable {
     /*Constructor to initialize values of current class as well as parent class*/
     public Patient(Long id, String encounters, List<PatientIdentifier> identifiers,
                    List<PersonName> names, String gender, String birthdate, boolean birthdateEstimated, List<PersonAddress> addresses, List<PersonAttribute> attributes,
-                   Bitmap photo, Resource causeOfDeath, boolean dead) {
-        super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead);
+                   Bitmap photo, Resource causeOfDeath, boolean dead, boolean voided) {
+        super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead, voided);
         this.id = id;
         this.encounters = encounters;
         this.identifiers = identifiers;
+        this.voided = voided;
     }
 
     /**
@@ -120,7 +125,7 @@ public class Patient extends Person implements Serializable {
     public Patient(Long id, String encounters, List<PatientIdentifier> identifiers,
                    List<PersonName> names, String gender, String birthdate, boolean birthdateEstimated, List<PersonAddress> addresses, List<PersonAttribute> attributes,
                    Bitmap photo, Resource causeOfDeath, boolean dead, String phoneNumber, String contactPhoneNumber, String documentId, List<PersonName> contactNames) {
-        super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead);
+        super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead, false);
         this.id = id;
         this.encounters = encounters;
         this.identifiers = identifiers;
@@ -145,7 +150,7 @@ public class Patient extends Person implements Serializable {
      */
     @SerializedName("person")
     public Person getPerson() {
-        return new Person(getNames(), getGender(), getBirthdate(), getBirthdateEstimated(), getAddresses(), getAttributes(), getPhoto(), getCauseOfDeath(), isDeceased());
+        return new Person(getNames(), getGender(), getBirthdate(), getBirthdateEstimated(), getAddresses(), getAttributes(), getPhoto(), getCauseOfDeath(), isDeceased(), getVoided());
     }
 
     /**
@@ -295,6 +300,14 @@ public class Patient extends Person implements Serializable {
         } else {
             return null;
         }
+    }
+
+    public Boolean getVoided() {
+        return voided;
+    }
+
+    public void setVoided(Boolean voided) {
+        this.voided = voided;
     }
 
     public void setContactNames(List<PersonName> contactNames) {

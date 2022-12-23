@@ -58,6 +58,9 @@ open class PatientDto {
     @Expose
     var person: Person? = null
 
+    @SerializedName("voided")
+    @Expose
+    private val voided: Boolean = false
 
     /**
      *
@@ -79,7 +82,8 @@ open class PatientDto {
                 person.attributes,
                 person.photo,
                 person.causeOfDeath,
-                person.isDeceased
+                person.isDeceased,
+                voided
 //                phoneNumber,
 //                contactPhoneNumber,
 //                documentId,

@@ -246,7 +246,7 @@ object AppDatabaseHelper {
     @JvmStatic
     fun convert(patient: Patient): PatientEntity {
         val patientEntity = PatientEntity()
-        patientEntity.display = patient.name.nameString
+        patientEntity.display = patient.name?.nameString
         patientEntity.uuid = patient.uuid
         patientEntity.phoneNumber = patient.phoneNumber
         patientEntity.documentId = patient.documentId
@@ -265,9 +265,9 @@ object AppDatabaseHelper {
         } else {
             patientEntity.identifier = null
         }
-        patientEntity.givenName = patient.name.givenName
-        patientEntity.middleName = patient.name.middleName
-        patientEntity.familyName = patient.name.familyName
+        patientEntity.givenName = patient.name?.givenName
+        patientEntity.middleName = patient.name?.middleName
+        patientEntity.familyName = patient.name?.familyName
         patientEntity.gender = patient.gender
         patientEntity.birthDate = patient.birthdate
         patientEntity.deathDate = null

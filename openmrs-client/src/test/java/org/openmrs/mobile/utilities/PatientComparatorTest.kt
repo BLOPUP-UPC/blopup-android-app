@@ -74,7 +74,21 @@ class PatientComparatorTest {
             val cod = Resource()
             val photo: Bitmap? = null
 
-            val existingPatient = Patient(id, "", mutableListOf(identifiers), mutableListOf(personName), gender, birthdate, true, mutableListOf(personAddress), mutableListOf(attributes), photo, cod, false)
+            val existingPatient = Patient(
+                id,
+                "",
+                mutableListOf(identifiers),
+                mutableListOf(personName),
+                gender,
+                birthdate,
+                true,
+                mutableListOf(personAddress),
+                mutableListOf(attributes),
+                photo,
+                cod,
+                false,
+                false
+            )
             patientList.add(existingPatient)
         }
     }
@@ -128,7 +142,21 @@ class PatientComparatorTest {
         val cod = Resource()
         val photo: Bitmap? = null
 
-        val patientToCheck = Patient(id, "", mutableListOf(identifiers), mutableListOf(personName), gender, birthdate, true, mutableListOf(personAddress), mutableListOf(attributes), photo, cod, false)
+        val patientToCheck = Patient(
+            id,
+            "",
+            mutableListOf(identifiers),
+            mutableListOf(personName),
+            gender,
+            birthdate,
+            true,
+            mutableListOf(personAddress),
+            mutableListOf(attributes),
+            photo,
+            cod,
+            false,
+            false
+        )
         val result = PatientComparator().findSimilarPatient(patientList, patientToCheck)
         val expected = mutableListOf<Patient>()
         expected.add(patientToCheck)
@@ -177,7 +205,21 @@ class PatientComparatorTest {
         val cod = Resource()
         val photo: Bitmap? = null
 
-        val patientToCheck = Patient(id, "", mutableListOf(identifiers), mutableListOf(personName), gender, birthdate, true, mutableListOf(personAddress), mutableListOf(attributes), photo, cod, false)
+        val patientToCheck = Patient(
+            id,
+            "",
+            mutableListOf(identifiers),
+            mutableListOf(personName),
+            gender,
+            birthdate,
+            true,
+            mutableListOf(personAddress),
+            mutableListOf(attributes),
+            photo,
+            cod,
+            false,
+            false
+        )
         val result = PatientComparator().findSimilarPatient(patientList, patientToCheck)
         val expected = mutableListOf<Patient>()
         expected.add(patientToCheck)

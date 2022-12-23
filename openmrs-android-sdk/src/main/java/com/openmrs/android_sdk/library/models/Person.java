@@ -50,6 +50,10 @@ public class Person extends Resource implements Serializable {
     @Expose
     private boolean birthdateEstimated;
 
+    @SerializedName("voided")
+    @Expose
+    private Boolean voided;
+
     @TypeConverters(PersonAddressConverter.class)
     @SerializedName("addresses")
     @Expose
@@ -90,7 +94,7 @@ public class Person extends Resource implements Serializable {
      * @param dead               the dead
      */
     public Person(List<PersonName> names, String gender, String birthdate, boolean birthdateEstimated, List<PersonAddress> addresses, List<PersonAttribute> attributes,
-                  Bitmap photo, Resource causeOfDeath, boolean dead) {
+                  Bitmap photo, Resource causeOfDeath, boolean dead, Boolean voided) {
         this.names = names;
         this.gender = gender;
         this.birthdate = birthdate;
@@ -100,6 +104,7 @@ public class Person extends Resource implements Serializable {
         this.photo = photo;
         this.causeOfDeath = causeOfDeath;
         this.dead = dead;
+        this.voided = voided;
     }
 
     /**

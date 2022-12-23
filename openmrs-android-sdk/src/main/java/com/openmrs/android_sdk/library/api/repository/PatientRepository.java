@@ -261,7 +261,7 @@ public class PatientRepository extends BaseRepository {
                     patientDAO.updatePatient(patient.getId(), patient);
                 }
                 //endregion
-                return newPatientDto.getPatient();
+                return patient;
             } else {
                 throw new IOException("Error with downloading patient: " + response.message());
             }

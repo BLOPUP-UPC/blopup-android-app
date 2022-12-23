@@ -57,7 +57,7 @@ class PatientMergerTest : ACUnitTestBase() {
             listOf(createPersonName(id)), "M_$id", "birth_date_$id",
             false,
             listOf(createPersonAddress(id)), null, null,
-            Resource(), false
+            Resource(), false, false
         )
     }
 
@@ -78,7 +78,7 @@ class PatientMergerTest : ACUnitTestBase() {
         return Patient(
             id, "", null,
             listOf(name), "null", null, false,
-            listOf(address), null, null, Resource(), false
+            listOf(address), null, null, Resource(), false, false
         )
     }
 
