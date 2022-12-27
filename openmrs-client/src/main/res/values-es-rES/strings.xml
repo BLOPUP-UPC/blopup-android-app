@@ -375,6 +375,6 @@
     <string name="weight_kg">Kg</string>
     <string name="scale_diagram_content_description">Scale image content</string>
     <string name="bluetooth_scale_instructions">1.-Activar el bluetooth del teléfono\n2.-Subir a la balanza\n3.-Esperar hasta que el resultado aparezca en la pantalla del teléfono</string>
-    <string name="weight_name_text">Weight:</string>
-    <string name="receive_vitals_from_scale_button_text"> Recibir peso de la báscula </string>
+    <string name="weight_name_text">Peso:</string>
+    <string name="receive_vitals_from_scale_button_text">Recibir peso de la báscula</string>
 </resources>

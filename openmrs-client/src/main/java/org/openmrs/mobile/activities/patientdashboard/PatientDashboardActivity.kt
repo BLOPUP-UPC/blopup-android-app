@@ -61,8 +61,13 @@ class PatientDashboardActivity : ACBaseActivity() {
 
         setupObserver()
         setupActionFABs()
-        if (NetworkUtils.isOnline()) viewModel.syncPatientData()
-        else initViewPager()
+        if (NetworkUtils.isOnline()) {
+            if (!viewModel.deleteLocalPatientIfDeletedInServer()) { // TODO to be removed when implementing card #145
+                viewModel.syncPatientData()
+            }
+        } else {
+            initViewPager()
+        }
     }
 
     private fun setupObserver() {
@@ -203,11 +208,6 @@ class PatientDashboardActivity : ACBaseActivity() {
                 )
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume();
-        initViewPager()
     }
 
     private fun startPatientUpdateActivity(patientId: Long) {

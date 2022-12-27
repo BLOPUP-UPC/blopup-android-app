@@ -54,15 +54,37 @@ class PatientDashboardMainViewModel @Inject constructor(
         syncVitals()
     }
 
+    // TODO to be removed when implementing card #145
+    fun deleteLocalPatientIfDeletedInServer(): Boolean {
+        if (isDeletedOnTheServer()) {
+            deletePatient()
+            return true
+        }
+        return false
+    }
+
+    private fun isDeletedOnTheServer(): Boolean {
+        return patientRepository.downloadPatientByUuid(patientUuid).single().toBlocking()
+            .first().isVoided
+    }
+
     private fun syncDetails() {
         runningSyncs++
         addSubscription(patientRepository.downloadPatientByUuid(patientUuid)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { setContent(Unit, PatientSynchronizing) },
+                { handleSyncPatientDetails(it) },
                 { setError(it, PatientSynchronizing) }
             )
         )
+    }
+
+    private fun handleSyncPatientDetails(serverPatient: Patient) {
+        if (!serverPatient.equals(patient)) {
+            patientDAO.updatePatient(patientId.toLong(), serverPatient)
+        }
+
+        setContent(Unit, PatientSynchronizing)
     }
 
     private fun syncVisits() {

@@ -59,6 +59,11 @@ class PatientDetailsFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        fetchPatientDetails()
+    }
+
     private fun setupObserver() {
         viewModel.result.observe(viewLifecycleOwner, Observer { result ->
             when (result) {

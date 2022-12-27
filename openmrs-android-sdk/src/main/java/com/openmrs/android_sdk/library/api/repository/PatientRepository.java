@@ -250,18 +250,7 @@ public class PatientRepository extends BaseRepository {
                 Bitmap photo = downloadPatientPhotoByUuid(newPatientDto.getUuid()).toBlocking().first();
                 if (photo != null) newPatientDto.getPerson().setPhoto(photo);
 
-                //#region  -- Update Database --
-                Patient previous = patientDAO.findPatientByUUID(uuid);
-                Patient patient = newPatientDto.getPatient();
-
-                if (previous == null) {
-                    patientDAO.updatePatient(patient.getUuid(), patient);
-                } else {
-                    patient.setId(previous.getId());
-                    patientDAO.updatePatient(patient.getId(), patient);
-                }
-                //endregion
-                return patient;
+                return newPatientDto.getPatient();
             } else {
                 throw new IOException("Error with downloading patient: " + response.message());
             }

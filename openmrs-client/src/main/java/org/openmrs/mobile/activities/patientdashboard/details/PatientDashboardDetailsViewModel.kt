@@ -1,7 +1,6 @@
 package org.openmrs.mobile.activities.patientdashboard.details
 
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.PatientRepository
 import com.openmrs.android_sdk.library.dao.PatientDAO
 import com.openmrs.android_sdk.library.models.OperationType.PatientFetching
 import com.openmrs.android_sdk.library.models.Patient
@@ -12,8 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardDetailsViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val savedStateHandle: SavedStateHandle
+    private val patientDAO: PatientDAO,
+    private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Patient>() {
 
     private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!

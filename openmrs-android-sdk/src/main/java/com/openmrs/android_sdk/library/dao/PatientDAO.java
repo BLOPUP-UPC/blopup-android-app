@@ -67,19 +67,6 @@ public class PatientDAO {
     }
 
     /**
-     * Update patient boolean.
-     *
-     * @param patientUUID the patient uuid
-     * @param patient   the patient
-     * @return the boolean
-     */
-    public boolean updatePatient(String patientUUID, Patient patient) {
-        PatientEntity entity = AppDatabaseHelper.convert(patient);
-        entity.setUuid(patientUUID);
-        return patientRoomDAO.updatePatient(entity) > 0;
-    }
-
-    /**
      * Delete patient.
      *
      * @param id the id

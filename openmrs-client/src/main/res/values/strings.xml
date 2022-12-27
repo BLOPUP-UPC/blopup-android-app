@@ -584,5 +584,5 @@
     <string name="scale_diagram_content_description">Scale image content</string>
     <string name="bluetooth_scale_instructions">1.-Turn on the mobile bluetooth\n2.-Get on the scale\n3.-Wait until the result appears on the mobile screen</string>
     <string name="weight_name_text">Weight: </string>
-    <string name="receive_vitals_from_scale_button_text"> Receive weight from Scale </string>
+    <string name="receive_vitals_from_scale_button_text">Receive weight from Scale</string>
 </resources>
