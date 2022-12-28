@@ -10,12 +10,6 @@
 
 package com.openmrs.android_sdk.library.models;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.graphics.Bitmap;
 
 import androidx.room.TypeConverters;
@@ -24,6 +18,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.openmrs.android_sdk.library.models.typeConverters.PersonNameConverter;
 import com.openmrs.android_sdk.utilities.StringUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The type Patient.
@@ -54,10 +54,6 @@ public class Patient extends Person implements Serializable {
     @SerializedName("contactPhoneNumber")
     @Expose
     private String contactPhoneNumber;
-
-    @SerializedName("voided")
-    @Expose
-    private Boolean voided;
 
     /**
      * Instantiates a new Patient.
@@ -96,13 +92,14 @@ public class Patient extends Person implements Serializable {
      */
     /*Constructor to initialize values of current class as well as parent class*/
     public Patient(Long id, String encounters, List<PatientIdentifier> identifiers,
-                   List<PersonName> names, String gender, String birthdate, boolean birthdateEstimated, List<PersonAddress> addresses, List<PersonAttribute> attributes,
+                   List<PersonName> names, String gender, String birthdate,
+                   boolean birthdateEstimated, List<PersonAddress> addresses,
+                   List<PersonAttribute> attributes,
                    Bitmap photo, Resource causeOfDeath, boolean dead, boolean voided) {
         super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead, voided);
         this.id = id;
         this.encounters = encounters;
         this.identifiers = identifiers;
-        this.voided = voided;
     }
 
     /**
@@ -150,7 +147,15 @@ public class Patient extends Person implements Serializable {
      */
     @SerializedName("person")
     public Person getPerson() {
-        return new Person(getNames(), getGender(), getBirthdate(), getBirthdateEstimated(), getAddresses(), getAttributes(), getPhoto(), getCauseOfDeath(), isDeceased(), getVoided());
+        return new Person(getNames(),
+                getGender(),
+                getBirthdate(),
+                getBirthdateEstimated(),
+                getAddresses(), getAttributes(),
+                getPhoto(),
+                getCauseOfDeath(),
+                isDeceased(),
+                isVoided());
     }
 
     /**
@@ -300,14 +305,6 @@ public class Patient extends Person implements Serializable {
         } else {
             return null;
         }
-    }
-
-    public Boolean getVoided() {
-        return voided;
-    }
-
-    public void setVoided(Boolean voided) {
-        this.voided = voided;
     }
 
     public void setContactNames(List<PersonName> contactNames) {

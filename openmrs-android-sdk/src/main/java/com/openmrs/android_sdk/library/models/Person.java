@@ -18,12 +18,12 @@ import android.graphics.Bitmap;
 
 import androidx.room.TypeConverters;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.openmrs.android_sdk.library.models.typeConverters.PersonAddressConverter;
 import com.openmrs.android_sdk.library.models.typeConverters.PersonAttributeConverter;
 import com.openmrs.android_sdk.library.models.typeConverters.PersonNameConverter;
 import com.openmrs.android_sdk.utilities.ImageUtils;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class Person extends Resource implements Serializable {
 
     @SerializedName("voided")
     @Expose
-    private Boolean voided;
+    private boolean voided;
 
     @TypeConverters(PersonAddressConverter.class)
     @SerializedName("addresses")
@@ -94,7 +94,7 @@ public class Person extends Resource implements Serializable {
      * @param dead               the dead
      */
     public Person(List<PersonName> names, String gender, String birthdate, boolean birthdateEstimated, List<PersonAddress> addresses, List<PersonAttribute> attributes,
-                  Bitmap photo, Resource causeOfDeath, boolean dead, Boolean voided) {
+                  Bitmap photo, Resource causeOfDeath, boolean dead, boolean voided) {
         this.names = names;
         this.gender = gender;
         this.birthdate = birthdate;
@@ -302,5 +302,13 @@ public class Person extends Resource implements Serializable {
      */
     public void setDeceased(Boolean dead) {
         this.dead = dead;
+    }
+
+    public boolean isVoided() {
+        return voided;
+    }
+
+    public void setVoided(boolean voided) {
+        this.voided = voided;
     }
 }
