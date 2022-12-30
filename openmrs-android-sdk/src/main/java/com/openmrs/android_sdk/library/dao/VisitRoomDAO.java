@@ -118,5 +118,5 @@ public interface VisitRoomDAO {
      * @return the int
      */
     @Query("DELETE FROM visits WHERE patient_id = :patientID")
-    void deleteVisitsByPatientId(long patientID);
+    int deleteVisitsByPatientId(long patientID);
 }

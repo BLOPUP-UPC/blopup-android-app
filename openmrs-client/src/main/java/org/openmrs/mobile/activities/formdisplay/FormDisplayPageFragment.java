@@ -68,9 +68,6 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     private static final String DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     private static final String HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     private static final String WEIGHT_FIELD_CONCEPT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    private static final String TEMPERATURE_FIELD_CONCEPT = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    private static final String HEIGHT_FIELD_CONCEPT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    private static final String BREATHE_FIELD_CONCEPT = "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     private String mSectionLabel;
     private FragmentFormDisplayBinding binding = null;

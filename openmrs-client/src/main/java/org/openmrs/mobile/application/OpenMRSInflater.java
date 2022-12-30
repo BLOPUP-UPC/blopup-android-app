@@ -38,7 +38,7 @@ public class OpenMRSInflater {
         }
 
         TextView dataText = view.findViewById(R.id.keyValueDataRowTextData);
-        dataText.setText(data);//label.substring(label.indexOf(':') + 1));
+        dataText.setText(data);
         parentLayout.addView(view);
         return parentLayout;
     }

@@ -98,9 +98,7 @@ public class VisitRepository extends BaseRepository {
 
             if (response.isSuccessful()) {
                 List<Visit> visits = response.body().getResults();
-
                 visitDAO.deleteVisitPatient(patient).toBlocking().subscribe();
-
                 for (Visit visit : visits) {
                     visitDAO.saveOrUpdate(visit, patient.getId()).toBlocking().subscribe();
                 }
