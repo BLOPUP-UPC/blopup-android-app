@@ -16,8 +16,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.anyLong
+import org.mockito.Mockito.`when`
 import org.openmrs.mobile.activities.visitdashboard.VisitDashboardViewModel
 import org.openmrs.mobile.test.ACUnitTestBaseRx
 import rx.Observable

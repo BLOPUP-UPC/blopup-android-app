@@ -25,7 +25,6 @@ import com.openmrs.android_sdk.library.models.Result
 import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.AndroidEntryPoint
 import org.openmrs.mobile.activities.BaseFragment
-import org.openmrs.mobile.activities.patientdashboard.PatientDashboardActivity
 import org.openmrs.mobile.databinding.FragmentPatientDiagnosisBinding
 
 @AndroidEntryPoint

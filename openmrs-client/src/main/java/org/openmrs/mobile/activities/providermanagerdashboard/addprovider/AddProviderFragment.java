@@ -18,10 +18,6 @@ import static android.app.Activity.RESULT_OK;
 import static com.openmrs.android_sdk.utilities.StringUtils.ILLEGAL_CHARACTERS;
 import static com.openmrs.android_sdk.utilities.StringUtils.validateText;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,6 +38,10 @@ import org.openmrs.mobile.R;
 import org.openmrs.mobile.activities.ACBaseFragment;
 import org.openmrs.mobile.databinding.FragmentAddProviderBinding;
 import org.openmrs.mobile.utilities.ViewUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class AddProviderFragment extends ACBaseFragment<AddProviderContract.Presenter>
         implements AddProviderContract.View {

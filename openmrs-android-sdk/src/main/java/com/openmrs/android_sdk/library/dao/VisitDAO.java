@@ -146,7 +146,6 @@ public class VisitDAO {
 
                 for (Observation obs : encounter.getObservations()) {
                     ObservationEntity observationEntity = AppDatabaseHelper.convert(obs, encounterID);
-                    //Check if encounter exist -> then update else addObservation
                     observationRoomDAO.addObservation(observationEntity);
                 }
             }
@@ -258,20 +257,15 @@ public class VisitDAO {
         });
     }
 
-
     /**
-     * Delete all visits by patient observable.
+     * Delete all visits by patient.
      *
      * @param patient the patient
-     * @return the observable
+     * @return wether if the operation went well or not
      */
     public Observable<Boolean> deleteVisitPatient(Patient patient) {
         return AppDatabaseHelper.createObservableIO(() -> {
-
-            //Delete Visit By Patient Id
             visitRoomDAO.deleteVisitsByPatientId(patient.getId());
-
-            //delete encounter by Patient UUID
             encounterDAO.deleteEncounterByPatientUUID(patient.getUuid());
             return true;
         });

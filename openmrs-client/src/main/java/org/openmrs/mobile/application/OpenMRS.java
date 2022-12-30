@@ -15,21 +15,17 @@
 package org.openmrs.mobile.application;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.multidex.MultiDexApplication;
 
 import com.openmrs.android_sdk.library.OpenMRSLogger;
 import com.openmrs.android_sdk.library.OpenmrsAndroid;
 
-import org.openmrs.mobile.services.FormListService;
 import org.openmrs.mobile.services.AuthenticateCheckService;
+import org.openmrs.mobile.services.FormListService;
 
 import java.io.File;
 

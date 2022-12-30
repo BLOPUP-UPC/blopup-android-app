@@ -4,8 +4,9 @@ import com.openmrs.android_sdk.library.models.Patient
 import com.openmrs.android_sdk.library.models.PersonAddress
 import com.openmrs.android_sdk.library.models.PersonName
 import com.openmrs.android_sdk.library.models.Resource
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Test
-import org.junit.Assert.*
 import org.openmrs.mobile.test.ACUnitTestBase
 
 class PatientMergerTest : ACUnitTestBase() {

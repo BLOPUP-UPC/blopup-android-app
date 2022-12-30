@@ -11,9 +11,9 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.openmrs.mobile.activities.BaseViewModel
 import rx.android.schedulers.AndroidSchedulers
-import javax.inject.Inject
 import java.io.IOException
 import java.nio.charset.StandardCharsets
+import javax.inject.Inject
 
 @HiltViewModel
 class FormListViewModel @Inject constructor(

@@ -18,9 +18,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.widget.LinearLayout;
 
 import com.openmrs.android_sdk.library.models.Page;
@@ -38,6 +35,9 @@ import org.openmrs.mobile.activities.formdisplay.FormDisplayPagePresenter;
 import org.openmrs.mobile.application.OpenMRS;
 import org.openmrs.mobile.test.ACUnitTestBase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @PrepareForTest({OpenMRS.class})
 public class FormDisplayPagePresenterTest extends ACUnitTestBase {

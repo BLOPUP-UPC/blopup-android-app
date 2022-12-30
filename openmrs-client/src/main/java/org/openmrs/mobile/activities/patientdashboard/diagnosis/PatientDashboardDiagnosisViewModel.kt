@@ -10,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openmrs.mobile.activities.BaseViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
-import java.util.ArrayList
 
 @HiltViewModel
 class PatientDashboardDiagnosisViewModel @Inject constructor(

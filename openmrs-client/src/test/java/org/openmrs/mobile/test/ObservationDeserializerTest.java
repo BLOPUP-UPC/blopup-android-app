@@ -14,26 +14,26 @@
 
 package org.openmrs.mobile.test;
 
-import com.openmrs.android_sdk.library.models.Observation;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.openmrs.android_sdk.library.models.Observation;
+import com.openmrs.android_sdk.utilities.ObservationDeserializer;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import com.openmrs.android_sdk.utilities.ObservationDeserializer;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ObservationDeserializerTest {

@@ -10,13 +10,6 @@
 
 package org.openmrs.mobile.services;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
-import retrofit2.Call;
-import retrofit2.Response;
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
@@ -39,6 +32,14 @@ import com.openmrs.android_sdk.utilities.ToastUtil;
 import org.openmrs.mobile.R;
 import org.openmrs.mobile.activities.matchingpatients.MatchingPatientsActivity;
 import org.openmrs.mobile.utilities.PatientAndMatchesWrapper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class PatientService extends IntentService {
     public static final String PATIENT_SERVICE_TAG = "PATIENT_SERVICE";

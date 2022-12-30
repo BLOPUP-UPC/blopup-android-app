@@ -14,10 +14,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.openmrs.android_sdk.library.api.services.EncounterService;
 import com.openmrs.android_sdk.utilities.ToastUtil;
 
 import org.openmrs.mobile.R;
-import com.openmrs.android_sdk.library.api.services.EncounterService;
 import org.openmrs.mobile.services.PatientService;
 
 public class SyncStateReceiver extends BroadcastReceiver {

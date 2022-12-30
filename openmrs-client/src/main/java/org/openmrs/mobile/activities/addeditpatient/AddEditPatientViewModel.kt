@@ -18,8 +18,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.joda.time.DateTime
 import org.openmrs.mobile.activities.BaseViewModel
 import rx.android.schedulers.AndroidSchedulers
-import javax.inject.Inject
 import java.io.File
+import javax.inject.Inject
 
 @HiltViewModel
 class AddEditPatientViewModel @Inject constructor(

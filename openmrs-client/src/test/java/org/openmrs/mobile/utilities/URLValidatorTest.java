@@ -14,9 +14,9 @@
 
 package org.openmrs.mobile.utilities;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 public class URLValidatorTest {
     private static final String INVALID_URL_1;

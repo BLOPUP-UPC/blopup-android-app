@@ -17,8 +17,12 @@ import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
 import com.openmrs.android_sdk.library.OpenmrsAndroid
 import com.openmrs.android_sdk.utilities.StringUtils.notEmpty
 import org.openmrs.mobile.activities.login.LocationArrayAdapter

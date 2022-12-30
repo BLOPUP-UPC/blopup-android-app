@@ -15,7 +15,8 @@ package org.openmrs.mobile.utilities
 
 import com.openmrs.android_sdk.utilities.PatientAndMatchingPatients
 import java.io.Serializable
-import java.util.*
+import java.util.ArrayDeque
+import java.util.Queue
 
 class PatientAndMatchesWrapper : Serializable {
     var matchingPatients: Queue<PatientAndMatchingPatients>

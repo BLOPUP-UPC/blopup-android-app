@@ -14,7 +14,6 @@ import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.blopup.scale.readScaleMeasurement.EXTRAS_WEIGHT
 import org.openmrs.mobile.BuildConfig
 import org.openmrs.mobile.R
 import org.openmrs.mobile.databinding.ActivityReadTensiometerBinding

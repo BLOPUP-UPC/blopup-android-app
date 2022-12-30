@@ -14,12 +14,6 @@
 
 package org.openmrs.mobile.activities.lastviewedpatients;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import rx.android.schedulers.AndroidSchedulers;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.view.ActionMode;
@@ -45,6 +39,13 @@ import com.openmrs.android_sdk.utilities.DateUtils;
 import com.openmrs.android_sdk.utilities.ToastUtil;
 
 import org.openmrs.mobile.R;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import rx.android.schedulers.AndroidSchedulers;
 
 class LastViewedPatientRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;

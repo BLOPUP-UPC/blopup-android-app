@@ -4,11 +4,11 @@ import com.openmrs.android_sdk.library.OpenMRSLogger
 import com.openmrs.android_sdk.library.OpenmrsAndroid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openmrs.mobile.activities.BaseViewModel
-import javax.inject.Inject
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
+import javax.inject.Inject
 
 @HiltViewModel
 class LogsViewModel @Inject constructor(private val openMRSLogger: OpenMRSLogger) : BaseViewModel<Unit>() {

@@ -24,9 +24,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.openmrs.android_sdk.library.models.Form;
 import com.openmrs.android_sdk.library.models.Page;
+import com.openmrs.android_sdk.utilities.FormService;
 
 import org.jetbrains.annotations.NotNull;
-import com.openmrs.android_sdk.utilities.FormService;
 
 import java.util.List;
 

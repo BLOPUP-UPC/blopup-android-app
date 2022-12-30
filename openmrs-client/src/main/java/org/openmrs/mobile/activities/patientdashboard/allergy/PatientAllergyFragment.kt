@@ -44,7 +44,6 @@ import org.openmrs.mobile.databinding.FragmentPatientAllergyBinding
 import org.openmrs.mobile.utilities.makeGone
 import org.openmrs.mobile.utilities.makeVisible
 import org.openmrs.mobile.utilities.observeOnce
-import java.util.ArrayList
 
 @AndroidEntryPoint
 class PatientAllergyFragment : BaseFragment(), OnLongPressListener, onInputSelected {

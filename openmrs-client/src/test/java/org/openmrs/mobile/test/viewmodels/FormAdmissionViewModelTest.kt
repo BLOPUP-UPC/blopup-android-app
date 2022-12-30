@@ -23,13 +23,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.anyString
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.openmrs.mobile.activities.formadmission.FormAdmissionViewModel
 import org.openmrs.mobile.test.ACUnitTestBaseRx
 import rx.Observable
-import java.util.ArrayList
 
 @RunWith(JUnit4::class)
 class FormAdmissionViewModelTest : ACUnitTestBaseRx() {

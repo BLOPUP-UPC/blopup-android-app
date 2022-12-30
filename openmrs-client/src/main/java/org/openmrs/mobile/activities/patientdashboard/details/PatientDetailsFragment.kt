@@ -26,7 +26,6 @@ import com.openmrs.android_sdk.library.models.Patient
 import com.openmrs.android_sdk.library.models.Result
 import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import com.openmrs.android_sdk.utilities.DateUtils.convertTime
-import com.openmrs.android_sdk.utilities.StringUtils
 import com.openmrs.android_sdk.utilities.StringUtils.notEmpty
 import com.openmrs.android_sdk.utilities.StringUtils.notNull
 import com.openmrs.android_sdk.utilities.ToastUtil.error

@@ -21,11 +21,6 @@
     import static org.junit.Assert.assertNull;
     import static org.mockito.Mockito.when;
 
-    import java.text.SimpleDateFormat;
-    import java.util.Date;
-    import java.util.Locale;
-    import java.util.TimeZone;
-
     import android.content.res.Resources;
 
     import com.openmrs.android_sdk.utilities.DateUtils;
@@ -43,6 +38,11 @@
     import org.mockito.Mockito;
     import org.openmrs.mobile.application.OpenMRS;
     import org.powermock.core.classloader.annotations.PrepareForTest;
+
+    import java.text.SimpleDateFormat;
+    import java.util.Date;
+    import java.util.Locale;
+    import java.util.TimeZone;
 
     @PrepareForTest({OpenMRS.class, Resources.class})
     public class DateUtilsTest {

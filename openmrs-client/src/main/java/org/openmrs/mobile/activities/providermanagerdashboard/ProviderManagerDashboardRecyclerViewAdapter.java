@@ -25,11 +25,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.openmrs.android_sdk.library.models.Provider;
+import com.openmrs.android_sdk.utilities.ApplicationConstants;
 
 import org.jetbrains.annotations.NotNull;
 import org.openmrs.mobile.R;
 import org.openmrs.mobile.activities.providerdashboard.ProviderDashboardActivity;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
 
 import java.util.List;
 

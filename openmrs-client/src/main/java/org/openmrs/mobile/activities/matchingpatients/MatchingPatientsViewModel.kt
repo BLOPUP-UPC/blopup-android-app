@@ -2,9 +2,9 @@ package org.openmrs.mobile.activities.matchingpatients
 
 import com.openmrs.android_sdk.library.api.repository.PatientRepository
 import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.Patient
 import com.openmrs.android_sdk.library.models.OperationType.PatientMerging
 import com.openmrs.android_sdk.library.models.OperationType.PatientRegistering
+import com.openmrs.android_sdk.library.models.Patient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openmrs.mobile.activities.BaseViewModel
 import org.openmrs.mobile.utilities.PatientMerger

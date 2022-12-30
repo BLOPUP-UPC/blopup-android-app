@@ -1,9 +1,9 @@
 package org.openmrs.mobile.utilities
 
 import com.github.mikephil.charting.components.AxisBase
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Test
-import org.mockito.Mock
 
 class DayAxisValueFormatterTest{
 

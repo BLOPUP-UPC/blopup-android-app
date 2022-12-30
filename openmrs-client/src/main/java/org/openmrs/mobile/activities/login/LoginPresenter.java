@@ -18,8 +18,12 @@ import androidx.annotation.NonNull;
 
 import com.openmrs.android_sdk.library.OpenMRSLogger;
 import com.openmrs.android_sdk.library.OpenmrsAndroid;
+import com.openmrs.android_sdk.library.api.RestApi;
+import com.openmrs.android_sdk.library.api.RestServiceBuilder;
+import com.openmrs.android_sdk.library.api.repository.VisitRepository;
 import com.openmrs.android_sdk.library.dao.LocationDAO;
 import com.openmrs.android_sdk.library.databases.entities.LocationEntity;
+import com.openmrs.android_sdk.library.listeners.retrofitcallbacks.GetVisitTypeCallback;
 import com.openmrs.android_sdk.library.models.Results;
 import com.openmrs.android_sdk.library.models.Session;
 import com.openmrs.android_sdk.library.models.VisitType;
@@ -31,13 +35,9 @@ import com.openmrs.android_sdk.utilities.ToastUtil;
 import org.mindrot.jbcrypt.BCrypt;
 import org.openmrs.mobile.R;
 import org.openmrs.mobile.activities.BasePresenter;
-import com.openmrs.android_sdk.library.api.RestApi;
-import com.openmrs.android_sdk.library.api.RestServiceBuilder;
-import org.openmrs.mobile.services.UserService;
-import com.openmrs.android_sdk.library.api.repository.VisitRepository;
 import org.openmrs.mobile.application.OpenMRS;
-import com.openmrs.android_sdk.library.listeners.retrofitcallbacks.GetVisitTypeCallback;
 import org.openmrs.mobile.net.AuthorizationManager;
+import org.openmrs.mobile.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

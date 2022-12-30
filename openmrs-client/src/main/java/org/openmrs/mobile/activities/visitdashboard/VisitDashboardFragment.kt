@@ -35,7 +35,6 @@ import com.openmrs.android_sdk.utilities.ApplicationConstants.EncounterTypes.ENC
 import com.openmrs.android_sdk.utilities.NetworkUtils
 import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_visit_dashboard.*
 import org.openmrs.mobile.R
 import org.openmrs.mobile.activities.BaseFragment
 import org.openmrs.mobile.activities.dialog.CustomFragmentDialog

@@ -14,14 +14,6 @@
 
 package com.openmrs.android_sdk.library.dao;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import rx.Observable;
-
 import com.openmrs.android_sdk.library.OpenmrsAndroid;
 import com.openmrs.android_sdk.library.databases.AppDatabase;
 import com.openmrs.android_sdk.library.databases.AppDatabaseHelper;
@@ -31,14 +23,23 @@ import com.openmrs.android_sdk.library.models.Encounter;
 import com.openmrs.android_sdk.library.models.EncounterType;
 import com.openmrs.android_sdk.library.models.Observation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import rx.Observable;
+
 /**
  * The type Encounter dao.
  */
 @Singleton
 public class EncounterDAO {
-    EncounterRoomDAO encounterRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).encounterRoomDAO();
-    ObservationRoomDAO observationRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).observationRoomDAO();
-    EncounterTypeRoomDAO encounterTypeRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).encounterTypeRoomDAO();
+
+    private final EncounterRoomDAO encounterRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).encounterRoomDAO();
+    private final ObservationRoomDAO observationRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).observationRoomDAO();
+    private final EncounterTypeRoomDAO encounterTypeRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).encounterTypeRoomDAO();
 
     @Inject
     public EncounterDAO() {
@@ -185,22 +186,15 @@ public class EncounterDAO {
         }
     }
 
-
     /**
-     * Delete encounter type by visit id.
+     * Delete encounter type by patient UUID.
      *
      * @param patientUuid the form name
-     * @return the encounter type by form name
      */
     public void deleteEncounterByPatientUUID(String patientUuid) {
         List<EncounterEntity> encounterList = encounterRoomDAO.getAllEncountersByPatientUUID(patientUuid).blockingGet();
-
-        //delete encounter by patient uuid
         encounterRoomDAO.deleteEncounterByPatientUUID(patientUuid);
-
-        //delete observations by encounter id
         for (EncounterEntity encounter : encounterList)
             observationRoomDAO.deleteObservationByEncounterId(encounter.getId());
     }
-
 }

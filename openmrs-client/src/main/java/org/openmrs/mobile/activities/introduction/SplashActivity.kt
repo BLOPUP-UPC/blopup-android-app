@@ -18,11 +18,15 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
-import android.view.animation.*
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
+import com.openmrs.android_sdk.utilities.ApplicationConstants
 import org.openmrs.mobile.R
 import org.openmrs.mobile.activities.ACBaseActivity
 import org.openmrs.mobile.databinding.ActivitySplashBinding
-import com.openmrs.android_sdk.utilities.ApplicationConstants
 
 class SplashActivity : ACBaseActivity() {
 

@@ -14,7 +14,6 @@
 
 package org.openmrs.mobile.activities.matchingpatients;
 
-import dagger.hilt.android.AndroidEntryPoint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -30,6 +29,8 @@ import org.openmrs.mobile.activities.ACBaseActivity;
 import org.openmrs.mobile.application.OpenMRS;
 import org.openmrs.mobile.databinding.ActivityMatchingPatientsBinding;
 import org.openmrs.mobile.utilities.PatientAndMatchesWrapper;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MatchingPatientsActivity extends ACBaseActivity {

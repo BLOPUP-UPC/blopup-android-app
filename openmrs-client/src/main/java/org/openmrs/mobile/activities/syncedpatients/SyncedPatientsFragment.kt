@@ -29,7 +29,6 @@ import org.openmrs.mobile.databinding.FragmentSyncedPatientsBinding
 import org.openmrs.mobile.utilities.makeGone
 import org.openmrs.mobile.utilities.makeInvisible
 import org.openmrs.mobile.utilities.makeVisible
-import java.util.ArrayList
 
 @AndroidEntryPoint
 class SyncedPatientsFragment : BaseFragment() {

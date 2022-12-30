@@ -14,10 +14,6 @@
 
 package org.openmrs.mobile.activities.dialog;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -75,6 +71,10 @@ import org.openmrs.mobile.activities.syncedpatients.SyncedPatientsActivity;
 import org.openmrs.mobile.activities.visitdashboard.VisitDashboardFragment;
 import org.openmrs.mobile.application.OpenMRS;
 import org.openmrs.mobile.bundle.CustomDialogBundle;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * General class for creating dialog fragment instances

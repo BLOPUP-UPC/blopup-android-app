@@ -28,7 +28,8 @@ import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT
 import com.openmrs.android_sdk.utilities.ToastUtil
 import com.openmrs.android_sdk.utilities.ToastUtil.showShortToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_patient_charts.*
+import kotlinx.android.synthetic.main.fragment_patient_charts.vitalEmpty
+import kotlinx.android.synthetic.main.fragment_patient_charts.vitalList
 import org.json.JSONException
 import org.json.JSONObject
 import org.openmrs.mobile.R

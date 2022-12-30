@@ -13,7 +13,6 @@ import org.json.JSONObject
 import org.openmrs.mobile.activities.BaseViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
-import java.util.HashSet
 
 @HiltViewModel
 class PatientDashboardChartsViewModel @Inject constructor(

@@ -8,12 +8,17 @@
  */
 package org.openmrs.mobile.activities.formdisplay;
 
+import static com.openmrs.android_sdk.utilities.FormService.getFormResourceByName;
+
 import android.os.Bundle;
 import android.util.SparseArray;
 
 import androidx.fragment.app.Fragment;
 
+import com.openmrs.android_sdk.library.api.repository.VisitRepository;
+import com.openmrs.android_sdk.library.api.services.EncounterService;
 import com.openmrs.android_sdk.library.dao.PatientDAO;
+import com.openmrs.android_sdk.library.listeners.retrofitcallbacks.DefaultResponseCallback;
 import com.openmrs.android_sdk.library.models.Encountercreate;
 import com.openmrs.android_sdk.library.models.Obscreate;
 import com.openmrs.android_sdk.library.models.Patient;
@@ -24,14 +29,8 @@ import com.openmrs.android_sdk.utilities.SelectOneField;
 import org.joda.time.LocalDateTime;
 import org.openmrs.mobile.activities.BasePresenter;
 
-import com.openmrs.android_sdk.library.api.services.EncounterService;
-import com.openmrs.android_sdk.library.api.repository.VisitRepository;
-import com.openmrs.android_sdk.library.listeners.retrofitcallbacks.DefaultResponseCallback;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.openmrs.android_sdk.utilities.FormService.getFormResourceByName;
 
 public class FormDisplayMainPresenter extends BasePresenter implements FormDisplayContract.Presenter.MainPresenter {
     private final long mPatientID;

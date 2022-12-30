@@ -14,10 +14,6 @@
 
 package org.openmrs.mobile.activities.providermanagerdashboard;
 
-import java.util.List;
-
-import rx.android.schedulers.AndroidSchedulers;
-
 import androidx.fragment.app.Fragment;
 
 import com.openmrs.android_sdk.library.api.RestApi;
@@ -29,6 +25,10 @@ import com.openmrs.android_sdk.utilities.ToastUtil;
 
 import org.jetbrains.annotations.NotNull;
 import org.openmrs.mobile.activities.BasePresenter;
+
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
 
 public class ProviderManagerDashboardPresenter extends BasePresenter implements ProviderManagerDashboardContract.Presenter, DefaultResponseCallback {
     private RestApi restApi;

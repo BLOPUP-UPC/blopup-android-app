@@ -36,15 +36,14 @@ import com.openmrs.android_sdk.utilities.ApplicationConstants
 import com.openmrs.android_sdk.utilities.NetworkUtils.hasNetwork
 import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_last_viewed_patients.view.*
-import kotlinx.android.synthetic.main.snackbar.view.*
+import kotlinx.android.synthetic.main.fragment_last_viewed_patients.view.swipe_container
+import kotlinx.android.synthetic.main.snackbar.view.snackbar_text
 import org.openmrs.mobile.R
 import org.openmrs.mobile.activities.BaseFragment
 import org.openmrs.mobile.activities.patientdashboard.PatientDashboardActivity
 import org.openmrs.mobile.databinding.FragmentLastViewedPatientsBinding
 import org.openmrs.mobile.utilities.makeGone
 import org.openmrs.mobile.utilities.makeVisible
-import java.util.ArrayList
 
 @AndroidEntryPoint
 class LastViewedPatientsFragment : BaseFragment() {

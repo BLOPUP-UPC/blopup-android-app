@@ -14,7 +14,11 @@
 package org.openmrs.mobile.utilities
 
 import com.openmrs.android_sdk.library.OpenmrsAndroid
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.InputStream
 
 object FileUtils {
     fun fileToByteArray(path: String?): ByteArray {

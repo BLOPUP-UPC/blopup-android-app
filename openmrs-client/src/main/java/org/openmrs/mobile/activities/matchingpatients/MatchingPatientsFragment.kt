@@ -24,8 +24,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.openmrs.android_sdk.library.models.OperationType.PatientMerging
 import com.openmrs.android_sdk.library.models.OperationType.PatientRegistering
 import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Result.Success
 import com.openmrs.android_sdk.library.models.Result.Error
+import com.openmrs.android_sdk.library.models.Result.Success
 import com.openmrs.android_sdk.utilities.ApplicationConstants
 import com.openmrs.android_sdk.utilities.DateUtils.convertTime
 import com.openmrs.android_sdk.utilities.PatientAndMatchingPatients

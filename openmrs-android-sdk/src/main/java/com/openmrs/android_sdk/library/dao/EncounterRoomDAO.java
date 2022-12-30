@@ -102,7 +102,7 @@ public interface EncounterRoomDAO {
     void deleteEncounterByID(long id);
 
     /**
-     * Delete encounter by visitId.
+     * Delete encounter by patient UUID.
      *
      * @param patientUUID the patient UUID
      */

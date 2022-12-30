@@ -1,6 +1,5 @@
 package org.openmrs.mobile.test.viewmodels
 
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.openmrs.android_sdk.library.api.repository.ConceptRepository
@@ -22,19 +21,16 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertIterableEquals
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.openmrs.mobile.activities.addeditpatient.AddEditPatientViewModel
 import org.openmrs.mobile.test.ACUnitTestBaseRx
 import rx.Observable
-import java.io.IOException
 
 @RunWith(JUnit4::class)
 class AddEditPatientViewModelTest : ACUnitTestBaseRx() {

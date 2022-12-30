@@ -25,9 +25,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.openmrs.android_sdk.library.models.Allergy;
+import com.openmrs.android_sdk.utilities.ApplicationConstants;
 
 import org.openmrs.mobile.R;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
 
 import java.util.List;
 

@@ -14,10 +14,6 @@
 
 package org.openmrs.mobile.activities.addeditpatient;
 
-import java.util.List;
-
-import rx.android.schedulers.AndroidSchedulers;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -41,6 +37,10 @@ import com.openmrs.android_sdk.utilities.StringUtils;
 
 import org.openmrs.mobile.R;
 import org.openmrs.mobile.activities.patientdashboard.PatientDashboardActivity;
+
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
 
 public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<SimilarPatientsRecyclerViewAdapter.PatientViewHolder> {
     private List<Patient> patientList;

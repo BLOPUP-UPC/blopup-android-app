@@ -12,8 +12,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.openmrs.mobile.R
 import org.openmrs.mobile.activities.BaseViewModel
 import org.openmrs.mobile.utilities.LanguageUtils
-import javax.inject.Inject
 import java.io.File
+import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(

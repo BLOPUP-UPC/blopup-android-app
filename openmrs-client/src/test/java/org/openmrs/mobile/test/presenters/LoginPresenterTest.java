@@ -21,10 +21,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import rx.Observable;
 import android.content.Context;
 
 import com.openmrs.android_sdk.library.OpenMRSLogger;
@@ -61,6 +57,11 @@ import org.openmrs.mobile.services.UserService;
 import org.openmrs.mobile.test.ACUnitTestBaseRx;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import rx.Observable;
 
 @PrepareForTest({OpenMRS.class, NetworkUtils.class, LocationDAO.class, RestServiceBuilder.class,
     StringUtils.class,OpenmrsAndroid.class})

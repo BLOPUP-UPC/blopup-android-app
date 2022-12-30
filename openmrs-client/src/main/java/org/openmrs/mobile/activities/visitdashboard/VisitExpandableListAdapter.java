@@ -14,9 +14,6 @@
 
 package org.openmrs.mobile.activities.visitdashboard;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -37,6 +34,9 @@ import com.openmrs.android_sdk.utilities.ImageUtils;
 
 import org.openmrs.mobile.R;
 import org.openmrs.mobile.application.OpenMRSInflater;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
     private static final int LEFT = 0;

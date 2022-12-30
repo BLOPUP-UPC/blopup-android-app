@@ -1,9 +1,10 @@
 package org.openmrs.mobile.test;
 
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 
-import androidx.annotation.NonNull;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
