@@ -453,21 +453,14 @@ public class FormDisplayPageFragment extends ACBaseFragment<FormDisplayContract.
     public List<InputField> getInputFields() {
         for (InputField field : inputFields) {
             try {
-                View v = getActivity().findViewById(field.id);
-                if (v instanceof DiscreteSeekBar) {
-                    DiscreteSeekBar sb = (DiscreteSeekBar) v;
-                    field.value = (double) sb.getProgress();
+                RangeEditText ed = getActivity().findViewById(field.id);
+                if (!isEmpty(ed)) {
+                    field.value = Double.parseDouble(ed.getText().toString());
+                    boolean isRed = (ed.getCurrentTextColor() == ContextCompat.getColor(OpenMRS.getInstance(), R.color.red));
+                    field.isRed = isRed;
                 } else {
-                    RangeEditText ed = getActivity().findViewById(field.id);
-                    if (!isEmpty(ed)) {
-                        field.value = Double.parseDouble(ed.getText().toString());
-                        boolean isRed = (ed.getCurrentTextColor() == ContextCompat.getColor(OpenMRS.getInstance(), R.color.red));
-                        field.isRed = isRed;
-                    } else {
-                        field.value = -1.0;
-                    }
+                    field.value = -1.0;
                 }
-
             } catch (ClassCastException e) {
                 field.value = Math.round(field.value * 100.0) / 100.0;
             }
