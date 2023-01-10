@@ -2,6 +2,7 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
@@ -54,7 +55,7 @@ public class CreatePatientUITTest {
         onView(withId(R.id.female)).check(matches(isNotChecked()));
         onView(withId(R.id.nonBinary)).check(matches(isNotChecked()));
 
-        onView(withId(R.id.addressOne)).perform(click());
+        onView(withId(R.id.addressOne)).perform(scrollTo(), click());
         onView(withId(R.id.addressOne))
                 .perform(typeText(this.address1), closeSoftKeyboard())
                 .check(matches(withText(this.address1)));
@@ -64,6 +65,7 @@ public class CreatePatientUITTest {
 
 //        onView(withId(R.id.estimatedYear))
 //                .perform(typeText("50")).check(matches(withText(this.estimatedYear)));
+        // .perform(scrollTo())
 
 
 
