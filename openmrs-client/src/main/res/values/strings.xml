@@ -384,7 +384,7 @@
     <string name="intro_register">Register Patients</string>
     <string name="intro_find">Find Patients</string>
     <string name="intro_monitor">Monitor Visits</string>
-    <string name="intro_manage">Manage Providers</string>
+    <string name="intro_contact_us">Contact Us</string>
     <string name="intro_location">Location</string>
     <string name="intro_settings">Settings</string>
 
@@ -392,7 +392,7 @@
     <string name="intro_register_desc">Register new patients to our server.</string>
     <string name="intro_find_desc">You can find and monitor those patients.</string>
     <string name="intro_monitor_desc">We help you monitor patient visits too.</string>
-    <string name="intro_manage_desc">You can manage providers using our app.</string>
+    <string name="intro_contact_desc">Send us any problem or suggestion.</string>
     <string name="intro_location_desc">You can change your location at a simple click.</string>
     <string name="intro_settings_desc">Try out our dark mode feature.\nExciting? Let\'s get started.</string>
     <string name="get_started_with_our_user_guide">Get started with our user guide</string>
@@ -585,4 +585,5 @@
     <string name="bluetooth_scale_instructions">1.-Turn on the mobile bluetooth\n2.-Get on the scale\n3.-Wait until the result appears on the mobile screen</string>
     <string name="weight_name_text">Weight: </string>
     <string name="receive_vitals_from_scale_button_text">Receive weight from Scale</string>
+    <string name="app_tutorial">Tutorial</string>
 </resources>

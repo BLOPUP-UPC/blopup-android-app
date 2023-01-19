@@ -26,4 +26,5 @@
     <string name="bluetooth_scale_instructions">1.-Activeu el bluetooth del telèfon\n2.-Pugeu a la balança\n3.-Espereu fins que el resultat aparegui a la pantalla del telèfon</string>
     <string name="weight_name_text">Pes:</string>
     <string name="receive_vitals_from_scale_button_text">Rebre el pes de la bàscula</string>
+    <string name="app_tutorial">App Tutorial</string>
 </resources>

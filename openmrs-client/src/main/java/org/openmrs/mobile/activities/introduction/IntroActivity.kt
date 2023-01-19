@@ -56,10 +56,10 @@ class IntroActivity : AppIntro2() {
                 backgroundColor = Color.parseColor("#F0A815")
         ))
         addSlide(AppIntroFragment.newInstance(
-                title = getString(R.string.intro_manage),
-                description = getString(R.string.intro_manage_desc),
-                imageDrawable = R.drawable.ic_provider_big,
-                backgroundColor = Color.parseColor("#F26522")
+            title = getString(R.string.intro_contact_us),
+            description = getString(R.string.intro_contact_desc),
+            imageDrawable = R.drawable.ic_provider_big,
+            backgroundColor = Color.parseColor("#F26522")
         ))
         addSlide(AppIntroFragment.newInstance(
                 title = getString(R.string.intro_location),

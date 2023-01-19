@@ -54,6 +54,7 @@ import org.openmrs.mobile.R;
 import org.openmrs.mobile.activities.community.contact.AboutActivity;
 import org.openmrs.mobile.activities.community.contact.ContactUsActivity;
 import org.openmrs.mobile.activities.dialog.CustomFragmentDialog;
+import org.openmrs.mobile.activities.introduction.IntroActivity;
 import org.openmrs.mobile.activities.introduction.SplashActivity;
 import org.openmrs.mobile.activities.login.LoginActivity;
 import org.openmrs.mobile.activities.settings.SettingsActivity;
@@ -187,6 +188,10 @@ public abstract class ACBaseActivity extends AppCompatActivity {
                 return true;
             case R.id.actionContact:
                 startActivity(new Intent(this, ContactUsActivity.class));
+                return true;
+            case R.id.actionTutorial:
+                startActivity(new Intent(this, IntroActivity.class));
+                OpenmrsAndroid.setUserFirstTime(true);
                 return true;
             case R.id.actionSearchLocal:
                 return true;

@@ -346,7 +346,7 @@
     <string name="intro_register">मरीजों को पंजीकृत करें</string>
     <string name="intro_find">मरीजों का पता लगाएं</string>
     <string name="intro_monitor">मॉनिटर का दौरा</string>
-    <string name="intro_manage">प्रदाता प्रबंधित करें</string>
+    <string name="intro_contact_us">प्रदाता प्रबंधित करें</string>
     <string name="intro_location">स्थान</string>
     <string name="intro_settings">समायोजन</string>
 
@@ -354,7 +354,7 @@
     <string name="intro_register_desc">हमारे सर्वर पर नए रोगियों को पंजीकृत करें।</string>
     <string name="intro_find_desc">आप उन रोगियों को ढूंढ और देख सकते हैं।</string>
     <string name="intro_monitor_desc">हम रोगी की यात्राओं पर भी नजर रखने में आपकी मदद करते हैं।</string>
-    <string name="intro_manage_desc">आप हमारे ऐप का उपयोग करके प्रदाताओं का प्रबंधन कर सकते हैं।</string>
+    <string name="intro_contact_desc">आप हमारे ऐप का उपयोग करके प्रदाताओं का प्रबंधन कर सकते हैं।</string>
     <string name="intro_location_desc">आप एक साधारण क्लिक पर अपना स्थान बदल सकते हैं।</string>
     <string name="intro_settings_desc">हमारी डार्क मोड सुविधा देखें।\n आएँ शुरू करें।</string>
     <string name="get_started_with_our_user_guide">हमारे उपयोगकर्ता गाइड के साथ आरंभ करें</string>
