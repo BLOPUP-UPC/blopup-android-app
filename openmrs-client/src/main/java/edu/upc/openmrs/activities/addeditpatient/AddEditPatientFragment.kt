@@ -507,10 +507,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 linearLayoutContactInfo.makeVisible()
                 viewModel.isPatientUnidentified = false
             }
-            submitButton.setOnClickListener {
-                submitAction()
-            }
 
+        }
+        submitButton.setOnClickListener {
+            submitAction()
         }
 
         gender.setOnCheckedChangeListener { _, _ -> gendererror.makeGone() }
@@ -967,7 +967,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> requireActivity().onBackPressed()
-            R.id.actionSubmit -> submitAction()
             R.id.actionReset -> AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.dialog_title_reset_patient)
                 .setMessage(R.string.reset_dialog_message)
