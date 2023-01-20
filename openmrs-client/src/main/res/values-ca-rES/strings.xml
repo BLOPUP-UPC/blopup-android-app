@@ -27,4 +27,17 @@
     <string name="weight_name_text">Pes:</string>
     <string name="receive_vitals_from_scale_button_text">Rebre el pes de la bàscula</string>
     <string name="app_tutorial">App Tutorial</string>
+    <string name="vitals_form_title">Constants vitals</string>
+    <string name="tensiometer_button_label">Rebre dades del tensiòmetre</string>
+    <string name="systolic_label">Sistòlica</string>
+    <string name="diastolic_label">Diastòlica</string>
+    <string name="blood_pressure_measurement_unit">"     mmHg"</string>
+    <string name="pulse_label">Pols</string>
+    <string name="receive_weight_value_button">Diastòlica</string>
+    <string name="weight_value_label">Pes</string>
+    <string name="weight_unit_label">"    Kg"</string>
+    <string name="height_value_label">Alçada</string>
+    <string name="height_unit_label">"  Cm"</string>
+    <string name="send_button_label">Enviar</string>
+    <string name="action_form_entry_new">Form Entry NEW</string>
 </resources>

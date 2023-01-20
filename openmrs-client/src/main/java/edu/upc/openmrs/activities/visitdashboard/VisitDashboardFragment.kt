@@ -16,12 +16,7 @@ package edu.upc.openmrs.activities.visitdashboard
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -36,6 +31,7 @@ import com.openmrs.android_sdk.utilities.NetworkUtils
 import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.showmeasurements.ShowMeasurementsActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
 import edu.upc.openmrs.activities.formlist.FormListActivity
 import edu.upc.openmrs.utilities.makeGone
@@ -160,6 +156,12 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         }
     }
 
+    private fun startVitalsMeasurement() {
+        Intent(requireActivity(), ShowMeasurementsActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+
     private fun startFormListActivity() {
         Intent(requireActivity(), FormListActivity::class.java).apply {
             putExtra(
@@ -183,6 +185,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         when (item.itemId) {
             android.R.id.home -> requireActivity().finish()
             R.id.actionFillForm -> startEncounter()
+            R.id.actionFillFormNew -> startVitalsMeasurement()
             R.id.actionEndVisit -> edu.upc.openmrs.bundle.CustomDialogBundle().apply {
                 titleViewMessage = getString(R.string.end_visit_dialog_title)
                 textViewMessage = getString(R.string.end_visit_dialog_message)

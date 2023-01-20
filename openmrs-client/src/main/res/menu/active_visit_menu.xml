@@ -26,4 +26,8 @@
         android:id="@+id/actionFillForm"
         android:title="@string/action_form_entry"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/actionFillFormNew"
+        android:title="@string/action_form_entry_new"
+        app:showAsAction="never" />
 </menu>

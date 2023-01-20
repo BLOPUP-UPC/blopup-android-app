@@ -279,7 +279,13 @@
         <activity
             android:name="edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity"
             android:exported="false" />
-
+        <activity
+            android:name="edu.upc.blopup.showmeasurements.ShowMeasurementsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".openmrs.activities.visitdashboard.VisitDashboardActivity" />
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_PLACE_API_KEY}" />

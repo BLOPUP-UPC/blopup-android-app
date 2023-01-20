@@ -40,6 +40,7 @@ import edu.upc.R
 import edu.upc.databinding.FragmentFormListBinding
 import edu.upc.openmrs.activities.formadmission.FormAdmissionActivity
 
+
 @AndroidEntryPoint
 class FormListFragment : edu.upc.openmrs.activities.BaseFragment() {
     private var _binding: FragmentFormListBinding? = null
@@ -137,4 +138,7 @@ class FormListFragment : edu.upc.openmrs.activities.BaseFragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
+
+

@@ -378,4 +378,5 @@
     <string name="weight_name_text">Peso:</string>
     <string name="receive_vitals_from_scale_button_text">Recibir peso de la báscula</string>
     <string name="app_tutorial">App Tutorial</string>
+    <string name="action_form_entry_new">Form Entry NEW</string>
 </resources>
