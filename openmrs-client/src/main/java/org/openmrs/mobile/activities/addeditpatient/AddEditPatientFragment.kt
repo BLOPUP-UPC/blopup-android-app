@@ -512,6 +512,10 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                 linearLayoutContactInfo.makeVisible()
                 viewModel.isPatientUnidentified = false
             }
+            submitButton.setOnClickListener {
+                submitAction()
+            }
+
         }
 
         gender.setOnCheckedChangeListener { _, _ -> gendererror.makeGone() }
