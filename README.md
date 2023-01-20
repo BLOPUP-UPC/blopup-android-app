@@ -104,5 +104,5 @@ This project is licensed under the OpenMRS Public License, see the [copyright](c
 - [Sprint board](https://issues.openmrs.org/secure/RapidBoard.jspa?rapidView=60)
 - [Dashboard](https://issues.openmrs.org/secure/Dashboard.jspa?selectPageId=12851)
 - [CI](https://travis-ci.org/openmrs/openmrs-contrib-android-client)
-- [Google Play](https://play.google.com/store/apps/details?id=org.openmrs.mobile)
+- [Google Play](https://play.google.com/store/apps/details?id=edu.upc)
 - [Release Notes](releaseNotes.md)

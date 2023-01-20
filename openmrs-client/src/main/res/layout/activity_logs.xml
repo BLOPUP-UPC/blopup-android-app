@@ -19,7 +19,7 @@
     android:id="@+id/activity_logs"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.openmrs.mobile.activities.logs.LogsActivity">
+    tools:context="edu.upc.openmrs.activities.logs.LogsActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
