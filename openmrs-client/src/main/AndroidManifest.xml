@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.openmrs.mobile">
+    package="edu.upc">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -23,7 +23,7 @@
         android:required="false" />
 
     <application
-        android:name=".application.OpenMRS"
+        android:name="edu.upc.openmrs.application.OpenMRS"
         android:allowBackup="true"
         android:icon="@drawable/ic_openmrs"
         android:label="@string/app_name"
@@ -31,11 +31,11 @@
         android:fullBackupContent="@xml/backup_rules"
         android:theme="@style/Theme.Openmrs">
         <activity
-            android:name=".activities.community.contact.AboutActivity"
+            android:name=".openmrs.activities.community.contact.AboutActivity"
             android:label="@string/action_about_activity"
             android:theme="@style/AppThemeOrig" />
         <activity
-            android:name=".activities.introduction.SplashActivity"
+            android:name=".openmrs.activities.introduction.SplashActivity"
             android:noHistory="true"
             android:theme="@style/AppTheme"
             android:exported="true">
@@ -51,25 +51,25 @@
             android:value="0" />
 
         <receiver
-            android:name=".api.SyncStateReceiver"
+            android:name="edu.upc.openmrs.api.SyncStateReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="org.openmrs.mobile.intent.action.SYNC_PATIENTS" />
+                <action android:name="edu.upc.openmrs.intent.action.SYNC_PATIENTS" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".services.ConceptDownloadService" />
+        <service android:name="edu.upc.openmrs.services.ConceptDownloadService" />
 
         <activity
-            android:name=".activities.dashboard.DashboardActivity"
+            android:name=".openmrs.activities.dashboard.DashboardActivity"
             android:label="@string/app_name"
             android:theme="@style/AppThemeOrig" />
         <activity
-            android:name=".activities.introduction.IntroActivity"
+            android:name=".openmrs.activities.introduction.IntroActivity"
             android:label="Introduction"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activities.syncedpatients.SyncedPatientsActivity"
+            android:name=".openmrs.activities.syncedpatients.SyncedPatientsActivity"
             android:configChanges="keyboardHidden|screenSize"
             android:label="@string/action_synced_patients"
             android:launchMode="singleTop"
@@ -79,7 +79,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.dashboard.DashboardActivity" />
+                android:value=".openmrs.activities.dashboard.DashboardActivity" />
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -89,20 +89,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.login.LoginActivity"
+            android:name="edu.upc.openmrs.activities.login.LoginActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/NoActionBarTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.settings.SettingsActivity"
+            android:name=".openmrs.activities.settings.SettingsActivity"
             android:configChanges="locale|orientation"
             android:label="@string/action_settings"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.dashboard.DashboardActivity"
+            android:parentActivityName=".openmrs.activities.dashboard.DashboardActivity"
             android:theme="@style/AppThemeOrig" />
         <activity
-            android:name=".activities.patientdashboard.PatientDashboardActivity"
+            android:name=".openmrs.activities.patientdashboard.PatientDashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeOrig">
@@ -110,10 +110,10 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.syncedpatients.SyncedPatientsActivity" />
+                android:value=".openmrs.activities.syncedpatients.SyncedPatientsActivity" />
         </activity>
         <activity
-            android:name=".activities.activevisits.ActiveVisitsActivity"
+            android:name="edu.upc.openmrs.activities.activevisits.ActiveVisitsActivity"
             android:configChanges="keyboardHidden|screenSize"
             android:label="@string/action_active_visits"
             android:launchMode="singleTop"
@@ -123,7 +123,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.dashboard.DashboardActivity" />
+                android:value=".openmrs.activities.dashboard.DashboardActivity" />
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -133,7 +133,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.visitdashboard.VisitDashboardActivity"
+            android:name=".openmrs.activities.visitdashboard.VisitDashboardActivity"
             android:label="@string/visit_dashboard_label"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeOrig">
@@ -141,75 +141,75 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.activevisits.ActiveVisitsActivity" />
+                android:value="edu.upc.openmrs.activities.activevisits.ActiveVisitsActivity" />
         </activity>
         <activity
-            android:name=".activities.formlist.FormListActivity"
+            android:name=".openmrs.activities.formlist.FormListActivity"
             android:label="@string/action_form_entry"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.formentrypatientlist.FormEntryPatientListActivity"
+            android:parentActivityName=".openmrs.activities.formentrypatientlist.FormEntryPatientListActivity"
             android:theme="@style/AppThemeOrig">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.formentrypatientlist.FormEntryPatientListActivity" />
+                android:value=".openmrs.activities.formentrypatientlist.FormEntryPatientListActivity" />
         </activity>
         <activity
-            android:name=".activities.formadmission.FormAdmissionActivity"
+            android:name=".openmrs.activities.formadmission.FormAdmissionActivity"
             android:label="@string/admission"
-            android:parentActivityName=".activities.formlist.FormListActivity"
+            android:parentActivityName=".openmrs.activities.formlist.FormListActivity"
             android:theme="@style/AppThemeOrig">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.openmrs.mobile.activities.formlist.FormListActivity" />
+                android:value="edu.upc.openmrs.activities.formlist.FormListActivity" />
         </activity>
         <activity
-            android:name=".activities.formentrypatientlist.FormEntryPatientListActivity"
+            android:name=".openmrs.activities.formentrypatientlist.FormEntryPatientListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/action_form_entry"
-            android:parentActivityName=".activities.dashboard.DashboardActivity"
+            android:parentActivityName=".openmrs.activities.dashboard.DashboardActivity"
             android:theme="@style/AppThemeOrig">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.dashboard.DashboardActivity" />
+                android:value=".openmrs.activities.dashboard.DashboardActivity" />
         </activity>
         <activity
-            android:name=".activities.addeditpatient.AddEditPatientActivity"
+            android:name=".openmrs.activities.addeditpatient.AddEditPatientActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/action_register_patient"
-            android:parentActivityName=".activities.addeditpatient.AddEditPatientActivity"
+            android:parentActivityName=".openmrs.activities.addeditpatient.AddEditPatientActivity"
             android:theme="@style/AppThemeOrig">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.addeditpatient.AddEditPatientActivity" />
+                android:value=".openmrs.activities.addeditpatient.AddEditPatientActivity" />
         </activity>
 
         <service
-            android:name=".services.PatientService"
+            android:name="edu.upc.openmrs.services.PatientService"
             android:enabled="true" />
         <service
             android:name="com.openmrs.android_sdk.library.api.services.EncounterService"
             android:enabled="true" />
         <service
-            android:name=".services.FormListService"
+            android:name="edu.upc.openmrs.services.FormListService"
             android:enabled="true" />
         <service
-            android:name=".services.AuthenticateCheckService"
+            android:name="edu.upc.openmrs.services.AuthenticateCheckService"
             android:enabled="true" />
 
         <activity
-            android:name=".activities.formdisplay.FormDisplayActivity"
+            android:name="edu.upc.openmrs.activities.formdisplay.FormDisplayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_form_create"
-            android:parentActivityName=".activities.formlist.FormListActivity"
+            android:parentActivityName=".openmrs.activities.formlist.FormListActivity"
             android:theme="@style/AppThemeOrig">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.openmrs.mobile.activities.formlist.FormListActivity" />
+                android:value="edu.upc.openmrs.activities.formlist.FormListActivity" />
         </activity>
         <activity
-            android:name=".activities.lastviewedpatients.LastViewedPatientsActivity"
+            android:name=".openmrs.activities.lastviewedpatients.LastViewedPatientsActivity"
             android:configChanges="keyboardHidden|screenSize"
             android:label="@string/action_download_patients"
             android:launchMode="singleTop"
@@ -219,7 +219,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.dashboard.DashboardActivity" />
+                android:value=".openmrs.activities.dashboard.DashboardActivity" />
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -228,45 +228,45 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.matchingpatients.MatchingPatientsActivity" />
+        <activity android:name="edu.upc.openmrs.activities.matchingpatients.MatchingPatientsActivity" />
         <activity
-            android:name=".activities.patientdashboard.details.PatientPhotoActivity"
-            android:parentActivityName=".activities.patientdashboard.PatientDashboardActivity"
+            android:name=".openmrs.activities.patientdashboard.details.PatientPhotoActivity"
+            android:parentActivityName=".openmrs.activities.patientdashboard.PatientDashboardActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.openmrs.mobile.activities.patientdashboard.PatientDashboardActivity" />
+                android:value="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity" />
         </activity>
         <activity
-            android:name=".activities.logs.LogsActivity"
+            android:name=".openmrs.activities.logs.LogsActivity"
             android:label="@string/title_activity_logs"
-            android:parentActivityName=".activities.settings.SettingsActivity"
+            android:parentActivityName=".openmrs.activities.settings.SettingsActivity"
             android:theme="@style/AppThemeOrig" />
         <activity
-            android:name=".activities.patientdashboard.charts.ChartsViewActivity"
-            android:parentActivityName=".activities.patientdashboard.PatientDashboardActivity" />
+            android:name="edu.upc.openmrs.activities.patientdashboard.charts.ChartsViewActivity"
+            android:parentActivityName=".openmrs.activities.patientdashboard.PatientDashboardActivity" />
         <activity
-            android:name=".activities.providermanagerdashboard.ProviderManagerDashboardActivity"
+            android:name="edu.upc.openmrs.activities.providermanagerdashboard.ProviderManagerDashboardActivity"
             android:configChanges="keyboardHidden|screenSize"
             android:label="@string/provider_manager"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeOrig" />
         <activity
-            android:name=".activities.providermanagerdashboard.addprovider.AddProviderActivity"
+            android:name="edu.upc.openmrs.activities.providermanagerdashboard.addprovider.AddProviderActivity"
             android:label="@string/title_provider_info"
-            android:parentActivityName=".activities.providermanagerdashboard.ProviderManagerDashboardActivity"
+            android:parentActivityName="edu.upc.openmrs.activities.providermanagerdashboard.ProviderManagerDashboardActivity"
             android:theme="@style/AppThemeOrig"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.providerdashboard.ProviderDashboardActivity"
-            android:parentActivityName=".activities.providermanagerdashboard.ProviderManagerDashboardActivity"
+            android:name="edu.upc.openmrs.activities.providerdashboard.ProviderDashboardActivity"
+            android:parentActivityName="edu.upc.openmrs.activities.providermanagerdashboard.ProviderManagerDashboardActivity"
             android:theme="@style/AppThemeOrig" />
         <activity
-            android:name=".activities.community.contact.ContactUsActivity"
+            android:name=".openmrs.activities.community.contact.ContactUsActivity"
             android:label="@string/contact_us"
             android:theme="@style/AppThemeOrig" />
         <activity
-            android:name=".activities.addeditallergy.AddEditAllergyActivity"
+            android:name=".openmrs.activities.addeditallergy.AddEditAllergyActivity"
             android:label="@string/allergy_heading"
             android:theme="@style/AppThemeOrig" />
         <activity

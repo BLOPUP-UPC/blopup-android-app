@@ -76,7 +76,7 @@
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context=".activities.formdisplay.FormDisplayActivity" />
+                tools:context="edu.upc.openmrs.activities.formdisplay.FormDisplayActivity" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

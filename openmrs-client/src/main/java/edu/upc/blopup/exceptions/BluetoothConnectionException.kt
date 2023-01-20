@@ -1,6 +1,6 @@
 package edu.upc.blopup.exceptions
 
-import org.openmrs.mobile.R
+import edu.upc.R
 
 sealed class BluetoothConnectionException(val messageId: Int) : RuntimeException() {
     object OnStartScan : BluetoothConnectionException(

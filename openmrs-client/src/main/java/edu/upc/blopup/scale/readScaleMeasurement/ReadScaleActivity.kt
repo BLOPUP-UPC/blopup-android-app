@@ -13,10 +13,10 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.BuildConfig
+import edu.upc.R
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import org.openmrs.mobile.BuildConfig
-import org.openmrs.mobile.R
-import org.openmrs.mobile.databinding.ActivityReadScaleBinding
+import edu.upc.databinding.ActivityReadScaleBinding
 
 const val EXTRAS_WEIGHT = "weight"
 const val LOCATION_REQUEST = 1
