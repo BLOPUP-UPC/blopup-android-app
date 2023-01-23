@@ -29,13 +29,7 @@ import android.os.StrictMode
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -55,13 +49,8 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.material.snackbar.Snackbar
-import com.openmrs.android_sdk.library.models.ConceptAnswers
+import com.openmrs.android_sdk.library.models.*
 import com.openmrs.android_sdk.library.models.OperationType.PatientRegistering
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.PersonAddress
-import com.openmrs.android_sdk.library.models.PersonName
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.library.models.ResultType
 import com.openmrs.android_sdk.utilities.ApplicationConstants
 import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
@@ -100,7 +89,7 @@ import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructPermissionsRequest
 import java.io.File
-import java.util.Calendar
+import java.util.*
 
 @AndroidEntryPoint
 class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInputSelected {
@@ -459,6 +448,9 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 val monthDiff =
                     if (isEmpty(estimatedMonth)) 0 else estimatedMonth.text.toString().toInt()
                 viewModel.dateHolder = getDateTimeFromDifference(yearDiff, monthDiff)
+                viewModel.patient.birthdate =
+                    DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
+                        .print(viewModel.dateHolder)
                 dobError.makeGone()
             }
         } else {
@@ -473,10 +465,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 viewModel.dateHolder = dateTimeFormatter.parseDateTime(insertedDate)
             }
             dobError.makeGone()
+            viewModel.patient.birthdate =
+                DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
+                    .print(viewModel.dateHolder)
         }
-        viewModel.patient.birthdate =
-            DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-                .print(viewModel.dateHolder)
     }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
