@@ -28,9 +28,8 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
-        <!--<item name="android:textColorPrimaryInverse">@color/white</item>
-        <item name="android:textColorPrimary">@color/dark_purple</item>-->
         <item name="actionModeStyle">@style/LongPress</item>
+        <item name="android:textColorSecondary">@color/card_shadow_1</item>
     </style>
 
     <style name="LongPress" parent="@style/Widget.AppCompat.ActionMode">
