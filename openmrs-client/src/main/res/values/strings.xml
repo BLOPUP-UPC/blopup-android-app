@@ -486,7 +486,7 @@
 
     <string name="unidentified_patient_name">UNKNOWN</string>
     <string name="snackbar_server_error">The entered server is currently down, please select a different one.</string>
-    <string name="snackbar_empty_visit_list">Select Form Entry from the menu to begin examining.</string>
+    <string name="snackbar_empty_visit_list">Select Vitals Entry from the menu to begin examining.</string>
     <string name="snackbar_no_forms_found">No Forms Found, try restarting the app.</string>
     <string name="snackbar_choose">Choose</string>
     <string name="snackbar_select">Select</string>
@@ -599,6 +599,6 @@
     <string name="height_value_label">Height</string>
     <string name="height_unit_label">"  Cm"</string>
     <string name="send_button_label">Send</string>
-    <string name="action_form_entry_new">Form Entry NEW</string>
+    <string name="action_vitals_form">Vitals Entry</string>
     <string name="patient_deceased">Patient deceased</string>
 </resources>

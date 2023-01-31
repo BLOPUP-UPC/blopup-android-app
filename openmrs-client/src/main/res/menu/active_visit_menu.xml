@@ -23,11 +23,7 @@
         app:showAsAction="never"
         android:title="@string/action_end_visit" />
     <item
-        android:id="@+id/actionFillForm"
-        android:title="@string/action_form_entry"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/actionFillFormNew"
-        android:title="@string/action_form_entry_new"
+        android:id="@+id/actionFillVitalsEntry"
+        android:title="@string/action_vitals_form"
         app:showAsAction="never" />
 </menu>

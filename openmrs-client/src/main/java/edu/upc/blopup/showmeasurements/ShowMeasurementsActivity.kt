@@ -3,12 +3,13 @@ package edu.upc.blopup.showmeasurements
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import com.openmrs.android_sdk.library.models.ResultType
 import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
@@ -19,31 +20,44 @@ import edu.upc.blopup.tensiometer.readTensiometerMeasurement.EXTRAS_HEART_RATE
 import edu.upc.blopup.tensiometer.readTensiometerMeasurement.EXTRAS_SYSTOLIC
 import edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivity
 import edu.upc.databinding.ActivityVitalsFormBinding
+import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.utilities.observeOnce
+
 
 @AndroidEntryPoint
-class ShowMeasurementsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
+class ShowMeasurementsActivity : ACBaseActivity() {
 
     private lateinit var mBinding: ActivityVitalsFormBinding
     private lateinit var mToolbar: Toolbar
+
+    private val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    private val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    private val HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    private val WEIGHT_FIELD_CONCEPT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    private val HEIGHT_FIELD_CONCEPT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+
+    private val viewModel: ShowMeasurementsViewModel by viewModels()
+
+    private var systolic: String = ""
+    private var diastolic: String = ""
+    private var heartRate: String = ""
+    private var weight: String = ""
+    private var heightCm: String = ""
+
+    private val vitals: MutableList<Vital> = mutableListOf()
 
     private val bluetoothTensiometerDataLauncher = registerForActivityResult(
         StartActivityForResult()
     ) { result: ActivityResult ->
         val intent = result.data
         if (intent != null && result.resultCode == RESULT_OK) {
-            val systolic = intent.extras!!.getInt(EXTRAS_SYSTOLIC)
-            val diastolic = intent.extras!!.getInt(EXTRAS_DIASTOLIC)
-            val pulse = intent.extras!!.getInt(EXTRAS_HEART_RATE)
+            systolic = intent.extras!!.getInt(EXTRAS_SYSTOLIC).toString()
+            diastolic = intent.extras!!.getInt(EXTRAS_DIASTOLIC).toString()
+            heartRate = intent.extras!!.getInt(EXTRAS_HEART_RATE).toString()
 
-            var systolicField = findViewById<View>(R.id.systolic) as EditText
-            systolicField.setText(systolic.toString())
-            systolicField.keyListener = null;
-            var diastolicField = findViewById<View>(R.id.diastolic) as EditText
-            diastolicField.setText(diastolic.toString())
-            diastolicField.keyListener = null;
-            var pulseField = findViewById<View>(R.id.pulse) as EditText
-            pulseField.setText(pulse.toString())
-            pulseField.keyListener = null;
+            mBinding.systolic.setText(systolic)
+            mBinding.diastolic.setText(diastolic)
+            mBinding.pulse.setText(heartRate)
         }
     }
 
@@ -52,10 +66,9 @@ class ShowMeasurementsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     ) { result: ActivityResult ->
         val intent = result.data
         if (intent != null && result.resultCode == RESULT_OK) {
-            val weight = intent.extras!!.getFloat(EXTRAS_WEIGHT)
-            var weightField = findViewById<View>(R.id.weight) as EditText
-            weightField.setText(weight.toString())
-            weightField.keyListener = null;
+            weight = intent.extras!!.getFloat(EXTRAS_WEIGHT).toString()
+
+            mBinding.weight.setText(weight)
         }
     }
 
@@ -90,7 +103,38 @@ class ShowMeasurementsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                 );
             }
         }
+
+        mBinding.buttonToSentVitals.setOnClickListener {
+            heightCm = mBinding.height.text.toString()
+            submitForm()
+        }
     }
+
+    private fun submitForm() {
+        addVitalsToForm()
+        viewModel.submitForm(vitals).observeOnce(this, Observer { result ->
+            when (result) {
+                ResultType.EncounterSubmissionSuccess -> {
+                    ToastUtil.success(getString(R.string.form_submitted_successfully))
+                    finish()
+                }
+                ResultType.EncounterSubmissionLocalSuccess -> {
+                    ToastUtil.notify(getString(R.string.form_data_sync_is_off_message))
+                    finish()
+                }
+                else -> ToastUtil.error(getString(R.string.form_data_submit_error))
+            }
+        })
+    }
+
+    private fun addVitalsToForm() {
+        vitals.add(Vital(SYSTOLIC_FIELD_CONCEPT, systolic))
+        vitals.add(Vital(DIASTOLIC_FIELD_CONCEPT, diastolic))
+        vitals.add(Vital(HEART_RATE_FIELD_CONCEPT, heartRate))
+        vitals.add(Vital(WEIGHT_FIELD_CONCEPT, weight))
+        vitals.add(Vital(HEIGHT_FIELD_CONCEPT, heightCm))
+    }
+
 
     private fun setUpToolbar() {
         mToolbar = mBinding.toolbarVitals.toolbar

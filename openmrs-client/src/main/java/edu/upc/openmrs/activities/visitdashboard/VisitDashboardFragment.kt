@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.openmrs.android_sdk.library.models.Encounter
 import com.openmrs.android_sdk.library.models.Result
 import com.openmrs.android_sdk.utilities.ApplicationConstants
+import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import com.openmrs.android_sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import com.openmrs.android_sdk.utilities.NetworkUtils
@@ -33,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.showmeasurements.ShowMeasurementsActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
-import edu.upc.openmrs.activities.formlist.FormListActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
@@ -132,7 +132,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     requireActivity().assets,
                     ApplicationConstants.TypeFacePathConstants.ROBOTO_MEDIUM
                 )
-                setOnClickListener { startEncounter() }
+                setOnClickListener { startVitalsMeasurement() }
             }
         }.let {
             val snackBar =
@@ -148,26 +148,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         (activity as VisitDashboardActivity).supportActionBar!!.title = name
     }
 
-    private fun startEncounter() {
-        if (viewModel.visit?.patient?.uuid == null) {
-            ToastUtil.error(getString(R.string.patient_not_yet_registered))
-        } else {
-            startFormListActivity()
-        }
-    }
-
     private fun startVitalsMeasurement() {
         Intent(requireActivity(), ShowMeasurementsActivity::class.java).apply {
-            startActivity(this)
-        }
-    }
-
-    private fun startFormListActivity() {
-        Intent(requireActivity(), FormListActivity::class.java).apply {
-            putExtra(
-                ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                viewModel.visit?.patient?.id
-            )
+            putExtra(PATIENT_ID_BUNDLE, viewModel.visit?.patient?.id)
             startActivity(this)
         }
     }
@@ -184,14 +167,15 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> requireActivity().finish()
-            R.id.actionFillForm -> startEncounter()
-            R.id.actionFillFormNew -> startVitalsMeasurement()
+            R.id.actionFillVitalsEntry -> startVitalsMeasurement()
             R.id.actionEndVisit -> edu.upc.openmrs.bundle.CustomDialogBundle().apply {
                 titleViewMessage = getString(R.string.end_visit_dialog_title)
                 textViewMessage = getString(R.string.end_visit_dialog_message)
-                rightButtonAction = edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.END_VISIT
+                rightButtonAction =
+                    edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.END_VISIT
                 rightButtonText = getString(R.string.dialog_button_ok)
-                leftButtonAction = edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.DISMISS
+                leftButtonAction =
+                    edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.DISMISS
                 leftButtonText = getString(R.string.dialog_button_cancel)
             }.let {
                 (requireActivity() as VisitDashboardActivity)
