@@ -1,4 +1,4 @@
-package edu.upc.blopup.showmeasurements
+package edu.upc.blopup.vitalsform
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.openmrs.android_sdk.library.models.ResultType
 import com.openmrs.android_sdk.utilities.ToastUtil
@@ -23,9 +24,8 @@ import edu.upc.databinding.ActivityVitalsFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.utilities.observeOnce
 
-
 @AndroidEntryPoint
-class ShowMeasurementsActivity : ACBaseActivity() {
+class VitalsFormActivity : ACBaseActivity() {
 
     private lateinit var mBinding: ActivityVitalsFormBinding
     private lateinit var mToolbar: Toolbar
@@ -36,13 +36,14 @@ class ShowMeasurementsActivity : ACBaseActivity() {
     private val WEIGHT_FIELD_CONCEPT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     private val HEIGHT_FIELD_CONCEPT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 
-    private val viewModel: ShowMeasurementsViewModel by viewModels()
+    private val viewModel: VitalsFormViewModel by viewModels()
 
     private var systolic: String = ""
     private var diastolic: String = ""
     private var heartRate: String = ""
     private var weight: String = ""
     private var heightCm: String = ""
+    private var receivedButtonModified: Boolean = false
 
     private val vitals: MutableList<Vital> = mutableListOf()
 
@@ -79,16 +80,18 @@ class ShowMeasurementsActivity : ACBaseActivity() {
         setContentView(mBinding.root)
 
         setUpToolbar()
-
+        mBinding.buttonToSentVitals.isEnabled = false
         mBinding.receiveTensiometerDataBtn.setOnClickListener {
             try {
                 val input = Intent(this, ReadTensiometerActivity::class.java)
                 bluetoothTensiometerDataLauncher.launch(input)
+                mBinding.buttonToSentVitals.isEnabled = true
+                receivedButtonModified = true
             } catch (ex: ActivityNotFoundException) {
                 ToastUtil.error(
                     getString(R.string.receive_vitals_from_bluetooth_button_error_message),
                     Toast.LENGTH_LONG
-                );
+                )
             }
         }
 
@@ -96,17 +99,25 @@ class ShowMeasurementsActivity : ACBaseActivity() {
             try {
                 val input = Intent(this, ReadWeightActivity::class.java)
                 bluetoothScaleDataLauncher.launch(input)
+                mBinding.buttonToSentVitals.isEnabled = true
+                receivedButtonModified = true
             } catch (ex: ActivityNotFoundException) {
                 ToastUtil.error(
                     getString(R.string.receive_vitals_from_bluetooth_button_error_message),
                     Toast.LENGTH_LONG
-                );
+                )
             }
         }
 
         mBinding.buttonToSentVitals.setOnClickListener {
             heightCm = mBinding.height.text.toString()
             submitForm()
+        }
+
+        mBinding.height.addTextChangedListener {
+            if (!receivedButtonModified) {
+                mBinding.buttonToSentVitals.isEnabled = mBinding.height.text.toString().isNotEmpty()
+            }
         }
     }
 

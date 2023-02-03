@@ -40,5 +40,28 @@ class Obscreate : Serializable {
     @SerializedName("encounter")
     @Expose
     var encounter: String? = null
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Obscreate
+
+        if (person != other.person) return false
+        if (obsDatetime != other.obsDatetime) return false
+        if (concept != other.concept) return false
+        if (value != other.value) return false
+        if (encounter != other.encounter) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = person?.hashCode() ?: 0
+        result = 31 * result + (obsDatetime?.hashCode() ?: 0)
+        result = 31 * result + (concept?.hashCode() ?: 0)
+        result = 31 * result + (value?.hashCode() ?: 0)
+        result = 31 * result + (encounter?.hashCode() ?: 0)
+        return result
+    }
 
 }

@@ -25,7 +25,7 @@ import com.openmrs.android_sdk.library.models.Patient
 import com.openmrs.android_sdk.utilities.ApplicationConstants
 import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.R
-import edu.upc.blopup.showmeasurements.ShowMeasurementsActivity
+import edu.upc.blopup.vitalsform.VitalsFormActivity
 
 class FormEntryPatientListAdapter(
         private val mContext: FormEntryPatientListFragment,
@@ -45,7 +45,7 @@ class FormEntryPatientListAdapter(
         holder.mVisitStatus.setCompoundDrawables(icon, null, null, null)
         holder.mVisitStatus.text = mContext.getString(R.string.active_visit_label_capture_vitals)
         holder.mRowLayout.setOnClickListener {
-            Intent(mContext.activity, ShowMeasurementsActivity::class.java).apply {
+            Intent(mContext.activity, VitalsFormActivity::class.java).apply {
                 putExtra(PATIENT_ID_BUNDLE, mItems[adapterPos].id)
                 mContext.startActivity(this)
             }

@@ -280,7 +280,7 @@
             android:name="edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity"
             android:exported="false" />
         <activity
-            android:name="edu.upc.blopup.showmeasurements.ShowMeasurementsActivity"
+            android:name="edu.upc.blopup.vitalsform.VitalsFormActivity"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

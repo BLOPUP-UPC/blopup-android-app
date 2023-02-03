@@ -35,7 +35,7 @@ import com.openmrs.android_sdk.utilities.DateUtils.convertTime
 import com.openmrs.android_sdk.utilities.ToastUtil.notify
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.blopup.showmeasurements.ShowMeasurementsActivity
+import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentPatientVitalsBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
@@ -120,7 +120,7 @@ class PatientVitalsFragment : edu.upc.openmrs.activities.BaseFragment() {
     private fun startFormDisplayActivity(encounter: Encounter) {
         val form = encounter.form
         if (form != null) {
-            val intent = Intent(context, ShowMeasurementsActivity::class.java)
+            val intent = Intent(context, VitalsFormActivity::class.java)
             intent.putExtra(FORM_NAME, form.name)
             intent.putExtra(PATIENT_ID_BUNDLE, encounter.patient!!.id)
             intent.putExtra(VALUEREFERENCE, form.valueReference)

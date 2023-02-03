@@ -1,4 +1,4 @@
-package edu.upc.blopup.showmeasurements
+package edu.upc.blopup.vitalsform
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,19 +12,17 @@ import com.openmrs.android_sdk.utilities.execute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.activities.BaseViewModel
 import org.joda.time.LocalDateTime
-import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @HiltViewModel
-class ShowMeasurementsViewModel @Inject constructor(
+class VitalsFormViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val formRepository: FormRepository,
     private val encounterRepository: EncounterRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Unit>() {
 
-    val DEFAULT_VALUE = -1.0F
     private val patientId: Long = savedStateHandle.get(PATIENT_ID_BUNDLE)!!
     private val encounterType: String = EncounterType.VITALS
     private val formName: String = "Vitals"
@@ -43,10 +41,10 @@ class ShowMeasurementsViewModel @Inject constructor(
         val observations = mutableListOf<Obscreate>()
 
         for (vital in vitals) {
-            if (vital.value.toFloat() != DEFAULT_VALUE) {
+            if (vital.validate()) {
                 observations += Obscreate().apply {
                     concept = vital.concept
-                    value = vital.value.toString()
+                    value = vital.value
                     obsDatetime = LocalDateTime().toString()
                     person = patient.uuid
                 }
@@ -55,18 +53,16 @@ class ShowMeasurementsViewModel @Inject constructor(
         return observations
     }
 
-    private fun createRecords(enc: Encountercreate): LiveData<ResultType> {
+    private fun createRecords(encounterCreate: Encountercreate): LiveData<ResultType> {
         val resultLiveData = MutableLiveData<ResultType>()
 
+        encounterCreate.patient = patient.uuid
+        encounterCreate.encounterType = encounterType
+        encounterCreate.formname = formName
+        encounterCreate.formUuid = formRepository.fetchFormResourceByName(formName).execute().uuid
+
         addSubscription(
-            Observable.fromCallable {
-                enc.patient = patient.uuid
-                enc.encounterType = encounterType
-                enc.formname = formName
-                enc.formUuid = formRepository.fetchFormResourceByName(formName).execute().uuid
-                return@fromCallable enc
-            }
-                .flatMap { encounterCreate -> encounterRepository.saveEncounter(encounterCreate) }
+            encounterRepository.saveEncounter(encounterCreate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { resultLiveData.value = it },

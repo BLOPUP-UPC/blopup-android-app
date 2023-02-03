@@ -32,7 +32,7 @@ import com.openmrs.android_sdk.utilities.NetworkUtils
 import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.blopup.showmeasurements.ShowMeasurementsActivity
+import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
@@ -149,7 +149,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun startVitalsMeasurement() {
-        Intent(requireActivity(), ShowMeasurementsActivity::class.java).apply {
+        Intent(requireActivity(), VitalsFormActivity::class.java).apply {
             putExtra(PATIENT_ID_BUNDLE, viewModel.visit?.patient?.id)
             startActivity(this)
         }

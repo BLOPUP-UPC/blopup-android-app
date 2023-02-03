@@ -6,7 +6,6 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -62,7 +61,7 @@ public class CreatePatientUITTest {
                 .perform(typeText(this.address1), closeSoftKeyboard())
                 .check(matches(withText(this.address1)));
 
-        onView(withId(R.id.actionSubmit)).perform(click());
+        onView(withId(R.id.submitButton)).perform(click());
 
         //Add check that you can see the patiend information after the registration
     }

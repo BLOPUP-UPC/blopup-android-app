@@ -75,4 +75,40 @@ class Encountercreate : Serializable {
     @SerializedName("encounterProviders")
     @Expose
     var encounterProvider: List<EncounterProviderCreate> = ArrayList()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Encountercreate
+
+        if (id != other.id) return false
+        if (visit != other.visit) return false
+        if (patient != other.patient) return false
+        if (patientId != other.patientId) return false
+        if (encounterType != other.encounterType) return false
+        if (formname != other.formname) return false
+        if (synced != other.synced) return false
+        if (observations != other.observations) return false
+        if (formUuid != other.formUuid) return false
+        if (location != other.location) return false
+        if (encounterProvider != other.encounterProvider) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + (visit?.hashCode() ?: 0)
+        result = 31 * result + (patient?.hashCode() ?: 0)
+        result = 31 * result + (patientId?.hashCode() ?: 0)
+        result = 31 * result + (encounterType?.hashCode() ?: 0)
+        result = 31 * result + (formname?.hashCode() ?: 0)
+        result = 31 * result + synced.hashCode()
+        result = 31 * result + observations.hashCode()
+        result = 31 * result + (formUuid?.hashCode() ?: 0)
+        result = 31 * result + (location?.hashCode() ?: 0)
+        result = 31 * result + encounterProvider.hashCode()
+        return result
+    }
 }
