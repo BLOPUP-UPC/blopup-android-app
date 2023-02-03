@@ -491,5 +491,6 @@
 
     <!--LastViewedPatientRecyclerViewAdapter-->
     <string name="failed_fetching_patient_data_error_message">रोगी डेटा लाने में विफल</string>
+    <string name="vitals_form_title">Formulario de signos vitales</string>
 
 </resources>
