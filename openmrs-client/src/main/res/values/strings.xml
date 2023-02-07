@@ -63,7 +63,7 @@
     <string name="reg_ques_address">Address</string>
     <string name="addr1_hint">Address Line 1*</string>
     <string name="addr2_hint">Address Line 2</string>
-    <string name="addr_invalid_error">Address cannot contain invalid characters</string>
+    <string name="addr_invalid_error">Address cannot contain invalid characters.</string>
     <string name="atleastone">Fill at least one address field</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -133,7 +133,7 @@
     <string name="action_download_patients">Download Patients</string>
     <string name="action_add_patients">Add Patients</string>
     <string name="search_patient_hint">Patient name</string>
-    <string name="search_patient_no_results">No patients exist in database</string>
+    <string name="search_patient_no_results">No patients exist in database.</string>
     <string name="search_patient_no_result_for_query">No results found for query \"%1$s\"</string>
     <string name="select_all_downloadable_data">Select all</string>
     <string name="download_selected_patient_data">Download Patient Data</string>
@@ -230,8 +230,8 @@
     <!-- Visit dashboard activity -->
     <string name="action_end_visit">End Visit</string>
     <string name="visit_dashboard_label">Encounters</string>
-    <string name="list_visit_selector_show">show details</string>
-    <string name="list_visit_selector_hide">hide details</string>
+    <string name="list_visit_selector_show">Show Details</string>
+    <string name="list_visit_selector_hide">Hide Details</string>
     <string name="visit_exp_list_empty">Visit has no encounters yet.</string>
     <string name="visit_fetching_error">Error with fetching the visit</string>
     <string name="visit_ending_not_online_error">Cannot end visit without internet connection or in offline mode</string>
@@ -472,7 +472,7 @@
     <string name="showcase_active_visits">Click here to get the list of all the currently active visits</string>
     <string name="showcase_register_patient">Click here to register a new patient</string>
     <string name="showcase_form_entry">Click here to capture vitals for a patient on a visit</string>
-    <string name="showcase_manage_providers">Click here to manage providers for a patient on a visit</string>
+    <string name="showcase_manage_providers">Click here to manage providers for a patient on a visit.</string>
 
     <!-- Chart Activity -->
     <string name="data_not_available_for_this_field">No data available to display chart</string>
