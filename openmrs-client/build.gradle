@@ -23,6 +23,8 @@ plugins {
 }
 apply from: './versions.gradle'
 apply plugin: "androidx.navigation.safeargs"
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.gms.google-services'
 
 def version = versions.appVersion
 def GOOGLE_PLACE_API_KEY = System.getenv('GOOGLE_PLACE_API_KEY') ?: "YOUR_API_KEY"
@@ -207,6 +209,13 @@ dependencies {
     }
     implementation files('libs/scale-sdk_v1.1.6_1907291543.aar')
     implementation files('libs/sdk-release.aar')
+
+    // add the Firebase SDK for Google Analytics
+    // The app need this to init in Firebase console
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+
+    // Add the Firebase SDK for Crashlytics.
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 
     // Test Implementations
     androidTestImplementation(
