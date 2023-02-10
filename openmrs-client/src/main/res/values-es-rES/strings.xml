@@ -76,7 +76,7 @@
     <string name="dashboard_search_icon_label">Buscar Pacientes</string>
     <string name="dashboard_registry_icon_label">Registrar Paciente</string>
     <string name="dashboard_visits_icon_label">Visitas Activas</string>
-    <string name="dashboard_forms_icon_label">Formulario de Entrada</string>
+    <string name="dashboard_forms_icon_label">Formulario Entrada</string>
     <string name="find_patients_row_checkbox_download_label">Descargar</string>
     <string name="action_synchronize_patients">Sincronizar paciente</string>
     <string name="action_connecting_to_the_hardware">Conectando con el hardware...</string>
@@ -187,7 +187,7 @@
     <string name="connected_to_server_message">Conectado!</string>
     <string name="intro_location_desc">Puedes cambiar la ubicación en un simple click.</string>
     <string name="intro_find_desc">Puedes buscar y monitorear a los pacientes.</string>
-    <string name="only_one_patient_can_be_selected_notification_message">Puedes seleccionar unicamente un paciente similar</string>
+    <string name="only_one_patient_can_be_selected_notification_message">Puedes seleccionar únicamente un paciente similar</string>
     <string name="intro_monitor_desc">Te ayudamos a monitorear las visitas de los pacientes también.</string>
     <string name="visit_exp_list_empty">La visita no tiene encuentros todavía.</string>
     <string name="snackbar_nonvisitting_patients">Los signos vitales solo pueden ser capturados en pacientes con una visita activa.</string>
