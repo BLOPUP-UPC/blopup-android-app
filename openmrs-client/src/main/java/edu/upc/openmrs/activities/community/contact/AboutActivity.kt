@@ -34,6 +34,7 @@ class AboutActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         val actionBar = supportActionBar
         if (actionBar != null) {
+            actionBar.title = getString(R.string.action_about_activity)
             actionBar.elevation = 0f
             actionBar.setDisplayHomeAsUpEnabled(true)
         }
