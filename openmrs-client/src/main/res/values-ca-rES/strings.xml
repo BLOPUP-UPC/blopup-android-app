@@ -262,14 +262,14 @@
     <string name="intro_register">Registrar Pacients</string>
     <string name="intro_find">Cercar Pacient</string>
     <string name="intro_monitor">Monitoritzar Constants Vitals</string>
-    <string name="intro_contact_us">Administrar proveïdors</string>
+    <string name="intro_contact_us">Contacta\'ns</string>
     <string name="intro_location">Ubicació</string>
     <string name="intro_settings">Preferències</string>
     <string name="intro_welcome_desc">la comunitat d\'OpenMRS treballa en conjunt per construir el sistema de registre mèdic electrònic de codi obert líder al món.</string>
     <string name="intro_register_desc">Registrar nous pacients al nostre servidor</string>
     <string name="intro_find_desc">Pots cercar i monitoritzar els pacients</string>
     <string name="intro_monitor_desc">També t\'ajudem a monitoritzar les visites dels pacients</string>
-    <string name="intro_contact_desc">Pots administrar els proveïdors usant la nostra aplicació.</string>
+    <string name="intro_contact_desc">Envia\'ns els teu problemes o sugerències</string>
     <string name="intro_location_desc">"Pot canviar la ubicació amb un simple clic. "</string>
     <string name="intro_settings_desc">Probi la nostra funcionalitat de mode fosc.[...]</string>
     <string name="get_started_with_our_user_guide">Començar amb la nostra guia d\'usuari</string>

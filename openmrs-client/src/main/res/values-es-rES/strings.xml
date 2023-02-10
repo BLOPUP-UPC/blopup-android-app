@@ -304,7 +304,7 @@
     <string name="settings_logs">Registros</string>
     <string name="title_activity_logs">Regitrstos</string>
     <string name="action_provider_management">Administrar Proveedores</string>
-    <string name="intro_contact_us">Administrar Proveedores</string>
+    <string name="intro_contact_us">Contáctenos</string>
     <string name="intro_monitor">Monitorear Signos Vitales</string>
     <string name="snackbar_no_internet_connection">Sin conexión a internet</string>
     <string name="activity_no_internet_connection">Sin conexión a internet. Los datos del registro del paciente se guardaran de manera local</string>
@@ -378,7 +378,7 @@
     <string name="delete_provider_success_msg">Proveedor eliminado con éxito.</string>
     <string name="edit_provider_success_msg">Proveedor editado con éxito.</string>
     <string name="dialog_button_stay">Permanecer</string>
-    <string name="intro_contact_desc">Puedes administrar los proveedores usando nuestra aplicación.</string>
+    <string name="intro_contact_desc">Envíenos sus problemas o sugerencias.</string>
     <string name="receive_vitals_from_bluetooth_button_text">Recibir datos desde el tensiómetro</string>
     <string name="receive_vitals_from_bluetooth_button_error_message">No se encontró ninguna app para tomar los datos bluetooth</string>
 
