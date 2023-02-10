@@ -197,7 +197,7 @@
     <string name="hiv_unknown">Desconocido</string>
     <string name="unidentified_patient_name">DESCONOCIDO</string>
     <string name="req_star"><![CDATA[<font color=\'#616161\'> * </font>]]></string>
-    <string name="more_about_openmrs"><![CDATA[more]]></string>
+    <string name="more_about_openmrs"><![CDATA[más]]></string>
     <string name="alphanumeric_postal_code">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "</string>
     <string name="add_comment">Añadir un comentario</string>
     <string name="delete_allergy_offline">La alergia será eliminada del servidor al estar online.</string>
@@ -238,7 +238,7 @@
     <string name="about_openmrs_1">" OpenMRS es una comunidad global de colaboradores verdaderamente dedicados, talentosos y generosos que construyen y mantienen la plataforma OpenMRS y otros productos técnicos fundamentales de OpenMRS."</string>
     <string name="about_openmrs_2">" OpenMRS es una plataforma que los países y los implementadores utilizan para crear un sistema EMR customizado en respuesta a las necesidades reales."</string>
     <string name="delete_allergy_description">La alergia del paciente se eliminará del servidor. Está seguro de que quiere continuar?</string>
-    <string name="unable_to_fetch_allergies">¡No se pueden obtener las últimas alergias registradas!</string>
+    <string name="unable_to_fetch_allergies">action_about_activity</string>
     <string name="empty_allergy_list">Al paciente aún no se lo han hecho pruebas por alergias.</string>
     <string name="allergy_reactions">Reacciones.</string>
     <string name="allergy_severity">Gravedad</string>
