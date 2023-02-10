@@ -600,4 +600,5 @@
     <string name="height_unit_label">"  Cm"</string>
     <string name="send_button_label">Send</string>
     <string name="action_form_entry_new">Form Entry NEW</string>
+    <string name="patient_deceased">Patient deceased</string>
 </resources>

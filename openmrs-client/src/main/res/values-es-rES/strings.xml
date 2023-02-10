@@ -405,7 +405,6 @@
     <string name="weight_name_text">Peso:</string>
     <string name="receive_vitals_from_scale_button_text">Recibir peso de la báscula</string>
     <string name="app_tutorial">App Tutorial</string>
-    <string name="action_vitals_form">Formulacio Constantes Vitales</string>
     <string name="action_form_entry_new">Form Entry NEW</string>
     <string name="diastolic_label">Diastólica:</string>
     <string name="systolic_label">Sistólica:</string>
@@ -417,4 +416,5 @@
     <string name="receive_weight_value_button">Recibir peso de la báscula</string>
     <string name="tensiometer_button_label">"Recibir información del tensiómetro "</string>
     <string name="vitals_form_title">Signos vitales</string>
+    <string name="patient_deceased">Patiente fallecido</string>
 </resources>
