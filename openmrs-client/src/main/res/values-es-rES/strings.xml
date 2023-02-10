@@ -216,7 +216,7 @@
     <string name="contact_us">"Contáctenos "</string>
     <string name="dialog_matching_provider_positive_btn">Crear de todas formas</string>
     <string name="label_dark_mode">Modo Oscuro</string>
-    <string name="dob_error">La fecha debe ser entre %1$s y %2$</string>
+    <string name="dob_error">La fecha debe ser entre %1$s y %2$s</string>
     <string name="delete_allergy_title">¿Eliminar %1$s?</string>
     <string name="button_deny">Rechazar</string>
     <string name="device_offline_msg">Dispositivo sin conexión!</string>

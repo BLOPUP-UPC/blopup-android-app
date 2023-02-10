@@ -27,7 +27,7 @@
     <string name="fname_invalid_error">El nom no pot tenir ni símbols ni números.</string>
     <string name="midname_invalid_error">El segon nom no pot tenir ni símbols ni números.</string>
     <string name="lname_invalid_error">El cognom no pot tenir ni símbols ni números.</string>
-    <string name="dob_error">"La data ha d'estrar entre %1$s i %2$ "</string>
+    <string name="dob_error">La data ha d\'estar entre %1$s i %2$s</string>
     <string name="reg_firstname_hint">Nom*</string>
     <string name="reg_contact_firstname_hint">Nom</string>
     <string name="reg_midname_hint">Segon nom</string>
