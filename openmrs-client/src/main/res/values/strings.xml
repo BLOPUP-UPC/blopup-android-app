@@ -599,6 +599,6 @@
     <string name="height_value_label">Height</string>
     <string name="height_unit_label">"  Cm"</string>
     <string name="send_button_label">Send</string>
-    <string name="action_vitals_form">Vitals Entry</string>
+    <string name="action_vitals_form">Take vitals</string>
     <string name="patient_deceased">Patient deceased</string>
 </resources>
