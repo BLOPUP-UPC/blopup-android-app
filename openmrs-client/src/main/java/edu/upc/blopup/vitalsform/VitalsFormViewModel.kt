@@ -30,6 +30,11 @@ class VitalsFormViewModel @Inject constructor(
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
     fun submitForm(vitals: List<Vital>): LiveData<ResultType> {
+        val resultLiveData = MutableLiveData<ResultType>()
+        if (vitals.isEmpty()) {
+            resultLiveData.value = ResultType.EncounterSubmissionError
+            return resultLiveData
+        }
         val encounterCreate = Encountercreate()
         encounterCreate.patientId = patientId
         encounterCreate.observations = createObservationsFromVitals(vitals)

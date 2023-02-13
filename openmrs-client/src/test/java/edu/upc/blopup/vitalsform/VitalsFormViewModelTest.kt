@@ -18,7 +18,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import rx.Observable
@@ -47,7 +47,6 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     private val DEFAULT_PATIENT_ID: Long = 88L
     private val vital = Vital("weight", "50")
     private val testVitalForm = listOf(vital)
-
     private val testPatient = Patient().apply {
         id = DEFAULT_PATIENT_ID
         uuid = "d384d23a-a91b-11ed-afa1-0242ac120002"
@@ -81,6 +80,22 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         assertEquals(ResultType.EncounterSubmissionSuccess, actualResult.value)
 
         verify(encounterRepository).saveEncounter(any())
+    }
+
+    @Test
+    fun `when empty list of vitals is sent check that encounterError is returned `() {
+        subjectUnderTest = VitalsFormViewModel(
+            patientDAO,
+            formRepository,
+            encounterRepository,
+            savedStateHandle
+        )
+
+        val actualResult = subjectUnderTest.submitForm(emptyList())
+
+        assertEquals(ResultType.EncounterSubmissionError, actualResult.value)
+
+        verify(encounterRepository, never()).saveEncounter(any())
     }
 }
 
