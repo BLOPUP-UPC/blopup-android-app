@@ -144,25 +144,6 @@
                 android:value="edu.upc.openmrs.activities.activevisits.ActiveVisitsActivity" />
         </activity>
         <activity
-            android:name=".openmrs.activities.formlist.FormListActivity"
-            android:label="@string/action_form_entry"
-            android:launchMode="singleTop"
-            android:parentActivityName=".openmrs.activities.formentrypatientlist.FormEntryPatientListActivity"
-            android:theme="@style/AppThemeOrig">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".openmrs.activities.formentrypatientlist.FormEntryPatientListActivity" />
-        </activity>
-        <activity
-            android:name=".openmrs.activities.formadmission.FormAdmissionActivity"
-            android:label="@string/admission"
-            android:parentActivityName=".openmrs.activities.formlist.FormListActivity"
-            android:theme="@style/AppThemeOrig">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.formlist.FormListActivity" />
-        </activity>
-        <activity
             android:name=".openmrs.activities.formentrypatientlist.FormEntryPatientListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/action_form_entry"
@@ -197,17 +178,6 @@
         <service
             android:name="edu.upc.openmrs.services.AuthenticateCheckService"
             android:enabled="true" />
-
-        <activity
-            android:name="edu.upc.openmrs.activities.formdisplay.FormDisplayActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/title_activity_form_create"
-            android:parentActivityName=".openmrs.activities.formlist.FormListActivity"
-            android:theme="@style/AppThemeOrig">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.formlist.FormListActivity" />
-        </activity>
         <activity
             android:name=".openmrs.activities.lastviewedpatients.LastViewedPatientsActivity"
             android:configChanges="keyboardHidden|screenSize"
