@@ -38,11 +38,6 @@ class PatientValidator(private val patient: Patient,
         // Validate addresses
         if (address == null) return false
         with(address) {
-            if ((address1.isNullOrBlank() && address2.isNullOrBlank())
-                    || !validateText(address1, ILLEGAL_ADDRESS_CHARACTERS)
-                    || !validateText(address2, ILLEGAL_ADDRESS_CHARACTERS)) {
-                return false
-            }
             if (country != null && !countriesList.contains(country!!)) return false
         }
 

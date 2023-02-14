@@ -386,15 +386,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
 
         /* Addresses */
-        if (isEmpty(addressOne) && isEmpty(addressTwo) || isCountryCodePickerEmpty(
-                countryCodeSpinner
-            )
-        ) {
-            addressError.makeVisible()
-            addressError.text = getString(R.string.atleastone)
-            textInputLayoutAddress.error = getString(R.string.atleastone)
-            scrollToTop()
-        } else if (!validateText(getInput(addressOne), ILLEGAL_ADDRESS_CHARACTERS)
+       if (!validateText(getInput(addressOne), ILLEGAL_ADDRESS_CHARACTERS)
             || !validateText(getInput(addressTwo), ILLEGAL_ADDRESS_CHARACTERS)
         ) {
             addressError.makeVisible()

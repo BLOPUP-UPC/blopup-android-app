@@ -22,7 +22,7 @@
     <string name="reg_ques_dob">Fecha de nacimiento del paciente*</string>
     <string name="label_or">O</string>
     <string name="reg_ques_address">Dirección</string>
-    <string name="addr1_hint">Dirección Línea 1*</string>
+    <string name="addr1_hint">Dirección Línea 1</string>
     <string name="addr2_hint">Dirección Línea 2</string>
     <string name="addr_invalid_error">La dirección no puede contener caracteres inválidos.</string>
     <string name="atleastone">Rellenar al menos un campo de dirección</string>
