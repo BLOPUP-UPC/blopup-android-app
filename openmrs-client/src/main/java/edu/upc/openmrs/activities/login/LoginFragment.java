@@ -40,6 +40,7 @@ import com.openmrs.android_sdk.utilities.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.upc.BuildConfig;
 import edu.upc.R;
 import edu.upc.databinding.FragmentLoginBinding;
 import edu.upc.openmrs.activities.ACBaseFragment;
@@ -51,6 +52,7 @@ import edu.upc.openmrs.bundle.CustomDialogBundle;
 import edu.upc.openmrs.listeners.watcher.LoginValidatorWatcher;
 import edu.upc.openmrs.services.FormListService;
 import edu.upc.openmrs.utilities.URLValidator;
+
 
 public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> implements LoginContract.View {
     private static String mLastCorrectURL = "";
@@ -79,6 +81,12 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
             binding.loginUrlField.setText(mLastCorrectURL);
         }
         hideURLDialog();
+        if (BuildConfig.DEBUG){
+            binding.textInputLayoutLoginURL.setVisibility(View.VISIBLE);
+        } else {
+            binding.textInputLayoutLoginURL.setVisibility(View.INVISIBLE);
+        }
+
         return mRootView;
     }
 
