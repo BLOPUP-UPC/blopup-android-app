@@ -466,6 +466,8 @@
     <string name="contact_us">Contact Us</string>
     <string name="no_mailing_client_found">There are no email clients installed.</string>
     <string name="contact_us_or">OR</string>
+    <string name="blopup_helpdesk" translatable="false">Blopup helpdesk</string>
+    <string name="message">Write here your message...</string>
 
     <!-- ShowCaseView -->
     <string name="showcase_find_patients">Click here to search through all the patients</string>

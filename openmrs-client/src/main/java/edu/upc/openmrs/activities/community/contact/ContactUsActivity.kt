@@ -13,14 +13,11 @@
  */
 package edu.upc.openmrs.activities.community.contact
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import com.openmrs.android_sdk.utilities.ToastUtil
+import com.openmrs.android_sdk.library.models.EmailRequest
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActvityContactUsBinding
@@ -43,25 +40,8 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             actionBar.setTitle(R.string.contact_us)
         }
 
-        binding.emailLayout.setOnClickListener {
-            val sendMailIntent = Intent(Intent.ACTION_SENDTO)
-            val mailTo = "mailto:" + binding.contactEmailLink.text.toString()
-            sendMailIntent.data = Uri.parse(mailTo)
-            try {
-                startActivity(sendMailIntent)
-            } catch (ex: ActivityNotFoundException) {
-                ToastUtil.showShortToast(this, ToastUtil.ToastType.ERROR, getString(R.string.no_mailing_client_found))
-            }
-        }
-
-        binding.forumLayout.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.contact_forum_url)))
-            startActivity(intent)
-        }
-
-        binding.ircLayout.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.contact_irc_url)))
-            startActivity(intent)
+        binding.sendEmail.setOnClickListener {
+            sendEmail()
         }
     }
 
@@ -85,5 +65,13 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun sendEmail() {
+        val message = binding.message.text.toString()
+
+        val emailRequest = EmailRequest("Blopup", message)
+
+        viewModel.sendEmail(emailRequest)
     }
 }

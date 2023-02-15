@@ -30,6 +30,7 @@ import com.openmrs.android_sdk.library.models.Allergy;
 import com.openmrs.android_sdk.library.models.AllergyCreate;
 import com.openmrs.android_sdk.library.models.ConceptAnswers;
 import com.openmrs.android_sdk.library.models.ConceptMembers;
+import com.openmrs.android_sdk.library.models.EmailRequest;
 import com.openmrs.android_sdk.library.models.Encounter;
 import com.openmrs.android_sdk.library.models.EncounterType;
 import com.openmrs.android_sdk.library.models.Encountercreate;
@@ -412,6 +413,15 @@ public interface RestApi {
      */
     @POST("provider")
     Call<Provider> addProvider(@Body Provider provider);
+
+    /**
+     * Add email call.
+     *
+     * @param emailRequest to Blopup
+     * @return the call
+     */
+    @POST("email")
+    Call<String> sendEmail(@Body EmailRequest emailRequest);
 
     /**
      * Update provider call.
