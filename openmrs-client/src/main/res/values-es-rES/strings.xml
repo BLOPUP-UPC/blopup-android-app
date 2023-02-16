@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OpenMRS Android Client</string>
+    <string name="app_name">BLOPUP Android Client</string>
     <string name="login_username_hint">Usuario</string>
     <string name="login_password_hint">Contraseña</string>
-    <string name="organization_name">OpenMRS</string>
     <string name="action_settings">Ajustes</string>
     <string name="action_logout">Cerrar sesión</string>
     <string name="action_location">Ubicación</string>
@@ -35,6 +34,7 @@
     <string name="age_out_of_bounds_message">La edad del paciente debe estar entre los 0 and %d</string>
     <string name="register_patient_error">Paciente no registrado debido a un error del servidor</string>
     <string name="update_patient_success">El paciente %s actualizado</string>
+    <string name="update_patient_error">El paciente %s no se ha actualizado por un error en el servidor</string>
     <string name="offline_mode_unsupported_in_first_login">El modo offline no está disponible durante el primer inicio de sesión. Activa el modo online e intenta nuevamente.</string>
     <string name="login_offline_toast_message">Ahora estás en modo offline.</string>
     <string name="auth_failed_dialog_message">Nombre de usuario o contraseña incorrectos. Por favor, intentar nuevamente.</string>

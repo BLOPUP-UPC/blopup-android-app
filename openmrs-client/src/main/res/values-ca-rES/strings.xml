@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OpenMRS Android Client</string>
+    <string name="app_name">BLOPUP Android Client</string>
     <string name="action_settings">Preferències</string>
     <string name="action_logout">Tancar sessió</string>
     <string name="action_location">Ubicació</string>
@@ -52,7 +52,7 @@
     <string name="age_out_of_bounds_message">L\'edat del pacient ha d\'estar entre els 0 and %d</string>
     <string name="register_patient_error">Pacient no registrat degut a un error amb el servidor</string>
     <string name="update_patient_success">El pacient %s actualitzat</string>
-    <string name="update_patient_error">Pacient %s actualitzat</string>
+    <string name="update_patient_error">El pacient %s no es pot actualitzar per un error al servidor</string>
     <string name="offline_mode_unsupported_in_first_login">El mode offline no està disponible durant el primer inici de sessió. Activa el mode online i intenta de nou.</string>
     <string name="login_offline_toast_message">Ara estàs al mode offline.</string>
     <string name="auth_failed_dialog_message">Nom d\'usuari o contrasenya incorrectes. Si us plau, intenta-ho un altre cop.</string>
@@ -408,13 +408,11 @@
     <string name="tensiometer_button_label">Rebre dades del tensiòmetre</string>
     <string name="systolic_label">Sistòlica</string>
     <string name="diastolic_label">Diastòlica</string>
-    <string name="blood_pressure_measurement_unit">"     mmHg"</string>
     <string name="pulse_label">Pols</string>
     <string name="receive_weight_value_button">"Rebre pes de la bàscula  "</string>
     <string name="weight_value_label">Pes</string>
     <string name="weight_unit_label">"    Kg"</string>
     <string name="height_value_label">Alçada</string>
-    <string name="height_unit_label">"  Cm"</string>
     <string name="send_button_label">Enviar</string>
     <string name="action_form_entry_new">Form Entry NEW</string>
     <string name="patient_deceased">Patient mort</string>
