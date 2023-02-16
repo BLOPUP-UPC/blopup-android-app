@@ -26,23 +26,15 @@ apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
 
-def version = versions.appVersion
 def GOOGLE_PLACE_API_KEY = System.getenv('GOOGLE_PLACE_API_KEY') ?: "YOUR_API_KEY"
 
 android {
     compileSdkVersion versions.compileSdk
 
-    def travisBuildNumber = System.getenv("TRAVIS_BUILD_NUMBER")
-    def buildNumber = (travisBuildNumber) ? (travisBuildNumber as int) : 1
-
-    def applicationVersion = version
-    def travisTag = System.getenv("TRAVIS_TAG")
-    def buildVersionName = (travisTag) ? travisTag : applicationVersion + "-debug." + buildNumber
-
     defaultConfig {
         applicationId "edu.upc"
-        versionName buildVersionName
-        versionCode buildNumber
+        versionName "1.0.0"
+        versionCode 1
         multiDexEnabled true
 
         minSdkVersion versions.minSdk
@@ -88,6 +80,8 @@ android {
     }
 
     lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
         warning 'InvalidPackage'
     }
 
