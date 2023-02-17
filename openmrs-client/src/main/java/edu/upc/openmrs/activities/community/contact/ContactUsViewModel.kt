@@ -11,20 +11,15 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactUsViewModel @Inject constructor(
     private val emailRepository: EmailRepository
-) : BaseViewModel<String>() {
+) : BaseViewModel<Boolean>() {
 
-    fun sendEmail(emailRequest: EmailRequest) {
-        setLoading(OperationType.PatientAllergyFetching)
+     fun sendEmail(emailRequest: EmailRequest) {
+        //setLoading(OperationType.EmailFetching)
         addSubscription(emailRepository.sendEmail(emailRequest)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { response: String ->
-                    setContent(
-                        response,
-                        OperationType.PatientAllergyFetching
-                    )
-                },
-                { setError(it, OperationType.PatientAllergyFetching) }
+                { setContent(it, OperationType.EmailFetching) },
+                { setError (it, OperationType.EmailFetching) }
             )
         )
     }

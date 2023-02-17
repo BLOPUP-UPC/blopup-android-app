@@ -421,7 +421,7 @@ public interface RestApi {
      * @return the call
      */
     @POST("email")
-    Call<String> sendEmail(@Body EmailRequest emailRequest);
+    Call<ResponseBody> sendEmail(@Body EmailRequest emailRequest);
 
     /**
      * Update provider call.

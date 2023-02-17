@@ -25,6 +25,7 @@ import com.openmrs.android_sdk.utilities.ToastUtil;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -34,24 +35,16 @@ public class EmailRepository extends BaseRepository {
     @Inject
     public  EmailRepository(){}
 
-    public Observable<String> sendEmail(EmailRequest emailRequest) {
+    public Observable<Boolean> sendEmail(EmailRequest emailRequest) {
         return createObservableIO(() -> {
-            // If not online, fetch providers locally
-            if (!NetworkUtils.isOnline()) {
-                ToastUtil.notify(context.getString(R.string.offline_provider_fetch));
-                logger.e("offline providers fetched couldn't sync with the database device offline");
-                return null;
-            }
-            // Otherwise (online), fetch remote providers
-            Response<String> response = restApi.sendEmail(emailRequest).execute();
-            if (response.isSuccessful()) {
-                if (StringUtils.notEmpty(response.body())) {
-                    return response.body();
-                }
-            } else {
-                logger.e("Error sending email from the server: " + response.errorBody().string());
-            }
-            return null;
+//            if (!NetworkUtils.isOnline()) {
+//                ToastUtil.notify(context.getString(R.string.offline_provider_fetch));
+//                logger.e("offline providers fetched couldn't sync with the database device offline");
+//                return null;
+//            }
+                Response<ResponseBody> response = restApi.sendEmail(emailRequest).execute();
+
+                return response.isSuccessful();
         });
     }
 }
