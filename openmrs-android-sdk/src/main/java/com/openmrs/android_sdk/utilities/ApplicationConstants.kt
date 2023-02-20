@@ -37,7 +37,7 @@ object ApplicationConstants {
     const val DEFAULT_BCRYPT_ROUND = 8
     const val SPLASH_TIMER = 3500
     const val PACKAGE_NAME = "edu.upc.openmrs"
-    const val USER_GUIDE = "https://openmrs.github.io/openmrs-android-client-user-guide/getting-started.html"
+    const val USER_GUIDE = "https://blopup-upc.github.io/blopup-android-user-guide/"
     const val MESSAGE_RFC_822 = "message/rfc822"
     const val FLAG = "flag"
     const val ERROR = "error"
