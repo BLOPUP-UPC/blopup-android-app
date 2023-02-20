@@ -15,16 +15,9 @@
 package com.openmrs.android_sdk.library.api.repository;
 
 import static com.openmrs.android_sdk.library.databases.AppDatabaseHelper.createObservableIO;
-
-import com.openmrs.android_sdk.R;
 import com.openmrs.android_sdk.library.models.EmailRequest;
-import com.openmrs.android_sdk.utilities.NetworkUtils;
-import com.openmrs.android_sdk.utilities.StringUtils;
-import com.openmrs.android_sdk.utilities.ToastUtil;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
@@ -37,14 +30,8 @@ public class EmailRepository extends BaseRepository {
 
     public Observable<Boolean> sendEmail(EmailRequest emailRequest) {
         return createObservableIO(() -> {
-//            if (!NetworkUtils.isOnline()) {
-//                ToastUtil.notify(context.getString(R.string.offline_provider_fetch));
-//                logger.e("offline providers fetched couldn't sync with the database device offline");
-//                return null;
-//            }
-                Response<ResponseBody> response = restApi.sendEmail(emailRequest).execute();
-
-                return response.isSuccessful();
+            Response<ResponseBody> response = restApi.sendEmail(emailRequest).execute();
+            return response.isSuccessful();
         });
     }
 }

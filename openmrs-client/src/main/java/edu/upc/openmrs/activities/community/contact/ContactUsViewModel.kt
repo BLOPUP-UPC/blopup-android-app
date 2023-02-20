@@ -14,7 +14,6 @@ class ContactUsViewModel @Inject constructor(
 ) : BaseViewModel<Boolean>() {
 
      fun sendEmail(emailRequest: EmailRequest) {
-        //setLoading(OperationType.EmailFetching)
         addSubscription(emailRepository.sendEmail(emailRequest)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

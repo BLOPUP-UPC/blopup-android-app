@@ -1,10 +1,13 @@
 package edu.upc.openmrs.test.viewmodels
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.openmrs.android_sdk.library.api.repository.EmailRepository
 import com.openmrs.android_sdk.library.models.EmailRequest
 import edu.upc.openmrs.activities.community.contact.ContactUsViewModel
+import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Before
 import org.junit.Ignore
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -16,17 +19,19 @@ import org.mockito.kotlin.verify
 import rx.Observable
 
 @RunWith(JUnit4::class)
-class ContactUsViewModelTest {
+class ContactUsViewModelTest : ACUnitTestBaseRx() {
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
     lateinit var emailRepository : EmailRepository
 
     @Before
-    fun setUp () {
-        MockitoAnnotations.initMocks(this)
+    override fun setUp () {
+        super.setUp()
     }
 
-    @Ignore
     @Test
     fun whenSendARequest_thenCallToTheAPI() {
         val contactUsViewModel = ContactUsViewModel(emailRepository)
