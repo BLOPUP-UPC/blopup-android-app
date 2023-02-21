@@ -36,9 +36,8 @@ class ContactUsViewModelTest : ACUnitTestBaseRx() {
     fun whenSendARequest_thenCallToTheAPI() {
         val contactUsViewModel = ContactUsViewModel(emailRepository)
         val emailRequest = createEmailRequest()
-        val sendEmailExpectedResult = true
 
-        `when`(emailRepository.sendEmail(emailRequest)).thenReturn(Observable.just(sendEmailExpectedResult))
+        `when`(emailRepository.sendEmail(emailRequest)).thenReturn(Observable.just(Unit))
         contactUsViewModel.sendEmail(emailRequest)
 
         verify(emailRepository).sendEmail(any())
