@@ -52,7 +52,11 @@ class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private val viewModel: SettingsViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         addLogsInfo()
@@ -81,7 +85,10 @@ class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
         super.onResume()
         updateConceptsInDbText()
         LocalBroadcastManager.getInstance(requireActivity())
-                .registerReceiver(broadcastReceiver!!, IntentFilter(ApplicationConstants.BroadcastActions.CONCEPT_DOWNLOAD_BROADCAST_INTENT_ID))
+            .registerReceiver(
+                broadcastReceiver!!,
+                IntentFilter(ApplicationConstants.BroadcastActions.CONCEPT_DOWNLOAD_BROADCAST_INTENT_ID)
+            )
     }
 
     private fun updateConceptsInDbText() {
@@ -92,8 +99,10 @@ class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
             val customSnackBarView = layoutInflater.inflate(R.layout.snackbar, null)
             val snackBarLayout = snackbar.view as SnackbarLayout
             snackBarLayout.setPadding(0, 0, 0, 0)
-            val dismissButton = customSnackBarView.findViewById<TextView>(R.id.snackbar_action_button)
-            val typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/Roboto/Roboto-Medium.ttf")
+            val dismissButton =
+                customSnackBarView.findViewById<TextView>(R.id.snackbar_action_button)
+            val typeface =
+                Typeface.createFromAsset(requireActivity().assets, "fonts/Roboto/Roboto-Medium.ttf")
             dismissButton.typeface = typeface
             dismissButton.setOnClickListener { snackbar.dismiss() }
             snackBarLayout.addView(customSnackBarView, 0)
@@ -117,8 +126,8 @@ class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
         conceptsDownloadButton.setOnClickListener {
             conceptsDownloadButton.isEnabled = false
             Intent(activity, edu.upc.openmrs.services.ConceptDownloadService::class.java)
-                    .apply { action = START_CONCEPT_DOWNLOAD_ACTION }
-                    .let { activity?.startService(it) }
+                .apply { action = START_CONCEPT_DOWNLOAD_ACTION }
+                .let { activity?.startService(it) }
         }
     }
 
@@ -132,8 +141,8 @@ class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
     private fun addPrivacyPolicyInfo() {
         binding.privacyPolicyLayout.setOnClickListener {
             Intent(Intent.ACTION_VIEW)
-                    .setData(Uri.parse(getString(R.string.url_privacy_policy)))
-                    .let { startActivity(it) }
+                .setData(Uri.parse(getString(R.string.url_privacy_policy)))
+                .let { startActivity(it) }
         }
     }
 
@@ -142,9 +151,11 @@ class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
             val intent = Intent(Intent.ACTION_VIEW, viewModel.appMarketUri)
             // Ignore Play Store back stack, on back press will take us back to our app
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+                intent.addFlags(
+                    Intent.FLAG_ACTIVITY_NO_HISTORY or
+                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+                )
             }
             try {
                 startActivity(intent)
@@ -155,7 +166,14 @@ class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun setupContactUsButton() {
-        binding.contactUsLayout.setOnClickListener { startActivity(Intent(context, ContactUsActivity::class.java)) }
+        binding.contactUsLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    context,
+                    ContactUsActivity::class.java
+                )
+            )
+        }
     }
 
     private fun setupDarkMode() {
@@ -170,10 +188,16 @@ class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private fun setupLanguageSpinner() {
         with(binding.languageSpinner) {
-            adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, LANGUAGE_LIST)
+            adapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, LANGUAGE_LIST)
             setSelection(viewModel.languageListPosition)
             onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     viewModel.languageListPosition = position
                 }
 

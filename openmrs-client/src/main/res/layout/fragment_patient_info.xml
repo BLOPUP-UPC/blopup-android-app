@@ -411,10 +411,11 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/dob_hint"
-                                    android:imeOptions="actionNext"
+                                    android:imeOptions="flagNoExtractUi|actionNext"
                                     android:inputType="datetime"
                                     android:maxLength="10"
                                     android:maxLines="1"
+                                    android:focusable="true"
                                     android:nextFocusDown="@+id/estimatedYear"
                                     android:textSize="14sp" />
                             </com.google.android.material.textfield.TextInputLayout>
