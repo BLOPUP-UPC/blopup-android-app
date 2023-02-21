@@ -417,5 +417,6 @@
     <string name="vitals_form_title">Signos vitales</string>
     <string name="patient_deceased">Patiente fallecido</string>
     <string name="action_vitals_form">Tomar constantes</string>
-    <string name="send_email_success_toast_message">Email enviado correctamente</string>
+    <string name="send_email_success_toast_message">Mensaje enviado correctamente</string>
+    <string name="send_email_fails_toast_message">Error al enviar el mensje</string>
 </resources>

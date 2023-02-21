@@ -416,5 +416,6 @@
     <string name="send_button_label">Enviar</string>
     <string name="patient_deceased">Pacient mort</string>
     <string name="action_vitals_form">Prendre constants</string>
-    <string name="send_email_success_toast_message">Email enviat correctament</string>
+    <string name="send_email_success_toast_message">Missatge enviat correctament</string>
+    <string name="send_email_fails_toast_message">Error a l\'enviar el missatge</string>
 </resources>

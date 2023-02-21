@@ -49,7 +49,6 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
-        //Disable Contact Option in Menu
         val contactItem = menu.findItem(R.id.actionContact)
         contactItem.isVisible = false
         val logOutItem = menu.findItem(R.id.actionLogout)
@@ -72,12 +71,23 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     private fun sendEmail() {
         val message = binding.message.text.toString()
 
-        val emailRequest = EmailRequest("Blopup", message)
+        val emailRequest = EmailRequest(getString(R.string.subject_send_email), message)
 
-        val result = viewModel.sendEmail(emailRequest)
-        when(result.value){
-            is Result.Success<Unit> -> ToastUtil.success(getString(R.string.send_email_success_toast_message))
-            //is Result.Error -> ToastUtil.error("Fallo al enviar")
+        val resultSendEmail = viewModel.sendEmail(emailRequest)
+
+        when(resultSendEmail.value) {
+            is Result.Success<Unit> -> onSuccess()
+            else -> onFailure()
         }
     }
+
+    private fun onSuccess() {
+        ToastUtil.success(getString(R.string.send_email_success_toast_message))
+        binding.message.text.clear()
+    }
+
+    private fun onFailure() {
+        ToastUtil.error(getString(R.string.send_email_fails_toast_message))
+    }
+
 }

@@ -603,5 +603,7 @@
     <string name="send_button_label">Send</string>
     <string name="action_vitals_form">Take vitals</string>
     <string name="patient_deceased">Patient deceased</string>
-    <string name="send_email_success_toast_message">Email sent correctly</string>
+    <string name="send_email_success_toast_message">Message sent correctly</string>
+    <string name="send_email_fails_toast_message">Error sending message</string>
+    <string name="subject_send_email" translatable="false">Blopup User Feedback</string>
 </resources>
