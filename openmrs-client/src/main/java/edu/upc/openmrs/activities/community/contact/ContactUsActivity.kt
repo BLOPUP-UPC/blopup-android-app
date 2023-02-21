@@ -18,6 +18,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import com.openmrs.android_sdk.library.models.EmailRequest
+import com.openmrs.android_sdk.library.models.Result
+import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActvityContactUsBinding
@@ -72,6 +74,10 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         val emailRequest = EmailRequest("Blopup", message)
 
-        viewModel.sendEmail(emailRequest)
+        val result = viewModel.sendEmail(emailRequest)
+        when(result.value){
+            is Result.Success<Unit> -> ToastUtil.success(getString(R.string.send_email_success_toast_message))
+            //is Result.Error -> ToastUtil.error("Fallo al enviar")
+        }
     }
 }
