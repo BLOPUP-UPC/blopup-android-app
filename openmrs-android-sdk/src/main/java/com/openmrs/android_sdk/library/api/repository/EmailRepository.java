@@ -15,12 +15,18 @@
 package com.openmrs.android_sdk.library.api.repository;
 
 import static com.openmrs.android_sdk.library.databases.AppDatabaseHelper.createObservableIO;
+
+import android.util.Log;
+
 import com.openmrs.android_sdk.library.models.EmailRequest;
+import com.openmrs.android_sdk.library.models.Session;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import kotlin.Unit;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -30,13 +36,18 @@ public class EmailRepository extends BaseRepository {
     @Inject
     public  EmailRepository(){}
 
-    public Observable<Unit> sendEmail(EmailRequest emailRequest) {
+    public Observable<String> sendEmail(EmailRequest emailRequest) {
         return createObservableIO(() -> {
-            Response<ResponseBody> response = restApi.sendEmail(emailRequest).execute();
-            if (!response.isSuccessful()){
+            try{
+                Response<ResponseBody> response = restApi.sendEmail(emailRequest).execute();
+                if (response.isSuccessful()){
+                    return response.body().string();
+                }
                 throw new Exception("Error sending email:" + response.errorBody());
+            } catch (Exception exception){
+                Log.e(getClass().getName(), exception.getMessage(), exception);
+                throw exception;
             }
-            return null;
         });
     }
 }

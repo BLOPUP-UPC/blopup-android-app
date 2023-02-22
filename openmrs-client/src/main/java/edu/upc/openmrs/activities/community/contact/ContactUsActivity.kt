@@ -17,12 +17,16 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.openmrs.android_sdk.library.models.EmailRequest
 import com.openmrs.android_sdk.library.models.Result
+import com.openmrs.android_sdk.library.models.ResultType
+import com.openmrs.android_sdk.utilities.StringUtils
 import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActvityContactUsBinding
+import edu.upc.openmrs.utilities.observeOnce
 
 @AndroidEntryPoint
 class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -73,21 +77,16 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         val emailRequest = EmailRequest(getString(R.string.subject_send_email), message)
 
-        val resultSendEmail = viewModel.sendEmail(emailRequest)
-
-        when(resultSendEmail.value) {
-            is Result.Success<Unit> -> onSuccess()
-            else -> onFailure()
-        }
+        viewModel.sendEmail(emailRequest).observeOnce(this, Observer { result ->
+            when (result) {
+                result -> {
+                    ToastUtil.success(getString(R.string.send_email_success_toast_message))
+                    binding.message.text.clear()
+                }
+                else -> {
+                    ToastUtil.error(getString(R.string.send_email_fails_toast_message))
+                }
+            }
+        })
     }
-
-    private fun onSuccess() {
-        ToastUtil.success(getString(R.string.send_email_success_toast_message))
-        binding.message.text.clear()
-    }
-
-    private fun onFailure() {
-        ToastUtil.error(getString(R.string.send_email_fails_toast_message))
-    }
-
 }
