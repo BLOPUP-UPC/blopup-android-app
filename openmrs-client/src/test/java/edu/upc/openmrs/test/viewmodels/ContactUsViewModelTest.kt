@@ -37,7 +37,7 @@ class ContactUsViewModelTest : ACUnitTestBaseRx() {
         val contactUsViewModel = ContactUsViewModel(emailRepository)
         val emailRequest = createEmailRequest()
 
-        `when`(emailRepository.sendEmail(emailRequest)).thenReturn(Observable.just(Unit))
+        `when`(emailRepository.sendEmail(emailRequest)).thenReturn(Observable.just("Success"))
         contactUsViewModel.sendEmail(emailRequest)
 
         verify(emailRepository).sendEmail(any())
