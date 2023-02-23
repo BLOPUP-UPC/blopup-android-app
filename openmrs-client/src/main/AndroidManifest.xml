@@ -25,7 +25,7 @@
     <application
         android:name="edu.upc.openmrs.application.OpenMRS"
         android:allowBackup="true"
-        android:icon="@drawable/ic_openmrs"
+        android:icon="@drawable/logo_blopup"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:fullBackupContent="@xml/backup_rules"

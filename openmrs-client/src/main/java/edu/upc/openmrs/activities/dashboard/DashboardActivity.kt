@@ -67,7 +67,7 @@ class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             actionBar.setDisplayHomeAsUpEnabled(false)
             actionBar.setDisplayUseLogoEnabled(true)
             actionBar.setDisplayShowHomeEnabled(true)
-            actionBar.setLogo(R.drawable.openmrs_action_logo)
+//            actionBar.setLogo(R.drawable.openmrs_action_logo)
             actionBar.setTitle(R.string.app_name)
         }
     }
