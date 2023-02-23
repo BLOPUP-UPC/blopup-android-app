@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:focusable="true"
                     android:gravity="top|left"
-                    android:hint="@string/message"
+                    android:hint="@string/contact_us_message_hint"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences|textMultiLine"
                     android:overScrollMode="always"
