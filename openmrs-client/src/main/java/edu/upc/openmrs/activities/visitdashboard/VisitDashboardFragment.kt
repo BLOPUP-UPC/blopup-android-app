@@ -42,7 +42,7 @@ import edu.upc.openmrs.utilities.observeOnce
 class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     private var _binding: FragmentVisitDashboardBinding? = null
     private val binding get() = _binding!!
-    private var visitExpandableListAdapter: edu.upc.openmrs.activities.visitdashboard.VisitExpandableListAdapter? = null
+    private var visitExpandableListAdapter: VisitExpandableListAdapter? = null
 
     private val viewModel: VisitDashboardViewModel by viewModels()
 
@@ -54,7 +54,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         visitExpandableListAdapter =
-            edu.upc.openmrs.activities.visitdashboard.VisitExpandableListAdapter(
+            VisitExpandableListAdapter(
                 requireContext(),
                 emptyList()
             )

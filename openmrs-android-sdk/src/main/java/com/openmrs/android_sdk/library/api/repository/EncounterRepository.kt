@@ -43,7 +43,7 @@ class EncounterRepository @Inject constructor() : BaseRepository() {
                         val encounter: Encounter = body()!!
                         encounter.encounterType = EncounterType(encounterCreate.formname)
                         for (i in encounterCreate.observations.indices) {
-                            encounter.observations[i].displayValue = encounterCreate.observations[i].value
+                            encounter.observations[i].displayValue = encounter.observations[i].display!!.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
                         }
 
                         // Update the visit linked to this encounter
