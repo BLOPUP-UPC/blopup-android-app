@@ -19,9 +19,6 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.openmrs.android_sdk.library.models.EmailRequest
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.library.models.ResultType
-import com.openmrs.android_sdk.utilities.StringUtils
 import com.openmrs.android_sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R

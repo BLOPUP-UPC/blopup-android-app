@@ -14,9 +14,16 @@
 package com.openmrs.android_sdk.utilities
 
 import android.util.Log
-import com.openmrs.android_sdk.library.models.Resource
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import com.google.gson.annotations.Expose
+import com.openmrs.android_sdk.library.models.Resource
 import java.lang.reflect.Type
 
 class ResourceSerializer : JsonSerializer<Resource> {

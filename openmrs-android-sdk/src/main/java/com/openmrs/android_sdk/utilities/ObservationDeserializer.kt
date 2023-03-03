@@ -13,12 +13,12 @@
  */
 package com.openmrs.android_sdk.utilities
 
-import com.openmrs.android_sdk.library.databases.entities.ConceptEntity
-import com.openmrs.android_sdk.library.models.Observation
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
+import com.openmrs.android_sdk.library.databases.entities.ConceptEntity
+import com.openmrs.android_sdk.library.models.Observation
 import java.lang.reflect.Type
 
 class ObservationDeserializer : JsonDeserializer<Observation> {

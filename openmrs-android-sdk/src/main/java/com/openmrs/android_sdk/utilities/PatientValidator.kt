@@ -1,7 +1,6 @@
 package com.openmrs.android_sdk.utilities
 
 import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.utilities.StringUtils.ILLEGAL_ADDRESS_CHARACTERS
 import com.openmrs.android_sdk.utilities.StringUtils.ILLEGAL_CHARACTERS
 import com.openmrs.android_sdk.utilities.StringUtils.validateText
 

@@ -17,11 +17,10 @@ package com.openmrs.android_sdk.library.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.TypeConverters
-import com.openmrs.android_sdk.library.models.typeConverters.PersonConverter
-import com.openmrs.android_sdk.library.models.typeConverters.ProviderAttributeConverter
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import com.openmrs.android_sdk.library.models.typeConverters.PersonConverter
+import com.openmrs.android_sdk.library.models.typeConverters.ProviderAttributeConverter
 
 /**
  * Provider

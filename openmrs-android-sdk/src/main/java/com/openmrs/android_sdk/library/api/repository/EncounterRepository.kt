@@ -10,9 +10,9 @@ import com.openmrs.android_sdk.library.models.ResultType
 import com.openmrs.android_sdk.utilities.NetworkUtils
 import com.openmrs.android_sdk.utilities.execute
 import rx.Observable
+import java.util.concurrent.Callable
 import javax.inject.Inject
 import javax.inject.Singleton
-import java.util.concurrent.Callable
 
 @Singleton
 class EncounterRepository @Inject constructor() : BaseRepository() {

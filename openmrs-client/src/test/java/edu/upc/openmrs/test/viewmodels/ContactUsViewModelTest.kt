@@ -6,14 +6,12 @@ import com.openmrs.android_sdk.library.models.EmailRequest
 import edu.upc.openmrs.activities.community.contact.ContactUsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import rx.Observable

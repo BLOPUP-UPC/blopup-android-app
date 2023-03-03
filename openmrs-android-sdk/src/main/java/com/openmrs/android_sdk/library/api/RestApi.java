@@ -10,19 +10,6 @@
 
 package com.openmrs.android_sdk.library.api;
 
-import java.util.Map;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.DELETE;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
-import retrofit2.http.Url;
-
 import com.openmrs.android_sdk.library.databases.entities.ConceptEntity;
 import com.openmrs.android_sdk.library.databases.entities.FormResourceEntity;
 import com.openmrs.android_sdk.library.databases.entities.LocationEntity;
@@ -54,6 +41,19 @@ import com.openmrs.android_sdk.library.models.SystemSetting;
 import com.openmrs.android_sdk.library.models.User;
 import com.openmrs.android_sdk.library.models.Visit;
 import com.openmrs.android_sdk.library.models.VisitType;
+
+import java.util.Map;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 /**
  * The interface Rest api.

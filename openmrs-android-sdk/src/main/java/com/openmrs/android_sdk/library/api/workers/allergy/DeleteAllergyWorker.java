@@ -17,8 +17,6 @@ package com.openmrs.android_sdk.library.api.workers.allergy;
 import static com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.ALLERGY_UUID;
 import static com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID;
 
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -30,6 +28,9 @@ import com.openmrs.android_sdk.library.api.RestServiceBuilder;
 import com.openmrs.android_sdk.library.dao.AllergyRoomDAO;
 import com.openmrs.android_sdk.library.databases.AppDatabase;
 import com.openmrs.android_sdk.utilities.NetworkUtils;
+
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 
 /**

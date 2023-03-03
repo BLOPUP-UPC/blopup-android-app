@@ -14,7 +14,6 @@ import androidx.room.TypeConverters
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.openmrs.android_sdk.library.models.typeConverters.PersonNameConverter
-import java.util.*
 
 /**
  *

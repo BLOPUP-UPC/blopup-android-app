@@ -17,16 +17,6 @@ package com.openmrs.android_sdk.library.api.repository;
 import static com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.ALLERGY_UUID;
 import static com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import rx.Observable;
-
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -42,6 +32,17 @@ import com.openmrs.android_sdk.library.models.Patient;
 import com.openmrs.android_sdk.library.models.ResultType;
 import com.openmrs.android_sdk.library.models.Results;
 import com.openmrs.android_sdk.utilities.NetworkUtils;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import rx.Observable;
 
 /**
  * The type Allergy repository.

@@ -5,14 +5,12 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.openmrs.android_sdk.library.databases.entities.DiagnosisEntity;
-import com.openmrs.android_sdk.library.databases.entities.ObservationEntity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import io.reactivex.Single;
-import kotlin.Unit;
 
 /**
  * The interface Visit room dao.

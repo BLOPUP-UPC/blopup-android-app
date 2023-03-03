@@ -19,17 +19,6 @@ import static com.openmrs.android_sdk.utilities.ApplicationConstants.API.FULL;
 import static com.openmrs.android_sdk.utilities.ApplicationConstants.API.REST_ENDPOINT;
 import static com.openmrs.android_sdk.utilities.ApplicationConstants.API.TAG_ADMISSION_LOCATION;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.HashSet;
-import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.Observable;
-
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -51,6 +40,18 @@ import com.openmrs.android_sdk.utilities.NetworkUtils;
 import com.openmrs.android_sdk.utilities.ToastUtil;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashSet;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import rx.Observable;
 
 /**
  * The type Provider repository.

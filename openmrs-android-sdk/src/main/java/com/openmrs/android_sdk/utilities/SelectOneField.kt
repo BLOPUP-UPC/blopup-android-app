@@ -17,7 +17,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.openmrs.android_sdk.library.models.Answer
 import java.io.Serializable
-import java.util.*
 
 class SelectOneField : Serializable, Parcelable {
     var concept: String? = null

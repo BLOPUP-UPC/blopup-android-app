@@ -15,7 +15,6 @@ package com.openmrs.android_sdk.library.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 /**
  * Allergy create

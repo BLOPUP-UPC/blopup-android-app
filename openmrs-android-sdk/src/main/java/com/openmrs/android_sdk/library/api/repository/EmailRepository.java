@@ -19,14 +19,11 @@ import static com.openmrs.android_sdk.library.databases.AppDatabaseHelper.create
 import android.util.Log;
 
 import com.openmrs.android_sdk.library.models.EmailRequest;
-import com.openmrs.android_sdk.library.models.Session;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import kotlin.Unit;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
 

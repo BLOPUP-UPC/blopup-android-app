@@ -7,9 +7,9 @@ import com.openmrs.android_sdk.library.models.ConceptMembers
 import com.openmrs.android_sdk.library.models.SystemProperty
 import com.openmrs.android_sdk.utilities.ApplicationConstants.API.FULL
 import rx.Observable
+import java.util.concurrent.Callable
 import javax.inject.Inject
 import javax.inject.Singleton
-import java.util.concurrent.Callable
 
 @Singleton
 class ConceptRepository @Inject constructor() : BaseRepository() {

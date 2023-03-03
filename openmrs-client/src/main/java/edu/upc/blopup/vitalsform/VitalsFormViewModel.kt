@@ -6,7 +6,11 @@ import androidx.lifecycle.SavedStateHandle
 import com.openmrs.android_sdk.library.api.repository.EncounterRepository
 import com.openmrs.android_sdk.library.api.repository.FormRepository
 import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.*
+import com.openmrs.android_sdk.library.models.EncounterType
+import com.openmrs.android_sdk.library.models.Encountercreate
+import com.openmrs.android_sdk.library.models.Obscreate
+import com.openmrs.android_sdk.library.models.Patient
+import com.openmrs.android_sdk.library.models.ResultType
 import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import com.openmrs.android_sdk.utilities.execute
 import dagger.hilt.android.lifecycle.HiltViewModel

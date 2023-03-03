@@ -4,9 +4,9 @@ import com.openmrs.android_sdk.library.databases.AppDatabaseHelper
 import com.openmrs.android_sdk.library.databases.entities.FormResourceEntity
 import com.openmrs.android_sdk.library.models.FormData
 import rx.Observable
+import java.util.concurrent.Callable
 import javax.inject.Inject
 import javax.inject.Singleton
-import java.util.concurrent.Callable
 
 @Singleton
 class FormRepository @Inject constructor() : BaseRepository() {

@@ -16,8 +16,8 @@ package com.openmrs.android_sdk.library.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.openmrs.android_sdk.library.databases.entities.AllergyEntity
 import androidx.room.Update
+import com.openmrs.android_sdk.library.databases.entities.AllergyEntity
 
 /**
  * The interface Allergy room dao.

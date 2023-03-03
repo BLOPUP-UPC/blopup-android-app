@@ -14,9 +14,9 @@
 package com.openmrs.android_sdk.library.models.typeConverters
 
 import androidx.room.TypeConverter
-import com.openmrs.android_sdk.library.models.PersonAddress
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.openmrs.android_sdk.library.models.PersonAddress
 import java.io.Serializable
 import java.lang.reflect.Modifier
 

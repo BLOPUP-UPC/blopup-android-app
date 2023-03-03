@@ -14,6 +14,8 @@
 
 package com.openmrs.android_sdk.library;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -27,8 +29,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.content.Context.MODE_PRIVATE;
 
 import rx.android.BuildConfig;
 

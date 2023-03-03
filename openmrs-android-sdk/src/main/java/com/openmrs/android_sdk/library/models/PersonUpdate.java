@@ -18,12 +18,12 @@ import android.graphics.Bitmap;
 
 import androidx.room.TypeConverters;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.openmrs.android_sdk.library.models.typeConverters.PersonAddressConverter;
 import com.openmrs.android_sdk.library.models.typeConverters.PersonAttributeConverter;
 import com.openmrs.android_sdk.library.models.typeConverters.PersonNameConverter;
 import com.openmrs.android_sdk.utilities.ImageUtils;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;

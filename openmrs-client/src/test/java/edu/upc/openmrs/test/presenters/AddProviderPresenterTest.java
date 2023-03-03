@@ -24,7 +24,6 @@ import org.mockito.Mock;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import edu.upc.openmrs.activities.providermanagerdashboard.addprovider.AddProviderContract;
 import edu.upc.openmrs.activities.providermanagerdashboard.addprovider.AddProviderPresenter;
 import edu.upc.openmrs.test.ACUnitTestBase;

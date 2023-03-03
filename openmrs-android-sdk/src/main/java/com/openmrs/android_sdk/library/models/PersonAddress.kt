@@ -14,11 +14,10 @@
 
 package com.openmrs.android_sdk.library.models
 
-import com.openmrs.android_sdk.utilities.StringUtils
+
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-
-
+import com.openmrs.android_sdk.utilities.StringUtils
 import java.io.Serializable
 
 /**

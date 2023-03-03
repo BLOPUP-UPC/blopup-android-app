@@ -10,13 +10,6 @@
 
 package com.openmrs.android_sdk.library.api.services;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.android.schedulers.AndroidSchedulers;
-
 import android.app.IntentService;
 import android.content.Intent;
 
@@ -37,8 +30,14 @@ import com.openmrs.android_sdk.library.models.Encounter;
 import com.openmrs.android_sdk.library.models.EncounterType;
 import com.openmrs.android_sdk.library.models.Encountercreate;
 import com.openmrs.android_sdk.utilities.NetworkUtils;
-import com.openmrs.android_sdk.utilities.StringUtils;
 import com.openmrs.android_sdk.utilities.ToastUtil;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * The type Encounter service.

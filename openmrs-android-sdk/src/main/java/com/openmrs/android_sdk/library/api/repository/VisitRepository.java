@@ -17,17 +17,6 @@ package com.openmrs.android_sdk.library.api.repository;
 import static com.openmrs.android_sdk.utilities.DateUtils.OPEN_MRS_REQUEST_FORMAT;
 import static com.openmrs.android_sdk.utilities.DateUtils.convertTime;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import java.io.IOException;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.Observable;
-
 import androidx.annotation.NonNull;
 
 import com.openmrs.android_sdk.library.OpenMRSLogger;
@@ -47,6 +36,17 @@ import com.openmrs.android_sdk.library.models.Visit;
 import com.openmrs.android_sdk.library.models.VisitType;
 import com.openmrs.android_sdk.utilities.ApplicationConstants;
 import com.openmrs.android_sdk.utilities.DateUtils;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import rx.Observable;
 
 
 /**

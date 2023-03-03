@@ -16,9 +16,9 @@ package com.openmrs.android_sdk.library.databases.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import com.openmrs.android_sdk.library.models.Resource
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.openmrs.android_sdk.library.models.Resource
 
 /**
  * Location entity

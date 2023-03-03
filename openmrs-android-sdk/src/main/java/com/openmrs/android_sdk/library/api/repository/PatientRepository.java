@@ -16,20 +16,6 @@ package com.openmrs.android_sdk.library.api.repository;
 
 import static com.openmrs.android_sdk.utilities.ApplicationConstants.PRIMARY_KEY_ID;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.Observable;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -66,6 +52,20 @@ import com.openmrs.android_sdk.utilities.ModuleUtils;
 import com.openmrs.android_sdk.utilities.NetworkUtils;
 import com.openmrs.android_sdk.utilities.PatientComparator;
 import com.openmrs.android_sdk.utilities.ToastUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import rx.Observable;
 
 /**
  * The type Patient repository.

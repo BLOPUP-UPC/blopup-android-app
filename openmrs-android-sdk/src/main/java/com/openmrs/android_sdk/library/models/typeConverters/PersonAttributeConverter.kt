@@ -14,10 +14,10 @@
 package com.openmrs.android_sdk.library.models.typeConverters
 
 import androidx.room.TypeConverter
-import com.openmrs.android_sdk.library.models.PersonAddress
-import com.openmrs.android_sdk.library.models.PersonAttribute
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.openmrs.android_sdk.library.models.PersonAddress
+import com.openmrs.android_sdk.library.models.PersonAttribute
 import java.io.Serializable
 import java.lang.reflect.Modifier
 
