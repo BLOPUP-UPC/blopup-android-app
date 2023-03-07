@@ -18,7 +18,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.syncedpatients.SyncedPatientsActivity">
+    tools:context="openmrs.activities.syncedpatients.SyncedPatientsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

@@ -20,10 +20,14 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 # Optimization options
+
+-keepattributes *Annotation*, Signature, Exception, SourceFile, LineNumberTable
 -optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
 -dontpreverify
+-dontobfuscate
+-dontshrink
 -verbose
 
 
@@ -40,6 +44,29 @@
 -keep public class * extends androidx.appcompat.app.ToolbarActionBar
 
 -keep public class * extends java.lang.Exception
+
+
+# for DexGuard only
+# -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.**
+-dontnote retrofit2.Platform
+-dontwarn retrofit2.Platform$Java8
+-keepattributes Signature
+-keepattributes Exceptions
+
+-keepclasseswithmembers class * {
+    @retrofit2.* <methods>;
+}
+
+-keepclasseswithmembers interface * {
+    @retrofit2.* <methods>;
+}
+
 
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**

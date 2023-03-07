@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/swipe_container"
-        tools:context=".activities.lastviewedpatients.LastViewedPatientsActivity">
+        tools:context="edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsActivity">
 
         <RelativeLayout
             android:id="@+id/lastViewedBottomComponents"
