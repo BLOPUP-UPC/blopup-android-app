@@ -23,7 +23,10 @@ import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActvityContactUsBinding
+import edu.upc.openmrs.utilities.ViewUtils
 import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.utilities.StringUtils
+import kotlinx.android.synthetic.main.actvity_contact_us.*
 
 @AndroidEntryPoint
 class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -70,6 +73,14 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     }
 
     private fun sendEmail() {
+        if (ViewUtils.isEmpty(binding.message)) {
+            binding.textInputLayoutContactUs.isErrorEnabled = true
+            binding.textInputLayoutContactUs.error = getString(R.string.emptyerror)
+            return
+        } else {
+            binding.textInputLayoutContactUs.isErrorEnabled = false
+        }
+
         val message = binding.message.text.toString()
 
         val emailRequest = EmailRequest(getString(R.string.subject_send_email), message)
