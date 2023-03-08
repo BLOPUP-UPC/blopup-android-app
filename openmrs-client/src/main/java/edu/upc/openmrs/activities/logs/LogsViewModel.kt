@@ -1,7 +1,7 @@
 package edu.upc.openmrs.activities.logs
 
-import com.openmrs.android_sdk.library.OpenMRSLogger
-import com.openmrs.android_sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.OpenMRSLogger
+import edu.upc.sdk.library.OpenmrsAndroid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.BufferedReader
 import java.io.File

@@ -16,7 +16,7 @@ package edu.upc.openmrs.activities.providermanagerdashboard;
 
 import androidx.fragment.app.Fragment;
 
-import com.openmrs.android_sdk.library.models.Provider;
+import edu.upc.sdk.library.models.Provider;
 
 import java.util.List;
 

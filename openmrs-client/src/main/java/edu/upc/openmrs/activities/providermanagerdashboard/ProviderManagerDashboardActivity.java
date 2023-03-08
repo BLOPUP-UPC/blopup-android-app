@@ -25,7 +25,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SearchView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.openmrs.android_sdk.utilities.StringUtils;
+import edu.upc.sdk.utilities.StringUtils;
 
 import edu.upc.R;
 import edu.upc.databinding.ActivityProviderManagementBinding;

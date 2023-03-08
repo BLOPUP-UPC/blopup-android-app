@@ -3,8 +3,8 @@ package edu.upc.openmrs.utilities
 import android.app.Activity
 import android.os.Build
 import android.os.Process
-import com.openmrs.android_sdk.library.OpenMRSLogger
-import com.openmrs.android_sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.OpenMRSLogger
+import edu.upc.sdk.library.OpenmrsAndroid
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream

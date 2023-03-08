@@ -24,8 +24,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.openmrs.android_sdk.library.models.Allergy;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.library.models.Allergy;
+import edu.upc.sdk.utilities.ApplicationConstants;
 
 import java.util.List;
 

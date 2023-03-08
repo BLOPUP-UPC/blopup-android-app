@@ -3,22 +3,22 @@ package edu.upc.openmrs.activities.formadmission
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.EncounterRepository
-import com.openmrs.android_sdk.library.api.repository.FormRepository
-import com.openmrs.android_sdk.library.api.repository.ProviderRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.databases.entities.LocationEntity
-import com.openmrs.android_sdk.library.models.EncounterProviderCreate
-import com.openmrs.android_sdk.library.models.Encountercreate
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Provider
-import com.openmrs.android_sdk.library.models.Resource
-import com.openmrs.android_sdk.library.models.ResultType
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.ENCOUNTERTYPE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.FORM_NAME
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.LOCATION
-import com.openmrs.android_sdk.utilities.execute
+import edu.upc.sdk.library.api.repository.EncounterRepository
+import edu.upc.sdk.library.api.repository.FormRepository
+import edu.upc.sdk.library.api.repository.ProviderRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.databases.entities.LocationEntity
+import edu.upc.sdk.library.models.EncounterProviderCreate
+import edu.upc.sdk.library.models.Encountercreate
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Provider
+import edu.upc.sdk.library.models.Resource
+import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.ENCOUNTERTYPE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.FORM_NAME
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.LOCATION
+import edu.upc.sdk.utilities.execute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -26,11 +26,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FormAdmissionViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val formRepository: FormRepository,
-        private val encounterRepository: EncounterRepository,
-        private val providerRepository: ProviderRepository,
-        private val savedStateHandle: SavedStateHandle
+    private val patientDAO: PatientDAO,
+    private val formRepository: FormRepository,
+    private val encounterRepository: EncounterRepository,
+    private val providerRepository: ProviderRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Unit>() {
 
     /* UI */

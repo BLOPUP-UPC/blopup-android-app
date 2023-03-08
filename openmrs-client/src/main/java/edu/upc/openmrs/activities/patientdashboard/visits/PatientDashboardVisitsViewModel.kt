@@ -3,24 +3,24 @@ package edu.upc.openmrs.activities.patientdashboard.visits
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.VisitRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.OperationType.PatientVisitStarting
-import com.openmrs.android_sdk.library.models.OperationType.PatientVisitsFetching
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Visit
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.api.repository.VisitRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.OperationType.PatientVisitStarting
+import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardVisitsViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val visitDAO: VisitDAO,
-        private val visitRepository: VisitRepository,
-        private val savedStateHandle: SavedStateHandle
+    private val patientDAO: PatientDAO,
+    private val visitDAO: VisitDAO,
+    private val visitRepository: VisitRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<List<Visit>>() {
 
     private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!

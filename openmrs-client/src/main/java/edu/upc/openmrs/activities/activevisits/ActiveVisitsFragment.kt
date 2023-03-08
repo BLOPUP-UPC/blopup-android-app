@@ -23,8 +23,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.library.models.Visit
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Visit
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentActiveVisitsBinding

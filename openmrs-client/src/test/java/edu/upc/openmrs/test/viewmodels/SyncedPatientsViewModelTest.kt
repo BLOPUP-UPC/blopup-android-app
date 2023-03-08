@@ -1,10 +1,10 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Result
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import junit.framework.Assert.assertEquals

@@ -14,7 +14,7 @@
 
 package edu.upc.openmrs.bundle;
 
-import com.openmrs.android_sdk.library.models.Patient;
+import edu.upc.sdk.library.models.Patient;
 
 import java.io.Serializable;
 import java.util.ArrayList;

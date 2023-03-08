@@ -31,11 +31,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.openmrs.android_sdk.library.OpenmrsAndroid;
-import com.openmrs.android_sdk.library.databases.entities.LocationEntity;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.StringUtils;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.StringUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;

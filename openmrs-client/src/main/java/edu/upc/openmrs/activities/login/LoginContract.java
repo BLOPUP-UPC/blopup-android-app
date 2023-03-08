@@ -16,8 +16,8 @@ package edu.upc.openmrs.activities.login;
 
 import androidx.annotation.NonNull;
 
-import com.openmrs.android_sdk.library.databases.entities.LocationEntity;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import java.util.List;
 

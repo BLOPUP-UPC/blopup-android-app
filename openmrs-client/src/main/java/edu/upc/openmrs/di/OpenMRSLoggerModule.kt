@@ -1,6 +1,6 @@
 package edu.upc.openmrs.di
 
-import com.openmrs.android_sdk.library.OpenMRSLogger
+import edu.upc.sdk.library.OpenMRSLogger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

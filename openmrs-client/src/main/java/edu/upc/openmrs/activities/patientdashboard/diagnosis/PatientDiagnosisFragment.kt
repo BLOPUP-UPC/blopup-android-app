@@ -21,8 +21,8 @@ import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.databinding.FragmentPatientDiagnosisBinding
 

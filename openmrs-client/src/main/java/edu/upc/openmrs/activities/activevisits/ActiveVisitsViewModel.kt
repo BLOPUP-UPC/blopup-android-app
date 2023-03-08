@@ -1,9 +1,9 @@
 package edu.upc.openmrs.activities.activevisits
 
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.OperationType.ActiveVisitsFetching
-import com.openmrs.android_sdk.library.models.OperationType.ActiveVisitsSearching
-import com.openmrs.android_sdk.library.models.Visit
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.OperationType.ActiveVisitsFetching
+import edu.upc.sdk.library.models.OperationType.ActiveVisitsSearching
+import edu.upc.sdk.library.models.Visit
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.utilities.FilterUtil
 import rx.android.schedulers.AndroidSchedulers

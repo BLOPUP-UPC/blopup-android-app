@@ -3,9 +3,9 @@ package edu.upc.openmrs.activities
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.openmrs.android_sdk.library.models.OperationType
-import com.openmrs.android_sdk.library.models.OperationType.GeneralOperation
-import com.openmrs.android_sdk.library.models.Result
+import edu.upc.sdk.library.models.OperationType
+import edu.upc.sdk.library.models.OperationType.GeneralOperation
+import edu.upc.sdk.library.models.Result
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 

@@ -13,7 +13,7 @@
  */
 package edu.upc.openmrs.utilities
 
-import com.openmrs.android_sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.OpenmrsAndroid
 import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
 import java.io.FileNotFoundException

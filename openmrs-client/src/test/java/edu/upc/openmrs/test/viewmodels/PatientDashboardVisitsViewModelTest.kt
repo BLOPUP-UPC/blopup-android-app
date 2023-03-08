@@ -2,13 +2,13 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.VisitRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.library.models.Visit
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.api.repository.VisitRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientDashboardVisitsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Before

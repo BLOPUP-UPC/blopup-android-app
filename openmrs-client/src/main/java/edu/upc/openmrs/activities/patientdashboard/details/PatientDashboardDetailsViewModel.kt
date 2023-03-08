@@ -1,10 +1,10 @@
 package edu.upc.openmrs.activities.patientdashboard.details
 
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.OperationType.PatientFetching
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.OperationType.PatientFetching
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

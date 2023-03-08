@@ -1,9 +1,9 @@
 package edu.upc.openmrs.utilities
 
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.PersonAddress
-import com.openmrs.android_sdk.library.models.PersonName
-import com.openmrs.android_sdk.library.models.Resource
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonAddress
+import edu.upc.sdk.library.models.PersonName
+import edu.upc.sdk.library.models.Resource
 import edu.upc.openmrs.test.ACUnitTestBase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals

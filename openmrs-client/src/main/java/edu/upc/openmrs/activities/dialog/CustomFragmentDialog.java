@@ -51,10 +51,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.openmrs.android_sdk.library.OpenmrsAndroid;
-import com.openmrs.android_sdk.library.models.Patient;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import org.jetbrains.annotations.NotNull;
 

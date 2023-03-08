@@ -25,12 +25,12 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.openmrs.android_sdk.library.models.Diagnosis;
-import com.openmrs.android_sdk.library.models.Encounter;
-import com.openmrs.android_sdk.library.models.EncounterType;
-import com.openmrs.android_sdk.library.models.Observation;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.ImageUtils;
+import edu.upc.sdk.library.models.Diagnosis;
+import edu.upc.sdk.library.models.Encounter;
+import edu.upc.sdk.library.models.EncounterType;
+import edu.upc.sdk.library.models.Observation;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;

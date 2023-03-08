@@ -16,7 +16,7 @@ package edu.upc.openmrs.activities.addeditpatient
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import com.openmrs.android_sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment.Companion.newInstance

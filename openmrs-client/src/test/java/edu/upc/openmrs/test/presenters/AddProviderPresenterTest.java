@@ -14,8 +14,8 @@
 
 package edu.upc.openmrs.test.presenters;
 
-import com.openmrs.android_sdk.library.models.Person;
-import com.openmrs.android_sdk.library.models.Provider;
+import edu.upc.sdk.library.models.Person;
+import edu.upc.sdk.library.models.Provider;
 
 import org.junit.Before;
 import org.junit.Test;

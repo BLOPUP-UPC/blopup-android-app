@@ -1,9 +1,9 @@
 package edu.upc.openmrs.activities.syncedpatients
 
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.OperationType
-import com.openmrs.android_sdk.library.models.Patient
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.OperationType
+import edu.upc.sdk.library.models.Patient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.utilities.FilterUtil
 import rx.android.schedulers.AndroidSchedulers

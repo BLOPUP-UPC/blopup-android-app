@@ -10,8 +10,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import com.openmrs.android_sdk.library.models.ResultType
-import com.openmrs.android_sdk.utilities.ToastUtil
+import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.scale.readScaleMeasurement.EXTRAS_WEIGHT

@@ -17,19 +17,20 @@ package edu.upc.openmrs.bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.openmrs.android_sdk.library.models.Answer;
-import com.openmrs.android_sdk.library.models.Encounter;
-import com.openmrs.android_sdk.library.models.Observation;
-import com.openmrs.android_sdk.library.models.Page;
-import com.openmrs.android_sdk.library.models.Question;
-import com.openmrs.android_sdk.library.models.Section;
-import com.openmrs.android_sdk.utilities.InputField;
-import com.openmrs.android_sdk.utilities.SelectOneField;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import edu.upc.sdk.library.models.Answer;
+import edu.upc.sdk.library.models.Encounter;
+import edu.upc.sdk.library.models.Observation;
+import edu.upc.sdk.library.models.Page;
+import edu.upc.sdk.library.models.Question;
+import edu.upc.sdk.library.models.Section;
+import edu.upc.sdk.utilities.InputField;
+import edu.upc.sdk.utilities.SelectOneField;
 
 public class FormFieldsWrapper implements Serializable, Parcelable {
     private List<InputField> inputFields;

@@ -16,7 +16,7 @@ package edu.upc.openmrs.utilities
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.openmrs.android_sdk.utilities.DateUtils.getDateFromString
+import edu.upc.sdk.utilities.DateUtils.getDateFromString
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import kotlin.math.abs

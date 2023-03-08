@@ -18,8 +18,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import com.openmrs.android_sdk.library.models.EmailRequest
-import com.openmrs.android_sdk.utilities.ToastUtil
+import edu.upc.sdk.library.models.EmailRequest
+import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActvityContactUsBinding

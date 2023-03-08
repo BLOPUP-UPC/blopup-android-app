@@ -2,15 +2,15 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.AllergyRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.Allergy
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.library.models.ResultType.AllergyDeletionError
-import com.openmrs.android_sdk.library.models.ResultType.AllergyDeletionLocalSuccess
-import com.openmrs.android_sdk.library.models.ResultType.AllergyDeletionSuccess
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.api.repository.AllergyRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.Allergy
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType.AllergyDeletionError
+import edu.upc.sdk.library.models.ResultType.AllergyDeletionLocalSuccess
+import edu.upc.sdk.library.models.ResultType.AllergyDeletionSuccess
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.openmrs.activities.patientdashboard.allergy.PatientDashboardAllergyViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Before

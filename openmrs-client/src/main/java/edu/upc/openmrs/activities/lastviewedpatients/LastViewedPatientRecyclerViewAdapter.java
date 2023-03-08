@@ -31,12 +31,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.openmrs.android_sdk.library.api.repository.PatientRepository;
-import com.openmrs.android_sdk.library.api.repository.VisitRepository;
-import com.openmrs.android_sdk.library.dao.PatientDAO;
-import com.openmrs.android_sdk.library.models.Patient;
-import com.openmrs.android_sdk.utilities.DateUtils;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.api.repository.PatientRepository;
+import edu.upc.sdk.library.api.repository.VisitRepository;
+import edu.upc.sdk.library.dao.PatientDAO;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.DateUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;

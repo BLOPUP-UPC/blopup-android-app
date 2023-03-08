@@ -1,8 +1,8 @@
 package edu.upc.openmrs.services;
 
-import static com.openmrs.android_sdk.utilities.ApplicationConstants.ConceptDownloadService.CHANNEL_DESC;
-import static com.openmrs.android_sdk.utilities.ApplicationConstants.ConceptDownloadService.CHANNEL_ID;
-import static com.openmrs.android_sdk.utilities.ApplicationConstants.ConceptDownloadService.CHANNEL_NAME;
+import static edu.upc.sdk.utilities.ApplicationConstants.ConceptDownloadService.CHANNEL_DESC;
+import static edu.upc.sdk.utilities.ApplicationConstants.ConceptDownloadService.CHANNEL_ID;
+import static edu.upc.sdk.utilities.ApplicationConstants.ConceptDownloadService.CHANNEL_NAME;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -21,15 +21,15 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.openmrs.android_sdk.library.api.RestApi;
-import com.openmrs.android_sdk.library.api.RestServiceBuilder;
-import com.openmrs.android_sdk.library.dao.ConceptRoomDAO;
-import com.openmrs.android_sdk.library.databases.AppDatabase;
-import com.openmrs.android_sdk.library.databases.entities.ConceptEntity;
-import com.openmrs.android_sdk.library.models.Link;
-import com.openmrs.android_sdk.library.models.Results;
-import com.openmrs.android_sdk.library.models.SystemSetting;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.RestServiceBuilder;
+import edu.upc.sdk.library.dao.ConceptRoomDAO;
+import edu.upc.sdk.library.databases.AppDatabase;
+import edu.upc.sdk.library.databases.entities.ConceptEntity;
+import edu.upc.sdk.library.models.Link;
+import edu.upc.sdk.library.models.Results;
+import edu.upc.sdk.library.models.SystemSetting;
+import edu.upc.sdk.utilities.ApplicationConstants;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package edu.upc.openmrs.activities.providerdashboard;
 
 import android.content.Intent;
 
-import com.openmrs.android_sdk.library.models.Provider;
+import edu.upc.sdk.library.models.Provider;
 
 import edu.upc.openmrs.activities.BasePresenterContract;
 import edu.upc.openmrs.activities.BaseView;

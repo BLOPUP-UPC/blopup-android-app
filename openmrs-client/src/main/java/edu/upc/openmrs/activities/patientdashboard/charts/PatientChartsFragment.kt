@@ -23,10 +23,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.common.collect.Lists
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import com.openmrs.android_sdk.utilities.ToastUtil
-import com.openmrs.android_sdk.utilities.ToastUtil.showShortToast
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ToastUtil
+import edu.upc.sdk.utilities.ToastUtil.showShortToast
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientChartsBinding

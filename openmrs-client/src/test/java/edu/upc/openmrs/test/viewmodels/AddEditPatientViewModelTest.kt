@@ -2,18 +2,18 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.ConceptRepository
-import com.openmrs.android_sdk.library.api.repository.PatientRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.ConceptAnswers
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.PersonAddress
-import com.openmrs.android_sdk.library.models.PersonName
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.library.models.ResultType.PatientUpdateSuccess
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import com.openmrs.android_sdk.utilities.PatientValidator
+import edu.upc.sdk.library.api.repository.ConceptRepository
+import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.ConceptAnswers
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonAddress
+import edu.upc.sdk.library.models.PersonName
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType.PatientUpdateSuccess
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.PatientValidator
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Assert.assertFalse
@@ -90,7 +90,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun `confirmPatient should create new patient when no patient id passed`() {
         viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
-        `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(Patient()))
+        `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(
+            Patient()
+        ))
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
             `when`(patientValidator.validate()).thenReturn(true)
@@ -119,7 +121,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun `confirmPatient should do nothing when patient data is invalid`() {
         viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
-        `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(Patient()))
+        `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(
+            Patient()
+        ))
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
             `when`(patientValidator.validate()).thenReturn(false)

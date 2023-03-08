@@ -20,8 +20,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Result
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentSyncedPatientsBinding

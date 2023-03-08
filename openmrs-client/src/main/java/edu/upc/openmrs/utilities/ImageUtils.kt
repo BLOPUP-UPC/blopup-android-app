@@ -18,10 +18,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ExifInterface
-import com.openmrs.android_sdk.library.OpenMRSLogger
-import com.openmrs.android_sdk.utilities.ApplicationConstants.INTENT_KEY_NAME
-import com.openmrs.android_sdk.utilities.ApplicationConstants.INTENT_KEY_PHOTO
-import com.openmrs.android_sdk.utilities.ImageUtils
+import edu.upc.sdk.library.OpenMRSLogger
+import edu.upc.sdk.utilities.ApplicationConstants.INTENT_KEY_NAME
+import edu.upc.sdk.utilities.ApplicationConstants.INTENT_KEY_PHOTO
+import edu.upc.sdk.utilities.ImageUtils
 import edu.upc.openmrs.activities.patientdashboard.details.PatientPhotoActivity
 import java.io.ByteArrayOutputStream
 import java.io.IOException

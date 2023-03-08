@@ -21,17 +21,17 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.openmrs.android_sdk.library.OpenMRSLogger;
-import com.openmrs.android_sdk.library.api.RestApi;
-import com.openmrs.android_sdk.library.api.RestServiceBuilder;
-import com.openmrs.android_sdk.library.dao.PatientDAO;
-import com.openmrs.android_sdk.library.models.Patient;
-import com.openmrs.android_sdk.library.models.PatientDto;
-import com.openmrs.android_sdk.library.models.PatientDtoUpdate;
-import com.openmrs.android_sdk.library.models.PatientPhoto;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.NetworkUtils;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.OpenMRSLogger;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.RestServiceBuilder;
+import edu.upc.sdk.library.dao.PatientDAO;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.library.models.PatientDto;
+import edu.upc.sdk.library.models.PatientDtoUpdate;
+import edu.upc.sdk.library.models.PatientPhoto;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.NetworkUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import java.io.IOException;
 

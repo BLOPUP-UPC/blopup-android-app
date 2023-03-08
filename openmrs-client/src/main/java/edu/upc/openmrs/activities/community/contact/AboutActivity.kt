@@ -19,7 +19,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.openmrs.android_sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityAboutBinding

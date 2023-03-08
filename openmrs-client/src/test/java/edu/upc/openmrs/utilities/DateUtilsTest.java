@@ -23,7 +23,7 @@
 
     import android.content.res.Resources;
 
-    import com.openmrs.android_sdk.utilities.DateUtils;
+    import edu.upc.sdk.utilities.DateUtils;
 
     import org.joda.time.DateTime;
     import org.joda.time.DateTimeZone;

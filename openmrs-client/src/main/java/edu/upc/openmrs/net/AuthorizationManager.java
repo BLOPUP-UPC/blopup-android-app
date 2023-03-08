@@ -16,8 +16,8 @@ package edu.upc.openmrs.net;
 
 import android.content.Intent;
 
-import com.openmrs.android_sdk.library.OpenmrsAndroid;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.utilities.ApplicationConstants;
 
 import edu.upc.openmrs.activities.login.LoginActivity;
 import edu.upc.openmrs.application.OpenMRS;

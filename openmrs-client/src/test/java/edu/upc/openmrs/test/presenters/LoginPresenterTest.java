@@ -23,21 +23,21 @@ import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 
-import com.openmrs.android_sdk.library.OpenMRSLogger;
-import com.openmrs.android_sdk.library.OpenmrsAndroid;
-import com.openmrs.android_sdk.library.api.RestApi;
-import com.openmrs.android_sdk.library.api.RestServiceBuilder;
-import com.openmrs.android_sdk.library.api.repository.VisitRepository;
-import com.openmrs.android_sdk.library.dao.EncounterDAO;
-import com.openmrs.android_sdk.library.dao.LocationDAO;
-import com.openmrs.android_sdk.library.dao.VisitDAO;
-import com.openmrs.android_sdk.library.databases.entities.LocationEntity;
-import com.openmrs.android_sdk.library.models.Session;
-import com.openmrs.android_sdk.library.models.User;
-import com.openmrs.android_sdk.library.models.VisitType;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.NetworkUtils;
-import com.openmrs.android_sdk.utilities.StringUtils;
+import edu.upc.sdk.library.OpenMRSLogger;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.RestServiceBuilder;
+import edu.upc.sdk.library.api.repository.VisitRepository;
+import edu.upc.sdk.library.dao.EncounterDAO;
+import edu.upc.sdk.library.dao.LocationDAO;
+import edu.upc.sdk.library.dao.VisitDAO;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.library.models.Session;
+import edu.upc.sdk.library.models.User;
+import edu.upc.sdk.library.models.VisitType;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.NetworkUtils;
+import edu.upc.sdk.utilities.StringUtils;
 
 import org.junit.After;
 import org.junit.Before;

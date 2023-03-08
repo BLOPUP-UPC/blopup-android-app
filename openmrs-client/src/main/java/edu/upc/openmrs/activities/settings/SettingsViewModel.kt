@@ -3,11 +3,11 @@ package edu.upc.openmrs.activities.settings
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import com.openmrs.android_sdk.library.OpenMRSLogger
-import com.openmrs.android_sdk.library.OpenmrsAndroid
-import com.openmrs.android_sdk.library.api.repository.ConceptRepository
-import com.openmrs.android_sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_CODE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.PACKAGE_NAME
+import edu.upc.sdk.library.OpenMRSLogger
+import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.api.repository.ConceptRepository
+import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_CODE
+import edu.upc.sdk.utilities.ApplicationConstants.PACKAGE_NAME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.R
 import edu.upc.openmrs.utilities.LanguageUtils

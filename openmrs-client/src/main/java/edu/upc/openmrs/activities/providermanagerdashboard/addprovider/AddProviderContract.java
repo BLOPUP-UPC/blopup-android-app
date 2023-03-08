@@ -14,8 +14,8 @@
 
 package edu.upc.openmrs.activities.providermanagerdashboard.addprovider;
 
-import com.openmrs.android_sdk.library.models.Person;
-import com.openmrs.android_sdk.library.models.Provider;
+import edu.upc.sdk.library.models.Person;
+import edu.upc.sdk.library.models.Provider;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -25,14 +25,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.openmrs.android_sdk.library.OpenMRSLogger;
-import com.openmrs.android_sdk.library.OpenmrsAndroid;
-import com.openmrs.android_sdk.library.api.RestApi;
-import com.openmrs.android_sdk.library.api.repository.ProviderRepository;
-import com.openmrs.android_sdk.library.dao.ProviderRoomDAO;
-import com.openmrs.android_sdk.library.models.Provider;
-import com.openmrs.android_sdk.utilities.NetworkUtils;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.OpenMRSLogger;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.repository.ProviderRepository;
+import edu.upc.sdk.library.dao.ProviderRoomDAO;
+import edu.upc.sdk.library.models.Provider;
+import edu.upc.sdk.utilities.NetworkUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import org.junit.Before;
 import org.junit.Ignore;

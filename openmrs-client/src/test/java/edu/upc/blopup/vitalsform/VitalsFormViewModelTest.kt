@@ -2,13 +2,13 @@ package edu.upc.blopup.vitalsform
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.EncounterRepository
-import com.openmrs.android_sdk.library.api.repository.FormRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.databases.entities.FormResourceEntity
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.ResultType
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.api.repository.EncounterRepository
+import edu.upc.sdk.library.api.repository.FormRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.databases.entities.FormResourceEntity
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Assert.assertEquals
 import org.junit.Before

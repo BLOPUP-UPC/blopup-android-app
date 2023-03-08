@@ -29,9 +29,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.openmrs.android_sdk.library.models.Patient;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.DateUtils;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;

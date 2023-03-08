@@ -21,8 +21,8 @@ import android.view.Menu;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.upc.R;

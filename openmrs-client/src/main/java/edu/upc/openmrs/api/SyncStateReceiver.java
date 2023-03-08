@@ -14,8 +14,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.openmrs.android_sdk.library.api.services.EncounterService;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.api.services.EncounterService;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import edu.upc.R;
 import edu.upc.openmrs.services.PatientService;

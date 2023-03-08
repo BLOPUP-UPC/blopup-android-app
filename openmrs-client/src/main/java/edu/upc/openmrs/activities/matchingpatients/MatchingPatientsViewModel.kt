@@ -1,10 +1,10 @@
 package edu.upc.openmrs.activities.matchingpatients
 
-import com.openmrs.android_sdk.library.api.repository.PatientRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.OperationType.PatientMerging
-import com.openmrs.android_sdk.library.models.OperationType.PatientRegistering
-import com.openmrs.android_sdk.library.models.Patient
+import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.OperationType.PatientMerging
+import edu.upc.sdk.library.models.OperationType.PatientRegistering
+import edu.upc.sdk.library.models.Patient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.utilities.PatientMerger
 import rx.android.schedulers.AndroidSchedulers
@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MatchingPatientsViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val patientRepository: PatientRepository
+    private val patientDAO: PatientDAO,
+    private val patientRepository: PatientRepository
 ) : edu.upc.openmrs.activities.BaseViewModel<Patient>() {
 
     fun registerNewPatient(patient: Patient) {

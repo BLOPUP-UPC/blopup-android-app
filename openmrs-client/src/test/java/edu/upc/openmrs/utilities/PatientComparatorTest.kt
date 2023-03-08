@@ -1,13 +1,13 @@
 package edu.upc.openmrs.utilities
 
 import android.graphics.Bitmap
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.PatientIdentifier
-import com.openmrs.android_sdk.library.models.PersonAddress
-import com.openmrs.android_sdk.library.models.PersonAttribute
-import com.openmrs.android_sdk.library.models.PersonName
-import com.openmrs.android_sdk.library.models.Resource
-import com.openmrs.android_sdk.utilities.PatientComparator
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PatientIdentifier
+import edu.upc.sdk.library.models.PersonAddress
+import edu.upc.sdk.library.models.PersonAttribute
+import edu.upc.sdk.library.models.PersonName
+import edu.upc.sdk.library.models.Resource
+import edu.upc.sdk.utilities.PatientComparator
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before

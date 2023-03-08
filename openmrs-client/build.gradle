@@ -69,12 +69,12 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             // Enables resource shrinking, which is performed by the
             // Android Gradle plugin.
             multiDexEnabled true
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
@@ -135,8 +135,6 @@ repositories {
 
 dependencies {
 
-    // Android sdk library dependency
-    implementation project(path: ':openmrs-android-sdk')
 
     implementation "androidx.appcompat:appcompat:${versions.material}"
     implementation "com.google.android.material:material:${versions.material}"
@@ -166,6 +164,8 @@ dependencies {
     // Database components
     implementation "androidx.room:room-runtime:${versions.roomRuntime}"
     implementation "android.arch.persistence.room:rxjava2:${versions.roomPersistence}"
+    //no inspection
+    kapt 'androidx.room:room-compiler:2.1.0-alpha04'
 
     // Noinspection GradleDependency
     annotationProcessor "androidx.room:room-compiler:${versions.roomCompiler}"

@@ -28,12 +28,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Objects;
-import com.openmrs.android_sdk.library.api.repository.VisitRepository;
-import com.openmrs.android_sdk.library.dao.PatientDAO;
-import com.openmrs.android_sdk.library.models.Patient;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.DateUtils;
-import com.openmrs.android_sdk.utilities.StringUtils;
+import edu.upc.sdk.library.api.repository.VisitRepository;
+import edu.upc.sdk.library.dao.PatientDAO;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.DateUtils;
+import edu.upc.sdk.utilities.StringUtils;
 
 import java.util.List;
 

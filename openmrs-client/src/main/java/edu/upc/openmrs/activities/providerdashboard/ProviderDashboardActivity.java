@@ -1,6 +1,6 @@
 package edu.upc.openmrs.activities.providerdashboard;
 
-import static com.openmrs.android_sdk.utilities.ApplicationConstants.RequestCodes.EDIT_PROVIDER_REQ_CODE;
+import static edu.upc.sdk.utilities.ApplicationConstants.RequestCodes.EDIT_PROVIDER_REQ_CODE;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.openmrs.android_sdk.library.models.Provider;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.library.models.Provider;
+import edu.upc.sdk.utilities.ApplicationConstants;
 
 import java.util.Objects;
 

@@ -15,7 +15,7 @@ package edu.upc.openmrs.activities.addeditallergy
 
 import android.os.Bundle
 import android.view.MenuItem
-import com.openmrs.android_sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 

@@ -3,22 +3,22 @@ package edu.upc.openmrs.activities.patientdashboard.allergy
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.AllergyRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.Allergy
-import com.openmrs.android_sdk.library.models.OperationType.PatientAllergyFetching
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.ResultType
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.api.repository.AllergyRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.Allergy
+import edu.upc.sdk.library.models.OperationType.PatientAllergyFetching
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardAllergyViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val allergyRepository: AllergyRepository,
-        private val savedStateHandle: SavedStateHandle
+    private val patientDAO: PatientDAO,
+    private val allergyRepository: AllergyRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<List<Allergy>>() {
 
     private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!

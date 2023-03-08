@@ -17,7 +17,7 @@ package edu.upc.openmrs.activities.dashboard
 import android.os.Bundle
 import android.os.Handler
 import androidx.navigation.fragment.NavHostFragment
-import com.openmrs.android_sdk.utilities.ToastUtil
+import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 

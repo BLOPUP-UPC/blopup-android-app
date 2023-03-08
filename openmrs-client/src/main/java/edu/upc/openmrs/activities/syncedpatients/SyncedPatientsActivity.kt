@@ -18,9 +18,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
-import com.openmrs.android_sdk.library.OpenmrsAndroid
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.utilities.StringUtils.notEmpty
+import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.utilities.StringUtils.notEmpty
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsActivity

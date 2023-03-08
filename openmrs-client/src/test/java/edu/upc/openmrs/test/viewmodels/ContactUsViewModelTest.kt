@@ -1,8 +1,8 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.openmrs.android_sdk.library.api.repository.EmailRepository
-import com.openmrs.android_sdk.library.models.EmailRequest
+import edu.upc.sdk.library.api.repository.EmailRepository
+import edu.upc.sdk.library.models.EmailRequest
 import edu.upc.openmrs.activities.community.contact.ContactUsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Before

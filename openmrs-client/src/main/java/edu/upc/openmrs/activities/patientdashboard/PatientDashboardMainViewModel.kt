@@ -2,16 +2,16 @@ package edu.upc.openmrs.activities.patientdashboard
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.AllergyRepository
-import com.openmrs.android_sdk.library.api.repository.PatientRepository
-import com.openmrs.android_sdk.library.api.repository.VisitRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.OperationType
-import com.openmrs.android_sdk.library.models.OperationType.PatientDeleting
-import com.openmrs.android_sdk.library.models.OperationType.PatientSynchronizing
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.api.repository.AllergyRepository
+import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.OperationType
+import edu.upc.sdk.library.models.OperationType.PatientDeleting
+import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject

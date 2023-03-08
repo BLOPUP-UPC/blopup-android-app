@@ -24,14 +24,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.openmrs.android_sdk.library.OpenmrsAndroid;
-import com.openmrs.android_sdk.library.api.RestApi;
-import com.openmrs.android_sdk.library.api.RestServiceBuilder;
-import com.openmrs.android_sdk.library.databases.AppDatabase;
-import com.openmrs.android_sdk.library.models.Session;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.NetworkUtils;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.RestServiceBuilder;
+import edu.upc.sdk.library.databases.AppDatabase;
+import edu.upc.sdk.library.models.Session;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.NetworkUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import java.util.List;
 import java.util.Timer;

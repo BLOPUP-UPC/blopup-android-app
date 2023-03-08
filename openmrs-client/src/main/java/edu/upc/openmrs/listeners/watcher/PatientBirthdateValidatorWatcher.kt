@@ -16,8 +16,8 @@ package edu.upc.openmrs.listeners.watcher
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import com.openmrs.android_sdk.utilities.ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
-import com.openmrs.android_sdk.utilities.ToastUtil
+import edu.upc.sdk.utilities.ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
+import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.R
 
 class PatientBirthdateValidatorWatcher(private val edDob: EditText,

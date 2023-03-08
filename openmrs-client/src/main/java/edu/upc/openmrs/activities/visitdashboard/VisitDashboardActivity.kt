@@ -14,7 +14,7 @@
 package edu.upc.openmrs.activities.visitdashboard
 
 import android.os.Bundle
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityVisitDashboardBinding

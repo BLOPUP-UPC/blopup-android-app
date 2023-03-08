@@ -19,7 +19,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro2
 import com.github.appintro.AppIntroFragment
-import com.openmrs.android_sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.R
 import edu.upc.openmrs.activities.dashboard.DashboardActivity
 

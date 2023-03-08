@@ -29,9 +29,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Objects;
-import com.openmrs.android_sdk.library.models.Patient;
-import com.openmrs.android_sdk.utilities.DateUtils;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.DateUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import java.util.List;
 

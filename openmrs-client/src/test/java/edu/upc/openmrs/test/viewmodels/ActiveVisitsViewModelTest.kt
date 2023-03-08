@@ -1,9 +1,9 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.Result
-import com.openmrs.android_sdk.library.models.Visit
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Visit
 import edu.upc.openmrs.activities.activevisits.ActiveVisitsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Assert.assertEquals

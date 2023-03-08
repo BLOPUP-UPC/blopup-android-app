@@ -15,7 +15,7 @@ package edu.upc.openmrs.utilities
 
 import android.util.DisplayMetrics
 import android.view.WindowManager
-import com.openmrs.android_sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.OpenmrsAndroid
 import java.lang.reflect.InvocationTargetException
 
 object TabUtil {

@@ -14,9 +14,9 @@
 package edu.upc.openmrs.activities.formadmission
 
 import android.os.Bundle
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.ENCOUNTERTYPE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.FORM_NAME
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.ENCOUNTERTYPE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.FORM_NAME
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 

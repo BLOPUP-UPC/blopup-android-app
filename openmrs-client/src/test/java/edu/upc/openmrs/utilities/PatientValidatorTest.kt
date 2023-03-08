@@ -1,7 +1,7 @@
 package edu.upc.openmrs.utilities
 
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.utilities.PatientValidator
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.utilities.PatientValidator
 import edu.upc.openmrs.test.ACUnitTestBase
 import org.junit.Assert.assertFalse
 import org.junit.Test
@@ -135,7 +135,9 @@ class PatientValidatorTest : ACUnitTestBase() {
         assertFalse(isValid)
     }
 
-    private fun createValidPatient() = updatePatientData(1L, Patient())
+    private fun createValidPatient() = updatePatientData(1L,
+        Patient()
+    )
 
     companion object {
         private const val INVALID_NAME_1 = "#James"

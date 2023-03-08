@@ -15,17 +15,17 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
-import com.openmrs.android_sdk.library.OpenmrsAndroid;
-import com.openmrs.android_sdk.library.api.RestApi;
-import com.openmrs.android_sdk.library.api.RestServiceBuilder;
-import com.openmrs.android_sdk.library.dao.EncounterTypeRoomDAO;
-import com.openmrs.android_sdk.library.dao.FormResourceDAO;
-import com.openmrs.android_sdk.library.databases.AppDatabase;
-import com.openmrs.android_sdk.library.databases.entities.FormResourceEntity;
-import com.openmrs.android_sdk.library.models.EncounterType;
-import com.openmrs.android_sdk.library.models.Results;
-import com.openmrs.android_sdk.utilities.NetworkUtils;
-import com.openmrs.android_sdk.utilities.ToastUtil;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.RestServiceBuilder;
+import edu.upc.sdk.library.dao.EncounterTypeRoomDAO;
+import edu.upc.sdk.library.dao.FormResourceDAO;
+import edu.upc.sdk.library.databases.AppDatabase;
+import edu.upc.sdk.library.databases.entities.FormResourceEntity;
+import edu.upc.sdk.library.models.EncounterType;
+import edu.upc.sdk.library.models.Results;
+import edu.upc.sdk.utilities.NetworkUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 import java.util.List;
 

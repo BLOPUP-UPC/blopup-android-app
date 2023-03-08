@@ -23,8 +23,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import com.openmrs.android_sdk.library.OpenmrsAndroid
-import com.openmrs.android_sdk.utilities.StringUtils.notEmpty
+import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.utilities.StringUtils.notEmpty
 
 //Class used to extract view validation logic
 class LoginValidatorWatcher(private val mUrl: EditText,

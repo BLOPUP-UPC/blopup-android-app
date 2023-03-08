@@ -24,8 +24,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.openmrs.android_sdk.library.models.Provider;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.library.models.Provider;
+import edu.upc.sdk.utilities.ApplicationConstants;
 
 import org.jetbrains.annotations.NotNull;
 

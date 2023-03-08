@@ -3,20 +3,20 @@ package edu.upc.openmrs.activities.patientdashboard.vitals
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.dao.EncounterDAO
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.Encounter
-import com.openmrs.android_sdk.library.models.OperationType.PatientVitalsFetching
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.dao.EncounterDAO
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.OperationType.PatientVitalsFetching
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardVitalsViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val encounterDAO: EncounterDAO,
-        private val savedStateHandle: SavedStateHandle
+    private val patientDAO: PatientDAO,
+    private val encounterDAO: EncounterDAO,
+    private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Encounter>() {
 
     private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!

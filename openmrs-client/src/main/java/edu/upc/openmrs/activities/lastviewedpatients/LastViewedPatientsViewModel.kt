@@ -1,12 +1,12 @@
 package edu.upc.openmrs.activities.lastviewedpatients
 
-import com.openmrs.android_sdk.library.api.repository.PatientRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.Link
-import com.openmrs.android_sdk.library.models.OperationType.LastViewedPatientsFetching
-import com.openmrs.android_sdk.library.models.OperationType.PatientSearching
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Results
+import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.Link
+import edu.upc.sdk.library.models.OperationType.LastViewedPatientsFetching
+import edu.upc.sdk.library.models.OperationType.PatientSearching
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Results
 import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LastViewedPatientsViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val patientRepository: PatientRepository
+    private val patientDAO: PatientDAO,
+    private val patientRepository: PatientRepository
 ) : edu.upc.openmrs.activities.BaseViewModel<List<Patient>>() {
 
     private val paginatedPatients = mutableListOf<Patient>()

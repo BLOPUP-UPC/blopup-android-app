@@ -14,8 +14,8 @@
 
 package edu.upc.openmrs.utilities
 
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Visit
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Visit
 
 object FilterUtil {
     /**

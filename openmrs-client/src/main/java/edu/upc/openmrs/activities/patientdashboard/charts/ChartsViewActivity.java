@@ -28,9 +28,9 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.common.collect.Lists;
-import com.openmrs.android_sdk.library.OpenmrsAndroid;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
-import com.openmrs.android_sdk.utilities.DateUtils;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.DateUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;

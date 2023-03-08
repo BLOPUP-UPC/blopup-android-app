@@ -4,35 +4,35 @@ import androidx.annotation.IdRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.api.repository.AllergyRepository
-import com.openmrs.android_sdk.library.api.repository.ConceptRepository
-import com.openmrs.android_sdk.library.dao.PatientDAO
-import com.openmrs.android_sdk.library.models.AllergenCreate
-import com.openmrs.android_sdk.library.models.Allergy
-import com.openmrs.android_sdk.library.models.AllergyCreate
-import com.openmrs.android_sdk.library.models.AllergyPatient
-import com.openmrs.android_sdk.library.models.AllergyReactionCreate
-import com.openmrs.android_sdk.library.models.AllergyUuid
-import com.openmrs.android_sdk.library.models.Patient
-import com.openmrs.android_sdk.library.models.Resource
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_ALLERGEN_DRUG
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_ALLERGEN_ENVIRONMENT
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_ALLERGEN_FOOD
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_REACTION
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_SEVERITY_MILD
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_SEVERITY_MODERATE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_SEVERITY_SEVERE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_DRUG
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_FOOD
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_MILD
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_MODERATE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_OTHER
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_SEVERE
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.SELECT_ALLERGEN
-import com.openmrs.android_sdk.utilities.ApplicationConstants.AllergyModule.SELECT_REACTION
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.ALLERGY_UUID
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import com.openmrs.android_sdk.utilities.mapAllergies
+import edu.upc.sdk.library.api.repository.AllergyRepository
+import edu.upc.sdk.library.api.repository.ConceptRepository
+import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.AllergenCreate
+import edu.upc.sdk.library.models.Allergy
+import edu.upc.sdk.library.models.AllergyCreate
+import edu.upc.sdk.library.models.AllergyPatient
+import edu.upc.sdk.library.models.AllergyReactionCreate
+import edu.upc.sdk.library.models.AllergyUuid
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Resource
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_ALLERGEN_DRUG
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_ALLERGEN_ENVIRONMENT
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_ALLERGEN_FOOD
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_REACTION
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_SEVERITY_MILD
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_SEVERITY_MODERATE
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.CONCEPT_SEVERITY_SEVERE
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_DRUG
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_FOOD
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_MILD
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_MODERATE
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_OTHER
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.PROPERTY_SEVERE
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.SELECT_ALLERGEN
+import edu.upc.sdk.utilities.ApplicationConstants.AllergyModule.SELECT_REACTION
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.ALLERGY_UUID
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.mapAllergies
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.R
 import rx.Observable
@@ -41,10 +41,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditAllergyViewModel @Inject constructor(
-        private val patientDAO: PatientDAO,
-        private val conceptRepository: ConceptRepository,
-        private val allergyRepository: AllergyRepository,
-        private val savedStateHandle: SavedStateHandle
+    private val patientDAO: PatientDAO,
+    private val conceptRepository: ConceptRepository,
+    private val allergyRepository: AllergyRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Unit>() {
 
     /* UI */

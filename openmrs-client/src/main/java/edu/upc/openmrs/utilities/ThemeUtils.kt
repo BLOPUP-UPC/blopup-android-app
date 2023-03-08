@@ -1,7 +1,7 @@
 package edu.upc.openmrs.utilities
 
-import com.openmrs.android_sdk.library.OpenmrsAndroid
-import com.openmrs.android_sdk.utilities.ApplicationConstants
+import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.utilities.ApplicationConstants
 
 object ThemeUtils {
 

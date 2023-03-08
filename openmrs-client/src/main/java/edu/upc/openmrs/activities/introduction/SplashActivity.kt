@@ -23,7 +23,7 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
-import com.openmrs.android_sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.R
 import edu.upc.databinding.ActivitySplashBinding
 

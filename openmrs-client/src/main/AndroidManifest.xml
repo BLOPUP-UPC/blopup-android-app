@@ -170,7 +170,7 @@
             android:name="edu.upc.openmrs.services.PatientService"
             android:enabled="true" />
         <service
-            android:name="com.openmrs.android_sdk.library.api.services.EncounterService"
+            android:name=".sdk.library.api.services.EncounterService"
             android:enabled="true" />
         <service
             android:name="edu.upc.openmrs.services.FormListService"

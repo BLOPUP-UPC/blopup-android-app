@@ -1,9 +1,9 @@
 package edu.upc.openmrs.activities.formentrypatientlist
 
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.OperationType.PatientFetching
-import com.openmrs.android_sdk.library.models.OperationType.PatientSearching
-import com.openmrs.android_sdk.library.models.Patient
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.OperationType.PatientFetching
+import edu.upc.sdk.library.models.OperationType.PatientSearching
+import edu.upc.sdk.library.models.Patient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.utilities.FilterUtil
 import rx.android.schedulers.AndroidSchedulers

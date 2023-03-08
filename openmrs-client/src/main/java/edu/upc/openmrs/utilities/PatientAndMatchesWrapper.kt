@@ -13,7 +13,7 @@
  */
 package edu.upc.openmrs.utilities
 
-import com.openmrs.android_sdk.utilities.PatientAndMatchingPatients
+import edu.upc.sdk.utilities.PatientAndMatchingPatients
 import java.io.Serializable
 import java.util.ArrayDeque
 import java.util.Queue

@@ -34,9 +34,9 @@ import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
-import com.openmrs.android_sdk.utilities.ApplicationConstants
-import com.openmrs.android_sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
-import com.openmrs.android_sdk.utilities.ApplicationConstants.ServiceActions.START_CONCEPT_DOWNLOAD_ACTION
+import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
+import edu.upc.sdk.utilities.ApplicationConstants.ServiceActions.START_CONCEPT_DOWNLOAD_ACTION
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentSettingsBinding

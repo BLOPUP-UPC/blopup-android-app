@@ -15,8 +15,8 @@
 package edu.upc.openmrs.activities.providermanagerdashboard.addprovider;
 
 import static android.app.Activity.RESULT_OK;
-import static com.openmrs.android_sdk.utilities.StringUtils.ILLEGAL_CHARACTERS;
-import static com.openmrs.android_sdk.utilities.StringUtils.validateText;
+import static edu.upc.sdk.utilities.StringUtils.ILLEGAL_CHARACTERS;
+import static edu.upc.sdk.utilities.StringUtils.validateText;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,9 +30,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.openmrs.android_sdk.library.models.Person;
-import com.openmrs.android_sdk.library.models.Provider;
-import com.openmrs.android_sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.library.models.Person;
+import edu.upc.sdk.library.models.Provider;
+import edu.upc.sdk.utilities.ApplicationConstants;
 
 import java.util.ArrayList;
 import java.util.List;

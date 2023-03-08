@@ -17,7 +17,7 @@ package edu.upc.openmrs.test;
 
 import androidx.annotation.NonNull;
 
-import com.openmrs.android_sdk.library.models.Results;
+import edu.upc.sdk.library.models.Results;
 
 import java.io.IOException;
 import java.util.List;

@@ -21,8 +21,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.openmrs.android_sdk.library.models.Observation;
-import com.openmrs.android_sdk.utilities.ObservationDeserializer;
+import edu.upc.sdk.library.models.Observation;
+import edu.upc.sdk.utilities.ObservationDeserializer;
 
 import org.junit.Before;
 import org.junit.Test;

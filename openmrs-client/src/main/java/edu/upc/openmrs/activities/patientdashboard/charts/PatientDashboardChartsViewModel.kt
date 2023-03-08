@@ -1,11 +1,11 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
 import androidx.lifecycle.SavedStateHandle
-import com.openmrs.android_sdk.library.dao.VisitDAO
-import com.openmrs.android_sdk.library.models.OperationType.PatientVisitsFetching
-import com.openmrs.android_sdk.library.models.Visit
-import com.openmrs.android_sdk.utilities.ApplicationConstants
-import com.openmrs.android_sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
+import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONArray
 import org.json.JSONException
@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardChartsViewModel @Inject constructor(
-        private val visitDAO: VisitDAO,
-        private val savedStateHandle: SavedStateHandle
+    private val visitDAO: VisitDAO,
+    private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<JSONObject>() {
 
     private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!
