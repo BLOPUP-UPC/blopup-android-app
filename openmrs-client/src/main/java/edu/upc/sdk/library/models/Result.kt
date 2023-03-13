@@ -23,7 +23,7 @@ enum class OperationType {
     PatientVitalsFetching,
     PatientDeleting,
     LastViewedPatientsFetching,
-    EmailSent
+    EmailSentError
 }
 
 enum class ResultType {
@@ -36,4 +36,6 @@ enum class ResultType {
     EncounterSubmissionSuccess,
     EncounterSubmissionLocalSuccess,
     EncounterSubmissionError,
+    EmailSentSuccess,
+    EmailSentError,
 }

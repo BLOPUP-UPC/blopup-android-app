@@ -1,10 +1,12 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import edu.upc.sdk.library.api.repository.EmailRepository
-import edu.upc.sdk.library.models.EmailRequest
 import edu.upc.openmrs.activities.community.contact.ContactUsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.api.repository.EmailRepository
+import edu.upc.sdk.library.models.EmailRequest
+import edu.upc.sdk.library.models.Result
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,6 +27,8 @@ class ContactUsViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var emailRepository : EmailRepository
 
+    private val emailRequest = createEmailRequest()
+
     @Before
     override fun setUp () {
         super.setUp()
@@ -33,12 +37,24 @@ class ContactUsViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun whenSendARequest_thenCallToTheAPI() {
         val contactUsViewModel = ContactUsViewModel(emailRepository)
-        val emailRequest = createEmailRequest()
 
         `when`(emailRepository.sendEmail(emailRequest)).thenReturn(Observable.just("Success"))
         contactUsViewModel.sendEmail(emailRequest)
 
         verify(emailRepository).sendEmail(any())
+    }
+
+    @Test
+    fun whenSendEmailIsNotPossible_thenThrowAnError() {
+        val contactUsViewModel = ContactUsViewModel(emailRepository)
+        val errorMsg = "EmailSentError"
+        val exception = Exception(errorMsg)
+
+        `when`(emailRepository.sendEmail(emailRequest)).thenReturn(Observable.error(exception))
+
+        val actualResult = contactUsViewModel.sendEmail(emailRequest)
+
+        assertEquals(errorMsg, actualResult.value.toString())
     }
 
     private fun createEmailRequest() : EmailRequest {

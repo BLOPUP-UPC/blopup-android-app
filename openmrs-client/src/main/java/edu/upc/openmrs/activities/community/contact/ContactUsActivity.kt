@@ -25,6 +25,10 @@ import edu.upc.R
 import edu.upc.databinding.ActvityContactUsBinding
 import edu.upc.openmrs.utilities.ViewUtils
 import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.models.OperationType
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Result.Success
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.StringUtils
 import kotlinx.android.synthetic.main.actvity_contact_us.*
 
@@ -87,9 +91,12 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         viewModel.sendEmail(emailRequest).observeOnce(this, Observer { result ->
             when (result) {
-                result -> {
+                ResultType.EmailSentSuccess -> {
                     ToastUtil.success(getString(R.string.send_email_success_toast_message))
                     binding.message.text.clear()
+                }
+                ResultType.EmailSentError -> {
+                    ToastUtil.error(getString(R.string.send_email_fails_toast_message))
                 }
                 else -> {
                     ToastUtil.error(getString(R.string.send_email_fails_toast_message))
