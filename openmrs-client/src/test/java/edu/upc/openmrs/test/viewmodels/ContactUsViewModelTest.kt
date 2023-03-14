@@ -52,11 +52,9 @@ class ContactUsViewModelTest : ACUnitTestBaseRx() {
 
         `when`(emailRepository.sendEmail(emailRequest)).thenReturn(Observable.error(exception))
 
-        contactUsViewModel.sendEmail(emailRequest)
+        val actualResult = contactUsViewModel.sendEmail(emailRequest)
 
-        val actualResult = (contactUsViewModel.result.value as Result.Error).throwable.message
-
-        assertEquals(errorMsg, actualResult)
+        assertEquals(errorMsg, actualResult.value.toString())
     }
 
     private fun createEmailRequest() : EmailRequest {
