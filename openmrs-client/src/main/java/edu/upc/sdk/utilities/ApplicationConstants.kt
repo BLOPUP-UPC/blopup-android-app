@@ -29,7 +29,7 @@ object ApplicationConstants {
     const val LAST_SESSION_TOKEN = "last_session_id"
     const val LAST_LOGIN_SERVER_URL = "last_login_server_url"
     const val DEFAULT_OPEN_MRS_URL = "https://blopup-staging.upc.edu/openmrs"
-    const val PROD_OPEN_MRS_URL = "https://blopup.upc.edu/openmrs"
+    const val PROD_OPEN_MRS_URL = "https://blopup-staging.upc.edu/openmrs"
     const val DB_NAME = "openmrs.db"
     const val DB_PASSWORD_BCRYPT_PEPPER = "$2a$08\$iUp3M1VapYpjcAXQBNX6uu"
     const val DB_PASSWORD_LITERAL_PEPPER = "Open Sesame"
