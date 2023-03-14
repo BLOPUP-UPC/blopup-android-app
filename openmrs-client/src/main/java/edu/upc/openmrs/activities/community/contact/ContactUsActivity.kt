@@ -89,13 +89,14 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         val emailRequest = EmailRequest(getString(R.string.subject_send_email), message)
 
+
         viewModel.sendEmail(emailRequest).observeOnce(this, Observer { result ->
             when (result) {
-                ResultType.EmailSentSuccess -> {
+                is Success -> {
                     ToastUtil.success(getString(R.string.send_email_success_toast_message))
                     binding.message.text.clear()
                 }
-                ResultType.EmailSentError -> {
+                is Error -> {
                     ToastUtil.error(getString(R.string.send_email_fails_toast_message))
                 }
                 else -> {

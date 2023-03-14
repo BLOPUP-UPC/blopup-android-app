@@ -17,17 +17,14 @@ class ContactUsViewModel @Inject constructor(
     private val emailRepository: EmailRepository
 ) : BaseViewModel<Unit>() {
 
-     fun sendEmail(emailRequest: EmailRequest) : LiveData<ResultType> {
-
-         val result = MutableLiveData<ResultType>()
-
+    fun sendEmail(emailRequest: EmailRequest) : LiveData<Result<Unit>> {
         addSubscription(emailRepository.sendEmail(emailRequest)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {result.value = ResultType.EmailSentSuccess},
-                {result.value = ResultType.EmailSentError}
+                { setContent(Unit, OperationType.EmailSentSuccess) },
+                { setError (it, OperationType.EmailSentError) }
             )
         )
-         return result
+        return result;
     }
 }
