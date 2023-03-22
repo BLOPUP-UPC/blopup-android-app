@@ -73,7 +73,11 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
                     for (Observation obs : encounter.getObservations()) {
                         openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(), obs.getDisplayValue());
                     }
-                    openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), bmiCalculator.execute(encounter.getObservations()));
+                    String bmiData = bmiCalculator.execute(encounter.getObservations());
+                    openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), bmiData);
+
+                    openMRSInflater.addBmiChart(contentLayout, bmiData);
+
                     layouts.add(convertView);
                     break;
                 case EncounterType.VISIT_NOTE:

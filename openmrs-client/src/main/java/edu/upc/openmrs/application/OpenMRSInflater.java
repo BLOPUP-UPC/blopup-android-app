@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.anastr.speedviewlib.SpeedView;
+
 import edu.upc.R;
 
 public class OpenMRSInflater {
@@ -43,10 +45,21 @@ public class OpenMRSInflater {
         return parentLayout;
     }
 
+
     public ViewGroup addSingleStringView(ViewGroup parentLayout, String label) {
         View view = mInflater.inflate(R.layout.row_single_text_data, null, false);
         TextView labelText = view.findViewById(R.id.singleTextRowLabelText);
         labelText.setText(label);
+        parentLayout.addView(view);
+        return parentLayout;
+    }
+
+    public ViewGroup addBmiChart(ViewGroup parentLayout, String bmiData) {
+        View view = mInflater.inflate(R.layout.bmi_chart, null, false);
+        SpeedView speedometer = view.findViewById(R.id.speedView);
+        speedometer.speedTo(Float.parseFloat(bmiData));
+        speedometer.setWithTremble(false);
+        speedometer.setUnit("kg/m²");
         parentLayout.addView(view);
         return parentLayout;
     }

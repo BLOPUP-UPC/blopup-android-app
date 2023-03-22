@@ -196,6 +196,7 @@ dependencies {
     implementation "commons-codec:commons-codec:${versions.codec}"
     implementation "org.jdeferred:jdeferred-android-aar:${versions.jdeferred}"
     implementation "com.google.guava:guava:${versions.guava}"
+    implementation 'com.github.anastr:speedviewlib:1.6.0'
 
     // Google place api
     implementation "com.google.android.libraries.places:places:${versions.placesAPI}"
@@ -219,10 +220,10 @@ dependencies {
 
     // add the Firebase SDK for Google Analytics
     // The app need this to init in Firebase console
-    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'com.google.firebase:firebase-analytics:21.2.0'
 
     // Add the Firebase SDK for Crashlytics.
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.3.5'
 
     // Test Implementations
     androidTestImplementation(
