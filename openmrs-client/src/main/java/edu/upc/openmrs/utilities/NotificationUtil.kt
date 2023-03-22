@@ -18,30 +18,41 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import edu.upc.R
 import edu.upc.openmrs.activities.dashboard.DashboardActivity
 
+
 object NotificationUtil {
     fun notify(title: String?, message: String?) {
-        val bitmap = BitmapFactory.decodeResource(edu.upc.openmrs.application.OpenMRS.getInstance().resources, R.drawable.ic_openmrs)
+        val flag =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+
+        val bitmap = BitmapFactory.decodeResource(
+            edu.upc.openmrs.application.OpenMRS.getInstance().resources,
+            R.drawable.ic_openmrs
+        )
         val mBuilder = NotificationCompat.Builder(edu.upc.openmrs.application.OpenMRS.getInstance())
-                .setSmallIcon(R.drawable.ic_stat_notify_openmrs)
-                .setLargeIcon(bitmap)
-                .setContentTitle(title)
-                .setContentText(message)
-        val resultIntent = Intent(edu.upc.openmrs.application.OpenMRS.getInstance(), DashboardActivity::class.java)
-        val stackBuilder = TaskStackBuilder.create(edu.upc.openmrs.application.OpenMRS.getInstance())
+            .setSmallIcon(R.drawable.ic_stat_notify_openmrs)
+            .setLargeIcon(bitmap)
+            .setContentTitle(title)
+            .setContentText(message)
+        val resultIntent =
+            Intent(edu.upc.openmrs.application.OpenMRS.getInstance(), DashboardActivity::class.java)
+        val stackBuilder =
+            TaskStackBuilder.create(edu.upc.openmrs.application.OpenMRS.getInstance())
         stackBuilder.addParentStack(DashboardActivity::class.java)
         stackBuilder.addNextIntent(resultIntent)
         val resultPendingIntent = stackBuilder.getPendingIntent(
-                0,
-                PendingIntent.FLAG_MUTABLE
+            0,
+            flag
         )
         mBuilder.setContentIntent(resultPendingIntent)
         mBuilder.setAutoCancel(true)
-        val mNotificationManager = edu.upc.openmrs.application.OpenMRS.getInstance().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val mNotificationManager = edu.upc.openmrs.application.OpenMRS.getInstance()
+            .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.notify(0, mBuilder.build())
     }
 }

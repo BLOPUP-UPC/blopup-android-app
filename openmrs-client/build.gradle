@@ -164,8 +164,11 @@ dependencies {
     // Database components
     implementation "androidx.room:room-runtime:${versions.roomRuntime}"
     implementation "android.arch.persistence.room:rxjava2:${versions.roomPersistence}"
+    implementation "androidx.room:room-rxjava2:${versions.roomRuntime}"
+
+
     //no inspection
-    kapt 'androidx.room:room-compiler:2.1.0-alpha04'
+    kapt 'androidx.room:room-compiler:2.5.0'
 
     // Noinspection GradleDependency
     annotationProcessor "androidx.room:room-compiler:${versions.roomCompiler}"

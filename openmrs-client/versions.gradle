@@ -1,6 +1,6 @@
 ext.versions = [:]
 
-versions.compileSdk = 31
+versions.compileSdk = 33
 versions.minSdk = 24
 versions.targetSdk = 31
 
@@ -21,13 +21,13 @@ versions.rxjava = '2.2.6'
 versions.rxandroid = '2.1.1'
 versions.rxbinding = '1.0.0'
 
-versions.roomRuntime = '2.3.0-alpha01'
+versions.roomRuntime = '2.5.0'
 versions.roomPersistence = '1.1.1'
-versions.roomCompiler = '2.1.0-alpha04'
+versions.roomCompiler = '2.5.0'
 
 versions.chuckerLibrary = '3.4.0'
 
-versions.workManager = '2.3.4'
+versions.workManager = '2.7.1'
 
 versions.seekbar = '1.0.1'
 versions.MPAndroidChart = 'v3.1.0'

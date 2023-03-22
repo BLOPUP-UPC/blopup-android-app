@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat
 import kotlin.math.abs
 
 class DayAxisValueFormatter(private val dates: ArrayList<String>) : ValueFormatter(), IAxisValueFormatter {
+    @Deprecated("Deprecated in Java")
     override fun getFormattedValue(value: Float, axis: AxisBase): String {
         val intValue = value.toInt()
         val vitalDate = getDateFromString(dates[abs(intValue)])

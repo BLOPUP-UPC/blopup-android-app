@@ -100,18 +100,21 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     when (result.operationType) {
                         LastViewedPatientsFetching -> showLoadingPatients()
                         PatientSearching -> showSearchingForPatient()
+                        else -> {}
                     }
                 }
                 is Result.Success -> {
                     when (result.operationType) {
                         LastViewedPatientsFetching -> showMorePatients(result.data)
                         PatientSearching -> showPatientSearchResult(result.data)
+                        else -> {}
                     }
                 }
                 is Result.Error -> {
                     when (result.operationType) {
                         LastViewedPatientsFetching -> showErrorFetchingPatients()
                         PatientSearching -> showPatientSearchError()
+                        else -> {}
                     }
                 }
                 else -> throw IllegalStateException()

@@ -927,6 +927,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
 
     private fun finishActivity() = requireActivity().finish()
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CROP) {
             if (resultCode == RESULT_OK) {

@@ -96,11 +96,12 @@ public class ConceptDownloadService extends Service {
             channelPayment.setDescription(CHANNEL_DESC);
             notificationManager.createNotificationChannel(channelPayment);
         }
+        final int flag = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
 
         Intent notificationIntent = new Intent(this, SettingsActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         notificationIntent.putExtra(ApplicationConstants.BroadcastActions.CONCEPT_DOWNLOAD_BROADCAST_INTENT_KEY_COUNT, downloadedConcepts);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_MUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, flag);
 
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_openmrs);
 

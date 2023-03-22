@@ -40,6 +40,7 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
     private val binding get() = _binding!!
     private var mBitmapCache: SparseArray<Bitmap>? = null
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
