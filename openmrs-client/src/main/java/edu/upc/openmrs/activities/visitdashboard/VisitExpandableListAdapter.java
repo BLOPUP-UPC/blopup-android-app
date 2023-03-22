@@ -45,12 +45,14 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
     private List<Encounter> mEncounters;
     private List<ViewGroup> mChildLayouts;
     private SparseArray<Bitmap> mBitmapCache;
+    private BMICalculator bmiCalculator;
 
     public VisitExpandableListAdapter(Context context, List<Encounter> encounters) {
         this.mContext = context;
         this.mEncounters = encounters;
         this.mBitmapCache = new SparseArray<>();
         this.mChildLayouts = generateChildLayouts();
+        this.bmiCalculator = new BMICalculator();
     }
 
     public void updateList(List<Encounter> encounters) {
@@ -71,7 +73,7 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
                     for (Observation obs : encounter.getObservations()) {
                         openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(), obs.getDisplayValue());
                     }
-                    openMRSInflater.addKeyValueStringView(contentLayout, "BMI", calculateBMI(encounter.getObservations()));
+                    openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), bmiCalculator.execute(encounter.getObservations()));
                     layouts.add(convertView);
                     break;
                 case EncounterType.VISIT_NOTE:
@@ -120,30 +122,6 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         return layouts;
-    }
-
-    private String calculateBMI(List<Observation> observations) {
-        String weight = "0";
-        String height = "0";
-
-        for (Observation obs : observations) {
-            if(obs.getDisplay().contains("Weight")){
-                weight = (obs.getDisplayValue()).substring(weight.indexOf(':') + 1);
-            }
-            if(obs.getDisplay().contains("Height")){
-                height = (obs.getDisplayValue()).substring(height.indexOf(':') + 1);
-            }
-        }
-
-        if(weight.equals("0") || height.equals("0")){
-            return "N/A";
-        }
-
-        double heightForBmi = Math.pow((Double.parseDouble(height) / 100), 2);
-        double bmi = Double.parseDouble(weight) / heightForBmi;
-        String bmiToString = String.format("%.2f", bmi);
-
-        return bmiToString;
     }
 
     @Override

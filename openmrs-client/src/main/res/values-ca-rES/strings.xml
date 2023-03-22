@@ -420,4 +420,5 @@
     <string name="send_email_fails_toast_message">Error a l\'enviar el missatge</string>
     <string name="jake_smith">Jake Smith</string>
     <string name="contact_us_message_hint">Escriu aquí el teu missatge</string>
+    <string name="bmi_label">" Índex de Massa Corporal (IMC)"</string>
 </resources>

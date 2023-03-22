@@ -240,6 +240,7 @@
 
     <string name="treatment_label" translatable="false">Treatment</string>
     <string name="diagnosis_label" translatable="false">Diagnosis</string>
+    <string name="bmi_label">Body Mass Index (BMI)</string>
 
     <!-- Capture Vitals activity -->
     <string name="action_delete_patient">Delete Patient</string>
