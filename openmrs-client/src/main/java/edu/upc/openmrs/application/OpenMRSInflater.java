@@ -14,12 +14,18 @@
 
 package edu.upc.openmrs.application;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.anastr.speedviewlib.Gauge;
 import com.github.anastr.speedviewlib.SpeedView;
+import com.github.anastr.speedviewlib.components.Section;
+import com.github.anastr.speedviewlib.components.indicators.Indicator;
+
+import java.util.Arrays;
 
 import edu.upc.R;
 
@@ -57,9 +63,25 @@ public class OpenMRSInflater {
     public ViewGroup addBmiChart(ViewGroup parentLayout, String bmiData) {
         View view = mInflater.inflate(R.layout.bmi_chart, null, false);
         SpeedView speedometer = view.findViewById(R.id.speedView);
+        speedometer.clearSections();
+        speedometer.setIndicator(Indicator.Indicators.HalfLineIndicator);
+        speedometer.getIndicator().setColor(Color.BLACK);
+        speedometer.setCenterCircleRadius(0f);
+        speedometer.setStartDegree(205);
+        speedometer.setEndDegree(335);
+        speedometer.setTicks(Arrays.asList(0f, .25f, .375f, .50f, .75f, 1f));
+        speedometer.setMinMaxSpeed(10f, 50f);
+        speedometer.addSections(
+                new Section(0f, .25f, Color.rgb(255, 54, 63), speedometer.getSpeedometerWidth()),
+                new Section(.25f, .375f, Color.rgb(60,179, 113), speedometer.getSpeedometerWidth()),
+                new Section(.375f, .50f, Color.rgb(255,215,0), speedometer.getSpeedometerWidth()),
+                new Section(.50f, .75f, Color.rgb(255, 165, 0), speedometer.getSpeedometerWidth()),
+                new Section(.75f, 1f, Color.rgb(255, 54, 63), speedometer.getSpeedometerWidth()));
         speedometer.speedTo(Float.parseFloat(bmiData));
+        speedometer.setSpeedTextPosition(Gauge.Position.CENTER);
+        speedometer.setSpeedTextColor(Color.GRAY);
         speedometer.setWithTremble(false);
-        speedometer.setUnit("kg/m²");
+        speedometer.setUnit("");
         parentLayout.addView(view);
         return parentLayout;
     }
