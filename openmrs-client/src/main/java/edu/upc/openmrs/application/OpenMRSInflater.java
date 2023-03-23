@@ -62,27 +62,51 @@ public class OpenMRSInflater {
 
     public ViewGroup addBmiChart(ViewGroup parentLayout, String bmiData) {
         View view = mInflater.inflate(R.layout.bmi_chart, null, false);
+
+        createChart(view, bmiData);
+
+        parentLayout.addView(view);
+        return parentLayout;
+    }
+
+    private void createChart(View view, String bmiData){
         SpeedView speedometer = view.findViewById(R.id.speedView);
-        speedometer.clearSections();
+
+        setIndicator(speedometer);
+        setSections(speedometer);
+        setValue(speedometer, bmiData);
+    }
+
+    private  void setValue(SpeedView speedometer, String bmiData){
+        speedometer.speedTo(Float.parseFloat(bmiData));
+        speedometer.setSpeedTextPosition(Gauge.Position.CENTER);
+        speedometer.setSpeedTextColor(Color.GRAY);
+        speedometer.setUnit("");
+    }
+    private void setIndicator(SpeedView speedometer){
         speedometer.setIndicator(Indicator.Indicators.HalfLineIndicator);
         speedometer.getIndicator().setColor(Color.BLACK);
         speedometer.setCenterCircleRadius(0f);
+        speedometer.setWithTremble(false);
+    }
+
+    private void setSections(SpeedView speedometer){
+        int red = Color.rgb(255, 54, 63);
+        int green = Color.rgb(60,179, 113);
+        int yellow = Color.rgb(255,215,0);
+        int orange = Color.rgb(255, 165, 0);
+        float width = speedometer.getSpeedometerWidth();
+
         speedometer.setStartDegree(205);
         speedometer.setEndDegree(335);
         speedometer.setTicks(Arrays.asList(0f, .25f, .375f, .50f, .75f, 1f));
         speedometer.setMinMaxSpeed(10f, 50f);
+        speedometer.clearSections();
         speedometer.addSections(
-                new Section(0f, .25f, Color.rgb(255, 54, 63), speedometer.getSpeedometerWidth()),
-                new Section(.25f, .375f, Color.rgb(60,179, 113), speedometer.getSpeedometerWidth()),
-                new Section(.375f, .50f, Color.rgb(255,215,0), speedometer.getSpeedometerWidth()),
-                new Section(.50f, .75f, Color.rgb(255, 165, 0), speedometer.getSpeedometerWidth()),
-                new Section(.75f, 1f, Color.rgb(255, 54, 63), speedometer.getSpeedometerWidth()));
-        speedometer.speedTo(Float.parseFloat(bmiData));
-        speedometer.setSpeedTextPosition(Gauge.Position.CENTER);
-        speedometer.setSpeedTextColor(Color.GRAY);
-        speedometer.setWithTremble(false);
-        speedometer.setUnit("");
-        parentLayout.addView(view);
-        return parentLayout;
+                new Section(0f, .25f, red, width),
+                new Section(.25f, .375f, green, width),
+                new Section(.375f, .50f, yellow, width),
+                new Section(.50f, .75f, orange, width),
+                new Section(.75f, 1f, red, width));
     }
 }
