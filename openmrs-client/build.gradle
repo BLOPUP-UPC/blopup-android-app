@@ -227,9 +227,9 @@ dependencies {
 
     // Test Implementations
     androidTestImplementation(
-            'androidx.test.ext:junit:1.1.1',
+            'androidx.test.ext:junit:1.1.5',
             'androidx.test.espresso:espresso-core:3.3.0',
-            'androidx.test:runner:1.1.0-alpha4',
+            'androidx.test:runner:1.5.2',
             'org.mockito:mockito-core:2.8.9',
             'com.google.dexmaker:dexmaker-mockito:1.2',
             'com.google.dexmaker:dexmaker:1.2',
