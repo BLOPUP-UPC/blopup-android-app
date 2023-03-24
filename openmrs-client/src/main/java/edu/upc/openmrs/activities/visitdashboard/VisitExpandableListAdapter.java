@@ -75,11 +75,11 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
                     }
                     String bmiData = bmiCalculator.execute(encounter.getObservations());
 
-                    if(!bmiData.equals("N/A")) {
+                    if(bmiData.equals("N/A")) {
+                        openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), bmiData);
+                    } else {
                         openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), null);
                         openMRSInflater.addBmiChart(contentLayout, bmiData);
-                    } else {
-                        openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), bmiData);
                     }
 
                     layouts.add(convertView);
