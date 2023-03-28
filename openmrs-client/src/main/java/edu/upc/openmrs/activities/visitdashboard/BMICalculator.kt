@@ -22,6 +22,6 @@ class BMICalculator {
         val heightForBmi = Math.pow(height.toDouble() / 100, 2.0)
         val bmi = weight.toDouble() / heightForBmi
 
-        return String.format("%.2f", bmi)
+        return String.format("%.1f", bmi)
     }
 }
