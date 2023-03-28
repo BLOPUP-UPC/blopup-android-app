@@ -27,7 +27,7 @@ public class BMIChartSetUp {
     private  void setValue(SpeedView speedometer, String bmiData){
         speedometer.speedTo(Float.parseFloat(bmiData));
         speedometer.setSpeedTextPosition(Gauge.Position.CENTER);
-        speedometer.setSpeedTextColor(Color.GRAY);
+        speedometer.setSpeedTextColor(Color.WHITE);
         speedometer.setUnit("");
     }
     private void setIndicator(SpeedView speedometer){
