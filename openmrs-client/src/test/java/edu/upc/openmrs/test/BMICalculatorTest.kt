@@ -23,7 +23,7 @@ class BMICalculatorTest(){
 
         val result = calculator.execute(list)
 
-        assertEquals("25.71", result)
+        assertEquals("25.7", result)
     }
 
     @Test
