@@ -9,33 +9,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivity">
+        android:orientation="vertical">
 
         <include
-            android:id="@+id/toolbar_include"
-            layout="@layout/toolbar" />
+            android:id="@+id/toolbar_vitals"
+            layout="@layout/toolbar_vitals" />
 
         <ImageView
-            android:id="@+id/tensiometer_diagram"
+            android:layout_marginTop="50dp"
+            android:id="@+id/bp_guide"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/tensiometer_diagram_content_description"
             android:cropToPadding="false"
-            android:src="@drawable/tensiometer_img" />
+            android:src="@drawable/how_to_measure" />
 
         <TextView
+            android:layout_marginTop="30dp"
             android:id="@+id/connection_instructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:padding="10dp"
-            android:text="@string/bluetooth_instructions"
+            android:text="Swipe left to start..."
             android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="20sp" />
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

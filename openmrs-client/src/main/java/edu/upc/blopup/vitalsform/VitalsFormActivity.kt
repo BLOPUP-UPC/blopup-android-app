@@ -10,19 +10,17 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import edu.upc.sdk.library.models.ResultType
-import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.scale.readScaleMeasurement.EXTRAS_WEIGHT
 import edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.EXTRAS_DIASTOLIC
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.EXTRAS_HEART_RATE
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.EXTRAS_SYSTOLIC
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivity
+import edu.upc.blopup.tensiometer.readTensiometerMeasurement.*
 import edu.upc.databinding.ActivityVitalsFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.utilities.ToastUtil
 
 @AndroidEntryPoint
 class VitalsFormActivity : ACBaseActivity() {
@@ -47,7 +45,7 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private val vitals: MutableList<Vital> = mutableListOf()
 
-    private val bluetoothTensiometerDataLauncher = registerForActivityResult(
+    private val bluetoothTensiometerDataLauncher  = registerForActivityResult(
         StartActivityForResult()
     ) { result: ActivityResult ->
         val intent = result.data
@@ -83,6 +81,7 @@ class VitalsFormActivity : ACBaseActivity() {
         mBinding.buttonToSentVitals.isEnabled = false
         mBinding.receiveTensiometerDataBtn.setOnClickListener {
             try {
+                startActivity(Intent(this, TensiometerActivity::class.java))
                 val input = Intent(this, ReadTensiometerActivity::class.java)
                 bluetoothTensiometerDataLauncher.launch(input)
                 mBinding.buttonToSentVitals.isEnabled = true
