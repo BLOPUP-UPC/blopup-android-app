@@ -390,7 +390,7 @@
     <string name="diastolic">Diastólica:</string>
     <string name="heartRate">Pulsaciones:</string>
     <string name="bluetooth_instructions">Para activar manualmente el Bluetooth, presione START/STOP (14) durante 5–6 segundos hasta que el símbolo de Bluetooth comience a parpadear (29)</string>
-    <string name="tensiometer_diagram_content_description">Diagrama del tensiómetro</string>
+    <string name="blood_pressure_diagram_content_description">Diagrama del tensiómetro</string>
     <string name="save_measurements_button_text">Guarda las mediciones</string>
     <string name="bt_exception_scan_message">Dispositivo no encontrado</string>
     <string name="bt_exception_disconnect_message">No se puede desconectar</string>
@@ -413,7 +413,7 @@
     <string name="pulse_label">Pulso</string>
     <string name="send_button_label">Enviar</string>
     <string name="receive_weight_value_button">Recibir peso de la báscula</string>
-    <string name="tensiometer_button_label">"Recibir información del tensiómetro "</string>
+    <string name="blood_pressure_button_label">"Recibir información del tensiómetro "</string>
     <string name="vitals_form_title">Signos vitales</string>
     <string name="patient_deceased">Patiente fallecido</string>
     <string name="action_vitals_form">Tomar constantes</string>

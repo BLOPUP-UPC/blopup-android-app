@@ -1,4 +1,4 @@
-package edu.upc.blopup.tensiometer.readTensiometerMeasurement
+package edu.upc.blopup.bloodpressure.readBloodPressureMeasurement
 
 sealed class ConnectionViewState {
     object Disconnected : ConnectionViewState()

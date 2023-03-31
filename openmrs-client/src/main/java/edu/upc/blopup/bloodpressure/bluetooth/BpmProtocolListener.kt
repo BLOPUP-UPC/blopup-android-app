@@ -1,4 +1,4 @@
-package edu.upc.blopup.tensiometer.bluetooth
+package edu.upc.blopup.bloodpressure.bluetooth
 
 import com.ideabus.model.bluetooth.MyBluetoothLE
 import com.ideabus.model.protocol.BPMProtocol

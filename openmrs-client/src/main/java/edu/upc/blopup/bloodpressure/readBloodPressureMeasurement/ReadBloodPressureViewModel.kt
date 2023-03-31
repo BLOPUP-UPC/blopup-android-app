@@ -1,4 +1,4 @@
-package edu.upc.blopup.tensiometer.readTensiometerMeasurement
+package edu.upc.blopup.bloodpressure.readBloodPressureMeasurement
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,24 +7,24 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ReadTensiometerViewModel @Inject constructor(
-    private val readTensiometerRepository: ReadTensiometerRepository
+class ReadBloodPressureViewModel @Inject constructor(
+    private val readBloodPressureRepository: ReadBloodPressureRepository
 ) : ViewModel() {
 
     private val _connectionViewState = MutableLiveData<ConnectionViewState>()
     val connectionViewState: LiveData<ConnectionViewState>
         get() = _connectionViewState
 
-    private val _viewState = MutableLiveData<TensiometerViewState>()
-    val viewState: LiveData<TensiometerViewState>
+    private val _viewState = MutableLiveData<BloodPressureViewState>()
+    val viewState: LiveData<BloodPressureViewState>
         get() = _viewState
 
     fun startListeningBluetoothConnection() {
-        readTensiometerRepository.start(
+        readBloodPressureRepository.start(
             { state: ConnectionViewState -> _connectionViewState.postValue(state) },
-            { state: TensiometerViewState -> _viewState.postValue(state) }
+            { state: BloodPressureViewState -> _viewState.postValue(state) }
         )
     }
 
-    fun disconnect() = readTensiometerRepository.disconnect()
+    fun disconnect() = readBloodPressureRepository.disconnect()
 }

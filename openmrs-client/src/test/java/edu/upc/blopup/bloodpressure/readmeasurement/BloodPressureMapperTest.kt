@@ -1,14 +1,14 @@
-package edu.upc.blopup.tensiometer.readmeasurement
+package edu.upc.blopup.bloodpressure.readmeasurement
 
 import com.ideabus.model.data.CurrentAndMData
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.Measurement
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
-class TensiometerMapperTest(private val case: TestCase) {
+class BloodPressureMapperTest(private val case: TestCase) {
 
     @Test
     fun `given valid bluetooth data then it is mapped properly`() {

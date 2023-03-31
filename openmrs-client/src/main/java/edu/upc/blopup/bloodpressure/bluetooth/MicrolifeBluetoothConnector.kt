@@ -1,4 +1,4 @@
-package edu.upc.blopup.tensiometer.bluetooth
+package edu.upc.blopup.bloodpressure.bluetooth
 
 import com.ideabus.model.data.CurrentAndMData
 import com.ideabus.model.data.DRecord
@@ -8,9 +8,9 @@ import com.ideabus.model.data.VersionData
 import com.ideabus.model.protocol.BPMProtocol
 import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.hilt.CurrentActivityProvider
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.ConnectionViewState
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.Measurement
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.TensiometerViewState
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import javax.inject.Inject
 
 class MicrolifeBluetoothConnector @Inject constructor(
@@ -21,7 +21,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
     private val bpmProtocol: BPMProtocol
 
     private lateinit var updateConnectionState: (ConnectionViewState) -> Unit
-    private lateinit var updateMeasurementState: (TensiometerViewState) -> Unit
+    private lateinit var updateMeasurementState: (BloodPressureViewState) -> Unit
 
     private var isConnecting = false
 
@@ -35,7 +35,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
 
     override fun connect(
         updateConnectionState: (ConnectionViewState) -> Unit,
-        updateMeasurementState: (TensiometerViewState) -> Unit
+        updateMeasurementState: (BloodPressureViewState) -> Unit
     ) {
         this.updateConnectionState = updateConnectionState
         this.updateMeasurementState = updateMeasurementState
@@ -50,7 +50,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
             bpmProtocol.stopScan()
             updateConnectionState(ConnectionViewState.Disconnected)
         } catch (ignore: Exception) {
-            updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnDisconnect))
+            updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnDisconnect))
         }
     }
 
@@ -70,7 +70,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
                 bpmProtocol.bond(mac)
             }
         } catch (ignore: Exception) {
-            updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnScanResult))
+            updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnScanResult))
         }
     }
 
@@ -102,12 +102,12 @@ class MicrolifeBluetoothConnector @Inject constructor(
             disconnect()
             val lastMeasurement = dRecord?.MData?.last()
             updateMeasurementState(
-                TensiometerViewState.Content(
+                BloodPressureViewState.Content(
                     Measurement.from(lastMeasurement!!)
                 )
             )
         } catch (ignore: Exception) {
-            updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnResponseReadHistory))
+            updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnResponseReadHistory))
         }
     }
 
@@ -118,7 +118,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
         try {
             bpmProtocol.readHistorysOrCurrDataAndSyncTiming()
         } catch (ignore: Exception) {
-            updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnResponseReadUserAndVersionData))
+            updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnResponseReadUserAndVersionData))
         }
     }
 
@@ -157,7 +157,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
             val timeoutInSeconds = 10
             bpmProtocol.startScan(timeoutInSeconds)
         } catch (ignored: Exception) {
-            updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnStartScan))
+            updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnStartScan))
         }
     }
 }

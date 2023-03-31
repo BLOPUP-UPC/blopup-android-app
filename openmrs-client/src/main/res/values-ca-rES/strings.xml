@@ -389,7 +389,7 @@
     <string name="diastolic">Diastòlica:</string>
     <string name="heartRate">Pulsacions:</string>
     <string name="bluetooth_instructions">Per activar manualment el Bluetooth, premeu START/STOP (14) durant 5–6 segons fins que el símbol de Bluetooth comenci a centellejar (29)</string>
-    <string name="tensiometer_diagram_content_description">Diagrama del tensiòmetre</string>
+    <string name="blood_pressure_diagram_content_description">Diagrama del tensiòmetre</string>
     <string name="save_measurements_button_text">Guarda les mesures</string>
     <string name="bt_exception_scan_message">No s\'ha trobat el dispositiu</string>
     <string name="bt_exception_disconnect_message">No s\'ha pogut desconnectar</string>
@@ -405,7 +405,7 @@
     <string name="receive_vitals_from_scale_button_text">Rebre el pes de la bàscula</string>
     <string name="app_tutorial">Tutorial de la app</string>
     <string name="vitals_form_title">Constants vitals</string>
-    <string name="tensiometer_button_label">Rebre dades del tensiòmetre</string>
+    <string name="blood_pressure_button_label">Rebre dades del tensiòmetre</string>
     <string name="systolic_label">Sistòlica</string>
     <string name="diastolic_label">Diastòlica</string>
     <string name="pulse_label">Pols</string>

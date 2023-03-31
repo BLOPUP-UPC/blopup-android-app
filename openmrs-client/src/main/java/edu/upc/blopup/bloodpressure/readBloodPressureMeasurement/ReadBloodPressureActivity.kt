@@ -1,4 +1,4 @@
-package edu.upc.blopup.tensiometer.readTensiometerMeasurement
+package edu.upc.blopup.bloodpressure.readBloodPressureMeasurement
 
 import android.Manifest
 import android.content.Intent
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.databinding.ActivityReadTensiometerBinding
+import edu.upc.databinding.ActivityReadBloodPressureBinding
 
 const val EXTRAS_SYSTOLIC = "systolic"
 const val EXTRAS_DIASTOLIC = "diastolic"
@@ -24,12 +24,12 @@ const val EXTRAS_HEART_RATE = "heartRate"
 const val LOCATION_REQUEST = 1
 
 @AndroidEntryPoint
-class ReadTensiometerActivity : AppCompatActivity() {
+class ReadBloodPressureActivity : AppCompatActivity() {
 
-    private lateinit var mBinding: ActivityReadTensiometerBinding
+    private lateinit var mBinding: ActivityReadBloodPressureBinding
     private lateinit var mToolbar: Toolbar
 
-    private val viewModel: ReadTensiometerViewModel by viewModels()
+    private val viewModel: ReadBloodPressureViewModel by viewModels()
     private val locationPermission = arrayOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION
@@ -42,7 +42,7 @@ class ReadTensiometerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mBinding = ActivityReadTensiometerBinding.inflate(layoutInflater)
+        mBinding = ActivityReadBloodPressureBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
         setUpToolbar()
@@ -110,8 +110,8 @@ class ReadTensiometerActivity : AppCompatActivity() {
         }
         viewModel.viewState.observe(this) { state ->
             when (state) {
-                is TensiometerViewState.Error -> handleError(state.exception)
-                is TensiometerViewState.Content -> {
+                is BloodPressureViewState.Error -> handleError(state.exception)
+                is BloodPressureViewState.Content -> {
                     val result = Intent().apply {
                         putExtra(EXTRAS_SYSTOLIC, state.measurement.systolic)
                         putExtra(EXTRAS_DIASTOLIC, state.measurement.diastolic)

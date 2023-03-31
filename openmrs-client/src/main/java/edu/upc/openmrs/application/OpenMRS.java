@@ -21,15 +21,14 @@ import android.os.Bundle;
 
 import androidx.multidex.MultiDexApplication;
 
-import edu.upc.sdk.library.OpenMRSLogger;
-import edu.upc.sdk.library.OpenmrsAndroid;
-
 import java.io.File;
 
 import dagger.hilt.android.HiltAndroidApp;
 import edu.upc.blopup.hilt.CurrentActivityProvider;
 import edu.upc.openmrs.services.AuthenticateCheckService;
 import edu.upc.openmrs.services.FormListService;
+import edu.upc.sdk.library.OpenMRSLogger;
+import edu.upc.sdk.library.OpenmrsAndroid;
 
 @HiltAndroidApp
 public class OpenMRS extends MultiDexApplication {

@@ -9,34 +9,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context="edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureActivity">
 
         <include
-            android:id="@+id/toolbar_vitals"
-            layout="@layout/toolbar_vitals" />
+            android:id="@+id/toolbar_include"
+            layout="@layout/toolbar" />
 
         <ImageView
-            android:layout_marginTop="50dp"
-            android:id="@+id/bp_guide"
+            android:id="@+id/blood_pressure_diagram"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/tensiometer_diagram_content_description"
+            android:contentDescription="@string/blood_pressure_diagram_content_description"
             android:cropToPadding="false"
-            android:src="@drawable/how_to_measure" />
+            android:src="@drawable/blood_pressure_img" />
 
         <TextView
-            android:layout_marginTop="30dp"
             android:id="@+id/connection_instructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Swipe left to start..."
+            android:text="@string/bluetooth_instructions"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

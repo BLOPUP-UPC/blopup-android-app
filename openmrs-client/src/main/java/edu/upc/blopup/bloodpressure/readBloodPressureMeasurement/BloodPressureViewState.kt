@@ -1,13 +1,13 @@
-package edu.upc.blopup.tensiometer.readTensiometerMeasurement
+package edu.upc.blopup.bloodpressure.readBloodPressureMeasurement
 
 import android.os.Parcelable
 import com.ideabus.model.data.CurrentAndMData
 import edu.upc.blopup.exceptions.BluetoothConnectionException
 import kotlinx.android.parcel.Parcelize
 
-sealed class TensiometerViewState {
-    data class Error(val exception: BluetoothConnectionException) : TensiometerViewState()
-    data class Content(val measurement: Measurement) : TensiometerViewState()
+sealed class BloodPressureViewState {
+    data class Error(val exception: BluetoothConnectionException) : BloodPressureViewState()
+    data class Content(val measurement: Measurement) : BloodPressureViewState()
 }
 
 @Parcelize

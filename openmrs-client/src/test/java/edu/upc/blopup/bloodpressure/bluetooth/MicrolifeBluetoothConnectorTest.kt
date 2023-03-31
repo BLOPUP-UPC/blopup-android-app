@@ -1,12 +1,12 @@
-package edu.upc.blopup.tensiometer.bluetooth
+package edu.upc.blopup.bloodpressure.bluetooth
 
 import com.ideabus.model.data.CurrentAndMData
 import com.ideabus.model.data.DRecord
 import com.ideabus.model.protocol.BPMProtocol
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.ConnectionViewState
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.Measurement
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.TensiometerViewState
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -25,7 +25,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
     private lateinit var bpmProtocol: BPMProtocol
 
     private lateinit var updateConnectionState: (ConnectionViewState) -> Unit
-    private lateinit var updateMeasurementState: (TensiometerViewState) -> Unit
+    private lateinit var updateMeasurementState: (BloodPressureViewState) -> Unit
 
     @Before
     fun setUp() {
@@ -82,7 +82,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
         verify { updateConnectionState(ConnectionViewState.Disconnected) }
         verify {
             updateMeasurementState(
-                TensiometerViewState.Content(
+                BloodPressureViewState.Content(
                     Measurement(
                         dRecord.mData[0].systole,
                         dRecord.mData[0].dia,
@@ -120,7 +120,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
             updateMeasurementState
         )
 
-        verify { updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnStartScan)) }
+        verify { updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnStartScan)) }
     }
 
     @Test
@@ -129,7 +129,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
         subjectUnderTest.disconnect()
 
-        verify { updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnDisconnect)) }
+        verify { updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnDisconnect)) }
     }
 
     @Test
@@ -138,7 +138,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
         subjectUnderTest.onScanResult(null, null, 0)
 
-        verify { updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnScanResult)) }
+        verify { updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnScanResult)) }
     }
 
     @Test
@@ -147,14 +147,14 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
         subjectUnderTest.onConnectionState(BPMProtocol.ConnectState.Disconnect)
 
-        verify { updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnStartScan)) }
+        verify { updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnStartScan)) }
     }
 
     @Test
     fun `given the bluetooth connection fails at reading the history then we manage the error`() {
         subjectUnderTest.onResponseReadHistory(null)
 
-        verify { updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnResponseReadHistory)) }
+        verify { updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnResponseReadHistory)) }
     }
 
     @Test
@@ -165,7 +165,7 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
 
         subjectUnderTest.onResponseReadUserAndVersionData(null, null)
 
-        verify { updateMeasurementState(TensiometerViewState.Error(BluetoothConnectionException.OnResponseReadUserAndVersionData)) }
+        verify { updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnResponseReadUserAndVersionData)) }
     }
 
     companion object {

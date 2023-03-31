@@ -245,13 +245,13 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name="edu.upc.blopup.tensiometer.readTensiometerMeasurement.ReadTensiometerActivity"
+            android:name="edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureActivity"
             android:exported="false" />
         <activity
             android:name="edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity"
             android:exported="false" />
         <activity
-            android:name="edu.upc.blopup.tensiometer.readTensiometerMeasurement.TensiometerActivity"
+            android:name="edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureInstructionsActivity"
             android:exported="false" />
         <activity
             android:name="edu.upc.blopup.vitalsform.VitalsFormActivity"

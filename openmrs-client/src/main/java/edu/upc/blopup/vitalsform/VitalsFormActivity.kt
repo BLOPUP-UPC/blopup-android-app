@@ -14,10 +14,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.scale.readScaleMeasurement.EXTRAS_WEIGHT
 import edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity
-import edu.upc.blopup.tensiometer.readTensiometerMeasurement.*
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.*
 import edu.upc.databinding.ActivityVitalsFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
-import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ToastUtil
@@ -45,7 +44,7 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private val vitals: MutableList<Vital> = mutableListOf()
 
-    private val bluetoothTensiometerDataLauncher  = registerForActivityResult(
+    private val bluetoothBloodPressureDataLauncher  = registerForActivityResult(
         StartActivityForResult()
     ) { result: ActivityResult ->
         val intent = result.data
@@ -79,11 +78,11 @@ class VitalsFormActivity : ACBaseActivity() {
 
         setUpToolbar()
         mBinding.buttonToSentVitals.isEnabled = false
-        mBinding.receiveTensiometerDataBtn.setOnClickListener {
+        mBinding.receiveBloodPressureDataBtn.setOnClickListener {
             try {
-                startActivity(Intent(this, TensiometerActivity::class.java))
-                val input = Intent(this, ReadTensiometerActivity::class.java)
-                bluetoothTensiometerDataLauncher.launch(input)
+                startActivity(Intent(this, BloodPressureInstructionsActivity::class.java))
+                val input = Intent(this, ReadBloodPressureActivity::class.java)
+                bluetoothBloodPressureDataLauncher.launch(input)
                 mBinding.buttonToSentVitals.isEnabled = true
                 receivedButtonModified = true
             } catch (ex: ActivityNotFoundException) {
