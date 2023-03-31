@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 
@@ -12,15 +13,15 @@ class BloodPressureInstructionsAdapter : PagerAdapter() {
         return 2
     }
 
-    override fun instantiateItem(collection: View, position: Int): Any {
-        val inflater = collection.getContext()
+    override fun instantiateItem(collection: ViewGroup, position: Int): Any {
+        val inflater = collection.context
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        var resId = 0
+        var imageId = 0
         when (position) {
-            0 -> resId = edu.upc.R.layout.activity_read_blood_pressure
-            1 -> resId = edu.upc.R.layout.activity_blood_pressure_instructions
+            0 -> imageId = edu.upc.R.layout.activity_read_blood_pressure
+            1 -> imageId = edu.upc.R.layout.activity_blood_pressure_instructions
         }
-        val view: View = inflater.inflate(resId, null)
+        val view: View = inflater.inflate(imageId, null)
         (collection as ViewPager).addView(view, 0)
         return view
     }
