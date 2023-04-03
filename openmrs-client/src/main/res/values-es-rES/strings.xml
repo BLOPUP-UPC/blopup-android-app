@@ -68,7 +68,7 @@
     <string name="action_download_patients">Descargar Pacientes</string>
     <string name="action_add_patients">Añadir Pacientes</string>
     <string name="search_patient_hint">Nombre del paciente</string>
-    <string name="search_patient_no_results">No existen pacientes en la base de datos.</string>
+    <string name="search_patient_no_results">¿No encuentras tu paciente?\n Prueba usando la lupa.</string>
     <string name="search_patient_no_result_for_query">No se encuentran resultados para la consulta \"%1$s\"</string>
     <string name="select_all_downloadable_data">Seleccionar todo</string>
     <string name="download_selected_patient_data">Descargar información del paciente</string>

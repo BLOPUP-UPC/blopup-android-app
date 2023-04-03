@@ -133,7 +133,7 @@
     <string name="action_download_patients">Download Patients</string>
     <string name="action_add_patients">Add Patients</string>
     <string name="search_patient_hint">Patient name</string>
-    <string name="search_patient_no_results">No patients exist in database.</string>
+    <string name="search_patient_no_results">Not finding your patient?\nTry to use the search icon.</string>
     <string name="search_patient_no_result_for_query">No results found for query \"%1$s\"</string>
     <string name="select_all_downloadable_data">Select all</string>
     <string name="download_selected_patient_data">Download Patient Data</string>

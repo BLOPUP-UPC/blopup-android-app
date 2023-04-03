@@ -87,7 +87,7 @@
     <string name="action_download_patients">Descarregar pacients</string>
     <string name="action_add_patients">Afegir pacients</string>
     <string name="search_patient_hint">Nom del pacient</string>
-    <string name="search_patient_no_results">No existeixen pacients a la base de dades.</string>
+    <string name="search_patient_no_results">No trobes el teu pacient?\nProva a fer servir la lupa.</string>
     <string name="search_patient_no_result_for_query">No s\'han trobat resultats per la visita \"%1$s\"</string>
     <string name="select_all_downloadable_data">Seleccionar tot</string>
     <string name="download_selected_patient_data">Descarregar la informació del pacient</string>
