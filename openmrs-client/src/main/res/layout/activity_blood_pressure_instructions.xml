@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,28 +14,71 @@
             android:id="@+id/toolbar_vitals"
             layout="@layout/toolbar_vitals" />
 
-        <ImageView
-            android:layout_marginTop="50dp"
-            android:id="@+id/bp_guide"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/blood_pressure_diagram_content_description"
-            android:cropToPadding="false"
-            android:src="@drawable/how_to_measure" />
-
         <TextView
-            android:layout_marginTop="30dp"
-            android:id="@+id/connection_instructions"
             android:layout_width="match_parent"
+            android:layout_marginTop="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Swipe left to start..."
+            android:text="@string/swipe_left_to_start"
+            android:textColor="@color/login_button_background"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/blood_pressure_instructions_title"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/blood_pressure_instructions"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/blood_pressure_instructions_title_two"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_marginVertical="10dp"
+           android:orientation="horizontal">
+
+           <ImageView
+               android:layout_marginStart="10dp"
+               android:id="@+id/bp_guide"
+               android:layout_width="170dp"
+               android:layout_height="300dp"
+               android:adjustViewBounds="true"
+               android:contentDescription="@string/blood_pressure_diagram_content_description"
+               android:src="@drawable/how_to_measure" />
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center"
+               android:padding="10dp"
+               android:text="@string/blood_pressure_instructions_two"
+               android:textColor="@color/black"
+               android:textSize="15sp" />
+
+       </LinearLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

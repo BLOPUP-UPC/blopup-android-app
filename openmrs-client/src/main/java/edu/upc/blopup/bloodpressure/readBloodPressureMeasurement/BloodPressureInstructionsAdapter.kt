@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 
 class BloodPressureInstructionsAdapter : PagerAdapter() {
     override fun getCount(): Int {

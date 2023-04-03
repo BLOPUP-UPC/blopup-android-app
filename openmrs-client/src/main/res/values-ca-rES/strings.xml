@@ -421,4 +421,9 @@
     <string name="jake_smith">Jake Smith</string>
     <string name="contact_us_message_hint">Escriu aquí el teu missatge</string>
     <string name="bmi_label">" Índex de Massa Corporal (IMC)"</string>
+    <string name="blood_pressure_instructions_title">Triant un braçalet de la mida adequada.</string>
+    <string name="blood_pressure_instructions">Mesura la circumferència del braç superior amb una cinta mètrica de sastre, a mig camí entre l\'espatlla i el colze. Tria un braçalet d\'una mida que inclogui la mesura.</string>
+    <string name="blood_pressure_instructions_title_two">Posició per prendre la tensió arterial.</string>
+    <string name="blood_pressure_instructions_two">1.- Descansa 5 minuts abans de prendre la pressió arterial.\n\n 2.- Seu en una cadira amb els dos peus plans a terra i l\'esquena recta.\n\n 3.- Situa el braç al nivell del cor o del pit.\n\n 4.- Queda\'t quiet i no parlis mentre el tensiòmetre pren les mesures.</string>
+    <string name="swipe_left_to_start">Llisca a l\'esquerra per començar</string>
 </resources>

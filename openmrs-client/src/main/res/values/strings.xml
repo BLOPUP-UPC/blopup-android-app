@@ -607,4 +607,9 @@
     <string name="send_email_success_toast_message">Message sent</string>
     <string name="send_email_fails_toast_message">Error sending message</string>
     <string name="subject_send_email" translatable="false">Blopup User Feedback</string>
+    <string name="blood_pressure_instructions_title">Choosing the correct blood pressure cuff size</string>
+    <string name="blood_pressure_instructions">Measure the circumference of your upper arm with a cloth measuring tape midway between the elbow and shoulder. Choose a cuff size that includes this measurement</string>
+    <string name="blood_pressure_instructions_title_two">Position for taking your blood pressure at home</string>
+    <string name="blood_pressure_instructions_two">1.- Rest for 5 minutes before measuring your blood pressure. \n\n 2.- Sit in a chair with both feet flat on the ground and back straight.\n\n 3.- Place your arm at the level of your heart or chest.\n\n 4.- Stay still and do not talk as your blood pressure machine operates.</string>
+    <string name="swipe_left_to_start">Swipe left to start</string>
 </resources>
