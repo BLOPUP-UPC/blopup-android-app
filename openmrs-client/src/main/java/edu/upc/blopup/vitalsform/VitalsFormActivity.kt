@@ -80,7 +80,6 @@ class VitalsFormActivity : ACBaseActivity() {
         mBinding.buttonToSentVitals.isEnabled = false
         mBinding.receiveBloodPressureDataBtn.setOnClickListener {
             try {
-                startActivity(Intent(this, BloodPressureInstructionsActivity::class.java))
                 val input = Intent(this, ReadBloodPressureActivity::class.java)
                 bluetoothBloodPressureDataLauncher.launch(input)
                 mBinding.buttonToSentVitals.isEnabled = true

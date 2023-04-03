@@ -18,8 +18,8 @@ class BloodPressureInstructionsAdapter : PagerAdapter() {
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         var viewId = 0
         when (position) {
-            0 -> viewId = edu.upc.R.layout.activity_read_blood_pressure
-            1 -> viewId = edu.upc.R.layout.activity_blood_pressure_instructions
+            0 -> viewId = edu.upc.R.layout.blood_pressure_instructions
+            1 -> viewId = edu.upc.R.layout.blood_pressure_device_diagram
         }
         val view: View = inflater.inflate(viewId, null)
         (collection as ViewPager).addView(view, 0)

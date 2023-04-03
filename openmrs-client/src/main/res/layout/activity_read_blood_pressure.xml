@@ -16,26 +16,9 @@
             android:id="@+id/toolbar_include"
             layout="@layout/toolbar" />
 
-        <ImageView
-            android:id="@+id/blood_pressure_diagram"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPagerBloodPressure"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/blood_pressure_diagram_content_description"
-            android:cropToPadding="false"
-            android:src="@drawable/blood_pressure_img" />
-
-        <TextView
-            android:id="@+id/connection_instructions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/bluetooth_instructions"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

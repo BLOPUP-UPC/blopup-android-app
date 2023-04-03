@@ -10,7 +10,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
@@ -91,23 +90,16 @@ class ReadBloodPressureActivity : AppCompatActivity() {
     }
 
     private fun startReading() {
-        if (BuildConfig.DEBUG) {
-            val result = Intent().apply {
-                putExtra(EXTRAS_SYSTOLIC, 127)
-                putExtra(EXTRAS_DIASTOLIC, 64)
-                putExtra(EXTRAS_HEART_RATE, 62)
-            }
-            setResult(RESULT_OK, result)
-            finish()
-        }
+        harcodeInDebugMode()
+
+        setUpSwipeAdapter()
+
         viewModel.startListeningBluetoothConnection()
-        viewModel.connectionViewState.observe(this) { state ->
-            val icon = when (state) {
-                ConnectionViewState.Disconnected -> R.drawable.ic_bluetooth_is_disconnected
-                ConnectionViewState.Pairing -> R.drawable.ic_bluetooth_is_searching
-            }
-            mToolbar.findViewById<ImageView>(R.id.bluetooth_icon).setImageResource(icon)
-        }
+        observeBluetoothConnectionState()
+        observeBloodPressureData()
+    }
+
+    private fun observeBloodPressureData() {
         viewModel.viewState.observe(this) { state ->
             when (state) {
                 is BloodPressureViewState.Error -> handleError(state.exception)
@@ -121,6 +113,35 @@ class ReadBloodPressureActivity : AppCompatActivity() {
                     finish()
                 }
             }
+        }
+    }
+
+    private fun observeBluetoothConnectionState() {
+        viewModel.connectionViewState.observe(this) { state ->
+            val icon = when (state) {
+                ConnectionViewState.Disconnected -> R.drawable.ic_bluetooth_is_disconnected
+                ConnectionViewState.Pairing -> R.drawable.ic_bluetooth_is_searching
+            }
+            mToolbar.findViewById<ImageView>(R.id.bluetooth_icon).setImageResource(icon)
+        }
+    }
+
+    private fun setUpSwipeAdapter() {
+        val adapter = BloodPressureInstructionsAdapter()
+        val myPager = mBinding.viewPagerBloodPressure
+        myPager.adapter = adapter
+        myPager.currentItem = 0
+    }
+
+    private fun harcodeInDebugMode() {
+        if (BuildConfig.DEBUG) {
+            val result = Intent().apply {
+                putExtra(EXTRAS_SYSTOLIC, 127)
+                putExtra(EXTRAS_DIASTOLIC, 64)
+                putExtra(EXTRAS_HEART_RATE, 62)
+            }
+            setResult(RESULT_OK, result)
+            finish()
         }
     }
 
