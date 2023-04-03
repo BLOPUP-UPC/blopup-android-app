@@ -94,50 +94,6 @@ public class ProviderManagerDashboardPresenterTest extends ACUnitTestBase {
         mockStaticMethods();
     }
 
-    @Test
-    @Ignore("Migrating from MVP to MVVM")
-    public void shouldGetProviders_AllOK() {
-
-        Provider providerOne = createProvider(1l, "doctor");
-        Provider providerTwo = createProvider(2l, "nurse");
-        providerList = Arrays.asList(providerOne, providerTwo);
-        providerLiveData.postValue(providerList);
-
-        when(NetworkUtils.isOnline()).thenReturn(true);
-        when(restApi.getProviderList()).thenReturn(mockSuccessCall(providerList));
-
-        providerManagerDashboardPresenter.updateViews(providerList);
-        //providerRepository.getProviders().observeForever(observer);
-
-        verify(restApi).getProviderList();
-        verify(providerManagerView).updateAdapter(providerList);
-        verify(providerManagerView).updateVisibility(true, null);
-    }
-
-    @Test
-    @Ignore("Migrating from MVP to MVVM")
-    public void shouldGetProviders_Error() {
-        Mockito.lenient().when(NetworkUtils.isOnline()).thenReturn(true);
-        Mockito.lenient().when(restApi.getProviderList()).thenReturn(mockErrorCall(401));
-
-        providerManagerDashboardPresenter.getProviders(fragment);
-        verify(restApi).getProviderList();
-    }
-
-    @Test
-    @Ignore("Migrating from MVP to MVVM")
-    public void shouldGetProviders_EmptyList() {
-        List<Provider> providerList = new ArrayList<>();
-        providerLiveData.postValue(providerList);
-
-        Mockito.lenient().when(NetworkUtils.isOnline()).thenReturn(true);
-        when(restApi.getProviderList()).thenReturn(mockSuccessCall(providerList));
-        providerManagerDashboardPresenter.getProviders(fragment);
-        providerManagerDashboardPresenter.updateViews(providerList);
-        verify(restApi).getProviderList();
-        verify(providerManagerView).updateVisibility(false, "No Data to display.");
-    }
-
     private void mockStaticMethods() {
         PowerMockito.mockStatic(NetworkUtils.class);
         PowerMockito.mockStatic(OpenMRS.class);

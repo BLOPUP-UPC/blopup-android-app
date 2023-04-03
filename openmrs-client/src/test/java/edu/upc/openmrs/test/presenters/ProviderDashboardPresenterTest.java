@@ -72,17 +72,6 @@ public class ProviderDashboardPresenterTest extends ACUnitTestBase {
         mockStaticMethods();
     }
 
-    @Test
-    @Ignore("Migrating from MVP to MVVM")
-    public void shouldReturnSuccessOnUpdateProvider() {
-        Provider provider = createProvider(1l, "doctor");
-        Mockito.lenient().when(NetworkUtils.isOnline()).thenReturn(true);
-        Mockito.lenient().when(restApi.UpdateProvider(provider.getUuid(), provider)).thenReturn(mockSuccessCall(provider));
-
-        providerDashboardPresenter.updateProvider(provider);
-        Mockito.verify(providerManagerView).setupBackdrop(provider);
-    }
-
     private void mockStaticMethods() {
         PowerMockito.mockStatic(NetworkUtils.class);
         PowerMockito.mockStatic(OpenMRS.class);
