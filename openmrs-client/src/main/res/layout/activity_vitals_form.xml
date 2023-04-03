@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/address_cardview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin_short"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent">
+    android:layout_margin="@dimen/margin_short">
 
     <LinearLayout
         android:id="@+id/linearLayout_vitals_info"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -25,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="14dp"
-            android:layout_marginBottom="50dip"
             android:orientation="vertical">
 
             <Button
@@ -39,6 +34,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingVertical="8dp"
                 android:stretchColumns="0,1">
 
                 <TableRow>
@@ -48,7 +44,6 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginRight="15dip">
 
                         <EditText
@@ -68,8 +63,7 @@
                         android:id="@+id/textInputDiastolic"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_marginTop="8dp">
+                        android:layout_height="fill_parent">
 
                         <EditText
                             android:id="@+id/diastolic"
@@ -87,6 +81,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
                         android:text="@string/blood_pressure_measurement_unit" />
                 </TableRow>
             </TableLayout>
@@ -95,6 +90,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingVertical="8dp"
                 android:stretchColumns="0">
 
                 <TableRow>
@@ -103,8 +99,7 @@
                         android:id="@+id/textInputPulse"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp">
+                        android:layout_height="wrap_content">
 
                         <EditText
                             android:id="@+id/pulse"
@@ -122,17 +117,16 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="   /Min" />
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/pulse_unit_label" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/scaleVariables"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dip"
             android:layout_margin="14dp"
             android:orientation="vertical">
 
@@ -147,6 +141,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingVertical="8dp"
                 android:stretchColumns="0,1">
 
                 <TableRow>
@@ -155,8 +150,7 @@
                         android:id="@+id/textInputWeight"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp">
+                        android:layout_height="wrap_content">
 
                         <EditText
                             android:id="@+id/weight"
@@ -173,6 +167,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
                         android:text="@string/weight_unit_label" />
                 </TableRow>
             </TableLayout>
@@ -181,6 +176,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingVertical="8dp"
                 android:stretchColumns="0,1">
 
                 <TableRow>
@@ -189,8 +185,7 @@
                         android:id="@+id/textInputHeight"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp">
+                        android:layout_height="wrap_content">
 
                         <EditText
                             android:id="@+id/height"
@@ -206,6 +201,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
                         android:text="@string/height_unit_label" />
                 </TableRow>
             </TableLayout>

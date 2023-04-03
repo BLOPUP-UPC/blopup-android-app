@@ -411,7 +411,6 @@
     <string name="pulse_label">Pols</string>
     <string name="receive_weight_value_button">"Rebre pes de la bàscula  "</string>
     <string name="weight_value_label">Pes</string>
-    <string name="weight_unit_label">"    Kg"</string>
     <string name="height_value_label">Alçada</string>
     <string name="send_button_label">Enviar</string>
     <string name="patient_deceased">Pacient mort</string>

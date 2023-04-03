@@ -409,7 +409,6 @@
     <string name="systolic_label">Sistólica:</string>
     <string name="height_value_label">Altura</string>
     <string name="weight_value_label">Peso</string>
-    <string name="weight_unit_label">"    Kg"</string>
     <string name="pulse_label">Pulso</string>
     <string name="send_button_label">Enviar</string>
     <string name="receive_weight_value_button">Recibir peso de la báscula</string>
