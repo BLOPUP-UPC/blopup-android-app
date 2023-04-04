@@ -35,10 +35,6 @@
         <action
             android:id="@+id/action_dashboardFragment_to_providerManagerDashboardActivity"
             app:destination="@id/providerManagerDashboardActivity" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_formEntryPatientListActivity"
-            app:destination="@id/formEntryPatientListActivity" />
-
     </fragment>
 
     <activity
@@ -60,9 +56,4 @@
         android:name="edu.upc.openmrs.activities.providermanagerdashboard.ProviderManagerDashboardActivity"
         android:label="activity_provider_management"
         tools:layout="@layout/activity_provider_management"/>
-    <activity
-        android:id="@+id/formEntryPatientListActivity"
-        android:name="edu.upc.openmrs.activities.formentrypatientlist.FormEntryPatientListActivity"
-        android:label="FormEntryPatientListActivity" />
-
 </navigation>

@@ -144,16 +144,6 @@
                 android:value="edu.upc.openmrs.activities.activevisits.ActiveVisitsActivity" />
         </activity>
         <activity
-            android:name="edu.upc.openmrs.activities.formentrypatientlist.FormEntryPatientListActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/action_form_entry"
-            android:parentActivityName="edu.upc.openmrs.activities.dashboard.DashboardActivity"
-            android:theme="@style/AppThemeOrig">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.dashboard.DashboardActivity" />
-        </activity>
-        <activity
             android:name="edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/action_register_patient"
