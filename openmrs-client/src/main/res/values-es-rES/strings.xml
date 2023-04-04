@@ -120,7 +120,7 @@
     <string name="list_visit_selector_show">Mostrar detalles</string>
     <string name="list_visit_selector_hide">Cerrar detalles</string>
     <string name="action_delete_patient">Eliminar Paciente</string>
-    <string name="action_register_patient">Registrar nuevo paciente</string>
+    <string name="action_register_patient">Registrar Nuevo Paciente</string>
     <string name="birthdate_hint">fecha de nacimiento:</string>
     <string name="address_hint">dirección:</string>
     <string name="crash_dialog_negative_button">Cerrar</string>

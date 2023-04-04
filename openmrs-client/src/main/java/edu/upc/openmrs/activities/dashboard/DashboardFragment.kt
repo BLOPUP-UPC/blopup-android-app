@@ -65,18 +65,9 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
                 .setShowcaseEventListener(object : OnShowcaseEventListener {
                     override fun onShowcaseViewHide(showcaseView: ShowcaseView) {
                         when (currentViewCount) {
-//                            ApplicationConstants.ShowCaseViewConstants.SHOW_FIND_PATIENT -> showOverlayTutorial((binding.activeVisitsView).id, getString(R.string.dashboard_visits_icon_label),
-//                                    getString(R.string.showcase_active_visits), R.style.CustomShowcaseTheme,
-//                                    ApplicationConstants.ShowCaseViewConstants.SHOW_ACTIVE_VISITS, true)
                             ApplicationConstants.ShowCaseViewConstants.SHOW_ACTIVE_VISITS -> showOverlayTutorial((binding.registryPatientView).id, getString(R.string.action_register_patient),
                                     getString(R.string.showcase_register_patient), R.style.CustomShowcaseTheme,
                                     ApplicationConstants.ShowCaseViewConstants.SHOW_REGISTER_PATIENT, false)
-//                            ApplicationConstants.ShowCaseViewConstants.SHOW_REGISTER_PATIENT -> showOverlayTutorial((binding.captureVitalsView).id, getString(R.string.dashboard_forms_icon_label),
-//                                    getString(R.string.showcase_form_entry), R.style.CustomShowcaseTheme,
-//                                    ApplicationConstants.ShowCaseViewConstants.SHOW_FORM_ENTRY, false)
-//                            ApplicationConstants.ShowCaseViewConstants.SHOW_FORM_ENTRY -> showOverlayTutorial((binding.dashboardProviderManagementView).id, getString(R.string.action_provider_management),
-//                                    getString(R.string.showcase_manage_providers), R.style.CustomShowcaseThemeExit,
-//                                    ApplicationConstants.ShowCaseViewConstants.SHOW_MANAGE_PROVIDERS, false)
                         }
                         showcaseView.visibility = View.GONE
                     }

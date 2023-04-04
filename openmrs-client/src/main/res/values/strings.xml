@@ -244,7 +244,7 @@
 
     <!-- Capture Vitals activity -->
     <string name="action_delete_patient">Delete Patient</string>
-    <string name="action_register_patient">Register new patient</string>
+    <string name="action_register_patient">Register New Patient</string>
     <string name="failed_to_open_vitals_form">An error occurred. Invalid or corrupted form file.</string>
     <string name="active_visit_label_capture_vitals">On Visit</string>
 
