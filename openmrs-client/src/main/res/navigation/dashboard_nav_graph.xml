@@ -29,14 +29,7 @@
         <action
             android:id="@+id/action_dashboardFragment_to_syncedPatientsActivity"
             app:destination="@id/syncedPatientsActivity" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_activeVisitsActivity"
-            app:destination="@id/activeVisitsActivity" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_providerManagerDashboardActivity"
-            app:destination="@id/providerManagerDashboardActivity" />
     </fragment>
-
     <activity
         android:id="@+id/addEditPatientActivity"
         android:name="edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity"
@@ -47,13 +40,4 @@
         android:name="edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity"
         android:label="activity_find_patients"
         tools:layout="@layout/activity_find_patients" />
-    <activity
-        android:id="@+id/activeVisitsActivity"
-        android:name="edu.upc.openmrs.activities.activevisits.ActiveVisitsActivity"
-        android:label="ActiveVisitsActivity" />
-    <activity
-        android:id="@+id/providerManagerDashboardActivity"
-        android:name="edu.upc.openmrs.activities.providermanagerdashboard.ProviderManagerDashboardActivity"
-        android:label="activity_provider_management"
-        tools:layout="@layout/activity_provider_management"/>
 </navigation>

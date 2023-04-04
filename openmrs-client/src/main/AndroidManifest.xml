@@ -113,35 +113,10 @@
                 android:value="edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity" />
         </activity>
         <activity
-            android:name="edu.upc.openmrs.activities.activevisits.ActiveVisitsActivity"
-            android:configChanges="keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/action_active_visits"
-            android:launchMode="singleTop"
-            android:theme="@style/AppThemeOrig">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.dashboard.DashboardActivity" />
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity"
             android:label="@string/visit_dashboard_label"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeOrig">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.activevisits.ActiveVisitsActivity" />
         </activity>
         <activity
             android:name="edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity"
@@ -206,22 +181,6 @@
         <activity
             android:name="edu.upc.openmrs.activities.patientdashboard.charts.ChartsViewActivity"
             android:parentActivityName="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity" />
-        <activity
-            android:name="edu.upc.openmrs.activities.providermanagerdashboard.ProviderManagerDashboardActivity"
-            android:configChanges="keyboardHidden|screenSize"
-            android:label="@string/provider_manager"
-            android:launchMode="singleTop"
-            android:theme="@style/AppThemeOrig" />
-        <activity
-            android:name="edu.upc.openmrs.activities.providermanagerdashboard.addprovider.AddProviderActivity"
-            android:label="@string/title_provider_info"
-            android:parentActivityName="edu.upc.openmrs.activities.providermanagerdashboard.ProviderManagerDashboardActivity"
-            android:theme="@style/AppThemeOrig"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="edu.upc.openmrs.activities.providerdashboard.ProviderDashboardActivity"
-            android:parentActivityName="edu.upc.openmrs.activities.providermanagerdashboard.ProviderManagerDashboardActivity"
-            android:theme="@style/AppThemeOrig" />
         <activity
             android:name="edu.upc.openmrs.activities.community.contact.ContactUsActivity"
             android:label="@string/contact_us"

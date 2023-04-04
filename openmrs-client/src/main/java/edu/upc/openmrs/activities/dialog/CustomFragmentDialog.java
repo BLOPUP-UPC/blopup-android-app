@@ -71,7 +71,6 @@ import edu.upc.openmrs.activities.login.LoginActivity;
 import edu.upc.openmrs.activities.login.LoginFragment;
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientVisitsFragment;
-import edu.upc.openmrs.activities.providerdashboard.ProviderDashboardActivity;
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity;
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardFragment;
 import edu.upc.openmrs.application.OpenMRS;
@@ -437,12 +436,6 @@ public class CustomFragmentDialog extends DialogFragment {
                 case DELETE_PATIENT:
                     ((PatientDashboardActivity) getActivity()).deletePatient();
                     dismiss();
-                    break;
-                case DELETE_PROVIDER:
-                    ProviderDashboardActivity providerDashboardActivity = (ProviderDashboardActivity) getActivity();
-                    providerDashboardActivity.mPresenter.deleteProvider();
-                    dismiss();
-                    providerDashboardActivity.finish();
                     break;
                 case MULTI_DELETE_PATIENT:
                     SyncedPatientsActivity syncedPatientsActivity = (SyncedPatientsActivity) getActivity();
