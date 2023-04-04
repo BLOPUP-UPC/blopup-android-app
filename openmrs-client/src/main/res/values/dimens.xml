@@ -18,7 +18,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="dashboard_icon_height_width">80dp</dimen>
     <dimen name="dashboard_icon_margin">20dp</dimen>
-    <dimen name="dashboard_text_size">18sp</dimen>
+    <dimen name="dashboard_text_size">16sp</dimen>
     <dimen name="dashboard_text_top_margin">10dp</dimen>
     <dimen name="dashboard_text_bottom_margin">15dp</dimen>
     <dimen name="settings_list_text_title_size">16sp</dimen>

@@ -65,18 +65,18 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
                 .setShowcaseEventListener(object : OnShowcaseEventListener {
                     override fun onShowcaseViewHide(showcaseView: ShowcaseView) {
                         when (currentViewCount) {
-                            ApplicationConstants.ShowCaseViewConstants.SHOW_FIND_PATIENT -> showOverlayTutorial((binding.activeVisitsView).id, getString(R.string.dashboard_visits_icon_label),
-                                    getString(R.string.showcase_active_visits), R.style.CustomShowcaseTheme,
-                                    ApplicationConstants.ShowCaseViewConstants.SHOW_ACTIVE_VISITS, true)
+//                            ApplicationConstants.ShowCaseViewConstants.SHOW_FIND_PATIENT -> showOverlayTutorial((binding.activeVisitsView).id, getString(R.string.dashboard_visits_icon_label),
+//                                    getString(R.string.showcase_active_visits), R.style.CustomShowcaseTheme,
+//                                    ApplicationConstants.ShowCaseViewConstants.SHOW_ACTIVE_VISITS, true)
                             ApplicationConstants.ShowCaseViewConstants.SHOW_ACTIVE_VISITS -> showOverlayTutorial((binding.registryPatientView).id, getString(R.string.action_register_patient),
                                     getString(R.string.showcase_register_patient), R.style.CustomShowcaseTheme,
                                     ApplicationConstants.ShowCaseViewConstants.SHOW_REGISTER_PATIENT, false)
-                            ApplicationConstants.ShowCaseViewConstants.SHOW_REGISTER_PATIENT -> showOverlayTutorial((binding.captureVitalsView).id, getString(R.string.dashboard_forms_icon_label),
-                                    getString(R.string.showcase_form_entry), R.style.CustomShowcaseTheme,
-                                    ApplicationConstants.ShowCaseViewConstants.SHOW_FORM_ENTRY, false)
-                            ApplicationConstants.ShowCaseViewConstants.SHOW_FORM_ENTRY -> showOverlayTutorial((binding.dashboardProviderManagementView).id, getString(R.string.action_provider_management),
-                                    getString(R.string.showcase_manage_providers), R.style.CustomShowcaseThemeExit,
-                                    ApplicationConstants.ShowCaseViewConstants.SHOW_MANAGE_PROVIDERS, false)
+//                            ApplicationConstants.ShowCaseViewConstants.SHOW_REGISTER_PATIENT -> showOverlayTutorial((binding.captureVitalsView).id, getString(R.string.dashboard_forms_icon_label),
+//                                    getString(R.string.showcase_form_entry), R.style.CustomShowcaseTheme,
+//                                    ApplicationConstants.ShowCaseViewConstants.SHOW_FORM_ENTRY, false)
+//                            ApplicationConstants.ShowCaseViewConstants.SHOW_FORM_ENTRY -> showOverlayTutorial((binding.dashboardProviderManagementView).id, getString(R.string.action_provider_management),
+//                                    getString(R.string.showcase_manage_providers), R.style.CustomShowcaseThemeExit,
+//                                    ApplicationConstants.ShowCaseViewConstants.SHOW_MANAGE_PROVIDERS, false)
                         }
                         showcaseView.visibility = View.GONE
                     }
@@ -108,11 +108,8 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
 
     private fun setListeners() {
         with(binding) {
-            activeVisitsView.setOnClickListener(this@DashboardFragment)
             registryPatientView.setOnClickListener(this@DashboardFragment)
             findPatientView.setOnClickListener(this@DashboardFragment)
-            captureVitalsView.setOnClickListener(this@DashboardFragment)
-            dashboardProviderManagementView.setOnClickListener(this@DashboardFragment)
         }
     }
 
@@ -128,8 +125,6 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
         with(binding) {
             bindDrawableResource(findPatientButton, R.drawable.ico_search)
             bindDrawableResource(registryPatientButton, R.drawable.ico_registry)
-            bindDrawableResource(activeVisitsButton, R.drawable.ico_visits)
-            bindDrawableResource(captureVitalsButton, R.drawable.ico_vitals)
             if (ThemeUtils.isDarkModeActivated()) {
                 changeColorOfDashboardIcons()
             }
@@ -178,9 +173,6 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
         when (v.id) {
             R.id.findPatientView -> findNavController().navigate(directionToFindPatent)
             R.id.registryPatientView -> findNavController().navigate(directionToRegister)
-            R.id.captureVitalsView -> findNavController().navigate(directionToFormEntry)
-            R.id.activeVisitsView -> findNavController().navigate(directionToActiveVisits)
-            R.id.dashboardProviderManagementView -> findNavController().navigate(directionToProviderManager)
             else -> {
             }
         }
@@ -189,11 +181,8 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
     private fun changeColorOfDashboardIcons() {
         with(binding) {
             val greenColorResId = R.color.green
-            ImageUtils.changeImageViewTint(context, activeVisitsButton, greenColorResId)
-            ImageUtils.changeImageViewTint(context, captureVitalsButton, greenColorResId)
             ImageUtils.changeImageViewTint(context, findPatientButton, greenColorResId)
             ImageUtils.changeImageViewTint(context, registryPatientButton, greenColorResId)
-            ImageUtils.changeImageViewTint(context, dashboardProviderManagementButton, greenColorResId)
         }
     }
 
