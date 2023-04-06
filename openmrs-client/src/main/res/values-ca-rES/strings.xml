@@ -161,7 +161,7 @@
     <string name="visit_ending_error">Error al finalitzar la visita</string>
     <string name="patient_not_yet_registered">Pacient no registrat encara, no es pot crear cap visita.</string>
     <string name="action_delete_patient">Esborrar Pacient</string>
-    <string name="action_register_patient">Registrar Nou Pacient</string>
+    <string name="action_register_patient">Registrar Pacient</string>
     <string name="failed_to_open_vitals_form">Ha saltat un error. Formulari no vàlid o malmès.</string>
     <string name="active_visit_label_capture_vitals">En visita</string>
     <string name="empty_visits_list">El pacient no té cap visita encara.</string>
