@@ -114,7 +114,7 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
      */
     fun bindDrawableResources() {
         with(binding) {
-            bindDrawableResource(findPatientButton, R.drawable.ico_search)
+            bindDrawableResource(findPatientButton, R.mipmap.ico_search_patients)
             bindDrawableResource(registryPatientButton, R.mipmap.ico_add_patient)
             if (ThemeUtils.isDarkModeActivated()) {
                 changeColorOfDashboardIcons()
