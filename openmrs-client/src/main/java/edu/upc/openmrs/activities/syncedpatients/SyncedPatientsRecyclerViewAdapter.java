@@ -29,6 +29,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import edu.upc.sdk.library.api.repository.PatientRepository;
+import edu.upc.sdk.library.api.repository.VisitRepository;
+import edu.upc.sdk.library.dao.PatientDAO;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.DateUtils;
@@ -104,6 +107,12 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
         }
         if (null != patient.getName()) {
             holder.mDisplayName.setText(patient.getName().getNameString());
+        } else if (null != patient.getDisplay()) {
+                /* if name is null, then we can get the name from 'display' which contains the ID and name
+                separated by a hyphen( - ). */
+            String patientName = patient.getDisplay().split("-")[1];
+            holder.mDisplayName.setText(patientName);
+
         }
         if (null != patient.getGender()) {
             if (patient.getPhoto() != null) {
@@ -116,7 +125,7 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
                 }
             }
         }
-        if (patient.isDeceased()) {
+        if (patient.isDeceased() != null && patient.isDeceased()) {
             holder.mRowLayout.setCardBackgroundColor(mContext.getResources().getColor(R.color.deceased_red));
         }
         try {
@@ -176,12 +185,48 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
             itemView.setOnClickListener(view -> {
                 if (!multiSelect) {
                     Intent intent = new Intent(mContext.getActivity(), PatientDashboardActivity.class);
-                    intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, value.getId());
+                    if (value.getId() == null) {
+                        Patient patient = retrieveOrDownloadPatient(value.getUuid());
+                        intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient.getId());
+                    } else
+                        intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, value.getId());
                     mContext.startActivity(intent);
                 } else {
                     selectItem(value);
                 }
             });
         }
+
+        private Patient retrieveOrDownloadPatient(final String patientUuid) {
+            PatientDAO patientDAO = new PatientDAO();
+            PatientRepository patientRepository = new PatientRepository();
+
+
+            //region == Check if it exist in the db before attempting a download ==
+            Patient patient = patientDAO.findPatientByUUID(patientUuid);
+            if (patient != null)
+                return patient;
+            //endregion
+
+            //region == Download Patient From Remote & Save To DB ==
+            patient = patientRepository.downloadPatientByUuid(patientUuid)
+                    .single()
+                    .toBlocking()
+                    .first();
+
+            Long id = patientDAO.savePatient(patient)
+                    .single()
+                    .toBlocking()
+                    .first();
+
+            patient.setId(id);
+
+            new VisitRepository().syncVisitsData(patient);
+            new VisitRepository().syncLastVitals(patientUuid);
+            //endregion
+
+            return patient;
+        }
+
     }
 }

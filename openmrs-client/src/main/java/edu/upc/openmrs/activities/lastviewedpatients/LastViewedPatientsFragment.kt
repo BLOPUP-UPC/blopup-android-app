@@ -51,7 +51,7 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private val viewModel: LastViewedPatientsViewModel by viewModels()
 
-    private lateinit var mAdapter: edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientRecyclerViewAdapter
+    private lateinit var mAdapter: LastViewedPatientRecyclerViewAdapter
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -84,7 +84,7 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private fun resetLastViewedPatients() {
         mAdapter =
-            edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientRecyclerViewAdapter(
+            LastViewedPatientRecyclerViewAdapter(
                 activity,
                 ArrayList(),
                 this@LastViewedPatientsFragment

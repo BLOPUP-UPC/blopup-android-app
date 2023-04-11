@@ -25,6 +25,7 @@ import edu.upc.sdk.library.models.Result
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentSyncedPatientsBinding
+import edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsViewModel
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeInvisible
 import edu.upc.openmrs.utilities.makeVisible
@@ -36,7 +37,11 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private val viewModel: SyncedPatientsViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSyncedPatientsBinding.inflate(inflater, container, false)
 
         val linearLayoutManager = LinearLayoutManager(this.activity)
@@ -44,7 +49,7 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
             syncedPatientRecyclerView.setHasFixedSize(true)
             syncedPatientRecyclerView.layoutManager = linearLayoutManager
             syncedPatientRecyclerView.adapter =
-                edu.upc.openmrs.activities.syncedpatients.SyncedPatientsRecyclerViewAdapter(
+                SyncedPatientsRecyclerViewAdapter(
                     this@SyncedPatientsFragment,
                     ArrayList()
                 )
@@ -70,11 +75,12 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
         })
     }
 
-    fun fetchSyncedPatients() {
+    private fun fetchSyncedPatients() {
         viewModel.fetchSyncedPatients()
     }
 
     fun fetchSyncedPatients(query: String) {
+        //search remote
         viewModel.fetchSyncedPatients(query)
     }
 
@@ -96,7 +102,9 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
                 syncedPatientRecyclerView.makeGone()
                 showEmptyListText()
             } else {
-                (syncedPatientRecyclerView.adapter as edu.upc.openmrs.activities.syncedpatients.SyncedPatientsRecyclerViewAdapter).updateList(patients)
+                (syncedPatientRecyclerView.adapter as SyncedPatientsRecyclerViewAdapter).updateList(
+                    patients
+                )
                 syncedPatientRecyclerView.makeVisible()
                 hideEmptyListText()
             }
