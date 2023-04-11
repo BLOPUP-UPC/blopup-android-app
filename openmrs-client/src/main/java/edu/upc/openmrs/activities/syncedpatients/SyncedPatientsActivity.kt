@@ -23,10 +23,11 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.StringUtils.notEmpty
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsActivity
 
 @AndroidEntryPoint
-class SyncedPatientsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
+class SyncedPatientsActivity : ACBaseActivity() {
     private var query: String? = null
     private var addPatientMenuItem: MenuItem? = null
 
@@ -41,18 +42,22 @@ class SyncedPatientsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
 
         // Create fragment
-        var syncedPatientsFragment = supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
+        var syncedPatientsFragment =
+            supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
         if (syncedPatientsFragment == null) {
             syncedPatientsFragment = SyncedPatientsFragment.newInstance()
         }
         if (!syncedPatientsFragment.isActive) {
-            addFragmentToActivity(supportFragmentManager,
-                    syncedPatientsFragment, R.id.syncedPatientsContentFrame)
+            addFragmentToActivity(
+                supportFragmentManager,
+                syncedPatientsFragment, R.id.syncedPatientsContentFrame
+            )
         }
     }
 
     fun deletePatient(patient: Patient) {
-        val syncedPatientsFragment = supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
+        val syncedPatientsFragment =
+            supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
         syncedPatientsFragment?.deletePatient(patient)
     }
 
@@ -88,13 +93,14 @@ class SyncedPatientsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                searchView.clearFocus()
+                // searchView.clearFocus()
+                val syncedPatientsFragment =
+                    supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
+                syncedPatientsFragment?.fetchSyncedPatients(query)
                 return true
             }
 
             override fun onQueryTextChange(query: String): Boolean {
-                val syncedPatientsFragment = supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
-                syncedPatientsFragment?.fetchSyncedPatients(query)
                 return true
             }
         })
