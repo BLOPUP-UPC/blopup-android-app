@@ -56,3 +56,5 @@ versions.hilt = '2.36'
 
 versions.lifecycle_version = "2.1.0"
 versions.arch_version = "2.1.0"
+
+versions.preference = '1.2.0'

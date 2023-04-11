@@ -15,23 +15,26 @@ package edu.upc.sdk.utilities
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.preference.PreferenceManager
+import android.net.NetworkCapabilities
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import edu.upc.sdk.library.OpenmrsAndroid
 
 object NetworkUtils {
     @JvmStatic
     fun hasNetwork(): Boolean {
-        val connectivityManager = OpenmrsAndroid.getInstance()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = OpenmrsAndroid.getInstance()
+            ?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
 
     @JvmStatic
     fun isOnline(): Boolean {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(OpenmrsAndroid.getInstance())
+        val prefs = getDefaultSharedPreferences(OpenmrsAndroid.getInstance()!!)
         val toggle = prefs.getBoolean("sync", true)
         return if (toggle) {
-            val connectivityManager = OpenmrsAndroid.getInstance()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager = OpenmrsAndroid.getInstance()
+                ?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
             val isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
             return if (isConnected) true
@@ -43,4 +46,13 @@ object NetworkUtils {
             }
         } else false
     }
+
+    fun isNetworkAvailable(context: Context) =
+        (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).run {
+            getNetworkCapabilities(activeNetwork)?.run {
+                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                        || hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                        || hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            } ?: false
+        }
 }
