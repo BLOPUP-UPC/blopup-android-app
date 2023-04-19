@@ -48,7 +48,7 @@ class PatientDashboardPagerAdapter(private val fm: FragmentManager,
             DIAGNOSIS_TAB_POS -> PatientDiagnosisFragment.newInstance(mPatientId)
             VISITS_TAB_POS -> PatientVisitsFragment.newInstance(mPatientId)
             VITALS_TAB_POS -> PatientVitalsFragment.newInstance(mPatientId)
-//            CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId)
+            CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId)
             else -> throw IllegalStateException()
         }
     }
@@ -60,7 +60,7 @@ class PatientDashboardPagerAdapter(private val fm: FragmentManager,
             DIAGNOSIS_TAB_POS -> context.getString(R.string.patient_scroll_tab_diagnosis_label)
             VISITS_TAB_POS -> context.getString(R.string.patient_scroll_tab_visits_label)
             VITALS_TAB_POS -> context.getString(R.string.patient_scroll_tab_vitals_label)
-//            CHARTS_TAB_POS -> context.getString(R.string.patient_scroll_tab_charts_label)
+            CHARTS_TAB_POS -> context.getString(R.string.patient_scroll_tab_charts_label)
             else -> super.getPageTitle(position)
         }
     }

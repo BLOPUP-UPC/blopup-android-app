@@ -24,14 +24,18 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Lists;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import edu.upc.R;
+import kotlin.jvm.internal.ArrayIteratorKt;
 
 public class PatientChartsRecyclerViewAdapter extends RecyclerView.Adapter<PatientChartsRecyclerViewAdapter.ViewHolder> {
     private Context mContext;
@@ -65,11 +69,10 @@ public class PatientChartsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
     }
 
     public void updateList(JSONObject observationList) {
-        Iterator<String> keys = observationList.keys();
-        mVitalNameList = Lists.newArrayList(keys);
+//        Iterator<String> keys = observationList.keys();
+        mVitalNameList = Arrays.asList("Blood Pressure Evolution");
         notifyDataSetChanged();
     }
-
     interface OnClickListener {
         void showChartActivity(String vitalName);
     }

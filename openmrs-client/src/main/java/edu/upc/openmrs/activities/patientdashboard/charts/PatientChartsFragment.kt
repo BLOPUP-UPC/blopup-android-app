@@ -14,10 +14,12 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -34,8 +36,11 @@ import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import kotlinx.android.synthetic.main.fragment_patient_charts.vitalEmpty
 import kotlinx.android.synthetic.main.fragment_patient_charts.vitalList
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc.openmrs.activities.patientdashboard.charts.PatientChartsRecyclerViewAdapter.OnClickListener {
@@ -103,30 +108,43 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc
         vitalList.makeGone()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun showChartActivity(vitalName: String) {
         try {
-            val chartData = observationList!!.getJSONObject(vitalName)
-            val dates = chartData.keys()
-            val dateList = Lists.newArrayList(dates)
-            if (dateList.size == 0) showShortToast(requireContext(), ToastUtil.ToastType.ERROR, getString(R.string.data_not_available_for_this_field)) else {
-                val dataArray = chartData.getJSONArray(dateList[0])
-                val entry = dataArray[0] as String
-                try {
-                    val entryValue = entry.toFloat()
-                    Intent(activity, edu.upc.openmrs.activities.patientdashboard.charts.ChartsViewActivity::class.java).apply {
-                        val bundle = Bundle().apply { putString("vitalName", chartData.toString()) }
-                        putExtra("bundle", bundle)
-                        startActivity(this)
-                    }
-                } catch (e: NumberFormatException) {
-                    showShortToast(requireContext(), ToastUtil.ToastType.ERROR, getString(R.string.data_type_not_available_for_this_field))
-                }
+            val systolicData = observationList!!.getJSONObject("Systolic")
+            val diastolicData = observationList!!.getJSONObject("Diastolic")
+            val systolicDataArray = ArrayList<String>()
+            val datesDataArray = ArrayList<String>()
+            val diastolicDataArray = ArrayList<String>()
+
+            for (key in systolicData.keys()) {
+                systolicDataArray.add((systolicData.get(key) as JSONArray).get(0) as String)
+                datesDataArray.add(key)
             }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-            showShortToast(requireContext(), ToastUtil.ToastType.ERROR, e.message!!)
+
+            for (key in diastolicData.keys()) {
+                diastolicDataArray.add((diastolicData.get(key) as JSONArray).get(0) as String)
+            }
+                Intent(
+                    activity,
+                    ChartsViewActivity::class.java
+                ).apply {
+                    val bundle = Bundle().apply {
+                        putString("systolic", systolicDataArray.toString())
+                        putString("diastolic", diastolicDataArray.toString())
+                        putString("dates", datesDataArray.toString())
+                    }
+                    putExtra("bundle", bundle)
+                    startActivity(this)
+                }
+            } catch (e: NumberFormatException) {
+                showShortToast(
+                    requireContext(),
+                    ToastUtil.ToastType.ERROR,
+                    getString(R.string.data_type_not_available_for_this_field)
+                )
+            }
         }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

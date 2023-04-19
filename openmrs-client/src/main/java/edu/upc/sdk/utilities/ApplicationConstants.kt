@@ -188,7 +188,7 @@ object ApplicationConstants {
         const val VISITS_TAB_POS = 3
         const val VITALS_TAB_POS = 4
         const val CHARTS_TAB_POS = 5
-        const val TAB_COUNT = 5
+        const val TAB_COUNT = 6
     }
 
     object ConceptDownloadService {
