@@ -24,26 +24,24 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.common.collect.Lists
-import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.ToastUtil
-import edu.upc.sdk.utilities.ToastUtil.showShortToast
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientChartsBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
-import kotlinx.android.synthetic.main.fragment_patient_charts.vitalEmpty
-import kotlinx.android.synthetic.main.fragment_patient_charts.vitalList
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ToastUtil
+import edu.upc.sdk.utilities.ToastUtil.showShortToast
+import kotlinx.android.synthetic.main.fragment_patient_charts.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 @AndroidEntryPoint
-class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc.openmrs.activities.patientdashboard.charts.PatientChartsRecyclerViewAdapter.OnClickListener {
+class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), PatientChartsRecyclerViewAdapter.OnClickListener {
     private var _binding: FragmentPatientChartsBinding? = null
     private val binding get() = _binding!!
 
@@ -66,7 +64,7 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter =
-                edu.upc.openmrs.activities.patientdashboard.charts.PatientChartsRecyclerViewAdapter(
+                PatientChartsRecyclerViewAdapter(
                     activity,
                     JSONObject(),
                     this@PatientChartsFragment
@@ -99,7 +97,7 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc
         with(binding) {
             vitalEmpty.makeGone()
             vitalList.makeVisible()
-            (vitalList.adapter as edu.upc.openmrs.activities.patientdashboard.charts.PatientChartsRecyclerViewAdapter).updateList(observationList)
+            (vitalList.adapter as PatientChartsRecyclerViewAdapter).updateList(observationList)
         }
     }
 
@@ -113,16 +111,11 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc
         try {
             val systolicData = observationList!!.getJSONObject("Systolic")
             val diastolicData = observationList!!.getJSONObject("Diastolic")
-            val systolicDataArray = ArrayList<String>()
-            val datesDataArray = ArrayList<String>()
-            val diastolicDataArray = ArrayList<String>()
 
-            for (key in systolicData.keys()) {
-                systolicDataArray.add((systolicData.get(key) as JSONArray).get(0) as String)
-                datesDataArray.add(key)
-            }
-            for (key in diastolicData.keys()) {
-                diastolicDataArray.add((diastolicData.get(key) as JSONArray).get(0) as String)
+            val map = HashMap<String, Pair<Float, Float>>()
+            val dates = systolicData.keys()
+            for (key in dates) {
+                map.put(key, Pair(((systolicData.get(key) as JSONArray).get(0) as String).toFloat(), ((diastolicData.get(key) as JSONArray).get(0) as String).toFloat()))
             }
 
             try{
@@ -131,9 +124,7 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc
                     ChartsViewActivity::class.java
                 ).apply {
                     val bundle = Bundle().apply {
-                        putString("systolic", systolicDataArray.toString())
-                        putString("diastolic", diastolicDataArray.toString())
-                        putString("dates", datesDataArray.toString())
+                        putSerializable("bloodPressure", map)
                     }
                     putExtra("bundle", bundle)
                     startActivity(this)

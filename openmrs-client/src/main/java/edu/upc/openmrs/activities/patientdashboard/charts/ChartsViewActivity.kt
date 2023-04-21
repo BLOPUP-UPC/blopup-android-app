@@ -1,6 +1,5 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -18,10 +17,11 @@ import edu.upc.R
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.utilities.ApplicationConstants
-import java.text.SimpleDateFormat
-import java.time.ZoneId
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ChartsViewActivity : ACBaseActivity() {
@@ -39,7 +39,7 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart = mBinding.linechart
 
         setChartData()
-        setChartLimitLines()
+        setChartMaxAndMinimumLimitLines()
         setChartFormat()
     }
 
@@ -53,53 +53,28 @@ class ChartsViewActivity : ACBaseActivity() {
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun setChartData() {
         val mBundle = this.intent.getBundleExtra(ApplicationConstants.BUNDLE)
 
-        val systolicData = mBundle!!.getString("systolic")
-        val diastolicData = mBundle.getString("diastolic")
-        val datesData = mBundle.getString("dates")
+        val bloodPressureData = mBundle!!.getSerializable("bloodPressure") as HashMap<String, Pair<Float, Float>>
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        val outputFormat = SimpleDateFormat("yyyy/MM/dd")
-        val dates = datesData!!.replace("[", "")
-            .replace("]", "")
-            .split(", ")
-            .map { dateFormat.parse(it).toInstant().atZone(ZoneId.systemDefault()).toLocalDate() }
-            .map { outputFormat.format(Date.from(it.atStartOfDay(ZoneId.systemDefault()).toInstant())) }
-            .toList()
+        val systolicData = ArrayList<Float>()
+        val diastolicData = ArrayList<Float>()
+        val datesData = ArrayList<String>()
 
-        mChart.xAxis.valueFormatter = MyValueFormatter(dates)
-        //to display one data per date
-        mChart.xAxis.granularity = 1F
-
-        val systolicDataString = systolicData?.replace("[^\\d.,]".toRegex(), "")?.split(",")
-        val systolicDataArray = systolicDataString?.map { it.toDouble() }?.toDoubleArray()
-        val systolicValues = ArrayList<Entry>()
-        if (systolicDataArray != null) {
-            var entryNumber =0f
-            for(value in systolicDataArray){
-                val entry = Entry(entryNumber, value.toFloat())
-                systolicValues.add(entry)
-                entryNumber++
+        for (key in bloodPressureData.keys) {
+            systolicData.add((bloodPressureData[key]!!.first))
+            diastolicData.add((bloodPressureData[key]!!.second))
+            datesData.add(key)
             }
-        }
 
-        val diastolicDataString = diastolicData?.replace("[^\\d.,]".toRegex(), "")?.split(",")
-        val diastolicDataArray = diastolicDataString?.map { it.toDouble() }?.toDoubleArray()
-        val diastolicValues = ArrayList<Entry>()
-        if (diastolicDataArray != null) {
-            var entryNumber = 0f
-            for(value in diastolicDataArray){
-                val entry = Entry(entryNumber, value.toFloat())
-                diastolicValues.add(entry)
-                entryNumber++
-            }
-        }
+        setDatesIntoChart(datesData)
 
-        val dataSetSystolic = LineDataSet(assignEntryIconSystolic(systolicValues), "")
-        val dataSetDiastolic = LineDataSet(assignEntryIconDiastolic(diastolicValues), "")
+        val systolicEntries = setEntries(systolicData)
+        val diastolicEntries = setEntries(diastolicData)
+
+        val dataSetSystolic = LineDataSet(setColorIconsToEntries(systolicEntries, "systolic"), "")
+        val dataSetDiastolic = LineDataSet(setColorIconsToEntries(diastolicEntries, "diastolic"), "")
 
         //makes the line between data points transparent
         dataSetDiastolic.color = Color.TRANSPARENT
@@ -120,32 +95,61 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart.data = lineData
     }
 
-    private fun setChartLimitLines() {
-        //lines to reflect minimum and maximum values
-        val lowerLimitDiastolic = LimitLine(130f)
-        lowerLimitDiastolic.lineColor = Color.GREEN
-        lowerLimitDiastolic.lineWidth = 2f
-        lowerLimitDiastolic.enableDashedLine(10f, 10f, 0f)
+    private fun setEntries(valueDataArray: ArrayList<Float>): ArrayList<Entry> {
+        val values = ArrayList<Entry>()
+        var entryNumber = 0f
+        for (value in valueDataArray) {
+            val entry = Entry(entryNumber, value)
+            values.add(entry)
+            entryNumber++
+        }
+        return values
+    }
 
-        val upperLimitDiastolic = LimitLine(140f)
+    private fun setDatesIntoChart(datesDataArray: ArrayList<String>) {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val dates = datesDataArray.map {
+            val dateTime =
+                LocalDateTime.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"))
+            dateTime.format(formatter)
+        }.toList()
+        mChart.xAxis.valueFormatter = MyValueFormatter(dates)
+    }
+
+    private fun setChartMaxAndMinimumLimitLines() {
+        val minLimitSystolic = LimitLine(80f)
+        applyGreenLine(minLimitSystolic)
+        applyLimitLineStyle(minLimitSystolic)
+
+        val maxLimitSystolic = LimitLine(90f)
+        applyRedLine(maxLimitSystolic)
+        applyLimitLineStyle(maxLimitSystolic)
+
+        val minLimitDiastolic = LimitLine(130f)
+        applyGreenLine(minLimitDiastolic)
+        applyLimitLineStyle(minLimitDiastolic)
+
+        val maxLimitDiastolic = LimitLine(140f)
+        applyRedLine(maxLimitDiastolic)
+        applyLimitLineStyle(maxLimitDiastolic)
+
+        mChart.axisLeft.addLimitLine(minLimitSystolic)
+        mChart.axisLeft.addLimitLine(maxLimitSystolic)
+        mChart.axisLeft.addLimitLine(minLimitDiastolic)
+        mChart.axisLeft.addLimitLine(maxLimitDiastolic)
+    }
+
+    private fun applyRedLine(upperLimitDiastolic: LimitLine) {
         upperLimitDiastolic.lineColor = Color.RED
-        upperLimitDiastolic.lineWidth = 2f
-        upperLimitDiastolic.enableDashedLine(10f, 10f, 0f)
+    }
 
-        val lowerLimitSystolic = LimitLine(80f)
-        lowerLimitSystolic.lineColor = Color.GREEN
-        lowerLimitSystolic.lineWidth = 2f
-        lowerLimitSystolic.enableDashedLine(10f, 10f, 0f)
+    private fun applyGreenLine(lowerLimitDiastolic: LimitLine) {
+        lowerLimitDiastolic.lineColor = Color.GREEN
+    }
 
-        val upperLimitSystolic = LimitLine(90f)
-        upperLimitSystolic.lineColor = Color.RED
-        upperLimitSystolic.lineWidth = 2f
-        upperLimitSystolic.enableDashedLine(10f, 10f, 0f)
-
-        mChart.axisLeft.addLimitLine(lowerLimitDiastolic)
-        mChart.axisLeft.addLimitLine(upperLimitDiastolic)
-        mChart.axisLeft.addLimitLine(lowerLimitSystolic)
-        mChart.axisLeft.addLimitLine(upperLimitSystolic)
+    private fun applyLimitLineStyle(limitLine: LimitLine) {
+        limitLine.lineWidth = 2f
+        limitLine.enableDashedLine(10f, 10f, 0f)
     }
 
     private fun setChartFormat() {
@@ -153,22 +157,25 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart.setTouchEnabled(true)
         // to make it scrollable
         mChart.setVisibleXRangeMaximum(3f)
-        mChart.axisLeft.setDrawLimitLinesBehindData(true)
         // to remove values in right side of screen
         mChart.axisRight.isEnabled = false
+        //to display one data per date
+        mChart.xAxis.granularity = 1F
         mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        mChart.axisLeft.axisMaximum = 200f
-        mChart.axisLeft.axisMinimum = 40f
         mChart.xAxis.axisLineWidth = 2f
         mChart.xAxis.axisLineColor = Color.BLACK
         mChart.axisLeft.axisLineWidth = 2f
         mChart.axisLeft.axisLineColor = Color.BLACK
+        mChart.axisLeft.axisMaximum = 200f
+        mChart.axisLeft.axisMinimum = 40f
+        mChart.axisLeft.setDrawLimitLinesBehindData(true)
     }
 
-    private fun assignEntryIconSystolic(entries: List<Entry>): List<Entry> {
-        //depending on the value, each entry is assigned a red or green icon
+    private fun setColorIconsToEntries(entries: List<Entry>, type: String): List<Entry> {
         entries.forEach {
-            if (it.y >= 130F) {
+            if (type == "systolic" && isSystolicHigh(it)) {
+                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
+            } else if (type == "diastolic" && isDiastolicHigh(it)) {
                 it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
             } else {
                 it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.green)
@@ -176,15 +183,6 @@ class ChartsViewActivity : ACBaseActivity() {
         }
         return entries
     }
-
-    private fun assignEntryIconDiastolic(entries: List<Entry>): List<Entry> {
-        entries.forEach {
-            if (it.y >= 80F) {
-                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
-            } else {
-                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.green)
-            }
-        }
-        return entries
-    }
+    private fun isSystolicHigh(it: Entry) = it.y >= 130F
+    private fun isDiastolicHigh(it: Entry) = it.y >= 80F
 }
