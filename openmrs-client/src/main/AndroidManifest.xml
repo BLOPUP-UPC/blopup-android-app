@@ -180,7 +180,10 @@
             android:theme="@style/AppThemeOrig" />
         <activity
             android:name="edu.upc.openmrs.activities.patientdashboard.charts.ChartsViewActivity"
-            android:parentActivityName="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity" />
+            android:parentActivityName="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden"
+            />
         <activity
             android:name="edu.upc.openmrs.activities.community.contact.ContactUsActivity"
             android:label="@string/contact_us"

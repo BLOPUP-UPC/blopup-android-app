@@ -426,4 +426,5 @@
     <string name="blood_pressure_instructions_two">1.- Descansa 5 minutos antes de tomar la presión sanguínea.\n\n 2.- Siéntate en una silla con los dos pies planos en el suelo y la espalda recta.\n\n 3.-  Coloca el brazo al nivel de tu corazón o de tu pecho.\n\n 4.- Quédate quieto y no hables mientras el tensiómetro toma las medidas.</string>
     <string name="swipe_left_to_start">Desliza a la izquierda para comenzar</string>
     <string name="patient_with_no_values_to_show">El paciente no tiene datos aún</string>
+    <string name="blood_pressure_evolution">Evolución de la presión arterial</string>
 </resources>

@@ -161,14 +161,18 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart.axisRight.isEnabled = false
         //to display one data per date
         mChart.xAxis.granularity = 1F
+        //to display the dates only in the bottom and not in the top as well
         mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         mChart.xAxis.axisLineWidth = 2f
         mChart.xAxis.axisLineColor = Color.BLACK
         mChart.axisLeft.axisLineWidth = 2f
         mChart.axisLeft.axisLineColor = Color.BLACK
+        //max and min values in the axis with the values
         mChart.axisLeft.axisMaximum = 200f
         mChart.axisLeft.axisMinimum = 40f
         mChart.axisLeft.setDrawLimitLinesBehindData(true)
+        //this fix the problem that we could not see the last date properly
+        mChart.setExtraOffsets(30F, 30F, 30F, 30F);
     }
 
     private fun setColorIconsToEntries(entries: List<Entry>, type: String): List<Entry> {
