@@ -121,10 +121,11 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc
                 systolicDataArray.add((systolicData.get(key) as JSONArray).get(0) as String)
                 datesDataArray.add(key)
             }
-
             for (key in diastolicData.keys()) {
                 diastolicDataArray.add((diastolicData.get(key) as JSONArray).get(0) as String)
             }
+
+            try{
                 Intent(
                     activity,
                     ChartsViewActivity::class.java
@@ -138,13 +139,13 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), edu.upc
                     startActivity(this)
                 }
             } catch (e: NumberFormatException) {
-                showShortToast(
-                    requireContext(),
-                    ToastUtil.ToastType.ERROR,
-                    getString(R.string.data_type_not_available_for_this_field)
-                )
+                showShortToast(requireContext(), ToastUtil.ToastType.ERROR, getString(R.string.data_type_not_available_for_this_field))
             }
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            showShortToast(requireContext(), ToastUtil.ToastType.ERROR, getString(R.string.patient_with_no_values_to_show))
         }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
