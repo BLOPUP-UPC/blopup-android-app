@@ -97,7 +97,6 @@ class ReadWeightActivity : AppCompatActivity() {
                 putExtra(EXTRAS_WEIGHT, 56.6f)
             }
             setResult(RESULT_OK, result)
-            finish()
         }
         viewModel.startListeningBluetoothConnection()
         viewModel.viewState.observe(this) { state ->

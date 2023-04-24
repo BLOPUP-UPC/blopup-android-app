@@ -90,7 +90,7 @@ class ReadBloodPressureActivity : AppCompatActivity() {
     }
 
     private fun startReading() {
-        harcodeInDebugMode()
+        hardcodeInDebugMode()
 
         setUpSwipeAdapter()
 
@@ -133,15 +133,14 @@ class ReadBloodPressureActivity : AppCompatActivity() {
         myPager.currentItem = 0
     }
 
-    private fun harcodeInDebugMode() {
+    private fun hardcodeInDebugMode() {
         if (BuildConfig.DEBUG) {
             val result = Intent().apply {
-                putExtra(EXTRAS_SYSTOLIC, 127)
-                putExtra(EXTRAS_DIASTOLIC, 64)
-                putExtra(EXTRAS_HEART_RATE, 62)
+                putExtra(EXTRAS_SYSTOLIC, (100..200).random())
+                putExtra(EXTRAS_DIASTOLIC, (50..99).random())
+                putExtra(EXTRAS_HEART_RATE, (55..120).random())
             }
             setResult(RESULT_OK, result)
-            finish()
         }
     }
 
