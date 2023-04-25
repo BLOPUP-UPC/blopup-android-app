@@ -17,11 +17,9 @@ import edu.upc.R
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.utilities.ApplicationConstants
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ChartsViewActivity : ACBaseActivity() {
@@ -29,6 +27,12 @@ class ChartsViewActivity : ACBaseActivity() {
     private lateinit var mBinding: ActivityChartsViewBinding
     private lateinit var mChart: LineChart
 
+    companion object {
+        const val SYSTOLIC = "systolic"
+        const val DIASTOLIC = "diastolic"
+        const val BLOOD_PRESSURE = "bloodPressure"
+        const val DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityChartsViewBinding.inflate(layoutInflater)
@@ -56,7 +60,8 @@ class ChartsViewActivity : ACBaseActivity() {
     private fun setChartData() {
         val mBundle = this.intent.getBundleExtra(ApplicationConstants.BUNDLE)
 
-        val bloodPressureData = mBundle!!.getSerializable("bloodPressure") as HashMap<String, Pair<Float, Float>>
+        val bloodPressureData =
+            mBundle!!.getSerializable(BLOOD_PRESSURE) as HashMap<String, Pair<Float, Float>>
 
         val systolicData = ArrayList<Float>()
         val diastolicData = ArrayList<Float>()
@@ -66,15 +71,13 @@ class ChartsViewActivity : ACBaseActivity() {
             systolicData.add((bloodPressureData[key]!!.first))
             diastolicData.add((bloodPressureData[key]!!.second))
             datesData.add(key)
-            }
-
-        setDatesIntoChart(datesData)
+        }
 
         val systolicEntries = setEntries(systolicData)
         val diastolicEntries = setEntries(diastolicData)
 
-        val dataSetSystolic = LineDataSet(setColorIconsToEntries(systolicEntries, "systolic"), "")
-        val dataSetDiastolic = LineDataSet(setColorIconsToEntries(diastolicEntries, "diastolic"), "")
+        val dataSetSystolic = LineDataSet(setColorIconsToEntries(systolicEntries, SYSTOLIC), "")
+        val dataSetDiastolic = LineDataSet(setColorIconsToEntries(diastolicEntries, DIASTOLIC), "")
 
         //makes the line between data points transparent
         dataSetDiastolic.color = Color.TRANSPARENT
@@ -93,6 +96,7 @@ class ChartsViewActivity : ACBaseActivity() {
         val lineData = LineData(dataSets)
 
         mChart.data = lineData
+        mChart.xAxis.valueFormatter = MyValueFormatter(datesData)
     }
 
     private fun setEntries(valueDataArray: ArrayList<Float>): ArrayList<Entry> {
@@ -104,16 +108,6 @@ class ChartsViewActivity : ACBaseActivity() {
             entryNumber++
         }
         return values
-    }
-
-    private fun setDatesIntoChart(datesDataArray: ArrayList<String>) {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val dates = datesDataArray.map {
-            val dateTime =
-                LocalDateTime.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"))
-            dateTime.format(formatter)
-        }.toList()
-        mChart.xAxis.valueFormatter = MyValueFormatter(dates)
     }
 
     private fun setChartMaxAndMinimumLimitLines() {
@@ -171,15 +165,16 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart.axisLeft.axisMaximum = 200f
         mChart.axisLeft.axisMinimum = 40f
         mChart.axisLeft.setDrawLimitLinesBehindData(true)
-        //this fix the problem that we could not see the last date properly
-        mChart.setExtraOffsets(30F, 30F, 30F, 30F);
+        //to add some space before the first and last values on the chart
+        mChart.xAxis.axisMinimum = -0.1F
+        mChart.xAxis.axisMaximum = mChart.xAxis.axisMaximum + 0.1F
     }
 
     private fun setColorIconsToEntries(entries: List<Entry>, type: String): List<Entry> {
         entries.forEach {
-            if (type == "systolic" && isSystolicHigh(it)) {
+            if (type == SYSTOLIC && isSystolicHigh(it)) {
                 it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
-            } else if (type == "diastolic" && isDiastolicHigh(it)) {
+            } else if (type == DIASTOLIC && isDiastolicHigh(it)) {
                 it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
             } else {
                 it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.green)
