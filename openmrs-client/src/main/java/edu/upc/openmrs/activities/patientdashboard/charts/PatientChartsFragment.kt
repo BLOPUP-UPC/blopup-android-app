@@ -37,6 +37,8 @@ import kotlinx.android.synthetic.main.fragment_patient_charts.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -117,6 +119,12 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
             for (key in dates) {
                 map.put(key, Pair(((systolicData.get(key) as JSONArray).get(0) as String).toFloat(), ((diastolicData.get(key) as JSONArray).get(0) as String).toFloat()))
             }
+
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+
+            val sortedMap = map.toSortedMap(compareBy { LocalDateTime.parse(it, formatter) })
+            map.clear()
+            map.putAll(sortedMap)
 
             try{
                 Intent(
