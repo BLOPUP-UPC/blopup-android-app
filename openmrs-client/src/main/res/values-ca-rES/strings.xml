@@ -38,11 +38,7 @@
     <string name="reg_ques_gender">Gènere del pacient</string>
     <string name="reg_ques_dob">Data de naixement del pacient*</string>
     <string name="label_or">O</string>
-    <string name="reg_ques_address">Adreça</string>
-    <string name="addr1_hint">Adreça Línia 1</string>
-    <string name="addr2_hint">Adreça Línia 2</string>
-    <string name="addr_invalid_error">L\'adreça no pot tenir caràcters invàlids.</string>
-    <string name="atleastone">Omplir, al menys, un camp de l\'adreça</string>
+    <string name="reg_ques_nationality">Nacionalitat*</string>
     <string name="male">Masculí</string>
     <string name="female">Femení</string>
     <string name="non_binary">No binari</string>

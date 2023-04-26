@@ -737,7 +737,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()
-        addressError.text = ""
         textInputLayoutFirstName.error = ""
         textInputLayoutMiddlename.error = ""
         textInputLayoutSurname.error = ""
