@@ -2,11 +2,8 @@ package edu.upc.openmrs.activities.patientdashboard.charts
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
-import edu.upc.openmrs.activities.patientdashboard.charts.ChartsViewActivity.Companion.DATE_TIME_PATTERN
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 private const val DATE_PATTERN = "dd/MM/yyyy"
