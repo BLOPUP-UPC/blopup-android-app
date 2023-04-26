@@ -120,12 +120,6 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
                 map.put(key, Pair(((systolicData.get(key) as JSONArray).get(0) as String).toFloat(), ((diastolicData.get(key) as JSONArray).get(0) as String).toFloat()))
             }
 
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-
-            val sortedMap = map.toSortedMap(compareBy { LocalDateTime.parse(it, formatter) })
-            map.clear()
-            map.putAll(sortedMap)
-
             try{
                 Intent(
                     activity,

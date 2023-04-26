@@ -17,6 +17,8 @@ import edu.upc.R
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.utilities.ApplicationConstants
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -61,11 +63,13 @@ class ChartsViewActivity : ACBaseActivity() {
         val bloodPressureData =
             mBundle!!.getSerializable(BLOOD_PRESSURE) as HashMap<String, Pair<Float, Float>>
 
+        val bloodPressureDataSorted = sortDataPerDate(bloodPressureData)
+
         val systolicData = ArrayList<Float>()
         val diastolicData = ArrayList<Float>()
         val datesData = ArrayList<String>()
 
-        for (key in bloodPressureData.keys) {
+        for (key in bloodPressureDataSorted.keys) {
             systolicData.add((bloodPressureData[key]!!.first))
             diastolicData.add((bloodPressureData[key]!!.second))
             datesData.add(key)
@@ -95,6 +99,13 @@ class ChartsViewActivity : ACBaseActivity() {
 
         mChart.data = lineData
         mChart.xAxis.valueFormatter = MyValueFormatter(datesData)
+    }
+
+    private fun sortDataPerDate(bloodPressureData: HashMap<String, Pair<Float, Float>>): SortedMap<String, Pair<Float, Float>> {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        val sortedBloodPressureData =
+            bloodPressureData.toSortedMap(compareBy { LocalDateTime.parse(it, formatter) })
+        return sortedBloodPressureData
     }
 
     private fun setEntries(valueDataArray: ArrayList<Float>): ArrayList<Entry> {
