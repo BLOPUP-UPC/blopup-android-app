@@ -38,7 +38,6 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.HashMap
 
 @AndroidEntryPoint
 class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), PatientChartsRecyclerViewAdapter.OnClickListener {
@@ -141,6 +140,11 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchChartsData()
     }
 
     companion object {
