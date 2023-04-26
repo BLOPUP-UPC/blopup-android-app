@@ -69,7 +69,6 @@ import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.DateUtils.convertTimeString
 import edu.upc.sdk.utilities.DateUtils.getDateTimeFromDifference
 import edu.upc.sdk.utilities.DateUtils.validateDate
-import edu.upc.sdk.utilities.StringUtils.ILLEGAL_ADDRESS_CHARACTERS
 import edu.upc.sdk.utilities.StringUtils.ILLEGAL_CHARACTERS
 import edu.upc.sdk.utilities.StringUtils.isBlank
 import edu.upc.sdk.utilities.StringUtils.notEmpty
@@ -274,9 +273,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 givenName = getString(R.string.unidentified_patient_name)
             })
 
-            /* Address */
-            viewModel.patient.addresses = emptyList()
-
             /* Birth date */
             if (isBlank(getInput(estimatedYear)) && isBlank(getInput(estimatedMonth))) {
                 dobError.text = getString(R.string.dob_error_for_unidentified)
@@ -375,7 +371,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
 
         viewModel.patient.addresses = listOf(PersonAddress().apply {
-            country = countryCodeSpinner.selectedCountryName
+            country = countryCodeSpinner.defaultCountryName
             preferred = true
         })
 
