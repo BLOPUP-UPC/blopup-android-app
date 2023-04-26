@@ -29,13 +29,7 @@ import android.os.StrictMode
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -48,20 +42,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken
-import com.google.android.libraries.places.api.model.TypeFilter
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.material.snackbar.Snackbar
-import edu.upc.sdk.library.models.ConceptAnswers
+import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.UCrop.REQUEST_CROP
+import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.R
+import edu.upc.databinding.FragmentPatientInfoBinding
+import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
+import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
+import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
+import edu.upc.openmrs.utilities.ImageUtils
+import edu.upc.openmrs.utilities.ViewUtils.getInput
+import edu.upc.openmrs.utilities.ViewUtils.isEmpty
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.models.*
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.PersonAddress
-import edu.upc.sdk.library.models.PersonName
-import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
@@ -78,20 +76,6 @@ import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.StringUtils.validateText
 import edu.upc.sdk.utilities.ToastUtil
-import com.yalantis.ucrop.UCrop
-import com.yalantis.ucrop.UCrop.REQUEST_CROP
-import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.R
-import edu.upc.databinding.FragmentPatientInfoBinding
-import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
-import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
-import edu.upc.openmrs.utilities.ImageUtils
-import edu.upc.openmrs.utilities.ViewUtils.getInput
-import edu.upc.openmrs.utilities.ViewUtils.isEmpty
-import edu.upc.openmrs.utilities.makeGone
-import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.openmrs.utilities.observeOnce
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -99,7 +83,7 @@ import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructPermissionsRequest
 import java.io.File
-import java.util.Calendar
+import java.util.*
 
 @AndroidEntryPoint
 class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInputSelected {
@@ -273,11 +257,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             } else if (StringValue.NON_BINARY == gender) {
                 binding.gender.check(R.id.nonBinary)
             }
-            binding.addressOne.setText(address.address1)
-            binding.addressTwo.setText(address.address2)
-            binding.cityAutoComplete.setText(address.cityVillage)
-            binding.stateAutoComplete.setText(address.stateProvince)
-            binding.postalCode.setText(address.postalCode)
             if (photo != null) binding.patientPhoto.setImageBitmap(resizedPhoto)
 
             binding.deceasedCheckbox.isChecked = isDeceased
@@ -395,38 +374,8 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             viewModel.patient.gender = genderChoices[index]
         }
 
-        /* Addresses */
-       if (!validateText(getInput(addressOne), ILLEGAL_ADDRESS_CHARACTERS)
-            || !validateText(getInput(addressTwo), ILLEGAL_ADDRESS_CHARACTERS)
-        ) {
-            addressError.makeVisible()
-            addressError.text = getString(R.string.addr_invalid_error)
-            scrollToTop()
-            if (!validateText(
-                    getInput(addressOne),
-                    ILLEGAL_ADDRESS_CHARACTERS
-                )
-            ) textInputLayoutAddress.error = getString(R.string.addr_invalid_error)
-            else textInputLayoutAddress.isErrorEnabled = false
-            if (!validateText(
-                    getInput(addressTwo),
-                    ILLEGAL_ADDRESS_CHARACTERS
-                )
-            ) textInputLayoutAddress2.error = getString(R.string.addr_invalid_error)
-            else textInputLayoutAddress2.isErrorEnabled = false
-        } else {
-            addressError.makeGone()
-            textInputLayoutAddress.isErrorEnabled = false
-            textInputLayoutAddress2.isErrorEnabled = false
-        }
-
         viewModel.patient.addresses = listOf(PersonAddress().apply {
-            address1 = getInput(addressOne)
-            address2 = getInput(addressTwo)
-            cityVillage = getInput(cityAutoComplete)
-            postalCode = getInput(this@with.postalCode)
             country = countryCodeSpinner.selectedCountryName
-            stateProvince = getInput(stateAutoComplete)
             preferred = true
         })
 
@@ -617,72 +566,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             }
         }
 
-        stateAutoComplete.onFocusChangeListener =
-            View.OnFocusChangeListener { _, _ -> addSuggestionsToCities() }
-
-        // Check for cities available on searching
-        cityAutoComplete.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isNotBlank()) cityProgressBar.makeVisible()
-                val cityList = mutableListOf<String>()
-                val token = AutocompleteSessionToken.newInstance()
-                val request = FindAutocompletePredictionsRequest.builder()
-                    .setCountry(countryCodeSpinner.selectedCountryNameCode.toLowerCase())
-                    .setTypeFilter(TypeFilter.CITIES)
-                    .setSessionToken(token)
-                    .setQuery(cityAutoComplete.text.toString())
-                    .build()
-                viewModel.placesClient?.findAutocompletePredictions(request)
-                    ?.addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
-                        cityProgressBar.makeGone()
-                        for (autocompletePrediction in response.autocompletePredictions) {
-                            cityList.add(autocompletePrediction.getFullText(null).toString())
-                        }
-
-                        // Creating an array from ArrayList to create adapter
-                        val address = arrayOfNulls<String>(cityList.size)
-                        for (`in` in cityList.indices) address[`in`] = cityList[`in`]
-                        val adapter = ArrayAdapter(
-                            requireContext(),
-                            android.R.layout.select_dialog_item,
-                            address
-                        )
-                        cityAutoComplete.setAdapter(adapter)
-                        cityAutoComplete.onItemClickListener =
-                            AdapterView.OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
-                                val primary_text =
-                                    response.autocompletePredictions[position].getPrimaryText(null)
-                                        .toString()
-                                val secondary_text =
-                                    response.autocompletePredictions[position].getSecondaryText(null)
-                                        .toString()
-                                cityAutoComplete.setText(primary_text)
-                                /*
-                                 * if it is a city , then format received will be :
-                                 * CITY, STATE, COUNTRY
-                                 * else it is a union territory, then it will show :
-                                 * CITY, COUNTRY
-                                 */
-                                if (secondary_text.contains(",")) {
-                                    val index = secondary_text.indexOf(',')
-                                    val state = secondary_text.substring(0, index)
-                                    stateAutoComplete.setText(state)
-                                } else {
-                                    stateAutoComplete.setText(primary_text)
-                                }
-                            }
-                    }?.addOnFailureListener { exception: Exception? ->
-                        if (exception is ApiException) {
-                            Log.i("Place API", "Place not found: " + exception.statusCode)
-                        }
-                        cityProgressBar.makeGone()
-                    }
-            }
-
-            override fun afterTextChanged(s: Editable) {}
-        })
-
         deceasedCheckbox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 deceasedProgressBar.makeVisible()
@@ -752,27 +635,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 Places.initialize(applicationContext, placesApiKey)
                 viewModel.placesClient = Places.createClient(this)
             }
-        }
-    }
-
-    private fun addSuggestionsToCities() {
-        var countryName = binding.countryCodeSpinner.selectedCountryName
-        countryName = countryName.replace("(", "")
-        countryName = countryName.replace(")", "")
-        countryName = countryName.replace(" ", "")
-        countryName = countryName.replace("-", "_")
-        countryName = countryName.replace(".", "")
-        countryName = countryName.replace("'", "")
-        val resourceId = resources.getIdentifier(
-            countryName.toLowerCase(),
-            "array",
-            requireContext().packageName
-        )
-        if (resourceId != 0) {
-            val states = resources.getStringArray(resourceId)
-            val stateAdapter =
-                ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, states)
-            binding.stateAutoComplete.setAdapter(stateAdapter)
         }
     }
 
@@ -871,12 +733,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         dobEditText.setText("")
         estimatedYear.setText("")
         estimatedMonth.setText("")
-        addressOne.setText("")
-        addressTwo.setText("")
         countryCodeSpinner.resetToDefaultCountry()
-        cityAutoComplete.setText("")
-        stateAutoComplete.setText("")
-        postalCode.setText("")
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()
@@ -884,8 +741,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         textInputLayoutFirstName.error = ""
         textInputLayoutMiddlename.error = ""
         textInputLayoutSurname.error = ""
-        textInputLayoutAddress.error = ""
-        textInputLayoutAddress2.error = ""
         patientPhoto.setImageResource(R.drawable.ic_person_grey_500_48dp)
         viewModel.resetPatient()
     }
@@ -903,9 +758,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
 
     fun isAnyFieldNotEmpty(): Boolean = with(binding) {
         return !isEmpty(firstName) || !isEmpty(middlename) || !isEmpty(surname) ||
-                !isEmpty(dobEditText) || !isEmpty(estimatedYear) || !isEmpty(estimatedMonth) ||
-                !isEmpty(addressOne) || !isEmpty(addressTwo) || !isEmpty(cityAutoComplete) ||
-                !isEmpty(stateAutoComplete) || !isEmpty(postalCode)
+                !isEmpty(dobEditText) || !isEmpty(estimatedYear) || !isEmpty(estimatedMonth)
     }
 
 

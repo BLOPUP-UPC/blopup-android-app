@@ -619,44 +619,6 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutAddress"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp">
-
-                        <EditText
-                            android:id="@+id/addressOne"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:hint="@string/addr1_hint"
-                            android:imeOptions="actionNext"
-                            android:inputType="textCapWords"
-                            android:maxLines="1"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutAddress2"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp">
-
-                        <EditText
-                            android:id="@+id/addressTwo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:hint="@string/addr2_hint"
-                            android:imeOptions="actionNext"
-                            android:inputType="textCapWords"
-                            android:maxLines="1"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -701,28 +663,6 @@
 
                         </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/postalCode"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:background="@drawable/rectangle_transparent_box"
-                            android:digits="@string/alphanumeric_postal_code"
-                            android:focusable="true"
-                            android:hint="@string/patient_postal_label"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:paddingStart="14dp"
-                            android:paddingLeft="14dp"
-                            android:textColorHint="@color/dark_grey_8x"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@id/guideline"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="RtlSymmetry" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -732,63 +672,6 @@
                         android:layout_marginTop="4dp"
                         android:baselineAligned="false"
                         android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/textInputLayoutCity"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_toLeftOf="@id/city_progressBar">
-
-                                <AutoCompleteTextView
-                                    android:id="@+id/cityAutoComplete"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="48dp"
-                                    android:focusable="true"
-                                    android:hint="@string/patient_city_label"
-                                    android:imeOptions="actionNext"
-                                    android:inputType="textCapWords"
-                                    android:maxLines="1"
-                                    android:paddingLeft="12dp"
-                                    android:textSize="14sp" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <ProgressBar
-                                android:id="@+id/city_progressBar"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:visibility="gone" />
-
-                        </RelativeLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayoutState"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp">
-
-                            <AutoCompleteTextView
-                                android:id="@+id/stateAutoComplete"
-                                android:layout_width="match_parent"
-                                android:layout_height="48dp"
-                                android:focusable="true"
-                                android:hint="@string/patient_state_label"
-                                android:imeOptions="actionNext"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:paddingStart="12dp"
-                                android:paddingLeft="12dp"
-                                android:textSize="14sp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
