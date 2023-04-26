@@ -14,8 +14,9 @@ class MyValueFormatter(dates: List<String>) : ValueFormatter() {
     private var mDates: List<String> = dates
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getAxisLabel(value: Float, axis: AxisBase?): String = mDates
-        .map { LocalDate.parse(it, DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)) }
-        .map { it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) }[value.toInt()]
-
+    override fun getFormattedValue(value: Float): String =
+        mDates
+            .map { LocalDate.parse(it, DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)) }
+            .map { it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) }
+            .elementAtOrElse(value.toInt()) { return "" }
 }
