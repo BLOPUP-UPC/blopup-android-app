@@ -9,6 +9,9 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+private const val DATE_PATTERN = "dd/MM/yyyy"
+const val DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+
 class MyValueFormatter(dates: List<String>) : ValueFormatter() {
 
     private var mDates: List<String> = dates
@@ -17,6 +20,6 @@ class MyValueFormatter(dates: List<String>) : ValueFormatter() {
     override fun getFormattedValue(value: Float): String =
         mDates
             .map { LocalDate.parse(it, DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)) }
-            .map { it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) }
+            .map { it.format(DateTimeFormatter.ofPattern(DATE_PATTERN)) }
             .elementAtOrElse(value.toInt()) { return "" }
 }

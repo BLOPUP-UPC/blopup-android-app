@@ -29,8 +29,8 @@ class ChartsViewActivity : ACBaseActivity() {
         const val SYSTOLIC = "systolic"
         const val DIASTOLIC = "diastolic"
         const val BLOOD_PRESSURE = "bloodPressure"
-        const val DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityChartsViewBinding.inflate(layoutInflater)
