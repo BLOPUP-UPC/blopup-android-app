@@ -375,6 +375,12 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             preferred = true
         })
 
+                viewModel.patient.attributes = listOf(PersonAttribute().apply {
+            attributeType = PersonAttributeType().apply {
+                uuid = ATTRIBUTE_TYPE_UUID_STGING
+            value = countryCodeSpinner.selectedCountryName}
+        })
+
 
         /* Birth date */
         if (isEmpty(dobEditText)) {
@@ -844,5 +850,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                     Pair(COUNTRIES_BUNDLE, countries)
                 )
             }
+
+        private const val ATTRIBUTE_TYPE_UUID_STGING = "ded1bbd8-8e43-4f76-a107-67b7eb170823"
     }
 }
