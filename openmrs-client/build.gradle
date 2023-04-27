@@ -188,6 +188,7 @@ dependencies {
     implementation "com.github.amlcurran.showcaseview:library:${versions.showcaseview}"
     implementation "org.mindrot:jbcrypt:${versions.jbcrypt}"
     implementation "com.hbb20:ccp:${versions.countryCodePicker}"
+    implementation 'com.hbb20:android-country-picker:0.0.7'
     implementation "com.github.AppIntro:AppIntro:${versions.AppIntro}"
     implementation 'com.github.yalantis:ucrop:2.2.5'
     implementation "com.github.permissions-dispatcher:permissionsdispatcher-ktx:${versions.permissionsdispatcher}"

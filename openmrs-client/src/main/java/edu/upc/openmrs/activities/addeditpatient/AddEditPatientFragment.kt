@@ -75,6 +75,7 @@ import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.StringUtils.validateText
 import edu.upc.sdk.utilities.ToastUtil
+import kotlinx.android.synthetic.main.fragment_matching_patients.view.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -371,14 +372,20 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
 
         viewModel.patient.addresses = listOf(PersonAddress().apply {
-            country = countryCodeSpinner.defaultCountryName
+            country = "Spain"
             preferred = true
         })
 
-                viewModel.patient.attributes = listOf(PersonAttribute().apply {
+        /*Nationality*/
+        if (null != countryCodeSpinner.cpViewHelper.selectedCountry.value) {
+            nationalityerror.makeVisible()
+            scrollToTop()
+        }
+        viewModel.patient.attributes = listOf(PersonAttribute().apply {
             attributeType = PersonAttributeType().apply {
                 uuid = ATTRIBUTE_TYPE_UUID_STGING
-            value = countryCodeSpinner.selectedCountryName}
+            value = countryCodeSpinner.cpViewHelper.selectedCountry.value!!.name
+            }
         })
 
 
@@ -735,7 +742,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         dobEditText.setText("")
         estimatedYear.setText("")
         estimatedMonth.setText("")
-        countryCodeSpinner.resetToDefaultCountry()
+        countryCodeSpinner.cpViewHelper.refreshView()
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()

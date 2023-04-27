@@ -511,6 +511,16 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
+                    <TextView
+                        android:id="@+id/nationalityerror"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="@string/emptyerror"
+                        android:textColor="@color/red"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -540,17 +550,12 @@
                             app:layout_constraintRight_toLeftOf="@id/guideline"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <com.hbb20.CountryCodePicker
+                            <com.hbb20.CountryPickerView
                                 android:id="@+id/countryCodeSpinner"
+                                app:cp_initialSelectionMode="empty"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:gravity="center"
-                                app:ccpDialog_textColor="?android:attr/textColorPrimary"
-                                app:ccp_defaultNameCode="ES"
-                                app:ccp_rememberLastSelection="true"
-                                app:ccp_showFullName="true"
-                                app:ccp_showNameCode="false"
-                                app:ccp_showPhoneCode="false" />
+                                android:gravity="center" />
 
                         </LinearLayout>
 
