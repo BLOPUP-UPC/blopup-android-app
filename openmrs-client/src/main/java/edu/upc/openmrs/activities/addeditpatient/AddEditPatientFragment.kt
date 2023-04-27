@@ -370,12 +370,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             viewModel.patient.gender = genderChoices[index]
         }
 
-        viewModel.patient.addresses = listOf(PersonAddress().apply {
-            country = countryCodeSpinner.defaultCountryName
-            preferred = true
-        })
-
-
         /* Birth date */
         if (isEmpty(dobEditText)) {
             if (isBlank(getInput(estimatedYear)) && isBlank(getInput(estimatedMonth))) {
