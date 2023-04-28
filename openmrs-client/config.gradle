@@ -2,12 +2,27 @@ android{
     buildTypes {
         release {
             buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"ded1bbd8-8e43-4f76-a107-67b7eb170823\""
-        }
-        debug {
-            buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"ded1bbd8-8e43-4f76-a107-67b7eb170823\""
+            buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup.upc.edu/openmrs\""
+
+            // Release toggles
+            buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
+            buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "false"
         }
         staging {
             buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"ded1bbd8-8e43-4f76-a107-67b7eb170823\""
+            buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-staging.upc.edu/openmrs\""
+
+            // Release toggles
+            buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
+            buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
+        }
+        debug {
+            buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"ded1bbd8-8e43-4f76-a107-67b7eb170823\""
+            buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-dev.upc.edu/openmrs\""
+
+            // Release toggles
+            buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "true"
+            buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
         }
     }
 }

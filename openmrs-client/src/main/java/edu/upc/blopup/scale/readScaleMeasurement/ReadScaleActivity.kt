@@ -10,12 +10,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.exceptions.BluetoothConnectionException
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.databinding.ActivityReadScaleBinding
 
 const val EXTRAS_WEIGHT = "weight"
@@ -92,13 +92,15 @@ class ReadWeightActivity : AppCompatActivity() {
     }
 
     private fun startReading() {
-        if (BuildConfig.DEBUG) {
-            val result = Intent().apply {
-                putExtra(EXTRAS_WEIGHT, 56.6f)
-            }
-            setResult(RESULT_OK, result)
-        }
+        hardcodeBluetoothDataToggle.check({
+            hardcodeBluetoothData()
+        })
+
         viewModel.startListeningBluetoothConnection()
+        observeWeightData()
+    }
+
+    private fun observeWeightData() {
         viewModel.viewState.observe(this) { state ->
             when (state) {
                 is ScaleViewState.Error -> handleError(state.exception)
@@ -111,6 +113,13 @@ class ReadWeightActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun hardcodeBluetoothData() {
+        val result = Intent().apply {
+            putExtra(EXTRAS_WEIGHT, 56.6f)
+        }
+        setResult(RESULT_OK, result)
     }
 
     private fun handleError(exception: BluetoothConnectionException) {

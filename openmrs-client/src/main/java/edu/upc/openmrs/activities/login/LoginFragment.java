@@ -31,11 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.snackbar.Snackbar;
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.StringUtils;
-import edu.upc.sdk.utilities.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +47,11 @@ import edu.upc.openmrs.bundle.CustomDialogBundle;
 import edu.upc.openmrs.listeners.watcher.LoginValidatorWatcher;
 import edu.upc.openmrs.services.FormListService;
 import edu.upc.openmrs.utilities.URLValidator;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.StringUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 
 public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> implements LoginContract.View {
@@ -81,7 +81,7 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
             binding.loginUrlField.setText(mLastCorrectURL);
         }
         hideURLDialog();
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.SHOW_SERVER_URL_TOGGLE) {
             binding.textInputLayoutLoginURL.setVisibility(View.VISIBLE);
         } else {
             binding.textInputLayoutLoginURL.setVisibility(View.INVISIBLE);
@@ -334,7 +334,7 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
     private List<String> getLocationStringList(List<LocationEntity> locationList) {
         List<String> list = new ArrayList<>();
         //If spinner is at start option, append a red * to signify requirement
-		list.add(Html.fromHtml(getString(R.string.login_location_select) + getString(R.string.req_star)).toString());
+        list.add(Html.fromHtml(getString(R.string.login_location_select) + getString(R.string.req_star)).toString());
         for (int i = 0; i < locationList.size(); i++) {
             list.add(locationList.get(i).getDisplay());
         }

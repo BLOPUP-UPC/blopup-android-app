@@ -12,9 +12,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.exceptions.BluetoothConnectionException
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.databinding.ActivityReadBloodPressureBinding
 
 const val EXTRAS_SYSTOLIC = "systolic"
@@ -90,7 +91,9 @@ class ReadBloodPressureActivity : AppCompatActivity() {
     }
 
     private fun startReading() {
-        hardcodeInDebugMode()
+        hardcodeBluetoothDataToggle.check(onToggleEnabled = {
+            hardcodeBluetoothData()
+        })
 
         setUpSwipeAdapter()
 
@@ -133,15 +136,13 @@ class ReadBloodPressureActivity : AppCompatActivity() {
         myPager.currentItem = 0
     }
 
-    private fun hardcodeInDebugMode() {
-        if (BuildConfig.DEBUG) {
-            val result = Intent().apply {
-                putExtra(EXTRAS_SYSTOLIC, (100..200).random())
-                putExtra(EXTRAS_DIASTOLIC, (50..99).random())
-                putExtra(EXTRAS_HEART_RATE, (55..120).random())
-            }
-            setResult(RESULT_OK, result)
+    private fun hardcodeBluetoothData() {
+        val result = Intent().apply {
+            putExtra(EXTRAS_SYSTOLIC, (100..200).random())
+            putExtra(EXTRAS_DIASTOLIC, (50..99).random())
+            putExtra(EXTRAS_HEART_RATE, (55..120).random())
         }
+        setResult(RESULT_OK, result)
     }
 
     private fun handleError(exception: BluetoothConnectionException) {

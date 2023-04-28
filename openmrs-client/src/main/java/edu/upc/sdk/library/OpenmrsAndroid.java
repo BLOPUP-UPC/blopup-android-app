@@ -22,6 +22,7 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 
+import edu.upc.BuildConfig;
 import edu.upc.sdk.utilities.ApplicationConstants;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -29,9 +30,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import edu.upc.sdk.utilities.ApplicationConstants;
-import rx.android.BuildConfig;
 
 /**
  * The type Openmrs android.
@@ -238,9 +236,7 @@ public class OpenmrsAndroid {
      */
     public static String getServerUrl() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return BuildConfig.DEBUG ?
-                prefs.getString(ApplicationConstants.SERVER_URL, ApplicationConstants.DEFAULT_OPEN_MRS_URL) :
-                prefs.getString(ApplicationConstants.SERVER_URL, ApplicationConstants.PROD_OPEN_MRS_URL);
+        return prefs.getString(ApplicationConstants.SERVER_URL, BuildConfig.OPEN_MRS_URL);
     }
 
     /**
