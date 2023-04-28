@@ -47,6 +47,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCrop.REQUEST_CROP
 import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
@@ -383,7 +384,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
         viewModel.patient.attributes = listOf(PersonAttribute().apply {
             attributeType = PersonAttributeType().apply {
-                uuid = ATTRIBUTE_TYPE_UUID_STGING
+                uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
             value = countryCodeSpinner.cpViewHelper.selectedCountry.value!!.name
             }
         })
@@ -857,7 +858,5 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                     Pair(COUNTRIES_BUNDLE, countries)
                 )
             }
-
-        private const val ATTRIBUTE_TYPE_UUID_STGING = "ded1bbd8-8e43-4f76-a107-67b7eb170823"
     }
 }

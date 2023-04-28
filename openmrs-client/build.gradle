@@ -85,6 +85,7 @@ android {
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
+            buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"ded1bbd8-8e43-4f76-a107-67b7eb170823\""
         }
     }
 
