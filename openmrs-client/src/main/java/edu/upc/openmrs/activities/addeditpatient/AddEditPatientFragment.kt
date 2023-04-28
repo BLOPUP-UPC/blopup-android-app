@@ -308,6 +308,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             }
             Log.i("payload", viewModel.patient.toString())
             return
+
         }
 
         /* Names */
@@ -377,18 +378,19 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             preferred = true
         })
 
-        /*Nationality*/
-        if (null != countryCodeSpinner.cpViewHelper.selectedCountry.value) {
+        /* Nationality */
+        if (null == countryCodeSpinner.cpViewHelper.selectedCountry.value) {
             nationalityerror.makeVisible()
             scrollToTop()
+        } else {
+            nationalityerror.makeGone()
+            viewModel.patient.attributes = listOf(PersonAttribute().apply {
+                attributeType = PersonAttributeType().apply {
+                    uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
+                    value = countryCodeSpinner.cpViewHelper.selectedCountry.value!!.name
+                }
+            })
         }
-        viewModel.patient.attributes = listOf(PersonAttribute().apply {
-            attributeType = PersonAttributeType().apply {
-                uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
-            value = countryCodeSpinner.cpViewHelper.selectedCountry.value!!.name
-            }
-        })
-
 
         /* Birth date */
         if (isEmpty(dobEditText)) {
@@ -430,6 +432,11 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
                     .print(viewModel.dateHolder)
         }
+
+        viewModel.patient.addresses = listOf(PersonAddress().apply {
+            country = "Spain"
+            preferred = true
+        })
     }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
@@ -452,7 +459,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             if (isChecked) {
                 linearLayoutName.makeGone()
                 constraintLayoutDOB.makeGone()
-                //linearLayoutContactInfo.makeGone()
+                linearLayoutContactInfo.makeGone()
                 viewModel.isPatientUnidentified = true
             } else {
                 linearLayoutName.makeVisible()
@@ -747,6 +754,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()
+        nationalityerror.makeGone()
         textInputLayoutFirstName.error = ""
         textInputLayoutMiddlename.error = ""
         textInputLayoutSurname.error = ""
