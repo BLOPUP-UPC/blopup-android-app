@@ -235,10 +235,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             binding.phoneNumber.setText(phoneNumber)
             binding.documentId.setText(documentId)
 
-            binding.contactFirstName.setText(viewModel.patient.contact.givenName)
-            binding.contactLastName.setText(viewModel.patient.contact.familyName)
-            binding.contactPhoneNumber.setText(viewModel.patient.contactPhoneNumber)
-
             if (notNull(birthdate) || notEmpty(birthdate)) {
                 viewModel.dateHolder = convertTimeString(birthdate)
                 binding.dobEditText.setText(
@@ -354,13 +350,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             familyName = getInput(surname)
         })
 
-        viewModel.patient.contactPhoneNumber = getInput(contactPhoneNumber)
-        viewModel.patient.phoneNumber = getInput(phoneNumber)
-        viewModel.patient.documentId = getInput(documentId)
-        viewModel.patient.contactNames = listOf(PersonName().apply {
-            givenName = getInput(contactFirstName)
-            familyName = getInput(contactLastName)
-        })
         /* Gender */
         val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
         val index = gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
@@ -459,12 +448,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             if (isChecked) {
                 linearLayoutName.makeGone()
                 constraintLayoutDOB.makeGone()
-                linearLayoutContactInfo.makeGone()
                 viewModel.isPatientUnidentified = true
             } else {
                 linearLayoutName.makeVisible()
                 constraintLayoutDOB.makeVisible()
-                linearLayoutContactInfo.makeVisible()
                 viewModel.isPatientUnidentified = false
             }
 
