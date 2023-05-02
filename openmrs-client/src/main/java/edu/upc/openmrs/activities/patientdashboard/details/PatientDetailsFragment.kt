@@ -30,6 +30,7 @@ import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil.error
 import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
@@ -123,6 +124,11 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
             val longTime = convertTime(patient.birthdate)
             if (longTime != null) {
                 patientDetailsBirthDate.text = convertTime(longTime)
+            }
+            patient.attributes?.forEach {attribute ->
+                if(attribute.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID){
+                    patientDetailsNationality.text = attribute.value
+                }
             }
             if (notEmpty(patient.phoneNumber)) {
                 patientDetailsPhoneNumber.text = patient.phoneNumber

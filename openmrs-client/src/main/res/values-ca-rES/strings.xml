@@ -423,4 +423,5 @@
     <string name="swipe_left_to_start">Llisca a l\'esquerra per començar</string>
     <string name="patient_with_no_values_to_show">El pacient encara no té dades</string>
     <string name="blood_pressure_evolution">Evolució de la pressió arterial</string>
+    <string name="nationality">Nacionalitat</string>
 </resources>

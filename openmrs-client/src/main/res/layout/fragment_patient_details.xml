@@ -134,6 +134,37 @@
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDateLabel"
             tools:ignore="RtlSymmetry" />
 
+        <TextView
+            android:id="@+id/patientDetailsNationalityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:text="@string/nationality"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/patientPhotoCardView"
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDate"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/patientDetailsNationality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/patientPhotoCardView"
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsNationalityLabel"
+            tools:ignore="RtlSymmetry" />
+
         <View
             android:id="@+id/view3"
             android:layout_width="0dp"
@@ -143,7 +174,8 @@
             android:background="@drawable/rectangle_shape_with_primary_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDate" />
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDate"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/patientDetailsAddressLabel"
@@ -155,7 +187,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
+            app:layout_constraintTop_toBottomOf="@+id/view3"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsStreet"
@@ -165,7 +198,8 @@
             android:fontFamily="@font/montserrat"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/patientDetailsAddressLabel"
-            app:layout_constraintTop_toBottomOf="@+id/patientDetailsAddressLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsAddressLabel"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsCityLabel"
@@ -176,7 +210,8 @@
             android:text="@string/patient_city_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsStreet" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsStreet"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsCity"
@@ -187,7 +222,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsStreet" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsStreet"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsPostalCodeLabel"
@@ -199,7 +235,8 @@
             android:text="@string/patient_postal_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsCityLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsCityLabel"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsPostalCode"
@@ -213,7 +250,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsCity" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsCity"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsStateLabel"
@@ -225,7 +263,8 @@
             android:text="@string/patient_state_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsPostalCodeLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsPostalCodeLabel"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsState"
@@ -237,7 +276,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsPostalCodeLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsPostalCodeLabel"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsCountryLabel"
@@ -249,7 +289,8 @@
             android:text="@string/patient_country_label"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsStateLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsStateLabel"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/addressDetailsCountry"
@@ -261,7 +302,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsState" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsState"
+            android:visibility="gone"/>
 
         <View
             android:id="@+id/view4"
@@ -272,7 +314,8 @@
             android:background="@drawable/rectangle_shape_with_primary_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addressDetailsCountry" />
+            app:layout_constraintTop_toBottomOf="@+id/addressDetailsCountry"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/contactDetailsLabel"
@@ -284,7 +327,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/view4" />
+            app:layout_constraintTop_toBottomOf="@+id/view4"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/contactFirstNameLabel"
@@ -296,7 +340,8 @@
             android:text="@string/first_name_hint"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/contactDetailsLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/contactDetailsLabel"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/contactFirstName"
@@ -308,7 +353,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
-            app:layout_constraintTop_toBottomOf="@+id/contactDetailsLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/contactDetailsLabel"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/contactLastNameLabel"
@@ -320,7 +366,8 @@
             android:text="@string/last_name_hint"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/contactFirstName" />
+            app:layout_constraintTop_toBottomOf="@+id/contactFirstName"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/contactLastName"
@@ -332,7 +379,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
-            app:layout_constraintTop_toBottomOf="@+id/contactFirstName" />
+            app:layout_constraintTop_toBottomOf="@+id/contactFirstName"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/contactPhoneNumberLabel"
@@ -344,7 +392,8 @@
             android:text="@string/reg_phone_number_hint"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/patientPhotoCardView"
-            app:layout_constraintTop_toBottomOf="@+id/contactLastName" />
+            app:layout_constraintTop_toBottomOf="@+id/contactLastName"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/contactPhoneNumber"
@@ -356,7 +405,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/addressDetailsPostalCode"
-            app:layout_constraintTop_toBottomOf="@+id/contactLastName" />
+            app:layout_constraintTop_toBottomOf="@+id/contactLastName"
+            android:visibility="gone"/>
 
         <View
             android:id="@+id/view5"
@@ -368,7 +418,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contactPhoneNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsNationality" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
