@@ -24,7 +24,7 @@ import java.lang.reflect.Modifier
 object PersonAttributeConverter : Serializable {
     @TypeConverter
     fun fromString(value: String?): List<PersonAttribute> {
-        val listType = object : TypeToken<List<PersonAddress?>?>() {}.type
+        val listType = object : TypeToken<List<PersonAttribute?>?>() {}.type
         val builder = GsonBuilder()
         builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
         val gson = builder.create()

@@ -71,7 +71,7 @@ import edu.upc.sdk.library.databases.entities.VisitEntity;
         EncounterType.class,
         Encountercreate.class,
         AllergyEntity.class},
-        version = 2)
+        version = 3)
 
 public abstract class AppDatabase extends RoomDatabase {
 

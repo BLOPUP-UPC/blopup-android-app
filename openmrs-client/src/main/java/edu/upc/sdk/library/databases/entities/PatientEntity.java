@@ -3,8 +3,17 @@ package edu.upc.sdk.library.databases.entities;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.TypeConverters;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.upc.sdk.library.models.PersonAttribute;
 import edu.upc.sdk.library.models.Resource;
+import edu.upc.sdk.library.models.typeConverters.PersonAttributeConverter;
 
 
 /**
@@ -53,7 +62,11 @@ public class PatientEntity extends Resource {
     private String deceased;
     @ColumnInfo(name = "encounters")
     private String encounters;
-
+    @TypeConverters(PersonAttributeConverter.class)
+    @SerializedName("attributes")
+    @ColumnInfo(name = "attributes")
+    @Expose
+    private List<PersonAttribute> attributes = new ArrayList<>();
     //TODO: Separate entity for Contact
     //#region -- Contact Details --
     @ColumnInfo(name = "contactFirstName")
@@ -453,5 +466,13 @@ public class PatientEntity extends Resource {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public List<PersonAttribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<PersonAttribute> attributes) {
+        this.attributes = attributes;
     }
 }

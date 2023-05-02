@@ -246,6 +246,7 @@ object AppDatabaseHelper {
             )
         }
         patient.isDeceased = patientEntity.deceased == "true"
+        patient.attributes = patientEntity.attributes
         return patient
     }
 
@@ -303,6 +304,7 @@ object AppDatabaseHelper {
         }
         patientEntity.encounters = patient.encounters
         patientEntity.deceased = patient.isDeceased.toString()
+        patientEntity.attributes = patient.attributes
         return patientEntity
     }
 
