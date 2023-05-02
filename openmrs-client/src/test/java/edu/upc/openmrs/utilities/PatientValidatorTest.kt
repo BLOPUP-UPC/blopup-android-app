@@ -99,6 +99,19 @@ class PatientValidatorTest : ACUnitTestBase() {
         assertFalse(isValid)
     }
 
+    @Test
+    fun `validate patient missing nationality`() {
+        val validator = PatientValidator(
+                createValidPatient().apply { attributes = emptyList() },
+                isPatientUnidentified = false,
+                countriesList = countries
+        )
+
+        val isValid = validator.validate()
+
+        assertFalse(isValid)
+    }
+
     private fun createValidPatient() = updatePatientData(1L,
         Patient()
     )
