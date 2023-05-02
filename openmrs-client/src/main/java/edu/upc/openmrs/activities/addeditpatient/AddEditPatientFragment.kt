@@ -407,7 +407,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         if (null == countryCodeSpinner.cpViewHelper.selectedCountry.value) {
             nationalityerror.makeVisible()
             scrollToTop()
-            scrollToTop()
         } else {
             nationalityerror.makeGone()
             viewModel.patient.attributes = listOf(PersonAttribute().apply {
@@ -417,12 +416,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 }
             })
         }
-
-        /* Send country as only Address value (default to Spain) */
-        viewModel.patient.addresses = listOf(PersonAddress().apply {
-            country = "Spain"
-            preferred = true
-        })
     }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {

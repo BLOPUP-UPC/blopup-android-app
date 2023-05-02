@@ -34,12 +34,6 @@ class PatientValidator(private val patient: Patient,
             if (familyName.isNullOrBlank() || !validateText(familyName, ILLEGAL_CHARACTERS)) return false
         }
 
-        // Validate addresses
-        if (address == null) return false
-        with(address) {
-            if (country != null && !countriesList.contains(country!!)) return false
-        }
-
         //Validate Nationality
         if (attributes.isEmpty()) return false
 
