@@ -362,25 +362,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             viewModel.patient.gender = genderChoices[index]
         }
 
-        viewModel.patient.addresses = listOf(PersonAddress().apply {
-            country = "Spain"
-            preferred = true
-        })
-
-        /* Nationality */
-        if (null == countryCodeSpinner.cpViewHelper.selectedCountry.value) {
-            nationalityerror.makeVisible()
-            scrollToTop()
-        } else {
-            nationalityerror.makeGone()
-            viewModel.patient.attributes = listOf(PersonAttribute().apply {
-                attributeType = PersonAttributeType().apply {
-                    uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
-                    value = countryCodeSpinner.cpViewHelper.selectedCountry.value!!.name
-                }
-            })
-        }
-
         /* Birth date */
         if (isEmpty(dobEditText)) {
             if (isBlank(getInput(estimatedYear)) && isBlank(getInput(estimatedMonth))) {
@@ -422,6 +403,22 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                     .print(viewModel.dateHolder)
         }
 
+        /* Nationality */
+        if (null == countryCodeSpinner.cpViewHelper.selectedCountry.value) {
+            nationalityerror.makeVisible()
+            scrollToTop()
+            scrollToTop()
+        } else {
+            nationalityerror.makeGone()
+            viewModel.patient.attributes = listOf(PersonAttribute().apply {
+                attributeType = PersonAttributeType().apply {
+                    uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
+                    value = countryCodeSpinner.cpViewHelper.selectedCountry.value!!.name
+                }
+            })
+        }
+
+        /* Send country as only Address value (default to Spain) */
         viewModel.patient.addresses = listOf(PersonAddress().apply {
             country = "Spain"
             preferred = true
@@ -737,7 +734,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         dobEditText.setText("")
         estimatedYear.setText("")
         estimatedMonth.setText("")
-        countryCodeSpinner.cpViewHelper.refreshView()
+        countryCodeSpinner.cpViewHelper.clearSelection()
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()

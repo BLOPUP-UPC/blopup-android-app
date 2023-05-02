@@ -40,6 +40,9 @@ class PatientValidator(private val patient: Patient,
             if (country != null && !countriesList.contains(country!!)) return false
         }
 
+        //Validate Nationality
+        if (attributes.isEmpty()) return false
+
         return true
     }
 }
