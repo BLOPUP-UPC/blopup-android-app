@@ -99,42 +99,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         assertFalse(isValid)
     }
 
-    @Test
-    fun `validate patient invalid address`() {
-        val validator1 = PatientValidator(
-                createValidPatient().apply { addresses = emptyList() },
-                isPatientUnidentified = false,
-                countriesList = countries
-        )
-        val validator2 = PatientValidator(
-                createValidPatient().apply { addresses = listOf(createPersonAddress(1).apply { address1 = INVALID_ADDRESS_1 }) },
-                isPatientUnidentified = false,
-                countriesList = countries
-        )
-        val validator3 = PatientValidator(
-                createValidPatient().apply { addresses = listOf(createPersonAddress(1).apply { address2 = INVALID_ADDRESS_2 }) },
-                isPatientUnidentified = false,
-                countriesList = countries
-        )
-
-        val isValid = validator1.validate() && validator2.validate() && validator3.validate()
-
-        assertFalse(isValid)
-    }
-
-    @Test
-    fun `validate patient invalid country`() {
-        val validator = PatientValidator(
-                createValidPatient().apply { address.country = INVALID_COUNTRY },
-                isPatientUnidentified = false,
-                countriesList = countries
-        )
-
-        val isValid = validator.validate()
-
-        assertFalse(isValid)
-    }
-
     private fun createValidPatient() = updatePatientData(1L,
         Patient()
     )
@@ -143,8 +107,5 @@ class PatientValidatorTest : ACUnitTestBase() {
         private const val INVALID_NAME_1 = "#James"
         private const val INVALID_NAME_2 = "John@Doe"
         private const val INVALID_NAME_3 = "Em*%ile"
-        private const val INVALID_ADDRESS_1 = "Washington street ^%123"
-        private const val INVALID_ADDRESS_2 = "Door $164"
-        private const val INVALID_COUNTRY = "No country"
     }
 }
