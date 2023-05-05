@@ -422,9 +422,11 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         edu.upc.openmrs.bundle.CustomDialogBundle().apply {
             titleViewMessage = getString(R.string.similar_patients_dialog_title)
             rightButtonText = getString(R.string.dialog_button_register_new)
-            rightButtonAction = edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.REGISTER_PATIENT
+            rightButtonAction =
+                edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.REGISTER_PATIENT
             leftButtonText = getString(R.string.dialog_button_cancel)
-            leftButtonAction = edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.DISMISS
+            leftButtonAction =
+                edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.DISMISS
             patientsList = patients
             newPatient = patient
         }.let {
@@ -445,6 +447,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 viewModel.isPatientUnidentified = false
             }
 
+        }
+
+        recordConsentImageButton.setOnClickListener {
+            showLegalConsent();
         }
         submitButton.setOnClickListener {
             submitAction()
@@ -667,6 +673,16 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             .setNegativeButton(R.string.button_deny) { _: DialogInterface?, _: Int -> request.cancel() }
             .show()
     }
+
+    private fun showLegalConsent() {
+        val builder = AlertDialog.Builder(requireActivity(), R.style.AlertDialogTheme)
+            .create()
+        val view = layoutInflater.inflate(R.layout.legal_consent, null)
+        builder.setView(view)
+        builder.setCanceledOnTouchOutside(false)
+        builder.show()
+    }
+
 
     private fun showLoading() {
         requireActivity().window.setFlags(

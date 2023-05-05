@@ -9,14 +9,25 @@
         android:layout_height="@dimen/dashboard_icon_height_width"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
+        android:background="@color/grey"
         android:paddingTop="@dimen/activity_horizontal_margin">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:textSize="@dimen/text_size_large"
+            style="@style/TextLabel.Bold"
             android:text="Header Goes here" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/translucent_50_percent"
+            android:visibility="gone" />
+
     </LinearLayout>
+
 
     <ScrollView
         android:id="@+id/scrollablContent"
@@ -36,14 +47,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textSize="@dimen/dashboard_text_size"
                 android:justificationMode="inter_word"
                 android:text="@string/lengthy_text" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/translucent_50_percent"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
+
     <LinearLayout
         android:id="@+id/footerView"
+        android:background="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dashboard_icon_height_width"
         android:layout_alignParentBottom="true"
@@ -54,6 +73,8 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:gravity="center"
+            android:textSize="@dimen/text_size_large"
+            style="@style/TextLabel.Bold"
             android:text="Play Goes Here" />
     </LinearLayout>
 

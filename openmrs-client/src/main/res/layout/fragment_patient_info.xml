@@ -410,12 +410,12 @@
                                     android:id="@+id/dobEditText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:focusable="true"
                                     android:hint="@string/dob_hint"
                                     android:imeOptions="flagNoExtractUi|actionNext"
                                     android:inputType="datetime"
                                     android:maxLength="10"
                                     android:maxLines="1"
-                                    android:focusable="true"
                                     android:nextFocusDown="@+id/estimatedYear"
                                     android:textSize="14sp" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -503,73 +503,129 @@
 
                     </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linearLayout_nationality"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="@dimen/appintro_bottombar_height"
-                    android:orientation="vertical">
-
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/linearLayout_nationality"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="@string/reg_ques_nationality"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:layout_marginBottom="@dimen/label_margin_wide"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/nationalityerror"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="@string/emptyerror"
-                        android:textColor="@color/red"
-                        android:textSize="14sp"
-                        android:visibility="gone" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/reg_ques_nationality"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline"
+                        <TextView
+                            android:id="@+id/nationalityerror"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.5" />
+                            android:padding="2dp"
+                            android:text="@string/emptyerror"
+                            android:textColor="@color/red"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
 
-                        <LinearLayout
-                            android:id="@+id/country_picker_layout"
-                            android:layout_width="0dp"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="8dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/rectangle_transparent_box"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/guideline"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:layout_marginTop="10dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                            <com.hbb20.CountryPickerView
-                                android:id="@+id/countryCodeSpinner"
-                                app:cp_initialSelectionMode="empty"
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_percent="0.5" />
+
+                            <LinearLayout
+                                android:id="@+id/country_picker_layout"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center" />
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/rectangle_transparent_box"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toLeftOf="@id/guideline"
+                                app:layout_constraintTop_toTopOf="parent">
 
-                        </LinearLayout>
+                                <com.hbb20.CountryPickerView
+                                    android:id="@+id/countryCodeSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    app:cp_initialSelectionMode="empty" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
-                </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout_consent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/appintro_bottombar_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/record_patient_consent"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/consenterror"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="@string/emptyerror"
+                            android:textColor="@color/red"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/record_consent_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="8dp"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <androidx.appcompat.widget.AppCompatImageButton
+                                    android:id="@+id/record_consent_imageButton"
+                                    android:layout_width="@dimen/dashboard_icon_height_width"
+                                    android:layout_height="@dimen/dashboard_icon_height_width"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/voice_assistant" />
+
+                            </LinearLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -621,12 +677,12 @@
         app:layout_constraintBottom_toBottomOf="@+id/addEditConstraintLayout">
 
         <Button
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginVertical="14dp"
             android:id="@+id/submitButton"
             style="@style/loginButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="14dp"
             android:text="@string/action_submit" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
