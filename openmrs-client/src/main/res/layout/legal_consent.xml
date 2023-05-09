@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:justificationMode="inter_word"
-                android:text="@string/lengthy_text"
+                android:text="@string/legal_consent"
                 android:textSize="@dimen/dashboard_text_size" />
 
             <View
@@ -69,7 +69,6 @@
             android:layout_weight="1"
             android:scaleType="centerInside"
             android:src="@drawable/play" />
-
 
     </LinearLayout>
 
