@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="legal_consent">
+        Els punts principals de la informació que t’hem donat oralment i per escrit son: \n\n
+        Participaràs en un estudi de Salut Sense Sostre que implica la mesura de la tensió arterial. Et donarem pautes d’actuació si és massa elevada i et farem un seguiment. Aquesta mesura no comporta cap mena de risc. \n\n
+        Les teves dades personals i mèdiques només les sabrem nosaltres i tu. Podràs veure-les i demanar que les destruïm. \n\n
+        Mai comunicarem les teves dades individuals, només de forma agregada i estadística. \n\n
+        La participació és voluntària i gratuïta, i podràs deixar de participar-hi quan vulguis. \n\n
+        Ara et demanarem que diguis el teu nom: \n\n
+        Dones et teu consentiment per participar en aquest estudi on prendrem dades mediques i personals teves, les guardarem i processarem, però mai les comunicarem sinó és de forma agregada? Respon si o no: \n\n
+    </string>
+</resources>
