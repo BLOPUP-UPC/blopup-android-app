@@ -59,6 +59,9 @@ object ApplicationConstants {
     const val PRIMARY_KEY_ID = "_id"
     const val MIN_NUMBER_OF_PATIENTS_TO_SHOW = 7;
     const val ABOUT_OPENMRS_URL = "https://openmrs.org/about/"
+    const val LEGAL_NOTIFICATION_CHANNEL_DESCRIPTION = "legal_notification_channel_description"
+    const val LEGAL_CONSENT_RECORDING = "legal_consent_recording"
+    const val LEGAL_CONSENT = "LEGAL_CONSENT"
 
     object OpenMRSSharedPreferenceNames {
         const val SHARED_PREFERENCES_NAME = "shared_preferences"
@@ -119,14 +122,19 @@ object ApplicationConstants {
     }
 
     object ServiceActions {
-        const val START_CONCEPT_DOWNLOAD_ACTION = "com.openmrs.mobile.services.conceptdownloadservice.action.startforeground"
-        const val STOP_CONCEPT_DOWNLOAD_ACTION = "com.openmrs.mobile.services.conceptdownloadservice.action.stopforeground"
+        const val START_CONCEPT_DOWNLOAD_ACTION =
+            "com.openmrs.mobile.services.conceptdownloadservice.action.startforeground"
+        const val STOP_CONCEPT_DOWNLOAD_ACTION =
+            "com.openmrs.mobile.services.conceptdownloadservice.action.stopforeground"
     }
 
     object BroadcastActions {
-        const val CONCEPT_DOWNLOAD_BROADCAST_INTENT_ID = "com.openmrs.mobile.services.conceptdownloadservice.action.broadcastintent"
-        const val CONCEPT_DOWNLOAD_BROADCAST_INTENT_KEY_COUNT = "com.openmrs.mobile.services.conceptdownloadservice.broadcastintent.key.count"
-        const val AUTHENTICATION_CHECK_BROADCAST_ACTION = "edu.upc.openmrs.services.AuthenticateCheckService"
+        const val CONCEPT_DOWNLOAD_BROADCAST_INTENT_ID =
+            "com.openmrs.mobile.services.conceptdownloadservice.action.broadcastintent"
+        const val CONCEPT_DOWNLOAD_BROADCAST_INTENT_KEY_COUNT =
+            "com.openmrs.mobile.services.conceptdownloadservice.broadcastintent.key.count"
+        const val AUTHENTICATION_CHECK_BROADCAST_ACTION =
+            "edu.upc.openmrs.services.AuthenticateCheckService"
     }
 
     object ServiceNotificationId {
@@ -141,7 +149,12 @@ object ApplicationConstants {
         const val VITALS = "67a71486-1a54-468f-ac3e-7091a9a79584"
 
         @JvmField
-        var ENCOUNTER_TYPES_DISPLAYS = arrayOf(EncounterType.VITALS, EncounterType.ADMISSION, EncounterType.DISCHARGE, EncounterType.VISIT_NOTE)
+        var ENCOUNTER_TYPES_DISPLAYS = arrayOf(
+            EncounterType.VITALS,
+            EncounterType.ADMISSION,
+            EncounterType.DISCHARGE,
+            EncounterType.VISIT_NOTE
+        )
     }
 
     object RequestCodes {

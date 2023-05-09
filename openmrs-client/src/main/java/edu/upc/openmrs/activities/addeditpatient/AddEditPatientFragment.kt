@@ -39,6 +39,7 @@ import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -53,12 +54,9 @@ import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
-import edu.upc.openmrs.utilities.ImageUtils
+import edu.upc.openmrs.utilities.*
 import edu.upc.openmrs.utilities.ViewUtils.getInput
 import edu.upc.openmrs.utilities.ViewUtils.isEmpty
-import edu.upc.openmrs.utilities.makeGone
-import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.*
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -678,6 +676,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         val builder = AlertDialog.Builder(requireActivity(), R.style.AlertDialogTheme)
             .create()
         val view = layoutInflater.inflate(R.layout.legal_consent, null)
+        val play = view.findViewById<AppCompatImageButton>(R.id.record)
+        play.setOnClickListener {
+            startRecordingNotification()
+        }
         builder.setView(view)
         builder.setCanceledOnTouchOutside(false)
         builder.show()

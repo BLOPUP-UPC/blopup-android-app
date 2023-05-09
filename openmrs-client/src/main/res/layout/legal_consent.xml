@@ -4,7 +4,6 @@
     android:layout_height="match_parent">
 
 
-
     <ScrollView
         android:id="@+id/scrollablContent"
         android:layout_width="match_parent"
@@ -22,9 +21,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="@dimen/dashboard_text_size"
                 android:justificationMode="inter_word"
-                android:text="@string/lengthy_text" />
+                android:text="@string/lengthy_text"
+                android:textSize="@dimen/dashboard_text_size" />
 
             <View
                 android:layout_width="match_parent"
@@ -37,20 +36,41 @@
 
     <LinearLayout
         android:id="@+id/footerView"
-        android:background="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dashboard_icon_height_width"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:gravity="bottom"
+        android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:gravity="center"
-            android:textSize="@dimen/text_size_large"
-            style="@style/TextLabel.Bold"
-            android:text="Play Goes Here" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/record"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dashboard_icon_height_width"
+            android:layout_margin="@dimen/fab_bottom_margin_4"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/mic" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/pause"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dashboard_icon_height_width"
+            android:layout_margin="@dimen/fab_bottom_margin_4"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/pause" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dashboard_icon_height_width"
+            android:layout_margin="@dimen/fab_bottom_margin_4"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/play" />
+
+
     </LinearLayout>
 
 </RelativeLayout>

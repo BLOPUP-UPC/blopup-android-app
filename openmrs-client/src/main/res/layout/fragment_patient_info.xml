@@ -620,7 +620,7 @@
                                     android:layout_width="@dimen/dashboard_icon_height_width"
                                     android:layout_height="@dimen/dashboard_icon_height_width"
                                     android:background="@color/allergy_orange_50_transparent"
-                                    android:scaleType="fitCenter"
+                                    android:scaleType="centerInside"
                                     android:src="@drawable/voice_assistant" />
                             </LinearLayout>
 
