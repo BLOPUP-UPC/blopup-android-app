@@ -1,6 +1,7 @@
 package edu.upc.openmrs.activities.visitdashboard
 
 import edu.upc.sdk.library.models.Observation
+import java.util.*
 
 class BMICalculator {
     fun execute(observations: List<Observation>): String? {
@@ -22,6 +23,6 @@ class BMICalculator {
         val heightForBmi = Math.pow(height.toDouble() / 100, 2.0)
         val bmi = weight.toDouble() / heightForBmi
 
-        return String.format("%.1f", bmi)
+        return String.format(Locale.US, "%.1f", bmi)
     }
 }
