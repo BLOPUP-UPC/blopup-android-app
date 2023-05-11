@@ -44,10 +44,9 @@ object NotificationUtil {
             .setLargeIcon(bitmap)
             .setContentTitle(title)
             .setContentText(message)
-        val resultIntent =
-            Intent(OpenMRS.getInstance(), DashboardActivity::class.java)
-        val stackBuilder =
-            TaskStackBuilder.create(OpenMRS.getInstance())
+
+        val resultIntent = Intent(OpenMRS.getInstance(), DashboardActivity::class.java)
+        val stackBuilder = TaskStackBuilder.create(OpenMRS.getInstance())
         stackBuilder.addParentStack(DashboardActivity::class.java)
         stackBuilder.addNextIntent(resultIntent)
         val resultPendingIntent = stackBuilder.getPendingIntent(
@@ -55,7 +54,8 @@ object NotificationUtil {
             flag
         )
         mBuilder.setContentIntent(resultPendingIntent)
-        mBuilder.setAutoCancel(true)
+        mBuilder.setAutoCancel(false)
+
         val mNotificationManager = OpenMRS.getInstance()
             .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.notify(0, mBuilder.build())
@@ -93,7 +93,7 @@ object NotificationUtil {
                 .setAutoCancel(true) // clear notification after click
                 .setBadgeIconType(NotificationCompat.BADGE_ICON_LARGE)
                 .setLargeIcon(bitmap)
-                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                .setStyle(NotificationCompat.BigTextStyle().bigText(message))
 
         val intent = Intent(OpenMRS.getInstance().baseContext, AddEditPatientActivity::class.java)
 
