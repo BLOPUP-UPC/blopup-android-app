@@ -14,15 +14,21 @@
 package edu.upc.openmrs.activities.addeditpatient
 
 import android.Manifest
+import android.Manifest.permission.RECORD_AUDIO
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.DialogInterface.*
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.media.MediaPlayer
+import android.media.MediaRecorder
 import android.media.ThumbnailUtils
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
@@ -31,15 +37,13 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -75,6 +79,7 @@ import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.StringUtils.validateText
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.android.synthetic.main.fragment_matching_patients.view.*
+import kotlinx.android.synthetic.main.legal_consent.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -82,7 +87,9 @@ import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructPermissionsRequest
 import java.io.File
+import java.io.IOException
 import java.util.*
+
 
 @AndroidEntryPoint
 class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInputSelected {
@@ -91,6 +98,19 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     private val binding get() = _binding!!
 
     private val viewModel: AddEditPatientViewModel by viewModels()
+    private var mRecorder: MediaRecorder? = null
+
+    // creating a variable for mediaplayer class
+    private var mPlayer: MediaPlayer? = null
+    private var isPlaying: Boolean = false
+    private var isRecording: Boolean = false
+
+
+    // string variable is created for storing a file name
+    private val mFileName: String? = null
+
+    // constant for storing audio permission
+    private val REQUEST_AUDIO_PERMISSION_CODE = 200
 
     private lateinit var cameraAndStoragePermissions: PermissionsRequester
     private lateinit var storageWritePermission: PermissionsRequester
@@ -130,19 +150,21 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
 
         fillFormFields()
 
+        askPermissions()
+
         return binding.root
     }
 
     private fun setupPermissionsHandler() {
         cameraAndStoragePermissions = constructPermissionsRequest(
-            Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA, WRITE_EXTERNAL_STORAGE,
             onShowRationale = ::showCameraPermissionRationale,
             onPermissionDenied = { showSnackbarLong(R.string.permissions_camera_storage_denied) },
             onNeverAskAgain = { showSnackbarLong(R.string.permissions_camera_storage_neverask) },
             requiresPermission = ::capturePhoto
         )
         storageWritePermission = constructPermissionsRequest(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            WRITE_EXTERNAL_STORAGE,
             onShowRationale = { request -> request.proceed() },
             onNeverAskAgain = { showSnackbarLong(R.string.permission_storage_neverask) },
             requiresPermission = ::pickPhoto
@@ -450,6 +472,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         recordConsentImageButton.setOnClickListener {
             showLegalConsent();
         }
+
         submitButton.setOnClickListener {
             submitAction()
         }
@@ -675,16 +698,130 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     private fun showLegalConsent() {
         val builder = AlertDialog.Builder(requireActivity(), R.style.AlertDialogTheme)
             .create()
+
+        builder.setOnCancelListener {
+            //Lets make sure to clean up resources once the modal is closed
+            mPlayer?.reset()
+            mPlayer?.release()
+
+            mRecorder?.reset()
+            mRecorder?.release()
+            isPlaying = false
+        }
         val view = layoutInflater.inflate(R.layout.legal_consent, null)
-        val play = view.findViewById<AppCompatImageButton>(R.id.record)
-        play.setOnClickListener {
-            startRecordingNotification()
+        val record = view.findViewById<AppCompatImageButton>(R.id.record)
+        val playPause = view.findViewById<AppCompatImageButton>(R.id.play_pause)
+
+        if (isMicrophonePresent()) {
+            record.setOnClickListener {
+                record.setImageResource(if (isRecording) R.drawable.mic else R.drawable.record)
+                startRecording()
+                record.isClickable = false
+            }
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Microphone Not Detected",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        playPause.setOnClickListener {
+            playPause.setImageResource(if (isPlaying) R.drawable.play else R.drawable.pause)
+            playPauseAudio()
         }
         builder.setView(view)
         builder.setCanceledOnTouchOutside(false)
         builder.show()
     }
 
+    private fun startRecording() {
+
+        if (isRecording) {
+            mRecorder?.stop()
+        } else {
+            mRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                context?.let { MediaRecorder(it) } else MediaRecorder()
+
+            mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+            mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            mRecorder?.setOutputFile(context?.let { FileUtils.getRecordingFilePath(it) })
+            mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            mRecorder?.prepare()
+            mRecorder?.start()
+            startRecordingNotification()
+        }
+
+        isRecording = !isRecording
+    }
+
+    private fun playPauseAudio() {
+        try {
+            if (isPlaying) {
+                mPlayer?.stop()
+                mPlayer?.reset()
+                mPlayer?.release()
+            } else {
+                mPlayer = MediaPlayer.create(context, R.raw.legal_consent_english)
+                mPlayer!!.start()
+            }
+
+        } catch (e: IOException) {
+            Log.e(tag, e.message, e)
+        }
+        isPlaying = !isPlaying
+    }
+
+
+    private fun askPermissions() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                WRITE_EXTERNAL_STORAGE
+            )
+            != PackageManager.PERMISSION_GRANTED
+            ||
+            ActivityCompat.checkSelfPermission(requireContext(), RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO), REQUEST_AUDIO_PERMISSION_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        // this method is called when user will
+        // grant the permission for audio recording.
+        when (requestCode) {
+            REQUEST_AUDIO_PERMISSION_CODE -> if (grantResults.size > 0) {
+                val permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                val permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED
+                if (permissionToRecord && permissionToStore) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Permission Granted",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Permission Denied",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun isMicrophonePresent(): Boolean {
+        return requireActivity().packageManager
+            .hasSystemFeature(PackageManager.FEATURE_MICROPHONE)
+    }
 
     private fun showLoading() {
         requireActivity().window.setFlags(
