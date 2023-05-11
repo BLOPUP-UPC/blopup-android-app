@@ -13,12 +13,16 @@
  */
 package edu.upc.openmrs.utilities
 
+import android.content.Context
+import android.content.ContextWrapper
+import android.os.Build
+import android.os.Environment
 import edu.upc.sdk.library.OpenmrsAndroid
-import java.io.ByteArrayOutputStream
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.InputStream
+import edu.upc.sdk.utilities.ApplicationConstants
+import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.coroutines.coroutineContext
 
 object FileUtils {
     fun fileToByteArray(path: String?): ByteArray {
@@ -46,5 +50,15 @@ object FileUtils {
             }
         }
         return out.toByteArray()
+    }
+
+
+    fun getRecordingFilePath(context: Context): String? {
+        return context.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.path + createUniqueAudioFileName();
+    }
+
+    private fun createUniqueAudioFileName(): String {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        return timeStamp + "_" + ".mp3"
     }
 }
