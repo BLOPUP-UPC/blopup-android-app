@@ -715,8 +715,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
 
         if (isMicrophonePresent()) {
             record?.setOnClickListener {
+
                 startRecording()
                 playPauseAudio()
+
                 record?.isClickable = false
                 playPause?.isClickable = true
                 stop?.isClickable = true
@@ -755,8 +757,9 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             mRecorder?.start()
             startRecordingNotification()
         }
-        record?.setImageResource(if (isRecording) R.drawable.mic else R.drawable.record)
         isRecording = !isRecording
+        record?.setImageResource(if (isRecording) R.drawable.record else R.drawable.mic)
+
     }
 
     private fun playPauseAudio() {
