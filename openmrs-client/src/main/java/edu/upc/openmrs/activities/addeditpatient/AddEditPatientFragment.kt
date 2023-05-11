@@ -78,6 +78,7 @@ import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.StringUtils.validateText
 import edu.upc.sdk.utilities.ToastUtil
+import kotlinx.android.synthetic.main.fragment_dialog_layout.*
 import kotlinx.android.synthetic.main.fragment_matching_patients.view.*
 import kotlinx.android.synthetic.main.legal_consent.*
 import org.joda.time.DateTime
@@ -104,10 +105,9 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     private var mPlayer: MediaPlayer? = null
     private var isPlaying: Boolean = false
     private var isRecording: Boolean = false
-
-
-    // string variable is created for storing a file name
-    private val mFileName: String? = null
+    private var record: AppCompatImageButton? = null
+    private var playPause: AppCompatImageButton? = null
+    private var stop: AppCompatImageButton? = null
 
     // constant for storing audio permission
     private val REQUEST_AUDIO_PERMISSION_CODE = 200
@@ -470,7 +470,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
 
         recordConsentImageButton.setOnClickListener {
-            showLegalConsent();
+            showLegalConsent()
         }
 
         submitButton.setOnClickListener {
@@ -699,6 +699,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         val builder = AlertDialog.Builder(requireActivity(), R.style.AlertDialogTheme)
             .create()
 
+        val legalConsentView = layoutInflater.inflate(R.layout.legal_consent, null)
+        record = legalConsentView.findViewById(R.id.record)
+        playPause = legalConsentView.findViewById(R.id.play_pause)
+        stop = legalConsentView.findViewById(R.id.stop)
         builder.setOnCancelListener {
             //Lets make sure to clean up resources once the modal is closed
             mPlayer?.reset()
@@ -708,15 +712,14 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             mRecorder?.release()
             isPlaying = false
         }
-        val view = layoutInflater.inflate(R.layout.legal_consent, null)
-        val record = view.findViewById<AppCompatImageButton>(R.id.record)
-        val playPause = view.findViewById<AppCompatImageButton>(R.id.play_pause)
 
         if (isMicrophonePresent()) {
-            record.setOnClickListener {
-                record.setImageResource(if (isRecording) R.drawable.mic else R.drawable.record)
+            record?.setOnClickListener {
                 startRecording()
-                record.isClickable = false
+                playPauseAudio()
+                record?.isClickable = false
+                playPause?.isClickable = true
+                stop?.isClickable = true
             }
         } else {
             Toast.makeText(
@@ -726,17 +729,18 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             ).show()
         }
 
-        playPause.setOnClickListener {
-            playPause.setImageResource(if (isPlaying) R.drawable.play else R.drawable.pause)
+        playPause?.setOnClickListener {
             playPauseAudio()
         }
-        builder.setView(view)
+        stop?.setOnClickListener {
+            builder.dismiss()
+        }
+        builder.setView(legalConsentView)
         builder.setCanceledOnTouchOutside(false)
         builder.show()
     }
 
     private fun startRecording() {
-
         if (isRecording) {
             mRecorder?.stop()
         } else {
@@ -751,25 +755,26 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             mRecorder?.start()
             startRecordingNotification()
         }
-
+        record?.setImageResource(if (isRecording) R.drawable.mic else R.drawable.record)
         isRecording = !isRecording
     }
 
     private fun playPauseAudio() {
         try {
-            if (isPlaying) {
-                mPlayer?.stop()
-                mPlayer?.reset()
-                mPlayer?.release()
-            } else {
+            if(mPlayer == null){
                 mPlayer = MediaPlayer.create(context, R.raw.legal_consent_english)
                 mPlayer!!.start()
             }
-
+            if(mPlayer?.isPlaying == true){
+                mPlayer?.stop()
+            } else {
+                mPlayer?.start()
+            }
         } catch (e: IOException) {
             Log.e(tag, e.message, e)
         }
         isPlaying = !isPlaying
+        playPause?.setImageResource(if (isPlaying) R.drawable.pause else R.drawable.play)
     }
 
 
