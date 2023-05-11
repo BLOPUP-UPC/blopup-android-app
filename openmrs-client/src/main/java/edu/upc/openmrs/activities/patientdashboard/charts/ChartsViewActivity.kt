@@ -91,6 +91,9 @@ class ChartsViewActivity : ACBaseActivity() {
         dataSetSystolic.circleRadius = 8F
         dataSetDiastolic.circleRadius = 8F
 
+        dataSetDiastolic.setCircleColor(Color.TRANSPARENT)
+        dataSetSystolic.setCircleColor(Color.TRANSPARENT)
+
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(dataSetSystolic)
         dataSets.add(dataSetDiastolic)

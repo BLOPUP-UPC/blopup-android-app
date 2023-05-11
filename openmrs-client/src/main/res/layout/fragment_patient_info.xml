@@ -508,7 +508,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="@dimen/label_margin_wide"
+                        android:layout_marginBottom="@dimen/dashboard_icon_margin"
                         android:orientation="vertical">
 
                         <TextView
