@@ -17,6 +17,7 @@ import android.Manifest
 import android.Manifest.permission.RECORD_AUDIO
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity.RESULT_OK
+import android.widget.LinearLayout.LayoutParams
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -54,6 +55,8 @@ import com.yalantis.ucrop.UCrop.REQUEST_CROP
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
@@ -152,6 +155,15 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
 
         askPermissions()
 
+        showPatientConsentToggle.check(onToggleDisabled = {
+            binding.linearLayoutConsent.makeGone()
+
+            val densityOperator = context?.resources?.displayMetrics?.density?.toInt()
+
+            val bottomMargin = binding.linearLayoutNationality.layoutParams as LayoutParams
+            bottomMargin.bottomMargin = densityOperator!! * 90
+            binding.linearLayoutNationality.layoutParams = bottomMargin
+        })
         return binding.root
     }
 
