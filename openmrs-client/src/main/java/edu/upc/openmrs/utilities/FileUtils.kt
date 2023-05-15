@@ -13,11 +13,10 @@
  */
 package edu.upc.openmrs.utilities
 
+import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.os.Environment
-import androidx.fragment.app.FragmentActivity
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment
+import edu.upc.R
 import edu.upc.sdk.library.OpenmrsAndroid
 import java.io.*
 import java.text.SimpleDateFormat
@@ -53,12 +52,24 @@ object FileUtils {
 
 
     fun getRecordingFilePath(context: Context): String? {
-        return context.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.path + createUniqueAudioFileName();
+        return context.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.path + "/" + createUniqueAudioFileName();
     }
 
     private fun createUniqueAudioFileName(): String {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         return timeStamp + "_" + ".mp3"
+    }
+
+    @JvmStatic
+    fun getLegalConsentByLanguage(activity: Activity?): Int {
+        val lang = LanguageUtils.getLanguage()
+
+        val resourceByLocal = activity?.resources?.getIdentifier(
+            "legal_consent_$lang", "raw", activity?.packageName
+        )
+
+        return if (resourceByLocal == 0) R.raw.legal_consent_es else resourceByLocal!!
+
     }
 
     fun fileIsCreatedSuccessfully(path: String?): Boolean {

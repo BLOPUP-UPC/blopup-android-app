@@ -716,7 +716,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         mRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
             context?.let { MediaRecorder(it) } else MediaRecorder()
 
-        mPlayer = MediaPlayer.create(context, R.raw.legal_consent_english)
+        mPlayer = MediaPlayer.create(context, FileUtils.getLegalConsentByLanguage(activity))
 
         record = legalConsentView.findViewById(R.id.record)
         playPause = legalConsentView.findViewById(R.id.play_pause)
@@ -762,10 +762,11 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             mRecorder?.release()
             mRecorder = null
             builder.dismiss()
-           if (FileUtils.fileIsCreatedSuccessfully(mFileName)) {
-               binding.recordConsentImageButton.setImageResource(R.drawable.saved)
-               binding.recordConsentImageButton.isEnabled = false
-           }
+
+            if (FileUtils.fileIsCreatedSuccessfully(mFileName)) {
+                binding.recordConsentImageButton.setImageResource(R.drawable.saved)
+                binding.recordConsentImageButton.isEnabled = false
+            }
         }
 
         builder.setView(legalConsentView)
@@ -803,7 +804,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             }
             isPlaying = !isPlaying
             playPause?.setImageResource(if (isPlaying) R.drawable.play else R.drawable.pause)
-        } catch (exception:Exception) {
+        } catch (exception: Exception) {
             exception.printStackTrace();
         }
     }
