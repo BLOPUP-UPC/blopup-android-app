@@ -15,16 +15,13 @@ package edu.upc.openmrs.utilities
 
 import android.content.Context
 import android.content.ContextWrapper
-import android.os.Build
 import android.os.Environment
 import androidx.fragment.app.FragmentActivity
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment
 import edu.upc.sdk.library.OpenmrsAndroid
-import edu.upc.sdk.utilities.ApplicationConstants
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 object FileUtils {
     fun fileToByteArray(path: String?): ByteArray {

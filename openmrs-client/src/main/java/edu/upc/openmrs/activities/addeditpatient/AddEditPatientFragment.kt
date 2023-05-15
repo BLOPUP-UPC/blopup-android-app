@@ -17,7 +17,6 @@ import android.Manifest
 import android.Manifest.permission.RECORD_AUDIO
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity.RESULT_OK
-import android.widget.LinearLayout.LayoutParams
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -39,6 +38,7 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import android.widget.LinearLayout.LayoutParams
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.annotation.StringDef
@@ -91,7 +91,6 @@ import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.constructPermissionsRequest
 import java.io.File
-import java.io.IOException
 import java.util.*
 
 
@@ -102,9 +101,8 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     private val binding get() = _binding!!
 
     private val viewModel: AddEditPatientViewModel by viewModels()
-    private var mRecorder: MediaRecorder? = null
 
-    // creating a variable for mediaplayer class
+    private var mRecorder: MediaRecorder? = null
     private var mPlayer: MediaPlayer? = null
     private var isPlaying: Boolean = false
     private var isRecording: Boolean = false
@@ -713,9 +711,20 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             .create()
 
         val legalConsentView = layoutInflater.inflate(R.layout.legal_consent, null)
+
+        mFileName = context?.let { FileUtils.getRecordingFilePath(it) }
+        mRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            context?.let { MediaRecorder(it) } else MediaRecorder()
+
+        mPlayer = MediaPlayer.create(context, R.raw.legal_consent_english)
+
         record = legalConsentView.findViewById(R.id.record)
         playPause = legalConsentView.findViewById(R.id.play_pause)
         stop = legalConsentView.findViewById(R.id.stop)
+
+        playPause?.isEnabled = false
+        stop?.isEnabled = false
+
         builder.setOnCancelListener {
             //Lets make sure to clean up resources once the modal is closed
             mPlayer?.reset()
@@ -730,11 +739,11 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             record?.setOnClickListener {
 
                 startRecording()
-                playPauseAudio()
+                startPlaying()
 
-                record?.isClickable = false
-                playPause?.isClickable = true
-                stop?.isClickable = true
+                record?.isEnabled = false
+                playPause?.isEnabled = true
+                stop?.isEnabled = true
             }
         } else {
             Toast.makeText(
@@ -747,26 +756,32 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         playPause?.setOnClickListener {
             playPauseAudio()
         }
+
         stop?.setOnClickListener {
+            mRecorder?.stop()
+            mRecorder?.release()
+            mRecorder = null
             builder.dismiss()
            if (FileUtils.fileIsCreatedSuccessfully(mFileName)) {
                binding.recordConsentImageButton.setImageResource(R.drawable.saved)
-               binding.recordConsentImageButton.isClickable = false
+               binding.recordConsentImageButton.isEnabled = false
            }
         }
+
         builder.setView(legalConsentView)
         builder.setCanceledOnTouchOutside(false)
         builder.show()
+    }
+
+    private fun startPlaying() {
+        mPlayer!!.start()
+        playPause?.setImageResource(R.drawable.pause)
     }
 
     private fun startRecording() {
         if (isRecording) {
             mRecorder?.stop()
         } else {
-            mFileName = context?.let { FileUtils.getRecordingFilePath(it) }
-            mRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                context?.let { MediaRecorder(it) } else MediaRecorder()
-
             mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
             mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
             mRecorder?.setOutputFile(mFileName)
@@ -777,27 +792,21 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
         isRecording = !isRecording
         record?.setImageResource(if (isRecording) R.drawable.record else R.drawable.mic)
-
     }
 
     private fun playPauseAudio() {
         try {
-            if(mPlayer == null){
-                mPlayer = MediaPlayer.create(context, R.raw.legal_consent_english)
-                mPlayer!!.start()
-            }
-            if(mPlayer?.isPlaying == true){
-                mPlayer?.stop()
+            if (mPlayer?.isPlaying == true) {
+                mPlayer?.pause()
             } else {
                 mPlayer?.start()
             }
-        } catch (e: IOException) {
-            Log.e(tag, e.message, e)
+            isPlaying = !isPlaying
+            playPause?.setImageResource(if (isPlaying) R.drawable.play else R.drawable.pause)
+        } catch (exception:Exception) {
+            exception.printStackTrace();
         }
-        isPlaying = !isPlaying
-        playPause?.setImageResource(if (isPlaying) R.drawable.pause else R.drawable.play)
     }
-
 
     private fun askPermissions() {
         if (ActivityCompat.checkSelfPermission(
