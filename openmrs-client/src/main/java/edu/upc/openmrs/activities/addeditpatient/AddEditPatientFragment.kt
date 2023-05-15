@@ -111,6 +111,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     private var record: AppCompatImageButton? = null
     private var playPause: AppCompatImageButton? = null
     private var stop: AppCompatImageButton? = null
+    private var mFileName: String? = null
 
     // constant for storing audio permission
     private val REQUEST_AUDIO_PERMISSION_CODE = 200
@@ -748,6 +749,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
         stop?.setOnClickListener {
             builder.dismiss()
+           if (FileUtils.fileIsCreatedSuccessfully(mFileName)) {
+               binding.recordConsentImageButton.setImageResource(R.drawable.saved)
+               binding.recordConsentImageButton.isClickable = false
+           }
         }
         builder.setView(legalConsentView)
         builder.setCanceledOnTouchOutside(false)
@@ -758,12 +763,13 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         if (isRecording) {
             mRecorder?.stop()
         } else {
+            mFileName = context?.let { FileUtils.getRecordingFilePath(it) }
             mRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
                 context?.let { MediaRecorder(it) } else MediaRecorder()
 
             mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
             mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mRecorder?.setOutputFile(context?.let { FileUtils.getRecordingFilePath(it) })
+            mRecorder?.setOutputFile(mFileName)
             mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
             mRecorder?.prepare()
             mRecorder?.start()
@@ -818,7 +824,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         // this method is called when user will
         // grant the permission for audio recording.
         when (requestCode) {
-            REQUEST_AUDIO_PERMISSION_CODE -> if (grantResults.size > 0) {
+            REQUEST_AUDIO_PERMISSION_CODE -> if (grantResults.isNotEmpty()) {
                 val permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED
                 val permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED
                 if (permissionToRecord && permissionToStore) {
