@@ -6,7 +6,7 @@
     <ScrollView
         android:id="@+id/scrollablContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/footerView"
         android:padding="@dimen/text_size_large">
 
@@ -32,44 +32,35 @@
         </LinearLayout>
     </ScrollView>
 
-
     <LinearLayout
         android:id="@+id/footerView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dashboard_icon_height_width"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:gravity="bottom"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <Button
             android:id="@+id/record"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dashboard_icon_height_width"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="@dimen/fab_bottom_margin_4"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/mic" />
+            android:background="@mipmap/record" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <Button
             android:id="@+id/play_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dashboard_icon_height_width"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="@dimen/fab_bottom_margin_4"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/play"
-            android:clickable="false" />
+            android:background="@mipmap/play_recording" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <Button
             android:id="@+id/stop"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dashboard_icon_height_width"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="@dimen/fab_bottom_margin_4"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/stop"
-            android:clickable="false" />
+            android:background="@mipmap/stop" />
 
     </LinearLayout>
 
