@@ -74,6 +74,6 @@ object FileUtils {
 
     fun fileIsCreatedSuccessfully(path: String?): Boolean {
         //check file is larger than 100KB
-        return path?.let { File(it).length().div(1024) }!! > 100
+        return path?.let { File(it).length().div(1024) }!! > 85
     }
 }
