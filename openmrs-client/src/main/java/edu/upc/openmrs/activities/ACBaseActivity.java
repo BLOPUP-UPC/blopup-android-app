@@ -41,14 +41,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
-import edu.upc.sdk.library.OpenMRSLogger;
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.dao.LocationDAO;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.NetworkUtils;
-import edu.upc.sdk.utilities.ToastUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,6 +62,14 @@ import edu.upc.openmrs.net.AuthorizationManager;
 import edu.upc.openmrs.utilities.ForceClose;
 import edu.upc.openmrs.utilities.LanguageUtils;
 import edu.upc.openmrs.utilities.ThemeUtils;
+import edu.upc.sdk.library.OpenMRSLogger;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.dao.LocationDAO;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.NetworkUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -100,7 +100,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         Thread.setDefaultUncaughtExceptionHandler(new ForceClose(this));
 
         setupTheme();
-        setupLanguage();
+        LanguageUtils.setupLanguage(getResources());
 
         mFragmentManager = getSupportFragmentManager();
         mAuthorizationManager = new AuthorizationManager();
@@ -121,7 +121,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setupTheme();
-        setupLanguage();
+        LanguageUtils.setupLanguage(getResources());
         invalidateOptionsMenu();
         if (!(this instanceof LoginActivity) && !mAuthorizationManager.isUserLoggedIn()
                 && !(this instanceof ContactUsActivity) && !(this instanceof SplashActivity)) {
@@ -433,16 +433,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             getDelegate().applyDayNight();
         }
-    }
-
-    private void setupLanguage() {
-        String lang = LanguageUtils.getLanguage();
-        Locale myLocale = new Locale(lang);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
     }
 
     @Override

@@ -13,8 +13,10 @@
  */
 package edu.upc.openmrs.utilities
 
+import android.content.res.Resources
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
+import java.util.*
 
 object LanguageUtils {
 
@@ -31,4 +33,12 @@ object LanguageUtils {
         editor.apply()
     }
 
+    @JvmStatic
+    fun setupLanguage(resources: Resources) {
+        val myLocale = getLanguage()?.let { Locale(it) }
+        val dm = resources.displayMetrics
+        val conf = resources.configuration
+        conf.locale = myLocale
+        resources.updateConfiguration(conf, dm)
+    }
 }
