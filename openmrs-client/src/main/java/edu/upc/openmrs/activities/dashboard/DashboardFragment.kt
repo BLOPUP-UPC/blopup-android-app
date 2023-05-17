@@ -41,7 +41,6 @@ class DashboardFragment : BaseFragment(), View.OnClickListener {
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     private var mBitmapCache: SparseArray<Bitmap>? = null
-    private var allowRefresh: Boolean = true
 
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {

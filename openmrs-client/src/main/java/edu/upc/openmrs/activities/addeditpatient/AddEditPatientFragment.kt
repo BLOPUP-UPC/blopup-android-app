@@ -25,6 +25,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.media.MediaPlayer
+import android.media.MediaPlayer.OnCompletionListener
 import android.media.MediaRecorder
 import android.media.ThumbnailUtils
 import android.net.Uri
@@ -39,12 +40,10 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.LinearLayout.LayoutParams
-import android.widget.LinearLayout.inflate
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.activity.result.contract.ActivityResultContracts.TakePicture
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -730,6 +729,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         playPause?.isEnabled = false
         stop?.isEnabled = false
 
+        mPlayer?.setOnCompletionListener(OnCompletionListener {
+            stop?.isEnabled = true
+        })
+
         builder.setOnCancelListener {
             //Lets make sure to clean up resources once the modal is closed
             mPlayer?.reset()
@@ -748,7 +751,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
 
                 record?.isEnabled = false
                 playPause?.isEnabled = true
-                stop?.isEnabled = true
             }
         } else {
             Toast.makeText(
@@ -762,6 +764,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             playPauseAudio()
         }
 
+
         stop?.setOnClickListener {
             mRecorder?.stop()
             mRecorder?.release()
@@ -769,11 +772,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
             builder.dismiss()
 
             if (FileUtils.fileIsCreatedSuccessfully(mFileName)) {
-                binding.recordConsentImageButton.setBackgroundResource(R.drawable.saved)
+                binding.recordConsentImageButton.setImageResource(R.drawable.saved)
                 binding.recordConsentImageButton.isEnabled = false
             }
         }
-
         builder.setView(legalConsentBinding.getRoot())
         builder.setCanceledOnTouchOutside(false)
         builder.show()
