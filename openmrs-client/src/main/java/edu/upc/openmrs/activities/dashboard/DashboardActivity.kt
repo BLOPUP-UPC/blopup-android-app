@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment
 import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.openmrs.utilities.LanguageUtils
 
 @AndroidEntryPoint
 class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -94,6 +95,7 @@ class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }*/
+
 
     override fun onResume() {
         super.onResume()

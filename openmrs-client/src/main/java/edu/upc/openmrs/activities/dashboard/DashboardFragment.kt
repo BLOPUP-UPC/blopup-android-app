@@ -21,66 +21,79 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE
 import androidx.navigation.fragment.findNavController
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.github.amlcurran.showcaseview.targets.Target
 import com.github.amlcurran.showcaseview.targets.ViewTarget
-import edu.upc.sdk.utilities.ApplicationConstants
-import edu.upc.sdk.utilities.ImageUtils
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentDashboardBinding
+import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.utilities.ThemeUtils
+import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ImageUtils
 
 @AndroidEntryPoint
-class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClickListener {
+class DashboardFragment : BaseFragment(), View.OnClickListener {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     private var mBitmapCache: SparseArray<Bitmap>? = null
+    private var allowRefresh: Boolean = true
 
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val settings2 = requireActivity().getSharedPreferences(ApplicationConstants.OPENMRS_PREF_FILE, 0)
+        val settings2 =
+            requireActivity().getSharedPreferences(ApplicationConstants.OPENMRS_PREF_FILE, 0)
         if (settings2.getBoolean("my_first_time", true)) {
-            showOverlayTutorial((binding.findPatientView).id, getString(R.string.dashboard_search_icon_label),
-                    getString(R.string.showcase_find_patients), R.style.CustomShowcaseTheme,
-                    ApplicationConstants.ShowCaseViewConstants.SHOW_FIND_PATIENT, true)
+            showOverlayTutorial(
+                (binding.findPatientView).id, getString(R.string.dashboard_search_icon_label),
+                getString(R.string.showcase_find_patients), R.style.CustomShowcaseTheme,
+                ApplicationConstants.ShowCaseViewConstants.SHOW_FIND_PATIENT, true
+            )
             settings2.edit().putBoolean("my_first_time", false).apply()
         }
     }
 
-    private fun showOverlayTutorial(view: Int, title: String, content: String, styleTheme: Int,
-                                    currentViewCount: Int, showTextBelow: Boolean) {
+    private fun showOverlayTutorial(
+        view: Int, title: String, content: String, styleTheme: Int,
+        currentViewCount: Int, showTextBelow: Boolean
+    ) {
         val viewTarget: Target = ViewTarget(view, this.activity)
         val builder = ShowcaseView.Builder(this.activity)
-                .setTarget(viewTarget)
-                .setContentTitle(title)
-                .setContentText(content)
-                .hideOnTouchOutside()
-                .setStyle(styleTheme)
-                .setShowcaseEventListener(object : OnShowcaseEventListener {
-                    override fun onShowcaseViewHide(showcaseView: ShowcaseView) {
-                        when (currentViewCount) {
-                            ApplicationConstants.ShowCaseViewConstants.SHOW_ACTIVE_VISITS -> showOverlayTutorial((binding.registryPatientView).id, getString(R.string.action_register_patient),
-                                    getString(R.string.showcase_register_patient), R.style.CustomShowcaseTheme,
-                                    ApplicationConstants.ShowCaseViewConstants.SHOW_REGISTER_PATIENT, false)
-                        }
-                        showcaseView.visibility = View.GONE
+            .setTarget(viewTarget)
+            .setContentTitle(title)
+            .setContentText(content)
+            .hideOnTouchOutside()
+            .setStyle(styleTheme)
+            .setShowcaseEventListener(object : OnShowcaseEventListener {
+                override fun onShowcaseViewHide(showcaseView: ShowcaseView) {
+                    when (currentViewCount) {
+                        ApplicationConstants.ShowCaseViewConstants.SHOW_ACTIVE_VISITS -> showOverlayTutorial(
+                            (binding.registryPatientView).id,
+                            getString(R.string.action_register_patient),
+                            getString(R.string.showcase_register_patient),
+                            R.style.CustomShowcaseTheme,
+                            ApplicationConstants.ShowCaseViewConstants.SHOW_REGISTER_PATIENT,
+                            false
+                        )
                     }
+                    showcaseView.visibility = View.GONE
+                }
 
-                    override fun onShowcaseViewDidHide(showcaseView: ShowcaseView) { //This method is intentionally left blank
-                    }
+                override fun onShowcaseViewDidHide(showcaseView: ShowcaseView) { //This method is intentionally left blank
+                }
 
-                    override fun onShowcaseViewShow(showcaseView: ShowcaseView) { //This method is intentionally left blank
-                    }
+                override fun onShowcaseViewShow(showcaseView: ShowcaseView) { //This method is intentionally left blank
+                }
 
-                    override fun onShowcaseViewTouchBlocked(motionEvent: MotionEvent) { //This method is intentionally left blank
-                    }
-                })
+                override fun onShowcaseViewTouchBlocked(motionEvent: MotionEvent) { //This method is intentionally left blank
+                }
+            })
         if (showTextBelow) {
             builder.build()
         } else {
@@ -88,7 +101,11 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
         bindDrawableResources()
@@ -109,6 +126,7 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
         unbindDrawableResources()
     }
 
+
     /**
      * Binds drawable resources to all dashboard buttons
      */
@@ -116,6 +134,8 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
         with(binding) {
             bindDrawableResource(findPatientButton, R.mipmap.ico_search_patients)
             bindDrawableResource(registryPatientButton, R.mipmap.ico_add_patient)
+            findPatientLabel.setText(R.string.dashboard_search_icon_label)
+            registryLabel.setText(R.string.action_register_patient)
             if (ThemeUtils.isDarkModeActivated()) {
                 changeColorOfDashboardIcons()
             }
@@ -150,14 +170,20 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
 
     private fun createImageBitmap(key: Int, layoutParams: ViewGroup.LayoutParams) {
         if (mBitmapCache!![key] == null) {
-            mBitmapCache!!.put(key, ImageUtils.decodeBitmapFromResource(resources, key,
-                    layoutParams.width, layoutParams.height))
+            mBitmapCache!!.put(
+                key, ImageUtils.decodeBitmapFromResource(
+                    resources, key,
+                    layoutParams.width, layoutParams.height
+                )
+            )
         }
     }
 
     override fun onClick(v: View) {
-        val directionToRegister = DashboardFragmentDirections.actionDashboardFragmentToAddEditPatientActivity()
-        val directionToFindPatent = DashboardFragmentDirections.actionDashboardFragmentToSyncedPatientsActivity()
+        val directionToRegister =
+            DashboardFragmentDirections.actionDashboardFragmentToAddEditPatientActivity()
+        val directionToFindPatent =
+            DashboardFragmentDirections.actionDashboardFragmentToSyncedPatientsActivity()
         when (v.id) {
             R.id.findPatientView -> findNavController().navigate(directionToFindPatent)
             R.id.registryPatientView -> findNavController().navigate(directionToRegister)
@@ -173,6 +199,18 @@ class DashboardFragment : edu.upc.openmrs.activities.BaseFragment(), View.OnClic
             ImageUtils.changeImageViewTint(context, registryPatientButton, greenColorResId)
         }
     }
+
+//    override fun onResume() {
+//        if (allowRefresh) {
+//            super.onResume()
+////            parentFragmentManager.beginTransaction()
+////                .detach(this)
+////                .attach(this)
+////                .commit()
+////            bindDrawableResources()
+//            allowRefresh = false
+//        }
+//    }
 
     companion object {
         fun newInstance(): DashboardFragment {

@@ -15,8 +15,4 @@ abstract class BaseFragment : Fragment() {
         )
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupLanguage(resources)
-    }
 }

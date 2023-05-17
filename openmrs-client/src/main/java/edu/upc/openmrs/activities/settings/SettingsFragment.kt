@@ -40,12 +40,13 @@ import edu.upc.sdk.utilities.ApplicationConstants.ServiceActions.START_CONCEPT_D
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentSettingsBinding
+import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.openmrs.activities.logs.LogsActivity
 import edu.upc.openmrs.utilities.ThemeUtils
 
 @AndroidEntryPoint
-class SettingsFragment : edu.upc.openmrs.activities.BaseFragment() {
+class SettingsFragment :  BaseFragment() {
     private var broadcastReceiver: BroadcastReceiver? = null
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!

@@ -121,7 +121,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setupTheme();
-        LanguageUtils.setupLanguage(getResources());
         invalidateOptionsMenu();
         if (!(this instanceof LoginActivity) && !mAuthorizationManager.isUserLoggedIn()
                 && !(this instanceof ContactUsActivity) && !(this instanceof SplashActivity)) {
@@ -401,7 +400,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
 
     public void showAppCrashDialog(String error) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                this,R.style.AlertDialogTheme);
+                this, R.style.AlertDialogTheme);
         alertDialogBuilder.setTitle(R.string.crash_dialog_title);
         // set dialog message
         alertDialogBuilder
