@@ -34,6 +34,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
@@ -452,6 +453,13 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 }
             })
         }
+
+        //#region -- If Record Consent Is Missing --
+        if (TextUtils.isEmpty(mFileName))
+            recordConsentError.makeVisible()
+        else
+            recordConsentError.makeGone()
+        //#endreigon
     }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
@@ -929,6 +937,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         dobError.text = ""
         gendererror.makeGone()
         nationalityerror.makeGone()
+        recordConsentError.makeGone()
         textInputLayoutFirstName.error = ""
         textInputLayoutMiddlename.error = ""
         textInputLayoutSurname.error = ""

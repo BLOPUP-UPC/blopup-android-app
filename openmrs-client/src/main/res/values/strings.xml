@@ -253,7 +253,7 @@
     <string name="title_activity_form_create" translatable="false">FormCreateActivity</string>
 
     <!-- Recording Legal Consent -->
-    <string name="record_patient_consent">Record Patient Consent</string>
+    <string name="record_patient_consent">Record Patient Consent*</string>
      <string name="recording_info">Please wait until this recording is completed</string>
     <string name="recording_inprogress">Recording In Progress …</string>
 
