@@ -455,9 +455,10 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
 
         //#region -- If Record Consent Is Missing --
-        if (TextUtils.isEmpty(mFileName))
+        if (!FileUtils.fileIsCreatedSuccessfully(mFileName)) {
             recordConsentError.makeVisible()
-        else
+            scrollToTop()
+        } else
             recordConsentError.makeGone()
         //#endreigon
     }

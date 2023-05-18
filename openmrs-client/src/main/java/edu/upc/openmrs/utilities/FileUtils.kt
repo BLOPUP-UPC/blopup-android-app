@@ -16,6 +16,7 @@ package edu.upc.openmrs.utilities
 import android.app.Activity
 import android.content.Context
 import android.os.Environment
+import android.text.TextUtils
 import edu.upc.R
 import edu.upc.sdk.library.OpenmrsAndroid
 import java.io.*
@@ -73,6 +74,7 @@ object FileUtils {
     }
 
     fun fileIsCreatedSuccessfully(path: String?): Boolean {
+        if (TextUtils.isEmpty(path)) return false
         //check file is larger than 85KB
         return path?.let { File(it).length().div(1024) }!! > 85
     }
