@@ -712,8 +712,8 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     private fun showLegalConsent() {
         if (isMicrophonePresent()) {
             LegalConsentDialogFragment().show(childFragmentManager, LegalConsentDialogFragment.TAG)
-            LegalConsentDialogFragment().onStart()
-
+            childFragmentManager.beginTransaction().add(LegalConsentDialogFragment(), "legalConsent").commitNow()
+            childFragmentManager.findFragmentById(R.id.legal_consent)?.onStart()
         } else {
             Toast.makeText(
                 requireContext(),
