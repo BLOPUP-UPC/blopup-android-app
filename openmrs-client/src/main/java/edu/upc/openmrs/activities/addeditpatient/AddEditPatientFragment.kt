@@ -58,7 +58,6 @@ import edu.upc.R
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.databinding.FragmentPatientInfoBinding
-import edu.upc.databinding.LegalConsentBinding
 import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
@@ -712,7 +711,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     private fun showLegalConsent() {
         if (isMicrophonePresent()) {
             LegalConsentDialogFragment().show(childFragmentManager, LegalConsentDialogFragment.TAG)
-            childFragmentManager.beginTransaction().add(LegalConsentDialogFragment(), "legalConsent").commitNow()
             childFragmentManager.findFragmentById(R.id.legal_consent)?.onStart()
         } else {
             Toast.makeText(
