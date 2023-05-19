@@ -25,7 +25,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
 import android.media.MediaRecorder
 import android.media.ThumbnailUtils
 import android.net.Uri
@@ -47,7 +46,7 @@ import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.snackbar.Snackbar
@@ -85,6 +84,7 @@ import edu.upc.sdk.utilities.StringUtils.validateText
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.android.synthetic.main.fragment_dialog_layout.*
 import kotlinx.android.synthetic.main.fragment_matching_patients.view.*
+import kotlinx.android.synthetic.main.fragment_patient_info.*
 import kotlinx.android.synthetic.main.legal_consent.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
@@ -99,20 +99,11 @@ import java.util.*
 @AndroidEntryPoint
 class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInputSelected {
     var alertDialog: AlertDialog? = null
+    private var legalConsentDialog: LegalConsentDialogFragment? = null
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: AddEditPatientViewModel by viewModels()
-
-    private lateinit var legalConsentBinding: LegalConsentBinding
-    private var mRecorder: MediaRecorder? = null
-    private var mPlayer: MediaPlayer? = null
-    private var isPlaying: Boolean = false
-    private var isRecording: Boolean = false
-    private var record: Button? = null
-    private var playPause: Button? = null
-    private var stop: Button? = null
-    private var mFileName: String? = null
 
     // constant for storing audio permission
     private val REQUEST_AUDIO_PERMISSION_CODE = 200
@@ -140,11 +131,9 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentPatientInfoBinding.inflate(inflater, container, false)
-
-        legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
 
         setHasOptionsMenu(true)
 
@@ -455,7 +444,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
 
         //#region -- If Record Consent Is Missing --
-        if (!FileUtils.fileIsCreatedSuccessfully(mFileName)) {
+        if (!FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.mFileName)) {
             recordConsentError.makeVisible()
             scrollToTop()
         } else
@@ -657,7 +646,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
                 adapterView: AdapterView<*>?,
                 view: View,
                 pos: Int,
-                l: Long
+                l: Long,
             ) {
                 val display = deceasedSpinner.selectedItem.toString()
                 for (i in answers.indices) {
@@ -721,106 +710,16 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     }
 
     private fun showLegalConsent() {
-        val builder = AlertDialog.Builder(requireActivity(), R.style.AlertDialogTheme)
-            .create()
-
-        mFileName = context?.let { FileUtils.getRecordingFilePath(it) }
-
-        mRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            context?.let { MediaRecorder(it) } else MediaRecorder()
-
-        mPlayer = MediaPlayer.create(context, FileUtils.getLegalConsentByLanguage(activity))
-
-        record = legalConsentBinding.record
-        playPause = legalConsentBinding.playPause
-        stop = legalConsentBinding.stop
-
-        playPause?.isEnabled = false
-        stop?.isEnabled = false
-
-        mPlayer?.setOnCompletionListener(OnCompletionListener {
-            stop?.isEnabled = true
-        })
-
-        builder.setOnCancelListener {
-            //Lets make sure to clean up resources once the modal is closed
-            mPlayer?.reset()
-            mPlayer?.release()
-
-            mRecorder?.reset()
-            mRecorder?.release()
-            isPlaying = false
-        }
-
         if (isMicrophonePresent()) {
-            record?.setOnClickListener {
+            LegalConsentDialogFragment().show(childFragmentManager, LegalConsentDialogFragment.TAG)
+            LegalConsentDialogFragment().onStart()
 
-                startRecording()
-                startPlaying()
-
-                record?.isEnabled = false
-                playPause?.isEnabled = true
-            }
         } else {
             Toast.makeText(
                 requireContext(),
                 "Microphone Not Detected",
                 Toast.LENGTH_LONG
             ).show()
-        }
-
-        playPause?.setOnClickListener {
-            playPauseAudio()
-        }
-
-
-        stop?.setOnClickListener {
-            mRecorder?.stop()
-            mRecorder?.release()
-            mRecorder = null
-            builder.dismiss()
-
-            if (FileUtils.fileIsCreatedSuccessfully(mFileName)) {
-                binding.recordConsentImageButton.setImageResource(R.drawable.saved)
-                binding.recordConsentImageButton.isEnabled = false
-            }
-        }
-        builder.setView(legalConsentBinding.getRoot())
-        builder.setCanceledOnTouchOutside(false)
-        builder.show()
-    }
-
-    private fun startPlaying() {
-        mPlayer!!.start()
-        playPause?.setBackgroundResource(R.mipmap.pause)
-    }
-
-    private fun startRecording() {
-        if (isRecording) {
-            mRecorder?.stop()
-        } else {
-            mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mRecorder?.setOutputFile(mFileName)
-            mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-            mRecorder?.prepare()
-            mRecorder?.start()
-            startRecordingNotification()
-        }
-        isRecording = !isRecording
-    }
-
-    private fun playPauseAudio() {
-        try {
-            if (mPlayer?.isPlaying == true) {
-                mPlayer?.pause()
-            } else {
-                mPlayer?.start()
-            }
-            isPlaying = !isPlaying
-            playPause?.setBackgroundResource(if (isPlaying) R.mipmap.play_recording else R.mipmap.pause)
-        } catch (exception: Exception) {
-            exception.printStackTrace();
         }
     }
 
@@ -844,7 +743,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         // this method is called when user will
         // grant the permission for audio recording.
@@ -981,7 +880,6 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
 
     private fun finishActivity() = requireActivity().finish()
 
-    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CROP) {
             if (resultCode == RESULT_OK) {
@@ -1032,7 +930,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         _binding = null
     }
 
-    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+    @Retention(AnnotationRetention.SOURCE)
     @StringDef(StringValue.MALE, StringValue.FEMALE)
     annotation class StringValue {
         companion object {

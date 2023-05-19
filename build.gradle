@@ -15,8 +15,6 @@ buildscript {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$safeargs_version"
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.4.0")
 
-        // TODO AC-861
-        //classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
         classpath "com.hiya:jacoco-android:0.2"
 
         // Hilt Plugin

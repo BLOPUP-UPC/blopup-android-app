@@ -20,44 +20,16 @@ import androidx.navigation.fragment.NavHostFragment
 import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.openmrs.utilities.LanguageUtils
 
 @AndroidEntryPoint
 class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
-    /*TODO: Permission handling to be coded later, moving to SDK 22 for now.
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
-    Bundle currinstantstate;
-    */
-
-
     private var doubleBackToExitPressedOnce: Boolean = false
     private var handler: Handler? = Handler()
 
-    private var runnable = object : Runnable {
-        override fun run() {
-            doubleBackToExitPressedOnce = false
-        }
-    }
-
+    private var runnable = Runnable { doubleBackToExitPressedOnce = false }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        /*TODO: Permission handling to be coded later, moving to SDK 22 for now.
-        currinstantstate=savedInstanceState;
-        if (Build.VERSION.SDK_INT >= 23) {
-            // Marshmallow+
-            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
-            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},
-                        REQUEST_CODE_ASK_PERMISSIONS);
-                return;
-            }
-        }
-        else {
-            // Pre-Marshmallow
-        }
-        */
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
@@ -68,34 +40,9 @@ class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             actionBar.setDisplayHomeAsUpEnabled(false)
             actionBar.setDisplayUseLogoEnabled(true)
             actionBar.setDisplayShowHomeEnabled(true)
-//            actionBar.setLogo(R.drawable.openmrs_action_logo)
             actionBar.setTitle(R.string.app_name)
         }
     }
-
-    /*TODO: Permission handling to be coded later, moving to SDK 22 for now.
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CODE_ASK_PERMISSIONS:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission Granted
-                    super.onCreate(currinstantstate);
-                    setContentView(R.layout.activity_dashboard);
-                    FontsUtil.setFont((ViewGroup) findViewById(android.R.id.content));
-
-                } else {
-                    // Permission Denied
-                    Toast.makeText(DashboardActivity.this, "Permission Denied, Exiting", Toast.LENGTH_SHORT)
-                            .show();
-                    finish();
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }*/
-
 
     override fun onResume() {
         super.onResume()
