@@ -1,22 +1,19 @@
 package edu.upc.openmrs.activities.addeditpatient
 
+import android.app.Dialog
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
 import edu.upc.databinding.LegalConsentBinding
 import edu.upc.openmrs.utilities.FileUtils
-import edu.upc.openmrs.utilities.NotificationUtil
-import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 
-@RequiresApi(Build.VERSION_CODES.O)
 class LegalConsentDialogFragment : DialogFragment() {
 
     private lateinit var legalConsentBinding: LegalConsentBinding
@@ -30,18 +27,23 @@ class LegalConsentDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
         mFileName = FileUtils.getRecordingFilePath(requireContext())
-        audioRecorder = AudioRecorder(
-            mFileName,
-            requireContext(),
-            FileUtils.getFileByLanguage(requireActivity(), TAG)
-        )
+        audioRecorder = AudioRecorder(mFileName, requireContext(), FileUtils.getFileByLanguage(requireActivity(), TAG))
         setupButtons()
         listenForPlayCompletion()
         return legalConsentBinding.root
+    }
+    override fun onStart() {
+        super.onStart()
+        val dialog: Dialog? = dialog
+        if (dialog != null) {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            dialog.window?.setLayout(width, height)
+        }
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -51,6 +53,10 @@ class LegalConsentDialogFragment : DialogFragment() {
     }
 
     fun fileName(): String = mFileName
+
+    fun startRecordingNotification() {
+        // TODO("Not yet implemented")
+    }
 
     private fun listenForPlayCompletion() {
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
@@ -83,7 +89,6 @@ class LegalConsentDialogFragment : DialogFragment() {
                 val parent = parentFragment as AddEditPatientFragment
                 parent.record_consent_imageButton.setImageResource(R.drawable.saved)
                 parent.record_consent_imageButton.isEnabled = false
-                //parent.record_consent_error.makeGone();
             }
         }
     }
@@ -103,10 +108,8 @@ class LegalConsentDialogFragment : DialogFragment() {
 
             recordButton.isEnabled = false
             playPauseButton.isEnabled = true
-            NotificationUtil.showRecordingNotification(
-                "Recording in progress",
-                getString(R.string.recording_info)
-            )
+
+            legalConsentBinding.recordingInProgress.makeVisible()
         }
     }
 

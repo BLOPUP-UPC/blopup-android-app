@@ -2,6 +2,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/recordingInProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="18dp"
+        android:background="@drawable/border"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/recording" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recording_in_progress"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/red"/>
+    </LinearLayout>
+
 
     <ScrollView
         android:id="@+id/scrollablContent"
@@ -61,7 +86,5 @@
             android:layout_height="100dp"
             android:layout_margin="@dimen/fab_bottom_margin_4"
             android:background="@mipmap/stop" />
-
     </LinearLayout>
-
 </RelativeLayout>
