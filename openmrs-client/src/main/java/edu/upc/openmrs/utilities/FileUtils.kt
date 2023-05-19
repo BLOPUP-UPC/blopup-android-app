@@ -13,13 +13,11 @@
  */
 package edu.upc.openmrs.utilities
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Environment
 import android.text.TextUtils
 import edu.upc.R
-import edu.upc.sdk.library.OpenmrsAndroid
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,11 +34,11 @@ object FileUtils {
     }
 
     @JvmStatic
-    fun getLegalConsentByLanguage(activity: Activity?): Int {
+    fun getFileByLanguage(activity: Activity?, fileName: String): Int {
         val lang = LanguageUtils.getLanguage()
 
         val resourceByLocal = activity?.resources?.getIdentifier(
-            "legal_consent_$lang", "raw", activity.packageName
+            fileName + "_$lang", "raw", activity.packageName
         )
 
         return if (resourceByLocal == 0) R.raw.legal_consent_es else resourceByLocal!!

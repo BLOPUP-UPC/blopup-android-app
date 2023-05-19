@@ -20,19 +20,27 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var recordButton: Button
     private lateinit var playPauseButton: Button
     private lateinit var stopButton: Button
-    private var mFileName: String? = null
+    private lateinit var mFileName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, ): View {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
-        mFileName = context?.let { FileUtils.getRecordingFilePath(it) }
-        audioRecorder = AudioRecorder(
-            mFileName,
-            requireContext(),
-            FileUtils.getLegalConsentByLanguage(requireActivity())
-        )
+        mFileName = FileUtils.getRecordingFilePath(requireContext())
+        audioRecorder = AudioRecorder(mFileName, requireContext(), FileUtils.getFileByLanguage(requireActivity(), TAG))
         setupButtons()
         listenForPlayCompletion()
         return legalConsentBinding.root
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+
+        audioRecorder.stopRecording()
+    }
+
+    fun fileName(): String = mFileName
+
+    fun startRecordingNotification() {
+        // TODO("Not yet implemented")
     }
 
     private fun listenForPlayCompletion() {
@@ -44,17 +52,6 @@ class LegalConsentDialogFragment : DialogFragment() {
         }
     }
 
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-        audioRecorder.stopRecording()
-    }
-
-    fun fileName(): String? = mFileName
-
-    fun startRecordingNotification() {
-        // TODO("Not yet implemented")
-    }
-
     private fun setupButtons() {
         recordButton = legalConsentBinding.record
         playPauseButton = legalConsentBinding.playPause
@@ -64,9 +61,7 @@ class LegalConsentDialogFragment : DialogFragment() {
         stopButton.isEnabled = false
 
         startRecordingAndPlayingAudio()
-
         playPauseAudio()
-
         stopRecording()
     }
 
@@ -102,6 +97,6 @@ class LegalConsentDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val TAG: String = "legalConsent"
+        const val TAG: String = "legal_consent"
     }
 }
