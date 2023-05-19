@@ -1,28 +1,24 @@
 package edu.upc.openmrs.activities.addeditpatient
 
-import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
+import android.media.MediaPlayer.create
 import android.media.MediaRecorder
 import android.os.Build
-import android.widget.Button
-import edu.upc.R
-import edu.upc.openmrs.utilities.FileUtils
+import androidx.lifecycle.MutableLiveData
 
-class AudioRecorder (private val fileName: String?, context: Context, activity: Activity, stopButton: Button, playPauseButton: Button){
+class AudioRecorder(private val outputFilePath: String?, context: Context, inputFileId: Int) {
 
     private var mRecorder: MediaRecorder? = null
     private var isRecording: Boolean = false
     private var mPlayer: MediaPlayer? = null
     private var isPlaying: Boolean = false
+    private var hasFinishedPlaying: MutableLiveData<Boolean> = MutableLiveData(false)
 
     init {
         mRecorder = createMediaRecorder(context)
-        mPlayer = createMediaPlayer(context, activity, stopButton , playPauseButton)
+        mPlayer = createMediaPlayer(context, inputFileId)
     }
-
-    private fun createMediaRecorder(context: Context) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-        MediaRecorder(context) else MediaRecorder()
 
     fun startRecording() {
         if (isRecording) {
@@ -30,17 +26,12 @@ class AudioRecorder (private val fileName: String?, context: Context, activity: 
         } else {
             mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
             mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mRecorder?.setOutputFile(fileName)
+            mRecorder?.setOutputFile(outputFilePath)
             mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
             mRecorder?.prepare()
             mRecorder?.start()
-//            startRecordingNotification()
         }
         isRecording = !isRecording
-    }
-
-    private fun startRecordingNotification() {
-        // TODO("Not yet implemented")
     }
 
     fun stopRecording() {
@@ -58,21 +49,11 @@ class AudioRecorder (private val fileName: String?, context: Context, activity: 
         mRecorder = null
     }
 
-    private fun createMediaPlayer(context: Context, activity: Activity, stopButton: Button, playPauseButton: Button): MediaPlayer? {
-        val mediaPLayer = MediaPlayer.create(context, FileUtils.getLegalConsentByLanguage(activity))
-        mediaPLayer.setOnCompletionListener {
-            stopButton.isEnabled = true
-            playPauseButton.isEnabled = false
-        }
-        return mediaPLayer
-    }
-
-    fun startPlaying(playPauseButton: Button) {
+    fun startPlaying() {
         mPlayer!!.start()
-        playPauseButton.setBackgroundResource(R.mipmap.pause)
     }
 
-    fun playPauseAudio(playPauseButton: Button) {
+    fun playPauseAudio() {
         try {
             if (mPlayer?.isPlaying == true) {
                 mPlayer?.pause()
@@ -80,9 +61,23 @@ class AudioRecorder (private val fileName: String?, context: Context, activity: 
                 mPlayer?.start()
             }
             isPlaying = !isPlaying
-            playPauseButton.setBackgroundResource(if (isPlaying) R.mipmap.play_recording else R.mipmap.pause)
         } catch (exception: Exception) {
             exception.printStackTrace()
         }
     }
+
+    fun isPlaying(): Boolean = isPlaying
+    fun hasFinishedPlaying(): MutableLiveData<Boolean> = hasFinishedPlaying
+
+    private fun createMediaPlayer(context: Context, inputFileId: Int): MediaPlayer? {
+        val mediaPlayer = create(context, inputFileId)
+        mediaPlayer.setOnCompletionListener {
+            hasFinishedPlaying.value = true
+        }
+        return mediaPlayer
+    }
+
+    private fun createMediaRecorder(context: Context) =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            MediaRecorder(context) else MediaRecorder()
 }

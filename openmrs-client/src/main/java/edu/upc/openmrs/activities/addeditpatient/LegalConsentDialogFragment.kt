@@ -20,26 +20,39 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var recordButton: Button
     private lateinit var playPauseButton: Button
     private lateinit var stopButton: Button
-    var mFileName: String? = null
+    private var mFileName: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, ): View {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
+        mFileName = context?.let { FileUtils.getRecordingFilePath(it) }
+        audioRecorder = AudioRecorder(
+            mFileName,
+            requireContext(),
+            FileUtils.getLegalConsentByLanguage(requireActivity())
+        )
+        setupButtons()
+        listenForPlayCompletion()
         return legalConsentBinding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        setupButtons()
-
-        mFileName = context?.let { FileUtils.getRecordingFilePath(it) }
-
-        audioRecorder = AudioRecorder(mFileName, requireContext(), requireActivity(), stopButton, playPauseButton)
+    private fun listenForPlayCompletion() {
+        audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
+            if (it == true) {
+                stopButton.isEnabled = true
+                playPauseButton.isEnabled = false
+            }
+        }
     }
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         audioRecorder.stopRecording()
+    }
+
+    fun fileName(): String? = mFileName
+
+    fun startRecordingNotification() {
+        // TODO("Not yet implemented")
     }
 
     private fun setupButtons() {
@@ -52,13 +65,16 @@ class LegalConsentDialogFragment : DialogFragment() {
 
         recordButton.setOnClickListener {
             audioRecorder.startRecording()
-            audioRecorder.startPlaying(playPauseButton)
+            audioRecorder.startPlaying()
+            playPauseButton.setBackgroundResource(R.mipmap.pause)
 
             recordButton.isEnabled = false
             playPauseButton.isEnabled = true
         }
+
         playPauseButton.setOnClickListener {
-            audioRecorder.playPauseAudio(playPauseButton)
+            audioRecorder.playPauseAudio()
+            playPauseButton.setBackgroundResource(if (audioRecorder.isPlaying()) R.mipmap.play_recording else R.mipmap.pause)
         }
 
         stopButton.setOnClickListener {

@@ -24,11 +24,8 @@ import android.content.DialogInterface.*
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.media.MediaPlayer
-import android.media.MediaRecorder
 import android.media.ThumbnailUtils
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
@@ -443,7 +440,7 @@ class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInpu
         }
 
         //#region -- If Record Consent Is Missing --
-        if (!FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.mFileName)) {
+        if (!FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName())) {
             recordConsentError.makeVisible()
             scrollToTop()
         } else
