@@ -93,7 +93,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class AddEditPatientFragment: BaseFragment(), onInputSelected {
+class AddEditPatientFragment : BaseFragment(), onInputSelected {
     var alertDialog: AlertDialog? = null
     private var legalConsentDialog: LegalConsentDialogFragment? = null
     private var _binding: FragmentPatientInfoBinding? = null
@@ -205,11 +205,13 @@ class AddEditPatientFragment: BaseFragment(), onInputSelected {
 
     fun registerPatient() {
         validateFormInputsAndUpdateViewModel()
+        if (!validateRecordConsent()) return
         viewModel.confirmPatient()
     }
 
     private fun updatePatient() {
         validateFormInputsAndUpdateViewModel()
+        if (!validateRecordConsent()) return
         viewModel.patientUpdateLiveData.observeOnce(viewLifecycleOwner, Observer {
             val patientName = viewModel.patient.name.nameString
             when (it) {
@@ -238,6 +240,17 @@ class AddEditPatientFragment: BaseFragment(), onInputSelected {
             }
         })
         viewModel.confirmPatient()
+    }
+
+    private fun validateRecordConsent(): Boolean {
+        //#region -- If Record Consent Is Missing --
+        if (!FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName())) {
+            binding.recordConsentError.makeVisible()
+            return false
+        } else
+            binding.recordConsentError.makeGone()
+        //#endreigon
+        return true
     }
 
     private fun fillFormFields() {
@@ -439,13 +452,7 @@ class AddEditPatientFragment: BaseFragment(), onInputSelected {
             })
         }
 
-        //#region -- If Record Consent Is Missing --
-        if (!FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName())) {
-            recordConsentError.makeVisible()
-            scrollToTop()
-        } else
-            recordConsentError.makeGone()
-        //#endreigon
+
     }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {

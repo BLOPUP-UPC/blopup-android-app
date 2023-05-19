@@ -13,6 +13,7 @@ import edu.upc.R
 import edu.upc.databinding.LegalConsentBinding
 import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.NotificationUtil
+import edu.upc.openmrs.utilities.makeGone
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -26,10 +27,18 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var stopButton: Button
     private lateinit var mFileName: String
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, ): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
         mFileName = FileUtils.getRecordingFilePath(requireContext())
-        audioRecorder = AudioRecorder(mFileName, requireContext(), FileUtils.getFileByLanguage(requireActivity(), TAG))
+        audioRecorder = AudioRecorder(
+            mFileName,
+            requireContext(),
+            FileUtils.getFileByLanguage(requireActivity(), TAG)
+        )
         setupButtons()
         listenForPlayCompletion()
         return legalConsentBinding.root
@@ -74,6 +83,7 @@ class LegalConsentDialogFragment : DialogFragment() {
                 val parent = parentFragment as AddEditPatientFragment
                 parent.record_consent_imageButton.setImageResource(R.drawable.saved)
                 parent.record_consent_imageButton.isEnabled = false
+                //parent.record_consent_error.makeGone();
             }
         }
     }
@@ -93,7 +103,10 @@ class LegalConsentDialogFragment : DialogFragment() {
 
             recordButton.isEnabled = false
             playPauseButton.isEnabled = true
-            NotificationUtil.showRecordingNotification("Recording in progress",getString(R.string.recording_info))
+            NotificationUtil.showRecordingNotification(
+                "Recording in progress",
+                getString(R.string.recording_info)
+            )
         }
     }
 

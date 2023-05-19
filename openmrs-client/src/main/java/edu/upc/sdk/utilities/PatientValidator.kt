@@ -37,6 +37,9 @@ class PatientValidator(private val patient: Patient,
         //Validate Nationality
         if (attributes.isEmpty()) return false
 
+        //Legal Consent
+
+
         return true
     }
 }
