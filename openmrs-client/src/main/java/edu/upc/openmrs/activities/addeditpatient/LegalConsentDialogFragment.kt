@@ -63,20 +63,14 @@ class LegalConsentDialogFragment : DialogFragment() {
         playPauseButton.isEnabled = false
         stopButton.isEnabled = false
 
-        recordButton.setOnClickListener {
-            audioRecorder.startRecording()
-            audioRecorder.startPlaying()
-            playPauseButton.setBackgroundResource(R.mipmap.pause)
+        startRecordingAndPlayingAudio()
 
-            recordButton.isEnabled = false
-            playPauseButton.isEnabled = true
-        }
+        playPauseAudio()
 
-        playPauseButton.setOnClickListener {
-            audioRecorder.playPauseAudio()
-            playPauseButton.setBackgroundResource(if (audioRecorder.isPlaying()) R.mipmap.play_recording else R.mipmap.pause)
-        }
+        stopRecording()
+    }
 
+    private fun stopRecording() {
         stopButton.setOnClickListener {
             audioRecorder.releaseRecording()
             this.dismiss()
@@ -86,6 +80,24 @@ class LegalConsentDialogFragment : DialogFragment() {
                 parent.record_consent_imageButton.setImageResource(R.drawable.saved)
                 parent.record_consent_imageButton.isEnabled = false
             }
+        }
+    }
+
+    private fun playPauseAudio() {
+        playPauseButton.setOnClickListener {
+            audioRecorder.playPauseAudio()
+            playPauseButton.setBackgroundResource(if (audioRecorder.isPlaying()) R.mipmap.play_recording else R.mipmap.pause)
+        }
+    }
+
+    private fun startRecordingAndPlayingAudio() {
+        recordButton.setOnClickListener {
+            audioRecorder.startRecording()
+            audioRecorder.startPlaying()
+            playPauseButton.setBackgroundResource(R.mipmap.pause)
+
+            recordButton.isEnabled = false
+            playPauseButton.isEnabled = true
         }
     }
 
