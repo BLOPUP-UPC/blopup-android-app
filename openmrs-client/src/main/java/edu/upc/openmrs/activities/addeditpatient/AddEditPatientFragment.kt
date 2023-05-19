@@ -30,7 +30,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
@@ -55,6 +54,7 @@ import edu.upc.R
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.databinding.FragmentPatientInfoBinding
+import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
@@ -93,7 +93,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class AddEditPatientFragment : edu.upc.openmrs.activities.BaseFragment(), onInputSelected {
+class AddEditPatientFragment: BaseFragment(), onInputSelected {
     var alertDialog: AlertDialog? = null
     private var legalConsentDialog: LegalConsentDialogFragment? = null
     private var _binding: FragmentPatientInfoBinding? = null

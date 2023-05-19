@@ -1,17 +1,21 @@
 package edu.upc.openmrs.activities.addeditpatient
 
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
 import edu.upc.databinding.LegalConsentBinding
 import edu.upc.openmrs.utilities.FileUtils
+import edu.upc.openmrs.utilities.NotificationUtil
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 
+@RequiresApi(Build.VERSION_CODES.O)
 class LegalConsentDialogFragment : DialogFragment() {
 
     private lateinit var legalConsentBinding: LegalConsentBinding
@@ -38,10 +42,6 @@ class LegalConsentDialogFragment : DialogFragment() {
     }
 
     fun fileName(): String = mFileName
-
-    fun startRecordingNotification() {
-        // TODO("Not yet implemented")
-    }
 
     private fun listenForPlayCompletion() {
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
@@ -93,6 +93,7 @@ class LegalConsentDialogFragment : DialogFragment() {
 
             recordButton.isEnabled = false
             playPauseButton.isEnabled = true
+            NotificationUtil.showRecordingNotification("Recording in progress",getString(R.string.recording_info))
         }
     }
 

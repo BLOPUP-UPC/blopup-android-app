@@ -13,6 +13,7 @@
  */
 package edu.upc.openmrs.utilities
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -31,36 +32,6 @@ import edu.upc.sdk.utilities.ApplicationConstants
 
 
 object NotificationUtil {
-    fun notify(title: String?, message: String?) {
-        val flag =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
-
-        val bitmap = BitmapFactory.decodeResource(
-            OpenMRS.getInstance().resources,
-            R.drawable.ic_openmrs
-        )
-        val mBuilder = NotificationCompat.Builder(OpenMRS.getInstance())
-            .setSmallIcon(R.drawable.ic_stat_notify_openmrs)
-            .setLargeIcon(bitmap)
-            .setContentTitle(title)
-            .setContentText(message)
-
-        val resultIntent = Intent(OpenMRS.getInstance(), DashboardActivity::class.java)
-        val stackBuilder = TaskStackBuilder.create(OpenMRS.getInstance())
-        stackBuilder.addParentStack(DashboardActivity::class.java)
-        stackBuilder.addNextIntent(resultIntent)
-        val resultPendingIntent = stackBuilder.getPendingIntent(
-            0,
-            flag
-        )
-        mBuilder.setContentIntent(resultPendingIntent)
-        mBuilder.setAutoCancel(false)
-
-        val mNotificationManager = OpenMRS.getInstance()
-            .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        mNotificationManager.notify(0, mBuilder.build())
-    }
-
 
     @JvmStatic
     fun showRecordingNotification(title: String, message: String) {
