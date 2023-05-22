@@ -10,9 +10,9 @@ import androidx.lifecycle.MutableLiveData
 class AudioRecorder(private val outputFilePath: String?, context: Context, inputFileId: Int) {
 
     private var mRecorder: MediaRecorder? = null
-    private var isRecording: Boolean = false
     private var mPlayer: MediaPlayer? = null
     private var isPlaying: Boolean = false
+    private var isRecording: MutableLiveData<Boolean> = MutableLiveData(false)
     private var hasFinishedPlaying: MutableLiveData<Boolean> = MutableLiveData(false)
 
     init {
@@ -21,7 +21,7 @@ class AudioRecorder(private val outputFilePath: String?, context: Context, input
     }
 
     fun startRecording() {
-        if (isRecording) {
+        if (isRecording.value!!) {
             mRecorder?.stop()
         } else {
             mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -31,7 +31,7 @@ class AudioRecorder(private val outputFilePath: String?, context: Context, input
             mRecorder?.prepare()
             mRecorder?.start()
         }
-        isRecording = !isRecording
+        isRecording.value = !isRecording.value!!
     }
 
     fun stopRecording() {
@@ -67,6 +67,7 @@ class AudioRecorder(private val outputFilePath: String?, context: Context, input
     }
 
     fun isPlaying(): Boolean = isPlaying
+    fun isRecording(): MutableLiveData<Boolean> = isRecording
     fun hasFinishedPlaying(): MutableLiveData<Boolean> = hasFinishedPlaying
 
     private fun createMediaPlayer(context: Context, inputFileId: Int): MediaPlayer? {

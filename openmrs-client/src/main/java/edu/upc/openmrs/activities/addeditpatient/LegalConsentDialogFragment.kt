@@ -19,7 +19,6 @@ class LegalConsentDialogFragment : DialogFragment() {
 
     private lateinit var legalConsentBinding: LegalConsentBinding
     private lateinit var audioRecorder: AudioRecorder
-
     private lateinit var recordButton: Button
     private lateinit var playPauseButton: Button
     private lateinit var stopButton: Button
@@ -35,6 +34,7 @@ class LegalConsentDialogFragment : DialogFragment() {
         audioRecorder = AudioRecorder(mFileName, requireContext(), getFileByLanguage(requireActivity(), TAG))
         setupButtons()
         listenForPlayCompletion()
+        isCancelableWhenNotRecording()
         return legalConsentBinding.root
     }
 
@@ -56,9 +56,17 @@ class LegalConsentDialogFragment : DialogFragment() {
         dialog?.window?.setLayout(width, height)
     }
 
+    private fun isCancelableWhenNotRecording() {
+        audioRecorder.isRecording().observe(requireActivity()) {
+            if (it) {
+                isCancelable = false
+            }
+        }
+    }
+
     private fun listenForPlayCompletion() {
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
-            if (it == true) {
+            if (it) {
                 stopButton.isEnabled = true
                 playPauseButton.isEnabled = false
             }
