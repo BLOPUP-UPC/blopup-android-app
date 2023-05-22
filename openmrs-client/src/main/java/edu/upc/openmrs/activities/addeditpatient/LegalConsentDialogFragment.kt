@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
+import edu.upc.blopup.AudioRecorder
 import edu.upc.databinding.LegalConsentBinding
 import edu.upc.openmrs.utilities.FileUtils.fileIsCreatedSuccessfully
 import edu.upc.openmrs.utilities.FileUtils.getFileByLanguage

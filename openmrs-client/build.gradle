@@ -148,7 +148,6 @@ repositories {
 
 dependencies {
 
-
     implementation "androidx.appcompat:appcompat:${versions.material}"
     implementation "com.google.android.material:material:${versions.material}"
     implementation "androidx.legacy:legacy-support-v13:${versions.supportVersion}"

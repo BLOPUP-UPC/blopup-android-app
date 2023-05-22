@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.addeditpatient
+package edu.upc.blopup
 
 import android.content.Context
 import android.media.MediaPlayer
