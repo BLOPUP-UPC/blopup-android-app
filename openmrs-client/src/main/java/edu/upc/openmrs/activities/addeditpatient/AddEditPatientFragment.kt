@@ -453,11 +453,10 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         /* Legal Consent */
         val validateLegalConsent = validateRecordConsent()
         if (validateLegalConsent) {
-//var listPersons += Person()
             if (viewModel.patient.attributes.any()) {
                 viewModel.patient.attributes =
                     viewModel.patient.attributes.plus(PersonAttribute().apply {
-                        PersonAttributeType().apply {
+                        attributeType = PersonAttributeType().apply {
                             uuid = BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID
                             value = legalConsentDialog?.fileName()
                         }
