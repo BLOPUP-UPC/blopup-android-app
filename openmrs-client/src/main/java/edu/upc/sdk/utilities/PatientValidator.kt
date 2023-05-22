@@ -1,5 +1,6 @@
 package edu.upc.sdk.utilities
 
+import edu.upc.BuildConfig
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.StringUtils.ILLEGAL_CHARACTERS
 import edu.upc.sdk.utilities.StringUtils.validateText
@@ -34,11 +35,11 @@ class PatientValidator(private val patient: Patient,
             if (familyName.isNullOrBlank() || !validateText(familyName, ILLEGAL_CHARACTERS)) return false
         }
 
+        //Legal Consent
+        if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) }) return false
+
         //Validate Nationality
         if (attributes.isEmpty()) return false
-
-        //Legal Consent
-
 
         return true
     }

@@ -205,13 +205,11 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     fun registerPatient() {
         validateFormInputsAndUpdateViewModel()
-        if (!validateRecordConsent()) return
         viewModel.confirmPatient()
     }
 
     private fun updatePatient() {
         validateFormInputsAndUpdateViewModel()
-        if (!validateRecordConsent()) return
         viewModel.patientUpdateLiveData.observeOnce(viewLifecycleOwner, Observer {
             val patientName = viewModel.patient.name.nameString
             when (it) {
@@ -452,8 +450,27 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             })
         }
 
-
-    }
+        /* Legal Consent */
+        val validateLegalConsent = validateRecordConsent()
+        if (validateLegalConsent) {
+            val legalConsentAttribute = PersonAttribute().apply {
+                PersonAttributeType().apply {
+                    uuid = BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID
+                    value = legalConsentDialog?.fileName()
+                }
+            }
+                if (viewModel.patient.attributes.any()) {
+                    viewModel.patient.attributes.add(legalConsentAttribute)
+                } else {
+                    viewModel.patient.attributes = listOf(PersonAttribute().apply {
+                        attributeType = PersonAttributeType().apply {
+                            uuid = BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID
+                            value = legalConsentDialog?.fileName()
+                        }
+                    })
+                }
+            }
+        }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
         edu.upc.openmrs.bundle.CustomDialogBundle().apply {
@@ -714,7 +731,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     private fun showLegalConsent() {
         if (isMicrophonePresent()) {
-            LegalConsentDialogFragment().show(childFragmentManager, LegalConsentDialogFragment.TAG)
+            legalConsentDialog =  LegalConsentDialogFragment()
+            legalConsentDialog?.show(childFragmentManager, LegalConsentDialogFragment.TAG)
             childFragmentManager.findFragmentById(R.id.legal_consent)?.onStart()
         } else {
             Toast.makeText(

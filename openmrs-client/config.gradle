@@ -2,6 +2,7 @@ android{
     buildTypes {
         release {
             buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"8ab9b8af-7c6c-40fb-96cf-c638f5c920b9\""
+            buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"89383989-15d6-4afc-8edd-778b20e6e24f\""
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup.upc.edu/openmrs\""
 
             // Release toggles
@@ -11,6 +12,7 @@ android{
         }
         staging {
             buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"ded1bbd8-8e43-4f76-a107-67b7eb170823\""
+            buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"7f3ff161-276f-4de4-b146-ceea7a6b093d\""
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-staging.upc.edu/openmrs\""
 
             // Release toggles
@@ -20,6 +22,7 @@ android{
         }
         debug {
             buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"0be398ea-52d4-4d41-83b1-0041a0d427df\""
+            buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"c28a11a7-1f89-4183-8a25-c2d0cc5f1b52\""
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-dev.upc.edu/openmrs\""
 
             // Release toggles
