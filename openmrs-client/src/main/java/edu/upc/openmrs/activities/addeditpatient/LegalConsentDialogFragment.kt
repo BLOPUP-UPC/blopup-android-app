@@ -1,6 +1,5 @@
 package edu.upc.openmrs.activities.addeditpatient
 
-import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +9,9 @@ import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
 import edu.upc.databinding.LegalConsentBinding
-import edu.upc.openmrs.utilities.FileUtils
+import edu.upc.openmrs.utilities.FileUtils.fileIsCreatedSuccessfully
+import edu.upc.openmrs.utilities.FileUtils.getFileByLanguage
+import edu.upc.openmrs.utilities.FileUtils.getRecordingFilePath
 import edu.upc.openmrs.utilities.makeVisible
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 
@@ -30,32 +31,29 @@ class LegalConsentDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
-        mFileName = FileUtils.getRecordingFilePath(requireContext())
-        audioRecorder = AudioRecorder(mFileName, requireContext(), FileUtils.getFileByLanguage(requireActivity(), TAG))
+        getRecordingFilePath(requireContext()).also { mFileName = it }
+        audioRecorder = AudioRecorder(mFileName, requireContext(), getFileByLanguage(requireActivity(), TAG))
         setupButtons()
         listenForPlayCompletion()
         return legalConsentBinding.root
     }
+
     override fun onStart() {
         super.onStart()
-        val dialog: Dialog? = dialog
-        if (dialog != null) {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val height = ViewGroup.LayoutParams.MATCH_PARENT
-            dialog.window?.setLayout(width, height)
-        }
+        setDialogWidthAndHeight()
     }
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-
         audioRecorder.stopRecording()
     }
 
     fun fileName(): String = mFileName
 
-    fun startRecordingNotification() {
-        // TODO("Not yet implemented")
+    private fun setDialogWidthAndHeight() {
+        val width = ViewGroup.LayoutParams.MATCH_PARENT
+        val height = ViewGroup.LayoutParams.MATCH_PARENT
+        dialog?.window?.setLayout(width, height)
     }
 
     private fun listenForPlayCompletion() {
@@ -85,7 +83,7 @@ class LegalConsentDialogFragment : DialogFragment() {
             audioRecorder.releaseRecording()
             this.dismiss()
 
-            if (FileUtils.fileIsCreatedSuccessfully(mFileName)) {
+            if (fileIsCreatedSuccessfully(mFileName)) {
                 val parent = parentFragment as AddEditPatientFragment
                 parent.record_consent_imageButton.setImageResource(R.drawable.saved)
                 parent.record_consent_imageButton.isEnabled = false
