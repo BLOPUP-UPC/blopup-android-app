@@ -336,7 +336,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                 viewModel.patient.gender = genderChoices[index]
             }
             Log.i("payload", viewModel.patient.toString())
-            return
 
         }
 
@@ -450,7 +449,13 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             })
         }
 
-        /* Legal Consent */
+        showPatientConsentToggle.check(onToggleEnabled = {
+            /* Legal Consent */
+            checkLegalConsent()
+        })
+    }
+
+    private fun checkLegalConsent() {
         val validateLegalConsent = validateRecordConsent()
         if (validateLegalConsent) {
             if (viewModel.patient.attributes.any()) {

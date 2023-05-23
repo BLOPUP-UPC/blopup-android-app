@@ -1,6 +1,8 @@
 package edu.upc.sdk.utilities
 
 import edu.upc.BuildConfig
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.StringUtils.ILLEGAL_CHARACTERS
 import edu.upc.sdk.utilities.StringUtils.validateText
@@ -34,9 +36,10 @@ class PatientValidator(private val patient: Patient,
             if (middleName != null && !validateText(middleName, ILLEGAL_CHARACTERS)) return false
             if (familyName.isNullOrBlank() || !validateText(familyName, ILLEGAL_CHARACTERS)) return false
         }
-
-        //Legal Consent
-        if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) }) return false
+        showPatientConsentToggle.check(onToggleEnabled = {
+            /* Legal Consent */
+            if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) }) return@check
+        })
 
         //Validate Nationality
         if (attributes.isEmpty()) return false
