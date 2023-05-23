@@ -51,6 +51,7 @@ class AudioRecorder(private val outputFilePath: String?, context: Context, input
 
     fun startPlaying() {
         mPlayer!!.start()
+        isPlaying = true
     }
 
     fun playPauseAudio() {
