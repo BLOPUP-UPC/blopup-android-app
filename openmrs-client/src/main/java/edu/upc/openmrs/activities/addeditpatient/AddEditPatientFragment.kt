@@ -458,19 +458,20 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     private fun checkLegalConsent() {
         val validateLegalConsent = validateRecordConsent()
         if (validateLegalConsent) {
+            val fileNameValue = legalConsentDialog?.fileName()?.substringAfterLast("/")
             if (viewModel.patient.attributes.any()) {
                 viewModel.patient.attributes =
                     viewModel.patient.attributes.plus(PersonAttribute().apply {
                         attributeType = PersonAttributeType().apply {
                             uuid = BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID
-                            value = legalConsentDialog?.fileName()
+                            value = fileNameValue
                         }
                     })
             } else {
                 viewModel.patient.attributes = listOf(PersonAttribute().apply {
                     attributeType = PersonAttributeType().apply {
                         uuid = BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID
-                        value = legalConsentDialog?.fileName()
+                        value = fileNameValue
                     }
                 })
             }

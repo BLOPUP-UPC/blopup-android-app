@@ -51,7 +51,6 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
         this.patientList = patientList;
         this.mContext = mContext;
     }
-
     @NonNull
     @Override
     public PatientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -170,6 +169,7 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
     }
 
     private void setPatientAddress(PatientViewHolder holder, Patient patient) {
+        if(newPatient.getAddress() == null) return;
         if (null != patient.getAddress().getAddress1()) {
             holder.mAddres.setText(patient.getAddress().getAddress1());
             if (Objects.equal(patient.getAddress().getAddress1(), newPatient.getAddress().getAddress1())) {
