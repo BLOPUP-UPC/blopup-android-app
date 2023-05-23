@@ -1,20 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/recordingInProgress"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:padding="18dp"
         android:background="@drawable/border"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="invisible"
+        android:layout_weight="0.15">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/recording" />
@@ -30,40 +32,27 @@
 
     <ScrollView
         android:id="@+id/scrollablContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/footerView"
-        android:padding="@dimen/text_size_large">
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/text_padding"
+        android:layout_weight="1">
 
-        <LinearLayout
-            android:id="@+id/content"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:justificationMode="inter_word"
-                android:text="@string/legal_consent"
-                android:textSize="@dimen/dashboard_text_size" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/translucent_50_percent"
-                android:visibility="gone" />
-        </LinearLayout>
+            android:gravity="center"
+            android:justificationMode="inter_word"
+            android:text="@string/legal_consent"
+            android:textSize="@dimen/dashboard_text_size" />
     </ScrollView>
 
     <LinearLayout
         android:id="@+id/footerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="0dp"
         android:background="@color/white"
         android:gravity="center"
+        android:layout_weight="0.18"
         android:orientation="horizontal">
 
         <Button
@@ -87,4 +76,5 @@
             android:layout_margin="@dimen/fab_bottom_margin_4"
             android:background="@mipmap/stop" />
     </LinearLayout>
-</RelativeLayout>
+
+</LinearLayout>
