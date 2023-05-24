@@ -28,7 +28,7 @@ android{
             // Release toggles
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "true"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
-            buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "false"
+            buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "true"
         }
     }
 }
