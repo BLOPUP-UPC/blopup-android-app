@@ -42,7 +42,7 @@ class PatientValidator(private val patient: Patient,
         })
 
         //Validate Nationality
-        if (attributes.isEmpty()) return false
+        if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID) }) return false
 
         return true
     }
