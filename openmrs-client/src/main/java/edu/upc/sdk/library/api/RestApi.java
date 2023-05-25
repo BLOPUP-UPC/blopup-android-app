@@ -75,12 +75,15 @@ import edu.upc.sdk.library.models.SystemSetting;
 import edu.upc.sdk.library.models.User;
 import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.library.models.VisitType;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -214,6 +217,10 @@ public interface RestApi {
     @POST("personimage/{uuid}")
     Call<PatientPhoto> uploadPatientPhoto(@Path("uuid") String uuid,
                                           @Body PatientPhoto patientPhoto);
+
+    @Multipart
+    @POST("/api/v1/upload/consent")
+    Call<String> uploadConsent(@Part MultipartBody.Part file);
 
     /**
      * Download patient photo call.

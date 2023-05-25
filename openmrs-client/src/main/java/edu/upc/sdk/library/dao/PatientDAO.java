@@ -70,6 +70,17 @@ public class PatientDAO {
         entity.setId(patientID);
         return patientRoomDAO.updatePatient(entity) > 0;
     }
+    /**
+     * Update patient boolean.
+     *
+     * @param patient   the patient
+     * @return the boolean
+     */
+    public boolean updatePatient(Patient patient) {
+        PatientEntity entity = AppDatabaseHelper.convert(patient);
+        entity.setId(patient.getId());
+        return patientRoomDAO.updatePatient(entity) > 0;
+    }
 
     /**
      * Delete patient.

@@ -55,6 +55,7 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.BaseFragment
+import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
@@ -207,21 +208,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     fun registerPatient() {
         validateFormInputsAndUpdateViewModel()
-        viewModel.saveLegalConsent(recording).observeOnce(this, Observer {result ->
-            when (result) {
-                ResultType.RecordingSuccess -> {
-                    viewModel.patient.isLegalConsent = true
-                    viewModel.savePatient()
-                    removeLocalRecordingFile()
-                }
-                ResultType.RecordingError -> {
-                    Log.e("Recording", "Recording was not saved, will try when resync patient")
-                }
-                else -> {
-                    Log.e("Recording", "Error while recording")
-                }
-            }
-        })
+
         viewModel.confirmPatient()
     }
 
@@ -516,7 +503,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             titleViewMessage = getString(R.string.similar_patients_dialog_title)
             rightButtonText = getString(R.string.dialog_button_register_new)
             rightButtonAction =
-                edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.REGISTER_PATIENT
+                CustomFragmentDialog.OnClickAction.REGISTER_PATIENT
             leftButtonText = getString(R.string.dialog_button_cancel)
             leftButtonAction =
                 edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.DISMISS

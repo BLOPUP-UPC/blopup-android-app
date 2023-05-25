@@ -1,26 +1,31 @@
 package edu.upc.openmrs.activities.addeditpatient
 
-import android.os.Environment
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.google.android.libraries.places.api.net.PlacesClient
+import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.BuildConfig
+import edu.upc.openmrs.activities.BaseViewModel
+import edu.upc.openmrs.application.OpenMRS
+import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.ConceptAnswers
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.RecordingRequest
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
-import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.openmrs.activities.BaseViewModel
-import edu.upc.sdk.library.api.repository.RecordingRepository
-import edu.upc.sdk.library.models.*
 import org.joda.time.DateTime
 import rx.android.schedulers.AndroidSchedulers
 import java.io.File
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 @HiltViewModel
 class AddEditPatientViewModel @Inject constructor(
@@ -85,18 +90,35 @@ class AddEditPatientViewModel @Inject constructor(
         else {
             registerPatient()
         }
+
     }
 
-    fun saveLegalConsent(recordingRequest: RecordingRequest) : LiveData<ResultType> {
+    fun saveLegalConsent(): LiveData<ResultType> {
         val result = MutableLiveData<ResultType>()
 
-        addSubscription(recordingRepository.saveRecording(recordingRequest)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {result.value = ResultType.RecordingSuccess},
-                {result.value = ResultType.RecordingError}
-            )
-        )
+        patient.attributes?.forEach { attribute ->
+            if (attribute.attributeType?.uuid == BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) {
+
+                val file =
+                    File(FileUtils.getRootDirectory() + "/" + attribute.value)
+
+                val recordingRequest =
+                    RecordingRequest(attribute.value.toString(), file.readBytes())
+
+                addSubscription(recordingRepository.saveRecording(recordingRequest)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        {
+                            result.value = ResultType.RecordingSuccess
+                            patient.isLegalConsent = true
+                            patientDAO.updatePatient(patient)
+                        },
+                        { result.value = ResultType.RecordingError }
+                    )
+                )
+            }
+        }
+
         return result
     }
 
@@ -108,20 +130,20 @@ class AddEditPatientViewModel @Inject constructor(
         }
         setLoading()
         addSubscription(patientRepository.fetchSimilarPatients(patient)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { _similarPatientsLiveData.value = it }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { _similarPatientsLiveData.value = it }
         )
     }
 
     fun fetchCausesOfDeath(): LiveData<ConceptAnswers> {
         val liveData = MutableLiveData<ConceptAnswers>()
         addSubscription(patientRepository.causeOfDeathGlobalConceptID
-                .flatMap { conceptRepository.getConceptByUuid(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { causesOfDeath: ConceptAnswers -> liveData.value = causesOfDeath },
-                        { throwable -> liveData.value = ConceptAnswers() }
-                )
+            .flatMap { conceptRepository.getConceptByUuid(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { causesOfDeath: ConceptAnswers -> liveData.value = causesOfDeath },
+                { throwable -> liveData.value = ConceptAnswers() }
+            )
         )
         return liveData
     }
@@ -129,27 +151,28 @@ class AddEditPatientViewModel @Inject constructor(
     private fun registerPatient() {
         setLoading()
         addSubscription(patientRepository.registerPatient(patient)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { setContent(it, PatientRegistering) },
-                        { setError(it, PatientRegistering) }
-                )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    setContent(it, PatientRegistering)
+                    saveLegalConsent()
+                },
+                { setError(it, PatientRegistering) }
+            )
         )
     }
 
     private fun updatePatient() {
         setLoading()
         addSubscription(patientRepository.updatePatient(patient)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { resultType -> _patientUpdateLiveData.value = resultType },
-                        { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
-                )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { resultType ->
+                    _patientUpdateLiveData.value = resultType
+                    saveLegalConsent()
+                },
+                { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
+            )
         )
     }
-
-    fun savePatient() {
-        patientDAO.savePatient(patient)
-    }
-
 }

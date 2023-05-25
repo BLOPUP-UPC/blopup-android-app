@@ -31,7 +31,7 @@ class LegalConsentDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
-        getRecordingFilePath(requireContext()).also { mFileName = it }
+        getRecordingFilePath().also { mFileName = it }
         audioRecorder = AudioRecorder(mFileName, requireContext(), getFileByLanguage(requireActivity(), TAG))
         setupButtons()
         listenForPlayCompletion()

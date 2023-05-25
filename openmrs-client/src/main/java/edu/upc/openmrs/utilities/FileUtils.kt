@@ -18,14 +18,19 @@ import android.content.Context
 import android.os.Environment
 import android.text.TextUtils
 import edu.upc.R
+import edu.upc.openmrs.application.OpenMRS
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 object FileUtils {
 
-    fun getRecordingFilePath(context: Context): String {
-        return context.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.path + "/" + createUniqueAudioFileName();
+    fun getRecordingFilePath(): String {
+        return getRootDirectory() + "/" + createUniqueAudioFileName();
+    }
+
+    fun getRootDirectory(): String {
+        return OpenMRS.getInstance().applicationContext.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.path.toString()
     }
 
     private fun createUniqueAudioFileName(): String {
