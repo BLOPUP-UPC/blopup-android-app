@@ -16,6 +16,7 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.api.repository.RecordingRepository
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -48,6 +49,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     lateinit var conceptRepository: ConceptRepository
 
     @Mock
+    lateinit var recordingRepository: RecordingRepository
+
+    @Mock
     lateinit var savedStateHandle: SavedStateHandle
 
     lateinit var viewModel: AddEditPatientViewModel
@@ -63,7 +67,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `resetPatient should clear all states and patient related data`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingRepository, savedStateHandle)
         updatePatientData(0L, viewModel.patient)
 
         viewModel.resetPatient()
@@ -89,7 +93,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `confirmPatient should create new patient when no patient id passed`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingRepository, savedStateHandle)
         `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(
             Patient()
         ))
@@ -106,7 +110,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun `confirmPatient should update existing patient when its id is passed`() {
         savedStateHandle.apply { set(PATIENT_ID_BUNDLE, "1L") }
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingRepository, savedStateHandle)
         `when`(patientRepository.updatePatient(any<Patient>())).thenReturn(Observable.just(PatientUpdateSuccess))
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
@@ -120,7 +124,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `confirmPatient should do nothing when patient data is invalid`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingRepository, savedStateHandle)
         `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(
             Patient()
         ))
@@ -136,7 +140,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchSimilarPatients() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingRepository, savedStateHandle)
         with(viewModel) {
             val similarPatients = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
             patientValidator = mock(PatientValidator::class.java)
@@ -151,7 +155,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchCausesOfDeath() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingRepository, savedStateHandle)
         `when`(patientRepository.getCauseOfDeathGlobalConceptID()).thenReturn(Observable.just(String()))
         `when`(conceptRepository.getConceptByUuid(anyString())).thenReturn(Observable.just(ConceptAnswers()))
 

@@ -76,9 +76,10 @@ public class PatientEntity extends Resource {
     @ColumnInfo(name = "contactPhoneNumber")
     private String contactPhoneNumber;
     //#endregion -- Contact Details --
-
     @ColumnInfo(name = "documentId")
     private String documentId;
+    @ColumnInfo(name = "legalConsent")
+    private boolean legalConsent;
 
     /**
      * Instantiates a new Patient entity.
@@ -474,5 +475,13 @@ public class PatientEntity extends Resource {
 
     public void setAttributes(List<PersonAttribute> attributes) {
         this.attributes = attributes;
+    }
+
+    public boolean isLegalConsent() {
+        return legalConsent;
+    }
+
+    public void setLegalConsent(boolean legalConsent) {
+        this.legalConsent = legalConsent;
     }
 }

@@ -38,4 +38,6 @@ enum class ResultType {
     EncounterSubmissionError,
     EmailSentSuccess,
     EmailSentError,
+    RecordingSuccess,
+    RecordingError
 }

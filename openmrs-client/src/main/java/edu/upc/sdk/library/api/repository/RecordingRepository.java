@@ -14,34 +14,33 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import static edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO;
-
 import android.util.Log;
-
-import edu.upc.sdk.library.models.EmailRequest;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
+import edu.upc.sdk.library.databases.entities.PatientEntity;
+import edu.upc.sdk.library.models.EmailRequest;
+import edu.upc.sdk.library.models.RecordingRequest;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
 
 @Singleton
-public class EmailRepository extends BaseRepository {
+public class RecordingRepository extends BaseRepository {
 
     @Inject
-    public  EmailRepository(){}
+    public RecordingRepository(){}
 
-    public Observable<String> sendEmail(EmailRequest emailRequest) {
+    public Observable<String> saveRecording(RecordingRequest recordingRequest) {
         return AppDatabaseHelper.createObservableIO(() -> {
             try{
-                Response<ResponseBody> response = restApi.sendEmail(emailRequest).execute();
-                if (response.isSuccessful()){
-                    return response.body().string();
+                if (Math.random() < 0.9){
+                    return "OK";
+                } else {
+                    throw new Exception("Error saving recording:");
                 }
-                throw new Exception("Error sending email:" + response.errorBody());
             } catch (Exception exception){
                 Log.e(getClass().getName(), exception.getMessage(), exception);
                 throw exception;

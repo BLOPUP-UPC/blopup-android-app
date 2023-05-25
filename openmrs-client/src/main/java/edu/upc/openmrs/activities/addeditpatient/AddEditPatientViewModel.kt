@@ -1,5 +1,7 @@
 package edu.upc.openmrs.activities.addeditpatient
 
+import android.os.Environment
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -7,14 +9,14 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.ConceptAnswers
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.openmrs.activities.BaseViewModel
+import edu.upc.sdk.library.api.repository.RecordingRepository
+import edu.upc.sdk.library.models.*
 import org.joda.time.DateTime
 import rx.android.schedulers.AndroidSchedulers
 import java.io.File
@@ -25,8 +27,9 @@ class AddEditPatientViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val patientRepository: PatientRepository,
     private val conceptRepository: ConceptRepository,
+    private val recordingRepository: RecordingRepository,
     private val savedStateHandle: SavedStateHandle
-) : edu.upc.openmrs.activities.BaseViewModel<Patient>() {
+) : BaseViewModel<Patient>() {
 
     private val _similarPatientsLiveData = MutableLiveData<List<Patient>>()
     val similarPatientsLiveData: LiveData<List<Patient>> get() = _similarPatientsLiveData
@@ -38,16 +41,16 @@ class AddEditPatientViewModel @Inject constructor(
 
     var isUpdatePatient = false
         private set
-
     lateinit var patient: Patient
         private set
+
     var isPatientUnidentified = false
         set(value) {
             field = value
             patientValidator.isPatientUnidentified = value
         }
-
     var placesClient: PlacesClient? = null
+
     var dateHolder: DateTime? = null
     var capturedPhotoFile: File? = null
 
@@ -79,7 +82,22 @@ class AddEditPatientViewModel @Inject constructor(
     fun confirmPatient() {
         if (!patientValidator.validate()) return
         if (isUpdatePatient) updatePatient()
-        else registerPatient()
+        else {
+            registerPatient()
+        }
+    }
+
+    fun saveLegalConsent(recordingRequest: RecordingRequest) : LiveData<ResultType> {
+        val result = MutableLiveData<ResultType>()
+
+        addSubscription(recordingRepository.saveRecording(recordingRequest)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {result.value = ResultType.RecordingSuccess},
+                {result.value = ResultType.RecordingError}
+            )
+        )
+        return result
     }
 
     fun fetchSimilarPatients() {
@@ -129,4 +147,9 @@ class AddEditPatientViewModel @Inject constructor(
                 )
         )
     }
+
+    fun savePatient() {
+        patientDAO.savePatient(patient)
+    }
+
 }
