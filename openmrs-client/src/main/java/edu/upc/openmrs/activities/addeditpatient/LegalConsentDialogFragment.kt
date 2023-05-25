@@ -103,7 +103,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private fun playPauseAudio() {
         playPauseButton.setOnClickListener {
             audioRecorder.playPauseAudio()
-            playPauseButton.setBackgroundResource(if (audioRecorder.isPlaying()) R.mipmap.play_recording else R.mipmap.pause)
+            playPauseButton.setBackgroundResource(if (!audioRecorder.isPlaying()) R.mipmap.play_recording else R.mipmap.pause)
         }
     }
 

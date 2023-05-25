@@ -53,6 +53,9 @@ android {
         manifestPlaceholders = [
                 GOOGLE_PLACE_API_KEY: GOOGLE_PLACE_API_KEY
         ]
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     configurations.all {
@@ -178,6 +181,7 @@ dependencies {
     implementation "androidx.room:room-runtime:${versions.roomRuntime}"
     implementation "android.arch.persistence.room:rxjava2:${versions.roomPersistence}"
     implementation "androidx.room:room-rxjava2:${versions.roomRuntime}"
+    testImplementation 'junit:junit:4.12'
 
 
     //no inspection
@@ -242,15 +246,13 @@ dependencies {
 
     // Test Implementations
     androidTestImplementation(
-            'androidx.test.ext:junit:1.1.5',
+            'androidx.test.ext:junit-ktx:1.1.5',
             'androidx.test.espresso:espresso-core:3.3.0',
             'androidx.test:runner:1.5.2',
             'org.mockito:mockito-core:2.8.9',
             'com.google.dexmaker:dexmaker-mockito:1.2',
             'com.google.dexmaker:dexmaker:1.2',
-            'com.jayway.android.robotium:robotium-solo:4.2',
-            'androidx.arch.core:core-testing:2.0.0'
-    )
+            'com.jayway.android.robotium:robotium-solo:4.2')
     testImplementation(
             'org.mockito:mockito-core:2.8.9',
             'org.mockito:mockito-inline:2.13.0',
@@ -263,7 +265,8 @@ dependencies {
             "androidx.arch.core:core-testing:${versions.arch_version}",
             'io.mockk:mockk:1.10.2',
             'org.robolectric:robolectric:4.9',
-            "androidx.work:work-testing:${versions.workManager}"
+            "androidx.work:work-testing:${versions.workManager}",
+            'androidx.test.ext:junit-ktx:1.1.5'
     )
     testImplementation "android.arch.core:core-testing:${versions.coreTesting}"
     kaptTest "com.google.dagger:hilt-compiler:${versions.hilt}"
@@ -272,6 +275,7 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}"
     // Debug database
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    debugImplementation 'androidx.fragment:fragment-testing:1.5.7'
 }
 
 kapt {

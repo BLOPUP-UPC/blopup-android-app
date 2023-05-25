@@ -44,6 +44,7 @@ object FileUtils {
         return if (resourceByLocal == 0) R.raw.legal_consent_es else resourceByLocal!!
     }
 
+    @JvmStatic
     fun fileIsCreatedSuccessfully(path: String?): Boolean {
         if (TextUtils.isEmpty(path)) return false
         //check file is larger than 85KB

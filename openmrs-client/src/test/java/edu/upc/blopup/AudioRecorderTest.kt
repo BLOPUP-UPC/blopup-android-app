@@ -4,16 +4,16 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.mockk.*
 import junit.framework.TestCase.assertFalse
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
 private const val TEST_FILE_PATH = "../testResources/recording.mp3"
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class AudioRecorderTest {
 
     private lateinit var mediaRecorder: MediaRecorder
