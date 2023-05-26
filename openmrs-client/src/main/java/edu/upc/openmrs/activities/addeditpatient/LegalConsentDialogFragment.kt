@@ -66,6 +66,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     }
 
     private fun listenForPlayCompletion() {
+
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
             if (it) {
                 stopButton.isEnabled = true
@@ -93,9 +94,9 @@ class LegalConsentDialogFragment : DialogFragment() {
             this.dismiss()
 
             if (fileIsCreatedSuccessfully(mFileName)) {
-                val parent = parentFragment as AddEditPatientFragment
-                parent.record_consent_imageButton.setImageResource(R.drawable.saved)
-                parent.record_consent_imageButton.isEnabled = false
+                val parent = parentFragment
+                parent?.record_consent_imageButton?.setImageResource(R.drawable.saved)
+                parent?.record_consent_imageButton?.isEnabled = false
             }
         }
     }
