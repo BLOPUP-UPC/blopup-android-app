@@ -428,7 +428,7 @@
     <string name="patient_with_no_values_to_show">El paciente no tiene datos aún</string>
     <string name="blood_pressure_evolution">Evolución de la presión arterial</string>
     <string name="nationality">Nacionalidad</string>
-    <string name="record_patient_consent">Record Patient Consent*</string>
+    <string name="record_patient_consent">Graba el consentimiento del paciente*</string>
     <string name="recording_inprogress">Grabación en curso</string>
     <string name="recording_info">Please wait until this recording is completed</string>
     <string name="recording_in_progress">Grabación en curso</string>
