@@ -1,7 +1,5 @@
 package edu.upc.blopup
 
-import android.media.MediaPlayer
-import android.media.MediaRecorder
 import edu.upc.BuildConfig
 import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.sdk.library.api.repository.RecordingRepository
@@ -9,7 +7,10 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAttribute
 import edu.upc.sdk.library.models.PersonAttributeType
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 import rx.Observable
@@ -42,10 +43,9 @@ class RecordingHelperTest {
 
         mockkStatic(FileUtils::class)
 
-        every { FileUtils.getRootDirectory() } returns
-                "/storage/emulated/0/Android/data/edu.upc/files/DCIM"
+        every { FileUtils.getRootDirectory() } returns ROOT_DIRECTORY
 
-        fullFilePath = "/storage/emulated/0/Android/data/edu.upc/files/DCIM/$FILE_NAME"
+        fullFilePath = "$ROOT_DIRECTORY/$FILE_NAME"
     }
 
     @Test
@@ -78,35 +78,18 @@ class RecordingHelperTest {
         verify(exactly = 0) { patientDAO.updatePatient(patient) }
     }
 
+    @Test
+    fun `should remove recording file from local when successful`(){
 
-//    @Ignore
-//    @Test
-//    fun `should set patient legalConsentSynced to true when successful`() {
-//
-//        val patientEntity = mockk<PatientEntity> {
-//            every { attributes } returns listOf(
-//                mockk {
-//                    every { attributeType } returns mockk {
-//                        every { uuid } returns "BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID"
-//                    }
-//                }
-//            )
-//            every { isLegalConsentSynced } returns false
-//        }
-//
-//        val recordingHelper = mockk<RecordingHelper>()
-//
-//        val successLiveData = MutableLiveData<ResultType>().apply { value = ResultType.RecordingSuccess }
-//
-//
-//        every { recordingHelper.saveLegalConsent() }  returns successLiveData
-//
-//        recordingHelper.saveLegalConsent()
-//
-//        verify { patientEntity.isLegalConsentSynced }
-//        assertTrue(patientEntity.isLegalConsentSynced)
+        every { recordingRepository.saveRecording(fullFilePath) } returns Observable.just("OK")
+
+        recordingHelper.saveLegalConsent(patient)
+
+        verify {  FileUtils.removeLocalRecordingFile(fullFilePath) }
+    }
 
     companion object {
         private const val FILE_NAME = "20230525_123926_.mp3"
-    }
+        private const val ROOT_DIRECTORY = "/storage/emulated/0/Android/data/edu.upc/files/DCIM"
+}
 }

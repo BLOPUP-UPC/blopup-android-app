@@ -14,9 +14,9 @@
 package edu.upc.openmrs.utilities
 
 import android.app.Activity
-import android.content.Context
 import android.os.Environment
 import android.text.TextUtils
+import android.util.Log
 import edu.upc.R
 import edu.upc.openmrs.application.OpenMRS
 import java.io.*
@@ -26,7 +26,7 @@ import java.util.*
 object FileUtils {
 
     fun getRecordingFilePath(): String {
-        return getRootDirectory() + "/" + createUniqueAudioFileName();
+        return getRootDirectory() + "/" + createUniqueAudioFileName()
     }
 
     @JvmStatic
@@ -55,5 +55,19 @@ object FileUtils {
         if (TextUtils.isEmpty(path)) return false
         //check file is larger than 85KB
         return path?.let { File(it).length().div(1024) }!! > 85
+    }
+
+    @JvmStatic
+    fun removeLocalRecordingFile(fullFilePath: String) {
+        val file = File(fullFilePath)
+        if (file.exists()) {
+            try {
+                file.delete()
+            } catch (e: SecurityException) {
+                Log.e("file", "Error deleting file: ${file.absolutePath}", e)
+            }
+        } else {
+            Log.d("file", "File does not exist: ${file.absolutePath}")
+        }
     }
 }

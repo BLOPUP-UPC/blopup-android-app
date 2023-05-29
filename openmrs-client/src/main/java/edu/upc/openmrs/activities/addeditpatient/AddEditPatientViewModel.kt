@@ -1,14 +1,14 @@
 package edu.upc.openmrs.activities.addeditpatient
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.RecordingHelper
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.openmrs.activities.BaseViewModel
-import edu.upc.openmrs.utilities.FileUtils.getRootDirectory
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
@@ -26,11 +26,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditPatientViewModel @Inject constructor(
-    patientDAO: PatientDAO,
+    private val patientDAO: PatientDAO,
     private val patientRepository: PatientRepository,
     private val conceptRepository: ConceptRepository,
-    savedStateHandle: SavedStateHandle,
-    private val recordingHelper: RecordingHelper
+    private val recordingHelper: RecordingHelper,
+    private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Patient>() {
 
     private val _similarPatientsLiveData = MutableLiveData<List<Patient>>()
@@ -90,26 +90,6 @@ class AddEditPatientViewModel @Inject constructor(
 
     }
 
-    private fun saveLegalConsent() {
-        recordingHelper.saveLegalConsent(patient)
-    }
-
-    private fun removeLocalRecordingFile() {
-        val pathFile = getRootDirectory() + "/"
-        val patientFile = patient.attributes[1].value
-        val recordingLocalFile = File(pathFile + patientFile)
-
-        if (recordingLocalFile.exists()) {
-            try {
-                recordingLocalFile.delete()
-            } catch (e: SecurityException) {
-                Log.e("file", "Error deleting file: ${recordingLocalFile.absolutePath}", e)
-            }
-        } else {
-            Log.d("file", "File does not exist: ${recordingLocalFile.absolutePath}")
-        }
-    }
-
     fun fetchSimilarPatients() {
         if (!patientValidator.validate()) return
         if (isPatientUnidentified) {
@@ -143,7 +123,9 @@ class AddEditPatientViewModel @Inject constructor(
             .subscribe(
                 {
                     setContent(it, PatientRegistering)
-                    saveLegalConsent()
+                    showPatientConsentToggle.check(onToggleEnabled = {
+                        recordingHelper.saveLegalConsent(it)
+                    })
                 },
                 { setError(it, PatientRegistering) }
             )
@@ -157,7 +139,9 @@ class AddEditPatientViewModel @Inject constructor(
             .subscribe(
                 { resultType ->
                     _patientUpdateLiveData.value = resultType
-                    saveLegalConsent()
+                    showPatientConsentToggle.check(onToggleEnabled = {
+                        recordingHelper.saveLegalConsent(patient)
+                    })
                 },
                 { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
             )
