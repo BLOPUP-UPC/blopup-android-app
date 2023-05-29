@@ -6,13 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.BuildConfig
 import edu.upc.openmrs.activities.BaseViewModel
-import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.FileUtils.getRootDirectory
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
-import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.ConceptAnswers
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
@@ -28,11 +25,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditPatientViewModel @Inject constructor(
-    private val patientDAO: PatientDAO,
+    patientDAO: PatientDAO,
     private val patientRepository: PatientRepository,
     private val conceptRepository: ConceptRepository,
-    private val recordingRepository: RecordingRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Patient>() {
 
     private val _similarPatientsLiveData = MutableLiveData<List<Patient>>()

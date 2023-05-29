@@ -1,11 +1,11 @@
 package edu.upc.blopup
 
 import android.util.Log
-import edu.upc.sdk.library.api.repository.RecordingRepository
 import java.io.File
 import javax.inject.Inject
 import edu.upc.BuildConfig
 import edu.upc.openmrs.utilities.FileUtils
+import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 
@@ -33,28 +33,6 @@ class RecordingHelper @Inject constructor(
         }
     }
 
-//    fun saveLegalConsent(): LiveData<ResultType> {
-//        val result = MutableLiveData<ResultType>()
-//
-//        patient.attributes?.forEach { attribute ->
-//            if (attribute.attributeType?.uuid == BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) {
-//                val file = File(FileUtils.getRootDirectory() + "/" + attribute.value)
-//
-//                addSubscription(recordingRepository.saveRecording(recording)
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(
-//                        {
-//                            result.value = ResultType.RecordingSuccess
-//                            patient.isLegalConsentSynced = true
-//                            removeLocalRecordingFile(file)
-//                        },
-//                        { result.value = ResultType.RecordingError }
-//                    )
-//                )
-//            }
-//        }
-//        return result
-//    }
 
     private fun removeLocalRecordingFile(file: File) {
         if (file.exists()) {
