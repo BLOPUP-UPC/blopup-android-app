@@ -1,6 +1,7 @@
 package edu.upc.blopup
 
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import java.io.File
 import javax.inject.Inject
 import edu.upc.BuildConfig
@@ -11,11 +12,10 @@ import edu.upc.sdk.library.models.Patient
 
 class RecordingHelper @Inject constructor(
     private val recordingRepository: RecordingRepository,
-    private val patient: Patient,
-    private val patientDAO: PatientDAO
-) {
+    private val patientDAO: PatientDAO,
+): ViewModel() {
 
-    fun saveLegalConsent() {
+    fun saveLegalConsent(patient: Patient) {
         val value = patient
             .attributes
             .first { it.attributeType?.uuid == BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID }
@@ -32,7 +32,6 @@ class RecordingHelper @Inject constructor(
             }
         }
     }
-
 
     private fun removeLocalRecordingFile(file: File) {
         if (file.exists()) {

@@ -2,6 +2,7 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import edu.upc.blopup.RecordingHelper
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
@@ -16,7 +17,6 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
-import edu.upc.sdk.library.api.repository.RecordingRepository
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -31,6 +31,7 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.verify
 import rx.Observable
 
 @RunWith(JUnit4::class)
@@ -51,6 +52,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var savedStateHandle: SavedStateHandle
 
+    @Mock
+    lateinit var recordingHelper: RecordingHelper
+
     lateinit var viewModel: AddEditPatientViewModel
 
     private val countries = listOf("country1", "country2", "country3")
@@ -60,11 +64,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         super.setUp()
         `when`(patientDAO.findPatientByID(anyString())).thenReturn(Patient())
         savedStateHandle = SavedStateHandle().apply { set(COUNTRIES_BUNDLE, countries) }
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle, recordingHelper)
     }
 
     @Test
     fun `resetPatient should clear all states and patient related data`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
         updatePatientData(0L, viewModel.patient)
 
         viewModel.resetPatient()
@@ -90,7 +94,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `confirmPatient should create new patient when no patient id passed`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
         `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(
             Patient()
         ))
@@ -107,7 +110,13 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun `confirmPatient should update existing patient when its id is passed`() {
         savedStateHandle.apply { set(PATIENT_ID_BUNDLE, "1L") }
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            savedStateHandle,
+            recordingHelper
+        )
         `when`(patientRepository.updatePatient(any<Patient>())).thenReturn(Observable.just(PatientUpdateSuccess))
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
@@ -121,7 +130,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `confirmPatient should do nothing when patient data is invalid`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
         `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(
             Patient()
         ))
@@ -137,7 +145,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchSimilarPatients() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
         with(viewModel) {
             val similarPatients = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
             patientValidator = mock(PatientValidator::class.java)
@@ -152,7 +159,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchCausesOfDeath() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, savedStateHandle)
         `when`(patientRepository.getCauseOfDeathGlobalConceptID()).thenReturn(Observable.just(String()))
         `when`(conceptRepository.getConceptByUuid(anyString())).thenReturn(Observable.just(ConceptAnswers()))
 

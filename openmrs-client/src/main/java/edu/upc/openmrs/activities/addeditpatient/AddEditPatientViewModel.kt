@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.blopup.RecordingHelper
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.openmrs.utilities.FileUtils.getRootDirectory
 import edu.upc.sdk.library.api.repository.ConceptRepository
@@ -28,7 +29,8 @@ class AddEditPatientViewModel @Inject constructor(
     patientDAO: PatientDAO,
     private val patientRepository: PatientRepository,
     private val conceptRepository: ConceptRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val recordingHelper: RecordingHelper
 ) : BaseViewModel<Patient>() {
 
     private val _similarPatientsLiveData = MutableLiveData<List<Patient>>()
@@ -88,30 +90,8 @@ class AddEditPatientViewModel @Inject constructor(
 
     }
 
-    private fun saveLegalConsent(): LiveData<ResultType> {
-        val result = MutableLiveData<ResultType>()
-
-//        patient.attributes?.forEach { attribute ->
-//            if (attribute.attributeType?.uuid == BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) {
-//
-//                val file =
-//                    File(FileUtils.getRootDirectory() + "/" + attribute.value)
-//
-//                addSubscription(recordingRepository.saveRecording()
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(
-//                        {
-//                            result.value = ResultType.RecordingSuccess
-//                            patient.isLegalConsentSynced = true
-//                            patientDAO.updatePatient(patient)
-//                            removeLocalRecordingFile()
-//                        },
-//                        { result.value = ResultType.RecordingError }
-//                    )
-//                )
-//            }
-//        }
-        return result
+    private fun saveLegalConsent() {
+        recordingHelper.saveLegalConsent(patient)
     }
 
     private fun removeLocalRecordingFile() {

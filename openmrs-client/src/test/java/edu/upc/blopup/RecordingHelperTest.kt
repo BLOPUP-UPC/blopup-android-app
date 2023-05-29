@@ -38,7 +38,7 @@ class RecordingHelperTest {
         patientDAO = mockk()
         every { patientDAO.updatePatient(patient) } returns true
 
-        recordingHelper = RecordingHelper(recordingRepository, patient, patientDAO)
+        recordingHelper = RecordingHelper(recordingRepository, patientDAO)
 
         mockkStatic(FileUtils::class)
 
@@ -53,7 +53,7 @@ class RecordingHelperTest {
 
         every { recordingRepository.saveRecording(fullFilePath) } returns Observable.just("OK")
 
-        recordingHelper.saveLegalConsent()
+        recordingHelper.saveLegalConsent(patient)
 
         verify { recordingRepository.saveRecording(fullFilePath) }
     }
@@ -64,7 +64,7 @@ class RecordingHelperTest {
 
         every { recordingRepository.saveRecording(fullFilePath) } returns Observable.just("OK")
 
-        recordingHelper.saveLegalConsent()
+        recordingHelper.saveLegalConsent(patient)
 
         verify {  patientDAO.updatePatient(patient) }
     }
@@ -73,7 +73,7 @@ class RecordingHelperTest {
     fun `shouldn't update patient legalConsentSynced when not successful`() {
         every { recordingRepository.saveRecording(fullFilePath) } returns Observable.just("Error")
 
-        recordingHelper.saveLegalConsent()
+        recordingHelper.saveLegalConsent(patient)
 
         verify(exactly = 0) { patientDAO.updatePatient(patient) }
     }
@@ -105,30 +105,7 @@ class RecordingHelperTest {
 //
 //        verify { patientEntity.isLegalConsentSynced }
 //        assertTrue(patientEntity.isLegalConsentSynced)
-//
-//    }
 
-    //        val mockMultipartBody = mockk<MultipartBody.Part>()
-
-
-//    val addressBook = mockk<AddressBook> {
-//        every { contacts } returns listOf(
-//            mockk {
-//                every { name } returns "John"
-//                every { telephone } returns "123-456-789"
-//                every { address.city } returns "New-York"
-//                every { address.zip } returns "123-45"
-//            },
-//            mockk {
-//                every { name } returns "Alex"
-//                every { telephone } returns "789-456-123"
-//                every { address } returns mockk {
-//                    every { city } returns "Wroclaw"
-//                    every { zip } returns "543-21"
-//                }
-//            }
-//        )
-//    }
     companion object {
         private const val FILE_NAME = "20230525_123926_.mp3"
     }
