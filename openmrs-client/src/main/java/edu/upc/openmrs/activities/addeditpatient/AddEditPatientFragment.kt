@@ -100,8 +100,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
 
-    private var recording: RecordingRequest = RecordingRequest("Record", ByteArray(2))
-
     private val viewModel: AddEditPatientViewModel by viewModels()
 
     // constant for storing audio permission
@@ -210,22 +208,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         validateFormInputsAndUpdateViewModel()
 
         viewModel.confirmPatient()
-    }
-
-    private fun removeLocalRecordingFile() {
-        val pathFile = context?.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.path + "/"
-        val patientFile = viewModel.patient.attributes[1].value
-        val recordingLocalFile = File(pathFile + patientFile)
-
-        if (recordingLocalFile.exists()) {
-            try {
-                recordingLocalFile.delete()
-            } catch (e: SecurityException) {
-                Log.e("file", "Error deleting file: ${recordingLocalFile.absolutePath}", e)
-            }
-        } else {
-            Log.d("file", "File does not exist: ${recordingLocalFile.absolutePath}")
-        }
     }
 
     private fun updatePatient() {

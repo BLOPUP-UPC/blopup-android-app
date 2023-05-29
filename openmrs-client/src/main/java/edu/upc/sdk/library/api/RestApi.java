@@ -219,7 +219,7 @@ public interface RestApi {
                                           @Body PatientPhoto patientPhoto);
 
     @Multipart
-    @POST("/api/v1/upload/consent")
+    @POST("/api/v1/consent")
     Call<String> uploadConsent(@Part MultipartBody.Part file);
 
     /**

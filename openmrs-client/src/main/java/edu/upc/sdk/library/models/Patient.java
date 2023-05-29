@@ -25,9 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
-import edu.upc.sdk.utilities.StringUtils;
-
 /**
  * The type Patient.
  *
@@ -59,9 +56,9 @@ public class Patient extends Person implements Serializable {
     private String contactPhoneNumber;
 
     //Legal consent
-    @SerializedName("legalConsent")
+    @SerializedName("legalConsentSynced")
     @Expose
-    private boolean legalConsent;
+    private boolean legalConsentSynced;
 
     /**
      * Instantiates a new Patient.
@@ -114,12 +111,12 @@ public class Patient extends Person implements Serializable {
                    List<PersonName> names, String gender, String birthdate,
                    boolean birthdateEstimated, List<PersonAddress> addresses,
                    List<PersonAttribute> attributes,
-                   Bitmap photo, Resource causeOfDeath, boolean dead, boolean voided, boolean legalConsent) {
+                   Bitmap photo, Resource causeOfDeath, boolean dead, boolean voided, boolean legalConsentSynced) {
         super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead, voided);
         this.id = id;
         this.encounters = encounters;
         this.identifiers = identifiers;
-        this.legalConsent = legalConsent;
+        this.legalConsentSynced = legalConsentSynced;
     }
 
     /**
@@ -347,11 +344,11 @@ public class Patient extends Person implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isLegalConsent() {
-        return legalConsent;
+    public boolean isLegalConsentSynced() {
+        return legalConsentSynced;
     }
 
-    public void setLegalConsent(boolean legalConsent) {
-        this.legalConsent = legalConsent;
+    public void setLegalConsentSynced(boolean legalConsentSynced) {
+        this.legalConsentSynced = legalConsentSynced;
     }
 }

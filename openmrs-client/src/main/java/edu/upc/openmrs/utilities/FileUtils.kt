@@ -29,6 +29,7 @@ object FileUtils {
         return getRootDirectory() + "/" + createUniqueAudioFileName();
     }
 
+    @JvmStatic
     fun getRootDirectory(): String {
         return OpenMRS.getInstance().applicationContext.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.path.toString()
     }

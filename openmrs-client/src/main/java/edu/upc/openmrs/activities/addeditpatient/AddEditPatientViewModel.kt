@@ -1,5 +1,6 @@
 package edu.upc.openmrs.activities.addeditpatient
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -7,8 +8,8 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.BuildConfig
 import edu.upc.openmrs.activities.BaseViewModel
-import edu.upc.openmrs.application.OpenMRS
 import edu.upc.openmrs.utilities.FileUtils
+import edu.upc.openmrs.utilities.FileUtils.getRootDirectory
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.RecordingRepository
@@ -16,7 +17,6 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.ConceptAnswers
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.RecordingRequest
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
@@ -25,7 +25,6 @@ import org.joda.time.DateTime
 import rx.android.schedulers.AndroidSchedulers
 import java.io.File
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
 @HiltViewModel
 class AddEditPatientViewModel @Inject constructor(
@@ -93,33 +92,46 @@ class AddEditPatientViewModel @Inject constructor(
 
     }
 
-    fun saveLegalConsent(): LiveData<ResultType> {
+    private fun saveLegalConsent(): LiveData<ResultType> {
         val result = MutableLiveData<ResultType>()
 
-        patient.attributes?.forEach { attribute ->
-            if (attribute.attributeType?.uuid == BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) {
-
-                val file =
-                    File(FileUtils.getRootDirectory() + "/" + attribute.value)
-
-                val recordingRequest =
-                    RecordingRequest(attribute.value.toString(), file.readBytes())
-
-                addSubscription(recordingRepository.saveRecording(recordingRequest)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        {
-                            result.value = ResultType.RecordingSuccess
-                            patient.isLegalConsent = true
-                            patientDAO.updatePatient(patient)
-                        },
-                        { result.value = ResultType.RecordingError }
-                    )
-                )
-            }
-        }
-
+//        patient.attributes?.forEach { attribute ->
+//            if (attribute.attributeType?.uuid == BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) {
+//
+//                val file =
+//                    File(FileUtils.getRootDirectory() + "/" + attribute.value)
+//
+//                addSubscription(recordingRepository.saveRecording()
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(
+//                        {
+//                            result.value = ResultType.RecordingSuccess
+//                            patient.isLegalConsentSynced = true
+//                            patientDAO.updatePatient(patient)
+//                            removeLocalRecordingFile()
+//                        },
+//                        { result.value = ResultType.RecordingError }
+//                    )
+//                )
+//            }
+//        }
         return result
+    }
+
+    private fun removeLocalRecordingFile() {
+        val pathFile = getRootDirectory() + "/"
+        val patientFile = patient.attributes[1].value
+        val recordingLocalFile = File(pathFile + patientFile)
+
+        if (recordingLocalFile.exists()) {
+            try {
+                recordingLocalFile.delete()
+            } catch (e: SecurityException) {
+                Log.e("file", "Error deleting file: ${recordingLocalFile.absolutePath}", e)
+            }
+        } else {
+            Log.d("file", "File does not exist: ${recordingLocalFile.absolutePath}")
+        }
     }
 
     fun fetchSimilarPatients() {

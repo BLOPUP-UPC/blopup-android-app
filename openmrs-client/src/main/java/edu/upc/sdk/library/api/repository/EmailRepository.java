@@ -14,8 +14,6 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import static edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO;
-
 import android.util.Log;
 
 import edu.upc.sdk.library.models.EmailRequest;
