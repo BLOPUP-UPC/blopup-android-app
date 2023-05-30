@@ -16,7 +16,6 @@ import edu.upc.sdk.utilities.PatientValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -177,11 +176,12 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    @Ignore("need to mock the patient already existing")
     fun `should not save legal consent recording when updating existing patient`() {
         val patient = Patient()
+        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, "patientId"); set(COUNTRIES_BUNDLE, countries)}
         viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
-        `when`(patientRepository.registerPatient(any())).thenReturn(Observable.just(patient))
+
+        `when`(patientRepository.updatePatient(any())).thenReturn(Observable.just(PatientUpdateSuccess))
 
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
