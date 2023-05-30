@@ -3,23 +3,24 @@ package edu.upc.openmrs.test.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.RecordingHelper
+import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
+import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.ConceptAnswers
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.PersonAddress
-import edu.upc.sdk.library.models.PersonName
-import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.*
 import edu.upc.sdk.library.models.ResultType.PatientUpdateSuccess
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.mockkConstructor
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -29,8 +30,7 @@ import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import rx.Observable
 
 @RunWith(JUnit4::class)
@@ -47,6 +47,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Mock
     lateinit var conceptRepository: ConceptRepository
+
     @Mock
     lateinit var savedStateHandle: SavedStateHandle
 
@@ -160,6 +161,39 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
         viewModel.fetchCausesOfDeath().observeForever {
             assert(it is ConceptAnswers)
+        }
+    }
+
+    @Test
+    fun `should save legal consent recording when new patient is added (with toggle on)`() {
+        val patient = Patient()
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
+        `when`(patientRepository.registerPatient(any())).thenReturn(Observable.just(patient))
+
+        with(viewModel) {
+            patientValidator = mock(PatientValidator::class.java)
+            `when`(patientValidator.validate()).thenReturn(true)
+
+            confirmPatient()
+
+            verify(recordingHelper).saveLegalConsent(patient)
+        }
+    }
+
+    @Test
+    @Ignore("need to mock the patient already existing")
+    fun `should not save legal consent recording when updating existing patient`() {
+        val patient = Patient()
+        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
+        `when`(patientRepository.registerPatient(any())).thenReturn(Observable.just(patient))
+
+        with(viewModel) {
+            patientValidator = mock(PatientValidator::class.java)
+            `when`(patientValidator.validate()).thenReturn(true)
+
+            confirmPatient()
+
+            verify(recordingHelper, times(0)).saveLegalConsent(patient)
         }
     }
 }

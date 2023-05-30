@@ -139,9 +139,6 @@ class AddEditPatientViewModel @Inject constructor(
             .subscribe(
                 { resultType ->
                     _patientUpdateLiveData.value = resultType
-                    showPatientConsentToggle.check(onToggleEnabled = {
-                        recordingHelper.saveLegalConsent(patient)
-                    })
                 },
                 { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
             )
