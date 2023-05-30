@@ -13,10 +13,6 @@ import edu.upc.sdk.library.models.ResultType.PatientUpdateSuccess
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
-import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
-import io.mockk.mockkConstructor
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
