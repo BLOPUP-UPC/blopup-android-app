@@ -3,6 +3,8 @@ package edu.upc.openmrs.utilities
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.PatientValidator
 import edu.upc.openmrs.test.ACUnitTestBase
+import edu.upc.sdk.library.models.PersonAttribute
+import edu.upc.sdk.library.models.PersonAttributeType
 import org.junit.Assert.assertFalse
 import org.junit.Test
 
@@ -102,9 +104,38 @@ class PatientValidatorTest : ACUnitTestBase() {
     @Test
     fun `validate patient missing nationality`() {
         val validator = PatientValidator(
-                createValidPatient().apply { attributes = emptyList() },
-                isPatientUnidentified = false,
-                countriesList = countries
+            createValidPatient().apply {
+                attributes.apply {
+                    listOf(PersonAttribute().apply {
+                        attributeType = PersonAttributeType().apply {
+                            uuid = INVALID_UUID
+                        }
+                    })
+                }
+            },
+            isPatientUnidentified = false,
+            countriesList = countries
+        )
+
+        val isValid = validator.validate()
+
+        assertFalse(isValid)
+    }
+
+    @Test
+    fun `validate patient missing legal consent`() {
+        val validator = PatientValidator(
+            createValidPatient().apply {
+                attributes.apply {
+                    listOf(PersonAttribute().apply {
+                        attributeType = PersonAttributeType().apply {
+                            uuid = INVALID_UUID
+                        }
+                    })
+                }
+            },
+            isPatientUnidentified = false,
+            countriesList = countries
         )
 
         val isValid = validator.validate()
@@ -120,5 +151,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         private const val INVALID_NAME_1 = "#James"
         private const val INVALID_NAME_2 = "John@Doe"
         private const val INVALID_NAME_3 = "Em*%ile"
+        private const val INVALID_UUID = "d364b420-8d71-11e3-baa8-0800200c9a66"
     }
 }

@@ -34,11 +34,13 @@ class PatientValidator(private val patient: Patient,
             if (middleName != null && !validateText(middleName, ILLEGAL_CHARACTERS)) return false
             if (familyName.isNullOrBlank() || !validateText(familyName, ILLEGAL_CHARACTERS)) return false
         }
+
+        //Validate Nationality
+        if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID) }) return false
+
         if(BuildConfig.SHOW_PATIENT_CONSENT_TOGGLE){
             if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) }) return false
         }
-        //Validate Nationality
-        if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID) }) return false
 
         return true
     }
