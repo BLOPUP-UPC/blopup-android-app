@@ -51,6 +51,12 @@ class AddEditPatientViewModel @Inject constructor(
             field = value
             patientValidator.isPatientUnidentified = value
         }
+
+    var isLegalRecordingPresent = false
+        set(value) {
+            field = value
+            patientValidator.isLegalRecordingPresent = value
+        }
     var placesClient: PlacesClient? = null
 
     var dateHolder: DateTime? = null
@@ -71,7 +77,7 @@ class AddEditPatientViewModel @Inject constructor(
         val countriesList: List<String> = savedStateHandle.get(COUNTRIES_BUNDLE)!!
 
         // Initialize patient data validator
-        patientValidator = PatientValidator(patient, isPatientUnidentified, countriesList)
+        patientValidator = PatientValidator(patient, isPatientUnidentified, isLegalRecordingPresent, countriesList)
     }
 
     fun resetPatient() {

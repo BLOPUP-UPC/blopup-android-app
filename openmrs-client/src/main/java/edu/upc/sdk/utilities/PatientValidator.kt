@@ -14,6 +14,7 @@ import edu.upc.sdk.utilities.StringUtils.validateText
  */
 class PatientValidator(private val patient: Patient,
                        var isPatientUnidentified: Boolean,
+                       var isLegalRecordingPresent: Boolean,
                        private val countriesList: List<String>) {
 
     /**
@@ -38,9 +39,8 @@ class PatientValidator(private val patient: Patient,
         //Validate Nationality
         if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID) }) return false
 
-        if(BuildConfig.SHOW_PATIENT_CONSENT_TOGGLE){
-            if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID) }) return false
-        }
+        //Validate Legal Consent Recording
+        if (!isLegalRecordingPresent) return false
 
         return true
     }

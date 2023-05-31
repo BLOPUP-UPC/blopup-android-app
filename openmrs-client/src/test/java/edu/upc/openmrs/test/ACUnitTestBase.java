@@ -23,21 +23,6 @@ import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
 
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.Allergen;
-import edu.upc.sdk.library.models.Allergy;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.PatientIdentifier;
-import edu.upc.sdk.library.models.Person;
-import edu.upc.sdk.library.models.PersonAddress;
-import edu.upc.sdk.library.models.PersonAttribute;
-import edu.upc.sdk.library.models.PersonName;
-import edu.upc.sdk.library.models.Provider;
-import edu.upc.sdk.library.models.Resource;
-import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.library.models.Visit;
-import edu.upc.sdk.library.models.VisitType;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -54,6 +39,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import edu.upc.BuildConfig;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.library.models.Allergen;
+import edu.upc.sdk.library.models.Allergy;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.library.models.PatientIdentifier;
+import edu.upc.sdk.library.models.Person;
+import edu.upc.sdk.library.models.PersonAddress;
+import edu.upc.sdk.library.models.PersonAttribute;
+import edu.upc.sdk.library.models.PersonAttributeType;
+import edu.upc.sdk.library.models.PersonName;
+import edu.upc.sdk.library.models.Provider;
+import edu.upc.sdk.library.models.Resource;
+import edu.upc.sdk.library.models.Results;
+import edu.upc.sdk.library.models.Visit;
+import edu.upc.sdk.library.models.VisitType;
 import retrofit2.Call;
 
 @PrepareForTest({Context.class,
@@ -107,7 +108,16 @@ ACUnitTestBase {
         patient.setBirthdate("25-02-2016");
         patient.setDeceased(false);
         patient.setCauseOfDeath(new Resource());
+        patient.setAttributes(createNationalityAttribute());
         return patient;
+    }
+
+    private List<PersonAttribute> createNationalityAttribute() {
+        PersonAttributeType attributeType = new PersonAttributeType();
+        attributeType.setUuid(BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID);
+        PersonAttribute personAttribute = new PersonAttribute();
+        personAttribute.setAttributeType(attributeType);
+        return Collections.singletonList(personAttribute);
     }
 
     protected PersonAddress createPersonAddress(Long id) {
