@@ -11,14 +11,11 @@ import org.junit.Test
 
 class PatientValidatorTest : ACUnitTestBase() {
 
-    private val countries = listOf("country1", "country2", "country3")
-
     @Test
     fun `validate patient missing first name`() {
         val validator = PatientValidator(
             createValidPatient().apply { name.givenName = null },
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = true
         )
 
@@ -32,7 +29,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         val validator = PatientValidator(
             createValidPatient().apply { name.givenName = INVALID_NAME_1 },
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = true
         )
 
@@ -46,7 +42,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         val validator = PatientValidator(
             createValidPatient().apply { name.middleName = INVALID_NAME_2 },
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = true
         )
 
@@ -60,7 +55,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         val validator = PatientValidator(
             createValidPatient().apply { name.familyName = null },
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = true
         )
 
@@ -74,7 +68,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         val validator = PatientValidator(
             createValidPatient().apply { name.familyName = INVALID_NAME_3 },
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = true
         )
 
@@ -88,7 +81,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         val validator = PatientValidator(
             createValidPatient().apply { gender = null },
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = true
         )
 
@@ -102,7 +94,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         val validator = PatientValidator(
             createValidPatient().apply { birthdate = null },
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = true
         )
 
@@ -116,7 +107,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         val validator = PatientValidator(
             createValidPatient().apply { attributes = emptyList() },
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = true
         )
 
@@ -130,7 +120,6 @@ class PatientValidatorTest : ACUnitTestBase() {
         val validator = PatientValidator(
             createValidPatient(),
             isPatientUnidentified = false,
-            countriesList = countries,
             isLegalRecordingPresent = false
         )
 
@@ -143,7 +132,6 @@ class PatientValidatorTest : ACUnitTestBase() {
     fun `returns true when patient is valid`() {
         val validator = PatientValidator(
             createValidPatient(),
-            countriesList = countries,
             isPatientUnidentified = false,
             isLegalRecordingPresent = true
         )

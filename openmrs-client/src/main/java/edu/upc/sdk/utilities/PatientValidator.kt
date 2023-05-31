@@ -14,8 +14,7 @@ import edu.upc.sdk.utilities.StringUtils.validateText
  */
 class PatientValidator(private val patient: Patient,
                        var isPatientUnidentified: Boolean,
-                       var isLegalRecordingPresent: Boolean,
-                       private val countriesList: List<String>) {
+                       var isLegalRecordingPresent: Boolean) {
 
     /**
      * Validates legality and presence of the necessary data of the patient object passed in the constructor

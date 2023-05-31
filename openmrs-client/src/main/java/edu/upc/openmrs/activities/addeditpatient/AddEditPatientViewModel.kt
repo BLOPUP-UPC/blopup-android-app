@@ -16,7 +16,6 @@ import edu.upc.sdk.library.models.ConceptAnswers
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.ResultType
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
 import org.joda.time.DateTime
@@ -73,11 +72,8 @@ class AddEditPatientViewModel @Inject constructor(
             resetPatient()
         }
 
-        // Get available countries picker list
-        val countriesList: List<String> = savedStateHandle.get(COUNTRIES_BUNDLE)!!
-
         // Initialize patient data validator
-        patientValidator = PatientValidator(patient, isPatientUnidentified, isLegalRecordingPresent, countriesList)
+        patientValidator = PatientValidator(patient, isPatientUnidentified, isLegalRecordingPresent)
     }
 
     fun resetPatient() {
