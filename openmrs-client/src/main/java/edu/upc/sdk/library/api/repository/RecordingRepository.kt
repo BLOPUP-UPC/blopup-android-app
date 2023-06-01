@@ -14,15 +14,18 @@
 package edu.upc.sdk.library.api.repository
 
 import android.util.Log
+import edu.upc.sdk.library.dao.LegalConsentDAO
 import edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO
+import edu.upc.sdk.library.models.LegalConsent
 import retrofit2.Response
 import rx.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RecordingRepository @Inject constructor() : BaseRepository() {
-    fun saveRecording(recording: String): Observable<String> {
+class RecordingRepository @Inject constructor(val legalConsentDAO: LegalConsentDAO) : BaseRepository() {
+
+    fun saveRecording(legalConsent: LegalConsent): Observable<String> {
         return createObservableIO {
             try {
                 val response = Response.success("OK")

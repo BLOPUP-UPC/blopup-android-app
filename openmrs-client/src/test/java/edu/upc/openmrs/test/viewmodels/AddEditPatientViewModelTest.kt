@@ -10,7 +10,6 @@ import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.*
 import edu.upc.sdk.library.models.ResultType.PatientUpdateSuccess
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
 import org.junit.Assert.assertFalse
@@ -22,10 +21,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import rx.Observable
 
 @RunWith(JUnit4::class)
@@ -51,13 +53,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     lateinit var viewModel: AddEditPatientViewModel
 
-    private val countries = listOf("country1", "country2", "country3")
-
     @Before
     override fun setUp() {
         super.setUp()
         `when`(patientDAO.findPatientByID(anyString())).thenReturn(Patient())
-        savedStateHandle = SavedStateHandle().apply { set(COUNTRIES_BUNDLE, countries) }
+        savedStateHandle = SavedStateHandle()
     }
 
     @Test
@@ -171,14 +171,13 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
             confirmPatient()
 
-            verify(recordingHelper).saveLegalConsent(patient)
+            verify(recordingHelper).saveLegalConsent(any())
         }
     }
 
     @Test
     fun `should not save legal consent recording when updating existing patient`() {
-        val patient = Patient()
-        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, "patientId"); set(COUNTRIES_BUNDLE, countries)}
+        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, "patientId") }
         viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
 
         `when`(patientRepository.updatePatient(any())).thenReturn(Observable.just(PatientUpdateSuccess))
@@ -189,7 +188,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
             confirmPatient()
 
-            verify(recordingHelper, times(0)).saveLegalConsent(patient)
+            verify(recordingHelper, times(0)).saveLegalConsent(any())
         }
     }
 }

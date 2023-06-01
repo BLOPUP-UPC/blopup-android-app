@@ -13,6 +13,7 @@ import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.ConceptAnswers
+import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.ResultType
@@ -60,10 +61,11 @@ class AddEditPatientViewModel @Inject constructor(
 
     var dateHolder: DateTime? = null
     var capturedPhotoFile: File? = null
+    var legalConsentFileName: String? = null
 
     init {
         // Initialize patient state
-        val patientId: String? = savedStateHandle.get(PATIENT_ID_BUNDLE)
+        val patientId: String? = savedStateHandle[PATIENT_ID_BUNDLE]
         val foundPatient = patientDAO.findPatientByID(patientId)
         if (foundPatient != null) {
             isUpdatePatient = true
@@ -126,7 +128,11 @@ class AddEditPatientViewModel @Inject constructor(
                 {
                     setContent(it, PatientRegistering)
                     showPatientConsentToggle.check(onToggleEnabled = {
-                        recordingHelper.saveLegalConsent(it)
+                        recordingHelper.saveLegalConsent(LegalConsent().apply {
+                            this.patientId = patient.uuid
+                            this.filePath = legalConsentFileName
+
+                        })
                     })
                 },
                 { setError(it, PatientRegistering) }

@@ -249,6 +249,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             return false
         } else
             binding.recordConsentError.makeGone()
+        viewModel.legalConsentFileName = legalConsentDialog?.fileName()
         //#endreigon
         return true
     }
