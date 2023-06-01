@@ -15,19 +15,13 @@ package edu.upc.sdk.library.databases
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.dao.DiagnosisDAO
 import edu.upc.sdk.library.dao.EncounterDAO
 import edu.upc.sdk.library.dao.ObservationDAO
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.databases.entities.AllergyEntity
-import edu.upc.sdk.library.databases.entities.ConceptEntity
-import edu.upc.sdk.library.databases.entities.DiagnosisEntity
-import edu.upc.sdk.library.databases.entities.EncounterEntity
-import edu.upc.sdk.library.databases.entities.LocationEntity
-import edu.upc.sdk.library.databases.entities.ObservationEntity
-import edu.upc.sdk.library.databases.entities.PatientEntity
-import edu.upc.sdk.library.databases.entities.VisitEntity
+import edu.upc.sdk.library.databases.entities.*
 import edu.upc.sdk.library.models.Allergen
 import edu.upc.sdk.library.models.Allergy
 import edu.upc.sdk.library.models.Diagnosis
@@ -390,5 +384,13 @@ object AppDatabaseHelper {
         diagnosisEntity.encounterId = encounterID
 
         return diagnosisEntity
+    }
+
+    @JvmStatic
+    fun convert(legalConsent: LegalConsent): LegalConsentEntity {
+        val legalConsentEntity = LegalConsentEntity()
+        legalConsentEntity.patientId = legalConsent.patientId!!
+        legalConsentEntity.filePath = legalConsent.filePath!!
+        return legalConsentEntity
     }
 }
