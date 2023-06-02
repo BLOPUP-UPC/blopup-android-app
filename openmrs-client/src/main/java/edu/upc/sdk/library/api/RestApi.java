@@ -10,38 +10,6 @@
 
 package edu.upc.sdk.library.api;
 
-import edu.upc.sdk.library.databases.entities.ConceptEntity;
-import edu.upc.sdk.library.databases.entities.FormResourceEntity;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.Allergy;
-import edu.upc.sdk.library.models.AllergyCreate;
-import edu.upc.sdk.library.models.ConceptAnswers;
-import edu.upc.sdk.library.models.ConceptMembers;
-import edu.upc.sdk.library.models.EmailRequest;
-import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.EncounterType;
-import edu.upc.sdk.library.models.Encountercreate;
-import edu.upc.sdk.library.models.FormCreate;
-import edu.upc.sdk.library.models.FormData;
-import edu.upc.sdk.library.models.IdGenPatientIdentifiers;
-import edu.upc.sdk.library.models.IdentifierType;
-import edu.upc.sdk.library.models.Module;
-import edu.upc.sdk.library.models.Obscreate;
-import edu.upc.sdk.library.models.Observation;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.PatientDto;
-import edu.upc.sdk.library.models.PatientDtoUpdate;
-import edu.upc.sdk.library.models.PatientPhoto;
-import edu.upc.sdk.library.models.Provider;
-import edu.upc.sdk.library.models.Resource;
-import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.library.models.Session;
-import edu.upc.sdk.library.models.SystemProperty;
-import edu.upc.sdk.library.models.SystemSetting;
-import edu.upc.sdk.library.models.User;
-import edu.upc.sdk.library.models.Visit;
-import edu.upc.sdk.library.models.VisitType;
-
 import java.util.Map;
 
 import edu.upc.sdk.library.databases.entities.ConceptEntity;
@@ -220,7 +188,7 @@ public interface RestApi {
 
     @Multipart
     @POST("/api/v1/consent")
-    Call<String> uploadConsent(@Part MultipartBody.Part file);
+    Call<String> uploadConsent(@Part MultipartBody.Part file, @Part("patientUuid") String patientId);
 
     /**
      * Download patient photo call.

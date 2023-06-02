@@ -3,6 +3,7 @@ package edu.upc.blopup
 import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.models.LegalConsent
+import edu.upc.sdk.library.models.ResultType
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -27,7 +28,7 @@ class RecordingHelperTest {
         }
 
         recordingRepository = mockk()
-        every { recordingRepository.saveRecording(legalConsent) } returns Observable.just("OK")
+        every { recordingRepository.saveRecording(legalConsent) } returns Observable.just(ResultType.RecordingSuccess)
 
         recordingHelper = RecordingHelper(recordingRepository)
 

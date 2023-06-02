@@ -17,19 +17,35 @@ import android.util.Log
 import edu.upc.sdk.library.dao.LegalConsentDAO
 import edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO
 import edu.upc.sdk.library.models.LegalConsent
-import retrofit2.Response
+import edu.upc.sdk.library.models.ResultType
+import okhttp3.MediaType
+import okhttp3.MultipartBody
 import rx.Observable
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RecordingRepository @Inject constructor(val legalConsentDAO: LegalConsentDAO) : BaseRepository() {
+class RecordingRepository @Inject constructor(val legalConsentDAO: LegalConsentDAO) :
+    BaseRepository() {
 
-    fun saveRecording(legalConsent: LegalConsent): Observable<String> {
+    fun saveRecording(legalConsent: LegalConsent): Observable<ResultType> {
+        val mediaType = MediaType.parse("audio")
+        val file = File(legalConsent.filePath!!)
+        val multipartBody = MultipartBody.create(mediaType, file)
+        val multipartBodyPart = MultipartBody.Part.create(multipartBody)
+
         return createObservableIO {
             try {
-                val response = Response.success("OK")
-                return@createObservableIO response.body()!!
+                val response = restApi.uploadConsent(multipartBodyPart, legalConsent.patientId).execute()
+
+                if (response.isSuccessful) {
+                    //save to local DB
+                    return@createObservableIO ResultType.RecordingSuccess
+                }
+                else {
+                    return@createObservableIO ResultType.RecordingError
+                }
             } catch (exception: Exception) {
                 Log.e(javaClass.name, exception.message, exception)
                 throw exception

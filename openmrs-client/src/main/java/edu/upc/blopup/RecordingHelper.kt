@@ -4,6 +4,7 @@ import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.FileUtils.removeLocalRecordingFile
 import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.models.LegalConsent
+import edu.upc.sdk.library.models.ResultType
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,7 +20,7 @@ class RecordingHelper @Inject constructor(
         val response = recordingRepository.saveRecording(legalConsent)
 
         response.subscribe {
-            if (it == "OK") {
+            if (it == ResultType.RecordingSuccess) {
                 removeLocalRecordingFile(fullFilePath)
             }
         }
