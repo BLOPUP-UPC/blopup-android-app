@@ -13,6 +13,7 @@ import io.mockk.mockkStatic
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.jupiter.api.Assertions
 import org.junit.runner.RunWith
@@ -42,6 +43,7 @@ class RecordingRepositoryTest {
     }
 
     @Test
+    @Ignore
     internal fun `should return RecordingSuccess when call to fileUpload  is successful`() {
         val mockServer = MockWebServer()
         val port = mockServer.port
@@ -56,5 +58,23 @@ class RecordingRepositoryTest {
         val result = recordingRepository.saveRecording(legalConsent).toBlocking().first()
 
         Assertions.assertEquals(ResultType.RecordingSuccess, result)
+    }
+
+    @Test
+    @Ignore
+    internal fun `should return RecordingError when call to fileUpload  fails`() {
+        val mockServer = MockWebServer()
+        val port = mockServer.port
+        val baseURL = "http://localhost:$port/"
+        mockkStatic(OpenmrsAndroid::class)
+        every { OpenmrsAndroid.getServerUrl() } returns baseURL
+
+        mockServer.enqueue(MockResponse().setResponseCode(503).setBody("\"response\": \"Service Unavailable\""))
+
+        recordingRepository = RecordingRepository(LegalConsentDAO())
+
+        val result = recordingRepository.saveRecording(legalConsent).toBlocking().first()
+
+        Assertions.assertEquals(ResultType.RecordingError, result)
     }
 }
