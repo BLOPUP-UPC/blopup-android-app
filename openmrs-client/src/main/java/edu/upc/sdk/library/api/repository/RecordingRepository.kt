@@ -14,14 +14,13 @@
 package edu.upc.sdk.library.api.repository
 
 import android.util.Log
+import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.sdk.library.dao.LegalConsentDAO
 import edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO
 import edu.upc.sdk.library.models.LegalConsent
+import edu.upc.sdk.library.models.LegalConsentRequest
 import edu.upc.sdk.library.models.ResultType
-import okhttp3.MediaType
-import okhttp3.MultipartBody
 import rx.Observable
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,14 +29,15 @@ class RecordingRepository @Inject constructor(val legalConsentDAO: LegalConsentD
     BaseRepository() {
 
     fun saveRecording(legalConsent: LegalConsent): Observable<ResultType> {
-        val mediaType = MediaType.parse("audio")
-        val file = File(legalConsent.filePath!!)
-        val multipartBody = MultipartBody.create(mediaType, file)
-        val multipartBodyPart = MultipartBody.Part.create(multipartBody)
+
+        val byteString = FileUtils.getByteArrayStringFromAudio(legalConsent.filePath)
+
+        val request = LegalConsentRequest(legalConsent.patientId!!, byteString!!)
+
 
         return createObservableIO {
             try {
-                val response = restApi.uploadConsent(multipartBodyPart, legalConsent.patientId).execute()
+                val response = restApi.uploadLegalConsent(request).execute()
 
                 if (response.isSuccessful) {
                     //save to local DB

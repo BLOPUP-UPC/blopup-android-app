@@ -9,7 +9,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RecordingHelper @Inject constructor(
+class
+RecordingHelper @Inject constructor(
     private val recordingRepository: RecordingRepository,
 ) {
 

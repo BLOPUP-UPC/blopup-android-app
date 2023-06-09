@@ -27,6 +27,7 @@ import edu.upc.sdk.library.models.FormCreate;
 import edu.upc.sdk.library.models.FormData;
 import edu.upc.sdk.library.models.IdGenPatientIdentifiers;
 import edu.upc.sdk.library.models.IdentifierType;
+import edu.upc.sdk.library.models.LegalConsentRequest;
 import edu.upc.sdk.library.models.Module;
 import edu.upc.sdk.library.models.Obscreate;
 import edu.upc.sdk.library.models.Observation;
@@ -186,9 +187,8 @@ public interface RestApi {
     Call<PatientPhoto> uploadPatientPhoto(@Path("uuid") String uuid,
                                           @Body PatientPhoto patientPhoto);
 
-    @Multipart
-    @POST("/api/v1/consent")
-    Call<String> uploadConsent(@Part MultipartBody.Part file, @Part("patientUuid") String patientId);
+    @POST("/api/v1/upload")
+    Call<String> uploadLegalConsent(@Body LegalConsentRequest legalConsentRequest);
 
     /**
      * Download patient photo call.

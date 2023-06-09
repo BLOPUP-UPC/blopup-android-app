@@ -12,4 +12,5 @@ class LegalConsent: java.io.Serializable{
     @SerializedName("patientId")
     @Expose
     var patientId: String? = null
+
 }

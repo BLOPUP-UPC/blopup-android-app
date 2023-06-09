@@ -16,6 +16,7 @@ package edu.upc.openmrs.utilities
 import android.app.Activity
 import android.os.Environment
 import android.text.TextUtils
+import android.util.Base64
 import android.util.Log
 import edu.upc.R
 import edu.upc.openmrs.application.OpenMRS
@@ -69,5 +70,23 @@ object FileUtils {
         } else {
             Log.d("file", "File does not exist: ${file.absolutePath}")
         }
+    }
+
+    @JvmStatic
+    fun getByteArrayStringFromAudio(filePath: String?): String? {
+        var fileInputStream: FileInputStream? = null
+        try {
+            fileInputStream = FileInputStream(filePath)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            val byteArray = ByteArray(1024)
+            var readNum: Int
+            while (fileInputStream.read(byteArray).also { readNum = it } != -1) {
+                byteArrayOutputStream.write(byteArray, 0, readNum)
+            }
+            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+        } catch (e: Exception) {
+            Log.d("mylog", e.toString())
+        }
+        return null
     }
 }

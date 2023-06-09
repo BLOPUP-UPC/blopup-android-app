@@ -14,12 +14,6 @@
 
 package edu.upc.sdk.library.dao;
 
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.databases.AppDatabase;
-import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.databases.entities.PatientEntity;
-import edu.upc.sdk.library.models.Patient;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.databases.entities.PatientEntity;
