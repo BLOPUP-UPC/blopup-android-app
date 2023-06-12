@@ -87,6 +87,7 @@ open class PatientDto {
 //                contactNames
             )
             patient.uuid = uuid.toString()
+            patient.identifiers = identifiers
 
             return patient
         }

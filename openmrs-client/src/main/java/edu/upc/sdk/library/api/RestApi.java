@@ -187,7 +187,7 @@ public interface RestApi {
     Call<PatientPhoto> uploadPatientPhoto(@Path("uuid") String uuid,
                                           @Body PatientPhoto patientPhoto);
 
-    @POST("/api/v1/upload")
+    @POST("upload")
     Call<String> uploadLegalConsent(@Body LegalConsentRequest legalConsentRequest);
 
     /**

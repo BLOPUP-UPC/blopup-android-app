@@ -21,7 +21,6 @@ import edu.upc.sdk.library.databases.entities.LocationEntity
  */
 class PatientIdentifier : Resource() {
 
-
     @SerializedName("identifierType")
     @Expose
     var identifierType: IdentifierType? = null

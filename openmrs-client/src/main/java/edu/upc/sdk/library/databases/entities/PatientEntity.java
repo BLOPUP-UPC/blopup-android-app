@@ -26,6 +26,8 @@ public class PatientEntity extends Resource {
     private boolean synced;
     @ColumnInfo(name = "identifier")
     private String identifier;
+    @ColumnInfo(name = "identifierUuid")
+    private String identifierUuid;
     @ColumnInfo(name = "givenName")
     private String givenName;
     @ColumnInfo(name = "middleName")
@@ -473,5 +475,13 @@ public class PatientEntity extends Resource {
 
     public void setAttributes(List<PersonAttribute> attributes) {
         this.attributes = attributes;
+    }
+
+    public String getIdentifierUuid() {
+        return identifierUuid;
+    }
+
+    public void setIdentifierUuid(String identifierUuid) {
+        this.identifierUuid = identifierUuid;
     }
 }

@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 class LegalConsentRequest(
 
-    @SerializedName("patientUuid")
+    @SerializedName("patientIdentifier")
     @Expose
-    val patientUuid: String,
+    val patientIdentifier: String,
 
     @SerializedName("fileByteString")
     @Expose

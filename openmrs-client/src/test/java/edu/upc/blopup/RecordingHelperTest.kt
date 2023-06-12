@@ -24,7 +24,7 @@ class RecordingHelperTest {
     fun setUp() {
         legalConsent = LegalConsent().apply {
             filePath = FILE_NAME
-            patientId = UUID.randomUUID().toString()
+            patientIdentifier = UUID.randomUUID().toString()
         }
 
         recordingRepository = mockk()

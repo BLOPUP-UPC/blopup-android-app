@@ -264,6 +264,7 @@ object AppDatabaseHelper {
         patientEntity.isSynced = patient.isSynced
         if (patient.identifier != null) {
             patientEntity.identifier = patient.identifier.identifier
+            patientEntity.identifierUuid = patient.identifier.uuid
         } else {
             patientEntity.identifier = null
         }
@@ -387,7 +388,7 @@ object AppDatabaseHelper {
     @JvmStatic
     fun convert(legalConsent: LegalConsent): LegalConsentEntity {
         val legalConsentEntity = LegalConsentEntity()
-        legalConsentEntity.patientId = legalConsent.patientId!!
+        legalConsentEntity.patientId = legalConsent.patientIdentifier!!
         legalConsentEntity.filePath = legalConsent.filePath!!
         return legalConsentEntity
     }

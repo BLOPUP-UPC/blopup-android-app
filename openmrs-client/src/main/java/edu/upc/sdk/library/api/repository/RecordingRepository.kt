@@ -32,7 +32,7 @@ class RecordingRepository @Inject constructor(val legalConsentDAO: LegalConsentD
 
         val byteString = FileUtils.getByteArrayStringFromAudio(legalConsent.filePath)
 
-        val request = LegalConsentRequest(legalConsent.patientId!!, byteString!!)
+        val request = LegalConsentRequest(legalConsent.patientIdentifier!!, byteString!!)
 
 
         return createObservableIO {

@@ -129,9 +129,11 @@ class AddEditPatientViewModel @Inject constructor(
                     setContent(it, PatientRegistering)
                     showPatientConsentToggle.check(onToggleEnabled = {
                         recordingHelper.saveLegalConsent(LegalConsent().apply {
-                            this.patientId = patient.uuid
-                            this.filePath = legalConsentFileName
-
+                            val patientIdentifier = patient.identifier.identifier
+                            if(patientIdentifier != null){
+                                this.patientIdentifier = patientIdentifier
+                                this.filePath = legalConsentFileName
+                            }
                         })
                     })
                 },

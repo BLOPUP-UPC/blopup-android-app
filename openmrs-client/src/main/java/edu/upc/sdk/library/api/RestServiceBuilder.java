@@ -97,6 +97,7 @@ public class RestServiceBuilder {
     private static GsonConverterFactory buildGsonConverter() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson myGson = gsonBuilder
+                .setLenient()
                 .excludeFieldsWithoutExposeAnnotation()
                 .registerTypeHierarchyAdapter(Resource.class, new ResourceSerializer())
                 .registerTypeHierarchyAdapter(Observation.class, new ObservationDeserializer())

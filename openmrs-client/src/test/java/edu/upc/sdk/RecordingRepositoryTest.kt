@@ -38,7 +38,7 @@ class RecordingRepositoryTest {
 
         legalConsent = LegalConsent().apply {
             filePath = testFilePath
-            patientId = UUID.randomUUID().toString()
+            patientIdentifier = UUID.randomUUID().toString()
         }
     }
 

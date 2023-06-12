@@ -1,6 +1,6 @@
 package edu.upc.blopup
 
-import edu.upc.openmrs.utilities.FileUtils
+import android.text.TextUtils
 import edu.upc.openmrs.utilities.FileUtils.removeLocalRecordingFile
 import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.models.LegalConsent
@@ -16,13 +16,13 @@ RecordingHelper @Inject constructor(
 
     fun saveLegalConsent(legalConsent: LegalConsent) {
 
-        val fullFilePath = FileUtils.getRootDirectory() + "/" + legalConsent.filePath
+        if(TextUtils.isEmpty(legalConsent.patientIdentifier) || TextUtils.isEmpty(legalConsent.filePath)) return
 
         val response = recordingRepository.saveRecording(legalConsent)
 
         response.subscribe {
             if (it == ResultType.RecordingSuccess) {
-                removeLocalRecordingFile(fullFilePath)
+                removeLocalRecordingFile(legalConsent.filePath!!)
             }
         }
     }

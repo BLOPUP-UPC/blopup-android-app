@@ -9,8 +9,8 @@ class LegalConsent: java.io.Serializable{
     @Expose
     var filePath: String? = null
 
-    @SerializedName("patientId")
+    @SerializedName("patientIdentifier")
     @Expose
-    var patientId: String? = null
+    var patientIdentifier: String? = null
 
 }

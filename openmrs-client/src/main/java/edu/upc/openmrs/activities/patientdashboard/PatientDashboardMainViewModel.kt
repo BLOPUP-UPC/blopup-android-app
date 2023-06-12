@@ -2,6 +2,7 @@ package edu.upc.openmrs.activities.patientdashboard
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.api.repository.AllergyRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
@@ -12,7 +13,6 @@ import edu.upc.sdk.library.models.OperationType.PatientDeleting
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
