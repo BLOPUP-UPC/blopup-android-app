@@ -78,8 +78,6 @@ public class PatientEntity extends Resource {
     //#endregion -- Contact Details --
     @ColumnInfo(name = "documentId")
     private String documentId;
-    @ColumnInfo(name = "legalConsentSynced")
-    private boolean legalConsentSynced;
 
     /**
      * Instantiates a new Patient entity.
@@ -475,13 +473,5 @@ public class PatientEntity extends Resource {
 
     public void setAttributes(List<PersonAttribute> attributes) {
         this.attributes = attributes;
-    }
-
-    public boolean isLegalConsentSynced() {
-        return legalConsentSynced;
-    }
-
-    public void setLegalConsentSynced(boolean legalConsentSynced) {
-        this.legalConsentSynced = legalConsentSynced;
     }
 }

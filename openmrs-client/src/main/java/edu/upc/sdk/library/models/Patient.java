@@ -55,11 +55,6 @@ public class Patient extends Person implements Serializable {
     @Expose
     private String contactPhoneNumber;
 
-    //Legal consent
-    @SerializedName("legalConsentSynced")
-    @Expose
-    private boolean legalConsentSynced;
-
     /**
      * Instantiates a new Patient.
      */
@@ -105,18 +100,6 @@ public class Patient extends Person implements Serializable {
         this.id = id;
         this.encounters = encounters;
         this.identifiers = identifiers;
-    }
-
-    public Patient(Long id, String encounters, List<PatientIdentifier> identifiers,
-                   List<PersonName> names, String gender, String birthdate,
-                   boolean birthdateEstimated, List<PersonAddress> addresses,
-                   List<PersonAttribute> attributes,
-                   Bitmap photo, Resource causeOfDeath, boolean dead, boolean voided, boolean legalConsentSynced) {
-        super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead, voided);
-        this.id = id;
-        this.encounters = encounters;
-        this.identifiers = identifiers;
-        this.legalConsentSynced = legalConsentSynced;
     }
 
     /**
@@ -342,13 +325,5 @@ public class Patient extends Person implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public boolean isLegalConsentSynced() {
-        return legalConsentSynced;
-    }
-
-    public void setLegalConsentSynced(boolean legalConsentSynced) {
-        this.legalConsentSynced = legalConsentSynced;
     }
 }
