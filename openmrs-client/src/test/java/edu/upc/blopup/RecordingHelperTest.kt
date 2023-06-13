@@ -9,7 +9,6 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.verify
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import rx.Observable
 import java.util.*
@@ -48,11 +47,10 @@ class RecordingHelperTest {
     }
 
     @Test
-    @Ignore
     fun `should remove recording file from local when successful`() {
         recordingHelper.saveLegalConsent(legalConsent)
 
-        verify { FileUtils.removeLocalRecordingFile(fullFilePath) }
+        verify { FileUtils.removeLocalRecordingFile(legalConsent.filePath!!) }
     }
 
     companion object {
