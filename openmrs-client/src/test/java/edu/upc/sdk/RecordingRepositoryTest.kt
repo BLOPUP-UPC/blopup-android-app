@@ -28,6 +28,8 @@ class RecordingRepositoryTest {
     lateinit var testFilePath: String
     lateinit var legalConsent: LegalConsent
     lateinit var recordingRepository: RecordingRepository
+    lateinit var mockServer: MockWebServer
+
 
     @Before
     fun setup() {
@@ -40,18 +42,22 @@ class RecordingRepositoryTest {
             filePath = testFilePath
             patientIdentifier = UUID.randomUUID().toString()
         }
+        mockServer = MockWebServer()
+
+        mockServer.enqueue(MockResponse().setResponseCode(200).setBody("\"response\": \"Ok\""))
+        mockServer.enqueue(  MockResponse().setResponseCode(503).setBody("\"response\": \"Service Unavailable\""))
+
+
     }
 
     @Test
-    @Ignore
+    //@Ignore
     internal fun `should return RecordingSuccess when call to fileUpload  is successful`() {
-        val mockServer = MockWebServer()
         val port = mockServer.port
         val baseURL = "http://localhost:$port/"
         mockkStatic(OpenmrsAndroid::class)
         every { OpenmrsAndroid.getServerUrl() } returns baseURL
 
-        mockServer.enqueue(MockResponse().setResponseCode(200).setBody("\"response\": \"Ok\""))
 
         recordingRepository = RecordingRepository(LegalConsentDAO())
 
@@ -61,15 +67,13 @@ class RecordingRepositoryTest {
     }
 
     @Test
-    @Ignore
+    //@Ignore
     internal fun `should return RecordingError when call to fileUpload  fails`() {
-        val mockServer = MockWebServer()
-        val port = mockServer.port
+         val port = mockServer.port
         val baseURL = "http://localhost:$port/"
         mockkStatic(OpenmrsAndroid::class)
         every { OpenmrsAndroid.getServerUrl() } returns baseURL
 
-        mockServer.enqueue(MockResponse().setResponseCode(503).setBody("\"response\": \"Service Unavailable\""))
 
         recordingRepository = RecordingRepository(LegalConsentDAO())
 
