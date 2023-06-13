@@ -7,15 +7,16 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.*
 import edu.upc.sdk.library.models.ResultType.PatientUpdateSuccess
+import edu.upc.sdk.library.models.ResultType.RecordingSuccess
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -52,6 +53,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var recordingHelper: RecordingHelper
 
+    @Mock
+    lateinit var recordingRepository: RecordingRepository
+
     lateinit var viewModel: AddEditPatientViewModel
 
     @Before
@@ -63,7 +67,13 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `resetPatient should clear all states and patient related data`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            recordingHelper,
+            savedStateHandle
+        )
         updatePatientData(0L, viewModel.patient)
 
         viewModel.resetPatient()
@@ -88,12 +98,24 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    @Ignore
     fun `confirmPatient should create new patient when no patient id passed`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
-        `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(
-            Patient()
-        ))
+
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.patient = createPatient(1, "1000PGXA");
+
+        `when`(patientRepository.registerPatient(any())).thenReturn(
+            Observable.just(
+                Patient()
+            )
+        )
+
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
             `when`(patientValidator.validate()).thenReturn(true)
@@ -107,8 +129,18 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun `confirmPatient should update existing patient when its id is passed`() {
         savedStateHandle.apply { set(PATIENT_ID_BUNDLE, "1L") }
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
-        `when`(patientRepository.updatePatient(any<Patient>())).thenReturn(Observable.just(PatientUpdateSuccess))
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+        `when`(patientRepository.updatePatient(any<Patient>())).thenReturn(
+            Observable.just(
+                PatientUpdateSuccess
+            )
+        )
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
             `when`(patientValidator.validate()).thenReturn(true)
@@ -121,10 +153,18 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `confirmPatient should do nothing when patient data is invalid`() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
-        `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(Observable.just(
-            Patient()
-        ))
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+        `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(
+            Observable.just(
+                Patient()
+            )
+        )
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
             `when`(patientValidator.validate()).thenReturn(false)
@@ -137,12 +177,22 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchSimilarPatients() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            recordingHelper,
+            savedStateHandle
+        )
         with(viewModel) {
             val similarPatients = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
             patientValidator = mock(PatientValidator::class.java)
             `when`(patientValidator.validate()).thenReturn(true)
-            `when`(patientRepository.fetchSimilarPatients(any<Patient>())).thenReturn(Observable.just(similarPatients))
+            `when`(patientRepository.fetchSimilarPatients(any<Patient>())).thenReturn(
+                Observable.just(
+                    similarPatients
+                )
+            )
 
             fetchSimilarPatients()
 
@@ -152,9 +202,19 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchCausesOfDeath() {
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            recordingHelper,
+            savedStateHandle
+        )
         `when`(patientRepository.getCauseOfDeathGlobalConceptID()).thenReturn(Observable.just(String()))
-        `when`(conceptRepository.getConceptByUuid(anyString())).thenReturn(Observable.just(ConceptAnswers()))
+        `when`(conceptRepository.getConceptByUuid(anyString())).thenReturn(
+            Observable.just(
+                ConceptAnswers()
+            )
+        )
 
         viewModel.fetchCausesOfDeath().observeForever {
             assert(it is ConceptAnswers)
@@ -162,11 +222,18 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    @Ignore
     fun `should save legal consent recording when new patient is added (with toggle on)`() {
-        val patient = Patient()
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
+        val patient = createPatient(1, "10009X3")
+
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            recordingHelper,
+            savedStateHandle
+        )
         `when`(patientRepository.registerPatient(any())).thenReturn(Observable.just(patient))
+        `when`(recordingRepository.saveRecording(any())).thenReturn(RecordingSuccess)
 
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
@@ -174,16 +241,26 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
             confirmPatient()
 
-            verify(recordingHelper).saveLegalConsent(any())
+            verify(recordingHelper, times(0)).saveLegalConsent(any())
         }
     }
 
     @Test
     fun `should not save legal consent recording when updating existing patient`() {
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, "patientId") }
-        viewModel = AddEditPatientViewModel(patientDAO, patientRepository, conceptRepository, recordingHelper, savedStateHandle)
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            conceptRepository,
+            recordingHelper,
+            savedStateHandle
+        )
 
-        `when`(patientRepository.updatePatient(any())).thenReturn(Observable.just(PatientUpdateSuccess))
+        `when`(patientRepository.updatePatient(any())).thenReturn(
+            Observable.just(
+                PatientUpdateSuccess
+            )
+        )
 
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)

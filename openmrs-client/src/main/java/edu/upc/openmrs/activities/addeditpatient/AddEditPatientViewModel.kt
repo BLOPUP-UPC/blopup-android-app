@@ -44,7 +44,6 @@ class AddEditPatientViewModel @Inject constructor(
     var isUpdatePatient = false
         private set
     lateinit var patient: Patient
-        private set
 
     var isPatientUnidentified = false
         set(value) {

@@ -55,7 +55,7 @@ class RecordingRepositoryTest {
 
         recordingRepository = RecordingRepository(LegalConsentDAO())
 
-        val result = recordingRepository.saveRecording(legalConsent).toBlocking().first()
+        val result = recordingRepository.saveRecording(legalConsent)
 
         Assertions.assertEquals(ResultType.RecordingSuccess, result)
     }
@@ -73,7 +73,7 @@ class RecordingRepositoryTest {
 
         recordingRepository = RecordingRepository(LegalConsentDAO())
 
-        val result = recordingRepository.saveRecording(legalConsent).toBlocking().first()
+        val result = recordingRepository.saveRecording(legalConsent)
 
         Assertions.assertEquals(ResultType.RecordingError, result)
     }

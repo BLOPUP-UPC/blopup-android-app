@@ -16,14 +16,12 @@ RecordingHelper @Inject constructor(
 
     fun saveLegalConsent(legalConsent: LegalConsent) {
 
-        if(TextUtils.isEmpty(legalConsent.patientIdentifier) || TextUtils.isEmpty(legalConsent.filePath)) return
+        if (TextUtils.isEmpty(legalConsent.patientIdentifier) || TextUtils.isEmpty(legalConsent.filePath)) return
 
         val response = recordingRepository.saveRecording(legalConsent)
 
-        response.subscribe {
-            if (it == ResultType.RecordingSuccess) {
-                removeLocalRecordingFile(legalConsent.filePath!!)
-            }
+        if (response == ResultType.RecordingSuccess) {
+            removeLocalRecordingFile(legalConsent.filePath!!)
         }
     }
 }

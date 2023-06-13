@@ -28,7 +28,7 @@ class RecordingHelperTest {
         }
 
         recordingRepository = mockk()
-        every { recordingRepository.saveRecording(legalConsent) } returns Observable.just(ResultType.RecordingSuccess)
+        every { recordingRepository.saveRecording(legalConsent) } returns ResultType.RecordingSuccess
 
         recordingHelper = RecordingHelper(recordingRepository)
 
