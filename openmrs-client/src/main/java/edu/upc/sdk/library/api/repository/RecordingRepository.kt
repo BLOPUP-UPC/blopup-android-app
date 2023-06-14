@@ -28,27 +28,27 @@ import javax.inject.Singleton
 class RecordingRepository @Inject constructor(val legalConsentDAO: LegalConsentDAO) :
     BaseRepository() {
 
-    fun saveRecording(legalConsent: LegalConsent): ResultType {
+    fun saveRecording(legalConsent: LegalConsent): Observable<ResultType> {
 
         val byteString = FileUtils.getByteArrayStringFromAudio(legalConsent.filePath)
 
         val request = LegalConsentRequest(legalConsent.patientIdentifier!!, byteString!!)
 
+        return createObservableIO {
+            try {
+                val response = restApi.uploadLegalConsent(request).execute()
 
-
-        try {
-            val response = restApi.uploadLegalConsent(request).execute()
-
-            if (response.isSuccessful) {
-                //save to local DB
-                return ResultType.RecordingSuccess
-            } else {
-                return ResultType.RecordingError
+                if (response.isSuccessful) {
+                    //save to local DB
+                    return@createObservableIO ResultType.RecordingSuccess
+                }
+                else {
+                    return@createObservableIO ResultType.RecordingError
+                }
+            } catch (exception: Exception) {
+                Log.e(javaClass.name, exception.message, exception)
+                throw exception
             }
-        } catch (exception: Exception) {
-            Log.e(javaClass.name, exception.message, exception)
-            throw exception
         }
-
     }
 }

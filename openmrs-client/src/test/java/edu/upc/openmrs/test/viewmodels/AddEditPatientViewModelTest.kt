@@ -108,7 +108,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.patient = createPatient(1, "1000PGXA");
+        viewModel.patient = createPatient(1, "1000PGXA")
 
         `when`(patientRepository.registerPatient(any())).thenReturn(
             Observable.just(
@@ -233,7 +233,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
         `when`(patientRepository.registerPatient(any())).thenReturn(Observable.just(patient))
-        `when`(recordingRepository.saveRecording(any())).thenReturn(RecordingSuccess)
+        `when`(recordingRepository.saveRecording(any())).thenReturn(Observable.just(RecordingSuccess))
 
         with(viewModel) {
             patientValidator = mock(PatientValidator::class.java)
