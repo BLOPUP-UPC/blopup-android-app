@@ -489,8 +489,18 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
         }
 
+        languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                // Enable the submit button if a valid language (not the first item) is selected
+                recordConsentImageButton.isEnabled = position != 0
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
         recordConsentImageButton.setOnClickListener {
-            val languageSpinner = binding.languageSpinner
             val selectedLanguage = languageSpinner.selectedItem.toString()
             showLegalConsent(selectedLanguage)
         }

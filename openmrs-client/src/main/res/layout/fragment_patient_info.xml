@@ -639,6 +639,7 @@
                                     android:layout_marginBottom="10dp"
                                     android:backgroundTint="@color/color_accent"
                                     app:borderWidth="0dp"
+                                    android:enabled="false"
                                     android:layout_gravity="center"
                                     app:srcCompat="@mipmap/record" />
 
