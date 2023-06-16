@@ -16,11 +16,10 @@ package edu.upc.openmrs.utilities
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.os.Build
+import edu.upc.R
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
 import java.util.*
-
 
 object LanguageUtils {
 
@@ -61,19 +60,20 @@ object LanguageUtils {
     }
 
     @JvmStatic
-    fun getLanguageCode(language: String): String? {
+    fun getLanguageCode(language: String, context: Context): String? {
+        val currentLocale = Locale.getDefault()
         val languageMap = mapOf(
-            "english" to "en",
-            "spanish" to "es",
-            "catalan" to "ca",
-            "italian" to "it",
-            "portuguese" to "pt",
-            "german" to "de",
-            "french" to "fr",
-            "moroccan" to "ma",
-            "russian" to "ru",
-            "ukrainian" to "uk"
+            context.getString(R.string.english) to "en",
+            context.getString(R.string.spanish) to "es",
+            context.getString(R.string.catalan) to "ca",
+            context.getString(R.string.italian) to "it",
+            context.getString(R.string.portuguese) to "pt",
+            context.getString(R.string.german) to "de",
+            context.getString(R.string.french) to "fr",
+            context.getString(R.string.moroccan) to "ma",
+            context.getString(R.string.russian) to "ru",
+            context.getString(R.string.ukrainian) to "uk",
         )
-        return languageMap[language.lowercase()]
+        return languageMap[language]?.lowercase(currentLocale)
     }
 }

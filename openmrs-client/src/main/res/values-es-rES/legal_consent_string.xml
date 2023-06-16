@@ -9,17 +9,27 @@
         Ahora te pediremos que digas tu nombre: \n\n
         ¿Das tu consentimiento para participar en este estudio donde tomaremos datos médicos y personales tuyos, los guardaremos y procesaremos, pero ¿nunca los comunicaremos si no es de forma agregada? Responde si o no: \n\n
     </string>
+    <string name="english">Inglés</string>
+    <string name="catalan">Catalán</string>
+    <string name="spanish">Español</string>
+    <string name="german">Alemán</string>
+    <string name="french">Francés</string>
+    <string name="italian">Italiano</string>
+    <string name="moroccan">Marroquí</string>
+    <string name="portuguese">Portugués</string>
+    <string name="russian">Ruso</string>
+    <string name="ukrainian">Ucraniano</string>
     <string-array name="languages">
-        <item>Select language</item>
-        <item>Catalan</item>
-        <item>English</item>
-        <item>French</item>
-        <item>German</item>
-        <item>Italian</item>
-        <item>Moroccan</item>
-        <item>Portuguese</item>
-        <item>Russian</item>
-        <item>Spanish</item>
-        <item>Ukrainian</item>
+        <item>Selecciona un idioma</item>
+        <item>Alemán</item>
+        <item>Catalán</item>
+        <item>Español</item>
+        <item>Francés</item>
+        <item>Inglés</item>
+        <item>Italiano</item>
+        <item>Marroquí</item>
+        <item>Portugués</item>
+        <item>Ruso</item>
+        <item>Ucraniano</item>
     </string-array>
 </resources>
