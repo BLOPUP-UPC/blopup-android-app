@@ -225,4 +225,8 @@ object ApplicationConstants {
         const val SELECT_ALLERGEN = "Select Allergen"
         const val SELECT_REACTION = "Reactions (you can select multiple)"
     }
+
+    object RecordingLanguages {
+        val LANGUAGE_LIST = arrayOf("Select language", "Catalan", "English", "French", "German", "Italian", "Moroccan", "Portuguese", "Russian", "Spanish", "Ukrainian")
+    }
 }

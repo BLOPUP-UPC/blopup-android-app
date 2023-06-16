@@ -2,6 +2,7 @@ package edu.upc.openmrs.test.activities.addeditpatient
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
@@ -15,34 +16,49 @@ import edu.upc.R
 import edu.upc.blopup.AudioRecorder
 import edu.upc.openmrs.activities.addeditpatient.LegalConsentDialogFragment
 import edu.upc.openmrs.utilities.FileUtils
+import edu.upc.openmrs.utilities.LanguageUtils
 import io.mockk.*
 import junit.framework.TestCase.*
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 import kotlinx.android.synthetic.main.legal_consent.*
+import org.junit.After
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyString
+import org.robolectric.annotation.Config
 
 private const val ADD_EDIT_PATIENT_FRAGMENT = "edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment"
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.N])
 class LegalConsentDialogFragmentTest {
     private lateinit var legalConsentScenario: FragmentScenario<LegalConsentDialogFragment>
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var context: Context
 
+
     @Before
     internal fun setup() {
         mediaPlayer = mockk(relaxUnitFun = true)
+//        mockkObject(LanguageUtils)
+
         context = ApplicationProvider.getApplicationContext<Context>()
 
         mockkStatic(MediaPlayer::class)
         mockkConstructor(AudioRecorder::class)
+//        mockkStatic(LanguageUtils::class)
 
         every { MediaPlayer.create(any(), any<Int>()) } returns mediaPlayer
+//        every { LanguageUtils.getLanguageCode(any()) } returns "en"
 
         legalConsentScenario = launchFragment()
+    }
+
+    @After
+    fun teardown() {
+        unmockkAll()
     }
 
     @Test

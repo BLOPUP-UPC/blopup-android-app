@@ -41,13 +41,10 @@ object FileUtils {
     }
 
     @JvmStatic
-    fun getFileByLanguage(activity: Activity?, fileName: String): Int {
-        val lang = LanguageUtils.getLanguage()
-
+    fun getFileByLanguage(activity: Activity?, fileName: String, languageCode: String?): Int {
         val resourceByLocal = activity?.resources?.getIdentifier(
-            fileName + "_$lang", "raw", activity.packageName
+            fileName + "_$languageCode", "raw", activity.packageName
         )
-
         return if (resourceByLocal == 0) R.raw.legal_consent_es else resourceByLocal!!
     }
 

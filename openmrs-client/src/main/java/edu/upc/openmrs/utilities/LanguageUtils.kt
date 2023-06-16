@@ -13,10 +13,14 @@
  */
 package edu.upc.openmrs.utilities
 
+import android.content.Context
+import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Build
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
 import java.util.*
+
 
 object LanguageUtils {
 
@@ -40,5 +44,36 @@ object LanguageUtils {
         val conf = resources.configuration
         conf.locale = myLocale
         resources.updateConfiguration(conf, dm)
+    }
+
+    @JvmStatic
+    fun getLocaleStringResource(
+        requestedLocale: Locale?,
+        resourceId: Int,
+        context: Context
+    ): String {
+        val result: String
+        // use latest api
+        val config = Configuration(context.getResources().getConfiguration())
+        config.setLocale(requestedLocale)
+        result = context.createConfigurationContext(config).getText(resourceId).toString()
+        return result
+    }
+
+    @JvmStatic
+    fun getLanguageCode(language: String): String? {
+        val languageMap = mapOf(
+            "english" to "en",
+            "spanish" to "es",
+            "catalan" to "ca",
+            "italian" to "it",
+            "portuguese" to "pt",
+            "german" to "de",
+            "french" to "fr",
+            "moroccan" to "ma",
+            "russian" to "ru",
+            "ukrainian" to "uk"
+        )
+        return languageMap[language.lowercase()]
     }
 }

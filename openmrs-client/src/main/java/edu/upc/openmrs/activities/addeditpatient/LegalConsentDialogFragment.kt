@@ -13,8 +13,11 @@ import edu.upc.databinding.LegalConsentBinding
 import edu.upc.openmrs.utilities.FileUtils.fileIsCreatedSuccessfully
 import edu.upc.openmrs.utilities.FileUtils.getFileByLanguage
 import edu.upc.openmrs.utilities.FileUtils.getRecordingFilePath
+import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.openmrs.utilities.makeVisible
 import kotlinx.android.synthetic.main.fragment_patient_info.*
+import java.util.*
+
 
 class LegalConsentDialogFragment : DialogFragment() {
 
@@ -31,12 +34,26 @@ class LegalConsentDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
+
+        val language = arguments?.getString(ARG_LANGUAGE)?.lowercase()
+        val languageCode = LanguageUtils.getLanguageCode(language!!)
+
         getRecordingFilePath().also { mFileName = it }
-        audioRecorder = AudioRecorder(mFileName, requireContext(), getFileByLanguage(requireActivity(), TAG))
+        audioRecorder = AudioRecorder(mFileName, requireContext(), getFileByLanguage(requireActivity(), TAG, languageCode))
+
+        setLegalConsentWordingLanguage(languageCode!!)
         setupButtons()
         listenForPlayCompletion()
         isCancelableWhenNotRecording()
         return legalConsentBinding.root
+    }
+
+    private fun setLegalConsentWordingLanguage(language: String) {
+        val legalConsentWording = legalConsentBinding.legalConsentWording
+
+        legalConsentWording.text = context?.let {
+            LanguageUtils.getLocaleStringResource(Locale(language), R.string.legal_consent, it)
+        }
     }
 
     override fun onStart() {
@@ -123,5 +140,14 @@ class LegalConsentDialogFragment : DialogFragment() {
 
     companion object {
         const val TAG: String = "legal_consent"
+        private const val ARG_LANGUAGE = "language"
+
+        fun newInstance(language: String): LegalConsentDialogFragment {
+            val fragment = LegalConsentDialogFragment()
+            val args = Bundle()
+            args.putString(ARG_LANGUAGE, language)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

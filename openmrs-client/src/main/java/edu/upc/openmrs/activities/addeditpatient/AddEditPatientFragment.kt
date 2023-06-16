@@ -490,7 +490,9 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         }
 
         recordConsentImageButton.setOnClickListener {
-            showLegalConsent()
+            val languageSpinner = binding.languageSpinner
+            val selectedLanguage = languageSpinner.selectedItem.toString()
+            showLegalConsent(selectedLanguage)
         }
 
         submitButton.setOnClickListener {
@@ -715,9 +717,9 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             .show()
     }
 
-    private fun showLegalConsent() {
+    private fun showLegalConsent(language: String) {
         if (isMicrophonePresent()) {
-            legalConsentDialog = LegalConsentDialogFragment()
+            legalConsentDialog = LegalConsentDialogFragment.newInstance(language)
             legalConsentDialog?.show(childFragmentManager, LegalConsentDialogFragment.TAG)
             childFragmentManager.findFragmentById(R.id.legal_consent)?.onStart()
         } else {
