@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="legal_consent">
+        L\'essentiel des informations que nous vous avons données oralement et par écrit sont: \n\n
+        Vous participerez à une étude de Salut Sense Sostre qui consiste à mesurer la tension artérielle. Nous vous donnerons des directives si elle est trop élevée et nous ferons un suivi avec vous. Cette mesure de tension ne comporte aucun risque. \n\n
+        Vos données personnelles et médicales ne seront connues que de nous et de vous. Vous pourrez les consulter et nous demander de les effacer. \n\n
+        Nous ne communiquerons jamais vos données individuelles, uniquement sous forme globale à des fins statistiques.  \n\n
+        La participation est volontaire et gratuite, et vous pouvez arrêter de participer quand vous voulez. \n\n
+        Nous allons maintenant vous demander de dire votre nom :\n\n
+        Donnez-vous votre consentement pour participer à cette étude où nous prendrons vos données médicales et personnelles, que nous conserverons et traiterons, cependant que nous ne communiquerons jamais si elles ne sont pas agrégées? Répond par oui ou non: \n\n
+    </string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="legal_consent">
+        I punti principali delle informazioni che ti abbiamo fornito verbalmente e per iscritto sono:\n\n
+        Parteciperai ad uno studio di Salut Sense Sostre che prevede la misurazione della pressione sanguigna.\n\n
+        Ti forniremo le linee guida da seguire se la pressione dovesse essere troppo alta e ti monitoreremo. Questa misurazione non comporta alcun rischio.\n\n
+        I tuoi dati personali e medici saranno conosciuti solo da noi e da te. Potrai vederli e chiederci di distruggerli. Non comunicheremo mai i tuoi dati personali, solo in forma aggregata e statistica.\n\n
+        La partecipazione è volontaria e gratuita e puoi interrompere la partecipazione in qualsiasi momento.\n\n
+        Ora ti chiederemo di dire il tuo nome: \n\n
+        Presti il tuo consenso a partecipare a questo studio dove prenderemo i tuoi dati medici e personali, li conserveremo e li elaboreremo, ma non li comunicheremo mai se non in forma aggregata? Rispondi si o no: \n\n
+    </string>
+</resources>

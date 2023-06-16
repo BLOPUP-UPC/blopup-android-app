@@ -9,4 +9,17 @@
         Now we will ask you to say your name: \n\n
         Do you give your consent to participate in this study where we will take medical and personal data about you, we will store and process it, but we will never share it if it is not in an aggregated way? Please, answer yes or no: \n\n
     </string>
+    <string-array name="languages">
+        <item>Select language</item>
+        <item>Catalan</item>
+        <item>English</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Italian</item>
+        <item>Moroccan</item>
+        <item>Portuguese</item>
+        <item>Russian</item>
+        <item>Spanish</item>
+        <item>Ukrainian</item>
+    </string-array>
 </resources>

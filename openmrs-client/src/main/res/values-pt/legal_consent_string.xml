@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="legal_consent">
+        Os pontos principais da informação que te foram transmitidos oralmente e por escrito são: \n\n
+        Você participará de um estudo da Salut Sense Sostre que envolve a medição da pressão arterial. \n\n
+        Nós te daremos orientações de ação se a mesma for muito alta e iremos acompanhá-lo. Esta medida não apresenta risco nenhum. \n\n
+        Seus dados pessoais e médicos serão conhecidos apenas por nós e por você. Você poderá vê-los e nos pedir para destruí-los. Nunca comunicaremos seus dados individuais, apenas de forma agregada e estatística. \n\n
+        A participação é voluntária e gratuita, podendo deixar de participar em qualquer momento. \n\n
+        Agora vamos pedir que você diga seu nome: \n\n
+        Você dá seu consentimento para participar deste estudo, onde coletaremos seus dados médicos e pessoais, os guardaremos e processaremos, mas nunca os comunicaremos se não estiverem de forma agregada? Responda sim ou não: \n\n
+    </string>
+</resources>
