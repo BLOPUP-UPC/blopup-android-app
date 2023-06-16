@@ -36,7 +36,7 @@ class LegalConsentDialogFragment : DialogFragment() {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
 
         val language = arguments?.getString(ARG_LANGUAGE)
-        val languageCode = context?.let { LanguageUtils.getLanguageCode(language!!, it) }
+        val languageCode = context?.let { LanguageUtils.getLanguageCode(language, it) }
 
         getRecordingFilePath().also { mFileName = it }
         audioRecorder = AudioRecorder(mFileName, requireContext(), getFileByLanguage(requireActivity(), TAG, languageCode))

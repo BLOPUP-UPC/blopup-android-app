@@ -26,7 +26,10 @@ object LanguageUtils {
     @JvmStatic
     fun getLanguage(): String? {
         val defaultSharedPref = OpenmrsAndroid.getOpenMRSSharedPreferences()
-        return defaultSharedPref.getString(ApplicationConstants.OpenMRSlanguage.KEY_LANGUAGE_MODE, "en")
+        return defaultSharedPref.getString(
+            ApplicationConstants.OpenMRSlanguage.KEY_LANGUAGE_MODE,
+            "en"
+        )
     }
 
     @JvmStatic
@@ -60,7 +63,7 @@ object LanguageUtils {
     }
 
     @JvmStatic
-    fun getLanguageCode(language: String, context: Context): String? {
+    fun getLanguageCode(language: String?, context: Context): String? {
         val currentLocale = Locale.getDefault()
         val languageMap = mapOf(
             context.getString(R.string.english) to "en",
@@ -74,6 +77,6 @@ object LanguageUtils {
             context.getString(R.string.russian) to "ru",
             context.getString(R.string.ukrainian) to "uk",
         )
-        return languageMap[language]?.lowercase(currentLocale)
+        return languageMap[language ?: "English"]?.lowercase(currentLocale)
     }
 }
