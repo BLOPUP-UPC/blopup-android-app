@@ -56,7 +56,7 @@ object LanguageUtils {
     ): String {
         val result: String
         // use latest api
-        val config = Configuration(context.getResources().getConfiguration())
+        val config = Configuration(context.resources.configuration)
         config.setLocale(requestedLocale)
         result = context.createConfigurationContext(config).getText(resourceId).toString()
         return result
@@ -73,7 +73,7 @@ object LanguageUtils {
             context.getString(R.string.portuguese) to "pt",
             context.getString(R.string.german) to "de",
             context.getString(R.string.french) to "fr",
-            context.getString(R.string.moroccan) to "ma",
+            context.getString(R.string.moroccan) to "ar",
             context.getString(R.string.russian) to "ru",
             context.getString(R.string.ukrainian) to "uk",
         )

@@ -585,6 +585,7 @@
                             android:text="@string/record_patient_consent"
                             android:textSize="16sp"
                             android:textStyle="bold" />
+
                         <TextView
                             android:id="@+id/record_consent_error"
                             android:layout_width="wrap_content"
@@ -616,9 +617,10 @@
                                 android:id="@+id/record_consent_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginRight="8dp"
-                                android:orientation="vertical"
+                                android:layout_gravity="end"
+                                android:layout_marginEnd="8dp"
+                                android:orientation="horizontal"
+                                android:weightSum="4"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
@@ -626,27 +628,29 @@
                                 <Spinner
                                     android:id="@+id/language_spinner"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="@drawable/spinner_settings_page"
-                                    android:entries="@array/languages"/>
+                                    android:layout_height="50dp"
+                                    android:layout_gravity="left"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/admission_spinner"
+                                    android:entries="@array/languages" />
+
 
                                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                                     android:id="@+id/record_consent_imageButton"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="-10dp"
-                                    android:layout_marginBottom="10dp"
+                                    android:layout_gravity="right"
+                                    android:layout_margin="10dp"
                                     android:backgroundTint="@color/color_accent"
-                                    app:borderWidth="0dp"
                                     android:enabled="false"
-                                    android:layout_gravity="center"
+                                    app:borderWidth="0dp"
                                     app:srcCompat="@mipmap/record" />
 
                                 <androidx.fragment.app.FragmentContainerView
                                     android:id="@+id/legal_consent"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"/>
+                                    android:layout_height="match_parent" />
 
                             </LinearLayout>
 
