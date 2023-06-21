@@ -114,6 +114,7 @@ class LegalConsentDialogFragment : DialogFragment() {
                 val parent = parentFragment
                 parent?.record_consent_imageButton?.setImageResource(R.drawable.saved)
                 parent?.record_consent_imageButton?.isEnabled = false
+                parent?.language_spinner?.isEnabled = false
             }
         }
     }

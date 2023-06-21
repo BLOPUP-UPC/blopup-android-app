@@ -4,9 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -178,6 +176,7 @@ class LegalConsentDialogFragmentTest {
             it.record.performClick()
             it.stop.performClick()
             assert(savedIconAsBitmap.sameAs(addEditPatient.record_consent_imageButton.background.toBitmap()))
+            assertFalse(it.language_spinner.isEnabled)
         }
     }
 }
