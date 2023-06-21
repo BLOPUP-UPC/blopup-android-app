@@ -26,7 +26,7 @@ import java.util.*
 @RunWith(RobolectricTestRunner::class)
 class RecordingRepositoryTest {
     lateinit var testFilePath: String
-    lateinit var legalConsent: LegalConsent
+    private lateinit var legalConsent: LegalConsent
     lateinit var recordingRepository: RecordingRepository
     lateinit var mockServer: MockWebServer
 
@@ -44,22 +44,19 @@ class RecordingRepositoryTest {
         }
         mockServer = MockWebServer()
 
-        mockServer.enqueue(MockResponse().setResponseCode(200).setBody("\"response\": \"Ok\""))
-        mockServer.enqueue(  MockResponse().setResponseCode(503).setBody("\"response\": \"Service Unavailable\""))
-
-
-    }
-
-    @Test
-    internal fun `should return RecordingSuccess when call to fileUpload  is successful`() {
         val port = mockServer.port
         val baseURL = "http://localhost:$port/"
         mockkStatic(OpenmrsAndroid::class)
         every { OpenmrsAndroid.getServerUrl() } returns baseURL
 
+        mockServer.enqueue(MockResponse().setResponseCode(200).setBody("\"response\": \"Ok\""))
+        mockServer.enqueue(  MockResponse().setResponseCode(503).setBody("\"response\": \"Service Unavailable\""))
 
         recordingRepository = RecordingRepository(LegalConsentDAO())
+    }
 
+    @Test
+    internal fun `should return RecordingSuccess when call to fileUpload  is successful`() {
         val result = recordingRepository.saveRecording(legalConsent)
         val actual = result.toBlocking().first()
 
@@ -68,13 +65,6 @@ class RecordingRepositoryTest {
 
     @Test
     internal fun `should return RecordingError when call to fileUpload  fails`() {
-         val port = mockServer.port
-        val baseURL = "http://localhost:$port/"
-        mockkStatic(OpenmrsAndroid::class)
-        every { OpenmrsAndroid.getServerUrl() } returns baseURL
-
-        recordingRepository = RecordingRepository(LegalConsentDAO())
-
         val result = recordingRepository.saveRecording(legalConsent)
         val actual = result.toBlocking().first()
 
