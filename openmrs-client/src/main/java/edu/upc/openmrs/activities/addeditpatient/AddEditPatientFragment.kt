@@ -47,7 +47,6 @@ import androidx.lifecycle.Observer
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.snackbar.Snackbar
 import com.hbb20.CountryCodePicker
-import com.hbb20.countrypicker.models.CPCountry
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCrop.REQUEST_CROP
 import dagger.hilt.android.AndroidEntryPoint
@@ -148,6 +147,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
         askPermissions()
 
+        setCountrySpinnerInCatalanToSpanish()
+
         showPatientConsentToggle.check(onToggleDisabled = {
             binding.linearLayoutConsent.makeGone()
 
@@ -158,6 +159,13 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             binding.linearLayoutNationality.layoutParams = bottomMargin
         })
         return binding.root
+    }
+
+    private fun setCountrySpinnerInCatalanToSpanish() {
+        val language = LanguageUtils.getLanguage()
+        if (language.equals("ca")) {
+            binding.countryCodeSpinner.changeDefaultLanguage(CountryCodePicker.Language.SPANISH)
+        }
     }
 
     private fun setupPermissionsHandler() {
