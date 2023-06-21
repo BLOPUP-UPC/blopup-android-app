@@ -51,7 +51,6 @@ class RecordingRepositoryTest {
     }
 
     @Test
-    @Ignore
     internal fun `should return RecordingSuccess when call to fileUpload  is successful`() {
         val port = mockServer.port
         val baseURL = "http://localhost:$port/"
@@ -62,23 +61,23 @@ class RecordingRepositoryTest {
         recordingRepository = RecordingRepository(LegalConsentDAO())
 
         val result = recordingRepository.saveRecording(legalConsent)
+        val actual = result.toBlocking().first()
 
-        Assertions.assertEquals(ResultType.RecordingSuccess, result)
+        Assertions.assertEquals(ResultType.RecordingSuccess, actual)
     }
 
     @Test
-    @Ignore
     internal fun `should return RecordingError when call to fileUpload  fails`() {
          val port = mockServer.port
         val baseURL = "http://localhost:$port/"
         mockkStatic(OpenmrsAndroid::class)
         every { OpenmrsAndroid.getServerUrl() } returns baseURL
 
-
         recordingRepository = RecordingRepository(LegalConsentDAO())
 
         val result = recordingRepository.saveRecording(legalConsent)
+        val actual = result.toBlocking().first()
 
-        Assertions.assertEquals(ResultType.RecordingError, result)
+        Assertions.assertEquals(ResultType.RecordingError, actual)
     }
 }
