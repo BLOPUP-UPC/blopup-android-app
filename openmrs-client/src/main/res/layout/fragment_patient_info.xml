@@ -558,12 +558,16 @@
                                 app:layout_constraintRight_toLeftOf="@id/guideline"
                                 app:layout_constraintTop_toTopOf="parent">
 
-                                <com.hbb20.CountryPickerView
+                                <com.hbb20.CountryCodePicker
                                     android:id="@+id/countryCodeSpinner"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
-                                    app:cp_initialSelectionMode="empty" />
+                                    app:ccp_autoDetectCountry="true"
+                                    app:ccp_autoDetectLanguage="true"
+                                    app:ccp_areaCodeDetectedCountry="true"
+                                    app:ccp_showFullName="true"
+                                    app:ccp_showPhoneCode="false" />
 
                             </LinearLayout>
 

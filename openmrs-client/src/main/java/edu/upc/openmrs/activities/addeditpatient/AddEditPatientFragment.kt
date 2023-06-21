@@ -46,6 +46,8 @@ import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.snackbar.Snackbar
+import com.hbb20.CountryCodePicker
+import com.hbb20.countrypicker.models.CPCountry
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCrop.REQUEST_CROP
 import dagger.hilt.android.AndroidEntryPoint
@@ -255,6 +257,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     }
 
     private fun fillFormFields() {
+
         if (!viewModel.isUpdatePatient) return
         with(viewModel.patient) {
             // Change to Update Patient Form
@@ -439,7 +442,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         }
 
         /* Nationality */
-        if (null == countryCodeSpinner.cpViewHelper.selectedCountry.value) {
+        if (null == countryCodeSpinner.selectedCountryEnglishName) {
             nationalityerror.makeVisible()
             scrollToTop()
         } else {
@@ -447,7 +450,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             viewModel.patient.attributes = listOf(PersonAttribute().apply {
                 attributeType = PersonAttributeType().apply {
                     uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
-                    value = countryCodeSpinner.cpViewHelper.selectedCountry.value!!.name
+                    value = countryCodeSpinner.selectedCountryEnglishName
                 }
             })
         }
@@ -490,7 +493,12 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         }
 
         languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 // Enable the submit button if a valid language (not the first item) is selected
                 recordConsentImageButton.isEnabled = position != 0
             }
@@ -728,6 +736,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     }
 
     private fun showLegalConsent(language: String) {
+
         if (isMicrophonePresent()) {
             legalConsentDialog = LegalConsentDialogFragment.newInstance(language)
             legalConsentDialog?.show(childFragmentManager, LegalConsentDialogFragment.TAG)
@@ -850,7 +859,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         dobEditText.setText("")
         estimatedYear.setText("")
         estimatedMonth.setText("")
-        countryCodeSpinner.cpViewHelper.clearSelection()
+        countryCodeSpinner.resetToDefaultCountry()
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()

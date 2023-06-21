@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="countries_array">
-        <item>Afghanistan</item>
+<!--        <item>Afghanistan</item>-->
         <item>Albania</item>
         <item>Algeria</item>
         <item>American Samoa</item>
