@@ -194,12 +194,11 @@ object ApplicationConstants {
 
     object PatientDashboardTabs {
         const val DETAILS_TAB_POS = 0
-        const val ALLERGY_TAB_POS = 1
-        const val DIAGNOSIS_TAB_POS = 2
-        const val VISITS_TAB_POS = 3
-        const val VITALS_TAB_POS = 4
-        const val CHARTS_TAB_POS = 5
-        const val TAB_COUNT = 6
+        const val DIAGNOSIS_TAB_POS = 1
+        const val VISITS_TAB_POS = 2
+        const val VITALS_TAB_POS = 3
+        const val CHARTS_TAB_POS = 4
+        const val TAB_COUNT = 5
     }
 
     object ConceptDownloadService {
