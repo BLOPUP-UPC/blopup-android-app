@@ -30,7 +30,6 @@ import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityPatientDashboardBinding
-import edu.upc.openmrs.activities.addeditallergy.AddEditAllergyActivity
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.utilities.ThemeUtils.isDarkModeActivated
 import edu.upc.openmrs.utilities.makeGone
@@ -154,9 +153,9 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         with(binding.actionsFab) {
             activityDashboardActionFab.setOnClickListener {
                 if (binding.pager.currentItem == 1) {
-                    Intent(this@PatientDashboardActivity, AddEditAllergyActivity::class.java)
-                        .putExtra(PATIENT_ID_BUNDLE, patientId)
-                        .apply { startActivity(this) }
+//                    Intent(this@PatientDashboardActivity, AddEditAllergyActivity::class.java)
+//                        .putExtra(PATIENT_ID_BUNDLE, patientId)
+//                        .apply { startActivity(this) }
                 } else {
                     if (!isActionFABOpen) openFABs()
                     else closeFABs()
