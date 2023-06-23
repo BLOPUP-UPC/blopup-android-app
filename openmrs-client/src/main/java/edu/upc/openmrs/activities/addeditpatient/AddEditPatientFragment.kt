@@ -46,7 +46,6 @@ import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.snackbar.Snackbar
-import com.hbb20.CountryCodePicker
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCrop.REQUEST_CROP
 import dagger.hilt.android.AndroidEntryPoint
@@ -147,7 +146,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
         askPermissions()
 
-        setCountrySpinnerInCatalanToSpanish()
+        setNationalitySpinner()
 
         showPatientConsentToggle.check(onToggleDisabled = {
             binding.linearLayoutConsent.makeGone()
@@ -161,11 +160,13 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         return binding.root
     }
 
-    private fun setCountrySpinnerInCatalanToSpanish() {
-        val language = LanguageUtils.getLanguage()
-        if (language.equals("ca")) {
-            binding.countryCodeSpinner.changeDefaultLanguage(CountryCodePicker.Language.SPANISH)
-        }
+    private fun setNationalitySpinner() {
+        val nationalitySpinner = binding.nationalitySpinner
+
+        val nationalities = NationalityData.getNationalities(requireContext())
+
+        val adapter = NationalityAdapter(requireContext(), R.layout.item_nationality, nationalities)
+        nationalitySpinner.adapter = adapter
     }
 
     private fun setupPermissionsHandler() {
@@ -450,7 +451,9 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         }
 
         /* Nationality */
-        if (null == countryCodeSpinner.selectedCountryEnglishName) {
+        val selectedNationality = nationalitySpinner.selectedItem as Nationality
+        val selectedNationalityName = selectedNationality.name
+        if (selectedNationalityName == context?.getString(R.string.nationality_default) ) {
             nationalityerror.makeVisible()
             scrollToTop()
         } else {
@@ -458,7 +461,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             viewModel.patient.attributes = listOf(PersonAttribute().apply {
                 attributeType = PersonAttributeType().apply {
                     uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
-                    value = countryCodeSpinner.selectedCountryEnglishName
+                    value = selectedNationalityName
                 }
             })
         }
@@ -867,7 +870,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         dobEditText.setText("")
         estimatedYear.setText("")
         estimatedMonth.setText("")
-        countryCodeSpinner.resetToDefaultCountry()
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()

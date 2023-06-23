@@ -127,15 +127,11 @@
                 app:layout_constraintRight_toLeftOf="@id/guideline"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.hbb20.CountryCodePicker
+                <Spinner
                     android:id="@+id/countryCodeSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    app:ccpDialog_textColor="?android:attr/textColorPrimary"
-                    app:ccp_showFullName="true"
-                    app:ccp_showNameCode="false"
-                    app:ccp_showPhoneCode="false" />
+                    android:gravity="center" />
             </LinearLayout>
 
             <EditText
