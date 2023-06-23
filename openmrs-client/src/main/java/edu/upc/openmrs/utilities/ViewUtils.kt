@@ -14,7 +14,6 @@
 package edu.upc.openmrs.utilities
 
 import android.widget.EditText
-import com.hbb20.CountryCodePicker
 
 object ViewUtils {
     @JvmStatic
@@ -29,10 +28,5 @@ object ViewUtils {
     @JvmStatic
     fun isEmpty(etText: EditText): Boolean {
         return etText.text.toString().trim { it <= ' ' }.isEmpty()
-    }
-
-    @JvmStatic
-    fun isCountryCodePickerEmpty(countryCodePicker: CountryCodePicker): Boolean {
-        return countryCodePicker.selectedCountryName == null
     }
 }

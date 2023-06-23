@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="nationality_default" tools:ignore="MissingTranslation">Select nationality</string>
+    <string name="afghanistan" tools:ignore="MissingTranslation">Afghanistan</string>
+    <string name="albania" tools:ignore="MissingTranslation">Albania</string>
+    <string name="algeria" tools:ignore="MissingTranslation">Algeria</string>
+    <string name="american_samoa" tools:ignore="MissingTranslation">American Samoa</string>
+    <string name="andorra" tools:ignore="MissingTranslation">Andorra</string>
+    <string name="angola" tools:ignore="MissingTranslation">Angola</string>
+    <string name="anguilla" tools:ignore="MissingTranslation">Anguilla</string>
+    <string name="antarctica" tools:ignore="MissingTranslation">Antarctica</string>
+    <string name="antigua_and_barbuda" tools:ignore="MissingTranslation">Antigua And Barbuda</string>
+    <string name="argentina" tools:ignore="MissingTranslation">Argentina</string>
+    <string name="armenia" tools:ignore="MissingTranslation">Armenia</string>
+    <string name="aruba" tools:ignore="MissingTranslation">Aruba</string>
+    <string name="australia" tools:ignore="MissingTranslation">Australia</string>
+    <string name="austria" tools:ignore="MissingTranslation">Austria</string>
+    <string name="azerbaijan" tools:ignore="MissingTranslation">Azerbaijan</string>
+    <string name="bahamas" tools:ignore="MissingTranslation">Bahamas</string>
+    <string name="bahrain" tools:ignore="MissingTranslation">Bahrain</string>
+    <string name="bangladesh" tools:ignore="MissingTranslation">Bangladesh</string>
+    <string name="barbados" tools:ignore="MissingTranslation">Barbados</string>
+    <string name="belarus" tools:ignore="MissingTranslation">Belarus</string>
+    <string name="belgium" tools:ignore="MissingTranslation">Belgium</string>
+    <string name="belize" tools:ignore="MissingTranslation">Belize</string>
+    <string name="benin" tools:ignore="MissingTranslation">Benin</string>
+    <string name="bermuda" tools:ignore="MissingTranslation">Bermuda</string>
+    <string name="bhutan" tools:ignore="MissingTranslation">Bhutan</string>
+    <string name="bolivia" tools:ignore="MissingTranslation">Bolivia</string>
+    <string name="bosnia_and_herzegovina" tools:ignore="MissingTranslation">Bosnia and Herzegovina</string>
+    <string name="botswana" tools:ignore="MissingTranslation">Botswana</string>
+    <string name="bouvet_island" tools:ignore="MissingTranslation">Bouvet Island</string>
+    <string name="brazil" tools:ignore="MissingTranslation">Brazil</string>
+    <string name="british_indian_ocean_territory" tools:ignore="MissingTranslation">British Indian Ocean Territory</string>
+    <string name="brunei" tools:ignore="MissingTranslation">Brunei</string>
+    <string name="bulgaria" tools:ignore="MissingTranslation">Bulgaria</string>
+    <string name="burkina_faso" tools:ignore="MissingTranslation">Burkina Faso</string>
+    <string name="burundi" tools:ignore="MissingTranslation">Burundi</string>
+    <string name="cambodia" tools:ignore="MissingTranslation">Cambodia</string>
+    <string name="cameroon" tools:ignore="MissingTranslation">Cameroon</string>
+    <string name="canada" tools:ignore="MissingTranslation">Canada</string>
+    <string name="cape_verde" tools:ignore="MissingTranslation">Cape Verde</string>
+    <string name="cayman_islands" tools:ignore="MissingTranslation">Cayman Islands</string>
+    <string name="central_african_republic" tools:ignore="MissingTranslation">Central African Republic</string>
+    <string name="chad" tools:ignore="MissingTranslation">Chad</string>
+    <string name="chile" tools:ignore="MissingTranslation">Chile</string>
+    <string name="china" tools:ignore="MissingTranslation">China</string>
+    <string name="christmas_island" tools:ignore="MissingTranslation">Christmas Island</string>
+    <string name="cocos_islands" tools:ignore="MissingTranslation">Cocos (Keeling) Islands</string>
+    <string name="colombia" tools:ignore="MissingTranslation">Colombia</string>
+    <string name="comoros" tools:ignore="MissingTranslation">Comoros</string>
+    <string name="congo" tools:ignore="MissingTranslation">Congo</string>
+    <string name="congo_democratic_republic" tools:ignore="MissingTranslation">Democratic Republic of the Congo</string>
+    <string name="cook_islands" tools:ignore="MissingTranslation">Cook Islands</string>
+    <string name="costa_rica" tools:ignore="MissingTranslation">Costa Rica</string>
+    <string name="cote_divoire" tools:ignore="MissingTranslation">Cote DIvoire (Ivory Coast)</string>
+    <string name="croatia" tools:ignore="MissingTranslation">Croatia (Hrvatska)</string>
+    <string name="cuba" tools:ignore="MissingTranslation">Cuba</string>
+    <string name="cyprus" tools:ignore="MissingTranslation">Cyprus</string>
+    <string name="czech_republic" tools:ignore="MissingTranslation">Czech Republic</string>
+    <string name="denmark" tools:ignore="MissingTranslation">Denmark</string>
+    <string name="djibouti" tools:ignore="MissingTranslation">Djibouti</string>
+    <string name="dominica" tools:ignore="MissingTranslation">Dominica</string>
+    <string name="dominican_republic" tools:ignore="MissingTranslation">Dominican Republic</string>
+    <string name="east_timor" tools:ignore="MissingTranslation">East Timor</string>
+    <string name="ecuador" tools:ignore="MissingTranslation">Ecuador</string>
+    <string name="egypt" tools:ignore="MissingTranslation">Egypt</string>
+    <string name="el_salvador" tools:ignore="MissingTranslation">El Salvador</string>
+    <string name="equatorial_guinea" tools:ignore="MissingTranslation">Equatorial Guinea</string>
+    <string name="eritrea" tools:ignore="MissingTranslation">Eritrea</string>
+    <string name="estonia" tools:ignore="MissingTranslation">Estonia</string>
+    <string name="ethiopia" tools:ignore="MissingTranslation">Ethiopia</string>
+    <string name="external_territories_australia" tools:ignore="MissingTranslation">External Territories of Australia</string>
+    <string name="falkland_islands" tools:ignore="MissingTranslation">Falkland Islands</string>
+    <string name="faroe_islands" tools:ignore="MissingTranslation">Faroe Islands</string>
+    <string name="fiji" tools:ignore="MissingTranslation">Fiji Islands</string>
+    <string name="finland" tools:ignore="MissingTranslation">Finland</string>
+    <string name="france" tools:ignore="MissingTranslation">France</string>
+    <string name="french_guiana" tools:ignore="MissingTranslation">French Guiana</string>
+    <string name="french_polynesia" tools:ignore="MissingTranslation">French Polynesia</string>
+    <string name="french_southern_territories" tools:ignore="MissingTranslation">French Southern Territories</string>
+    <string name="gabon" tools:ignore="MissingTranslation">Gabon</string>
+    <string name="gambia" tools:ignore="MissingTranslation">Gambia</string>
+    <string name="georgia" tools:ignore="MissingTranslation">Georgia</string>
+    <string name="germany" tools:ignore="MissingTranslation">Germany</string>
+    <string name="ghana" tools:ignore="MissingTranslation">Ghana</string>
+    <string name="gibraltar" tools:ignore="MissingTranslation">Gibraltar</string>
+    <string name="greece" tools:ignore="MissingTranslation">Greece</string>
+    <string name="greenland" tools:ignore="MissingTranslation">Greenland</string>
+    <string name="grenada" tools:ignore="MissingTranslation">Grenada</string>
+    <string name="guadeloupe" tools:ignore="MissingTranslation">Guadeloupe</string>
+    <string name="guam" tools:ignore="MissingTranslation">Guam</string>
+    <string name="guatemala" tools:ignore="MissingTranslation">Guatemala</string>
+    <string name="guernsey_and_alderney" tools:ignore="MissingTranslation">Guernsey and Alderney</string>
+    <string name="guinea" tools:ignore="MissingTranslation">Guinea</string>
+    <string name="guinea_bissau" tools:ignore="MissingTranslation">Guinea-Bissau</string>
+    <string name="guyana" tools:ignore="MissingTranslation">Guyana</string>
+    <string name="haiti" tools:ignore="MissingTranslation">Haiti</string>
+    <string name="heard_and_mcdonald_islands" tools:ignore="MissingTranslation">Heard and McDonald Islands</string>
+    <string name="honduras" tools:ignore="MissingTranslation">Honduras</string>
+    <string name="hong_kong_sar" tools:ignore="MissingTranslation">Hong Kong S.A.R.</string>
+    <string name="hungary" tools:ignore="MissingTranslation">Hungary</string>
+    <string name="iceland" tools:ignore="MissingTranslation">Iceland</string>
+    <string name="india" tools:ignore="MissingTranslation">India</string>
+    <string name="indonesia" tools:ignore="MissingTranslation">Indonesia</string>
+    <string name="iran" tools:ignore="MissingTranslation">Iran</string>
+    <string name="iraq" tools:ignore="MissingTranslation">Iraq</string>
+    <string name="ireland" tools:ignore="MissingTranslation">Ireland</string>
+    <string name="israel" tools:ignore="MissingTranslation">Israel</string>
+    <string name="italy" tools:ignore="MissingTranslation">Italy</string>
+    <string name="jamaica" tools:ignore="MissingTranslation">Jamaica</string>
+    <string name="japan" tools:ignore="MissingTranslation">Japan</string>
+    <string name="jersey" tools:ignore="MissingTranslation">Jersey</string>
+    <string name="jordan" tools:ignore="MissingTranslation">Jordan</string>
+    <string name="kazakhstan" tools:ignore="MissingTranslation">Kazakhstan</string>
+    <string name="kenya" tools:ignore="MissingTranslation">Kenya</string>
+    <string name="kiribati" tools:ignore="MissingTranslation">Kiribati</string>
+    <string name="korea_north" tools:ignore="MissingTranslation">Korea North</string>
+    <string name="korea_south" tools:ignore="MissingTranslation">Korea South</string>
+    <string name="kuwait" tools:ignore="MissingTranslation">Kuwait</string>
+    <string name="kyrgyzstan" tools:ignore="MissingTranslation">Kyrgyzstan</string>
+    <string name="laos" tools:ignore="MissingTranslation">Laos</string>
+    <string name="latvia" tools:ignore="MissingTranslation">Latvia</string>
+    <string name="lebanon" tools:ignore="MissingTranslation">Lebanon</string>
+    <string name="lesotho" tools:ignore="MissingTranslation">Lesotho</string>
+    <string name="liberia" tools:ignore="MissingTranslation">Liberia</string>
+    <string name="libya" tools:ignore="MissingTranslation">Libya</string>
+    <string name="liechtenstein" tools:ignore="MissingTranslation">Liechtenstein</string>
+    <string name="lithuania" tools:ignore="MissingTranslation">Lithuania</string>
+    <string name="luxembourg" tools:ignore="MissingTranslation">Luxembourg</string>
+    <string name="macau_sar" tools:ignore="MissingTranslation">Macau S.A.R.</string>
+    <string name="macedonia" tools:ignore="MissingTranslation">Macedonia</string>
+    <string name="madagascar" tools:ignore="MissingTranslation">Madagascar</string>
+    <string name="malawi" tools:ignore="MissingTranslation">Malawi</string>
+    <string name="malaysia" tools:ignore="MissingTranslation">Malaysia</string>
+    <string name="maldives" tools:ignore="MissingTranslation">Maldives</string>
+    <string name="mali" tools:ignore="MissingTranslation">Mali</string>
+    <string name="malta" tools:ignore="MissingTranslation">Malta</string>
+    <string name="man_isle_of" tools:ignore="MissingTranslation">Man (Isle of)</string>
+    <string name="marshall_islands" tools:ignore="MissingTranslation">Marshall Islands</string>
+    <string name="martinique" tools:ignore="MissingTranslation">Martinique</string>
+    <string name="mauritania" tools:ignore="MissingTranslation">Mauritania</string>
+    <string name="mauritius" tools:ignore="MissingTranslation">Mauritius</string>
+    <string name="mayotte" tools:ignore="MissingTranslation">Mayotte</string>
+    <string name="mexico" tools:ignore="MissingTranslation">Mexico</string>
+    <string name="micronesia" tools:ignore="MissingTranslation">Micronesia</string>
+    <string name="moldova" tools:ignore="MissingTranslation">Moldova</string>
+    <string name="monaco" tools:ignore="MissingTranslation">Monaco</string>
+    <string name="mongolia" tools:ignore="MissingTranslation">Mongolia</string>
+    <string name="montserrat" tools:ignore="MissingTranslation">Montserrat</string>
+    <string name="morocco" tools:ignore="MissingTranslation">Morocco</string>
+    <string name="mozambique" tools:ignore="MissingTranslation">Mozambique</string>
+    <string name="myanmar" tools:ignore="MissingTranslation">Myanmar</string>
+    <string name="namibia" tools:ignore="MissingTranslation">Namibia</string>
+    <string name="nauru" tools:ignore="MissingTranslation">Nauru</string>
+    <string name="nepal" tools:ignore="MissingTranslation">Nepal</string>
+    <string name="netherlands_antilles" tools:ignore="MissingTranslation">Netherlands Antilles</string>
+    <string name="netherlands" tools:ignore="MissingTranslation">Netherlands</string>
+    <string name="new_caledonia" tools:ignore="MissingTranslation">New Caledonia</string>
+    <string name="new_zealand" tools:ignore="MissingTranslation">New Zealand</string>
+    <string name="nicaragua" tools:ignore="MissingTranslation">Nicaragua</string>
+    <string name="niger" tools:ignore="MissingTranslation">Niger</string>
+    <string name="nigeria" tools:ignore="MissingTranslation">Nigeria</string>
+    <string name="niue" tools:ignore="MissingTranslation">Niue</string>
+    <string name="norfolk_island" tools:ignore="MissingTranslation">Norfolk Island</string>
+    <string name="northern_mariana_islands" tools:ignore="MissingTranslation">Northern Mariana Islands</string>
+    <string name="norway" tools:ignore="MissingTranslation">Norway</string>
+    <string name="oman" tools:ignore="MissingTranslation">Oman</string>
+    <string name="pakistan" tools:ignore="MissingTranslation">Pakistan</string>
+    <string name="palau" tools:ignore="MissingTranslation">Palau</string>
+    <string name="palestinian_territory_occupied" tools:ignore="MissingTranslation">Palestinian Territory Occupied</string>
+    <string name="panama" tools:ignore="MissingTranslation">Panama</string>
+    <string name="papua_new_guinea" tools:ignore="MissingTranslation">Papua New Guinea</string>
+    <string name="paraguay" tools:ignore="MissingTranslation">Paraguay</string>
+    <string name="peru" tools:ignore="MissingTranslation">Peru</string>
+    <string name="philippines" tools:ignore="MissingTranslation">Philippines</string>
+    <string name="pitcairn_island" tools:ignore="MissingTranslation">Pitcairn Island</string>
+    <string name="poland" tools:ignore="MissingTranslation">Poland</string>
+    <string name="portugal" tools:ignore="MissingTranslation">Portugal</string>
+    <string name="puerto_rico" tools:ignore="MissingTranslation">Puerto Rico</string>
+    <string name="qatar" tools:ignore="MissingTranslation">Qatar</string>
+    <string name="reunion" tools:ignore="MissingTranslation">Reunion</string>
+    <string name="romania" tools:ignore="MissingTranslation">Romania</string>
+    <string name="russia" tools:ignore="MissingTranslation">Russia</string>
+    <string name="rwanda" tools:ignore="MissingTranslation">Rwanda</string>
+    <string name="saint_helena" tools:ignore="MissingTranslation">Saint Helena</string>
+    <string name="saint_kitts_and_nevis" tools:ignore="MissingTranslation">Saint Kitts And Nevis</string>
+    <string name="saint_lucia" tools:ignore="MissingTranslation">Saint Lucia</string>
+    <string name="saint_pierre_and_miquelon" tools:ignore="MissingTranslation">Saint Pierre and Miquelon</string>
+    <string name="saint_vincent_and_the_grenadines" tools:ignore="MissingTranslation">Saint Vincent And The Grenadines</string>
+    <string name="samoa" tools:ignore="MissingTranslation">Samoa</string>
+    <string name="san_marino" tools:ignore="MissingTranslation">San Marino</string>
+    <string name="sao_tome_and_principe" tools:ignore="MissingTranslation">Sao Tome and Principe</string>
+    <string name="saudi_arabia" tools:ignore="MissingTranslation">Saudi Arabia</string>
+    <string name="senegal" tools:ignore="MissingTranslation">Senegal</string>
+    <string name="serbia" tools:ignore="MissingTranslation">Serbia</string>
+    <string name="seychelles" tools:ignore="MissingTranslation">Seychelles</string>
+    <string name="sierra_leone" tools:ignore="MissingTranslation">Sierra Leone</string>
+    <string name="singapore" tools:ignore="MissingTranslation">Singapore</string>
+    <string name="slovakia" tools:ignore="MissingTranslation">Slovakia</string>
+    <string name="slovenia" tools:ignore="MissingTranslation">Slovenia</string>
+    <string name="smaller_territories_of_the_uk" tools:ignore="MissingTranslation">Smaller Territories of the UK</string>
+    <string name="solomon_islands" tools:ignore="MissingTranslation">Solomon Islands</string>
+    <string name="somalia" tools:ignore="MissingTranslation">Somalia</string>
+    <string name="south_africa" tools:ignore="MissingTranslation">South Africa</string>
+    <string name="south_georgia" tools:ignore="MissingTranslation">South Georgia</string>
+    <string name="south_sudan" tools:ignore="MissingTranslation">South Sudan</string>
+    <string name="spain" tools:ignore="MissingTranslation">Spain</string>
+    <string name="sri_lanka" tools:ignore="MissingTranslation">Sri Lanka</string>
+    <string name="sudan" tools:ignore="MissingTranslation">Sudan</string>
+    <string name="suriname" tools:ignore="MissingTranslation">Suriname</string>
+    <string name="svalbard_and_jan_mayen_islands" tools:ignore="MissingTranslation">Svalbard And Jan Mayen Islands</string>
+    <string name="swaziland" tools:ignore="MissingTranslation">Swaziland</string>
+    <string name="sweden" tools:ignore="MissingTranslation">Sweden</string>
+    <string name="switzerland" tools:ignore="MissingTranslation">Switzerland</string>
+    <string name="syria" tools:ignore="MissingTranslation">Syria</string>
+    <string name="taiwan" tools:ignore="MissingTranslation">Taiwan</string>
+    <string name="tajikistan" tools:ignore="MissingTranslation">Tajikistan</string>
+    <string name="tanzania" tools:ignore="MissingTranslation">Tanzania</string>
+    <string name="thailand" tools:ignore="MissingTranslation">Thailand</string>
+    <string name="togo" tools:ignore="MissingTranslation">Togo</string>
+    <string name="tokelau" tools:ignore="MissingTranslation">Tokelau</string>
+    <string name="tonga" tools:ignore="MissingTranslation">Tonga</string>
+    <string name="trinidad_and_tobago" tools:ignore="MissingTranslation">Trinidad And Tobago</string>
+    <string name="tunisia" tools:ignore="MissingTranslation">Tunisia</string>
+    <string name="turkey" tools:ignore="MissingTranslation">Turkey</string>
+    <string name="turkmenistan" tools:ignore="MissingTranslation">Turkmenistan</string>
+    <string name="turks_and_caicos_islands" tools:ignore="MissingTranslation">Turks And Caicos Islands</string>
+    <string name="tuvalu" tools:ignore="MissingTranslation">Tuvalu</string>
+    <string name="uganda" tools:ignore="MissingTranslation">Uganda</string>
+    <string name="ukraine" tools:ignore="MissingTranslation">Ukraine</string>
+    <string name="united_arab_emirates" tools:ignore="MissingTranslation">United Arab Emirates</string>
+    <string name="united_kingdom" tools:ignore="MissingTranslation">United Kingdom</string>
+    <string name="united_states" tools:ignore="MissingTranslation">United States</string>
+    <string name="united_states_minor_outlying_islands" tools:ignore="MissingTranslation">United States Minor Outlying Islands</string>
+    <string name="uruguay" tools:ignore="MissingTranslation">Uruguay</string>
+    <string name="uzbekistan" tools:ignore="MissingTranslation">Uzbekistan</string>
+    <string name="vanuatu" tools:ignore="MissingTranslation">Vanuatu</string>
+    <string name="vatican_city" tools:ignore="MissingTranslation">Vatican City</string>
+    <string name="venezuela" tools:ignore="MissingTranslation">Venezuela</string>
+    <string name="vietnam" tools:ignore="MissingTranslation">Vietnam</string>
+    <string name="virgin_islands_british" tools:ignore="MissingTranslation">Virgin Islands (British)</string>
+    <string name="virgin_islands_us" tools:ignore="MissingTranslation">Virgin Islands (US)</string>
+    <string name="wallis_and_futuna_islands" tools:ignore="MissingTranslation">Wallis And Futuna Islands</string>
+    <string name="western_sahara" tools:ignore="MissingTranslation">Western Sahara</string>
+    <string name="yemen" tools:ignore="MissingTranslation">Yemen</string>
+    <string name="yugoslavia" tools:ignore="MissingTranslation">Yugoslavia</string>
+    <string name="zambia" tools:ignore="MissingTranslation">Zambia</string>
+    <string name="zimbabwe" tools:ignore="MissingTranslation">Zimbabwe</string>
+</resources>
