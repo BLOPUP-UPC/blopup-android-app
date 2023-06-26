@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="nationality_default" tools:ignore="MissingTranslation">Select nationality</string>
+    <string name="search_hint_text" tools:ignore="MissingTranslation">Search…</string>
+    <string name="no_result_found" tools:ignore="MissingTranslation">Results not found</string>
     <string name="afghanistan" tools:ignore="MissingTranslation">Afghanistan</string>
     <string name="albania" tools:ignore="MissingTranslation">Albania</string>
     <string name="algeria" tools:ignore="MissingTranslation">Algeria</string>

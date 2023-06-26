@@ -558,11 +558,14 @@
                                 app:layout_constraintRight_toLeftOf="@id/guideline"
                                 app:layout_constraintTop_toTopOf="parent">
 
-                                <Spinner
-                                    android:id="@+id/nationality_spinner"
+                                <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginVertical="8dp"/>
+                                    android:id="@+id/nationality"
+                                    android:text="@string/nationality_default"
+                                    android:padding="12dp"
+                                    android:gravity="center_vertical"
+                                    app:drawableEndCompat="@drawable/black_arrow_down" />
 
                             </LinearLayout>
 

@@ -83,6 +83,7 @@ import kotlinx.android.synthetic.main.fragment_dialog_layout.*
 import kotlinx.android.synthetic.main.fragment_matching_patients.view.*
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 import kotlinx.android.synthetic.main.legal_consent.*
+import kotlinx.android.synthetic.main.list_gallery_or_camera_item.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -97,6 +98,8 @@ import java.util.*
 class AddEditPatientFragment : BaseFragment(), onInputSelected {
     var alertDialog: AlertDialog? = null
     private var legalConsentDialog: LegalConsentDialogFragment? = null
+    private var nationalityDialog: NationalityDialog? = null
+    private var nationalityTextView: TextView? = null
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
 
@@ -131,6 +134,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentPatientInfoBinding.inflate(inflater, container, false)
+        val rootView = binding.root
 
         setHasOptionsMenu(true)
 
@@ -157,16 +161,22 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             bottomMargin.bottomMargin = densityOperator!! * 90
             binding.linearLayoutNationality.layoutParams = bottomMargin
         })
-        return binding.root
+        return rootView
     }
 
     private fun setNationalitySpinner() {
-        val nationalitySpinner = binding.nationalitySpinner
+        nationalityTextView = binding.nationality
 
-        val nationalities = NationalityData.getNationalities(requireContext())
+        nationalityTextView!!.setOnClickListener {
+            // Initialize dialog
+            nationalityDialog = NationalityDialog()
+            nationalityDialog?.show(childFragmentManager, null)
+            childFragmentManager.findFragmentById(R.id.nationalitySpinner)?.onStart()
+        }
+    }
 
-        val adapter = NationalityAdapter(requireContext(), R.layout.item_nationality, nationalities)
-        nationalitySpinner.adapter = adapter
+    fun onNationalitySelected(nationality: String?) {
+        nationalityTextView?.text = nationality
     }
 
     private fun setupPermissionsHandler() {
@@ -451,9 +461,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         }
 
         /* Nationality */
-        val selectedNationality = nationalitySpinner.selectedItem as Nationality
-        val selectedNationalityName = selectedNationality.name
-        if (selectedNationalityName == context?.getString(R.string.nationality_default) ) {
+        val patientNationality = nationalityTextView?.text.toString()
+        if (patientNationality == context?.getString(R.string.nationality_default)) {
             nationalityerror.makeVisible()
             scrollToTop()
         } else {
@@ -461,7 +470,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             viewModel.patient.attributes = listOf(PersonAttribute().apply {
                 attributeType = PersonAttributeType().apply {
                     uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
-                    value = selectedNationalityName
+                    value = patientNationality
                 }
             })
         }

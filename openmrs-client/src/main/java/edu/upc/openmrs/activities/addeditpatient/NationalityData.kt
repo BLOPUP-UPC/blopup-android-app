@@ -5,9 +5,8 @@ import edu.upc.R
 
 class NationalityData {
     companion object {
-        fun getNationalities(context: Context): Array<Nationality> {
-            return arrayOf(
-                Nationality(context.getString(R.string.nationality_default), R.drawable.flag_blank),
+        fun getNationalities(context: Context): List<Nationality> {
+            return listOf(
                 Nationality(context.getString(R.string.afghanistan), R.drawable.flag_afghanistan),
                 Nationality(context.getString(R.string.albania), R.drawable.flag_albania),
                 Nationality(context.getString(R.string.algeria), R.drawable.flag_algeria),

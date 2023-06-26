@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="nationality_default">Seleccioneu la nacionalitat</string>
+    <string name="search_hint_text">Cercar…</string>
+    <string name="no_result_found">No s\'han trobat resultats</string>
     <string name="afghanistan">Afganistan</string>
     <string name="albania">Albània</string>
     <string name="algeria">Algèria</string>
