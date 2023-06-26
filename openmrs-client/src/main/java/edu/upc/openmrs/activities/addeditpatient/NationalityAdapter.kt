@@ -16,7 +16,7 @@ class NationalityAdapter(
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var originalList: List<Nationality> = nationalityList
-    private var filteredList: List<Nationality> = nationalityList
+    var filteredList: List<Nationality> = nationalityList
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
