@@ -12,7 +12,7 @@ import edu.upc.R
 import edu.upc.databinding.DialogSearchNationalityBinding
 
 
-class NationalityDialog : DialogFragment() {
+class NationalityDialogFragment : DialogFragment() {
     private lateinit var nationalityDialogBinding: DialogSearchNationalityBinding
 
     private var nationalityString: String? = null
@@ -27,16 +27,16 @@ class NationalityDialog : DialogFragment() {
         val searchText = nationalityDialogBinding.editTextSearch
         val listNationalities = nationalityDialogBinding.listView
 
-        val nationalities = NationalityData.getNationalities(requireContext()).toMutableList()
+        val nationalities = NationalityData.getNationalities(requireContext())
 
         val adapter = NationalityAdapter(requireContext(), R.layout.item_nationality, nationalities)
         listNationalities.adapter = adapter
 
         searchText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                adapter.filter.filter(s)
+            override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(text)
             }
 
             override fun afterTextChanged(s: Editable) {}

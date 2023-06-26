@@ -98,7 +98,7 @@ import java.util.*
 class AddEditPatientFragment : BaseFragment(), onInputSelected {
     var alertDialog: AlertDialog? = null
     private var legalConsentDialog: LegalConsentDialogFragment? = null
-    private var nationalityDialog: NationalityDialog? = null
+    private var nationalityDialogFragment: NationalityDialogFragment? = null
     private var nationalityTextView: TextView? = null
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
@@ -169,8 +169,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
         nationalityTextView!!.setOnClickListener {
             // Initialize dialog
-            nationalityDialog = NationalityDialog()
-            nationalityDialog?.show(childFragmentManager, null)
+            nationalityDialogFragment = NationalityDialogFragment()
+            nationalityDialogFragment?.show(childFragmentManager, null)
             childFragmentManager.findFragmentById(R.id.nationalitySpinner)?.onStart()
         }
     }
