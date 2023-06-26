@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ListView
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
 import edu.upc.databinding.DialogSearchNationalityBinding
@@ -42,10 +43,28 @@ class NationalityDialogFragment : DialogFragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
+        onNationalitySelection(listNationalities, adapter)
+
+        closeDialog()
+
+        return nationalityDialogBinding.root
+    }
+
+    private fun closeDialog() {
+        val closeDialogImage = nationalityDialogBinding.imgDismiss
+        closeDialogImage.setOnClickListener {
+            dialog?.dismiss()
+        }
+    }
+
+    private fun onNationalitySelection(
+        listNationalities: ListView,
+        adapter: NationalityAdapter
+    ) {
         listNationalities.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+            AdapterView.OnItemClickListener { _, _, position, _ ->
                 val selectedNationality = adapter.getItem(position)
-                nationalityString = selectedNationality?.name
+                nationalityString = selectedNationality.name
 
                 val parentFragment = parentFragment
                 if (parentFragment is AddEditPatientFragment) {
@@ -53,6 +72,5 @@ class NationalityDialogFragment : DialogFragment() {
                 }
                 dialog?.dismiss()
             }
-        return nationalityDialogBinding.root
     }
 }

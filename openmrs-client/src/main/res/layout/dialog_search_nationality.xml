@@ -51,24 +51,12 @@
                 android:id="@+id/editText_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/img_clear_query"
                 android:hint="@string/search_hint_text"
                 android:imeOptions="actionSearch"
                 android:inputType="textNoSuggestions"
                 android:singleLine="true"
                 android:textColor="@android:color/primary_text_light_nodisable" />
 
-            <ImageView
-                android:id="@+id/img_clear_query"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:alpha="0.7"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="10dp"
-                app:srcCompat="@drawable/ic_backspace_black_24dp" />
         </RelativeLayout>
 
         <ListView
