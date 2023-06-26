@@ -40,7 +40,7 @@ class NationalityAdapterTest {
 
         val result = adapter.filteredList
 
-        assertEquals(expected.size, result.size)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -54,7 +54,7 @@ class NationalityAdapterTest {
 
         val result = adapter.filteredList
 
-        assertEquals(expected.size, result.size)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -66,6 +66,6 @@ class NationalityAdapterTest {
 
         val result = adapter.filteredList
 
-        assertEquals(expected.size, result.size)
+        assertEquals(expected, result)
     }
 }
