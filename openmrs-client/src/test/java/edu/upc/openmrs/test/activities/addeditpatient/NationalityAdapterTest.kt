@@ -18,23 +18,23 @@ class NationalityAdapterTest {
     @Before
     internal fun setup() {
         val data = listOf(
-            Nationality("Albania", R.drawable.flag_albania),
-            Nationality("Algeria", R.drawable.flag_algeria),
-            Nationality("Andorra", R.drawable.flag_andorra),
-            Nationality("Argentina", R.drawable.flag_argentina)
+            Nationality.ALBANIA,
+            Nationality.ALGERIA,
+            Nationality.ANDORRA,
+            Nationality.ARGENTINA
         )
         adapter = NationalityAdapter(ApplicationProvider.getApplicationContext(), R.layout.item_nationality, data)
     }
 
     @Test
     fun testGetItem() {
-        assertEquals("Albania", (adapter.getItem(0)).name)
+        assertEquals("ALBANIA", (adapter.getItem(0)).name)
     }
 
     @Test
     fun `when search for Algeria then the list should only return one item`(){
 
-        val expected = listOf(Nationality("Algeria", R.drawable.flag_algeria))
+        val expected = listOf(Nationality.ALGERIA)
 
         adapter.filter.filter("Algeria")
 
@@ -47,8 +47,7 @@ class NationalityAdapterTest {
     fun `when search for 'Al' then the list should return 2 items`(){
 
         val expected = listOf(
-            Nationality("Albania", R.drawable.flag_albania),
-            Nationality("Algeria", R.drawable.flag_algeria))
+            Nationality.ALBANIA, Nationality.ALGERIA)
 
         adapter.filter.filter("Al")
 

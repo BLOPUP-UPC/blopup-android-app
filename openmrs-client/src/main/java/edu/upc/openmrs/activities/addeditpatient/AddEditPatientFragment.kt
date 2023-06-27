@@ -99,7 +99,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     var alertDialog: AlertDialog? = null
     private var legalConsentDialog: LegalConsentDialogFragment? = null
     private var nationalityDialogFragment: NationalityDialogFragment? = null
-    private var nationalityTextView: TextView? = null
+    private var patientNationality: Nationality? = null
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
 
@@ -165,9 +165,9 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     }
 
     private fun setNationalitySpinner() {
-        nationalityTextView = binding.nationality
+        val nationalityTextView = binding.nationality
 
-        nationalityTextView!!.setOnClickListener {
+        nationalityTextView.setOnClickListener {
             // Initialize dialog
             nationalityDialogFragment = NationalityDialogFragment()
             nationalityDialogFragment?.show(childFragmentManager, null)
@@ -175,8 +175,9 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         }
     }
 
-    fun onNationalitySelected(nationality: String?) {
-        nationalityTextView?.text = nationality
+    fun onNationalitySelected(nationality: Nationality) {
+        patientNationality = nationality
+        binding.nationality.text = nationality.getLabel(requireContext())
     }
 
     private fun setupPermissionsHandler() {
@@ -461,8 +462,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         }
 
         /* Nationality */
-        val patientNationality = nationalityTextView?.text.toString()
-        if (patientNationality == context?.getString(R.string.nationality_default)) {
+        if (binding.nationality.text == context?.getString(R.string.nationality_default)) {
             nationalityerror.makeVisible()
             scrollToTop()
         } else {
@@ -470,7 +470,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             viewModel.patient.attributes = listOf(PersonAttribute().apply {
                 attributeType = PersonAttributeType().apply {
                     uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
-                    value = patientNationality
+                    value = patientNationality?.name
                 }
             })
         }

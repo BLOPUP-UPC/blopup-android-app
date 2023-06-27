@@ -34,8 +34,8 @@ class NationalityAdapter(
         }
 
         val nationality = getItem(position)
-        holder.textViewNationality?.text = nationality.name
-        nationality.flagResId.let { holder.imageViewFlag?.setImageResource(it) }
+        holder.textViewNationality?.text = nationality.getLabel(context)
+        nationality.flag.let { holder.imageViewFlag?.setImageResource(it) }
 
         return view
     }
@@ -61,7 +61,7 @@ class NationalityAdapter(
 
                 filteredList = if (searchText.isNotEmpty()) {
                     originalList.filter { nationality ->
-                        nationality.name.lowercase(Locale.getDefault()).contains(searchText)
+                        nationality.getLabel(context).lowercase(Locale.getDefault()).contains(searchText)
                     }
                 } else {
                     originalList

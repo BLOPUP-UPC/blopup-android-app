@@ -28,7 +28,7 @@ class NationalityDialogFragment : DialogFragment() {
         val searchText = nationalityDialogBinding.editTextSearch
         val listNationalities = nationalityDialogBinding.listView
 
-        val nationalities = NationalityData.getNationalities(requireContext())
+        val nationalities = Nationality.values().toList()
 
         val adapter = NationalityAdapter(requireContext(), R.layout.item_nationality, nationalities)
         listNationalities.adapter = adapter
@@ -64,11 +64,10 @@ class NationalityDialogFragment : DialogFragment() {
         listNationalities.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val selectedNationality = adapter.getItem(position)
-                nationalityString = selectedNationality.name
 
                 val parentFragment = parentFragment
                 if (parentFragment is AddEditPatientFragment) {
-                    parentFragment.onNationalitySelected(nationalityString)
+                    parentFragment.onNationalitySelected(selectedNationality)
                 }
                 dialog?.dismiss()
             }
