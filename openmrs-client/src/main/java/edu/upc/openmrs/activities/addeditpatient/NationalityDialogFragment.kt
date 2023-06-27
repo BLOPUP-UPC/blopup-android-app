@@ -16,8 +16,6 @@ import edu.upc.databinding.DialogSearchNationalityBinding
 class NationalityDialogFragment : DialogFragment() {
     private lateinit var nationalityDialogBinding: DialogSearchNationalityBinding
 
-    private var nationalityString: String? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
