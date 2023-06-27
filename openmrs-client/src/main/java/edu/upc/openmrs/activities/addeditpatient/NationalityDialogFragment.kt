@@ -26,7 +26,7 @@ class NationalityDialogFragment : DialogFragment() {
         val searchText = nationalityDialogBinding.editTextSearch
         val listNationalities = nationalityDialogBinding.listView
 
-        val nationalities = Nationality.values().toList()
+        val nationalities = Nationality.values()
 
         val adapter = NationalityAdapter(requireContext(), R.layout.item_nationality, nationalities)
         listNationalities.adapter = adapter

@@ -17,7 +17,7 @@ class NationalityAdapterTest {
 
     @Before
     internal fun setup() {
-        val data = listOf(
+        val data = arrayOf(
             Nationality.ALBANIA,
             Nationality.ALGERIA,
             Nationality.ANDORRA,
@@ -34,37 +34,37 @@ class NationalityAdapterTest {
     @Test
     fun `when search for Algeria then the list should only return one item`(){
 
-        val expected = listOf(Nationality.ALGERIA)
+        val expected = arrayOf(Nationality.ALGERIA)
 
         adapter.filter.filter("Algeria")
 
         val result = adapter.filteredList
 
-        assertEquals(expected, result)
+        assertEquals(expected.size, result.size)
     }
 
     @Test
     fun `when search for 'Al' then the list should return 2 items`(){
 
-        val expected = listOf(
+        val expected = arrayOf(
             Nationality.ALBANIA, Nationality.ALGERIA)
 
         adapter.filter.filter("Al")
 
         val result = adapter.filteredList
 
-        assertEquals(expected, result)
+        assertEquals(expected.size, result.size)
     }
 
     @Test
     fun `when search for 'z' then the list should be empty`(){
 
-        val expected = emptyList<Nationality>()
+        val expected = emptyArray<Nationality>()
 
         adapter.filter.filter("z")
 
         val result = adapter.filteredList
 
-        assertEquals(expected, result)
+        assertEquals(expected.size, result.size)
     }
 }

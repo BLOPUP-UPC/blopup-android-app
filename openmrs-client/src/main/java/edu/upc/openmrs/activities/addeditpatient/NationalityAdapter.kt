@@ -11,12 +11,12 @@ import java.util.*
 class NationalityAdapter(
     context: Context,
     resource: Int,
-    nationalityList: List<Nationality>
+    nationalityList: Array<Nationality>
 ) : ArrayAdapter<Nationality>(context, resource, nationalityList) {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var originalList: List<Nationality> = nationalityList
-    var filteredList: List<Nationality> = nationalityList
+    private var originalList: Array<Nationality> = nationalityList
+    var filteredList: Array<Nationality> = nationalityList
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
@@ -62,7 +62,7 @@ class NationalityAdapter(
                 filteredList = if (searchText.isNotEmpty()) {
                     originalList.filter { nationality ->
                         nationality.getLabel(context).lowercase(Locale.getDefault()).contains(searchText)
-                    }
+                    }.toTypedArray()
                 } else {
                     originalList
                 }
@@ -74,7 +74,7 @@ class NationalityAdapter(
             }
 
             override fun publishResults(constraint: CharSequence, results: FilterResults) {
-                filteredList = results.values as List<Nationality>
+                filteredList = results.values as Array<Nationality>
                 notifyDataSetChanged()
             }
         }
