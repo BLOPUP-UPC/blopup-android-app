@@ -7,6 +7,7 @@ import edu.upc.openmrs.activities.addeditpatient.Nationality
 import edu.upc.openmrs.activities.addeditpatient.NationalityAdapter
 import io.mockk.*
 import junit.framework.TestCase.assertEquals
+
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,7 +41,7 @@ class NationalityAdapterTest {
 
         val result = adapter.filteredList
 
-        assertEquals(expected.size, result.size)
+        assert(expected.contentEquals(result))
     }
 
     @Test
@@ -53,7 +54,7 @@ class NationalityAdapterTest {
 
         val result = adapter.filteredList
 
-        assertEquals(expected.size, result.size)
+        assert(expected.contentEquals(result))
     }
 
     @Test
@@ -65,6 +66,6 @@ class NationalityAdapterTest {
 
         val result = adapter.filteredList
 
-        assertEquals(expected.size, result.size)
+        assert(expected.contentEquals(result))
     }
 }
