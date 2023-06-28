@@ -15,8 +15,9 @@ class NationalityAdapter(
 ) : ArrayAdapter<Nationality>(context, resource, nationalityList) {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var originalList: Array<Nationality> = nationalityList
-    var filteredList: Array<Nationality> = nationalityList
+    private var originalList: Array<Nationality> = nationalityList.sortedBy { it.getLabel(context) }.toTypedArray()
+    var filteredList: Array<Nationality> = nationalityList.sortedBy { it.getLabel(context) }.toTypedArray()
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
