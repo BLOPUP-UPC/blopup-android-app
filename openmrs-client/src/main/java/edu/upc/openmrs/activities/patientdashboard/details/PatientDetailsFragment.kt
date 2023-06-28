@@ -129,7 +129,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
             patient.attributes?.forEach {attribute ->
                 val nationality = attribute.value?.let { Nationality.valueOf(it) }
                 if(attribute.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID){
-                    patientDetailsNationality.text = nationality?.getLabel(requireContext())
+                    patientDetailsNationality.text = nationality?.translatedLabel
                 }
             }
             if (notEmpty(patient.phoneNumber)) {
