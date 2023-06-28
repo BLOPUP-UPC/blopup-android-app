@@ -179,8 +179,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     fun onNationalitySelected(nationality: Nationality) {
         patientNationality = nationality
-        patientNationality!!.setTranslatedLabel(requireContext())
-        binding.nationality.text = patientNationality!!.translatedLabel
+        binding.nationality.text = nationality.getLabel(requireContext())
     }
 
     private fun setupPermissionsHandler() {
