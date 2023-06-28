@@ -3,8 +3,8 @@ package edu.upc.openmrs.test.activities.addeditpatient
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.R
-import edu.upc.openmrs.activities.addeditpatient.Nationality
-import edu.upc.openmrs.activities.addeditpatient.NationalityAdapter
+import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
+import edu.upc.openmrs.activities.addeditpatient.nationality.NationalityAdapter
 import io.mockk.*
 import junit.framework.TestCase.assertEquals
 

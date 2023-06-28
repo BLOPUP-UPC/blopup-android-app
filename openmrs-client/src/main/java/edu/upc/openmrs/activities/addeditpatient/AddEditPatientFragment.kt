@@ -55,6 +55,8 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.BaseFragment
+import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
+import edu.upc.openmrs.activities.addeditpatient.nationality.NationalityDialogFragment
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity

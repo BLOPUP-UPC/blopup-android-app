@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.addeditpatient
+package edu.upc.openmrs.activities.addeditpatient.nationality
 
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +11,7 @@ import android.widget.ListView
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
 import edu.upc.databinding.DialogSearchNationalityBinding
+import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment
 
 
 class NationalityDialogFragment : DialogFragment() {

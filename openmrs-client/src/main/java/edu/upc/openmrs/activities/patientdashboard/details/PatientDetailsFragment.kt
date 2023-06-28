@@ -33,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
-import edu.upc.openmrs.activities.addeditpatient.Nationality
+import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.utilities.ImageUtils.showPatientPhoto
 import edu.upc.openmrs.utilities.makeGone
