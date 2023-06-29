@@ -1,5 +1,7 @@
 package edu.upc.openmrs.test.activities.addeditpatient
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.R
@@ -11,6 +13,7 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class NationalityAdapterTest {
@@ -67,5 +70,30 @@ class NationalityAdapterTest {
         val result = adapter.filteredList
 
         assert(expected.contentEquals(result))
+    }
+
+    @Test
+    fun `when language is set to Spain should sort alphabetically by translated names`() {
+        val data = arrayOf(Nationality.SOUTH_SUDAN, Nationality.SPAIN)
+
+        val context: Context = getContextWithSpanishLocale()
+
+        adapter = NationalityAdapter(context, R.layout.item_nationality, data)
+
+        val expected = arrayOf(Nationality.SPAIN, Nationality.SOUTH_SUDAN)
+
+        adapter.filter.filter("")
+
+        val result = adapter.filteredList
+
+        assert(expected.contentEquals(result))
+    }
+
+    private fun getContextWithSpanishLocale(): Context {
+        val config = Configuration()
+        config.setLocale(Locale("es", "ES"))
+        val context: Context =
+            ApplicationProvider.getApplicationContext<Context?>().createConfigurationContext(config)
+        return context
     }
 }
