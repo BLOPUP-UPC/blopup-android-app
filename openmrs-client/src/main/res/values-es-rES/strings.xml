@@ -293,7 +293,7 @@
     <string name="gender_hint">género:</string>
     <string name="get_started_with_our_user_guide">Comenzar con nuestra guía de usuario</string>
     <string name="list_vital_selector_hide">Ocultar gráfico</string>
-    <string name="url_privacy_policy">https://github.com/openmrs/openmrs-contrib-android-client/blob/master/privacy_policy.md#privacy-policy</string>
+    <string name="url_privacy_policy">https://www.upc.edu/es/avis-legal/condicions-dus-i-privacitat</string>
     <string name="identifier_hint">Identificador</string>
     <string name="visit_in">en %1$s</string>
     <string name="invalid_login_or_password_message">Usuario o contraseña incorrectos. Por favor, intentar nuevamente.</string>

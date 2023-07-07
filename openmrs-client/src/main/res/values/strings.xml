@@ -324,7 +324,7 @@
     <string name="dialog_button_leave">Leave</string>
 
     <string name="logout_success">Logged out successfully!</string>
-    <string name="url_privacy_policy">https://github.com/openmrs/openmrs-contrib-android-client/blob/master/privacy_policy.md#privacy-policy</string>
+    <string name="url_privacy_policy">https://www.upc.edu/en/disclaimer/terms-of-use-and-privacy-policy</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
 
     <string name="action_submit">Submit</string>
