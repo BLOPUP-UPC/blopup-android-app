@@ -26,6 +26,7 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private lateinit var mBinding: ActivityVitalsFormBinding
     private lateinit var mToolbar: Toolbar
+    private var firstSubmitVitalsButtonClick = true
 
     private val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     private val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
@@ -107,8 +108,11 @@ class VitalsFormActivity : ACBaseActivity() {
         }
 
         mBinding.buttonToSentVitals.setOnClickListener {
-            heightCm = mBinding.height.text.toString()
-            submitForm()
+            if(firstSubmitVitalsButtonClick) {
+                firstSubmitVitalsButtonClick = false
+                heightCm = mBinding.height.text.toString()
+                submitForm()
+            }
         }
 
         mBinding.height.addTextChangedListener {
