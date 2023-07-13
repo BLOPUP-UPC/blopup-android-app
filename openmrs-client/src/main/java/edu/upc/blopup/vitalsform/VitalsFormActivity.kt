@@ -20,13 +20,13 @@ import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ToastUtil
+import kotlinx.android.synthetic.main.activity_vitals_form.*
 
 @AndroidEntryPoint
 class VitalsFormActivity : ACBaseActivity() {
 
     private lateinit var mBinding: ActivityVitalsFormBinding
     private lateinit var mToolbar: Toolbar
-    private var firstSubmitVitalsButtonClick = true
 
     private val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     private val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
@@ -45,7 +45,7 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private val vitals: MutableList<Vital> = mutableListOf()
 
-    private val bluetoothBloodPressureDataLauncher  = registerForActivityResult(
+    private val bluetoothBloodPressureDataLauncher = registerForActivityResult(
         StartActivityForResult()
     ) { result: ActivityResult ->
         val intent = result.data
@@ -108,11 +108,9 @@ class VitalsFormActivity : ACBaseActivity() {
         }
 
         mBinding.buttonToSentVitals.setOnClickListener {
-            if(firstSubmitVitalsButtonClick) {
-                firstSubmitVitalsButtonClick = false
-                heightCm = mBinding.height.text.toString()
-                submitForm()
-            }
+            buttonToSentVitals.isEnabled = false
+            heightCm = mBinding.height.text.toString()
+            submitForm()
         }
 
         mBinding.height.addTextChangedListener {
