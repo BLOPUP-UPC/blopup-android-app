@@ -1,21 +1,18 @@
-package edu.upc.openmrs.test.robolectric
+package edu.upc.openmrs.test.integration
 
 import android.content.Intent
-import android.os.Looper
 import android.view.View
 import android.view.autofill.AutofillValue
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.testing.WorkManagerTestInitHelper
 import edu.upc.R
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
-import edu.upc.openmrs.activities.dashboard.DashboardActivity
 import edu.upc.openmrs.activities.login.LoginActivity
+import edu.upc.openmrs.services.FormListService
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.junit.Assert
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
-import org.junit.jupiter.api.Disabled
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
@@ -46,8 +43,7 @@ class LoginActivityTest {
     }
 
     @Test
-    @Ignore
-    fun clickingLoginButton_shouldStartDashboardActivity() {
+    fun clickingLoginButton_shouldStartFormListService() {
         loginActivity.findViewById<View>(R.id.loginUsernameField)
             .autofill(AutofillValue.forText("admin"))
         loginActivity.findViewById<View>(R.id.loginPasswordField)
@@ -56,11 +52,8 @@ class LoginActivityTest {
 
         loginActivity.findViewById<View>(R.id.loginButton).performClick()
 
-        Thread.sleep(1_000)
-        shadowOf(Looper.getMainLooper()).idle()
-
-        val expectedIntent = Intent(loginActivity, DashboardActivity::class.java)
-        val actual = shadowOf(RuntimeEnvironment.getApplication()).nextStartedActivity
+        val expectedIntent = Intent(loginActivity, FormListService::class.java)
+        val actual = shadowOf(RuntimeEnvironment.getApplication()).nextStartedService
         Assert.assertEquals(expectedIntent.component, actual.component)
     }
 }
