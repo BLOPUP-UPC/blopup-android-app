@@ -44,7 +44,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="15dip">
+                        android:layout_marginEnd="15dip">
 
                         <EditText
                             android:id="@+id/systolic"
@@ -160,7 +160,7 @@
                             android:enabled="false"
                             android:hint="@string/weight_value_label"
                             android:imeOptions="actionNext"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -194,7 +194,7 @@
                             android:focusable="true"
                             android:hint="@string/height_value_label"
                             android:imeOptions="actionNext"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
