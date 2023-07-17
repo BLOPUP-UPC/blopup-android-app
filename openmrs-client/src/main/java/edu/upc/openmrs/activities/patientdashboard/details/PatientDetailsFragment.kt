@@ -127,9 +127,12 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                 patientDetailsBirthDate.text = convertTime(longTime)
             }
             patient.attributes?.forEach {attribute ->
-                val nationality = attribute.value?.let { Nationality.valueOf(it) }
+                val nationalityValue = attribute.value?.uppercase()
                 if(attribute.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID){
-                    patientDetailsNationality.text = nationality?.getLabel(requireContext())
+                    val nationality = nationalityValue?.let { Nationality.valueOf(it) }
+                    if (nationality != null) {
+                        patientDetailsNationality.text = nationality.getLabel(requireContext())
+                    }
                 }
             }
             if (notEmpty(patient.phoneNumber)) {

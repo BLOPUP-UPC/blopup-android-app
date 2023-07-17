@@ -3,14 +3,15 @@ package edu.upc.openmrs.activities.addeditpatient.nationality
 import android.content.Context
 import edu.upc.R
 
-
 enum class Nationality(val label: Int, val flag: Int) {
 
     AFGHANISTAN(R.string.afghanistan, R.drawable.flag_afghanistan),
     ALBANIA(R.string.albania, R.drawable.flag_albania),
     ALGERIA(R.string.algeria, R.drawable.flag_algeria),
+    AMERICAN_SAMOA(R.string.american_samoa, R.drawable.flag_united_states_of_america),
     ANDORRA(R.string.andorra, R.drawable.flag_andorra),
     ANGOLA(R.string.angola, R.drawable.flag_angola),
+    ANGUILLA(R.string.anguilla, R.drawable.flag_anguilla),
     ANTARCTICA(R.string.antarctica, R.drawable.flag_antarctica),
     ANTIGUA_AND_BARBUDA(R.string.antigua_and_barbuda, R.drawable.flag_antigua_and_barbuda),
     ARGENTINA(R.string.argentina, R.drawable.flag_argentina),
