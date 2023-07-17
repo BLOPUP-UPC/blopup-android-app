@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.upc">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="edu.upc.openmrs.application.OpenMRS"
+        android:networkSecurityConfig="@xml/network_security_config">
+    </application>
+
+</manifest>
