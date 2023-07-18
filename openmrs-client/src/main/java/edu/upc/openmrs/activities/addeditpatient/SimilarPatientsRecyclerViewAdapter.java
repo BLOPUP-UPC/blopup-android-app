@@ -64,7 +64,6 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
 
         setPatientName(holder, patient);
         setGender(holder, patient);
-        setPhoneNumber(holder, patient);
         setBirthdate(holder, patient);
         setPatientAddress(holder, patient);
         setPatientContactDetails(holder, patient);
@@ -92,9 +91,7 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
     public class PatientViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout mRowLayout;
         private TextView mGivenName;
-        private TextView mMiddleName;
         private TextView mFamilyName;
-        private TextView mPhoneNumber;
         private TextView mDocumentId;
         private TextView mGender;
         private TextView mBirthDate;
@@ -110,10 +107,7 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
             super(itemView);
             mRowLayout = (LinearLayout) itemView;
             mGivenName = itemView.findViewById(R.id.patientGivenName);
-            mMiddleName = itemView.findViewById(R.id.patientMiddleName);
             mFamilyName = itemView.findViewById(R.id.patientFamilyName);
-
-            mPhoneNumber = itemView.findViewById(R.id.phoneNumber);
             mDocumentId = itemView.findViewById(R.id.documentId);
 
             mGender = itemView.findViewById(R.id.patientGender);
@@ -159,15 +153,6 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
         }
     }
 
-    private void setPhoneNumber(PatientViewHolder holder, Patient patient) {
-        if (StringUtils.notEmpty(patient.getPhoneNumber())) {
-            holder.mPhoneNumber.setText(patient.getPhoneNumber());
-            if (Objects.equal(patient.getPhoneNumber(), newPatient.getPhoneNumber())) {
-                setStyleForMatchedPatientFields(holder.mPhoneNumber);
-            }
-        }
-    }
-
     private void setPatientAddress(PatientViewHolder holder, Patient patient) {
         if(newPatient.getAddress() == null) return;
         if (null != patient.getAddress().getAddress1()) {
@@ -201,12 +186,6 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
             holder.mGivenName.setText(patient.getName().getGivenName());
             if (Objects.equal(patient.getName().getGivenName(), newPatient.getName().getGivenName())) {
                 setStyleForMatchedPatientFields(holder.mGivenName);
-            }
-        }
-        if (null != patient.getName().getMiddleName()) {
-            holder.mMiddleName.setText(patient.getName().getMiddleName());
-            if (Objects.equal(patient.getName().getMiddleName(), newPatient.getName().getMiddleName())) {
-                setStyleForMatchedPatientFields(holder.mMiddleName);
             }
         }
         if (null != patient.getName().getFamilyName()) {

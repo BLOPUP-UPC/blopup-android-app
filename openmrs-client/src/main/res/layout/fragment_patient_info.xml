@@ -257,25 +257,6 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayoutPhoneNumber"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp">
-
-                            <EditText
-                                android:id="@+id/phoneNumber"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:focusable="true"
-                                android:hint="@string/reg_phone_number_hint"
-                                android:imeOptions="actionNext"
-                                android:inputType="phone|textCapWords"
-                                android:maxLines="1"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textInputLayoutDocumentId"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
