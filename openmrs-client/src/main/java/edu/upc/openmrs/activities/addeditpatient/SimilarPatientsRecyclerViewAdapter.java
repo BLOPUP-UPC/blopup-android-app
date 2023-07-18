@@ -92,7 +92,6 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
         private LinearLayout mRowLayout;
         private TextView mGivenName;
         private TextView mFamilyName;
-        private TextView mDocumentId;
         private TextView mGender;
         private TextView mBirthDate;
         private TextView mAddres;
@@ -108,7 +107,6 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
             mRowLayout = (LinearLayout) itemView;
             mGivenName = itemView.findViewById(R.id.patientGivenName);
             mFamilyName = itemView.findViewById(R.id.patientFamilyName);
-            mDocumentId = itemView.findViewById(R.id.documentId);
 
             mGender = itemView.findViewById(R.id.patientGender);
             mBirthDate = itemView.findViewById(R.id.patientBirthDate);

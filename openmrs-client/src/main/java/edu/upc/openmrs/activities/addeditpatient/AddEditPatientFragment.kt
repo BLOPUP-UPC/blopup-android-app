@@ -286,7 +286,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
             binding.firstName.setText(name.givenName)
             binding.surname.setText(name.familyName)
-            binding.documentId.setText(documentId)
 
             if (notNull(birthdate) || notEmpty(birthdate)) {
                 viewModel.dateHolder = convertTimeString(birthdate)
