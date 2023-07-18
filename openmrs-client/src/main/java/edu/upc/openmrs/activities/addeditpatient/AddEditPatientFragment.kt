@@ -20,7 +20,6 @@ import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.DialogInterface.*
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -42,7 +41,7 @@ import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.*
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.snackbar.Snackbar
@@ -81,11 +80,6 @@ import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.StringUtils.validateText
 import edu.upc.sdk.utilities.ToastUtil
-import kotlinx.android.synthetic.main.fragment_dialog_layout.*
-import kotlinx.android.synthetic.main.fragment_matching_patients.view.*
-import kotlinx.android.synthetic.main.fragment_patient_info.*
-import kotlinx.android.synthetic.main.legal_consent.*
-import kotlinx.android.synthetic.main.list_gallery_or_camera_item.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -291,7 +285,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             binding.deceasedCardview.makeVisible()
 
             binding.firstName.setText(name.givenName)
-            binding.middlename.setText(name.middleName)
             binding.surname.setText(name.familyName)
             binding.phoneNumber.setText(phoneNumber)
             binding.documentId.setText(documentId)
@@ -381,16 +374,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         } else {
             textInputLayoutFirstName.isErrorEnabled = false
         }
-
-        // Middle name validation (can be empty)
-        if (!validateText(getInput(middlename), ILLEGAL_CHARACTERS)) {
-            textInputLayoutMiddlename.isErrorEnabled = true
-            textInputLayoutMiddlename.error = getString(R.string.midname_invalid_error)
-            scrollToTop()
-        } else {
-            textInputLayoutMiddlename.isErrorEnabled = false
-        }
-
         // Family name validation
         if (isEmpty(surname)) {
             textInputLayoutSurname.isErrorEnabled = true
@@ -406,7 +389,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
         viewModel.patient.names = listOf(PersonName().apply {
             givenName = getInput(firstName)
-            middleName = getInput(middlename)
             familyName = getInput(surname)
         })
 
@@ -876,7 +858,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
 
     private fun resetAction() = with(binding) {
         firstName.setText("")
-        middlename.setText("")
         surname.setText("")
         dobEditText.setText("")
         estimatedYear.setText("")
@@ -887,7 +868,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         nationalityerror.makeGone()
         recordConsentError.makeGone()
         textInputLayoutFirstName.error = ""
-        textInputLayoutMiddlename.error = ""
         textInputLayoutSurname.error = ""
         patientPhoto.setImageResource(R.drawable.ic_person_grey_500_48dp)
         viewModel.resetPatient()
@@ -905,7 +885,7 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     }
 
     fun isAnyFieldNotEmpty(): Boolean = with(binding) {
-        return !isEmpty(firstName) || !isEmpty(middlename) || !isEmpty(surname) ||
+        return !isEmpty(firstName) || !isEmpty(surname) ||
                 !isEmpty(dobEditText) || !isEmpty(estimatedYear) || !isEmpty(estimatedMonth)
     }
 

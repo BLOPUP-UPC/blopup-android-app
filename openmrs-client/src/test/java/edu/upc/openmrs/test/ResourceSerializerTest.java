@@ -84,7 +84,6 @@ public class ResourceSerializerTest {
         PersonName personName = new PersonName();
         personName.setFamilyName("family");
         personName.setGivenName("given");
-        personName.setMiddleName("middle");
         patient.setNames(Arrays.asList(personName));
         patient.setGender("M");
         return patient;

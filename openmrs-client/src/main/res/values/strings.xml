@@ -50,7 +50,7 @@
     <string name="midname_invalid_error" tools:ignore="MissingTranslation">Middle name cannot contain symbols or numbers</string>
     <string name="lname_invalid_error" tools:ignore="MissingTranslation">Family name cannot contain symbols or numbers</string>
     <string name="dob_error" tools:ignore="MissingTranslation">Date should be between %1$s and %2$s</string>
-    <string name="reg_firstname_hint" tools:ignore="MissingTranslation">First Name*</string>
+    <string name="reg_firstname_hint" tools:ignore="MissingTranslation">Name*</string>
     <string name="reg_contact_firstname_hint" tools:ignore="MissingTranslation">First Name</string>
     <string name="reg_midname_hint" tools:ignore="MissingTranslation">Middle Name</string>
     <string name="reg_surname_hint" tools:ignore="MissingTranslation">Family Name*</string>

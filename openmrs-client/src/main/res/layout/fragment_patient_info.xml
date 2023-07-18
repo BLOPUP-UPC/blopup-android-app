@@ -219,37 +219,16 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/textInputLayoutFirstName"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1">
 
                                 <EditText
                                     android:id="@+id/firstName"
-                                    android:layout_width="fill_parent"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:focusable="true"
                                     android:hint="@string/reg_firstname_hint"
-                                    android:imeOptions="actionNext"
-                                    android:inputType="textPersonName|textCapWords"
-                                    android:maxLines="1"
-                                    android:textSize="14sp" />
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/textInputLayoutMiddlename"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginLeft="8dp"
-                                android:layout_weight="1">
-
-                                <EditText
-                                    android:id="@+id/middlename"
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:focusable="true"
-                                    android:hint="@string/reg_midname_hint"
                                     android:imeOptions="actionNext"
                                     android:inputType="textPersonName|textCapWords"
                                     android:maxLines="1"
