@@ -45,12 +45,6 @@ class AddEditPatientViewModel @Inject constructor(
         private set
     lateinit var patient: Patient
 
-    var isPatientUnidentified = false
-        set(value) {
-            field = value
-            patientValidator.isPatientUnidentified = value
-        }
-
     var isLegalRecordingPresent = false
         set(value) {
             field = value
@@ -74,7 +68,7 @@ class AddEditPatientViewModel @Inject constructor(
         }
 
         // Initialize patient data validator
-        patientValidator = PatientValidator(patient, isPatientUnidentified, isLegalRecordingPresent)
+        patientValidator = PatientValidator(patient, isLegalRecordingPresent)
     }
 
     fun resetPatient() {
@@ -95,10 +89,6 @@ class AddEditPatientViewModel @Inject constructor(
 
     fun fetchSimilarPatients() {
         if (!patientValidator.validate()) return
-        if (isPatientUnidentified) {
-            _similarPatientsLiveData.value = emptyList()
-            return
-        }
         setLoading()
         addSubscription(patientRepository.fetchSimilarPatients(patient)
             .observeOn(AndroidSchedulers.mainThread())

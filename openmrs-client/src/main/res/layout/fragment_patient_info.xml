@@ -111,17 +111,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/photo_cardview">
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/unidentified_checkbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/unidentified_patient"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView

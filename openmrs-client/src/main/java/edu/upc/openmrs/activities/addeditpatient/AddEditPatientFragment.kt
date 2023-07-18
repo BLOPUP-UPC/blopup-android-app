@@ -30,7 +30,6 @@ import android.os.Environment
 import android.os.StrictMode
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -279,8 +278,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             // Change to Update Patient Form
             requireActivity().title = getString(R.string.action_update_patient_data)
 
-            // No need for un-identification option once the patient is registered
-            binding.unidentifiedCheckbox.makeGone()
             // Show deceased option only when patient is registered
             binding.deceasedCardview.makeVisible()
 
@@ -313,53 +310,8 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     }
 
     private fun validateFormInputsAndUpdateViewModel() = with(binding) {
-        viewModel.isPatientUnidentified = unidentifiedCheckbox.isChecked
         viewModel.patient.isDeceased = deceasedCheckbox.isChecked
-
-        if (unidentifiedCheckbox.isChecked) {
-            /* Names */
-            viewModel.patient.names = listOf(PersonName().apply {
-                familyName = getString(R.string.unidentified_patient_name)
-                givenName = getString(R.string.unidentified_patient_name)
-            })
-
-            /* Birth date */
-            if (isBlank(getInput(estimatedYear)) && isBlank(getInput(estimatedMonth))) {
-                dobError.text = getString(R.string.dob_error_for_unidentified)
-                dobError.makeVisible()
-                scrollToTop()
-            } else {
-                dobError.makeGone()
-                viewModel.patient.birthdateEstimated = true
-                val yearDiff =
-                    if (isEmpty(estimatedYear)) 0 else estimatedYear.text.toString().toInt()
-                val monthDiff =
-                    if (isEmpty(estimatedMonth)) 0 else estimatedMonth.text.toString().toInt()
-                viewModel.dateHolder = getDateTimeFromDifference(yearDiff, monthDiff)
-                viewModel.patient.birthdate =
-                    DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-                        .print(viewModel.dateHolder)
-            }
-
-            /* Gender */
-            val genderChoices =
-                arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
-            val index =
-                gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
-            if (index == -1) {
-                gendererror.makeVisible()
-                viewModel.patient.gender = null
-                scrollToTop()
-            } else {
-                gendererror.makeGone()
-                viewModel.patient.gender = genderChoices[index]
-            }
-            Log.i("payload", viewModel.patient.toString())
-
-        }
-
         /* Names */
-
         // First name validation
         if (isEmpty(firstName)) {
             textInputLayoutFirstName.isErrorEnabled = true
@@ -481,19 +433,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     }
 
     private fun setupViewsListeners() = with(binding) {
-        unidentifiedCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                linearLayoutName.makeGone()
-                constraintLayoutDOB.makeGone()
-                viewModel.isPatientUnidentified = true
-            } else {
-                linearLayoutName.makeVisible()
-                constraintLayoutDOB.makeVisible()
-                viewModel.isPatientUnidentified = false
-            }
-
-        }
-
         languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,

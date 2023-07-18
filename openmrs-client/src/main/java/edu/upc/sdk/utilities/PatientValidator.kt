@@ -9,11 +9,9 @@ import edu.upc.sdk.utilities.StringUtils.validateText
  * This utility class validates patient's data presence and legality for registering.
  *
  * @param patient the patient to validate
- * @param isPatientUnidentified whether the patient being registered is unidentified or not
  * @param countriesList the available countries that can be picked from as the patient's country
  */
 class PatientValidator(private val patient: Patient,
-                       var isPatientUnidentified: Boolean,
                        var isLegalRecordingPresent: Boolean) {
 
     /**
@@ -23,7 +21,6 @@ class PatientValidator(private val patient: Patient,
         /* Checks for identified or unidentified patient */
         if (gender.isNullOrBlank()) return false
         if (birthdate.isNullOrBlank()) return false
-        if (isPatientUnidentified) return true
 
         /* Additional checks for identified patient */
 
