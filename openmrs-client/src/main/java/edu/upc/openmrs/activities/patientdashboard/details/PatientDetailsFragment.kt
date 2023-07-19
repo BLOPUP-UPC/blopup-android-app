@@ -21,6 +21,14 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.BuildConfig
+import edu.upc.R
+import edu.upc.databinding.FragmentPatientDetailsBinding
+import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
+import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -29,15 +37,6 @@ import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil.error
-import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.BuildConfig
-import edu.upc.R
-import edu.upc.databinding.FragmentPatientDetailsBinding
-import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
-import edu.upc.openmrs.utilities.ImageUtils.showPatientPhoto
-import edu.upc.openmrs.utilities.makeGone
-import edu.upc.openmrs.utilities.makeVisible
 
 @AndroidEntryPoint
 class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -109,18 +108,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     }
                 }
             }
-            if (patient.photo != null) {
-                val photo = patient.resizedPhoto
-                val patientName = patient.name.nameString
-                patientPhoto.setImageBitmap(photo)
-                patientPhoto.setOnClickListener {
-                    showPatientPhoto(
-                        requireContext(),
-                        photo,
-                        patientName
-                    )
-                }
-            }
+
             patientDetailsName.text = patient.name.nameString
             val longTime = convertTime(patient.birthdate)
             if (longTime != null) {
