@@ -55,18 +55,6 @@ object ImageUtils {
     }
 
     @JvmStatic
-    fun resizePhoto(photo: Bitmap): Bitmap {
-        val HEIGHT = 500.0
-        val WIDTH = 500.0
-        val height = photo.height
-        val width = photo.width
-        val aspectRatio = Math.min(HEIGHT / height, WIDTH / width)
-        return if (0 < aspectRatio && aspectRatio < 1) {
-            Bitmap.createScaledBitmap(photo, (aspectRatio * width).toInt(), (aspectRatio * height).toInt(), true)
-        } else photo
-    }
-
-    @JvmStatic
     fun changeImageViewTint(context: Context?, imageView: ImageView?, color: Int) {
         ImageViewCompat.setImageTintList(imageView!!, ColorStateList.valueOf(ContextCompat.getColor(context!!, color)))
     }
