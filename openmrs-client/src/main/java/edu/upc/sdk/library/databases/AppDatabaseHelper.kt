@@ -202,10 +202,6 @@ object AppDatabaseHelper {
         patient.names.add(personName)
         patient.gender = patientEntity.gender
         patient.birthdate = patientEntity.birthDate
-        val photoByteArray = patientEntity.photo
-        if (photoByteArray != null) {
-            patient.photo = byteArrayToBitmap(photoByteArray)
-        }
         val personAddress = PersonAddress()
         personAddress.address1 = patientEntity.address_1
         personAddress.address2 = patientEntity.address_2
@@ -264,11 +260,7 @@ object AppDatabaseHelper {
             patientEntity.causeOfDeath = null
         }
         patientEntity.age = null
-        if (patient.photo != null) {
-            patientEntity.photo = bitmapToByteArray(patient.photo)
-        } else {
-            patientEntity.photo = null
-        }
+        patientEntity.photo = null
         if (null != patient.address) {
             patientEntity.address_1 = patient.address.address1
             patientEntity.address_2 = patient.address.address2

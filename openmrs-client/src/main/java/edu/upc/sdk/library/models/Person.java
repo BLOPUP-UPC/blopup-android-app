@@ -28,7 +28,6 @@ import java.util.List;
 import edu.upc.sdk.library.models.typeConverters.PersonAddressConverter;
 import edu.upc.sdk.library.models.typeConverters.PersonAttributeConverter;
 import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
-import edu.upc.sdk.utilities.ImageUtils;
 
 /**
  * The type Person.
@@ -249,24 +248,6 @@ public class Person extends Resource implements Serializable {
      */
     public Bitmap getPhoto() {
         return photo;
-    }
-
-    /**
-     * Sets photo.
-     *
-     * @param patientPhoto the patient photo
-     */
-    public void setPhoto(Bitmap patientPhoto) {
-        this.photo = patientPhoto;
-    }
-
-    /**
-     * Gets resized photo.
-     *
-     * @return the resized photo
-     */
-    public Bitmap getResizedPhoto() {
-        return ImageUtils.resizePhoto(this.photo);
     }
 
     /**

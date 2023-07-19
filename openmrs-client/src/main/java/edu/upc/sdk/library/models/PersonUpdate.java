@@ -20,10 +20,6 @@ import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import edu.upc.sdk.library.models.typeConverters.PersonAddressConverter;
-import edu.upc.sdk.library.models.typeConverters.PersonAttributeConverter;
-import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
-import edu.upc.sdk.utilities.ImageUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,7 +28,6 @@ import java.util.List;
 import edu.upc.sdk.library.models.typeConverters.PersonAddressConverter;
 import edu.upc.sdk.library.models.typeConverters.PersonAttributeConverter;
 import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
-import edu.upc.sdk.utilities.ImageUtils;
 
 /**
  * The type Person update.
@@ -73,8 +68,6 @@ public class PersonUpdate extends Resource implements Serializable {
     @Expose
     private String causeOfDeath = null;
 
-    private Bitmap photo;
-
     /**
      * Instantiates a new Person update.
      */
@@ -102,7 +95,6 @@ public class PersonUpdate extends Resource implements Serializable {
         this.birthdateEstimated = birthdateEstimated;
         this.addresses = addresses;
         this.attributes = attributes;
-        this.photo = photo;
         this.causeOfDeath = causeOfDeath;
         this.dead = dead;
     }
@@ -239,33 +231,6 @@ public class PersonUpdate extends Resource implements Serializable {
      */
     public void setAttributes(List<PersonAttribute> attributes) {
         this.attributes = attributes;
-    }
-
-    /**
-     * Gets photo.
-     *
-     * @return the photo
-     */
-    public Bitmap getPhoto() {
-        return photo;
-    }
-
-    /**
-     * Sets photo.
-     *
-     * @param patientPhoto the patient photo
-     */
-    public void setPhoto(Bitmap patientPhoto) {
-        this.photo = patientPhoto;
-    }
-
-    /**
-     * Gets resized photo.
-     *
-     * @return the resized photo
-     */
-    public Bitmap getResizedPhoto() {
-        return ImageUtils.resizePhoto(this.photo);
     }
 
     /**
