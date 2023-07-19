@@ -34,7 +34,6 @@ import edu.upc.sdk.library.models.Observation;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientDtoUpdate;
-import edu.upc.sdk.library.models.PatientPhoto;
 import edu.upc.sdk.library.models.Provider;
 import edu.upc.sdk.library.models.Resource;
 import edu.upc.sdk.library.models.Results;
@@ -44,15 +43,12 @@ import edu.upc.sdk.library.models.SystemSetting;
 import edu.upc.sdk.library.models.User;
 import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.library.models.VisitType;
-import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -176,28 +172,8 @@ public interface RestApi {
     Call<Results<PatientDto>> getPatientsDto(@Query("q") String searchQuery,
                                              @Query("v") String representation);
 
-    /**
-     * Upload patient photo call.
-     *
-     * @param uuid         the uuid
-     * @param patientPhoto the patient photo
-     * @return the call
-     */
-    @POST("personimage/{uuid}")
-    Call<PatientPhoto> uploadPatientPhoto(@Path("uuid") String uuid,
-                                          @Body PatientPhoto patientPhoto);
-
     @POST("upload")
     Call<String> uploadLegalConsent(@Body LegalConsentRequest legalConsentRequest);
-
-    /**
-     * Download patient photo call.
-     *
-     * @param uuid the uuid
-     * @return the call
-     */
-    @GET("personimage/{uuid}")
-    Call<ResponseBody> downloadPatientPhoto(@Path("uuid") String uuid);
 
     /**
      * Gets similar patients.

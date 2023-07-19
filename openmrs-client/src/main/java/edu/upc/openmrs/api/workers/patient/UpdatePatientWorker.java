@@ -21,6 +21,9 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.io.IOException;
+
+import edu.upc.R;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -28,14 +31,9 @@ import edu.upc.sdk.library.dao.PatientDAO;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientDtoUpdate;
-import edu.upc.sdk.library.models.PatientPhoto;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.ToastUtil;
-
-import java.io.IOException;
-
-import edu.upc.R;
 import retrofit2.Response;
 
 public class UpdatePatientWorker extends Worker {
@@ -76,9 +74,7 @@ public class UpdatePatientWorker extends Worker {
                     patient.setBirthdate(responsePatientDto.getPerson().getBirthdate());
 
                     patient.setUuid(patient.getUuid());
-                    if (patient.getPhoto() != null) {
-                        uploadPatientPhoto(patient);
-                    }
+
                     patientDAO.updatePatient(patient.getId(), patient);
 
                     new Handler(Looper.getMainLooper()).post(() -> {
@@ -92,25 +88,4 @@ public class UpdatePatientWorker extends Worker {
         }
         return false;
     }
-
-    private void uploadPatientPhoto(final Patient patient) {
-        PatientPhoto patientPhoto = new PatientPhoto();
-        patientPhoto.setPhoto(patient.getPhoto());
-        patientPhoto.setPerson(patient);
-
-        try {
-            Response<PatientPhoto> response = restApi.uploadPatientPhoto(patient.getUuid(), patientPhoto).execute();
-
-            if (response.isSuccessful()) {
-                logger.i(response.message());
-            } else {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    ToastUtil.error(getApplicationContext().getString(R.string.patient_photo_update_unsuccessful, response.message()));
-                });
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
-

@@ -14,18 +14,13 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import androidx.annotation.NonNull;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +45,6 @@ import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientDtoUpdate;
 import edu.upc.sdk.library.models.PatientIdentifier;
-import edu.upc.sdk.library.models.PatientPhoto;
 import edu.upc.sdk.library.models.ResultType;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.SystemProperty;
@@ -59,9 +53,7 @@ import edu.upc.sdk.utilities.ModuleUtils;
 import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.PatientComparator;
 import edu.upc.sdk.utilities.ToastUtil;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -120,9 +112,6 @@ public class PatientRepository extends BaseRepository {
                 PatientDto returnedPatientDto = response.body();
 
                 patient.setUuid(returnedPatientDto.getUuid());
-                if (patient.getPhoto() != null) {
-                    uploadPatientPhoto(patient);
-                }
 
                 patientDAO.updatePatient(patient.getId(), patient);
                 if (!patient.getEncounters().equals("")) {
@@ -132,31 +121,6 @@ public class PatientRepository extends BaseRepository {
                 return patient;
             } else {
                 throw new Exception("syncPatient error: " + response.message());
-            }
-        });
-    }
-
-    private void uploadPatientPhoto(final Patient patient) {
-        PatientPhoto patientPhoto = new PatientPhoto();
-        patientPhoto.setPhoto(patient.getPhoto());
-        patientPhoto.setPerson(patient);
-        Call<PatientPhoto> personPhotoCall =
-                restApi.uploadPatientPhoto(patient.getUuid(), patientPhoto);
-        personPhotoCall.enqueue(new Callback<PatientPhoto>() {
-            @Override
-            public void onResponse(@NonNull Call<PatientPhoto> call, @NonNull Response<PatientPhoto> response) {
-                logger.i(response.message());
-                if (!response.isSuccessful()) {
-
-                    //string resource added "patient_photo_update_unsuccessful"
-                    ToastUtil.error("Patient photo cannot be synced due to server error: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<PatientPhoto> call, @NonNull Throwable t) {
-                //string resource added "patient_photo_update_unsuccessful"
-                ToastUtil.notify("Patient photo cannot be synced due to server error: " + t.toString());
             }
         });
     }
@@ -193,8 +157,6 @@ public class PatientRepository extends BaseRepository {
                     PatientDto patientDto = response.body();
                     patient.setBirthdate(patientDto.getPerson().getBirthdate());
                     patient.setUuid(patientDto.getUuid());
-
-                    if (patient.getPhoto() != null) uploadPatientPhoto(patient);
 
                     patientDAO.updatePatient(patient.getId(), patient);
 
@@ -245,38 +207,10 @@ public class PatientRepository extends BaseRepository {
             if (response.isSuccessful()) {
                 final PatientDto newPatientDto = response.body();
 
-                Bitmap photo = downloadPatientPhotoByUuid(newPatientDto.getUuid()).toBlocking().first();
-                if (photo != null) newPatientDto.getPerson().setPhoto(photo);
-
                 return newPatientDto.getPatient();
             } else {
                 throw new IOException("Error with downloading patient: " + response.message());
             }
-        });
-    }
-
-    /**
-     * Download patient photo by uuid.
-     *
-     * @param uuid patient uuid
-     * @return Photo bitmap or null bitmap observable
-     */
-    public Observable<Bitmap> downloadPatientPhotoByUuid(String uuid) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            Call<ResponseBody> call = restApi.downloadPatientPhoto(uuid);
-            Response<ResponseBody> response = call.execute();
-
-            if (response.isSuccessful()) {
-                try {
-                    InputStream inputStream = response.body().byteStream();
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    inputStream.close();
-                    return bitmap;
-                } catch (Exception e) {
-                    logger.e(e.getMessage());
-                }
-            }
-            return null;
         });
     }
 

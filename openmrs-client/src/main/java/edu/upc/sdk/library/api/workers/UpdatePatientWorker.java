@@ -32,17 +32,6 @@ import edu.upc.sdk.library.listeners.retrofitcallbacks.DefaultResponseCallback;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientDtoUpdate;
-import edu.upc.sdk.library.models.PatientPhoto;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.NetworkUtils;
-import edu.upc.sdk.utilities.ToastUtil;
-
-import edu.upc.sdk.library.dao.PatientDAO;
-import edu.upc.sdk.library.listeners.retrofitcallbacks.DefaultResponseCallback;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.PatientDto;
-import edu.upc.sdk.library.models.PatientDtoUpdate;
-import edu.upc.sdk.library.models.PatientPhoto;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.ToastUtil;
@@ -56,8 +45,6 @@ import retrofit2.Response;
 public class UpdatePatientWorker extends Worker {
     private static final int ON_SUCCESS = 1;
     private static final int ON_FAILURE = 2;
-    private static final int ON_UNSUCCESSFUL_RESPONSE_PHOTO_UPDATE = 3;
-    private static final int ON_FAILURE_RESPONSE_PHOTO_UPDATE = 4;
     private RestApi restApi;
     private OpenMRSLogger logger;
     private Handler mHandler;
@@ -86,12 +73,6 @@ public class UpdatePatientWorker extends Worker {
                         String updateFailedPatientName = (String) msg.obj;
                         ToastUtil.error(getApplicationContext().getString(R.string.patient_update_unsuccessful, updateFailedPatientName));
                         break;
-                    case ON_UNSUCCESSFUL_RESPONSE_PHOTO_UPDATE:
-                        responseMessage = (String) msg.obj;
-                        ToastUtil.error(getApplicationContext().getString(R.string.patient_photo_update_unsuccessful, responseMessage));
-                    case ON_FAILURE_RESPONSE_PHOTO_UPDATE:
-                        responseMessage = (String) msg.obj;
-                        ToastUtil.notify(getApplicationContext().getString(R.string.patient_photo_update_unsuccessful, responseMessage));
                 }
                 super.handleMessage(msg);
             }
@@ -146,9 +127,6 @@ public class UpdatePatientWorker extends Worker {
                         patient.setBirthdate(patientDto.getPerson().getBirthdate());
 
                         patient.setUuid(patient.getUuid());
-                        if (patient.getPhoto() != null) {
-                            uploadPatientPhoto(patient);
-                        }
 
                         new PatientDAO().updatePatient(patient.getId(), patient);
 
@@ -171,33 +149,4 @@ public class UpdatePatientWorker extends Worker {
             });
         }
     }
-
-    private void uploadPatientPhoto(final Patient patient) {
-        PatientPhoto patientPhoto = new PatientPhoto();
-        patientPhoto.setPhoto(patient.getPhoto());
-        patientPhoto.setPerson(patient);
-        Call<PatientPhoto> personPhotoCall = restApi.uploadPatientPhoto(patient.getUuid(), patientPhoto);
-        personPhotoCall.enqueue(new Callback<PatientPhoto>() {
-            @Override
-            public void onResponse(@NonNull Call<PatientPhoto> call, @NonNull Response<PatientPhoto> response) {
-                logger.i(response.message());
-
-                if (!response.isSuccessful()) {
-                    Message msg = new Message();
-                    msg.obj = response.message();
-                    msg.what = ON_UNSUCCESSFUL_RESPONSE_PHOTO_UPDATE;
-                    mHandler.sendMessage(msg);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<PatientPhoto> call, @NonNull Throwable t) {
-                Message msg = new Message();
-                msg.obj = t.toString();
-                msg.what = ON_FAILURE_RESPONSE_PHOTO_UPDATE;
-                mHandler.sendMessage(msg);
-            }
-        });
-    }
 }
-
