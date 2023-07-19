@@ -3,7 +3,6 @@ package edu.upc.openmrs.activities.patientdashboard
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.sdk.library.api.repository.AllergyRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
@@ -23,7 +22,6 @@ class PatientDashboardMainViewModel @Inject constructor(
     private val visitDAO: VisitDAO,
     private val patientRepository: PatientRepository,
     private val visitRepository: VisitRepository,
-    private val allergyRepository: AllergyRepository,
     private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Unit>() {
 
@@ -49,7 +47,6 @@ class PatientDashboardMainViewModel @Inject constructor(
         setLoading(PatientSynchronizing)
         syncDetails()
         syncVisits()
-        syncAllergies()
         syncVitals()
     }
 
@@ -94,17 +91,6 @@ class PatientDashboardMainViewModel @Inject constructor(
                 { setContent(Unit, PatientSynchronizing) },
                 { setError(it, PatientSynchronizing) }
             ))
-    }
-
-    private fun syncAllergies() {
-        runningSyncs++
-        addSubscription(allergyRepository.syncAllergies(patient)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { setContent(Unit, PatientSynchronizing) },
-                { setError(it, PatientSynchronizing) }
-            )
-        )
     }
 
     private fun syncVitals() {

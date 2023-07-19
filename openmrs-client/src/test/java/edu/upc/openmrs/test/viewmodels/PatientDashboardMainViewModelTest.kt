@@ -2,17 +2,15 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import edu.upc.sdk.library.api.repository.AllergyRepository
+import edu.upc.openmrs.activities.patientdashboard.PatientDashboardMainViewModel
+import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
-import edu.upc.sdk.library.models.Allergy
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardMainViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,9 +44,6 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var patientRepository: PatientRepository
 
-    @Mock
-    lateinit var allergyRepository: AllergyRepository
-
     lateinit var savedStateHandle: SavedStateHandle
 
     lateinit var viewModel: PatientDashboardMainViewModel
@@ -65,7 +60,7 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, PATIENT_ID) }
         viewModel = PatientDashboardMainViewModel(
             patientDAO, visitDAO, patientRepository,
-            visitRepository, allergyRepository, savedStateHandle
+            visitRepository, savedStateHandle
         )
         visitList = createVisitList()
     }
@@ -77,8 +72,6 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
             .thenReturn(Observable.just(serverPatient))
         Mockito.`when`(visitRepository.syncVisitsData(any()))
             .thenReturn(Observable.just(emptyList<Visit>()))
-        Mockito.`when`(allergyRepository.syncAllergies(any()))
-            .thenReturn(Observable.just(emptyList<Allergy>()))
         Mockito.`when`(visitRepository.syncLastVitals(any()))
             .thenReturn(Observable.just(null))
 
@@ -95,8 +88,6 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
             .thenReturn(Observable.just(patient))
         Mockito.`when`(visitRepository.syncVisitsData(any()))
             .thenReturn(Observable.just(emptyList<Visit>()))
-        Mockito.`when`(allergyRepository.syncAllergies(any()))
-            .thenReturn(Observable.just(emptyList<Allergy>()))
         Mockito.`when`(visitRepository.syncLastVitals(any()))
             .thenReturn(Observable.just(null))
 

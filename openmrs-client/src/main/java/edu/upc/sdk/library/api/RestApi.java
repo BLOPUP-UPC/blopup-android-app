@@ -15,8 +15,6 @@ import java.util.Map;
 import edu.upc.sdk.library.databases.entities.ConceptEntity;
 import edu.upc.sdk.library.databases.entities.FormResourceEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.Allergy;
-import edu.upc.sdk.library.models.AllergyCreate;
 import edu.upc.sdk.library.models.ConceptAnswers;
 import edu.upc.sdk.library.models.ConceptMembers;
 import edu.upc.sdk.library.models.EmailRequest;
@@ -417,15 +415,6 @@ public interface RestApi {
                                   @Body Provider provider);
 
     /**
-     * Gets allergies.
-     *
-     * @param uuid the uuid
-     * @return the allergies
-     */
-    @GET("patient/{uuid}/allergy")
-    Call<Results<Allergy>> getAllergies(@Path("uuid") String uuid);
-
-    /**
      * Delete allergy call.
      *
      * @param patientUuid the patient uuid
@@ -436,27 +425,4 @@ public interface RestApi {
     Call<ResponseBody> deleteAllergy(@Path("patientUuid") String patientUuid,
                                      @Path("allergyUuid") String allergyUuid);
 
-    /**
-     * Create allergy call.
-     *
-     * @param uuid          the uuid
-     * @param allergyCreate the allergy create
-     * @return the call
-     */
-    @POST("patient/{uuid}/allergy")
-    Call<Allergy> createAllergy(@Path("uuid") String uuid,
-                                @Body AllergyCreate allergyCreate);
-
-    /**
-     * Update allergy call.
-     *
-     * @param patientUuid   the patient uuid
-     * @param allergyUuid   the allergy uuid
-     * @param allergyCreate the allergy create
-     * @return the call
-     */
-    @POST("patient/{patientUuid}/allergy/{allergyUuid}")
-    Call<Allergy> updateAllergy(@Path("patientUuid") String patientUuid,
-                                @Path("allergyUuid") String allergyUuid,
-                                @Body AllergyCreate allergyCreate);
 }

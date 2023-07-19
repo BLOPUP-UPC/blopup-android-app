@@ -41,8 +41,6 @@ import java.util.List;
 
 import edu.upc.BuildConfig;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.Allergen;
-import edu.upc.sdk.library.models.Allergy;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientIdentifier;
 import edu.upc.sdk.library.models.Person;
@@ -167,23 +165,6 @@ ACUnitTestBase {
         provider.setDisplay(identifier);
 
         return provider;
-    }
-
-    protected Allergy createAllergy(Long id, String display) {
-        Allergy allergy = new Allergy();
-        allergy.setId(id);
-        allergy.setUuid("uuid");
-        allergy.setDisplay(display);
-
-        allergy.setComment("comment");
-        Allergen allergen = new Allergen();
-        Resource resource = new Resource("uuid", display, new ArrayList<>(), id);
-        allergen.setCodedAllergen(resource);
-        allergy.setAllergen(allergen);
-        allergy.setReactions(new ArrayList<>());
-        allergy.setSeverity(null);
-
-        return allergy;
     }
 
     protected List<Visit> createVisitList() {
