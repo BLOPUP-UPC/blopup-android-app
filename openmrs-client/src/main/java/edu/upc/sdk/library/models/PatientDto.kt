@@ -29,22 +29,12 @@ open class PatientDto {
     @Expose
     private var identifiers: List<PatientIdentifier> = ArrayList()
 
-//
-//    //Phone Number
-//    @SerializedName("phoneNumber")
-//    @Expose
-//    private var phoneNumber: String? = null
-//
 //    //Contact Number
 //    @SerializedName("contactPhoneNumber")
 //    @Expose
 //    private var contactPhoneNumber: String? = null
 //
-//    //DocumentId
-//    @SerializedName("documentId")
-//    @Expose
-//    private val documentId: String? = null
-//
+
 //    //Contact Names
 //    @TypeConverters(PersonNameConverter::class)
 //    @SerializedName("contactNames")
@@ -81,9 +71,7 @@ open class PatientDto {
                 person.causeOfDeath,
                 person.isDeceased,
                 voided
-//                phoneNumber,
 //                contactPhoneNumber,
-//                documentId,
 //                contactNames
             )
             patient.uuid = uuid.toString()

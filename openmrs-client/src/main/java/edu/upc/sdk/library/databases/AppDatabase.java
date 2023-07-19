@@ -64,7 +64,7 @@ import edu.upc.sdk.utilities.ApplicationConstants;
         Encountercreate.class,
         AllergyEntity.class,
         LegalConsentEntity.class},
-        version = 5)
+        version = 6)
 
 public abstract class AppDatabase extends RoomDatabase {
 

@@ -181,8 +181,6 @@ object AppDatabaseHelper {
         )
         patient.display = patientEntity.display
         patient.uuid = patientEntity.uuid
-        patient.documentId = patientEntity.documentId
-        patient.phoneNumber = patientEntity.phoneNumber
 
         //#region -- Contact Details --
         val contactNames = PersonName()
@@ -235,8 +233,6 @@ object AppDatabaseHelper {
             PatientEntity()
         patientEntity.display = patient.name?.nameString
         patientEntity.uuid = patient.uuid
-        patientEntity.phoneNumber = patient.phoneNumber
-        patientEntity.documentId = patient.documentId
 
         //#region -- Contact Details --
         patientEntity.contactPhoneNumber = patient.contactPhoneNumber

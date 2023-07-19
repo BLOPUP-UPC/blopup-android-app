@@ -123,11 +123,6 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     }
                 }
             }
-            if (notEmpty(patient.phoneNumber)) {
-                patientDetailsPhoneNumber.text = patient.phoneNumber
-                patientDetailsPhoneNumber.visibility = View.VISIBLE
-            }
-
             contactFirstName.text = patient.contact.givenName
             contactLastName.text = patient.contact.familyName
             contactPhoneNumber.text = patient.contactPhoneNumber

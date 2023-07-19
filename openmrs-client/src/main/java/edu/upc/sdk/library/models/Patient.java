@@ -38,15 +38,6 @@ public class Patient extends Person implements Serializable {
     @Expose
     private List<PatientIdentifier> identifiers = new ArrayList<>();
 
-    //DocumentId
-    @SerializedName("documentId")
-    @Expose
-    private String documentId;
-    //Phone Number
-    @SerializedName("phoneNumber")
-    @Expose
-    private String phoneNumber;
-
     @TypeConverters(PersonNameConverter.class)
     @SerializedName("contactNames")
     @Expose
@@ -122,15 +113,13 @@ public class Patient extends Person implements Serializable {
     /*Constructor to initialize values of current class as well as parent class*/
     public Patient(Long id, String encounters, List<PatientIdentifier> identifiers,
                    List<PersonName> names, String gender, String birthdate, boolean birthdateEstimated, List<PersonAddress> addresses, List<PersonAttribute> attributes,
-                   Bitmap photo, Resource causeOfDeath, boolean dead, String phoneNumber, String contactPhoneNumber, String documentId, List<PersonName> contactNames) {
+                   Bitmap photo, Resource causeOfDeath, boolean dead, String contactPhoneNumber, List<PersonName> contactNames) {
         super(names, gender, birthdate, birthdateEstimated, addresses, attributes, photo, causeOfDeath, dead, false);
         this.id = id;
         this.encounters = encounters;
         this.identifiers = identifiers;
-        this.phoneNumber = phoneNumber;
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactNames = contactNames;
-        this.documentId = documentId;
     }
 
     public Long getId() {
@@ -287,14 +276,6 @@ public class Patient extends Person implements Serializable {
         }
     }
 
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
-
     public List<PersonName> getContactNames() {
         return contactNames;
     }
@@ -317,13 +298,5 @@ public class Patient extends Person implements Serializable {
 
     public void setContactPhoneNumber(String contactPhoneNumber) {
         this.contactPhoneNumber = contactPhoneNumber;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 }

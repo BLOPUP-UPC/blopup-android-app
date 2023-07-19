@@ -34,8 +34,6 @@ public class PatientEntity extends Resource {
     private String familyName;
     @ColumnInfo(name = "gender")
     private String gender;
-    @ColumnInfo(name = "phoneNumber")
-    private String phoneNumber;
     @ColumnInfo(name = "birthDate")
     private String birthDate;
     @ColumnInfo(name = "deathDate")
@@ -76,8 +74,6 @@ public class PatientEntity extends Resource {
     @ColumnInfo(name = "contactPhoneNumber")
     private String contactPhoneNumber;
     //#endregion -- Contact Details --
-    @ColumnInfo(name = "documentId")
-    private String documentId;
 
     /**
      * Instantiates a new Patient entity.
@@ -431,22 +427,6 @@ public class PatientEntity extends Resource {
 
     public void setContactLastName(String contactLastName) {
         this.contactLastName = contactLastName;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public List<PersonAttribute> getAttributes() {

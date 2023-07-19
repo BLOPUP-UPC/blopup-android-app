@@ -30,23 +30,11 @@ open class PatientDtoUpdate {
     @SerializedName("identifiers")
     @Expose
     private var identifiers: List<PatientIdentifier> = ArrayList()
-
-
-
-    //Phone Number
-    @SerializedName("phoneNumber")
-    @Expose
-    private var phoneNumber: String? = null
-
+    
     //Contact Number
     @SerializedName("contactPhoneNumber")
     @Expose
     private var contactPhoneNumber: String? = null
-
-    //DocumentId
-    @SerializedName("documentId")
-    @Expose
-    private val documentId: String? = null
 
     //Contact Names
     @TypeConverters(PersonNameConverter::class)
