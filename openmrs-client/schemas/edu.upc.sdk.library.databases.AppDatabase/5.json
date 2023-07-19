@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "e0d95d7a116038fe2966f2ccad12ad02",
+    "identityHash": "469330851abec5b2bc08e393e6049258",
     "entities": [
       {
         "tableName": "concepts",
@@ -278,7 +278,7 @@
       },
       {
         "tableName": "patients",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`synced` INTEGER NOT NULL, `identifier` TEXT, `givenName` TEXT, `middleName` TEXT, `familyName` TEXT, `gender` TEXT, `phoneNumber` TEXT, `birthDate` TEXT, `deathDate` TEXT, `causeOfDeath` TEXT, `age` TEXT, `photo` BLOB, `address1` TEXT, `address2` TEXT, `city` TEXT, `state` TEXT, `country` TEXT, `postalCode` TEXT, `dead` TEXT, `encounters` TEXT, `attributes` TEXT, `contactFirstName` TEXT, `contactLastName` TEXT, `contactPhoneNumber` TEXT, `documentId` TEXT, `legalConsentSynced` INTEGER NOT NULL, `uuid` TEXT, `display` TEXT, `_id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`synced` INTEGER NOT NULL, `identifier` TEXT, `identifierUuid` TEXT, `givenName` TEXT, `middleName` TEXT, `familyName` TEXT, `gender` TEXT, `phoneNumber` TEXT, `birthDate` TEXT, `deathDate` TEXT, `causeOfDeath` TEXT, `age` TEXT, `photo` BLOB, `address1` TEXT, `address2` TEXT, `city` TEXT, `state` TEXT, `country` TEXT, `postalCode` TEXT, `dead` TEXT, `encounters` TEXT, `attributes` TEXT, `contactFirstName` TEXT, `contactLastName` TEXT, `contactPhoneNumber` TEXT, `documentId` TEXT, `uuid` TEXT, `display` TEXT, `_id` INTEGER PRIMARY KEY AUTOINCREMENT)",
         "fields": [
           {
             "fieldPath": "synced",
@@ -289,6 +289,12 @@
           {
             "fieldPath": "identifier",
             "columnName": "identifier",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "identifierUuid",
+            "columnName": "identifierUuid",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -429,12 +435,6 @@
             "columnName": "documentId",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "legalConsentSynced",
-            "columnName": "legalConsentSynced",
-            "affinity": "INTEGER",
-            "notNull": true
           },
           {
             "fieldPath": "uuid",
@@ -892,7 +892,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e0d95d7a116038fe2966f2ccad12ad02')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '469330851abec5b2bc08e393e6049258')"
     ]
   }
 }

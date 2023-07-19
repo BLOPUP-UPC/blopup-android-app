@@ -13,29 +13,31 @@
  */
 package edu.upc.openmrs.activities.addeditpatient
 
-import android.Manifest
 import android.Manifest.permission.RECORD_AUDIO
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.media.ThumbnailUtils
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.os.StrictMode
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import android.widget.LinearLayout.LayoutParams
-import androidx.activity.result.contract.ActivityResultContracts.GetContent
-import androidx.activity.result.contract.ActivityResultContracts.TakePicture
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -44,8 +46,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.snackbar.Snackbar
-import com.yalantis.ucrop.UCrop
-import com.yalantis.ucrop.UCrop.REQUEST_CROP
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
@@ -56,18 +56,25 @@ import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
 import edu.upc.openmrs.activities.addeditpatient.nationality.NationalityDialogFragment
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
-import edu.upc.openmrs.activities.dialog.CustomPickerDialog.onInputSelected
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
-import edu.upc.openmrs.utilities.*
+import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.ViewUtils.getInput
 import edu.upc.openmrs.utilities.ViewUtils.isEmpty
-import edu.upc.sdk.library.models.*
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.models.ConceptAnswers
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonAttribute
+import edu.upc.sdk.library.models.PersonAttributeType
+import edu.upc.sdk.library.models.PersonName
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.ApplicationConstants.URI_IMAGE
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.DateUtils.convertTimeString
@@ -83,14 +90,11 @@ import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import permissions.dispatcher.PermissionRequest
-import permissions.dispatcher.ktx.PermissionsRequester
-import permissions.dispatcher.ktx.constructPermissionsRequest
-import java.io.File
-import java.util.*
+import java.util.Calendar
 
 
 @AndroidEntryPoint
-class AddEditPatientFragment : BaseFragment(), onInputSelected {
+class AddEditPatientFragment : BaseFragment() {
     var alertDialog: AlertDialog? = null
     private var legalConsentDialog: LegalConsentDialogFragment? = null
     private var nationalityDialogFragment: NationalityDialogFragment? = null
@@ -103,26 +107,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     // constant for storing audio permission
     private val REQUEST_AUDIO_PERMISSION_CODE = 200
 
-    private lateinit var cameraAndStoragePermissions: PermissionsRequester
-    private lateinit var storageWritePermission: PermissionsRequester
-
-    private val pickPhoto = registerForActivityResult(GetContent()) { uri ->
-        if (uri == null) return@registerForActivityResult
-        val destinationUri = Uri.fromFile(
-            File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
-                ImageUtils.createUniqueImageFileName()
-            )
-        )
-        startCropActivity(uri, destinationUri)
-    }
-
-    private val capturePhoto = registerForActivityResult(TakePicture()) { resultOk ->
-        if (!resultOk) return@registerForActivityResult
-        val sourceUri = Uri.fromFile(viewModel.capturedPhotoFile)
-        startCropActivity(sourceUri, sourceUri)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -132,8 +116,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         val rootView = binding.root
 
         setHasOptionsMenu(true)
-
-        setupPermissionsHandler()
 
         setupObservers()
 
@@ -173,22 +155,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     fun onNationalitySelected(nationality: Nationality) {
         patientNationality = nationality
         binding.nationality.text = nationality.getLabel(requireContext())
-    }
-
-    private fun setupPermissionsHandler() {
-        cameraAndStoragePermissions = constructPermissionsRequest(
-            Manifest.permission.CAMERA, WRITE_EXTERNAL_STORAGE,
-            onShowRationale = ::showCameraPermissionRationale,
-            onPermissionDenied = { showSnackbarLong(R.string.permissions_camera_storage_denied) },
-            onNeverAskAgain = { showSnackbarLong(R.string.permissions_camera_storage_neverask) },
-            requiresPermission = ::capturePhoto
-        )
-        storageWritePermission = constructPermissionsRequest(
-            WRITE_EXTERNAL_STORAGE,
-            onShowRationale = { request -> request.proceed() },
-            onNeverAskAgain = { showSnackbarLong(R.string.permission_storage_neverask) },
-            requiresPermission = ::pickPhoto
-        )
     }
 
     private fun setupObservers() {
@@ -303,7 +269,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             } else if (StringValue.NON_BINARY == gender) {
                 binding.gender.check(R.id.nonBinary)
             }
-            if (photo != null) binding.patientPhoto.setImageBitmap(resizedPhoto)
 
             binding.deceasedCheckbox.isChecked = isDeceased
         }
@@ -525,49 +490,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             estimatedYear.addTextChangedListener(it)
         }
 
-        capturePhoto.setOnClickListener {
-            val dialogList = mutableListOf(
-                edu.upc.openmrs.activities.dialog.CustomDialogModel(
-                    getString(R.string.dialog_take_photo),
-                    R.drawable.ic_photo_camera
-                ),
-                edu.upc.openmrs.activities.dialog.CustomDialogModel(
-                    getString(R.string.dialog_choose_photo),
-                    R.drawable.ic_photo_library
-                )
-            )
-            if (viewModel.patient.photo != null) {
-                dialogList.add(
-                    edu.upc.openmrs.activities.dialog.CustomDialogModel(
-                        getString(R.string.dialog_remove_photo),
-                        R.drawable.ic_photo_delete
-                    )
-                )
-            }
-            edu.upc.openmrs.activities.dialog.CustomPickerDialog(dialogList)
-                .apply { setTargetFragment(this@AddEditPatientFragment, 1000) }
-                .show(requireFragmentManager(), "tag")
-        }
-
-        patientPhoto.setOnClickListener {
-            if (viewModel.capturedPhotoFile != null) {
-                val i = Intent(Intent.ACTION_VIEW)
-                i.setDataAndType(
-                    Uri.fromFile(viewModel.capturedPhotoFile),
-                    ApplicationConstants.IMAGE_JPEG
-                )
-                startActivity(i)
-            } else if (viewModel.patient.photo != null) {
-                viewModel.patient.run {
-                    ImageUtils.showPatientPhoto(
-                        requireContext(),
-                        photo,
-                        name.nameString
-                    )
-                }
-            }
-        }
-
         deceasedCheckbox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 deceasedProgressBar.makeVisible()
@@ -639,34 +561,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
             }
         }
     }
-
-    override fun performFunction(position: Int) = when (position) {
-        0 -> {
-            // Capture photo
-            StrictMode.VmPolicy.Builder().run { StrictMode.setVmPolicy(build()) }
-            cameraAndStoragePermissions.launch()
-        }
-        1 -> {
-            // Pick photo from gallery
-            storageWritePermission.launch()
-        }
-        2 -> {
-            // Remove photo
-            binding.patientPhoto.setImageResource(R.drawable.ic_person_grey_500_48dp)
-            binding.patientPhoto.invalidate()
-            viewModel.patient.photo = null
-        }
-        else -> {
-        }
-    }
-
-    private fun capturePhoto() = with(viewModel) {
-        val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
-        capturedPhotoFile = File(dir, ImageUtils.createUniqueImageFileName())
-        capturePhoto.launch(Uri.fromFile(capturedPhotoFile))
-    }
-
-    private fun pickPhoto() = pickPhoto.launch(URI_IMAGE)
 
     private fun showCameraPermissionRationale(request: PermissionRequest) {
         AlertDialog.Builder(requireActivity())
@@ -806,7 +700,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
         recordConsentError.makeGone()
         textInputLayoutFirstName.error = ""
         textInputLayoutSurname.error = ""
-        patientPhoto.setImageResource(R.drawable.ic_person_grey_500_48dp)
         viewModel.resetPatient()
     }
 
@@ -826,16 +719,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
                 !isEmpty(dobEditText) || !isEmpty(estimatedYear) || !isEmpty(estimatedMonth)
     }
 
-
-    private fun startCropActivity(sourceUri: Uri, destinationUri: Uri) {
-        UCrop.of(sourceUri, destinationUri)
-            .withAspectRatio(
-                ApplicationConstants.ASPECT_RATIO_FOR_CROPPING,
-                ApplicationConstants.ASPECT_RATIO_FOR_CROPPING
-            )
-            .start(requireActivity(), this@AddEditPatientFragment)
-    }
-
     private fun startPatientDashboardActivity() {
         Intent(requireActivity(), PatientDashboardActivity::class.java).apply {
             putExtra(PATIENT_ID_BUNDLE, viewModel.patient.id)
@@ -844,25 +727,6 @@ class AddEditPatientFragment : BaseFragment(), onInputSelected {
     }
 
     private fun finishActivity() = requireActivity().finish()
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CROP) {
-            if (resultCode == RESULT_OK) {
-                data?.let { UCrop.getOutput(it) }?.path?.let {
-                    viewModel.patient.photo = ImageUtils.getResizedPortraitImage(it)
-                    with(binding.patientPhoto) {
-                        val bitmap =
-                            ThumbnailUtils.extractThumbnail(viewModel.patient.photo, width, height)
-                        setImageBitmap(bitmap)
-                        invalidate()
-                    }
-                }
-            } else {
-                viewModel.capturedPhotoFile = null
-                data?.let { ToastUtil.error(UCrop.getError(it)?.message!!) }
-            }
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
