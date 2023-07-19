@@ -27,8 +27,6 @@ class PatientValidator(private val patient: Patient,
         // Validate names
         with(name) {
             if (givenName.isNullOrBlank() || !validateText(givenName, ILLEGAL_CHARACTERS)) return false
-            // Middle name can be left empty
-            if (middleName != null && !validateText(middleName, ILLEGAL_CHARACTERS)) return false
             if (familyName.isNullOrBlank() || !validateText(familyName, ILLEGAL_CHARACTERS)) return false
         }
 

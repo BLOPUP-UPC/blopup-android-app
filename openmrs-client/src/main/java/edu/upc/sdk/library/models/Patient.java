@@ -16,14 +16,15 @@ import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
-import edu.upc.sdk.utilities.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
+import edu.upc.sdk.utilities.StringUtils;
 
 /**
  * The type Patient.
@@ -268,7 +269,6 @@ public class Patient extends Person implements Serializable {
     public Map<String, String> toMap() {
         Map<String, String> map = new HashMap<>();
         puToMapIfNotNull(map, "givenname", getName().getGivenName());
-        puToMapIfNotNull(map, "middlename", getName().getMiddleName());
         puToMapIfNotNull(map, "familyname", getName().getFamilyName());
         puToMapIfNotNull(map, "gender", getGender());
         puToMapIfNotNull(map, "birthdate", getBirthdate());

@@ -31,18 +31,11 @@ class PersonName : Serializable {
     @Expose
     var givenName: String? = null
 
-    @SerializedName("middleName")
-    @Expose
-    var middleName: String? = null
-
     @SerializedName("familyName")
     @Expose
     var familyName: String? = null
 
 
     val nameString: String
-        get() = if (middleName == null || middleName == "null")
-            "$givenName $familyName"
-        else
-            "$givenName $middleName $familyName"
+        get() = "$givenName $familyName"
 }

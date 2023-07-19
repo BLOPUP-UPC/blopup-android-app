@@ -14,8 +14,7 @@
 package edu.upc.sdk.utilities
 
 import edu.upc.sdk.library.models.Patient
-import java.util.Arrays
-import java.util.LinkedList
+import java.util.*
 
 class PatientComparator {
     fun findSimilarPatient(patientList: List<Patient>, patient: Patient): List<Patient> {
@@ -92,9 +91,6 @@ class PatientComparator {
                 score += 1
             }
             if (newPatient.name.familyName == existingPatient.name.familyName) {
-                score += 1
-            }
-            if (newPatient.name.middleName == existingPatient.name.middleName) {
                 score += 1
             }
         }

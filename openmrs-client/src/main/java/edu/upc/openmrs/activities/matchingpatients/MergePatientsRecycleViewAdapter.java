@@ -29,13 +29,13 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Objects;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.utilities.DateUtils;
-import edu.upc.sdk.utilities.ToastUtil;
 
 import java.util.List;
 
 import edu.upc.R;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.DateUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 
 public class MergePatientsRecycleViewAdapter extends RecyclerView.Adapter<MergePatientsRecycleViewAdapter.PatientViewHolder> {
     private List<Patient> patientList;
@@ -82,7 +82,6 @@ public class MergePatientsRecycleViewAdapter extends RecyclerView.Adapter<MergeP
 
     public class PatientViewHolder extends RecyclerView.ViewHolder {
         private TextView mGivenName;
-        private TextView mMiddleName;
         private TextView mFamilyName;
         private TextView mGender;
         private TextView mBirthDate;
@@ -94,7 +93,6 @@ public class MergePatientsRecycleViewAdapter extends RecyclerView.Adapter<MergeP
         public PatientViewHolder(View itemView) {
             super(itemView);
             mGivenName = itemView.findViewById(R.id.patientGivenName);
-            mMiddleName = itemView.findViewById(R.id.patientMiddleName);
             mFamilyName = itemView.findViewById(R.id.patientFamilyName);
             mGender = itemView.findViewById(R.id.patientGender);
             mBirthDate = itemView.findViewById(R.id.patientBirthDate);
@@ -171,12 +169,6 @@ public class MergePatientsRecycleViewAdapter extends RecyclerView.Adapter<MergeP
             holder.mGivenName.setText(patient.getName().getGivenName());
             if (Objects.equal(patient.getName().getGivenName(), newPatient.getName().getGivenName())) {
                 setStyleForMatchedPatientFields(holder.mGivenName);
-            }
-        }
-        if (null != patient.getName().getMiddleName()) {
-            holder.mMiddleName.setText(patient.getName().getMiddleName());
-            if (Objects.equal(patient.getName().getMiddleName(), newPatient.getName().getMiddleName())) {
-                setStyleForMatchedPatientFields(holder.mMiddleName);
             }
         }
         if (null != patient.getName().getFamilyName()) {

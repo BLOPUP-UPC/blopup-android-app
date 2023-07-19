@@ -28,17 +28,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.base.Objects;
+
+import java.util.List;
+
+import edu.upc.R;
+import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
 import edu.upc.sdk.library.api.repository.VisitRepository;
 import edu.upc.sdk.library.dao.PatientDAO;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.DateUtils;
 import edu.upc.sdk.utilities.StringUtils;
-
-import java.util.List;
-
-import edu.upc.R;
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<SimilarPatientsRecyclerViewAdapter.PatientViewHolder> {
@@ -199,12 +199,6 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
             holder.mContactFirstName.setText(patient.getContact().getGivenName());
             if (Objects.equal(patient.getContact().getGivenName(), newPatient.getContact().getGivenName())) {
                 setStyleForMatchedPatientFields(holder.mContactFirstName);
-            }
-        }
-        if (patient.getContact() != null && StringUtils.notEmpty(patient.getContact().getFamilyName())) {
-            holder.mContactLastName.setText(patient.getContact().getFamilyName());
-            if (Objects.equal(patient.getContact().getMiddleName(), newPatient.getContact().getMiddleName())) {
-                setStyleForMatchedPatientFields(holder.mContactLastName);
             }
         }
         if (patient.getContact() != null && StringUtils.notEmpty(patient.getContactPhoneNumber())) {

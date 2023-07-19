@@ -1,12 +1,7 @@
 package edu.upc.openmrs.utilities
 
 import android.graphics.Bitmap
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.PatientIdentifier
-import edu.upc.sdk.library.models.PersonAddress
-import edu.upc.sdk.library.models.PersonAttribute
-import edu.upc.sdk.library.models.PersonName
-import edu.upc.sdk.library.models.Resource
+import edu.upc.sdk.library.models.*
 import edu.upc.sdk.utilities.PatientComparator
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -17,7 +12,6 @@ class PatientComparatorTest {
 
     private val patientList = mutableListOf<Patient>()
     private val givenNameList = mutableListOf<String>()
-    private val middleNameList = mutableListOf<String>()
     private val familyNameList = mutableListOf<String>()
     private val genderList = mutableListOf<String>()
     private val birthdateList = mutableListOf<String>()
@@ -31,7 +25,6 @@ class PatientComparatorTest {
     @Before
     fun setup() {
         givenNameList.addAll(listOf("Michael", "Dwight", "Jim", "Stanley", "Kelly"))
-        middleNameList.addAll(listOf("a", "aa", "aaa", "aaaa", "aaaaa"))
         familyNameList.addAll(listOf("Scott", "Schrute", "Halpert", "Hudson", "Kapoor"))
         genderList.addAll(listOf("m", "f", "m", "f", "m"))
         birthdateList.addAll(listOf("15-07-1965", "16-08-1966", "17-09-1967", "18-010-1968", "19-11-1969"))
@@ -44,7 +37,6 @@ class PatientComparatorTest {
 
         for (i in 0..4) {
             val givenName = givenNameList[i]
-            val middleName = middleNameList[i]
             val familyName = familyNameList[i]
             val gender = genderList[i]
             val birthdate = birthdateList[i]
@@ -57,7 +49,6 @@ class PatientComparatorTest {
 
             val personName = PersonName()
             personName.givenName = givenName
-            personName.middleName = middleName
             personName.familyName = familyName
 
             val personAddress = PersonAddress()
@@ -97,7 +88,6 @@ class PatientComparatorTest {
     fun destroy() {
         patientList.clear()
         givenNameList.clear()
-        middleNameList.clear()
         familyNameList.clear()
         genderList.clear()
         birthdateList.clear()
@@ -112,7 +102,6 @@ class PatientComparatorTest {
     @Test
     fun patientMatchesWithExistingPatient_returnsPatient() {
         val givenName = "Michael"
-        val middleName = "a"
         val familyName = "Scott"
         val address1 = "b"
         val address2 = "c"
@@ -125,7 +114,6 @@ class PatientComparatorTest {
 
         val personName = PersonName()
         personName.givenName = givenName
-        personName.middleName = middleName
         personName.familyName = familyName
 
         val personAddress = PersonAddress()
@@ -163,7 +151,6 @@ class PatientComparatorTest {
 
         assertEquals(expected[0].name.givenName, result[0].name.givenName)
         assertEquals(expected[0].name.familyName, result[0].name.familyName)
-        assertEquals(expected[0].name.middleName, result[0].name.middleName)
         assertEquals(expected[0].address.address1, result[0].address.address1)
         assertEquals(expected[0].address.address2, result[0].address.address2)
         assertEquals(expected[0].address.country, result[0].address.country)
@@ -175,7 +162,6 @@ class PatientComparatorTest {
     @Test
     fun noMatchWithExistingPatients_returnsEmptyList() {
         val givenName = "doesn't exist"
-        val middleName = "doesn't exist"
         val familyName = "doesn't exist"
         val address1 = "doesn't exist"
         val address2 = "doesn't exist"
@@ -188,7 +174,6 @@ class PatientComparatorTest {
 
         val personName = PersonName()
         personName.givenName = givenName
-        personName.middleName = middleName
         personName.familyName = familyName
 
         val personAddress = PersonAddress()

@@ -15,26 +15,13 @@ package edu.upc.sdk.library.databases
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.dao.DiagnosisDAO
 import edu.upc.sdk.library.dao.EncounterDAO
 import edu.upc.sdk.library.dao.ObservationDAO
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.databases.entities.*
-import edu.upc.sdk.library.models.Allergen
-import edu.upc.sdk.library.models.Allergy
-import edu.upc.sdk.library.models.Diagnosis
-import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.EncounterType
-import edu.upc.sdk.library.models.Observation
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.PatientIdentifier
-import edu.upc.sdk.library.models.PersonAddress
-import edu.upc.sdk.library.models.PersonName
-import edu.upc.sdk.library.models.Resource
-import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.library.models.VisitType
+import edu.upc.sdk.library.models.*
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.convertTime
@@ -200,7 +187,6 @@ object AppDatabaseHelper {
         //#region -- Contact Details --
         val contactNames = PersonName()
         contactNames.givenName = patientEntity.givenName
-        contactNames.middleName = patientEntity.middleName
         contactNames.familyName = patientEntity.familyName
         patient.contactNames.add(contactNames)
         patient.contactPhoneNumber = patientEntity.contactPhoneNumber
@@ -214,7 +200,6 @@ object AppDatabaseHelper {
         patient.identifiers.add(patientIdentifier)
         val personName = PersonName()
         personName.givenName = patientEntity.givenName
-        personName.middleName = patientEntity.middleName
         personName.familyName = patientEntity.familyName
         patient.names.add(personName)
         patient.gender = patientEntity.gender
@@ -269,7 +254,6 @@ object AppDatabaseHelper {
             patientEntity.identifier = null
         }
         patientEntity.givenName = patient.name?.givenName
-        patientEntity.middleName = patient.name?.middleName
         patientEntity.familyName = patient.name?.familyName
         patientEntity.gender = patient.gender
         patientEntity.birthDate = patient.birthdate

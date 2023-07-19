@@ -1,11 +1,11 @@
 package edu.upc.openmrs.utilities
 
 import edu.upc.BuildConfig
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.utilities.PatientValidator
 import edu.upc.openmrs.test.ACUnitTestBase
+import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAttribute
 import edu.upc.sdk.library.models.PersonAttributeType
+import edu.upc.sdk.utilities.PatientValidator
 import org.junit.Assert.assertFalse
 import org.junit.Test
 
@@ -27,18 +27,6 @@ class PatientValidatorTest : ACUnitTestBase() {
     fun `validate patient invalid first name`() {
         val validator = PatientValidator(
             createValidPatient().apply { name.givenName = INVALID_NAME_1 },
-            isLegalRecordingPresent = true
-        )
-
-        val isValid = validator.validate()
-
-        assertFalse(isValid)
-    }
-
-    @Test
-    fun `validate patient invalid middle name`() {
-        val validator = PatientValidator(
-            createValidPatient().apply { name.middleName = INVALID_NAME_2 },
             isLegalRecordingPresent = true
         )
 

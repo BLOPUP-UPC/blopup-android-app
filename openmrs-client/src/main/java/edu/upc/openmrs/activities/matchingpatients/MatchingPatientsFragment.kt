@@ -21,6 +21,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.R
+import edu.upc.databinding.FragmentMatchingPatientsBinding
+import edu.upc.openmrs.utilities.makeGone
 import edu.upc.sdk.library.models.OperationType.PatientMerging
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
@@ -31,11 +35,7 @@ import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.PatientAndMatchingPatients
 import edu.upc.sdk.utilities.ToastUtil.error
 import edu.upc.sdk.utilities.ToastUtil.success
-import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.R
-import edu.upc.databinding.FragmentMatchingPatientsBinding
-import edu.upc.openmrs.utilities.makeGone
-import java.util.Queue
+import java.util.*
 
 @AndroidEntryPoint
 class MatchingPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -128,7 +128,6 @@ class MatchingPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
     private fun setPatientInfo(patient: Patient) {
         with(binding) {
             givenName.text = patient.name.givenName
-            middleName.text = patient.name.middleName
             familyName.text = patient.name.familyName
             if ("M" == patient.gender) {
                 gender.text = getString(R.string.male)

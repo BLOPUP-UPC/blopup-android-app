@@ -30,8 +30,6 @@ public class PatientEntity extends Resource {
     private String identifierUuid;
     @ColumnInfo(name = "givenName")
     private String givenName;
-    @ColumnInfo(name = "middleName")
-    private String middleName;
     @ColumnInfo(name = "familyName")
     private String familyName;
     @ColumnInfo(name = "gender")
@@ -112,15 +110,6 @@ public class PatientEntity extends Resource {
      */
     public void setGivenName(String givenName) {
         this.givenName = givenName;
-    }
-
-    /**
-     * Sets middle name.
-     *
-     * @param middleName the middle name
-     */
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
     }
 
     /**
@@ -283,15 +272,6 @@ public class PatientEntity extends Resource {
      */
     public String getGivenName() {
         return givenName;
-    }
-
-    /**
-     * Gets middle name.
-     *
-     * @return the middle name
-     */
-    public String getMiddleName() {
-        return middleName;
     }
 
     /**

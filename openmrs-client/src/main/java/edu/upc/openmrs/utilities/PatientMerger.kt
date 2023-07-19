@@ -43,7 +43,6 @@ class PatientMerger {
 
     private fun mergePersonNames(oldName: PersonName, newName: PersonName) {
         oldName.givenName = getNewValueIfOldIsNull(oldName.givenName, newName.givenName)
-        oldName.middleName = getNewValueIfOldIsNull(oldName.middleName, newName.middleName)
         oldName.familyName = getNewValueIfOldIsNull(oldName.familyName, newName.familyName)
     }
 

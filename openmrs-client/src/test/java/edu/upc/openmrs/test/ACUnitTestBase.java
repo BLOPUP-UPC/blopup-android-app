@@ -135,7 +135,6 @@ ACUnitTestBase {
         PersonName personName = new PersonName();
         char alphabetic_id = (char) (id.intValue() + 'a' - 1);
         personName.setGivenName("given_name_" + alphabetic_id);
-        personName.setMiddleName("middle_name_" + alphabetic_id);
         personName.setFamilyName("family_name_" + alphabetic_id);
         return personName;
     }

@@ -1,10 +1,10 @@
 package edu.upc.openmrs.utilities
 
+import edu.upc.openmrs.test.ACUnitTestBase
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAddress
 import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.library.models.Resource
-import edu.upc.openmrs.test.ACUnitTestBase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
@@ -37,7 +37,6 @@ class PatientMergerTest : ACUnitTestBase() {
 
         assertNotEquals(oldPatient.name.givenName, newPatient.name.givenName)
 
-        assertEquals(oldPatient.name.middleName, newPatient.name.middleName)
         assertEquals(oldPatient.name.familyName, newPatient.name.familyName)
 
         assertEquals(oldPatient.address.address1, newPatient.address.address1)
@@ -65,7 +64,6 @@ class PatientMergerTest : ACUnitTestBase() {
     private fun createPatientWithNullFields(id: Long): Patient {
         val name = PersonName()
         name.givenName = "given_name_$id"
-        name.middleName = "null"
         name.familyName = null
 
         val address = PersonAddress()
