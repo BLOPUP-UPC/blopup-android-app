@@ -29,19 +29,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import edu.upc.sdk.library.api.repository.PatientRepository;
-import edu.upc.sdk.library.api.repository.VisitRepository;
-import edu.upc.sdk.library.dao.PatientDAO;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.DateUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.upc.R;
 import edu.upc.openmrs.activities.ACBaseActivity;
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
+import edu.upc.sdk.library.api.repository.PatientRepository;
+import edu.upc.sdk.library.api.repository.VisitRepository;
+import edu.upc.sdk.library.dao.PatientDAO;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.DateUtils;
 
 public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<SyncedPatientsRecyclerViewAdapter.PatientViewHolder> {
     private SyncedPatientsFragment mContext;
@@ -113,17 +112,6 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
             String patientName = patient.getDisplay().split("-")[1];
             holder.mDisplayName.setText(patientName);
 
-        }
-        if (null != patient.getGender()) {
-            if (patient.getPhoto() != null) {
-                holder.mGender.setImageBitmap(patient.getPhoto());
-            } else {
-                if (patient.getGender().equals(ApplicationConstants.MALE)) {
-                    holder.mGender.setImageResource(R.drawable.patient_male);
-                } else {
-                    holder.mGender.setImageResource(R.drawable.patient_female);
-                }
-            }
         }
         if (patient.isDeceased() != null && patient.isDeceased()) {
             holder.mRowLayout.setCardBackgroundColor(mContext.getResources().getColor(R.color.deceased_red));

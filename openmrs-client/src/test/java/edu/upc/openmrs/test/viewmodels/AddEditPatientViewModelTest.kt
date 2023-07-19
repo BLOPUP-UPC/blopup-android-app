@@ -81,7 +81,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         with(viewModel) {
             // ViewModel state holding
             assertFalse(isUpdatePatient)
-            assertNull(capturedPhotoFile)
             assertNull(dateHolder)
         }
         with(viewModel.patient) {

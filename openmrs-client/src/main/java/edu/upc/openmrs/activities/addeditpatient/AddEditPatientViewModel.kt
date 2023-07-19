@@ -21,7 +21,6 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
 import org.joda.time.DateTime
 import rx.android.schedulers.AndroidSchedulers
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,7 +52,6 @@ class AddEditPatientViewModel @Inject constructor(
     var placesClient: PlacesClient? = null
 
     var dateHolder: DateTime? = null
-    var capturedPhotoFile: File? = null
     var legalConsentFileName: String? = null
 
     init {
@@ -73,7 +71,6 @@ class AddEditPatientViewModel @Inject constructor(
 
     fun resetPatient() {
         isUpdatePatient = false
-        capturedPhotoFile = null
         dateHolder = null
         patient = Patient()
     }

@@ -89,7 +89,6 @@ import edu.upc.sdk.utilities.ToastUtil
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
-import permissions.dispatcher.PermissionRequest
 import java.util.Calendar
 
 
@@ -560,14 +559,6 @@ class AddEditPatientFragment : BaseFragment() {
                 viewModel.placesClient = Places.createClient(this)
             }
         }
-    }
-
-    private fun showCameraPermissionRationale(request: PermissionRequest) {
-        AlertDialog.Builder(requireActivity())
-            .setMessage(R.string.permissions_camera_storage_rationale)
-            .setPositiveButton(R.string.button_allow) { _: DialogInterface?, _: Int -> request.proceed() }
-            .setNegativeButton(R.string.button_deny) { _: DialogInterface?, _: Int -> request.cancel() }
-            .show()
     }
 
     private fun showLegalConsent(language: String) {

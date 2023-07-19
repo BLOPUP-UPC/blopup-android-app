@@ -98,7 +98,6 @@
     <string name="download_started">Descargando...</string>
     <string name="action_starting_visit">Iniciando Visita</string>
     <string name="visit_start_error">Error al iniciar la visita</string>
-    <string name="patient_details_photo_label">FOTO DEL PACIENTE</string>
     <string name="patient_details_birth_date_label">Fecha de nacimiento</string>
     <string name="patient_contact_info_label">Información del contacto</string>
     <string name="patient_contact_label">Contacto</string>
@@ -138,9 +137,6 @@
     <string name="delete_allergy_success">Alergia eliminada con éxito.</string>
     <string name="form_data_submit_error">Error al enviar el formulario</string>
     <string name="all_fields_empty_error_message">No pueden estar todos los campos vacíos</string>
-    <string name="permissions_camera_storage_rationale">Se necesitan permisos de escritura de cámara y almacenamiento para capturar y guardar una foto.</string>
-    <string name="permissions_camera_storage_denied">Se denegó el permiso de escritura de la cámara o el almacenamiento. Actívelos para tomar una foto.</string>
-    <string name="permissions_camera_storage_neverask">"Se denegó el permiso de escritura de la cámara o el almacenamiento con \"No volver a preguntar\". "</string>
     <string name="permission_storage_neverask">"Se denegó el permiso de escritura de almacenamiento con \"No volver a preguntar\", este permiso es necesario. "</string>
     <string name="button_allow">Permitir</string>
     <string name="dialog_message_data_lost">Toda la información ingresada del paciente se perderá</string>
@@ -150,7 +146,6 @@
     <string name="dialog_title_are_you_sure">¿Está seguro/a?</string>
     <string name="delete_multiple_patients_dialog_message">¿Está vd. seguro que desea eliminar a estos pacientes?</string>
     <string name="choose_category">Seleccionar[...]</string>
-    <string name="dialog_choose_photo">Elegir foto</string>
     <string name="create_allergy_title">¿Crear Alergia?</string>
     <string name="delete">eliminar</string>
     <string name="allergy_concepts_fetch_error">Error combinando las alergias en el servidor</string>
@@ -201,9 +196,6 @@
     <string name="alphanumeric_postal_code">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "</string>
     <string name="add_comment">Añadir un comentario</string>
     <string name="delete_allergy_offline">La alergia será eliminada del servidor al recuperar la conexión.</string>
-    <string name="permission_camera_rationale">Los permisos de la cámara son necesarios para tomar una foto.</string>
-    <string name="permission_camera_denied">Los permisos de la cámara fueron denegados. Por favor, considerar otorgar los mismos para acceder a la cámara.</string>
-    <string name="permission_camera_neverask">Los permisos de la cámara fueron rechazados con nunca preguntar nuevamente.</string>
     <string name="offline_mode_not_supported">No se puede iniciar una visita en modo sin conexión.</string>
     <string name="cannot_start_visit_for_deceased">No se puede iniciar una visita para un paciente fallecido.</string>
     <string name="data_type_not_available_for_this_field">Gráfico no disponible para este campo.</string>
@@ -255,8 +247,6 @@
     <string name="snackbar_empty_visit_list">Seleccionar Formulario de Constantes desde el menu para comenzar a examinar.</string>
     <string name="snackbar_server_error">El servidor ingresado está caído, por favor seleccionar uno diferente.</string>
     <string name="dob_error_for_unidentified">Por favor, añada una edad estimada del paciente</string>
-    <string name="dialog_remove_photo">Eliminar foto</string>
-    <string name="dialog_take_photo">Tomar foto</string>
     <string name="data_not_available_for_this_field">No hay datos disponibles para el cuadro.</string>
     <string name="showcase_manage_providers">Haz click aquí para administrar los proveedores para un paciente en una visita.</string>
     <string name="no_mailing_client_found">No hay correos electrónicos de clientes instalados.</string>
@@ -327,8 +317,6 @@
     <string name="visit_ending_not_online_error">No se puede finalizar una visita sin conexión a internet o con el modo sin conexión activado</string>
     <string name="visit_ending_error">Error al finalizar la visita</string>
     <string name="patient_not_yet_registered">Paciente aún no registrado, no se puede crear encuentro.</string>
-    <string name="patient_photo">Foto del paciente</string>
-    <string name="patient_photo_update_unsuccessful">La foto del paciente no se pudo sincronizar debido a un error del servidor: %1$s</string>
     <string name="patient_registered_locally">Paciente registrado localmente</string>
     <string name="patient_register_success">Paciente registrado con éxito</string>
     <string name="patients_tab_title">Pacientes</string>
@@ -367,7 +355,6 @@
     <string name="no_such_form_name_error_message">No hay ningún tipo de encuentro denominado %1$</string>
     <string name="intro_welcome_desc">La comunidad global de OpenMRS trabaja en conjunto para construir el sistema de registro médico electrónico líder de código abierto en el mundo.</string>
     <string name="diagnosis_note_label">Texto de la nota del encuentro</string>
-    <string name="take_a_photo">Tomar foto</string>
     <string name="form_data_sync_is_off_message">La sincronización está desactivada. Activela para guardar los datos del formulario.</string>
     <string name="offline_mode_patient_data_saved_locally_notification_message">La sincronización está desactivada. Los datos de actualización del paciente se guardarán localmente y se sincronizarán cuando se restablezca la conexión.</string>
     <string name="patent_and_form_data_sync_resumed">Sincronización activada, intentando sincronizar pacientes y datos de formularios</string>

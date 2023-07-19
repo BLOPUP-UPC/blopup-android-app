@@ -6,9 +6,6 @@
     <string name="action_location">Ubicació</string>
     <string name="allergy_heading">Nova al·lèrgia</string>
     <string name="snackbar_nonvisitting_patients">Les constants vitals només es poden capturar en pacients amb una visita activa</string>
-    <string name="permission_camera_rationale">Els permisos de la càmera són necessaris per fer una fotografia</string>
-    <string name="permission_camera_denied">Els permisos de la càmera han estat denegats. Si us plau, otorga els permisos necessaris per poder accedir a la càmera.</string>
-    <string name="permission_camera_neverask">Els permisos de la càmera s\'han refusat amb l\'opció \"no tornar a preguntar\".</string>
     <string name="mark_patient_deceased_concept_has_no_answer">No s\'han trobat possibles causes de mort per aquesta cerca.</string>
     <string name="mark_patient_deceased_invalid_uuid">Si us plau, afegir un UUID vàlid al servidor.</string>
     <string name="no_death_concepts_in_server">Si us plau, afegir les possibles causes de mort al servidor.</string>
@@ -116,8 +113,6 @@
     <string name="visit_start_error">Error al iniciar la visita</string>
     <string name="patient_update_successful">Pacient %1$s actualitzat</string>
     <string name="patient_update_unsuccessful">El pacient %1$s no es pot actualitzar degut a un error del servidor. Més endavant es tornarà a intentar.</string>
-    <string name="patient_photo_update_unsuccessful">La fotografia del pacient no s\'ha pogut sincronitzar degu a un error del servidor: %1$s</string>
-    <string name="patient_details_photo_label">FOTO DEL PACIENT</string>
     <string name="patient_details_birth_date_label">Data de naixement</string>
     <string name="patient_contact_info_label">Informació del contacte</string>
     <string name="patient_contact_label">Contacte</string>
@@ -179,15 +174,10 @@
     <string name="openmrs_logo">Logo OpenMRS</string>
     <string name="toast_with_black_background">Toast amb un fons negre</string>
     <string name="edit_form">Editar formulari</string>
-    <string name="patient_photo">Foto del pacient</string>
-    <string name="take_a_photo">Fer una foto</string>
     <string name="snackbar_action_open">Obrir</string>
     <string name="snackbar_info_patient_downloaded">Pacient descarregat</string>
     <string name="invalid_login_or_password_message">Nom d\'usuari o paraula de pas incorrectes. Si us plau, intenteu-ho de nou.</string>
     <string name="snackbar_no_internet_connection">Sense connexió a internet</string>
-    <string name="permissions_camera_storage_rationale">Es necessiten permisos d\'escriptura de càmera i emmagatzematge per capturar i desar una foto.</string>
-    <string name="permissions_camera_storage_denied">S\'ha denegat el permís d\'escriptura de la càmera o l\'emmagatzematge. Concedi-ho-los per a poder fer la foto.</string>
-    <string name="permissions_camera_storage_neverask">S\'ha denegat el permís d\'escriptura de la càmera o l\'emmagatzematge amb \"No ho tornis a preguntar mai més\".</string>
     <string name="permission_storage_neverask">"S'ha denegat el permís d'escriptura d'emmagatzematge amb \"No ho tornis a preguntar\", aquest permís és necessari. "</string>
     <string name="button_allow">Permetre</string>
     <string name="button_deny">Rebutjar</string>
@@ -311,9 +301,6 @@
     <string name="showcase_manage_providers">Prem aquí per administrar els proveïdors d\'un pacient a una visita.</string>
     <string name="data_not_available_for_this_field">No hi ha dades disponibles pel gràfic</string>
     <string name="data_type_not_available_for_this_field">Gràfic no disponible per aquest camp</string>
-    <string name="dialog_take_photo">Fer una foto</string>
-    <string name="dialog_choose_photo">Triar foto</string>
-    <string name="dialog_remove_photo">Esborrar foto</string>
     <string name="unidentified_patient">Pacient no identificat</string>
     <string name="dob_error_for_unidentified">Si us plau afegeixi una edat estimada</string>
     <string name="unidentified_patient_name">DESCONEGUT</string>

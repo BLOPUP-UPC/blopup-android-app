@@ -15,7 +15,6 @@ For a better experience, while using our service, we may require you to provide 
 1. Full name
 2. Full address
 3. Gender, birth-date, and age
-4. Your photographs
 5. Provider information
 6. Notes on symptoms and other information
 7. Medical diagnostics and vitals (body temperature, pulse rate, blood pressure, weight, height, and respiratory rate)

@@ -21,9 +21,6 @@
     <string name="action_location" tools:ignore="MissingTranslation">Location</string>
     <string name="allergy_heading" tools:ignore="MissingTranslation">New Allergy</string>
     <string name="snackbar_nonvisitting_patients" tools:ignore="MissingTranslation">Vital signs can only be captured in patients with an active visit.</string>
-    <string name="permission_camera_rationale" tools:ignore="MissingTranslation">Camera permissions are required to take photo.</string>
-    <string name="permission_camera_denied" tools:ignore="MissingTranslation">Camera permissions were denied. Please consider granting them to access the camera.</string>
-    <string name="permission_camera_neverask" tools:ignore="MissingTranslation">Camera permissions were refused with never ask again.</string>
     <string name="mark_patient_deceased_concept_has_no_answer" tools:ignore="MissingTranslation">No possible causes of death were found for this search.</string>
     <string name="mark_patient_deceased_invalid_uuid" tools:ignore="MissingTranslation">Please add a valid UUID on the server</string>
     <string name="no_death_concepts_in_server" tools:ignore="MissingTranslation">Please, add the possible causes of death on the server</string>
@@ -175,11 +172,9 @@
     <!--SyncedPatient Activity-->
     <string name="patient_update_successful" tools:ignore="MissingTranslation">Patient %1$s Updated</string>
     <string name="patient_update_unsuccessful" tools:ignore="MissingTranslation">Patient %1$s cannot be updated due to server error will retry sync</string>
-    <string name="patient_photo_update_unsuccessful" tools:ignore="MissingTranslation">Patient photo cannot be synced due to server error:  %1$s</string>
 
     <!-- fragment_patient_details layout -->
     <string name="patient_identifier" translatable="false"># %1$s</string>
-    <string name="patient_details_photo_label" tools:ignore="MissingTranslation">PATIENT\’S PHOTO</string>
     <string name="patient_details_birth_date_label" tools:ignore="MissingTranslation">Birth date</string>
     <string name="patient_contact_info_label" tools:ignore="MissingTranslation">Contact Information</string>
     <string name="patient_contact_label" tools:ignore="MissingTranslation">Contact</string>
@@ -283,8 +278,6 @@
     <string name="openmrs_logo" tools:ignore="MissingTranslation">OpenMRS logo</string>
     <string name="toast_with_black_background" tools:ignore="MissingTranslation">Toast with black background</string>
     <string name="edit_form" tools:ignore="MissingTranslation">Edit form</string>
-    <string name="patient_photo" tools:ignore="MissingTranslation">Patient Photo</string>
-    <string name="take_a_photo" tools:ignore="MissingTranslation">Take a photo</string>
 
     <!--Snackbar strings-->
     <string name="snackbar_action_open" tools:ignore="MissingTranslation">Open</string>
@@ -293,9 +286,6 @@
     <string name="snackbar_no_internet_connection" tools:ignore="MissingTranslation">No internet connection</string>
 
     <!-- Permissions -->
-    <string name="permissions_camera_storage_rationale" tools:ignore="MissingTranslation">Camera and storage write permissions are needed to capture and save a photo.</string>
-    <string name="permissions_camera_storage_denied" tools:ignore="MissingTranslation">Camera or storage write permission was denied. Consider granting them to take a photo.</string>
-    <string name="permissions_camera_storage_neverask" tools:ignore="MissingTranslation">Camera or storage write permission was denied with Never ask again.</string>
     <string name="permission_storage_neverask" tools:ignore="MissingTranslation">Storage write permission was denied with Never ask again, this permission is needed.</string>
     <string name="button_allow" tools:ignore="MissingTranslation">Allow</string>
     <string name="button_deny" tools:ignore="MissingTranslation">Deny</string>
@@ -486,9 +476,6 @@
     <!-- Chart Activity -->
     <string name="data_not_available_for_this_field" tools:ignore="MissingTranslation">No data available to display chart</string>
     <string name="data_type_not_available_for_this_field" tools:ignore="MissingTranslation">Chart not available for this field</string>
-    <string name="dialog_take_photo" tools:ignore="MissingTranslation">Take a photo</string>
-    <string name="dialog_choose_photo" tools:ignore="MissingTranslation">Choose photo</string>
-    <string name="dialog_remove_photo" tools:ignore="MissingTranslation">Remove photo</string>
 
     <string name="unidentified_patient" tools:ignore="MissingTranslation">Unidentified Patient</string>
     <string name="dob_error_for_unidentified" tools:ignore="MissingTranslation">Please give a rough estimate of patient age</string>
