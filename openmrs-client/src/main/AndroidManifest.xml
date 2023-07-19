@@ -172,14 +172,6 @@
         </activity>
         <activity android:name="edu.upc.openmrs.activities.matchingpatients.MatchingPatientsActivity" />
         <activity
-            android:name="edu.upc.openmrs.activities.patientdashboard.details.PatientPhotoActivity"
-            android:parentActivityName="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity" />
-        </activity>
-        <activity
             android:name="edu.upc.openmrs.activities.logs.LogsActivity"
             android:label="@string/title_activity_logs"
             android:parentActivityName=".openmrs.activities.settings.SettingsActivity"
@@ -192,10 +184,6 @@
         <activity
             android:name="edu.upc.openmrs.activities.community.contact.ContactUsActivity"
             android:label="@string/contact_us"
-            android:theme="@style/AppThemeOrig" />
-        <activity
-            android:name="edu.upc.openmrs.activities.addeditallergy.AddEditAllergyActivity"
-            android:label="@string/allergy_heading"
             android:theme="@style/AppThemeOrig" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
