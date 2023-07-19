@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "7998d3aa58cc85284c1139a17f743ff9",
+    "identityHash": "1563d1cd21af1657e3702b1742c7d3e9",
     "entities": [
       {
         "tableName": "concepts",
@@ -278,7 +278,7 @@
       },
       {
         "tableName": "patients",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`synced` INTEGER NOT NULL, `identifier` TEXT, `identifierUuid` TEXT, `givenName` TEXT, `familyName` TEXT, `gender` TEXT, `birthDate` TEXT, `deathDate` TEXT, `causeOfDeath` TEXT, `age` TEXT, `photo` BLOB, `address1` TEXT, `address2` TEXT, `city` TEXT, `state` TEXT, `country` TEXT, `postalCode` TEXT, `dead` TEXT, `encounters` TEXT, `attributes` TEXT, `contactFirstName` TEXT, `contactLastName` TEXT, `contactPhoneNumber` TEXT, `uuid` TEXT, `display` TEXT, `_id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`synced` INTEGER NOT NULL, `identifier` TEXT, `identifierUuid` TEXT, `givenName` TEXT, `familyName` TEXT, `gender` TEXT, `birthDate` TEXT, `deathDate` TEXT, `causeOfDeath` TEXT, `age` TEXT, `address1` TEXT, `address2` TEXT, `city` TEXT, `state` TEXT, `country` TEXT, `postalCode` TEXT, `dead` TEXT, `encounters` TEXT, `attributes` TEXT, `contactFirstName` TEXT, `contactLastName` TEXT, `contactPhoneNumber` TEXT, `uuid` TEXT, `display` TEXT, `_id` INTEGER PRIMARY KEY AUTOINCREMENT)",
         "fields": [
           {
             "fieldPath": "synced",
@@ -338,12 +338,6 @@
             "fieldPath": "age",
             "columnName": "age",
             "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "photo",
-            "columnName": "photo",
-            "affinity": "BLOB",
             "notNull": false
           },
           {
@@ -874,7 +868,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7998d3aa58cc85284c1139a17f743ff9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1563d1cd21af1657e3702b1742c7d3e9')"
     ]
   }
 }

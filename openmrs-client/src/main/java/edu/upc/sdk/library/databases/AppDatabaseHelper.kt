@@ -260,7 +260,6 @@ object AppDatabaseHelper {
             patientEntity.causeOfDeath = null
         }
         patientEntity.age = null
-        patientEntity.photo = null
         if (null != patient.address) {
             patientEntity.address_1 = patient.address.address1
             patientEntity.address_2 = patient.address.address2
@@ -273,71 +272,6 @@ object AppDatabaseHelper {
         patientEntity.deceased = patient.isDeceased.toString()
         patientEntity.attributes = patient.attributes
         return patientEntity
-    }
-
-    @JvmStatic
-    fun convert(allergy: Allergy, patientID: String?): AllergyEntity {
-        val allergyEntity = AllergyEntity()
-        allergyEntity.uuid = allergy.uuid
-        allergyEntity.patientId = patientID
-        allergyEntity.comment = allergy.comment
-        if (allergy.severity != null) {
-            allergyEntity.severityDisplay = allergy.severity!!.display
-            allergyEntity.severityUUID = allergy.severity!!.uuid
-        }
-        allergyEntity.allergenDisplay = allergy.allergen!!.codedAllergen!!.display
-        allergyEntity.allergenUUID = allergy.allergen!!.codedAllergen!!.uuid
-        allergyEntity.allergenType = allergy.allergen!!.allergenType
-        allergyEntity.allergyReactions = allergy.reactions
-        return allergyEntity
-    }
-
-    @JvmStatic
-    @JvmName("convertTo")
-    fun convert(entities: List<AllergyEntity>): List<Allergy> {
-        val allergies = ArrayList<Allergy>()
-        for (allergyEntity in entities) {
-            allergies.add(convert(allergyEntity))
-        }
-        return allergies
-    }
-
-    @JvmStatic
-    fun convert(allergyEntity: AllergyEntity): Allergy {
-        val allergy = Allergy()
-        allergy.id = allergyEntity.id
-        allergy.uuid = allergyEntity.uuid
-        allergy.comment = allergyEntity.comment
-        if (allergyEntity.allergyReactions != null) {
-            allergy.reactions = allergyEntity.allergyReactions!!
-        } else {
-            allergy.reactions = ArrayList()
-        }
-        val allergen = Allergen()
-        allergen.allergenType = allergyEntity.allergenType
-        allergen.codedAllergen =
-            Resource(allergyEntity.allergenUUID!!, allergyEntity.allergenDisplay!!, ArrayList(), 1)
-        allergy.allergen = allergen
-        if (allergyEntity.severityDisplay != null) {
-            allergy.severity = Resource(
-                allergyEntity.severityUUID!!,
-                allergyEntity.severityDisplay!!,
-                ArrayList(),
-                1
-            )
-        }
-        return allergy
-    }
-
-    private fun bitmapToByteArray(image: Bitmap): ByteArray {
-        val outputStream = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.PNG, 0, outputStream)
-        return outputStream.toByteArray()
-    }
-
-    private fun byteArrayToBitmap(imageByteArray: ByteArray): Bitmap {
-        val inputStream = ByteArrayInputStream(imageByteArray)
-        return BitmapFactory.decodeStream(inputStream)
     }
 
     @JvmStatic

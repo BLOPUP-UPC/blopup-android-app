@@ -42,8 +42,6 @@ public class PatientEntity extends Resource {
     private String causeOfDeath;
     @ColumnInfo(name = "age")
     private String age;
-    @ColumnInfo(name = "photo")
-    private byte[] photo;
     @ColumnInfo(name = "address1")
     private String address_1;
     @ColumnInfo(name = "address2")
@@ -160,15 +158,6 @@ public class PatientEntity extends Resource {
      */
     public void setAge(String age) {
         this.age = age;
-    }
-
-    /**
-     * Sets photo.
-     *
-     * @param photo the photo
-     */
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
     }
 
     /**
@@ -322,15 +311,6 @@ public class PatientEntity extends Resource {
      */
     public String getAge() {
         return age;
-    }
-
-    /**
-     * Get photo byte [ ].
-     *
-     * @return the byte [ ]
-     */
-    public byte[] getPhoto() {
-        return photo;
     }
 
     /**
