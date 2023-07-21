@@ -150,13 +150,6 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     it.cityVillage
                 )
             }
-            if (patient.isDeceased) {
-                deceasedView.makeVisible()
-                deceasedView.text = getString(
-                    R.string.marked_patient_deceased_successfully,
-                    patient.causeOfDeath.display
-                )
-            }
         }
     }
 

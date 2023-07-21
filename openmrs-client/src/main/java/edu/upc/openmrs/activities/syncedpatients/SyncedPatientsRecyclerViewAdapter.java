@@ -113,9 +113,6 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
             holder.mDisplayName.setText(patientName);
 
         }
-        if (patient.isDeceased() != null && patient.isDeceased()) {
-            holder.mRowLayout.setCardBackgroundColor(mContext.getResources().getColor(R.color.deceased_red));
-        }
         try {
             holder.mBirthDate.setText(DateUtils.convertTime(DateUtils.convertTime(patient.getBirthdate())));
         } catch (Exception e) {

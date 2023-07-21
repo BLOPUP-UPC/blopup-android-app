@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -33,10 +32,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.LinearLayout.LayoutParams
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
@@ -45,7 +42,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.libraries.places.api.Places
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
@@ -64,7 +60,6 @@ import edu.upc.openmrs.utilities.ViewUtils.isEmpty
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
-import edu.upc.sdk.library.models.ConceptAnswers
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAttribute
@@ -163,14 +158,17 @@ class AddEditPatientFragment : BaseFragment() {
                     showLoading()
                     hideSoftKeys()
                 }
+
                 is Result.Success -> if (result.operationType == PatientRegistering) {
                     startPatientDashboardActivity()
                     finishActivity()
                 }
+
                 is Result.Error -> if (result.operationType == PatientRegistering) {
                     hideLoading()
                     ToastUtil.error(getString(R.string.register_patient_error))
                 }
+
                 else -> throw IllegalStateException()
             }
         })
@@ -206,10 +204,12 @@ class AddEditPatientFragment : BaseFragment() {
                     )
                     finishActivity()
                 }
+
                 ResultType.PatientUpdateLocalSuccess -> {
                     ToastUtil.notify(getString(R.string.offline_mode_patient_data_saved_locally_notification_message))
                     finishActivity()
                 }
+
                 else -> {
                     ToastUtil.error(
                         String.format(
@@ -243,9 +243,6 @@ class AddEditPatientFragment : BaseFragment() {
             // Change to Update Patient Form
             requireActivity().title = getString(R.string.action_update_patient_data)
 
-            // Show deceased option only when patient is registered
-            binding.deceasedCardview.makeVisible()
-
             binding.firstName.setText(name.givenName)
             binding.surname.setText(name.familyName)
 
@@ -268,13 +265,10 @@ class AddEditPatientFragment : BaseFragment() {
             } else if (StringValue.NON_BINARY == gender) {
                 binding.gender.check(R.id.nonBinary)
             }
-
-            binding.deceasedCheckbox.isChecked = isDeceased
         }
     }
 
     private fun validateFormInputsAndUpdateViewModel() = with(binding) {
-        viewModel.patient.isDeceased = deceasedCheckbox.isChecked
         /* Names */
         // First name validation
         if (isEmpty(firstName)) {
@@ -488,64 +482,6 @@ class AddEditPatientFragment : BaseFragment() {
             estimatedMonth.addTextChangedListener(it)
             estimatedYear.addTextChangedListener(it)
         }
-
-        deceasedCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                deceasedProgressBar.makeVisible()
-                deceasedSpinner.makeGone()
-                showCauseOfDeathOptions()
-            } else {
-                deceasedProgressBar.makeGone()
-                deceasedSpinner.makeGone()
-                viewModel.patient.isDeceased = false
-                viewModel.patient.causeOfDeath = null
-            }
-        }
-    }
-
-    private fun showCauseOfDeathOptions() {
-        viewModel.fetchCausesOfDeath().observeOnce(viewLifecycleOwner, Observer {
-            if (it.answers.isNotEmpty()) updateCauseOfDeathSpinner(it)
-            else showCannotMarkDeceased()
-        })
-    }
-
-    private fun showCannotMarkDeceased() = with(binding) {
-        deceasedProgressBar.makeGone()
-        deceasedSpinner.makeGone()
-        deceasedCheckbox.isChecked = false
-        ToastUtil.error(getString(R.string.mark_patient_deceased_no_concepts))
-    }
-
-    private fun updateCauseOfDeathSpinner(concept: ConceptAnswers) = with(binding) {
-        deceasedProgressBar.makeGone()
-        deceasedSpinner.makeVisible()
-
-        val answers = concept.answers
-        val answerDisplays = arrayOfNulls<String>(answers.size)
-        for (i in answers.indices) {
-            answerDisplays[i] = answers[i].display
-        }
-
-        deceasedSpinner.adapter =
-            ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, answerDisplays)
-        deceasedSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                adapterView: AdapterView<*>?,
-                view: View,
-                pos: Int,
-                l: Long,
-            ) {
-                val display = deceasedSpinner.selectedItem.toString()
-                for (i in answers.indices) {
-                    if (display == answers[i].display) {
-                        viewModel.patient.causeOfDeath = answers[i]
-                    }
-                }
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-        }
     }
 
     private fun initPlaces() {
@@ -643,39 +579,13 @@ class AddEditPatientFragment : BaseFragment() {
 
     fun isLoading(): Boolean = viewModel.result.value is Result.Loading
 
-    private fun showSnackbarLong(stringId: Int) {
-        Snackbar.make(binding.addEditConstraintLayout, stringId, Snackbar.LENGTH_LONG)
-            .apply {
-                view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-                    .setTextColor(Color.WHITE)
-            }
-            .show()
-    }
-
     private fun submitAction() = with(viewModel) {
         // New patient registering
         if (!isUpdatePatient) {
             findSimilarPatients()
             return@with
         }
-        // Existing patient updating
-        if (patient.isDeceased && !patient.causeOfDeath.uuid.isNullOrEmpty()) {
-            alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme)
-                .setTitle(R.string.mark_patient_deceased)
-                .setMessage(R.string.mark_patient_deceased_notice)
-                .setCancelable(false)
-                .setPositiveButton(R.string.mark_patient_deceased_proceed) { _, _ ->
-                    alertDialog?.cancel()
-                    updatePatient()
-                }
-                .setNegativeButton(R.string.dialog_button_cancel) { _, _ ->
-                    alertDialog?.cancel()
-                }
-                .create()
-            alertDialog?.show()
-        } else {
-            updatePatient()
-        }
+        updatePatient()
     }
 
     private fun resetAction() = with(binding) {
@@ -740,6 +650,7 @@ class AddEditPatientFragment : BaseFragment() {
                 .setPositiveButton(R.string.dialog_button_ok) { dialogInterface: DialogInterface?, i: Int -> resetAction() }
                 .setNegativeButton(R.string.dialog_button_cancel, null)
                 .show()
+
             else -> return super.onOptionsItemSelected(item)
         }
         return true

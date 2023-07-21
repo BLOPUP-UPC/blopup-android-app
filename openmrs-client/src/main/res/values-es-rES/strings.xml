@@ -168,8 +168,6 @@
     <string name="last_name_hint">Apellido</string>
     <string name="intro_location">Ubicación</string>
     <string name="location_successfully_updated">Ubicación actualizada con éxito</string>
-    <string name="mark_patient_deceased_no_concepts">Por favor, añada el UUID del paciente y las posibles causas de la muerte.</string>
-    <string name="mark_patient_deceased">¿Marcar paciente como fallecido?</string>
     <string name="matching_patients_toolbar_title">Combinar pacientes</string>
     <string name="midname_invalid_error">El segundo nombre no puede contener ni símbolos ni números.</string>
     <string name="allergy_heading">Nueva Alergia</string>
@@ -197,7 +195,6 @@
     <string name="add_comment">Añadir un comentario</string>
     <string name="delete_allergy_offline">La alergia será eliminada del servidor al recuperar la conexión.</string>
     <string name="offline_mode_not_supported">No se puede iniciar una visita en modo sin conexión.</string>
-    <string name="cannot_start_visit_for_deceased">No se puede iniciar una visita para un paciente fallecido.</string>
     <string name="data_type_not_available_for_this_field">Gráfico no disponible para este campo.</string>
     <string name="charts_view_toolbar_title">Vistas de los gráficos</string>
     <string name="snackbar_choose">Escoger</string>
@@ -234,11 +231,6 @@
     <string name="empty_allergy_list">Al paciente aún no se le han hecho pruebas por alergias.</string>
     <string name="allergy_reactions">Reacciones</string>
     <string name="allergy_severity">Gravedad</string>
-    <string name="marked_patient_deceased_successfully">Paciente marcado como fallecido — %1$s</string>
-    <string name="mark_patient_deceased_concept_has_no_answer">No se encontraron posibles causas de muerte para esta búsqueda.</string>
-    <string name="mark_patient_deceased_invalid_uuid">Por favor, añadir un UUID válido en el servidor.</string>
-    <string name="mark_patient_deceased_proceed">Continuar</string>
-    <string name="mark_patient_deceased_notice">El paciente será guardado como fallecido y no será posible iniciar una visita.</string>
     <string name="no_death_concepts_in_server">Por favor, añadir las posibles causas de fallecimiento en el servidor.</string>
     <string name="admission_provider_role">Rol del proveedor:</string>
     <string name="admission_fields_required">Por favor, seleccionar campo requerido</string>
@@ -401,7 +393,6 @@
     <string name="receive_weight_value_button">Recibir peso de la báscula</string>
     <string name="blood_pressure_button_label">"Recibir información del tensiómetro "</string>
     <string name="vitals_form_title">Signos vitales</string>
-    <string name="patient_deceased">Patiente fallecido</string>
     <string name="action_vitals_form">Tomar constantes</string>
     <string name="send_email_success_toast_message">Mensaje enviado</string>
     <string name="send_email_fails_toast_message">Error al enviar el mensje</string>

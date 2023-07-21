@@ -155,9 +155,7 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private fun showStartVisitStatus() {
         if (!isOnline()) notify(getString(R.string.offline_mode_not_supported))
-        else if (viewModel.getPatient().isDeceased) {
-            error(getString(R.string.cannot_start_visit_for_deceased))
-        } else {
+        else {
             viewModel.hasActiveVisit().observeOnce(viewLifecycleOwner, Observer { hasActiveVisit ->
                 with(patientDashboardActivity.supportActionBar!!) {
                     if (hasActiveVisit) patientDashboardActivity.showStartVisitImpossibleDialog(title)

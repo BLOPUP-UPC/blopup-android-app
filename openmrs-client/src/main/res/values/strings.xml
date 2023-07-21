@@ -21,8 +21,6 @@
     <string name="action_location" tools:ignore="MissingTranslation">Location</string>
     <string name="allergy_heading" tools:ignore="MissingTranslation">New Allergy</string>
     <string name="snackbar_nonvisitting_patients" tools:ignore="MissingTranslation">Vital signs can only be captured in patients with an active visit.</string>
-    <string name="mark_patient_deceased_concept_has_no_answer" tools:ignore="MissingTranslation">No possible causes of death were found for this search.</string>
-    <string name="mark_patient_deceased_invalid_uuid" tools:ignore="MissingTranslation">Please add a valid UUID on the server</string>
     <string name="no_death_concepts_in_server" tools:ignore="MissingTranslation">Please, add the possible causes of death on the server</string>
     <string name="admission_provider_role" tools:ignore="MissingTranslation">Provider role:</string>
     <string name="form_data_will_be_synced_later_error_message" tools:ignore="MissingTranslation">" \"Patient not yet registered. No internet connection. Form data is saved locally and will be synced when internet connection is restored\"."</string>
@@ -502,14 +500,6 @@
     <string name="discharge_location_in_list" translatable="false">Discharged From %1$s</string>
     <string name="form_submitted_successfully" translatable="false">Form Submitted Successfully</string>
 
-    <!--Marking Patient Deceased -->
-    <string name="mark_patient_deceased_no_concepts" tools:ignore="MissingTranslation">Please add a valid deceased concept UUID and possible causes of death in the server</string>
-    <string name="mark_patient_deceased" tools:ignore="MissingTranslation">Mark Patient Deceased?</string>
-    <string name="mark_patient_deceased_notice" tools:ignore="MissingTranslation">The patient will be marked deceased and no further visit will be possible.</string>
-    <string name="mark_patient_deceased_proceed" tools:ignore="MissingTranslation">Proceed</string>
-    <string name="marked_patient_deceased_successfully" tools:ignore="MissingTranslation">Patient is marked deceased — %1$s</string>
-    <string name="cannot_start_visit_for_deceased" tools:ignore="MissingTranslation">Cannot start visit for deceased patient</string>
-
     <!--Allergies -->
     <string name="new_allergy_title" tools:ignore="MissingTranslation">New Allergy</string>
     <string name="update_allergy_title" tools:ignore="MissingTranslation">Update Allergy</string>
@@ -597,7 +587,6 @@
     <string name="pulse_unit_label" translatable="false">/Min</string>
     <string name="send_button_label" tools:ignore="MissingTranslation">Send</string>
     <string name="action_vitals_form" tools:ignore="MissingTranslation">Take vitals</string>
-    <string name="patient_deceased" tools:ignore="MissingTranslation">Patient deceased</string>
     <string name="send_email_success_toast_message" tools:ignore="MissingTranslation">Message sent</string>
     <string name="send_email_fails_toast_message" tools:ignore="MissingTranslation">Error sending message</string>
     <string name="subject_send_email" translatable="false">Blopup User Feedback</string>
