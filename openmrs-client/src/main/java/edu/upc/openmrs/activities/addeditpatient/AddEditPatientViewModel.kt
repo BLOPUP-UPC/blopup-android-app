@@ -93,19 +93,6 @@ class AddEditPatientViewModel @Inject constructor(
         )
     }
 
-    fun fetchCausesOfDeath(): LiveData<ConceptAnswers> {
-        val liveData = MutableLiveData<ConceptAnswers>()
-        addSubscription(patientRepository.causeOfDeathGlobalConceptID
-            .flatMap { conceptRepository.getConceptByUuid(it) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { causesOfDeath: ConceptAnswers -> liveData.value = causesOfDeath },
-                { throwable -> liveData.value = ConceptAnswers() }
-            )
-        )
-        return liveData
-    }
-
     private fun registerPatient() {
         setLoading()
         addSubscription(patientRepository.registerPatient(patient)

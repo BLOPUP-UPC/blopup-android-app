@@ -89,7 +89,6 @@ import java.util.Calendar
 
 @AndroidEntryPoint
 class AddEditPatientFragment : BaseFragment() {
-    var alertDialog: AlertDialog? = null
     private var legalConsentDialog: LegalConsentDialogFragment? = null
     private var nationalityDialogFragment: NationalityDialogFragment? = null
     private var patientNationality: Nationality? = null
@@ -269,6 +268,8 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     private fun validateFormInputsAndUpdateViewModel() = with(binding) {
+        viewModel.patient.isDeceased = false
+        viewModel.patient.causeOfDeath = null
         /* Names */
         // First name validation
         if (isEmpty(firstName)) {

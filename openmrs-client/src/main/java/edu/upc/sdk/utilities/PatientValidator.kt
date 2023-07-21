@@ -34,8 +34,6 @@ class PatientValidator(private val patient: Patient,
         if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID) }) return false
 
         //Validate Legal Consent Recording
-        if (!isLegalRecordingPresent) return false
-
-        return true
+        return isLegalRecordingPresent
     }
 }

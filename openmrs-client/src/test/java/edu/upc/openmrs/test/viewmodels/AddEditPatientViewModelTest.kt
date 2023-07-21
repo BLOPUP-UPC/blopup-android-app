@@ -214,10 +214,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
                 ConceptAnswers()
             )
         )
-
-        viewModel.fetchCausesOfDeath().observeForever {
-            assert(it is ConceptAnswers)
-        }
     }
 
     @Test
