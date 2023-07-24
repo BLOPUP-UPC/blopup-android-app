@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "1563d1cd21af1657e3702b1742c7d3e9",
+    "identityHash": "91af31a23c7b86ece746eb5b9019d860",
     "entities": [
       {
         "tableName": "concepts",
@@ -765,80 +765,6 @@
         "foreignKeys": []
       },
       {
-        "tableName": "allergy",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `uuid` TEXT, `patientId` TEXT, `comment` TEXT, `severity_display` TEXT, `severity_uuid` TEXT, `allergen_display` TEXT, `allergen_uuid` TEXT, `allergen_type` TEXT, `allergy_reactions` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "_id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "uuid",
-            "columnName": "uuid",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "patientId",
-            "columnName": "patientId",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "comment",
-            "columnName": "comment",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "severityDisplay",
-            "columnName": "severity_display",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "severityUUID",
-            "columnName": "severity_uuid",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "allergenDisplay",
-            "columnName": "allergen_display",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "allergenUUID",
-            "columnName": "allergen_uuid",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "allergenType",
-            "columnName": "allergen_type",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "allergyReactions",
-            "columnName": "allergy_reactions",
-            "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "_id"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "legalConsents",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`filePath` TEXT NOT NULL, `patientId` TEXT NOT NULL, PRIMARY KEY(`filePath`))",
         "fields": [
@@ -868,7 +794,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1563d1cd21af1657e3702b1742c7d3e9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '91af31a23c7b86ece746eb5b9019d860')"
     ]
   }
 }

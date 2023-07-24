@@ -19,7 +19,6 @@
     <string name="action_settings" tools:ignore="MissingTranslation">Settings</string>
     <string name="action_logout" tools:ignore="MissingTranslation">Logout</string>
     <string name="action_location" tools:ignore="MissingTranslation">Location</string>
-    <string name="allergy_heading" tools:ignore="MissingTranslation">New Allergy</string>
     <string name="snackbar_nonvisitting_patients" tools:ignore="MissingTranslation">Vital signs can only be captured in patients with an active visit.</string>
     <string name="no_death_concepts_in_server" tools:ignore="MissingTranslation">Please, add the possible causes of death on the server</string>
     <string name="admission_provider_role" tools:ignore="MissingTranslation">Provider role:</string>
@@ -155,9 +154,7 @@
     <string name="delete_patient_error" tools:ignore="MissingTranslation">Error with deleting patient</string>
     <string name="get_patient_from_database_error" tools:ignore="MissingTranslation">Failed to fetch patient from database</string>
     <string name="action_start_visit" tools:ignore="MissingTranslation">Start visit</string>
-    <string name="action_create_allergy" tools:ignore="MissingTranslation">Create Allergy</string>
     <string name="patient_scroll_tab_details_label" tools:ignore="MissingTranslation">Details</string>
-    <string name="patient_scroll_tab_allergy_label" tools:ignore="MissingTranslation">Allergy</string>
     <string name="patient_scroll_tab_diagnosis_label" tools:ignore="MissingTranslation">Diagnosis</string>
     <string name="patient_scroll_tab_visits_label" tools:ignore="MissingTranslation">Visits</string>
     <string name="patient_scroll_tab_vitals_label" tools:ignore="MissingTranslation">Vitals</string>
@@ -500,43 +497,6 @@
     <string name="discharge_location_in_list" translatable="false">Discharged From %1$s</string>
     <string name="form_submitted_successfully" translatable="false">Form Submitted Successfully</string>
 
-    <!--Allergies -->
-    <string name="new_allergy_title" tools:ignore="MissingTranslation">New Allergy</string>
-    <string name="update_allergy_title" tools:ignore="MissingTranslation">Update Allergy</string>
-    <string name="allergy_comment" tools:ignore="MissingTranslation">Comment</string>
-    <string name="allergy_severity" tools:ignore="MissingTranslation">Severity</string>
-    <string name="allergy_reactions" tools:ignore="MissingTranslation">Reactions</string>
-    <!-- Refer to AllergyRepository syncAllergies method for empty_allergy_list string value,
-     it should be changed to "Patient has no known allergies" when server fixes the issue mentioned -->
-    <string name="empty_allergy_list" tools:ignore="MissingTranslation">Patient has not been tested for allergies yet.</string>
-    <string name="unable_to_fetch_allergies" tools:ignore="MissingTranslation">Unable to get the latest recorded allergies!</string>
-    <string name="delete_allergy_title" tools:ignore="MissingTranslation">Delete %1$s?</string>
-    <string name="delete_allergy_description" tools:ignore="MissingTranslation">The patient\'s allergy will be removed from server. Are you sure you want to continue?</string>
-    <string name="delete_allergy_success" tools:ignore="MissingTranslation">Allergy successfully deleted.</string>
-    <string name="delete_allergy_failure" tools:ignore="MissingTranslation">Unable to delete allergy</string>
-    <string name="delete_allergy_offline" tools:ignore="MissingTranslation">Allergy will be removed from the server when you are back online.</string>
-    <string name="choose_category" tools:ignore="MissingTranslation">Choose\na category</string>
-    <string name="allergen_drug" tools:ignore="MissingTranslation">Drug</string>
-    <string name="allergen_food" tools:ignore="MissingTranslation">Food</string>
-    <string name="allergen_other" tools:ignore="MissingTranslation">Other</string>
-    <string name="severity" tools:ignore="MissingTranslation">Severity</string>
-    <string name="severity_mild" tools:ignore="MissingTranslation">Mild</string>
-    <string name="severity_moderate" tools:ignore="MissingTranslation">Moderate</string>
-    <string name="severity_severe" tools:ignore="MissingTranslation">Severe</string>
-    <string name="comment" tools:ignore="MissingTranslation">Comment</string>
-    <string name="add_comment" tools:ignore="MissingTranslation">Add a comment</string>
-    <string name="create_allergy_title" tools:ignore="MissingTranslation">Create Allergy?</string>
-    <string name="create_allergy_description" tools:ignore="MissingTranslation">The patient\'s allergy will be added to server. Are you sure you want to continue?</string>
-    <string name="warning_select_allergen" tools:ignore="MissingTranslation">Please select an Allergen before proceeding</string>
-    <string name="error_creating_allergy" tools:ignore="MissingTranslation">An error or similar existing allergy may be found when submitting the allergy.</string>
-    <string name="success_creating_allergy" tools:ignore="MissingTranslation">Allergy successfully added.</string>
-    <string name="allergy_concepts_fetch_error" tools:ignore="MissingTranslation">Error fetching allergy concepts from server</string>
-    <string name="delete_allergy_dialog" tools:ignore="MissingTranslation">Delete Allergy</string>
-    <string name="update_allergy_dialog" tools:ignore="MissingTranslation">Update Allergy</string>
-    <string name="allergy_already_selected" tools:ignore="MissingTranslation">Allergy already selected !</string>
-    <string name="start" tools:ignore="MissingTranslation">Start:</string>
-    <string name="end" tools:ignore="MissingTranslation">End:</string>
-
     <!-- About Activity -->
     <string name="action_about_activity" tools:ignore="MissingTranslation">About us</string>
     <string name="action_about" tools:ignore="MissingTranslation">About us</string>
@@ -600,5 +560,6 @@
     <string name="nationality" tools:ignore="MissingTranslation">Nationality</string>
     <string name="lengthy_text" tools:ignore="MissingTranslation">The UPC informs users of this website that it can automatically process the personal data provided to it when they use this website, in strict compliance with the provisions of the legislation on personal data protection. \n\n Users must guarantee the veracity and authenticity of the information and data they communicate when they use this website. Therefore, they must keep the information and data updated to ensure that the data correspond to reality at all times. \n\n Any false or inaccurate statement that arises from the information and data provided and any damages that this may cause are the responsibility of users.  In accordance with the provisions of EU Regulation 2016/679 by the Parliament and the Council, of 27 April 2016, on the protection of natural persons with regard to the processing of personal data and on the free movement of such data (hereinafter, the GDPR), we inform you that personal data are collected and processed for the purposes described in the UPC’s Processing Activity Register (https://rat.upc.edu). \n\n Specifically, with regard to multichannel processing by the service providing information and assistance to individuals who contact this university, the basic information on data protection is available on the following web page: https://rat.upc.edu/ca/registre-de-tractaments-de-dades-personals/F03.13.  Users may at any time exercise their right to access, correct, delete, challenge, limit the processing of and transfer their collected and filed data. Requests to exercise these rights must be addressed to the UPC Data Protection Officer in writing. \n\n Exercising these rights does not in any way affect access to the website or any subscriptions users may have.  The data recorded may be used to produce statistics, send scientific and academic information, manage incidents or conduct market studies, in addition to the purposes for which they have been expressly collected. \n\n  If necessary, the personal data provided by users may be communicated to a third party for the fulfilment of the aforementioned purposes only, in accordance with the provisions of Article 6 of the GDPR, for which the consent of the interested parties must be obtained whenever necessary. \n\n When users provide personal data to the UPC, they accept, fully and without reservations, that the UPC will process the personal data that are appropriate, pertinent and limited to the purposes of assisting them effectively and exercising its functions in accordance with the processing principles outlined in Chapter 2, Article 5 of the GDPR.  The UPC undertakes to comply with the obligation to maintain the secrecy of the personal data that are processed, and expresses its intention to implement measures to guarantee adequate security, including protection against unauthorised or illicit processing and loss, destruction or accidental damage, by applying the appropriate technical and organisational measures (“integrity and confidentiality”).</string>
     <string name="recording_in_progress" tools:ignore="MissingTranslation">Recording in Progress</string>
-
+    <string name="start" tools:ignore="MissingTranslation">Start:</string>
+    <string name="end" tools:ignore="MissingTranslation">End:</string>R
 </resources>

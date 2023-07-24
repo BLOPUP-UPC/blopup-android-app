@@ -32,7 +32,6 @@ import edu.upc.sdk.library.dao.ObservationRoomDAO;
 import edu.upc.sdk.library.dao.PatientRoomDAO;
 import edu.upc.sdk.library.dao.ProviderRoomDAO;
 import edu.upc.sdk.library.dao.VisitRoomDAO;
-import edu.upc.sdk.library.databases.entities.AllergyEntity;
 import edu.upc.sdk.library.databases.entities.ConceptEntity;
 import edu.upc.sdk.library.databases.entities.DiagnosisEntity;
 import edu.upc.sdk.library.databases.entities.EncounterEntity;
@@ -61,7 +60,6 @@ import edu.upc.sdk.utilities.ApplicationConstants;
         FormResourceEntity.class,
         EncounterType.class,
         Encountercreate.class,
-        AllergyEntity.class,
         LegalConsentEntity.class},
         version = 6)
 

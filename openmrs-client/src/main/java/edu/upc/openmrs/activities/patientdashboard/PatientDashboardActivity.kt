@@ -78,6 +78,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                         }
                     }
                 }
+
                 is Result.Success -> {
                     dismissCustomFragmentDialog()
                     when (result.operationType) {
@@ -85,14 +86,17 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                             ToastUtil.success(getString(R.string.synchronize_patient_successful))
                             initViewPager()
                         }
+
                         PatientDeleting -> {
                             ToastUtil.success(getString(R.string.delete_patient_successful))
                             finish()
                         }
+
                         else -> {
                         }
                     }
                 }
+
                 is Result.Error -> {
                     dismissCustomFragmentDialog()
                     when (result.operationType) {
@@ -100,11 +104,13 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                             ToastUtil.error(getString(R.string.synchronize_patient_error))
                             initViewPager()
                         }
+
                         PatientDeleting -> ToastUtil.error(getString(R.string.delete_patient_error))
                         else -> {
                         }
                     }
                 }
+
                 else -> throw IllegalStateException()
             }
         })
@@ -152,14 +158,8 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     private fun setupActionFABs() {
         with(binding.actionsFab) {
             activityDashboardActionFab.setOnClickListener {
-                if (binding.pager.currentItem == 1) {
-//                    Intent(this@PatientDashboardActivity, AddEditAllergyActivity::class.java)
-//                        .putExtra(PATIENT_ID_BUNDLE, patientId)
-//                        .apply { startActivity(this) }
-                } else {
-                    if (!isActionFABOpen) openFABs()
-                    else closeFABs()
-                }
+                if (!isActionFABOpen) openFABs()
+                else closeFABs()
             }
             activityDashboardDeleteFab.setOnClickListener { showDeletePatientDialog() }
             activityDashboardUpdateFab.setOnClickListener { startPatientUpdateActivity(patientId.toLong()) }

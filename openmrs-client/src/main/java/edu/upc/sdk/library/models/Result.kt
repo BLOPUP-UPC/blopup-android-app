@@ -19,7 +19,6 @@ enum class OperationType {
     PatientSynchronizing,
     PatientVisitsFetching,
     PatientVisitStarting,
-    PatientAllergyFetching,
     PatientVitalsFetching,
     PatientDeleting,
     LastViewedPatientsFetching,
@@ -27,9 +26,6 @@ enum class OperationType {
 }
 
 enum class ResultType {
-    AllergyDeletionSuccess,
-    AllergyDeletionLocalSuccess,
-    AllergyDeletionError,
     PatientUpdateSuccess,
     PatientUpdateLocalSuccess,
     PatientUpdateError,

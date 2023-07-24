@@ -414,15 +414,4 @@ public interface RestApi {
     Call<Provider> UpdateProvider(@Path("uuid") String uuid,
                                   @Body Provider provider);
 
-    /**
-     * Delete allergy call.
-     *
-     * @param patientUuid the patient uuid
-     * @param allergyUuid the allergy uuid
-     * @return the call
-     */
-    @DELETE("patient/{patientUuid}/allergy/{allergyUuid}")
-    Call<ResponseBody> deleteAllergy(@Path("patientUuid") String patientUuid,
-                                     @Path("allergyUuid") String allergyUuid);
-
 }
