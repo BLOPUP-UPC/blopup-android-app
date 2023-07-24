@@ -21,6 +21,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.viewpager.widget.ViewPager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
@@ -29,6 +30,7 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.utilities.ThemeUtils.isDarkModeActivated
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.OperationType.PatientDeleting
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Result
@@ -134,6 +136,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             pager.offscreenPageLimit = adapter.count - 1
             pager.adapter = adapter
             tabhost.setupWithViewPager(pager)
+            setUpStartVisitFAB()
             pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(
                     position: Int,
@@ -172,17 +175,22 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             }
             activityDashboardDeleteFab.setOnClickListener { showDeletePatientDialog() }
             activityDashboardUpdateFab.setOnClickListener { startPatientUpdateActivity(patientId.toLong()) }
+
+            startVisitFab.setOnClickListener {
+                viewModel.hasActiveVisit()
+                    .observeOnce(it.findViewTreeLifecycleOwner()!!) { hasActiveVisit ->
+                        with(supportActionBar!!) {
+                            if (hasActiveVisit) showStartVisitImpossibleDialog(title)
+                            else showStartVisitDialog(title)
+                        }
+                    }
+            }
         }
     }
 
     private fun setUpStartVisitFAB() {
-        with(binding.actionsFab) {
-            startVisitFab.setOnClickListener {
-                showStartVisitDialog(title)
-            }
-            binding.actionsFab.startVisitFab.isVisible = true
-            binding.actionsFab.activityDashboardActionFab.isVisible = false
-        }
+        binding.actionsFab.startVisitFab.isVisible = true
+        binding.actionsFab.activityDashboardActionFab.isVisible = false
     }
 
     private fun openFABs() {

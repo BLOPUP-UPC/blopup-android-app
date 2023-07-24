@@ -184,14 +184,6 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
         inflater.inflate(R.menu.patients_visit_tab_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionStartVisit -> showStartVisitStatus()
-            else -> {
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

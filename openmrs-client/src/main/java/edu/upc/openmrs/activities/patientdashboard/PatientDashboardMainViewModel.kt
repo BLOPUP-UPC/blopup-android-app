@@ -1,6 +1,8 @@
 package edu.upc.openmrs.activities.patientdashboard
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.api.repository.PatientRepository
@@ -11,6 +13,7 @@ import edu.upc.sdk.library.models.OperationType
 import edu.upc.sdk.library.models.OperationType.PatientDeleting
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -41,6 +44,14 @@ class PatientDashboardMainViewModel @Inject constructor(
                 { setError(it, PatientDeleting) }
             )
         )
+    }
+
+    fun hasActiveVisit(): LiveData<Boolean> {
+        val liveData = MutableLiveData<Boolean>()
+        addSubscription(visitDAO.getActiveVisitByPatientId(patientId.toLong())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { visit: Visit? -> liveData.value = visit != null })
+        return liveData
     }
 
     fun syncPatientData() {
