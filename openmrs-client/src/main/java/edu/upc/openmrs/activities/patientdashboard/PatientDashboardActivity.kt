@@ -35,6 +35,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
+import kotlinx.android.synthetic.main.fragment_add_provider.*
 
 @AndroidEntryPoint
 class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -142,12 +143,19 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    actionsFab.activityDashboardActionFab.apply {
-                        if (position == 1) {
-                            // Convert main & sub FABs into Add Allergy FAB
-                            closeFABs(animate = false)
-                            setImageResource(R.drawable.ic_add)
-                        } else setImageResource(R.drawable.ic_edit_white_24dp)
+                    if (position == 0 || position == 2) {
+                        setUpStartVisitFAB()
+                    } else {
+                        binding.actionsFab.startVisitFab.isVisible = false
+                        binding.actionsFab.activityDashboardActionFab.isVisible = true
+
+                        actionsFab.activityDashboardActionFab.apply {
+                            if (position == 1) {
+                                // Convert main & sub FABs into Add Allergy FAB
+                                closeFABs(animate = false)
+                                setImageResource(R.drawable.ic_add)
+                            } else setImageResource(R.drawable.ic_edit_white_24dp)
+                        }
                     }
                 }
 
@@ -156,7 +164,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
-    fun setupActionFABs() {
+    private fun setupActionFABs() {
         with(binding.actionsFab) {
             activityDashboardActionFab.setOnClickListener {
                 if (!isActionFABOpen) openFABs()
@@ -167,7 +175,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
-    fun setUpStartVisitFAB() {
+    private fun setUpStartVisitFAB() {
         with(binding.actionsFab) {
             startVisitFab.setOnClickListener {
                 showStartVisitDialog(title)

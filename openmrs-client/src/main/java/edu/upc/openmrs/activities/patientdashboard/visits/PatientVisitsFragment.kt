@@ -83,7 +83,7 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
             adapter =
-                edu.upc.openmrs.activities.patientdashboard.visits.PatientVisitsRecyclerViewAdapter(
+                PatientVisitsRecyclerViewAdapter(
                     this@PatientVisitsFragment,
                     emptyList()
                 )
@@ -137,7 +137,7 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
                 patientVisitRecyclerView.makeGone()
                 emptyVisitsList.makeVisible()
             } else {
-                (binding.patientVisitRecyclerView.adapter as edu.upc.openmrs.activities.patientdashboard.visits.PatientVisitsRecyclerViewAdapter).updateList(visits)
+                (binding.patientVisitRecyclerView.adapter as PatientVisitsRecyclerViewAdapter).updateList(visits)
                 patientVisitRecyclerView.makeVisible()
                 emptyVisitsList.makeGone()
             }
