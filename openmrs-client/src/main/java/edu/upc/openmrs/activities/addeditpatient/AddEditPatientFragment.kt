@@ -21,8 +21,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -41,7 +39,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.google.android.libraries.places.api.Places
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
@@ -53,6 +50,7 @@ import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
 import edu.upc.openmrs.activities.addeditpatient.nationality.NationalityDialogFragment
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
+import edu.upc.openmrs.listeners.watcher.DateOfBirthTextWatcher
 import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
 import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.ViewUtils.getInput
@@ -112,15 +110,12 @@ class AddEditPatientFragment : BaseFragment() {
 
         setupObservers()
 
-        initPlaces()
-
         setupViewsListeners()
+        setNationalitySpinner()
 
         fillFormFields()
 
         askPermissions()
-
-        setNationalitySpinner()
 
         showPatientConsentToggle.check(onToggleDisabled = {
             binding.linearLayoutConsent.makeGone()
@@ -265,6 +260,7 @@ class AddEditPatientFragment : BaseFragment() {
                 binding.gender.check(R.id.nonBinary)
             }
         }
+
     }
 
     private fun validateFormInputsAndUpdateViewModel() = with(binding) {
@@ -403,9 +399,7 @@ class AddEditPatientFragment : BaseFragment() {
                 recordConsentImageButton.isEnabled = position != 0
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         recordConsentImageButton.setOnClickListener {
@@ -419,31 +413,9 @@ class AddEditPatientFragment : BaseFragment() {
 
         gender.setOnCheckedChangeListener { _, _ -> gendererror.makeGone() }
 
-        dobEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // No need for this method
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // Auto-add slash before entering month (e.g. "17/*") and before entering year (e.g. "17/10/*")
-                dobEditText.text.toString().let {
-                    if ((it.length == 3 && !it.contains("/")) ||
-                        (it.length == 6 && !it.substring(3).contains("/"))
-                    ) {
-                        dobEditText.setText(StringBuilder(it).insert(it.length - 1, "/").toString())
-                        dobEditText.setSelection(dobEditText.text.length)
-                    }
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                // If a considerable amount of text is filled in dobEditText, then remove 'Estimated age' fields.
-                if (s.length >= 10) {
-                    estimatedMonth.text.clear()
-                    estimatedYear.text.clear()
-                }
-            }
-        })
+        DateOfBirthTextWatcher(dobEditText, estimatedMonth, estimatedYear).let {
+            dobEditText.addTextChangedListener(it)
+        }
 
         datePicker.setOnClickListener {
             val cYear: Int
@@ -464,12 +436,7 @@ class AddEditPatientFragment : BaseFragment() {
             val dateSetListener =
                 { _: DatePicker?, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
                     val adjustedMonth = selectedMonth + 1
-                    dobEditText.setText(
-                        String.format(
-                            "%02d",
-                            selectedDay
-                        ) + "/" + String.format("%02d", adjustedMonth) + "/" + selectedYear
-                    )
+                    dobEditText.setText(String.format("%02d", selectedDay) + "/" + String.format("%02d", adjustedMonth) + "/" + selectedYear)
                     viewModel.dateHolder =
                         LocalDate(selectedYear, adjustedMonth, selectedDay).toDateTimeAtStartOfDay()
                 }
@@ -482,19 +449,6 @@ class AddEditPatientFragment : BaseFragment() {
         PatientBirthdateValidatorWatcher(dobEditText, estimatedMonth, estimatedYear).let {
             estimatedMonth.addTextChangedListener(it)
             estimatedYear.addTextChangedListener(it)
-        }
-    }
-
-    private fun initPlaces() {
-        if (viewModel.placesClient != null) return
-        with(requireActivity()) {
-            val applicationInfo =
-                packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-            val placesApiKey = applicationInfo.metaData.getString("com.google.android.geo.API_KEY")
-            if (!Places.isInitialized() && placesApiKey != null) {
-                Places.initialize(applicationContext, placesApiKey)
-                viewModel.placesClient = Places.createClient(this)
-            }
         }
     }
 
@@ -673,12 +627,8 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(patientID: String?, countries: List<String>) =
+        fun newInstance(patientID: String?) =
             AddEditPatientFragment().apply {
-                arguments = bundleOf(
-                    Pair(PATIENT_ID_BUNDLE, patientID),
-                    Pair(COUNTRIES_BUNDLE, countries)
-                )
-            }
+                arguments = bundleOf(Pair(PATIENT_ID_BUNDLE, patientID)) }
     }
 }

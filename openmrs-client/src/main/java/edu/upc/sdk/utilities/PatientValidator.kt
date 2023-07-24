@@ -9,7 +9,7 @@ import edu.upc.sdk.utilities.StringUtils.validateText
  * This utility class validates patient's data presence and legality for registering.
  *
  * @param patient the patient to validate
- * @param countriesList the available countries that can be picked from as the patient's country
+ * @param isLegalRecordingPresent the flag to indicate whether the patient has a legal consent recording
  */
 class PatientValidator(private val patient: Patient,
                        var isLegalRecordingPresent: Boolean) {

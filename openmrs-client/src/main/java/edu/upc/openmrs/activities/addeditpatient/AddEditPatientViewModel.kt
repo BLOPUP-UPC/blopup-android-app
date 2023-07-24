@@ -3,7 +3,6 @@ package edu.upc.openmrs.activities.addeditpatient
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.RecordingHelper
 import edu.upc.blopup.toggles.check
@@ -12,7 +11,6 @@ import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.ConceptAnswers
 import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
@@ -49,7 +47,6 @@ class AddEditPatientViewModel @Inject constructor(
             field = value
             patientValidator.isLegalRecordingPresent = value
         }
-    var placesClient: PlacesClient? = null
 
     var dateHolder: DateTime? = null
     var legalConsentFileName: String? = null
