@@ -19,14 +19,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import edu.upc.sdk.library.models.OperationType.PatientDeleting
-import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
-import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.NetworkUtils
-import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityPatientDashboardBinding
@@ -34,6 +29,12 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.utilities.ThemeUtils.isDarkModeActivated
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.sdk.library.models.OperationType.PatientDeleting
+import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.NetworkUtils
+import edu.upc.sdk.utilities.ToastUtil
 
 @AndroidEntryPoint
 class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -155,7 +156,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
-    private fun setupActionFABs() {
+    fun setupActionFABs() {
         with(binding.actionsFab) {
             activityDashboardActionFab.setOnClickListener {
                 if (!isActionFABOpen) openFABs()
@@ -163,6 +164,16 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             }
             activityDashboardDeleteFab.setOnClickListener { showDeletePatientDialog() }
             activityDashboardUpdateFab.setOnClickListener { startPatientUpdateActivity(patientId.toLong()) }
+        }
+    }
+
+    fun setUpStartVisitFAB() {
+        with(binding.actionsFab) {
+            startVisitFab.setOnClickListener {
+                showStartVisitDialog(title)
+            }
+            binding.actionsFab.startVisitFab.isVisible = true
+            binding.actionsFab.activityDashboardActionFab.isVisible = false
         }
     }
 

@@ -21,6 +21,20 @@
         app:rippleColor="@color/color_accent"
         tools:targetApi="lollipop" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/start_visit_fab"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="@string/start_visit_dialog_title"
+        android:text="@string/start_visit_dialog_title"
+        android:backgroundTint="@color/color_accent"
+        android:tint="@color/color_accent"
+        app:rippleColor="@color/color_accent"
+        app:icon="@drawable/calendar"/>
+
     <LinearLayout
         android:id="@+id/custom_fab_delete_ll"
         android:layout_width="wrap_content"
