@@ -37,6 +37,7 @@ import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.marginBottom
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,7 +67,6 @@ import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.COUNTRIES_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.convertTime
@@ -93,7 +93,7 @@ class AddEditPatientFragment : BaseFragment() {
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: AddEditPatientViewModel by viewModels()
+    val viewModel: AddEditPatientViewModel by viewModels()
 
     // constant for storing audio permission
     private val REQUEST_AUDIO_PERMISSION_CODE = 200
@@ -120,13 +120,17 @@ class AddEditPatientFragment : BaseFragment() {
         showPatientConsentToggle.check(onToggleDisabled = {
             binding.linearLayoutConsent.makeGone()
 
-            val densityOperator = context?.resources?.displayMetrics?.density?.toInt()
-
-            val bottomMargin = binding.linearLayoutNationality.layoutParams as LayoutParams
-            bottomMargin.bottomMargin = densityOperator!! * 90
-            binding.linearLayoutNationality.layoutParams = bottomMargin
+            addBottomMargin()
         })
         return rootView
+    }
+
+    private fun addBottomMargin() {
+        val densityOperator = context?.resources?.displayMetrics?.density?.toInt()
+
+        val bottomMargin = binding.linearLayoutNationality.layoutParams as LayoutParams
+        bottomMargin.bottomMargin = densityOperator!! * 90
+        binding.linearLayoutNationality.layoutParams = bottomMargin
     }
 
     private fun setNationalitySpinner() {
@@ -146,7 +150,7 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     private fun setupObservers() {
-        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading()
@@ -165,12 +169,12 @@ class AddEditPatientFragment : BaseFragment() {
 
                 else -> throw IllegalStateException()
             }
-        })
-        viewModel.similarPatientsLiveData.observe(viewLifecycleOwner, Observer { similarPatients ->
+        }
+        viewModel.similarPatientsLiveData.observe(viewLifecycleOwner) { similarPatients ->
             hideLoading()
             if (similarPatients.isEmpty()) registerPatient()
             else showSimilarPatientsDialog(similarPatients, viewModel.patient)
-        })
+        }
     }
 
     private fun findSimilarPatients() {
@@ -259,6 +263,15 @@ class AddEditPatientFragment : BaseFragment() {
             } else if (StringValue.NON_BINARY == gender) {
                 binding.gender.check(R.id.nonBinary)
             }
+
+            val nationalityLabel = attributes.firstOrNull { it.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID }?.value
+
+            if (nationalityLabel === null) { binding.nationality.text = context?.getString(R.string.nationality_default)}
+            else Nationality.valueOf(nationalityLabel).getLabel(requireContext())
+                .also { binding.nationality.text = it }
+
+            binding.linearLayoutConsent.makeGone()
+            addBottomMargin()
         }
 
     }
