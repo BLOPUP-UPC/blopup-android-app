@@ -20,6 +20,6 @@
         android:id="@+id/actionReset"
         android:icon="@drawable/ic_menu_refresh"
         android:title="@string/action_reset"
-        app:showAsAction="always"
+        app:showAsAction="never"
         />
 </menu>

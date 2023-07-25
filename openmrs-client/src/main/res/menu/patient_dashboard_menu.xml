@@ -20,5 +20,5 @@
     <item android:id="@+id/actionDelete"
         android:title="@string/action_delete_patient"
         android:icon="@drawable/delete_patient"
-        app:showAsAction="ifRoom|collapseActionView"/>
+        app:showAsAction="never"/>
 </menu>
