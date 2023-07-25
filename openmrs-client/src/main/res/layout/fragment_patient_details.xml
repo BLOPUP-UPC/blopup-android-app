@@ -35,12 +35,14 @@
             android:focusable="true"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/edit"
-            android:textColor="@color/allergy_orange"
+            android:textStyle="bold"
+            android:textColor="@color/color_accent"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/patientDetailsName"
             app:layout_constraintHorizontal_bias="0.918"
-            tools:layout_editor_absoluteY="38dp" />
+            tools:layout_editor_absoluteY="38dp"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/patientDetailsName"
@@ -51,7 +53,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             tools:layout_editor_absoluteX="157dp"
-            tools:layout_editor_absoluteY="46dp" />
+            tools:layout_editor_absoluteY="46dp"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/patientDetailsGender"
@@ -60,10 +63,9 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat"
             android:paddingStart="10dp"
-            android:paddingLeft="10dp"
             android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsName"
-            tools:ignore="RtlSymmetry"
+            tools:ignore="MissingConstraints,RtlSymmetry"
             tools:layout_editor_absoluteX="141dp" />
 
         <TextView
@@ -72,12 +74,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingStart="10dp"
-            android:paddingLeft="10dp"
             android:text="@string/patient_details_birth_date_label"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsGender"
-            tools:ignore="RtlSymmetry"
+            tools:ignore="MissingConstraints,RtlSymmetry"
             tools:layout_editor_absoluteX="141dp" />
 
         <TextView
@@ -87,10 +88,9 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat"
             android:paddingStart="10dp"
-            android:paddingLeft="10dp"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDateLabel"
-            tools:ignore="RtlSymmetry"
+            tools:ignore="MissingConstraints,RtlSymmetry"
             tools:layout_editor_absoluteX="141dp" />
 
         <TextView
@@ -99,12 +99,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingStart="10dp"
-            android:paddingLeft="10dp"
             android:text="@string/nationality"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDate"
-            tools:ignore="RtlSymmetry"
+            tools:ignore="MissingConstraints,RtlSymmetry"
             tools:layout_editor_absoluteX="141dp" />
 
         <TextView
@@ -114,10 +113,9 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat"
             android:paddingStart="10dp"
-            android:paddingLeft="10dp"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsNationalityLabel"
-            tools:ignore="RtlSymmetry"
+            tools:ignore="MissingConstraints,RtlSymmetry"
             tools:layout_editor_absoluteX="141dp" />
 
         <View
@@ -143,7 +141,8 @@
             android:textSize="20sp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/view3"
-            tools:layout_editor_absoluteX="20dp" />
+            tools:layout_editor_absoluteX="20dp"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/addressDetailsStreet"
@@ -166,7 +165,8 @@
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/addressDetailsStreet"
-            tools:layout_editor_absoluteX="20dp" />
+            tools:layout_editor_absoluteX="20dp"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/addressDetailsCity"
@@ -191,14 +191,14 @@
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/addressDetailsCityLabel"
-            tools:layout_editor_absoluteX="20dp" />
+            tools:layout_editor_absoluteX="20dp"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/addressDetailsPostalCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_short"
-            android:layout_marginLeft="@dimen/margin_short"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/montserrat"
             android:textAllCaps="true"
@@ -219,7 +219,8 @@
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/addressDetailsPostalCodeLabel"
-            tools:layout_editor_absoluteX="20dp" />
+            tools:layout_editor_absoluteX="20dp"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/addressDetailsState"
@@ -282,7 +283,8 @@
             android:textSize="20sp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/view4"
-            tools:layout_editor_absoluteX="20dp" />
+            tools:layout_editor_absoluteX="20dp"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/contactFirstNameLabel"
@@ -294,7 +296,8 @@
             android:text="@string/first_name_hint"
             android:textSize="16sp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/contactDetailsLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/contactDetailsLabel"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/contactFirstName"
@@ -319,7 +322,8 @@
             android:text="@string/last_name_hint"
             android:textSize="16sp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/contactFirstName" />
+            app:layout_constraintTop_toBottomOf="@+id/contactFirstName"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/contactLastName"
@@ -344,7 +348,8 @@
             android:text="@string/reg_phone_number_hint"
             android:textSize="16sp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/contactLastName" />
+            app:layout_constraintTop_toBottomOf="@+id/contactLastName"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/contactPhoneNumber"
