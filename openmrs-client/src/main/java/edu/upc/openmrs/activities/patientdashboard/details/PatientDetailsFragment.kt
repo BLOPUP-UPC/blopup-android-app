@@ -13,6 +13,7 @@
  */
 package edu.upc.openmrs.activities.patientdashboard.details
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,10 +26,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
+import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.utilities.makeGone
-import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -94,6 +95,10 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private fun showPatientDetails(patient: Patient) {
         with(binding) {
+            edit.setOnClickListener {
+                startPatientUpdateActivity(patient.id)
+            }
+
             setMenuTitle(patient.name.nameString, patient.identifier.identifier!!)
             if (isAdded) {
                 when (patient.gender) {
@@ -114,9 +119,9 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
             if (longTime != null) {
                 patientDetailsBirthDate.text = convertTime(longTime)
             }
-            patient.attributes?.forEach {attribute ->
+            patient.attributes?.forEach { attribute ->
                 val nationalityValue = attribute.value?.uppercase()
-                if(attribute.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID){
+                if (attribute.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID) {
                     val nationality = nationalityValue?.let { Nationality.valueOf(it) }
                     if (nationality != null) {
                         patientDetailsNationality.text = nationality.getLabel(requireContext())
@@ -151,6 +156,12 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                 )
             }
         }
+    }
+
+    private fun startPatientUpdateActivity(patientId: Long?) {
+        val intent = Intent(requireContext(), AddEditPatientActivity::class.java)
+            .putExtra(PATIENT_ID_BUNDLE, patientId.toString())
+        startActivity(intent)
     }
 
     private fun showAddressDetailsViewElement(

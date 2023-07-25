@@ -374,4 +374,5 @@
     <string name="recording_inprogress">Grabación en curso</string>
     <string name="recording_info">Please wait until this recording is completed</string>
     <string name="recording_in_progress">Grabación en curso</string>
+    <string name="edit"><u>Editar</u></string>
 </resources>
