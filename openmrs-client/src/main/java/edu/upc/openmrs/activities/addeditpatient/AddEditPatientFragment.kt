@@ -223,14 +223,13 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     private fun validateLegalConsent(): Boolean {
-        //#region -- If Record Consent Is Missing --
+        if (viewModel.isUpdatePatient) return true
         if (!FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName())) {
             binding.recordConsentError.makeVisible()
             return false
         } else
             binding.recordConsentError.makeGone()
         viewModel.legalConsentFileName = legalConsentDialog?.fileName()
-        //#endreigon
         return true
     }
 
