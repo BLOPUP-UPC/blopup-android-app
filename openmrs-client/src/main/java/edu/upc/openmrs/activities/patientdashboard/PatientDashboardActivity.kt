@@ -13,8 +13,6 @@
  */
 package edu.upc.openmrs.activities.patientdashboard
 
-import android.animation.ObjectAnimator
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -26,18 +24,13 @@ import androidx.viewpager.widget.ViewPager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityPatientDashboardBinding
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.utilities.ThemeUtils.isDarkModeActivated
-import edu.upc.openmrs.utilities.makeGone
-import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.OperationType.PatientDeleting
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
-import kotlinx.android.synthetic.main.fragment_add_provider.*
 
 @AndroidEntryPoint
 class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -47,7 +40,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     private val viewModel: PatientDashboardMainViewModel by viewModels()
 
     private lateinit var patientId: String
-    var isActionFABOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,18 +142,8 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                         setUpStartVisitFAB()
                     } else {
                         binding.actionsFab.startVisitFab.isVisible = false
-                        binding.actionsFab.activityDashboardActionFab.isVisible = true
-
-                        actionsFab.activityDashboardActionFab.apply {
-                            if (position == 1) {
-                                // Convert main & sub FABs into Add Allergy FAB
-                                closeFABs(animate = false)
-                                setImageResource(R.drawable.ic_add)
-                            } else setImageResource(R.drawable.ic_edit_white_24dp)
-                        }
                     }
                 }
-
                 override fun onPageScrollStateChanged(state: Int) {}
             })
         }
@@ -169,13 +151,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     private fun setupActionFABs() {
         with(binding.actionsFab) {
-            activityDashboardActionFab.setOnClickListener {
-                if (!isActionFABOpen) openFABs()
-                else closeFABs()
-            }
-            activityDashboardDeleteFab.setOnClickListener { showDeletePatientDialog() }
-            activityDashboardUpdateFab.setOnClickListener { startPatientUpdateActivity(patientId.toLong()) }
-
             startVisitFab.setOnClickListener {
                 viewModel.hasActiveVisit()
                     .observeOnce(it.findViewTreeLifecycleOwner()!!) { hasActiveVisit ->
@@ -190,55 +165,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     private fun setUpStartVisitFAB() {
         binding.actionsFab.startVisitFab.isVisible = true
-        binding.actionsFab.activityDashboardActionFab.isVisible = false
-    }
-
-    private fun openFABs() {
-        animateMainFABIcon()
-        with(binding.actionsFab) {
-            customFabDeleteLl.makeVisible()
-            customFabUpdateLl.makeVisible()
-            customFabDeleteLl.animate()
-                .translationY(-resources!!.getDimension(R.dimen.custom_fab_bottom_margin_55))
-            customFabUpdateLl.animate()
-                .translationY(-resources!!.getDimension(R.dimen.custom_fab_bottom_margin_105))
-        }
-        isActionFABOpen = true
-    }
-
-    private fun closeFABs(animate: Boolean = true) {
-        if (animate) animateMainFABIcon()
-        with(binding.actionsFab) {
-            customFabDeleteLl.animate().translationY(0f)
-            customFabUpdateLl.animate().translationY(0f)
-            customFabDeleteLl.makeGone()
-            customFabUpdateLl.makeGone()
-        }
-        isActionFABOpen = false
-    }
-
-    private fun animateMainFABIcon() {
-        with(binding.actionsFab.activityDashboardActionFab) {
-            if (!isActionFABOpen) {
-                ObjectAnimator.ofFloat(this, "rotation", 0f, 180f).setDuration(500).start()
-                handler.postDelayed(
-                    { setImageDrawable(resources.getDrawable(R.drawable.ic_close_white_24dp)) },
-                    400
-                )
-            } else {
-                ObjectAnimator.ofFloat(this, "rotation", 180f, 0f).setDuration(500).start()
-                handler.postDelayed(
-                    { setImageDrawable(resources.getDrawable(R.drawable.ic_edit_white_24dp)) },
-                    400
-                )
-            }
-        }
-    }
-
-    private fun startPatientUpdateActivity(patientId: Long) {
-        Intent(this, AddEditPatientActivity::class.java)
-            .putExtra(PATIENT_ID_BUNDLE, patientId.toString())
-            .apply { startActivity(this) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -255,14 +181,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             else -> return super.onOptionsItemSelected(item)
         }
         return true
-    }
-
-    override fun onBackPressed() {
-        if (isActionFABOpen) closeFABs()
-        else {
-            super.onBackPressed()
-            finish()
-        }
     }
 
     override fun onDestroy() {

@@ -48,7 +48,7 @@
     <string name="end_visit_dialog_title">Finalizar consulta</string>
     <string name="start_visit_dialog_message">¿Está seguro que desea iniciar una consulta para %1$s ahora?</string>
     <string name="end_visit_dialog_message">¿Está seguro que desea concluir esta consulta?</string>
-    <string name="start_visit_dialog_title">Inicio de la consulta</string>
+    <string name="start_visit_dialog_title">Iniciar visita</string>
     <string name="start_visit_unsuccessful_dialog_title">La consulta no está iniciada.</string>
     <string name="start_visit_unsuccessful_dialog_message">Hay consultas activas de %1$s. Intenta sincronizar el paciente o cerrar las consultas previas.</string>
     <string name="delete_patient_dialog_message">¿Usted está seguro que desea eliminar a este paciente?</string>
