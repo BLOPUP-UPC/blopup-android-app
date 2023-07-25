@@ -264,7 +264,10 @@ class AddEditPatientFragment : BaseFragment() {
                 binding.gender.check(R.id.nonBinary)
             }
 
-            val nationalityLabel = attributes.firstOrNull { it.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID }?.value
+            val nationalityLabel = attributes
+                                    .firstOrNull { it.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID }
+                                    ?.value
+                                    ?.uppercase()
 
             if (nationalityLabel === null) { binding.nationality.text = context?.getString(R.string.nationality_default)}
             else Nationality.valueOf(nationalityLabel).getLabel(requireContext())
