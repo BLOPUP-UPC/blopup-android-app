@@ -13,8 +13,7 @@
  */
 package edu.upc.openmrs.activities.addeditpatient
 
-import android.Manifest.permission.RECORD_AUDIO
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -35,9 +34,7 @@ import android.widget.LinearLayout.LayoutParams
 import android.widget.Toast
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.marginBottom
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
@@ -95,9 +92,6 @@ class AddEditPatientFragment : BaseFragment() {
 
     val viewModel: AddEditPatientViewModel by viewModels()
 
-    // constant for storing audio permission
-    private val REQUEST_AUDIO_PERMISSION_CODE = 200
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -115,7 +109,8 @@ class AddEditPatientFragment : BaseFragment() {
 
         fillFormFields()
 
-        askPermissions()
+        val permissionManager = PermissionsManager(requireActivity())
+        permissionManager.askPermissions()
 
         showPatientConsentToggle.check(onToggleDisabled = {
             binding.linearLayoutConsent.makeGone()
@@ -479,51 +474,6 @@ class AddEditPatientFragment : BaseFragment() {
                 "Microphone Not Detected",
                 Toast.LENGTH_LONG
             ).show()
-        }
-    }
-
-    private fun askPermissions() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                WRITE_EXTERNAL_STORAGE
-            )
-            != PackageManager.PERMISSION_GRANTED
-            ||
-            ActivityCompat.checkSelfPermission(requireContext(), RECORD_AUDIO)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO), REQUEST_AUDIO_PERMISSION_CODE
-            )
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        // this method is called when user will
-        // grant the permission for audio recording.
-        when (requestCode) {
-            REQUEST_AUDIO_PERMISSION_CODE -> if (grantResults.isNotEmpty()) {
-                val permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                val permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED
-                if (permissionToRecord && permissionToStore) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Permission Granted",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Permission Denied",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
         }
     }
 
