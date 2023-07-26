@@ -29,50 +29,75 @@ class IntroActivity : AppIntro2() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        addSlide(AppIntroFragment.newInstance(
+        addSlide(
+            AppIntroFragment.newInstance(
+                title = getString(R.string.intro_info),
+                description = getString(R.string.intro_info_desc),
+                imageDrawable = R.drawable.info,
+                titleColor = Color.BLACK,
+                descriptionColor = Color.BLACK,
+                backgroundColor = Color.WHITE
+            )
+        )
+
+        addSlide(
+            AppIntroFragment.newInstance(
                 title = getString(R.string.intro_welcome),
                 description = getString(R.string.intro_welcome_desc),
                 imageDrawable = R.drawable.logo_blopup,
                 titleColor = Color.BLACK,
                 descriptionColor = Color.BLACK,
                 backgroundColor = Color.WHITE
-        ))
-        addSlide(AppIntroFragment.newInstance(
+            )
+        )
+        addSlide(
+            AppIntroFragment.newInstance(
                 title = getString(R.string.intro_register),
                 description = getString(R.string.intro_register_desc),
                 imageDrawable = R.drawable.ico_registry,
                 backgroundColor = Color.parseColor("#F8793B")
-        ))
-        addSlide(AppIntroFragment.newInstance(
+            )
+        )
+        addSlide(
+            AppIntroFragment.newInstance(
                 title = getString(R.string.intro_find),
                 description = getString(R.string.intro_find_desc),
                 imageDrawable = R.drawable.ico_search,
                 backgroundColor = Color.parseColor("#009384")
-        ))
-        addSlide(AppIntroFragment.newInstance(
+            )
+        )
+        addSlide(
+            AppIntroFragment.newInstance(
                 title = getString(R.string.intro_monitor),
                 description = getString(R.string.intro_monitor_desc),
                 imageDrawable = R.drawable.ico_visits,
                 backgroundColor = Color.parseColor("#F0A815")
-        ))
-        addSlide(AppIntroFragment.newInstance(
-            title = getString(R.string.intro_contact_us),
-            description = getString(R.string.intro_contact_desc),
-            imageDrawable = R.drawable.ic_provider_big,
-            backgroundColor = Color.parseColor("#F26522")
-        ))
-        addSlide(AppIntroFragment.newInstance(
+            )
+        )
+        addSlide(
+            AppIntroFragment.newInstance(
+                title = getString(R.string.intro_contact_us),
+                description = getString(R.string.intro_contact_desc),
+                imageDrawable = R.drawable.ic_provider_big,
+                backgroundColor = Color.parseColor("#F26522")
+            )
+        )
+        addSlide(
+            AppIntroFragment.newInstance(
                 title = getString(R.string.intro_location),
                 description = getString(R.string.intro_location_desc),
                 imageDrawable = R.drawable.ic_location_big,
                 backgroundColor = Color.parseColor("#009384")
-        ))
-        addSlide(AppIntroFragment.newInstance(
+            )
+        )
+        addSlide(
+            AppIntroFragment.newInstance(
                 title = getString(R.string.intro_settings),
                 description = getString(R.string.intro_settings_desc),
                 imageDrawable = R.drawable.ic_settings_big,
                 backgroundColor = Color.parseColor("#F0A815")
-        ))
+            )
+        )
 
         if (!OpenmrsAndroid.getFirstTime()) {
             startActivity(Intent(this, DashboardActivity::class.java))

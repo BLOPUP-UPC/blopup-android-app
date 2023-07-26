@@ -372,6 +372,7 @@
     <string name="apply" tools:ignore="MissingTranslation">Apply</string>
 
     <!-- introduction Activity -->
+    <string name="intro_info" tools:ignore="MissingTranslation">Info</string>
     <string name="intro_welcome" tools:ignore="MissingTranslation">Welcome</string>
     <string name="intro_register" tools:ignore="MissingTranslation">Register Patients</string>
     <string name="intro_find" tools:ignore="MissingTranslation">Find Patients</string>
@@ -380,6 +381,7 @@
     <string name="intro_location" tools:ignore="MissingTranslation">Location</string>
     <string name="intro_settings" tools:ignore="MissingTranslation">Settings</string>
 
+    <string name="intro_info_desc" tools:ignore="MissingTranslation">Blopup is considered a research app and any user should not rely on the application for medical purposes.</string>
     <string name="intro_welcome_desc" tools:ignore="MissingTranslation">The global OpenMRS community works together to build the world\'s leading open source electronic medical record system.</string>
     <string name="intro_register_desc" tools:ignore="MissingTranslation">Register new patients to our server.</string>
     <string name="intro_find_desc" tools:ignore="MissingTranslation">You can find and monitor those patients.</string>
