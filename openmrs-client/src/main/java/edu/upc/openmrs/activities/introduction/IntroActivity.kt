@@ -31,9 +31,9 @@ class IntroActivity : AppIntro2() {
 
         addSlide(
             AppIntroFragment.newInstance(
-                title = getString(R.string.intro_info),
+//                title = getString(R.string.intro_info),
                 description = getString(R.string.intro_info_desc),
-                imageDrawable = R.drawable.info,
+                imageDrawable = R.drawable.logo_blopup,
                 titleColor = Color.BLACK,
                 descriptionColor = Color.BLACK,
                 backgroundColor = Color.WHITE
@@ -44,7 +44,7 @@ class IntroActivity : AppIntro2() {
             AppIntroFragment.newInstance(
                 title = getString(R.string.intro_welcome),
                 description = getString(R.string.intro_welcome_desc),
-                imageDrawable = R.drawable.logo_blopup,
+                imageDrawable = R.drawable.openmrs_logo,
                 titleColor = Color.BLACK,
                 descriptionColor = Color.BLACK,
                 backgroundColor = Color.WHITE
