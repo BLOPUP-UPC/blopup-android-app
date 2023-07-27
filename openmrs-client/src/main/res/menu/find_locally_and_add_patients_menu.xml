@@ -24,9 +24,9 @@
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
-    <item android:id="@+id/actionAddPatients"
-        android:title="@string/action_add_patients"
-        android:icon="@drawable/ic_add"
-        app:showAsAction="never"/>
+<!--    <item android:id="@+id/actionAddPatients"-->
+<!--        android:title="@string/action_add_patients"-->
+<!--        android:icon="@drawable/ic_add"-->
+<!--        app:showAsAction="never"/>-->
 
 </menu>

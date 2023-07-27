@@ -66,10 +66,10 @@ class SyncedPatientsActivity : ACBaseActivity() {
 
         when (item.itemId) {
             R.id.syncbutton -> enableAddPatient(OpenmrsAndroid.getSyncState())
-            R.id.actionAddPatients -> {
-                val intent = Intent(this, LastViewedPatientsActivity::class.java)
-                startActivity(intent)
-            }
+//            R.id.actionAddPatients -> {
+//                val intent = Intent(this, LastViewedPatientsActivity::class.java)
+//                startActivity(intent)
+//            }
             android.R.id.home -> onBackPressed()
             else -> {
             }
@@ -81,7 +81,7 @@ class SyncedPatientsActivity : ACBaseActivity() {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.find_locally_and_add_patients_menu, menu)
 
-        addPatientMenuItem = menu.findItem(R.id.actionAddPatients)
+//        addPatientMenuItem = menu.findItem(R.id.actionAddPatients)
         enableAddPatient(OpenmrsAndroid.getSyncState())
 
         val searchMenuItem = menu.findItem(R.id.actionSearchLocal)
