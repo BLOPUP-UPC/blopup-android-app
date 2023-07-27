@@ -2,14 +2,14 @@ package edu.upc.blopup.vitalsform
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
 import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.databases.entities.FormResourceEntity
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.library.models.*
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -41,6 +41,9 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     lateinit var encounterRepository: EncounterRepository
 
     @Mock
+    lateinit var visitDAO: VisitDAO
+
+    @Mock
     lateinit var savedStateHandle: SavedStateHandle
 
     lateinit var subjectUnderTest: VitalsFormViewModel
@@ -59,16 +62,48 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, DEFAULT_PATIENT_ID) }
 
         `when`(patientDAO.findPatientByID(ArgumentMatchers.anyString())).thenReturn(testPatient)
-    }
 
-    @Test
-    fun `when we pass vitals, vitals are sent`() {
         subjectUnderTest = VitalsFormViewModel(
             patientDAO,
             formRepository,
             encounterRepository,
+            visitDAO,
             savedStateHandle
         )
+    }
+
+    @Test
+    fun `when patient had previous visits, we are able to grab the already existing height value`() {
+
+        val visitList = createVisitListWithHeightObservation()
+
+        `when`(visitDAO.getVisitsByPatientID(DEFAULT_PATIENT_ID)).thenReturn(
+            Observable.just(visitList)
+        )
+
+        val actualResult = subjectUnderTest.getLastHeightFromVisits()
+
+        val expectedResult = "190"
+
+        if (actualResult is Result.Success<*>) {
+            assertEquals(expectedResult, actualResult.data)
+        }
+    }
+
+
+    @Test
+    fun `when empty list of vitals is sent check that encounterError is returned `() {
+
+        val actualResult = subjectUnderTest.submitForm(emptyList())
+
+        assertEquals(ResultType.EncounterSubmissionError, actualResult.value)
+
+        verify(encounterRepository, never()).saveEncounter(any())
+    }
+
+    @Test
+    fun `when we pass vitals, vitals are sent`() {
+
         `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
             Observable.just(FormResourceEntity().apply {
                 uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
@@ -83,20 +118,18 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         verify(encounterRepository).saveEncounter(any())
     }
 
-    @Test
-    fun `when empty list of vitals is sent check that encounterError is returned `() {
-        subjectUnderTest = VitalsFormViewModel(
-            patientDAO,
-            formRepository,
-            encounterRepository,
-            savedStateHandle
-        )
-
-        val actualResult = subjectUnderTest.submitForm(emptyList())
-
-        assertEquals(ResultType.EncounterSubmissionError, actualResult.value)
-
-        verify(encounterRepository, never()).saveEncounter(any())
+    private fun createVisitListWithHeightObservation(): List<Visit> {
+        val observation = Observation().apply {
+            display = "Height: 190"
+            displayValue = "190.0"
+        }
+        val encounter = Encounter().apply {
+            observations = listOf(observation)
+        }
+        val visit = Visit().apply {
+            encounters = listOf(encounter)
+        }
+        return listOf(visit)
     }
 }
 

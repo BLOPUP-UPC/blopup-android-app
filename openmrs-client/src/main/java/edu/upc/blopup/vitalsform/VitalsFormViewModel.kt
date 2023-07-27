@@ -3,18 +3,15 @@ package edu.upc.blopup.vitalsform
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.EncounterType
-import edu.upc.sdk.library.models.Encountercreate
-import edu.upc.sdk.library.models.Obscreate
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.models.*
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.execute
-import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.openmrs.activities.BaseViewModel
 import org.joda.time.LocalDateTime
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -24,6 +21,7 @@ class VitalsFormViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val formRepository: FormRepository,
     private val encounterRepository: EncounterRepository,
+    private val visitDAO: VisitDAO,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Unit>() {
 
@@ -32,6 +30,32 @@ class VitalsFormViewModel @Inject constructor(
     private val formName: String = "Vitals"
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
+
+    fun getLastHeightFromVisits(): LiveData<Result<String>> {
+        val resultLiveData = MutableLiveData<Result<String>>()
+        addSubscription(visitDAO.getVisitsByPatientID(patientId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { visits ->
+                    resultLiveData.value = Result.Success(getLastHeight(visits))
+                },
+                { error ->
+                    resultLiveData.value = Result.Error(error, OperationType.PatientSynchronizing)
+                }
+            )
+        )
+        return resultLiveData
+    }
+
+    private fun getLastHeight(visits: List<Visit>): String {
+        return visits.flatMap { visit ->
+            visit.encounters.asReversed().flatMap { encounter ->
+                encounter.observations.filter {
+                    it.display?.contains("Height") == true && it.displayValue != null
+                }
+            }
+        }.firstOrNull()?.displayValue?.substringBefore(".") ?: ""
+    }
 
     fun submitForm(vitals: List<Vital>): LiveData<ResultType> {
         val resultLiveData = MutableLiveData<ResultType>()

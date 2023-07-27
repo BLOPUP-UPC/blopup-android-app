@@ -12,12 +12,16 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_DIASTOLIC
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_HEART_RATE
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_SYSTOLIC
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureActivity
 import edu.upc.blopup.scale.readScaleMeasurement.EXTRAS_WEIGHT
 import edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.*
 import edu.upc.databinding.ActivityVitalsFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.android.synthetic.main.activity_vitals_form.*
@@ -78,6 +82,9 @@ class VitalsFormActivity : ACBaseActivity() {
         setContentView(mBinding.root)
 
         setUpToolbar()
+
+        getHeightValueFromPreviousVisits()
+
         mBinding.buttonToSentVitals.isEnabled = false
         mBinding.receiveBloodPressureDataBtn.setOnClickListener {
             try {
@@ -145,6 +152,18 @@ class VitalsFormActivity : ACBaseActivity() {
         vitals.add(Vital(HEIGHT_FIELD_CONCEPT, heightCm))
     }
 
+    private fun getHeightValueFromPreviousVisits() {
+        viewModel.getLastHeightFromVisits().observe(this) { result ->
+            when (result) {
+                is Result.Success<String> -> {
+                    val height = result.data
+                    val heightField = mBinding.height
+                    heightField.setText(height)
+                }
+                else -> throw IllegalStateException()
+            }
+        }
+    }
 
     private fun setUpToolbar() {
         mToolbar = mBinding.toolbarVitals.toolbar
