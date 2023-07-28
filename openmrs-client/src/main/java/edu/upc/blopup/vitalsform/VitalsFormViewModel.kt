@@ -48,13 +48,18 @@ class VitalsFormViewModel @Inject constructor(
     }
 
     private fun getLastHeight(visits: List<Visit>): String {
-        return visits.flatMap { visit ->
-            visit.encounters.asReversed().flatMap { encounter ->
-                encounter.observations.filter {
-                    it.display?.contains("Height") == true && it.displayValue != null
+        val heightObservations = visits.flatMap { visit ->
+            visit.encounters.flatMap { encounter ->
+                encounter.observations.filter { observation ->
+                    observation.display?.contains("Height", ignoreCase = true) == true
+                }.map { observation ->
+                    Pair(observation, encounter.encounterDatetime)
                 }
             }
-        }.firstOrNull()?.displayValue?.substringBefore(".") ?: ""
+        }
+        val sortedHeightObservations = heightObservations.sortedByDescending { it.second }
+
+        return sortedHeightObservations.firstOrNull()?.first?.displayValue?.substringBefore(".") ?: ""
     }
 
     fun submitForm(vitals: List<Vital>): LiveData<ResultType> {

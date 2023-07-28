@@ -73,25 +73,6 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    fun `when patient had previous visits, we are able to grab the already existing height value`() {
-
-        val visitList = createVisitListWithHeightObservation()
-
-        `when`(visitDAO.getVisitsByPatientID(DEFAULT_PATIENT_ID)).thenReturn(
-            Observable.just(visitList)
-        )
-
-        val actualResult = subjectUnderTest.getLastHeightFromVisits()
-
-        val expectedResult = "190"
-
-        if (actualResult is Result.Success<*>) {
-            assertEquals(expectedResult, actualResult.data)
-        }
-    }
-
-
-    @Test
     fun `when empty list of vitals is sent check that encounterError is returned `() {
 
         val actualResult = subjectUnderTest.submitForm(emptyList())
@@ -118,16 +99,63 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         verify(encounterRepository).saveEncounter(any())
     }
 
+
+    @Test
+    fun `when patient had previous visits, we are able to grab the already existing height value`() {
+
+        val visitList = createVisitListWithHeightObservation()
+
+        `when`(visitDAO.getVisitsByPatientID(DEFAULT_PATIENT_ID)).thenReturn(
+            Observable.just(visitList)
+        )
+
+        val actualResult = subjectUnderTest.getLastHeightFromVisits()
+
+        val expectedResult = "190"
+
+        if (actualResult is Result.Success<*>) {
+            assertEquals(expectedResult, actualResult.data)
+        }
+    }
+
+    @Test
+    fun `when patient had previous visits, we are able to grab the last height value`() {
+
+        val visitList = createVisitListWithHeightObservation()
+
+        `when`(visitDAO.getVisitsByPatientID(DEFAULT_PATIENT_ID)).thenReturn(
+            Observable.just(visitList)
+        )
+
+        val actualResult = subjectUnderTest.getLastHeightFromVisits()
+
+        val expectedResult = "180"
+
+        if (actualResult is Result.Success<*>) {
+            assertEquals(expectedResult, actualResult.data)
+        }
+    }
+
+
     private fun createVisitListWithHeightObservation(): List<Visit> {
-        val observation = Observation().apply {
+        val observationOne = Observation().apply {
             display = "Height: 190"
             displayValue = "190.0"
         }
-        val encounter = Encounter().apply {
-            observations = listOf(observation)
+        val observationTwo = Observation().apply {
+            display = "Height: 180"
+            displayValue = "180.0"
+        }
+        val encounterOne = Encounter().apply {
+            encounterDate = "2023-07-27T09:28:04.000+0200"
+            observations = listOf(observationOne)
+        }
+        val encounterTwo = Encounter().apply {
+            encounterDate = "2023-07-27T09:38:38.000+0200"
+            observations = listOf(observationTwo)
         }
         val visit = Visit().apply {
-            encounters = listOf(encounter)
+            encounters = listOf(encounterOne, encounterTwo)
         }
         return listOf(visit)
     }

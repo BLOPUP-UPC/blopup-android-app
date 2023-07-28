@@ -33,7 +33,6 @@ class Encounter constructor() : Resource(), Serializable {
     @SerializedName("encounterDatetime")
     @Expose
     var encounterDate: String? = null
-        private set
 
     @SerializedName("patient")
     @Expose
