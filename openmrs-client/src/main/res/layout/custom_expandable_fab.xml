@@ -11,9 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:textColor="@color/white"
         android:backgroundTint="@color/color_accent"
         android:contentDescription="@string/start_visit_dialog_title"
         android:text="@string/start_visit_dialog_title"
+        app:iconTint="@color/white"
         android:tint="@color/color_accent"
         app:icon="@drawable/calendar"
         app:rippleColor="@color/color_accent" />
