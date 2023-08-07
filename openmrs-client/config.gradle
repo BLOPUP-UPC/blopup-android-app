@@ -21,8 +21,8 @@ android{
             buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "false"
         }
         debug {
-            buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"0be398ea-52d4-4d41-83b1-0041a0d427df\""
-            buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"c28a11a7-1f89-4183-8a25-c2d0cc5f1b52\""
+            buildConfigField "String", "NATIONALITY_ATTRIBUTE_TYPE_UUID", "\"6aba6deb-b260-4117-9a50-37c8e1a76a45\""
+            buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"b8cb9abe-f0cd-4b09-b6db-69cd54ba22d7\""
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-dev.upc.edu/openmrs\""
 
             // Release toggles
