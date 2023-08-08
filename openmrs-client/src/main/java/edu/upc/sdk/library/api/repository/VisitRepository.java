@@ -19,6 +19,8 @@ import static edu.upc.sdk.utilities.DateUtils.convertTime;
 
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.NotNull;
+
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
@@ -234,5 +236,9 @@ public class VisitRepository extends BaseRepository {
      */
     public long addEncounterCreated(final Encountercreate encountercreate) {
         return encounterCreateRoomDAO.addEncounterCreated(encountercreate);
+    }
+
+    public Visit getActiveVisitByPatientId(long patientId) {
+        return visitDAO.getActiveVisitByPatientId(patientId).toBlocking().first();
     }
 }

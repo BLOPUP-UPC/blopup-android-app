@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.*
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class VitalsFormViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val formRepository: FormRepository,
+    private val visitRepository: VisitRepository,
     private val encounterRepository: EncounterRepository,
     private val visitDAO: VisitDAO,
     private val savedStateHandle: SavedStateHandle
@@ -63,7 +65,7 @@ class VitalsFormViewModel @Inject constructor(
     }
 
     fun submitForm(vitals: List<Vital>): LiveData<ResultType> {
-        val resultLiveData = MutableLiveData<ResultType>()
+        var resultLiveData = MutableLiveData<ResultType>()
         if (vitals.isEmpty()) {
             resultLiveData.value = ResultType.EncounterSubmissionError
             return resultLiveData
@@ -72,6 +74,12 @@ class VitalsFormViewModel @Inject constructor(
         encounterCreate.patientId = patientId
         encounterCreate.observations = createObservationsFromVitals(vitals)
 
+        if(visitRepository.getActiveVisitByPatientId(patientId) == null) {
+            addSubscription(
+                visitRepository.startVisit(patient)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
+            )}
         return createRecords(encounterCreate)
     }
 
@@ -91,7 +99,7 @@ class VitalsFormViewModel @Inject constructor(
         return observations
     }
 
-    private fun createRecords(encounterCreate: Encountercreate): LiveData<ResultType> {
+    private fun createRecords(encounterCreate: Encountercreate): MutableLiveData<ResultType> {
         val resultLiveData = MutableLiveData<ResultType>()
 
         encounterCreate.patient = patient.uuid

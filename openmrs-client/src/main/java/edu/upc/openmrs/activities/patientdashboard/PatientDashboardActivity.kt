@@ -13,6 +13,7 @@
  */
 package edu.upc.openmrs.activities.patientdashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -23,12 +24,14 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.viewpager.widget.ViewPager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.utilities.ThemeUtils.isDarkModeActivated
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.OperationType.PatientDeleting
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
 
@@ -156,10 +159,17 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                     .observeOnce(it.findViewTreeLifecycleOwner()!!) { hasActiveVisit ->
                         with(supportActionBar!!) {
                             if (hasActiveVisit) showStartVisitImpossibleDialog(title)
-                            else showStartVisitDialog(title)
+                            else startVitalsMeasurement()
                         }
                     }
             }
+        }
+    }
+
+    private fun startVitalsMeasurement(){
+        Intent(this, VitalsFormActivity::class.java).apply {
+            putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, viewModel.patientId.toLong())
+            startActivity(this)
         }
     }
 
