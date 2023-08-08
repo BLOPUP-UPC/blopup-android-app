@@ -65,7 +65,7 @@ class VitalsFormViewModel @Inject constructor(
     }
 
     fun submitForm(vitals: List<Vital>): LiveData<ResultType> {
-        var resultLiveData = MutableLiveData<ResultType>()
+        val resultLiveData = MutableLiveData<ResultType>()
         if (vitals.isEmpty()) {
             resultLiveData.value = ResultType.EncounterSubmissionError
             return resultLiveData
@@ -74,12 +74,9 @@ class VitalsFormViewModel @Inject constructor(
         encounterCreate.patientId = patientId
         encounterCreate.observations = createObservationsFromVitals(vitals)
 
-        if(visitRepository.getActiveVisitByPatientId(patientId) == null) {
-            addSubscription(
-                visitRepository.startVisit(patient)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-            )}
+        if (visitRepository.getActiveVisitByPatientId(patientId) == null) {
+            visitRepository.startVisit(patient).execute()
+        }
         return createRecords(encounterCreate)
     }
 

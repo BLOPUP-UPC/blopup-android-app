@@ -2,7 +2,6 @@ package edu.upc.blopup.vitalsform
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import edu.upc.blopup.vitalsform.VitalsFormActivity.Companion.WEIGHT_FIELD_CONCEPT
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
@@ -81,6 +80,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun `when no open visit, a visit should be created`(){
         `when`(visitRepository.getActiveVisitByPatientId(DEFAULT_PATIENT_ID)).thenReturn(null)
+        `when`(visitRepository.startVisit(testPatient)).thenReturn(Observable.just(Visit()))
         `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
             Observable.just(FormResourceEntity().apply {
                 uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
@@ -106,7 +106,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when we pass vitals, vitals are sent`() {
-
+        `when`(visitRepository.getActiveVisitByPatientId(DEFAULT_PATIENT_ID)).thenReturn(Visit())
         `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
             Observable.just(FormResourceEntity().apply {
                 uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
