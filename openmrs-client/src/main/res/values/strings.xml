@@ -564,5 +564,11 @@
     <string name="recording_in_progress" tools:ignore="MissingTranslation">Recording in Progress</string>
     <string name="start" tools:ignore="MissingTranslation">Start:</string>
     <string name="end" tools:ignore="MissingTranslation">End:</string>
-    <string name="edit" translatable="false"><u>Edit</u></string>R
+    <string name="edit" translatable="false"><u>Edit</u></string>
+    <string name="remove_vitals" tools:ignore="MissingTranslation">Remove vitals</string>
+    <string name="end_vitals_dialog_message" tools:ignore="MissingTranslation">Yes, cancel</string>
+    <string name="keep_vitals_dialog_message" tools:ignore="MissingTranslation">No, continue</string>
+    <string name="cancel_vitals_dialog_message" tools:ignore="MissingTranslation">If you cancel the vitals recording, the medical visit will also be canceled. Do you want to proceed?</string>
+    <string name="visit_cancel">The visit has been cancelled</string>
+    R
 </resources>

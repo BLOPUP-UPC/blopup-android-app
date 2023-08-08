@@ -375,4 +375,9 @@
     <string name="recording_info">Please wait until this recording is completed</string>
     <string name="recording_in_progress">Grabación en curso</string>
     <string name="edit"><u>Editar</u></string>
+    <string name="remove_vitals">Eliminar vitales</string>
+    <string name="end_vitals_dialog_message">Si, cancelar</string>
+    <string name="keep_vitals_dialog_message">No, conservar</string>
+    <string name="cancel_vitals_dialog_message">Al cancelar la toma de signos vitales, también se anulara la visita médica. Desea proceder con la cancelación de los vitales?</string>
+    <string name="visit_cancel">La visita ha sido cancelada</string>
 </resources>

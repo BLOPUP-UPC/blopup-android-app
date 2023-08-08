@@ -41,6 +41,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,11 +52,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.ToastUtil;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -63,6 +59,7 @@ import java.util.List;
 import java.util.Objects;
 
 import edu.upc.R;
+import edu.upc.blopup.vitalsform.VitalsFormActivity;
 import edu.upc.openmrs.activities.ACBaseActivity;
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity;
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment;
@@ -75,6 +72,10 @@ import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity;
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardFragment;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.ToastUtil;
 
 /**
  * General class for creating dialog fragment instances
@@ -84,7 +85,7 @@ public class CustomFragmentDialog extends DialogFragment {
 
     public enum OnClickAction {
         SET_URL, SHOW_URL_DIALOG, DISMISS_URL_DIALOG, DISMISS, LOGOUT, FINISH, INTERNET, UNAUTHORIZED, END_VISIT,
-        START_VISIT, LOGIN, REGISTER_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER
+        START_VISIT, LOGIN, REGISTER_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER, END_VITALS
     }
 
     protected LayoutInflater mInflater;
@@ -453,7 +454,11 @@ public class CustomFragmentDialog extends DialogFragment {
                     ToastUtil.showShortToast(getContext(), ToastUtil.ToastType.SUCCESS, edu.upc.R.string.location_successfully_updated);
                     dismiss();
                     break;
-
+                case END_VITALS:
+                    ((VitalsFormActivity) requireActivity()).finish();
+                    Toast.makeText(getContext(), R.string.visit_cancel, Toast.LENGTH_SHORT).show();
+                    dismiss();
+                    break;
                 default:
                     break;
             }

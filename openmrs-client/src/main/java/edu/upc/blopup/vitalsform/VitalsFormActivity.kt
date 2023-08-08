@@ -3,6 +3,7 @@ package edu.upc.blopup.vitalsform
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -20,9 +21,12 @@ import edu.upc.blopup.scale.readScaleMeasurement.EXTRAS_WEIGHT
 import edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity
 import edu.upc.databinding.ActivityVitalsFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
+import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.android.synthetic.main.activity_vitals_form.*
 
@@ -118,6 +122,34 @@ class VitalsFormActivity : ACBaseActivity() {
             if (!receivedButtonModified) {
                 mBinding.buttonToSentVitals.isEnabled = mBinding.height.text.toString().isNotEmpty()
             }
+        }
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                setDialogToConfirmVitalsRemoval()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        setDialogToConfirmVitalsRemoval()
+    }
+
+    private fun setDialogToConfirmVitalsRemoval() {
+        CustomDialogBundle().apply {
+            titleViewMessage = getString(R.string.remove_vitals)
+            textViewMessage = getString(R.string.cancel_vitals_dialog_message)
+            rightButtonText = getString(R.string.keep_vitals_dialog_message)
+            leftButtonText = getString(R.string.end_vitals_dialog_message)
+            leftButtonAction = CustomFragmentDialog.OnClickAction.DISMISS
+            rightButtonAction = CustomFragmentDialog.OnClickAction.END_VITALS
+        }.let {
+            createAndShowDialog(it, ApplicationConstants.DialogTAG.END_VITALS_TAG)
         }
     }
 

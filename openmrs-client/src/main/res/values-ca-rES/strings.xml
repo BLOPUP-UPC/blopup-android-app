@@ -372,4 +372,9 @@
     <string name="recording_info">Please wait until this recording is completed</string>
     <string name="recording_in_progress">Gravació en procés</string>
     <string name="edit"><u>Editar</u></string>
+    <string name="remove_vitals">Eliminar vitals</string>
+    <string name="end_vitals_dialog_message">Si, cancel·la</string>
+    <string name="keep_vitals_dialog_message">No, mantingues</string>
+    <string name="cancel_vitals_dialog_message">Si cancel les la presa de les teves dades vitals, també s\'anul·lará la visita mèdica. Vols continuar?</string>
+    <string name="visit_cancel">La visita ha estat cancel·lada</string>
 </resources>

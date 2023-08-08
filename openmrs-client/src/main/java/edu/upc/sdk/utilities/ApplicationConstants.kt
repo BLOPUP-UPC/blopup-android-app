@@ -83,6 +83,7 @@ object ApplicationConstants {
     object DialogTAG {
         const val LOGOUT_DIALOG_TAG = "logoutDialog"
         const val END_VISIT_DIALOG_TAG = "endVisitDialogTag"
+        const val END_VITALS_TAG = "endVitalsTag"
         const val START_VISIT_DIALOG_TAG = "startVisitDialog"
         const val START_VISIT_IMPOSSIBLE_DIALOG_TAG = "startVisitImpossibleDialog"
         const val WARNING_LOST_DATA_DIALOG_TAG = "warningLostDataDialog"
