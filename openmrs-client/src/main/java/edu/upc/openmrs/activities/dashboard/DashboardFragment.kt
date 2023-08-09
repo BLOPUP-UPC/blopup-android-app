@@ -21,7 +21,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE
 import androidx.navigation.fragment.findNavController
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener
 import com.github.amlcurran.showcaseview.ShowcaseView
@@ -31,7 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentDashboardBinding
 import edu.upc.openmrs.activities.BaseFragment
-import edu.upc.openmrs.utilities.ThemeUtils
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ImageUtils
 
@@ -135,9 +133,6 @@ class DashboardFragment : BaseFragment(), View.OnClickListener {
             bindDrawableResource(registryPatientButton, R.mipmap.ico_add_patient)
             findPatientLabel.setText(R.string.dashboard_search_icon_label)
             registryLabel.setText(R.string.action_register_patient)
-            if (ThemeUtils.isDarkModeActivated()) {
-                changeColorOfDashboardIcons()
-            }
         }
     }
 
@@ -188,14 +183,6 @@ class DashboardFragment : BaseFragment(), View.OnClickListener {
             R.id.registryPatientView -> findNavController().navigate(directionToRegister)
             else -> {
             }
-        }
-    }
-
-    private fun changeColorOfDashboardIcons() {
-        with(binding) {
-            val greenColorResId = R.color.green
-            ImageUtils.changeImageViewTint(context, findPatientButton, greenColorResId)
-            ImageUtils.changeImageViewTint(context, registryPatientButton, greenColorResId)
         }
     }
 

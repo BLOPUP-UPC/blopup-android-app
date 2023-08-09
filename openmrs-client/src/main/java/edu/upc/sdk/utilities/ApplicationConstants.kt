@@ -44,7 +44,6 @@ object ApplicationConstants {
     const val READ_MODE = "r"
     const val MIME_TYPE_MAILTO = "mailto:"
     const val OPENMRS_PREF_FILE = "OpenMRSPrefFile"
-    const val VITAL_NAME = "vitalName"
     const val BUNDLE = "bundle"
     const val URI_CONTENT = "content://"
     const val MIME_TYPE_VND = "vnd"
@@ -54,11 +53,8 @@ object ApplicationConstants {
     const val EMPTY_DASH_REPRESENTATION = "---"
     const val COMMA_WITH_SPACE = ", "
     const val PRIMARY_KEY_ID = "_id"
-    const val MIN_NUMBER_OF_PATIENTS_TO_SHOW = 7;
+    const val MIN_NUMBER_OF_PATIENTS_TO_SHOW = 7
     const val ABOUT_OPENMRS_URL = "https://openmrs.org/about/"
-    const val LEGAL_NOTIFICATION_CHANNEL_DESCRIPTION = "legal_notification_channel_description"
-    const val LEGAL_CONSENT_RECORDING = "legal_consent_recording"
-    const val LEGAL_CONSENT = "LEGAL_CONSENT"
 
     object OpenMRSSharedPreferenceNames {
         const val SHARED_PREFERENCES_NAME = "shared_preferences"
@@ -102,7 +98,6 @@ object ApplicationConstants {
     object BundleKeys {
         const val CUSTOM_DIALOG_BUNDLE = "customDialogBundle"
         const val PATIENT_ID_BUNDLE = "patientID"
-        const val COUNTRIES_BUNDLE = "countries_list"
         const val VISIT_ID = "visitID"
         const val ENCOUNTERTYPE = "encounterType"
         const val VALUEREFERENCE = "valueReference"
@@ -162,10 +157,6 @@ object ApplicationConstants {
         const val GALLERY_IMAGE_REQUEST = 2
     }
 
-    object OpenMRSThemes {
-        const val KEY_DARK_MODE = "key_dark_mode"
-    }
-
     object OpenMRSlanguage {
         const val KEY_LANGUAGE_MODE = "key_language_mode"
         val LANGUAGE_LIST = arrayOf("English", "Español", "Català")
@@ -202,9 +193,5 @@ object ApplicationConstants {
         const val CHANNEL_ID = "conceptCount"
         const val CHANNEL_DESC = "This channel receives new concept count notifications"
         const val CHANNEL_NAME = "Concepts Channel"
-    }
-
-    object RecordingLanguages {
-        val LANGUAGE_LIST = arrayOf("Select language", "Catalan", "English", "French", "German", "Italian", "Moroccan", "Portuguese", "Russian", "Spanish", "Ukrainian")
     }
 }

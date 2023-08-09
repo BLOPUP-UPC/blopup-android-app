@@ -26,7 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
-import edu.upc.openmrs.utilities.ThemeUtils.isDarkModeActivated
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.OperationType.PatientDeleting
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
@@ -127,7 +126,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     private fun initViewPager() {
         val adapter = PatientDashboardPagerAdapter(supportFragmentManager, this, patientId)
         with(binding) {
-            if (isDarkModeActivated()) tabhost.setBackgroundColor(resources.getColor(R.color.black_dark_mode))
             pager.offscreenPageLimit = adapter.count - 1
             pager.adapter = adapter
             tabhost.setupWithViewPager(pager)

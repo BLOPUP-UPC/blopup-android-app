@@ -20,12 +20,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +32,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -45,7 +41,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.upc.R;
@@ -61,7 +56,6 @@ import edu.upc.openmrs.bundle.CustomDialogBundle;
 import edu.upc.openmrs.net.AuthorizationManager;
 import edu.upc.openmrs.utilities.ForceClose;
 import edu.upc.openmrs.utilities.LanguageUtils;
-import edu.upc.openmrs.utilities.ThemeUtils;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.dao.LocationDAO;
@@ -99,7 +93,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Thread.setDefaultUncaughtExceptionHandler(new ForceClose(this));
 
-        setupTheme();
         LanguageUtils.setupLanguage(getResources());
 
         mFragmentManager = getSupportFragmentManager();
@@ -120,7 +113,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setupTheme();
         invalidateOptionsMenu();
         if (!(this instanceof LoginActivity) && !mAuthorizationManager.isUserLoggedIn()
                 && !(this instanceof ContactUsActivity) && !(this instanceof SplashActivity)) {
@@ -422,16 +414,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
                 });
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
-
-    public void setupTheme() {
-        if (ThemeUtils.isDarkModeActivated()) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            getDelegate().applyDayNight();
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            getDelegate().applyDayNight();
-        }
     }
 
     @Override

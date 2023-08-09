@@ -13,11 +13,7 @@
  */
 package edu.upc.openmrs.activities.settings
 
-import android.content.ActivityNotFoundException
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
@@ -28,22 +24,20 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
-import edu.upc.sdk.utilities.ApplicationConstants
-import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
-import edu.upc.sdk.utilities.ApplicationConstants.ServiceActions.START_CONCEPT_DOWNLOAD_ACTION
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentSettingsBinding
 import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.openmrs.activities.logs.LogsActivity
-import edu.upc.openmrs.utilities.ThemeUtils
+import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
+import edu.upc.sdk.utilities.ApplicationConstants.ServiceActions.START_CONCEPT_DOWNLOAD_ACTION
 
 @AndroidEntryPoint
 class SettingsFragment :  BaseFragment() {
@@ -65,7 +59,6 @@ class SettingsFragment :  BaseFragment() {
         addPrivacyPolicyInfo()
         rateUs()
         setupContactUsButton()
-        setupDarkMode()
         setupLanguageSpinner()
 
         broadcastReceiver = object : BroadcastReceiver() {
@@ -174,16 +167,6 @@ class SettingsFragment :  BaseFragment() {
                     ContactUsActivity::class.java
                 )
             )
-        }
-    }
-
-    private fun setupDarkMode() {
-        with(binding) {
-            darkModeSwitch.isChecked = ThemeUtils.isDarkModeActivated()
-            darkModeSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                ThemeUtils.setDarkMode(isChecked)
-                requireActivity().recreate()
-            }
         }
     }
 

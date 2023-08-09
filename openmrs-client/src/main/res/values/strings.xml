@@ -388,7 +388,6 @@
     <string name="intro_monitor_desc" tools:ignore="MissingTranslation">We help you monitor patient visits too.</string>
     <string name="intro_contact_desc" tools:ignore="MissingTranslation">Send us any problem or suggestion.</string>
     <string name="intro_location_desc" tools:ignore="MissingTranslation">You can change your location at a simple click.</string>
-    <string name="intro_settings_desc" tools:ignore="MissingTranslation">Try out our dark mode feature.\nExciting? Let\'s get started.</string>
     <string name="get_started_with_our_user_guide" tools:ignore="MissingTranslation">Get started with our user guide</string>
 
     <!--AuthenticateCheck service-->

@@ -252,7 +252,6 @@
     <string name="intro_monitor_desc">També t\'ajudem a monitoritzar les visites dels pacients</string>
     <string name="intro_contact_desc">Envia\'ns els teu problemes o suggeriments</string>
     <string name="intro_location_desc">"Pot canviar la ubicació amb un simple clic. "</string>
-    <string name="intro_settings_desc">Probi la nostra funcionalitat de mode fosc.[...]</string>
     <string name="get_started_with_our_user_guide">Començar amb la nostra guia d\'usuari</string>
     <string name="authenticate_check_service_error_response_message">Error a la resposta del servei de verificació d\'autenticació</string>
     <string name="authenticate_service_error_message">Error en el servei de verificació d\'autenticació</string>

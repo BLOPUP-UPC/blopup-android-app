@@ -19,9 +19,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro2
 import com.github.appintro.AppIntroFragment
-import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.R
 import edu.upc.openmrs.activities.dashboard.DashboardActivity
+import edu.upc.sdk.library.OpenmrsAndroid
 
 class IntroActivity : AppIntro2() {
 
@@ -88,14 +88,6 @@ class IntroActivity : AppIntro2() {
                 description = getString(R.string.intro_location_desc),
                 imageDrawable = R.drawable.ic_location_big,
                 backgroundColor = Color.parseColor("#009384")
-            )
-        )
-        addSlide(
-            AppIntroFragment.newInstance(
-                title = getString(R.string.intro_settings),
-                description = getString(R.string.intro_settings_desc),
-                imageDrawable = R.drawable.ic_settings_big,
-                backgroundColor = Color.parseColor("#F0A815")
             )
         )
 

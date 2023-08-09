@@ -304,7 +304,6 @@
     <string name="offline_provider_edit">El proveedor actualizado se sincronizará con el servidor cuando el dispositivo se conecte a la red</string>
     <string name="unable_to_login">¿No puede iniciar sesión?</string>
     <string name="unable_to_fetch_providers">¡No se puden obtener los Proveedores!</string>
-    <string name="intro_settings_desc">Pruebe nuestra funcionalidad de modo oscuro.[...]</string>
     <string name="registration_core_info">Para usar una resolución de paciente similar más rápida y precisa, actualice el módulo principal de registro a 1.7 o superior</string>
     <string name="toast_with_black_background">Toast con fondo negro.</string>
     <string name="form_error">Este formulario no es compatible.</string>
