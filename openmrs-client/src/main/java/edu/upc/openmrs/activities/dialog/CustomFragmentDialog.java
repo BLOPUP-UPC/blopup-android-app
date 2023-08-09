@@ -41,7 +41,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -455,8 +454,8 @@ public class CustomFragmentDialog extends DialogFragment {
                     dismiss();
                     break;
                 case END_VITALS:
+                    ToastUtil.showShortToast(getContext(), ToastUtil.ToastType.SUCCESS, R.string.visit_cancel);
                     ((VitalsFormActivity) requireActivity()).finish();
-                    Toast.makeText(getContext(), R.string.visit_cancel, Toast.LENGTH_SHORT).show();
                     dismiss();
                     break;
                 default:

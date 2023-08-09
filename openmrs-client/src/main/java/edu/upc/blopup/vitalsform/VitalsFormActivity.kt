@@ -146,8 +146,8 @@ class VitalsFormActivity : ACBaseActivity() {
             textViewMessage = getString(R.string.cancel_vitals_dialog_message)
             rightButtonText = getString(R.string.keep_vitals_dialog_message)
             leftButtonText = getString(R.string.end_vitals_dialog_message)
-            leftButtonAction = CustomFragmentDialog.OnClickAction.DISMISS
-            rightButtonAction = CustomFragmentDialog.OnClickAction.END_VITALS
+            leftButtonAction = CustomFragmentDialog.OnClickAction.END_VITALS
+            rightButtonAction = CustomFragmentDialog.OnClickAction.DISMISS
         }.let {
             createAndShowDialog(it, ApplicationConstants.DialogTAG.END_VITALS_TAG)
         }
