@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import android.window.OnBackInvokedCallback
+import android.window.OnBackInvokedDispatcher
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
@@ -73,6 +76,11 @@ class VitalsFormActivity : ACBaseActivity() {
         }
     }
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            setDialogToConfirmVitalsRemoval()        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -124,6 +132,8 @@ class VitalsFormActivity : ACBaseActivity() {
             }
         }
 
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -136,18 +146,14 @@ class VitalsFormActivity : ACBaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        setDialogToConfirmVitalsRemoval()
-    }
-
     private fun setDialogToConfirmVitalsRemoval() {
         CustomDialogBundle().apply {
             titleViewMessage = getString(R.string.remove_vitals)
             textViewMessage = getString(R.string.cancel_vitals_dialog_message)
-            rightButtonText = getString(R.string.keep_vitals_dialog_message)
-            leftButtonText = getString(R.string.end_vitals_dialog_message)
-            leftButtonAction = CustomFragmentDialog.OnClickAction.END_VITALS
-            rightButtonAction = CustomFragmentDialog.OnClickAction.DISMISS
+            rightButtonText = getString(R.string.end_vitals_dialog_message)
+            leftButtonText = getString(R.string.keep_vitals_dialog_message)
+            leftButtonAction = CustomFragmentDialog.OnClickAction.DISMISS
+            rightButtonAction = CustomFragmentDialog.OnClickAction.END_VITALS
         }.let {
             createAndShowDialog(it, ApplicationConstants.DialogTAG.END_VITALS_TAG)
         }
