@@ -17,7 +17,10 @@ package edu.upc.sdk.library.api.repository;
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,14 +28,12 @@ import javax.inject.Singleton;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
-import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
 import edu.upc.sdk.library.dao.EncounterDAO;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.listeners.retrofitcallbacks.GetVisitTypeCallback;
 import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.Encountercreate;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
@@ -54,7 +55,6 @@ public class VisitRepository extends BaseRepository {
     private LocationDAO locationDAO;
     private VisitDAO visitDAO;
     private EncounterDAO encounterDAO;
-    private EncounterCreateRoomDAO encounterCreateRoomDAO;
 
     /**
      * Instantiates a new Visit repository.
@@ -63,7 +63,6 @@ public class VisitRepository extends BaseRepository {
     public VisitRepository() {
         visitDAO = new VisitDAO();
         encounterDAO = new EncounterDAO();
-        encounterCreateRoomDAO = db.encounterCreateRoomDAO();
         locationDAO = new LocationDAO();
     }
 
@@ -210,14 +209,19 @@ public class VisitRepository extends BaseRepository {
         });
     }
 
-    /**
-     * Add encounter created long.
-     *
-     * @param encountercreate the encountercreate
-     * @return the long
-     */
-    public long addEncounterCreated(final Encountercreate encountercreate) {
-        return encounterCreateRoomDAO.addEncounterCreated(encountercreate);
+    public Optional<Visit> getLatestVisitWithHeight(long patientId) {
+        List<Visit> visits = visitDAO.getVisitsByPatientID(patientId)
+                .toBlocking().first().stream()
+                .filter(visit -> visit.encounters != null &&
+                        visit.encounters.stream()
+                        .anyMatch(encounter -> encounter.getObservations().stream()
+                                .anyMatch(observation -> observation.getDisplay().contains("Height"))))
+                .sorted(Comparator.comparing(Visit::getStartDatetime, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+        if (visits.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(visits.get(0));
     }
 
     public Visit getActiveVisitByPatientId(long patientId) {

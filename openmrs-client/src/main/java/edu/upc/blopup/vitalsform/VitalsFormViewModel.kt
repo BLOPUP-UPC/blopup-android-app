@@ -9,7 +9,6 @@ import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.*
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.execute
@@ -19,15 +18,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VitalsFormViewModel @Inject constructor(
-    private val patientDAO: PatientDAO,
+    patientDAO: PatientDAO,
     private val formRepository: FormRepository,
     private val visitRepository: VisitRepository,
     private val encounterRepository: EncounterRepository,
-    private val visitDAO: VisitDAO,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Unit>() {
 
-    private val patientId: Long = savedStateHandle.get(PATIENT_ID_BUNDLE)!!
+    private val patientId: Long = savedStateHandle[PATIENT_ID_BUNDLE]!!
     private val encounterType: String = EncounterType.VITALS
     private val formName: String = "Vitals"
 
@@ -35,34 +33,14 @@ class VitalsFormViewModel @Inject constructor(
 
     fun getLastHeightFromVisits(): LiveData<Result<String>> {
         val resultLiveData = MutableLiveData<Result<String>>()
-        addSubscription(visitDAO.getVisitsByPatientID(patientId)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { visits ->
-                    resultLiveData.value = Result.Success(getLastHeight(visits))
-                },
-                { error ->
-                    resultLiveData.value = Result.Error(error, OperationType.PatientSynchronizing)
-                }
-            )
-        )
-        return resultLiveData
-    }
-
-    private fun getLastHeight(visits: List<Visit>): String {
-        val heightObservations = visits.flatMap { visit ->
-            visit.encounters.flatMap { encounter ->
-                encounter.observations.filter { observation ->
-                    observation.display?.contains("Height", ignoreCase = true) == true
-                }.map { observation ->
-                    Pair(observation, encounter.encounterDatetime)
-                }
-            }
+        val latestVisit = visitRepository.getLatestVisitWithHeight(patientId)
+        latestVisit.ifPresent { visit ->
+            resultLiveData.value = Result.Success(visit.getLatestHeight())
         }
-        val sortedHeightObservations = heightObservations.sortedByDescending { it.second }
-
-        return sortedHeightObservations.firstOrNull()?.first?.displayValue?.substringBefore(".")
-            ?: ""
+        if (!latestVisit.isPresent) {
+            resultLiveData.value = Result.Error(Exception("No visit found"), OperationType.PatientSynchronizing)
+        }
+        return resultLiveData
     }
 
     fun submitForm(vitals: List<Vital>): LiveData<ResultType> {

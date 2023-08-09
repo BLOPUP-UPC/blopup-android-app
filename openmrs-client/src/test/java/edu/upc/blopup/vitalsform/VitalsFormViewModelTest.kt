@@ -7,7 +7,6 @@ import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.databases.entities.FormResourceEntity
 import edu.upc.sdk.library.models.*
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
@@ -24,6 +23,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import rx.Observable
+import java.util.Optional
 
 
 @RunWith(JUnit4::class)
@@ -42,9 +42,6 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     lateinit var encounterRepository: EncounterRepository
 
     @Mock
-    lateinit var visitDAO: VisitDAO
-
-    @Mock
     lateinit var visitRepository: VisitRepository
 
     @Mock
@@ -52,18 +49,18 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
     lateinit var viewModel: VitalsFormViewModel
 
-    private val DEFAULT_PATIENT_ID: Long = 88L
+    private val patientId: Long = 88L
     private val vital = Vital("weight", "50")
     private val vitalsList = listOf(vital)
     private val testPatient = Patient().apply {
-        id = DEFAULT_PATIENT_ID
+        id = patientId
         uuid = "d384d23a-a91b-11ed-afa1-0242ac120002"
     }
 
     @Before
     override fun setUp() {
         super.setUp()
-        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, DEFAULT_PATIENT_ID) }
+        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, patientId) }
 
         `when`(patientDAO.findPatientByID(ArgumentMatchers.anyString())).thenReturn(testPatient)
 
@@ -72,14 +69,13 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
             formRepository,
             visitRepository,
             encounterRepository,
-            visitDAO,
             savedStateHandle
         )
     }
 
     @Test
     fun `when no open visit, a visit should be created`(){
-        `when`(visitRepository.getActiveVisitByPatientId(DEFAULT_PATIENT_ID)).thenReturn(null)
+        `when`(visitRepository.getActiveVisitByPatientId(patientId)).thenReturn(null)
         `when`(visitRepository.startVisit(testPatient)).thenReturn(Observable.just(Visit()))
         `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
             Observable.just(FormResourceEntity().apply {
@@ -106,7 +102,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when we pass vitals, vitals are sent`() {
-        `when`(visitRepository.getActiveVisitByPatientId(DEFAULT_PATIENT_ID)).thenReturn(Visit())
+        `when`(visitRepository.getActiveVisitByPatientId(patientId)).thenReturn(Visit())
         `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
             Observable.just(FormResourceEntity().apply {
                 uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
@@ -123,39 +119,17 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when patient had previous visits, we are able to grab the already existing height value`() {
-
         val visitList = createVisitListWithHeightObservation()
 
-        `when`(visitDAO.getVisitsByPatientID(DEFAULT_PATIENT_ID)).thenReturn(
-            Observable.just(visitList)
+        `when`(visitRepository.getLatestVisitWithHeight(patientId)).thenReturn(
+            Optional.of(visitList[0])
         )
 
-        val actualResult = viewModel.getLastHeightFromVisits()
-
-        val expectedResult = "190"
-
-        if (actualResult is Result.Success<*>) {
-            assertEquals(expectedResult, actualResult.data)
-        }
-    }
-
-
-    @Test
-    fun `when patient had previous visits, we are able to grab the last height value`() {
-
-        val visitList = createVisitListWithHeightObservation()
-
-        `when`(visitDAO.getVisitsByPatientID(DEFAULT_PATIENT_ID)).thenReturn(
-            Observable.just(visitList)
-        )
-
-        val actualResult = viewModel.getLastHeightFromVisits()
+        val actualResult = viewModel.getLastHeightFromVisits().value as Result.Success<*>
 
         val expectedResult = "180"
 
-        if (actualResult is Result.Success<*>) {
-            assertEquals(expectedResult, actualResult.data)
-        }
+        assertEquals(expectedResult, actualResult.data)
     }
 
     @Test
@@ -164,7 +138,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
             id = 1234L
         }
 
-        `when`(visitRepository.getActiveVisitByPatientId(DEFAULT_PATIENT_ID)).thenReturn(null)
+        `when`(visitRepository.getActiveVisitByPatientId(patientId)).thenReturn(null)
         `when`(visitRepository.startVisit(viewModel.patient)).thenReturn(Observable.just(visit))
 
         `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
@@ -202,4 +176,3 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         return listOf(visit)
     }
 }
-
