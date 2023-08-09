@@ -14,12 +14,13 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import static edu.upc.sdk.utilities.DateUtils.OPEN_MRS_REQUEST_FORMAT;
-import static edu.upc.sdk.utilities.DateUtils.convertTime;
-
 import androidx.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
+import java.io.IOException;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
@@ -28,25 +29,6 @@ import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
 import edu.upc.sdk.library.dao.EncounterDAO;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
-import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.listeners.retrofitcallbacks.GetVisitTypeCallback;
-import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.Encountercreate;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.library.models.Visit;
-import edu.upc.sdk.library.models.VisitType;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.DateUtils;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
-import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.listeners.retrofitcallbacks.GetVisitTypeCallback;
 import edu.upc.sdk.library.models.Encounter;
@@ -240,5 +222,9 @@ public class VisitRepository extends BaseRepository {
 
     public Visit getActiveVisitByPatientId(long patientId) {
         return visitDAO.getActiveVisitByPatientId(patientId).toBlocking().first();
+    }
+
+    public void deleteVisitById(long visitId) {
+        visitDAO.deleteVisitById(visitId).toBlocking().first();
     }
 }

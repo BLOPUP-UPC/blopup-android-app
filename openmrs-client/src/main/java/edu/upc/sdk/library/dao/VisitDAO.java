@@ -16,19 +16,6 @@ package edu.upc.sdk.library.dao;
 
 import android.content.Context;
 
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.databases.AppDatabase;
-import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.databases.entities.DiagnosisEntity;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.databases.entities.ObservationEntity;
-import edu.upc.sdk.library.databases.entities.VisitEntity;
-import edu.upc.sdk.library.models.Diagnosis;
-import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.Observation;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.Visit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -279,6 +266,13 @@ public class VisitDAO {
         return AppDatabaseHelper.createObservableIO(() -> {
             visitRoomDAO.deleteVisitsByPatientId(patient.getId());
             encounterDAO.deleteEncounterByPatientUUID(patient.getUuid());
+            return true;
+        });
+    }
+
+    public Observable<Boolean> deleteVisitById(long visitId) {
+        return AppDatabaseHelper.createObservableIO(() -> {
+            visitRoomDAO.deleteVisitById(visitId);
             return true;
         });
     }

@@ -20,8 +20,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import edu.upc.sdk.library.databases.entities.VisitEntity;
-
 import java.util.List;
 
 import edu.upc.sdk.library.databases.entities.VisitEntity;
@@ -120,4 +118,13 @@ public interface VisitRoomDAO {
      */
     @Query("DELETE FROM visits WHERE patient_id = :patientID")
     int deleteVisitsByPatientId(long patientID);
+
+    /**
+     * Delete visit by visit id.
+     *
+     * @param visitID the visit id
+     * @return the int
+     */
+    @Query("DELETE FROM visits WHERE _id = :visitID")
+    int deleteVisitById(long visitID);
 }

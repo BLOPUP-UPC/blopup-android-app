@@ -54,7 +54,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
     private val DEFAULT_PATIENT_ID: Long = 88L
     private val vital = Vital("weight", "50")
-    private val testVitalForm = listOf(vital)
+    private val vitalsList = listOf(vital)
     private val testPatient = Patient().apply {
         id = DEFAULT_PATIENT_ID
         uuid = "d384d23a-a91b-11ed-afa1-0242ac120002"
@@ -88,7 +88,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         )
         `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(ResultType.EncounterSubmissionSuccess))
 
-        viewModel.submitForm(testVitalForm)
+        viewModel.submitForm(vitalsList)
 
         verify(visitRepository).startVisit(testPatient)
     }
@@ -114,7 +114,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         )
         `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(ResultType.EncounterSubmissionSuccess))
 
-        val actualResult = viewModel.submitForm(testVitalForm)
+        val actualResult = viewModel.submitForm(vitalsList)
 
         assertEquals(ResultType.EncounterSubmissionSuccess, actualResult.value)
 
@@ -156,6 +156,27 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         if (actualResult is Result.Success<*>) {
             assertEquals(expectedResult, actualResult.data)
         }
+    }
+
+    @Test
+    fun `when no previous visit and error submitting vitals, no new visit is created`() {
+        val visit = Visit().apply {
+            id = 1234L
+        }
+
+        `when`(visitRepository.getActiveVisitByPatientId(DEFAULT_PATIENT_ID)).thenReturn(null)
+        `when`(visitRepository.startVisit(viewModel.patient)).thenReturn(Observable.just(visit))
+
+        `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
+            Observable.just(FormResourceEntity().apply {
+                uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
+            })
+        )
+        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(ResultType.EncounterSubmissionError))
+
+        viewModel.submitForm(vitalsList)
+
+        verify(visitRepository).deleteVisitById(visit.id!!)
     }
 
     private fun createVisitListWithHeightObservation(): List<Visit> {

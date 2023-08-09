@@ -61,7 +61,8 @@ class VitalsFormViewModel @Inject constructor(
         }
         val sortedHeightObservations = heightObservations.sortedByDescending { it.second }
 
-        return sortedHeightObservations.firstOrNull()?.first?.displayValue?.substringBefore(".") ?: ""
+        return sortedHeightObservations.firstOrNull()?.first?.displayValue?.substringBefore(".")
+            ?: ""
     }
 
     fun submitForm(vitals: List<Vital>): LiveData<ResultType> {
@@ -74,10 +75,12 @@ class VitalsFormViewModel @Inject constructor(
         encounterCreate.patientId = patientId
         encounterCreate.observations = createObservationsFromVitals(vitals)
 
-        if (visitRepository.getActiveVisitByPatientId(patientId) == null) {
-            visitRepository.startVisit(patient).execute()
+        return if (visitRepository.getActiveVisitByPatientId(patientId) == null) {
+            val visit = visitRepository.startVisit(patient).execute()
+            createRecords(encounterCreate, visit.id)
+        } else {
+            createRecords(encounterCreate, null)
         }
-        return createRecords(encounterCreate)
     }
 
     private fun createObservationsFromVitals(vitals: List<Vital>): List<Obscreate> {
@@ -96,7 +99,10 @@ class VitalsFormViewModel @Inject constructor(
         return observations
     }
 
-    private fun createRecords(encounterCreate: Encountercreate): MutableLiveData<ResultType> {
+    private fun createRecords(
+        encounterCreate: Encountercreate,
+        visitId: Long?
+    ): MutableLiveData<ResultType> {
         val resultLiveData = MutableLiveData<ResultType>()
 
         encounterCreate.patient = patient.uuid
@@ -109,7 +115,14 @@ class VitalsFormViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { resultLiveData.value = it },
-                    { resultLiveData.value = ResultType.EncounterSubmissionError }
+                    { resultLiveData.value = ResultType.EncounterSubmissionError; if (visitId != null) {
+                        visitRepository.deleteVisitById(visitId)
+                    }
+                    },
+                    {
+                        if (resultLiveData.value == ResultType.EncounterSubmissionError && visitId != null)
+                            visitRepository.deleteVisitById(visitId)
+                    }
                 )
         )
         return resultLiveData
