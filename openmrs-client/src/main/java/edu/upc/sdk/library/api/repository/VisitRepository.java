@@ -40,6 +40,7 @@ import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.library.models.VisitType;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.DateUtils;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -214,8 +215,8 @@ public class VisitRepository extends BaseRepository {
                 .toBlocking().first().stream()
                 .filter(visit -> visit.encounters != null &&
                         visit.encounters.stream()
-                        .anyMatch(encounter -> encounter.getObservations().stream()
-                                .anyMatch(observation -> observation.getDisplay().contains("Height"))))
+                                .anyMatch(encounter -> encounter.getObservations().stream()
+                                        .anyMatch(observation -> observation.getDisplay().contains("Height"))))
                 .sorted(Comparator.comparing(Visit::getStartDatetime, Comparator.reverseOrder()))
                 .collect(Collectors.toList());
         if (visits.isEmpty()) {
@@ -228,7 +229,14 @@ public class VisitRepository extends BaseRepository {
         return visitDAO.getActiveVisitByPatientId(patientId).toBlocking().first();
     }
 
-    public void deleteVisitById(long visitId) {
-        visitDAO.deleteVisitById(visitId).toBlocking().first();
+    public void deleteVisitByUuid(String visitUuid) throws IOException {
+        Response<ResponseBody> response = restApi.deleteVisit(visitUuid).execute();
+
+        if (response.isSuccessful()) {
+            visitDAO.deleteVisitByUuid(visitUuid).toBlocking().first();
+
+        } else {
+            throw new IOException(response.message());
+        }
     }
 }

@@ -263,6 +263,16 @@ public interface RestApi {
     Call<Results<VisitType>> getVisitType();
 
     /**
+     * Delete provider call.
+     *
+     * @param uuid the uuid
+     * @return the call
+     */
+    @DELETE("visit")
+    Call<ResponseBody> deleteVisit(@Path("uuid") String uuid);
+
+
+    /**
      * Gets last vitals.
      *
      * @param patientUUID    the patient uuid

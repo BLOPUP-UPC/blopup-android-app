@@ -24,6 +24,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import rx.Observable
 import java.util.Optional
+import java.util.UUID
 
 
 @RunWith(JUnit4::class)
@@ -135,7 +136,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun `when no previous visit and error submitting vitals, no new visit is created`() {
         val visit = Visit().apply {
-            id = 1234L
+            uuid = UUID.randomUUID().toString()
         }
 
         `when`(visitRepository.getActiveVisitByPatientId(patientId)).thenReturn(null)
@@ -150,7 +151,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
         viewModel.submitForm(vitalsList)
 
-        verify(visitRepository).deleteVisitById(visit.id!!)
+        verify(visitRepository).deleteVisitByUuid(visit.uuid!!)
     }
 
     private fun createVisitListWithHeightObservation(): List<Visit> {

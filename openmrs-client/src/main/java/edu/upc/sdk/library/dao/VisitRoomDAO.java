@@ -122,9 +122,9 @@ public interface VisitRoomDAO {
     /**
      * Delete visit by visit id.
      *
-     * @param visitID the visit id
+     * @param uuid the visit id
      * @return the int
      */
-    @Query("DELETE FROM visits WHERE _id = :visitID")
-    int deleteVisitById(long visitID);
+    @Query("DELETE FROM visits WHERE uuid = :uuid")
+    int deleteVisitByUuid(String uuid);
 }

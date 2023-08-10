@@ -270,9 +270,9 @@ public class VisitDAO {
         });
     }
 
-    public Observable<Boolean> deleteVisitById(long visitId) {
+    public Observable<Boolean> deleteVisitByUuid(String visitUuid) {
         return AppDatabaseHelper.createObservableIO(() -> {
-            visitRoomDAO.deleteVisitById(visitId);
+            visitRoomDAO.deleteVisitByUuid(visitUuid);
             return true;
         });
     }

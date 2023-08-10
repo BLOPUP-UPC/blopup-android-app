@@ -55,7 +55,7 @@ class VitalsFormViewModel @Inject constructor(
 
         return if (visitRepository.getActiveVisitByPatientId(patientId) == null) {
             val visit = visitRepository.startVisit(patient).execute()
-            createRecords(encounterCreate, visit.id)
+            createRecords(encounterCreate, visit.uuid)
         } else {
             createRecords(encounterCreate, null)
         }
@@ -79,7 +79,7 @@ class VitalsFormViewModel @Inject constructor(
 
     private fun createRecords(
         encounterCreate: Encountercreate,
-        visitId: Long?
+        visitUuid: String?
     ): MutableLiveData<ResultType> {
         val resultLiveData = MutableLiveData<ResultType>()
 
@@ -93,13 +93,13 @@ class VitalsFormViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { resultLiveData.value = it },
-                    { resultLiveData.value = ResultType.EncounterSubmissionError; if (visitId != null) {
-                        visitRepository.deleteVisitById(visitId)
+                    { resultLiveData.value = ResultType.EncounterSubmissionError; if (visitUuid != null) {
+                        visitRepository.deleteVisitByUuid(visitUuid)
                     }
                     },
                     {
-                        if (resultLiveData.value == ResultType.EncounterSubmissionError && visitId != null)
-                            visitRepository.deleteVisitById(visitId)
+                        if (resultLiveData.value == ResultType.EncounterSubmissionError && visitUuid != null)
+                            visitRepository.deleteVisitByUuid(visitUuid)
                     }
                 )
         )
