@@ -268,7 +268,7 @@ public interface RestApi {
      * @param uuid the uuid
      * @return the call
      */
-    @DELETE("visit")
+    @DELETE("visit/{uuid}")
     Call<ResponseBody> deleteVisit(@Path("uuid") String uuid);
 
 

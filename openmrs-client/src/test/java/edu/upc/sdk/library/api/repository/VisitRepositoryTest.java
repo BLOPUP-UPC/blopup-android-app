@@ -99,6 +99,7 @@ public class VisitRepositoryTest {
 
         when(restApi.deleteVisit(visitToDelete.getUuid())).thenReturn(call);
         when(visitDAO.deleteVisitByUuid(visitToDelete.getUuid())).thenReturn(Observable.just(true));
+        when(call.execute()).thenReturn(Response.success(ResponseBody.create("", null)));
 
         visitRepository.deleteVisitByUuid(visitToDelete.getUuid());
 
