@@ -38,7 +38,7 @@ class VitalsFormViewModel @Inject constructor(
             resultLiveData.value = Result.Success(visit.getLatestHeight())
         }
         if (!latestVisit.isPresent) {
-            resultLiveData.value = Result.Error(Exception("No visit found"), OperationType.PatientSynchronizing)
+            resultLiveData.value = Result.Success("")
         }
         return resultLiveData
     }
