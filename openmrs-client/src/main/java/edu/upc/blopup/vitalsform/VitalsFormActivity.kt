@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
@@ -76,7 +77,8 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            setDialogToConfirmVitalsRemoval()        }
+            setDialogToConfirmVitalsRemoval()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,12 +120,6 @@ class VitalsFormActivity : ACBaseActivity() {
             }
         }
 
-        mBinding.buttonToSentVitals.setOnClickListener {
-            buttonToSentVitals.isEnabled = false
-            heightCm = mBinding.height.text.toString()
-            submitForm()
-        }
-
         mBinding.height.addTextChangedListener {
             if (!receivedButtonModified) {
                 mBinding.buttonToSentVitals.isEnabled = mBinding.height.text.toString().isNotEmpty()
@@ -132,6 +128,25 @@ class VitalsFormActivity : ACBaseActivity() {
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
+    }
+
+    fun sendVitals(view: View) {
+        buttonToSentVitals.isEnabled = false
+        heightCm = mBinding.height.text.toString()
+        if(isHeightValidForFormSubmission()) {
+            submitForm()
+        } else {
+            mBinding.textInputHeight.error = (getString(R.string.height_range))
+            buttonToSentVitals.isEnabled = true
+        }
+    }
+
+    private fun isHeightValidForFormSubmission(): Boolean {
+        val heightValue = mBinding.height.text.toString().trim().toIntOrNull()
+        val isHeightValid = heightValue in (50..280)
+        val isOtherDataPresent = weight.isNotEmpty() || systolic.isNotEmpty() || diastolic.isNotEmpty() || heartRate.isNotEmpty()
+
+        return isHeightValid or (isOtherDataPresent && heightValue == null)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -161,8 +176,7 @@ class VitalsFormActivity : ACBaseActivity() {
         addVitalsToForm()
         viewModel.submitForm(vitals).observeOnce(this, Observer { result ->
             when (result) {
-                ResultType.EncounterSubmissionSuccess -> {
-                    ToastUtil.success(getString(R.string.form_submitted_successfully))
+                ResultType.EncounterSubmissionSuccess -> { ToastUtil.success(getString(R.string.form_submitted_successfully))
                     finish()
                 }
                 ResultType.EncounterSubmissionLocalSuccess -> {
@@ -203,7 +217,7 @@ class VitalsFormActivity : ACBaseActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
     }
 
-    companion object{
+    companion object {
         const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         const val HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

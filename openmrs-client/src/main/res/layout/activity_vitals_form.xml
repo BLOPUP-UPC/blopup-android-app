@@ -43,15 +43,15 @@
                         android:id="@+id/textInputSystolic"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
+                        android:hint="@string/systolic_label"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dip">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/systolic"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:focusable="true"
-                            android:hint="@string/systolic_label"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:enabled="false"
@@ -63,15 +63,15 @@
                         android:id="@+id/textInputDiastolic"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
+                        android:hint="@string/diastolic_label"
                         android:layout_height="fill_parent">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/diastolic"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:enabled="false"
                             android:focusable="true"
-                            android:hint="@string/diastolic_label"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:textSize="14sp" />
@@ -97,17 +97,17 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputPulse"
+                        android:hint="@string/pulse_label"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/pulse"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:focusable="true"
                             android:enabled="false"
-                            android:hint="@string/pulse_label"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:textSize="14sp" />
@@ -150,18 +150,19 @@
                         android:id="@+id/textInputWeight"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
+                        android:hint="@string/weight_value_label"
                         android:layout_height="wrap_content">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/weight"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:focusable="true"
                             android:enabled="false"
-                            android:hint="@string/weight_value_label"
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:textSize="14sp" />
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -185,17 +186,19 @@
                         android:id="@+id/textInputHeight"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="fill_parent"
+                        android:hint="@string/height_value_label"
                         android:layout_height="wrap_content">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/height"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:focusable="true"
-                            android:hint="@string/height_value_label"
                             android:imeOptions="actionNext"
                             android:inputType="number"
-                            android:textSize="14sp" />
+                            android:maxLength="4"
+                            android:textSize="14sp"/>
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -220,7 +223,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/allergy_orange"
-                android:text="@string/send_button_label" />
+                android:text="@string/send_button_label"
+                android:onClick="sendVitals" />
 
         </LinearLayout>
 

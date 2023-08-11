@@ -569,5 +569,6 @@
     <string name="keep_vitals_dialog_message" tools:ignore="MissingTranslation">No, continue</string>
     <string name="cancel_vitals_dialog_message" tools:ignore="MissingTranslation">If you cancel the vitals recording, the medical visit will also be canceled. Do you want to proceed?</string>
     <string name="visit_cancel" tools:ignore="MissingTranslation">The visit has been cancelled</string>
+    <string name="height_range" tools:ignore="MissingTranslation">Height should be between 50–280 cm</string>
     R
 </resources>
