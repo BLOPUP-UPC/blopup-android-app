@@ -35,7 +35,7 @@ import kotlinx.android.synthetic.main.activity_vitals_form.*
 @AndroidEntryPoint
 class VitalsFormActivity : ACBaseActivity() {
 
-    private lateinit var mBinding: ActivityVitalsFormBinding
+    lateinit var mBinding: ActivityVitalsFormBinding
     private lateinit var mToolbar: Toolbar
 
     private val viewModel: VitalsFormViewModel by viewModels()
@@ -133,20 +133,12 @@ class VitalsFormActivity : ACBaseActivity() {
     fun sendVitals(view: View) {
         buttonToSentVitals.isEnabled = false
         heightCm = mBinding.height.text.toString()
-        if(isHeightValidForFormSubmission()) {
+        if(HeightValidator.isValid(heightCm, weight, systolic, diastolic, heartRate)) {
             submitForm()
         } else {
             mBinding.textInputHeight.error = (getString(R.string.height_range))
             buttonToSentVitals.isEnabled = true
         }
-    }
-
-    private fun isHeightValidForFormSubmission(): Boolean {
-        val heightValue = mBinding.height.text.toString().trim().toIntOrNull()
-        val isHeightValid = heightValue in (50..280)
-        val isOtherDataPresent = weight.isNotEmpty() || systolic.isNotEmpty() || diastolic.isNotEmpty() || heartRate.isNotEmpty()
-
-        return isHeightValid or (isOtherDataPresent && heightValue == null)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
