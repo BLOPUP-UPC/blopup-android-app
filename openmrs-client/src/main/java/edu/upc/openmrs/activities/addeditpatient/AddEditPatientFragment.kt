@@ -411,13 +411,19 @@ class AddEditPatientFragment : BaseFragment() {
                 id: Long
             ) {
                 // Enable the submit button if a valid language (not the first item) is selected
-                recordConsentImageButton.isEnabled = position != 0
+                if (position != 0) {
+                    recordLegalConsent.isEnabled = true
+                    recordLegalConsent.setTextColor(resources.getColor(R.color.color_accent, null))
+                } else {
+                    recordLegalConsent.isEnabled = false
+                    recordLegalConsent.setTextColor(resources.getColor(R.color.dark_grey_6x, null))
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        recordConsentImageButton.setOnClickListener {
+        recordLegalConsent.setOnClickListener {
             val selectedLanguage = languageSpinner.selectedItem.toString()
             showLegalConsent(selectedLanguage)
         }
@@ -451,7 +457,12 @@ class AddEditPatientFragment : BaseFragment() {
             val dateSetListener =
                 { _: DatePicker?, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
                     val adjustedMonth = selectedMonth + 1
-                    dobEditText.setText(String.format("%02d", selectedDay) + "/" + String.format("%02d", adjustedMonth) + "/" + selectedYear)
+                    dobEditText.setText(
+                        String.format(
+                            "%02d",
+                            selectedDay
+                        ) + "/" + String.format("%02d", adjustedMonth) + "/" + selectedYear
+                    )
                     viewModel.dateHolder =
                         LocalDate(selectedYear, adjustedMonth, selectedDay).toDateTimeAtStartOfDay()
                 }
@@ -472,7 +483,7 @@ class AddEditPatientFragment : BaseFragment() {
         if (isMicrophonePresent()) {
             legalConsentDialog = LegalConsentDialogFragment.newInstance(language)
             legalConsentDialog?.show(childFragmentManager, LegalConsentDialogFragment.TAG)
-            childFragmentManager.findFragmentById(R.id.legal_consent)?.onStart()
+            childFragmentManager.findFragmentById(R.id.linearLayout_consent)?.onStart()
         } else {
             Toast.makeText(
                 requireContext(),

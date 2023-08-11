@@ -376,5 +376,7 @@
     <string name="keep_vitals_dialog_message">No, mantingues</string>
     <string name="cancel_vitals_dialog_message">Si cancel les la presa de les teves dades vitals, també s\'anul·lará la visita mèdica. Vols continuar?</string>
     <string name="visit_cancel">La visita ha estat cancel·lada</string>
+    <string name="record_legal_consent"><u>Gravar consentiment</u></string>
+    <string name="recording_has_been_saved">La gravació s\'ha desat</string>
     <string name="height_range">L\'alçada ha de ser entre 50–280 cm</string>
 </resources>

@@ -379,5 +379,7 @@
     <string name="keep_vitals_dialog_message">No, conservar</string>
     <string name="cancel_vitals_dialog_message">Al cancelar la toma de signos vitales, también se anulara la visita médica. Desea proceder con la cancelación de los vitales?</string>
     <string name="visit_cancel">La visita ha sido cancelada</string>
+    <string name="record_legal_consent"><u>Grabar consentimiento</u></string>
+    <string name="recording_has_been_saved">La grabación se ha guardado</string>
     <string name="height_range">La altura debe ser entre 50–280 cm</string>
 </resources>

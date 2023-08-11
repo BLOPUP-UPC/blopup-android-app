@@ -14,6 +14,7 @@ import edu.upc.openmrs.utilities.FileUtils.fileIsCreatedSuccessfully
 import edu.upc.openmrs.utilities.FileUtils.getFileByLanguage
 import edu.upc.openmrs.utilities.FileUtils.getRecordingFilePath
 import edu.upc.openmrs.utilities.LanguageUtils
+import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 import java.util.*
@@ -112,9 +113,10 @@ class LegalConsentDialogFragment : DialogFragment() {
 
             if (fileIsCreatedSuccessfully(mFileName)) {
                 val parent = parentFragment
-                parent?.record_consent_imageButton?.setImageResource(R.drawable.saved)
-                parent?.record_consent_imageButton?.isEnabled = false
+                parent?.record_consent_saved?.isEnabled = false
+                parent?.record_consent_saved?.makeVisible()
                 parent?.language_spinner?.isEnabled = false
+                parent?.record_legal_consent?.makeGone()
             }
         }
     }
