@@ -186,18 +186,6 @@ class DashboardFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-//    override fun onResume() {
-//        if (allowRefresh) {
-//            super.onResume()
-////            parentFragmentManager.beginTransaction()
-////                .detach(this)
-////                .attach(this)
-////                .commit()
-////            bindDrawableResources()
-//            allowRefresh = false
-//        }
-//    }
-
     companion object {
         fun newInstance(): DashboardFragment {
             return DashboardFragment()
