@@ -1,11 +1,16 @@
 package edu.upc.openmrs.activities.addeditpatient
 
 import android.content.DialogInterface
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
 import edu.upc.blopup.AudioRecorder
@@ -25,7 +30,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var legalConsentBinding: LegalConsentBinding
     private lateinit var audioRecorder: AudioRecorder
     private lateinit var recordButton: Button
-    private lateinit var playPauseButton: Button
+    private lateinit var playPauseButton: TextView
     private lateinit var stopButton: Button
     private lateinit var mFileName: String
 
@@ -84,11 +89,11 @@ class LegalConsentDialogFragment : DialogFragment() {
     }
 
     private fun listenForPlayCompletion() {
-
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
             if (it) {
+                playPauseButton.isVisible = false
                 stopButton.isEnabled = true
-                playPauseButton.isEnabled = false
+                stopButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.color_accent,null))
             }
         }
     }
@@ -97,9 +102,6 @@ class LegalConsentDialogFragment : DialogFragment() {
         recordButton = legalConsentBinding.record
         playPauseButton = legalConsentBinding.playPause
         stopButton = legalConsentBinding.stop
-
-        playPauseButton.isEnabled = false
-        stopButton.isEnabled = false
 
         startRecordingAndPlayingAudio()
         playPauseAudio()
@@ -124,7 +126,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private fun playPauseAudio() {
         playPauseButton.setOnClickListener {
             audioRecorder.playPauseAudio()
-            playPauseButton.setBackgroundResource(if (!audioRecorder.isPlaying()) R.mipmap.play_recording else R.mipmap.pause)
+            playPauseButton.setText(if (!audioRecorder.isPlaying()) R.string.resume else R.string.pause)
         }
     }
 
@@ -132,13 +134,24 @@ class LegalConsentDialogFragment : DialogFragment() {
         recordButton.setOnClickListener {
             audioRecorder.startRecording()
             audioRecorder.startPlaying()
-            playPauseButton.setBackgroundResource(R.mipmap.pause)
 
-            recordButton.isEnabled = false
-            playPauseButton.isEnabled = true
+            playPauseButton.isVisible = true
+            setMargin(playPauseButton)
+            stopButton.isVisible = true
+            recordButton.isVisible = false
 
             legalConsentBinding.recordingInProgress.makeVisible()
         }
+    }
+
+    private fun setMargin(textView: TextView) {
+        val densityOperator = context?.resources?.displayMetrics?.density?.toInt()
+
+        val margin = textView.layoutParams as LinearLayout.LayoutParams
+        margin.bottomMargin = densityOperator!! * 45
+        margin.topMargin = densityOperator * 25
+
+        textView.layoutParams = margin
     }
 
     companion object {

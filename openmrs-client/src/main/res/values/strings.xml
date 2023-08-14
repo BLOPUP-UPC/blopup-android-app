@@ -569,7 +569,11 @@
     <string name="keep_vitals_dialog_message" tools:ignore="MissingTranslation">No, continue</string>
     <string name="cancel_vitals_dialog_message" tools:ignore="MissingTranslation">If you cancel the vitals recording, the medical visit will also be canceled. Do you want to proceed?</string>
     <string name="visit_cancel" tools:ignore="MissingTranslation">The visit has been cancelled</string>
-    <string name="record_legal_consent" tools:ignore="MissingTranslation"><u>Record legal consent</u></string>
+    <string name="record_legal_consent_u" tools:ignore="MissingTranslation"><u>Record legal consent</u></string>
+    <string name="record_legal_consent" tools:ignore="MissingTranslation">Record legal consent</string>
     <string name="recording_has_been_saved" tools:ignore="MissingTranslation">recording has been saved</string>
     <string name="height_range" tools:ignore="MissingTranslation">Height should be between 50–280 cm</string>
+    <string name="pause">Pause</string>
+    <string name="stop_save">Stop and Save Recording</string>
+    <string name="resume">resume</string>
 </resources>

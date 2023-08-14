@@ -19,7 +19,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
-            android:src="@mipmap/recording" />
+            android:src="@mipmap/recording"
+            android:contentDescription="@string/recording_in_progress" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +30,6 @@
             android:textColor="@color/red"
             android:textSize="18sp" />
     </LinearLayout>
-
 
     <ScrollView
         android:id="@+id/scrollablContent"
@@ -50,23 +50,33 @@
 
     <Button
         android:id="@+id/record"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/fab_bottom_margin_4"
-        android:background="@mipmap/record" />
+        style="@style/loginButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/text_padding"
+        android:text="@string/record_legal_consent" />
 
-    <Button
+    <TextView
         android:id="@+id/play_pause"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/fab_bottom_margin_4"
-        android:background="@mipmap/play_recording" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_accent"
+        android:textSize="20sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/pause"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/stop"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/fab_bottom_margin_4"
-        android:background="@mipmap/stop" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/stop_save"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/dark_grey_8x"
+        android:enabled="false"
+        android:visibility="gone" />
 
 </LinearLayout>

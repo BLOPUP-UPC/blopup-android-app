@@ -483,7 +483,7 @@
                                     android:enabled="false"
                                     android:focusable="true"
                                     android:fontFamily="@font/roboto_medium"
-                                    android:text="@string/record_legal_consent"
+                                    android:text="@string/record_legal_consent_u"
                                     android:textSize="16sp"
                                     android:textStyle="bold" />
 

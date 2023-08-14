@@ -25,8 +25,6 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 
-private const val ADD_EDIT_PATIENT_FRAGMENT =
-    "edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment"
 
 @RunWith(AndroidJUnit4::class)
 class LegalConsentDialogFragmentTest {
@@ -48,20 +46,29 @@ class LegalConsentDialogFragmentTest {
     }
 
     @Test
-    internal fun `should only enable recording button on launch`() {
+    internal fun `should only display recording button on launch`() {
         legalConsentScenario.onFragment {
-            assertFalse(it.play_pause.isEnabled)
-            assertFalse(it.stop.isEnabled)
-            assert(it.record.isEnabled)
+            assertFalse(it.play_pause.isVisible)
+            assertFalse(it.stop.isVisible)
+            assert(it.record.isVisible)
         }
     }
 
     @Test
-    internal fun `should only enable playpause button when record button is clicked`() {
+    internal fun `should hide recording and show pause and stop buttons when recording is clicked`() {
+        legalConsentScenario.onFragment {
+            it.record.performClick()
+            assert(it.play_pause.isVisible)
+            assert(it.stop.isVisible)
+            assertFalse(it.record.isVisible)
+        }
+    }
+
+    @Test
+    internal fun `playpause button should be enabled and stop button should be disabled when record is clicked`() {
         legalConsentScenario.onFragment {
             it.record.performClick()
             assert(it.play_pause.isEnabled)
-            assertFalse(it.record.isEnabled)
             assertFalse(it.stop.isEnabled)
         }
     }
@@ -94,17 +101,14 @@ class LegalConsentDialogFragmentTest {
     }
 
     @Test
-    internal fun `should change playpause icon when playpause button is clicked`() {
-        val playIconAsBitmap =
-            context.resources.getDrawable(R.mipmap.play_recording, null).toBitmap()
-        val pauseIconAsBitmap = context.resources.getDrawable(R.mipmap.pause, null).toBitmap()
+    internal fun `should change playpause text when playpause button is clicked`() {
         every { mediaPlayer.isPlaying } returns false
 
         legalConsentScenario.onFragment {
             it.record.performClick() //isPlaying == true
-            assert(pauseIconAsBitmap.sameAs(it.play_pause.background.toBitmap()))
+            assert(it.play_pause.text == context.getString(R.string.pause))
             it.play_pause.performClick() //isPlaying == false
-            assert(playIconAsBitmap.sameAs(it.play_pause.background.toBitmap()))
+            assert(it.play_pause.text == context.getString(R.string.resume))
         }
     }
 
@@ -144,7 +148,7 @@ class LegalConsentDialogFragmentTest {
 
     @Test
     @Ignore("Is entering the if statement within the onCompletionListener but the assertion is still failing")
-    internal fun `should only enable stop button when audioRecorder has finished playing`() {
+    internal fun `should enable and change color for stop button when audioRecorder has finished playing`() {
         legalConsentScenario.onFragment {
             it.record.performClick()
 
@@ -155,8 +159,7 @@ class LegalConsentDialogFragmentTest {
             it.onCreateView(it.layoutInflater, null, Bundle.EMPTY)
 
             assert(it.stop.isEnabled)
-            assertFalse(it.record.isEnabled)
-            assertFalse(it.play_pause.isEnabled)
+            assert(it.stop.background.equals(R.color.color_accent))
         }
     }
 
