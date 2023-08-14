@@ -7,26 +7,27 @@
         android:id="@+id/recordingInProgress"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="18dp"
+        android:layout_weight="0.15"
         android:background="@drawable/border"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:visibility="invisible"
-        android:layout_weight="0.15">
+        android:padding="18dp"
+        android:visibility="invisible">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
             android:src="@mipmap/recording" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/recording_in_progress"
-            android:textSize="18sp"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/red"/>
+            android:text="@string/recording_in_progress"
+            android:textColor="@color/red"
+            android:textSize="18sp" />
     </LinearLayout>
 
 
@@ -47,35 +48,25 @@
             android:textSize="@dimen/dashboard_text_size" />
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/footerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:layout_weight="0.18"
-        android:orientation="horizontal">
+    <Button
+        android:id="@+id/record"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/fab_bottom_margin_4"
+        android:background="@mipmap/record" />
 
-        <Button
-            android:id="@+id/record"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="@dimen/fab_bottom_margin_4"
-            android:background="@mipmap/record" />
+    <Button
+        android:id="@+id/play_pause"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/fab_bottom_margin_4"
+        android:background="@mipmap/play_recording" />
 
-        <Button
-            android:id="@+id/play_pause"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="@dimen/fab_bottom_margin_4"
-            android:background="@mipmap/play_recording" />
-
-        <Button
-            android:id="@+id/stop"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="@dimen/fab_bottom_margin_4"
-            android:background="@mipmap/stop" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/fab_bottom_margin_4"
+        android:background="@mipmap/stop" />
 
 </LinearLayout>

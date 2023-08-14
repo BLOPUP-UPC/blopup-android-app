@@ -16,6 +16,7 @@ import edu.upc.blopup.AudioRecorder
 import edu.upc.openmrs.activities.addeditpatient.LegalConsentDialogFragment
 import edu.upc.openmrs.utilities.FileUtils
 import io.mockk.*
+import io.mockk.InternalPlatformDsl.toStr
 import junit.framework.TestCase.*
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 import kotlinx.android.synthetic.main.legal_consent.*
@@ -160,22 +161,18 @@ class LegalConsentDialogFragmentTest {
     }
 
     @Test
-    @Ignore("Not able to set parentFragment in LegalConsentDialogFragment which generates a NPE")
-    internal fun `should change record consent imageButton in parent when recording is completed`() {
+    @Ignore("not sure how to assign a parent to a fragment in a test")
+    internal fun `should show record consent imageButton in parent when recording is completed`() {
+        legalConsentScenario = launchFragmentInContainer()
         mockkStatic(FileUtils::class)
         every { FileUtils.fileIsCreatedSuccessfully(any()) } returns true
-        val savedIconAsBitmap = context.resources.getDrawable(R.drawable.saved, null).toBitmap()
 
         legalConsentScenario.onFragment {
 
-            val addEditPatient = it.parentFragmentManager.fragmentFactory.instantiate(
-                ClassLoader.getSystemClassLoader(),
-                ADD_EDIT_PATIENT_FRAGMENT
-            )
-
             it.record.performClick()
             it.stop.performClick()
-            assert(savedIconAsBitmap.sameAs(addEditPatient.record_consent_imageButton.background.toBitmap()))
+
+            assert(it.parentFragment?.record_consent_saved!!.isVisible)
             assertFalse(it.language_spinner.isEnabled)
         }
     }
