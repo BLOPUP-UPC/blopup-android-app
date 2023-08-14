@@ -60,6 +60,7 @@
         android:id="@+id/play_pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_padding"
         android:textColor="@color/color_accent"
         android:textSize="20sp"
         android:textAllCaps="true"
@@ -72,11 +73,12 @@
     <Button
         android:id="@+id/stop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/appintro_button_margin"
+        android:backgroundTint="@color/dark_grey_6x"
+        android:enabled="false"
         android:text="@string/stop_save"
         android:textColor="@color/white"
-        android:backgroundTint="@color/dark_grey_8x"
-        android:enabled="false"
         android:visibility="gone" />
 
 </LinearLayout>

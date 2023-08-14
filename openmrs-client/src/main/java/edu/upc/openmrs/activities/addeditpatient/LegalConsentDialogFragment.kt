@@ -31,7 +31,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var audioRecorder: AudioRecorder
     private lateinit var recordButton: Button
     private lateinit var playPauseButton: TextView
-    private lateinit var stopButton: Button
+    private lateinit var stopButton: TextView
     private lateinit var mFileName: String
 
     override fun onCreateView(
