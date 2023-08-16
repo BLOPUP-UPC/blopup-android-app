@@ -7,18 +7,18 @@
         We will never communicate your individual data, only in an aggregated and statistical fashion. \n\n
         Participation is voluntary and free, and you can stop participating whenever you want. \n\n
         Now we will ask you to say your name: \n\n
-        Do you give your consent to participate in this study where we will take medical and personal data about you, we will store and process it, but we will never share it if it is not in an aggregated way? Please, answer yes or no: \n\n
+        Do you give your consent to participate in this study where we will take medical and personal data about you, we will store and process it, but we will never share it if it is not in an aggregated way? Please, answer yes or no:
     </string>
-    <string name="english">English</string>
-    <string name="catalan">Catalan</string>
-    <string name="spanish">Spanish</string>
-    <string name="german">German</string>
-    <string name="french">French</string>
-    <string name="italian">Italian</string>
-    <string name="moroccan">Moroccan</string>
-    <string name="portuguese">Portuguese</string>
-    <string name="russian">Russian</string>
-    <string name="ukrainian">Ukrainian</string>
+    <string name="english" translatable="false">English</string>
+    <string name="catalan" translatable="false">Catalan</string>
+    <string name="spanish" translatable="false">Spanish</string>
+    <string name="german" translatable="false">German</string>
+    <string name="french" translatable="false">French</string>
+    <string name="italian" translatable="false">Italian</string>
+    <string name="moroccan" translatable="false">Moroccan</string>
+    <string name="portuguese" translatable="false">Portuguese</string>
+    <string name="russian" translatable="false">Russian</string>
+    <string name="ukrainian" translatable="false">Ukrainian</string>
     <string-array name="languages">
         <item>Select language</item>
         <item>Catalan</item>

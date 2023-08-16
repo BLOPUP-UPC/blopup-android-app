@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
 import edu.upc.blopup.AudioRecorder

@@ -413,31 +413,20 @@
                             android:textSize="14sp"
                             android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/consenterror"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="2dp"
-                            android:text="@string/emptyerror"
-                            android:textColor="@color/red"
-                            android:textSize="14sp"
-                            android:visibility="gone" />
-
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:baselineAligned="false"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
                             <LinearLayout
                                 android:id="@+id/record_consent_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="end"
                                 android:layout_marginEnd="8dp"
                                 android:orientation="vertical"
-                                android:weightSum="4"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
@@ -445,8 +434,6 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="end"
-                                    android:layout_marginEnd="8dp"
                                     android:orientation="horizontal"
                                     android:weightSum="4"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -456,21 +443,21 @@
                                     <Spinner
                                         android:id="@+id/language_spinner"
                                         android:layout_width="wrap_content"
-                                        android:layout_marginTop="15dp"
-                                        android:layout_height="50dp"
+                                        android:layout_height="40dp"
                                         android:layout_weight="1"
                                         android:background="@drawable/admission_spinner"
                                         android:entries="@array/languages" />
 
-                                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    <ImageView
                                         android:id="@+id/record_consent_saved"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_margin="10dp"
-                                        android:backgroundTint="@color/color_accent"
-                                        app:srcCompat="@drawable/saved"
+                                        android:layout_width="wrap_content"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_height="30dp"
+                                        android:layout_gravity="center"
                                         android:visibility="gone"
-                                        android:contentDescription="@string/recording_has_been_saved" />
+                                        android:src="@drawable/saved_recording_icon"
+                                        android:contentDescription="@string/recording_has_been_saved"
+                                        app:tint="@color/color_accent" />
 
                                 </LinearLayout>
 
@@ -478,7 +465,7 @@
                                     android:id="@+id/record_legal_consent"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
+                                    android:layout_marginTop="10dp"
                                     android:clickable="true"
                                     android:enabled="false"
                                     android:focusable="true"

@@ -35,17 +35,17 @@
         android:id="@+id/scrollablContent"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/text_padding"
+        android:layout_marginHorizontal="@dimen/text_padding"
+        android:layout_marginBottom="0dp"
         android:layout_weight="1">
 
         <TextView
             android:id="@+id/legal_consent_wording"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:justificationMode="inter_word"
             android:text="@string/legal_consent"
-            android:textSize="@dimen/dashboard_text_size" />
+            android:layout_marginBottom="0dp"
+            android:textSize="@dimen/text_size_large" />
     </ScrollView>
 
     <Button
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/text_padding"
         android:textColor="@color/color_accent"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textAllCaps="true"
         android:textStyle="bold"
         android:clickable="true"
@@ -77,8 +77,9 @@
         android:layout_margin="@dimen/appintro_button_margin"
         android:backgroundTint="@color/dark_grey_6x"
         android:enabled="false"
+        android:textSize="18sp"
         android:text="@string/stop_save"
-        android:textColor="@color/white"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textColor="@color/white" />
 
 </LinearLayout>
