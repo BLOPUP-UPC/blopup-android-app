@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.bottomappbar.BottomAppBar
 import edu.upc.R
 import edu.upc.blopup.AudioRecorder
 import edu.upc.databinding.LegalConsentBinding
@@ -30,7 +31,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var audioRecorder: AudioRecorder
     private lateinit var recordButton: Button
     private lateinit var playPauseButton: TextView
-    private lateinit var stopButton: TextView
+    private lateinit var stopButton: BottomAppBar
     private lateinit var mFileName: String
 
     override fun onCreateView(
@@ -91,7 +92,7 @@ class LegalConsentDialogFragment : DialogFragment() {
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
             if (it) {
                 playPauseButton.isVisible = false
-                stopButton.isEnabled = true
+                stopButton.isClickable = true
                 stopButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.color_accent,null))
             }
         }
@@ -137,6 +138,7 @@ class LegalConsentDialogFragment : DialogFragment() {
             playPauseButton.isVisible = true
             setMargin(playPauseButton)
             stopButton.isVisible = true
+            stopButton.isClickable = false
             recordButton.isVisible = false
 
             legalConsentBinding.recordingInProgress.makeVisible()

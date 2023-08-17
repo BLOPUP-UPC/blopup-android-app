@@ -1,85 +1,107 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/recordingInProgress"
+        android:paddingVertical="25dp"
+        android:paddingHorizontal="15dp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.15"
-        android:background="@drawable/border"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:padding="18dp"
-        android:visibility="invisible">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
+        <LinearLayout
+            android:visibility="invisible"
+            android:id="@+id/recordingInProgress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
-            android:src="@mipmap/recording"
-            android:contentDescription="@string/recording_in_progress" />
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/recording"
+                android:contentDescription="@string/recording_in_progress" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:text="@string/recording_in_progress" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollablContent"
+            android:layout_width="match_parent"
+            android:paddingTop="15dp"
+            android:paddingHorizontal="10dp"
+            android:layout_height="580dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/legal_consent_wording"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/legal_consent"
+                android:textSize="@dimen/text_size_large"/>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/recording_in_progress"
-            android:textColor="@color/red"
-            android:textSize="18sp" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/record"
+                android:layout_marginTop="30dp"
+                style="@style/loginButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text="@string/record_legal_consent" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/play_pause"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_accent"
+                android:textSize="18sp"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/pause" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollablContent"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="@dimen/text_padding"
-        android:layout_marginBottom="0dp"
-        android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/legal_consent_wording"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/legal_consent"
-            android:layout_marginBottom="0dp"
-            android:textSize="@dimen/text_size_large" />
-    </ScrollView>
-
-    <Button
-        android:id="@+id/record"
-        style="@style/loginButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_margin="@dimen/text_padding"
-        android:text="@string/record_legal_consent" />
-
-    <TextView
-        android:id="@+id/play_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_padding"
-        android:textColor="@color/color_accent"
-        android:textSize="18sp"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/pause"
-        android:visibility="gone" />
-
-    <Button
+    <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/stop"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="@dimen/appintro_button_margin"
-        android:backgroundTint="@color/dark_grey_6x"
-        android:enabled="false"
-        android:textSize="18sp"
-        android:text="@string/stop_save"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:focusable="true"
         android:visibility="gone"
-        android:textColor="@color/white" />
+        android:backgroundTint="@color/dark_grey_6x">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/stop_wording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stop_save"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+    </com.google.android.material.bottomappbar.BottomAppBar>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
