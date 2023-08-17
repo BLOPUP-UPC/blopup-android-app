@@ -1,6 +1,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/legal_consent_container"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -19,17 +21,20 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/recording"
-                android:contentDescription="@string/recording_in_progress" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/recording_in_progress"
+                android:layout_marginEnd="15dp"
+                android:contentDescription="@string/recording_in_progress"
+                app:tint="@color/color_accent" />
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/red"
+                android:textColor="@color/color_accent"
+                android:textStyle="bold"
                 android:textSize="18sp"
                 android:text="@string/recording_in_progress" />
 
@@ -39,7 +44,7 @@
             android:id="@+id/scrollablContent"
             android:layout_width="match_parent"
             android:paddingTop="15dp"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="8dp"
             android:layout_height="580dp"
             android:layout_weight="1">
 
@@ -101,7 +106,6 @@
             android:layout_gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
