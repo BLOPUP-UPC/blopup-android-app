@@ -21,15 +21,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.LinearLayout.LayoutParams
 import android.widget.Toast
@@ -58,13 +53,8 @@ import edu.upc.openmrs.utilities.ViewUtils.isEmpty
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.models.*
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.PersonAttribute
-import edu.upc.sdk.library.models.PersonAttributeType
-import edu.upc.sdk.library.models.PersonName
-import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils
@@ -81,7 +71,7 @@ import edu.upc.sdk.utilities.ToastUtil
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
-import java.util.Calendar
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -401,7 +391,11 @@ class AddEditPatientFragment : BaseFragment() {
         }
     }
 
+
     private fun setupViewsListeners() = with(binding) {
+
+        setLanguagesOptionsInSpinner()
+
         languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -475,6 +469,17 @@ class AddEditPatientFragment : BaseFragment() {
             estimatedMonth.addTextChangedListener(it)
             estimatedYear.addTextChangedListener(it)
         }
+    }
+
+    private fun setLanguagesOptionsInSpinner() {
+        val spinner = _binding!!.languageSpinner
+        val languagesArray = resources.getStringArray(R.array.languages)
+
+        val languagesAdapter =
+            ArrayAdapter<Any?>(requireContext(), R.layout.spinner_list, languagesArray)
+        languagesAdapter.setDropDownViewResource(R.layout.spinner_list)
+
+        spinner.adapter = languagesAdapter
     }
 
     private fun showLegalConsent(language: String) {

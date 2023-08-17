@@ -445,8 +445,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="40dp"
                                         android:layout_weight="1"
-                                        android:background="@drawable/admission_spinner"
-                                        android:entries="@array/languages" />
+                                        android:background="@drawable/admission_spinner" />
 
                                     <ImageView
                                         android:id="@+id/record_consent_saved"
