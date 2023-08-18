@@ -2,7 +2,9 @@ package edu.upc.openmrs.activities.addeditpatient
 
 import android.content.DialogInterface
 import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +36,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var playPauseButton: TextView
     private lateinit var stopButton: BottomAppBar
     private lateinit var mFileName: String
+    private lateinit var legalConsentWording: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,11 +51,22 @@ class LegalConsentDialogFragment : DialogFragment() {
         getRecordingFilePath().also { mFileName = it }
         audioRecorder = AudioRecorder(mFileName, requireContext(), getFileByLanguage(requireActivity(), TAG, languageCode))
 
+        setLegalConsentHTMLText()
         setLegalConsentWordingLanguage(languageCode!!)
         setupButtons()
         listenForPlayCompletion()
         isCancelableWhenNotRecording()
         return legalConsentBinding.root
+    }
+
+    private fun setLegalConsentHTMLText() {
+        legalConsentWording = legalConsentBinding.legalConsentWording
+        val legalConsentText = getString(R.string.legal_consent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            legalConsentWording.text = Html.fromHtml(legalConsentText, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            legalConsentWording.text = Html.fromHtml(legalConsentText)
+        }
     }
 
     private fun setLegalConsentWordingLanguage(language: String) {
@@ -92,7 +106,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private fun listenForPlayCompletion() {
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
             if (it) {
-                playPauseButton.isVisible = false
+                playPauseButton.visibility= View.GONE
                 stopButton.isClickable = true
                 stopButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.color_accent,null))
             }
@@ -140,11 +154,16 @@ class LegalConsentDialogFragment : DialogFragment() {
             setMargin(playPauseButton)
             stopButton.isVisible = true
             stopButton.isClickable = false
-            recordButton.isVisible = false
+            recordButton.visibility = View.GONE
             legalConsentBinding.legalConsentContainer.background =
                 context?.let { it1 -> ContextCompat.getDrawable(it1, R.drawable.orange_border) }
 
             legalConsentBinding.recordingInProgress.makeVisible()
+
+            val scrollView = legalConsentBinding.scrollWording
+            val params = scrollView.layoutParams
+            params.height = resources.getDimensionPixelSize(R.dimen.legal_consent)
+            scrollView.layoutParams = params
         }
     }
 

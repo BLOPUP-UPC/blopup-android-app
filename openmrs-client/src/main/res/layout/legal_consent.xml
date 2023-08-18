@@ -1,19 +1,19 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     android:id="@+id/legal_consent_container"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:paddingVertical="25dp"
+        android:paddingVertical="20dp"
         android:paddingHorizontal="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-            android:visibility="invisible"
+            android:visibility="gone"
             android:id="@+id/recordingInProgress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -41,18 +41,18 @@
         </LinearLayout>
 
         <ScrollView
-            android:id="@+id/scrollablContent"
+            android:id="@+id/scroll_wording"
             android:layout_width="match_parent"
             android:paddingTop="15dp"
             android:paddingHorizontal="8dp"
-            android:layout_height="580dp"
+            android:layout_height="0dp"
             android:layout_weight="1">
 
             <TextView
                 android:id="@+id/legal_consent_wording"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:text="@string/legal_consent"
                 android:textSize="@dimen/text_size_large"/>
         </ScrollView>
 
@@ -60,12 +60,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/record"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="14dp"
                 style="@style/loginButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
@@ -74,7 +74,7 @@
             <TextView
                 android:visibility="gone"
                 android:id="@+id/play_pause"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_accent"
@@ -91,11 +91,13 @@
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/stop"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:focusable="true"
-        android:visibility="gone"
+        android:layout_marginBottom="2dp"
+        android:layout_marginHorizontal="2dp"
         android:backgroundTint="@color/dark_grey_6x">
 
         <TextView

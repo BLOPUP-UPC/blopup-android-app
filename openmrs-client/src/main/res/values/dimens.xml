@@ -25,6 +25,7 @@
     <dimen name="settings_icon_size">24dp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="information_icon_size">48dp</dimen>
+    <dimen name="legal_consent">600dp</dimen>
     <dimen name="margin_short">8dp</dimen>
     <dimen name="margin_long">16dp</dimen>
     <dimen name="margin_small">4dp</dimen>
