@@ -1,31 +1,30 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/legal_consent_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:paddingVertical="20dp"
-        android:paddingHorizontal="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="20dp">
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/recordingInProgress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/recording_in_progress"
                 android:layout_marginEnd="15dp"
                 android:contentDescription="@string/recording_in_progress"
+                android:src="@drawable/recording_in_progress"
                 app:tint="@color/color_accent" />
 
             <TextView
@@ -33,27 +32,121 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:text="@string/recording_in_progress"
                 android:textColor="@color/color_accent"
-                android:textStyle="bold"
                 android:textSize="18sp"
-                android:text="@string/recording_in_progress" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <ScrollView
             android:id="@+id/scroll_wording"
             android:layout_width="match_parent"
-            android:paddingTop="15dp"
-            android:paddingHorizontal="8dp"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="15dp">
 
-            <TextView
-                android:id="@+id/legal_consent_wording"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_large"/>
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/legal_consent_wording"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dashboard_text_size" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/circle" />
+
+                    <TextView
+                        android:id="@+id/first_bullet_point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/first_bullet_point"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dashboard_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/circle" />
+
+                    <TextView
+                        android:id="@+id/second_bullet_point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/second_bullet_point"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dashboard_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/circle" />
+
+                    <TextView
+                        android:id="@+id/third_bullet_point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/third_bullet_point"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dashboard_text_size" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/circle" />
+
+                    <TextView
+                        android:id="@+id/forth_bullet_point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/fourth_bullet_point"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dashboard_text_size" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/legal_consent_wording_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bottom_text"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dashboard_text_size" />
+
+            </LinearLayout>
         </ScrollView>
 
         <LinearLayout
@@ -65,25 +158,25 @@
 
             <Button
                 android:id="@+id/record"
-                android:layout_marginTop="14dp"
                 style="@style/loginButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
+                android:layout_marginTop="14dp"
                 android:text="@string/record_legal_consent" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/play_pause"
-                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_accent"
-                android:textSize="18sp"
-                android:textAllCaps="true"
-                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="@string/pause" />
+                android:text="@string/pause"
+                android:textAllCaps="true"
+                android:textColor="@color/color_accent"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -91,23 +184,23 @@
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/stop"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:focusable="true"
-        android:layout_marginBottom="2dp"
         android:layout_marginHorizontal="2dp"
-        android:backgroundTint="@color/dark_grey_6x">
+        android:layout_marginBottom="2dp"
+        android:backgroundTint="@color/dark_grey_6x"
+        android:focusable="true"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/stop_wording"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/stop_save"
             android:layout_gravity="center"
+            android:text="@string/stop_save"
+            android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/white" />
+            android:textStyle="bold" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

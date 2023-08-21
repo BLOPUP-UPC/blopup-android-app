@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="legal_consent">
-        The main points of the information we have explained to you verbally and in a written format are: \n\n
-        You will participate in a study by Salut Sense Sostre that involves the measurement of blood pressure. We will give you action guidelines if it is too high and we will follow you up. This measurement does not carry any risks. \n\n
-        Your personal and medical data will only be known by us and by you. You will be able to see it and ask us to destroy it. \n\n
-        We will never communicate your individual data, only in an aggregated and statistical fashion. \n\n
-        Participation is voluntary and free, and you can stop participating whenever you want. \n\n
-        Now we will ask you to say your name: \n\n
-        Do you give your consent to participate in this study where we will take medical and personal data about you, we will store and process it, but we will never share it if it is not in an aggregated way? Please, answer yes or no:
-    </string>
+    <string name="legal_consent">We need to record the patient\'s consent to register personal information. We will read out loud the following text. \n\nOnce the recording starts you can <b>pause</b> and resume as many times as you want. \nOnce finished, press <b>Stop and send recording</b> to record the consent and be able to continue the patient registration process. \n\nThe main points of the information we have explained to you verbally and in a written format are: \n
+</string>
     <string name="english" translatable="false">English</string>
     <string name="catalan" translatable="false">Catalan</string>
     <string name="spanish" translatable="false">Spanish</string>
@@ -19,6 +12,11 @@
     <string name="portuguese" translatable="false">Portuguese</string>
     <string name="russian" translatable="false">Russian</string>
     <string name="ukrainian" translatable="false">Ukrainian</string>
+    <string name="first_bullet_point">You will participate in a study by Salut Sense Sostre that involves the measurement of blood pressure.</string>
+    <string name="second_bullet_point">We will give you action guidelines if it is too high and we will follow you up. This measurement does not carry any risks.</string>
+    <string name="third_bullet_point">Your personal and medical data will only be known by us and by you. You will be able to see it and ask us to destroy it. We will never communicate your individual data, only in an aggregated and statistical fashion.</string>
+    <string name="fourth_bullet_point">Participation is voluntary and free, and you can stop participating whenever you want.\n</string>
+    <string name="bottom_text">Now we will ask you to say your name: \n\nDo you give your consent to participate in this study where we will take medical and personal data about you, we will store and process it, but we will never share it if it is not in an aggregated way? \n\nPlease, answer yes or no:\n</string>
     <string-array name="languages">
         <item>Select language</item>
         <item>Catalan</item>

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="legal_consent">
-        Los puntos principales de la información que te hemos dado oralmente y por escrito son: \n\n
-        Participarás en un estudio de Salut Sense Sostre que implica la medición de la tensión arterial. \n\n
-        Te daremos pautas de actuación si es demasiado elevada y te haremos un seguimiento. Esta medida no comporta ningún riesgo. \n\n
-        Tus datos personales y médicos sólo los sabremos nosotros y tú. Podrás verlos y pedir que los destruyamos. Nunca comunicaremos tus datos individuales, sólo de forma agregada y estadística. \n\n
-        La participación es voluntaria y gratuita, y podrás dejar de participar cuando quieras. \n\n
-        Ahora te pediremos que digas tu nombre: \n\n
-        ¿Das tu consentimiento para participar en este estudio donde tomaremos datos médicos y personales tuyos, los guardaremos y procesaremos, pero ¿nunca los comunicaremos si no es de forma agregada? Responde si o no: \n\n
+        Necesitamos grabar el consentimiento del paciente para poder registrar sus datos personales. A continuación leeremos el siguiente texto en voz alta.\n\nUna vez que comience la grabación podrás pausar y retomar las veces que quieras.\nUna vez finalizado presiona Detener y enviar grabación para grabar el consentimiento y poder continuar el proceso de registro del paciente.\n\nLos puntos principales de la información que te hemos dado oralmente y por escrito son:\n
     </string>
+    <string name="first_bullet_point">Participarás en un estidio de Salud Sense Sostre que implica la medición de la tensión arterial.</string>
+    <string name="second_bullet_point">Te daremos pautas de actuación si es demasiado elevada y te haremos un seguimiento. Esta medida no comporta ningún riesgo.</string>
+    <string name="third_bullet_point">Tus datos personales y médicos sólo los sabremos nosotros y tú. Podrás verlos y pedir que los destruyamos. Nunca comunicaremos tus datos individuales, sólo de forma agregada y estadística.</string>
+    <string name="fourth_bullet_point">La participación es voluntaria y gratuita, y podrás dejar de participar cuando quieras.\n</string>
+    <string name="bottom_text">Ahora te pediremos que digas tu nombre: \n\n¿Das tu consentimiento para participar en este estudio donde tomaremos datos médicos y personales tuyos, los guardaremos y procesaremos, pero ¿nunca los comunicaremos si no es de forma agregada?\n\nResponde si o no: \n</string>
     <string name="english">Inglés</string>
     <string name="catalan">Catalán</string>
     <string name="spanish">Español</string>

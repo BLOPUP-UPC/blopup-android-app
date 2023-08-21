@@ -2,9 +2,7 @@ package edu.upc.openmrs.activities.addeditpatient
 
 import android.content.DialogInterface
 import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,9 +47,12 @@ class LegalConsentDialogFragment : DialogFragment() {
         val languageCode = context?.let { LanguageUtils.getLanguageCode(language, it) }
 
         getRecordingFilePath().also { mFileName = it }
-        audioRecorder = AudioRecorder(mFileName, requireContext(), getFileByLanguage(requireActivity(), TAG, languageCode))
+        audioRecorder = AudioRecorder(
+            mFileName,
+            requireContext(),
+            getFileByLanguage(requireActivity(), TAG, languageCode)
+        )
 
-        setLegalConsentHTMLText()
         setLegalConsentWordingLanguage(languageCode!!)
         setupButtons()
         listenForPlayCompletion()
@@ -59,21 +60,31 @@ class LegalConsentDialogFragment : DialogFragment() {
         return legalConsentBinding.root
     }
 
-    private fun setLegalConsentHTMLText() {
-        legalConsentWording = legalConsentBinding.legalConsentWording
-        val legalConsentText = getString(R.string.legal_consent)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            legalConsentWording.text = Html.fromHtml(legalConsentText, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            legalConsentWording.text = Html.fromHtml(legalConsentText)
-        }
-    }
-
     private fun setLegalConsentWordingLanguage(language: String) {
         val legalConsentWording = legalConsentBinding.legalConsentWording
+        val legalConsentWordingTwo = legalConsentBinding.firstBulletPoint
+        val legalConsentWordingThree = legalConsentBinding.secondBulletPoint
+        val legalConsentWordingFour = legalConsentBinding.thirdBulletPoint
+        val legalConsentWordingFive = legalConsentBinding.forthBulletPoint
+        val legalConsentWordingSix = legalConsentBinding.legalConsentWordingBottom
 
         legalConsentWording.text = context?.let {
             LanguageUtils.getLocaleStringResource(Locale(language), R.string.legal_consent, it)
+        }
+        legalConsentWordingTwo.text = context?.let {
+            LanguageUtils.getLocaleStringResource(Locale(language), R.string.first_bullet_point, it)
+        }
+        legalConsentWordingThree.text = context?.let {
+            LanguageUtils.getLocaleStringResource(Locale(language), R.string.second_bullet_point, it)
+        }
+        legalConsentWordingFour.text = context?.let {
+            LanguageUtils.getLocaleStringResource(Locale(language), R.string.third_bullet_point, it)
+        }
+        legalConsentWordingFive.text = context?.let {
+            LanguageUtils.getLocaleStringResource(Locale(language), R.string.fourth_bullet_point, it)
+        }
+        legalConsentWordingSix.text = context?.let {
+            LanguageUtils.getLocaleStringResource(Locale(language), R.string.bottom_text, it)
         }
     }
 
@@ -106,9 +117,10 @@ class LegalConsentDialogFragment : DialogFragment() {
     private fun listenForPlayCompletion() {
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
             if (it) {
-                playPauseButton.visibility= View.GONE
+                playPauseButton.visibility = View.GONE
                 stopButton.isClickable = true
-                stopButton.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.color_accent,null))
+                stopButton.backgroundTintList =
+                    ColorStateList.valueOf(resources.getColor(R.color.color_accent, null))
             }
         }
     }
