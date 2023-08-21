@@ -60,30 +60,17 @@ class LegalConsentDialogFragment : DialogFragment() {
     }
 
     private fun setLegalConsentWordingLanguage(language: String) {
-        val legalConsentWording = legalConsentBinding.legalConsentWording
-        val legalConsentWordingTwo = legalConsentBinding.firstBulletPoint
-        val legalConsentWordingThree = legalConsentBinding.secondBulletPoint
-        val legalConsentWordingFour = legalConsentBinding.thirdBulletPoint
-        val legalConsentWordingFive = legalConsentBinding.forthBulletPoint
-        val legalConsentWordingSix = legalConsentBinding.legalConsentWordingBottom
+        val viewsAndResourceIds = listOf(
+            Pair(legalConsentBinding.legalConsentWording, R.string.legal_consent),
+            Pair(legalConsentBinding.firstBulletPoint, R.string.first_bullet_point),
+            Pair(legalConsentBinding.secondBulletPoint, R.string.second_bullet_point),
+            Pair(legalConsentBinding.thirdBulletPoint, R.string.third_bullet_point),
+            Pair(legalConsentBinding.forthBulletPoint, R.string.fourth_bullet_point),
+            Pair(legalConsentBinding.legalConsentWordingBottom, R.string.bottom_text)
+        )
 
-        legalConsentWording.text = context?.let {
-            LanguageUtils.getLocaleStringResource(Locale(language), R.string.legal_consent, it)
-        }
-        legalConsentWordingTwo.text = context?.let {
-            LanguageUtils.getLocaleStringResource(Locale(language), R.string.first_bullet_point, it)
-        }
-        legalConsentWordingThree.text = context?.let {
-            LanguageUtils.getLocaleStringResource(Locale(language), R.string.second_bullet_point, it)
-        }
-        legalConsentWordingFour.text = context?.let {
-            LanguageUtils.getLocaleStringResource(Locale(language), R.string.third_bullet_point, it)
-        }
-        legalConsentWordingFive.text = context?.let {
-            LanguageUtils.getLocaleStringResource(Locale(language), R.string.fourth_bullet_point, it)
-        }
-        legalConsentWordingSix.text = context?.let {
-            LanguageUtils.getLocaleStringResource(Locale(language), R.string.bottom_text, it)
+        for ((view, resourceId) in viewsAndResourceIds) {
+            view.text = LanguageUtils.getLocaleStringResource(Locale(language), resourceId, context!!)
         }
     }
 
