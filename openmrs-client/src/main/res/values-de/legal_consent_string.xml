@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="legal_consent">
-        Die wichtigsten Punkte der Informationen die wir Ihnen mündlich und schriftlich mitgeteilt haben sind folgende: \n\n
-        Sie nehmen an einer Gesundheitsstudie für Obdachlose teil, bei der Ihr Blutdruck gemessen wird. \n\n
-        Wir werden Sie kontaktieren, wenn die Werte Ihres Blutdrucks zu hoch sind, und Ihnen Anweisungen geben wie Sie handeln müssen. Diese Maßnahmen sind komplett Risikofrei. \n\n
-        Die Ansicht Ihrer Personalien und Gesundheitsdaten werden nur an Sie selbst und uns gewährt. Sie können  jederzeit die Datenvernichtung anfordern. Ihre  personenbezogenen Daten werden niemals weitergeleitet, und wenn, dann nur in zusammengefasster Form für statistische Zwecke. \n\n
-        Die Teilnahme ist freiwillig und kostenlos, und Sie können diese jederzeit beenden. \n\n
-        Bitte nennen Sie jetzt Ihren Namen: \n\n
-        Willigen Sie ein, an dieser Studie teilzunehmen, bei der Ihre Personalien und Gesundheitsdaten erfasst, gespeichert und verarbeitet, diese jedoch ausschließlich nur in zusammengefasster Form weitergeleitet werden? \n\n
-        Antworten Sie bitte mit ja oder nein: \n\n
+        Für die Erfassung personenbezogener Daten ist die Einwilligung des Patienten erforderlich. Dann lesen wir den folgenden Text laut vor.\n\nSobald die Aufzeichnung beginnt, können Sie sie beliebig oft pausieren und fortsetzen.\nWenn Sie fertig sind, klicken Sie auf Stopp und Aufzeichnung senden, um die Einwilligung aufzuzeichnen und mit der Patientenregistrierung fortfahren zu können Prozess.\n\nDie wichtigsten Punkte der Informationen die wir Ihnen mündlich und schriftlich mitgeteilt haben sind folgende:\n
     </string>
+    <string name="first_bullet_point">Sie nehmen an einer Gesundheitsstudie für Obdachlose teil, bei der Ihr Blutdruck gemessen wird.</string>
+    <string name="second_bullet_point">Wir werden Sie kontaktieren, wenn die Werte Ihres Blutdrucks zu hoch sind, und Ihnen Anweisungen geben wie Sie handeln müssen. Diese Maßnahmen sind komplett Risikofrei.</string>
+    <string name="third_bullet_point">Die Ansicht Ihrer Personalien und Gesundheitsdaten werden nur an Sie selbst und uns gewährt. Sie können  jederzeit die Datenvernichtung anfordern. Ihre  personenbezogenen Daten werden niemals weitergeleitet, und wenn, dann nur in zusammengefasster Form für statistische Zwecke.</string>
+    <string name="fourth_bullet_point">Die Teilnahme ist freiwillig und kostenlos, und Sie können diese jederzeit beenden.\n</string>
+    <string name="bottom_text">Bitte nennen Sie jetzt Ihren Namen: \n\nWilligen Sie ein, an dieser Studie teilzunehmen, bei der Ihre Personalien und Gesundheitsdaten erfasst, gespeichert und verarbeitet, diese jedoch ausschließlich nur in zusammengefasster Form weitergeleitet werden?\n\nAntworten Sie bitte mit ja oder nein:\n</string>
 </resources>

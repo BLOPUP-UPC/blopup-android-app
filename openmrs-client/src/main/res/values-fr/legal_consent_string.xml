@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="legal_consent">
-        L\'essentiel des informations que nous vous avons données oralement et par écrit sont: \n\n
-        Vous participerez à une étude de Salut Sense Sostre qui consiste à mesurer la tension artérielle. Nous vous donnerons des directives si elle est trop élevée et nous ferons un suivi avec vous. Cette mesure de tension ne comporte aucun risque. \n\n
-        Vos données personnelles et médicales ne seront connues que de nous et de vous. Vous pourrez les consulter et nous demander de les effacer. \n\n
-        Nous ne communiquerons jamais vos données individuelles, uniquement sous forme globale à des fins statistiques.  \n\n
-        La participation est volontaire et gratuite, et vous pouvez arrêter de participer quand vous voulez. \n\n
-        Nous allons maintenant vous demander de dire votre nom :\n\n
-        Donnez-vous votre consentement pour participer à cette étude où nous prendrons vos données médicales et personnelles, que nous conserverons et traiterons, cependant que nous ne communiquerons jamais si elles ne sont pas agrégées? Répond par oui ou non: \n\n
+        Nous devons enregistrer le consentement du patient pour pouvoir enregistrer ses données personnelles. Ensuite, nous lirons le texte suivant à voix haute.\n\nUne fois l\'enregistrement démarré, vous pouvez mettre en pause et reprendre autant de fois que vous le souhaitez.\nUne fois terminé, appuyez sur Arrêter et envoyer l\'enregistrement pour enregistrer le consentement et pouvoir continuer l\'enregistrement du patient processus.\n\nL\'essentiel des informations que nous vous avons données oralement et par écrit sont:\n
     </string>
+    <string name="first_bullet_point">Vous participerez à une étude de Salut Sense Sostre qui consiste à mesurer la tension artérielle.</string>
+    <string name="second_bullet_point">Nous vous donnerons des directives si elle est trop élevée et nous ferons un suivi avec vous. Cette mesure de tension ne comporte aucun risque.</string>
+    <string name="third_bullet_point">Vos données personnelles et médicales ne seront connues que de nous et de vous. Vous pourrez les consulter et nous demander de les effacer. Nous ne communiquerons jamais vos données individuelles, uniquement sous forme globale à des fins statistiques.</string>
+    <string name="fourth_bullet_point">La participation est volontaire et gratuite, et vous pouvez arrêter de participer quand vous voulez.\n</string>
+    <string name="bottom_text">Nous allons maintenant vous demander de dire votre nom :\n\nDonnez-vous votre consentement pour participer à cette étude où nous prendrons vos données médicales et personnelles, que nous conserverons et traiterons, cependant que nous ne communiquerons jamais si elles ne sont pas agrégées?\n\nRépond par oui ou non:\n</string>
 </resources>

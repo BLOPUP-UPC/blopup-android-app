@@ -34,7 +34,6 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var playPauseButton: TextView
     private lateinit var stopButton: BottomAppBar
     private lateinit var mFileName: String
-    private lateinit var legalConsentWording: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
