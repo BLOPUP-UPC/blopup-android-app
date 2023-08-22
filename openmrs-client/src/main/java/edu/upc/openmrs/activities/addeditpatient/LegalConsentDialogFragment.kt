@@ -3,6 +3,7 @@ package edu.upc.openmrs.activities.addeditpatient
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -60,17 +62,25 @@ class LegalConsentDialogFragment : DialogFragment() {
     }
 
     private fun setLegalConsentWordingLanguage(language: String) {
-        val viewsAndResourceIds = listOf(
-            Pair(legalConsentBinding.legalConsentWording, R.string.legal_consent),
-            Pair(legalConsentBinding.firstBulletPoint, R.string.first_bullet_point),
-            Pair(legalConsentBinding.secondBulletPoint, R.string.second_bullet_point),
-            Pair(legalConsentBinding.thirdBulletPoint, R.string.third_bullet_point),
-            Pair(legalConsentBinding.forthBulletPoint, R.string.fourth_bullet_point),
-            Pair(legalConsentBinding.legalConsentWordingBottom, R.string.bottom_text)
-        )
+        context?.let {
+            val viewsAndResourceIds = listOf(
+                Pair(legalConsentBinding.legalConsentWording, R.string.legal_consent),
+                Pair(legalConsentBinding.firstBulletPoint, R.string.first_bullet_point),
+                Pair(legalConsentBinding.secondBulletPoint, R.string.second_bullet_point),
+                Pair(legalConsentBinding.thirdBulletPoint, R.string.third_bullet_point),
+                Pair(legalConsentBinding.forthBulletPoint, R.string.fourth_bullet_point),
+                Pair(legalConsentBinding.legalConsentWordingBottom, R.string.bottom_text)
+            )
 
-        for ((view, resourceId) in viewsAndResourceIds) {
-            view.text = LanguageUtils.getLocaleStringResource(Locale(language), resourceId, context!!)
+            for ((view, resourceId) in viewsAndResourceIds) {
+                val wording = LanguageUtils.getLocaleStringResource(Locale(language), resourceId, it)
+                if(view == legalConsentBinding.legalConsentWording){
+                    val styledLegalConsentText = HtmlCompat.fromHtml(wording, Html.FROM_HTML_MODE_LEGACY)
+                    legalConsentBinding.legalConsentWording.text = styledLegalConsentText
+                } else {
+                    view.text = wording
+                }
+            }
         }
     }
 
