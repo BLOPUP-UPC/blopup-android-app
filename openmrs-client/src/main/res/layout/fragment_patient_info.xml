@@ -378,7 +378,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:padding="12dp"
+                                    android:padding="17dp"
                                     android:text="@string/country_of_birth_default"
                                     app:drawableEndCompat="@drawable/black_arrow_down" />
 
@@ -443,7 +443,7 @@
                                     <Spinner
                                         android:id="@+id/language_spinner"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="40dp"
+                                        android:layout_height="52dp"
                                         android:layout_weight="1"
                                         android:background="@drawable/admission_spinner" />
 
@@ -465,6 +465,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="15dp"
                                     android:clickable="true"
                                     android:enabled="false"
                                     android:focusable="true"
