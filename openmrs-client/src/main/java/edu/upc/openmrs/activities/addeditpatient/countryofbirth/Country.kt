@@ -1,9 +1,9 @@
-package edu.upc.openmrs.activities.addeditpatient.nationality
+package edu.upc.openmrs.activities.addeditpatient.countryofbirth
 
 import android.content.Context
 import edu.upc.R
 
-enum class Nationality(val label: Int, val flag: Int) {
+enum class Country(val label: Int, val flag: Int) {
 
     AFGHANISTAN(R.string.afghanistan, R.drawable.flag_afghanistan),
     ALBANIA(R.string.albania, R.drawable.flag_albania),

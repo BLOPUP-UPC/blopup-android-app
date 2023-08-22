@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="nationality_default">Selecciona la nacionalidad</string>
+    <string name="country_of_birth_default">Selecciona el país de nacimiento</string>
     <string name="search_hint_text">Buscar…</string>
     <string name="no_result_found">No se encontraron resultados</string>
     <string name="afghanistan">Afganistán</string>

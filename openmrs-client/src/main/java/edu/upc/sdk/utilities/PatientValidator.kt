@@ -30,8 +30,8 @@ class PatientValidator(private val patient: Patient,
             if (familyName.isNullOrBlank() || !validateText(familyName, ILLEGAL_CHARACTERS)) return false
         }
 
-        //Validate Nationality
-        if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID) }) return false
+        //Validate Country of birth
+        if(!attributes.any { it.attributeType?.uuid.equals(BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID) }) return false
 
         //Validate Legal Consent Recording
         return isLegalRecordingPresent

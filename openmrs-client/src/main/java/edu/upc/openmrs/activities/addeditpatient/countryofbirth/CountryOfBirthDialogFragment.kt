@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.addeditpatient.nationality
+package edu.upc.openmrs.activities.addeditpatient.countryofbirth
 
 import android.os.Bundle
 import android.text.Editable
@@ -10,27 +10,27 @@ import android.widget.AdapterView
 import android.widget.ListView
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
-import edu.upc.databinding.DialogSearchNationalityBinding
+import edu.upc.databinding.DialogSearchCountryOfBirthBinding
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment
 
 
-class NationalityDialogFragment : DialogFragment() {
-    private lateinit var nationalityDialogBinding: DialogSearchNationalityBinding
+class CountryOfBirthDialogFragment : DialogFragment() {
+    private lateinit var countryOfBirthBinding: DialogSearchCountryOfBirthBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        nationalityDialogBinding = DialogSearchNationalityBinding.inflate(inflater, container, false)
+        countryOfBirthBinding = DialogSearchCountryOfBirthBinding.inflate(inflater, container, false)
 
-        val searchText = nationalityDialogBinding.editTextSearch
-        val listNationalities = nationalityDialogBinding.listView
+        val searchText = countryOfBirthBinding.editTextSearch
+        val listCountries = countryOfBirthBinding.listView
 
-        val nationalities = Nationality.values()
+        val countries = Country.values()
 
-        val adapter = NationalityAdapter(requireContext(), R.layout.item_nationality, nationalities)
-        listNationalities.adapter = adapter
+        val adapter = CountryAdapter(requireContext(), R.layout.item_country, countries)
+        listCountries.adapter = adapter
 
         searchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {}
@@ -42,31 +42,31 @@ class NationalityDialogFragment : DialogFragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-        onNationalitySelection(listNationalities, adapter)
+        onCountrySelection(listCountries, adapter)
 
         closeDialog()
 
-        return nationalityDialogBinding.root
+        return countryOfBirthBinding.root
     }
 
     private fun closeDialog() {
-        val closeDialogImage = nationalityDialogBinding.imgDismiss
+        val closeDialogImage = countryOfBirthBinding.imgDismiss
         closeDialogImage.setOnClickListener {
             dialog?.dismiss()
         }
     }
 
-    private fun onNationalitySelection(
-        listNationalities: ListView,
-        adapter: NationalityAdapter
+    private fun onCountrySelection(
+        listCountries: ListView,
+        adapter: CountryAdapter
     ) {
-        listNationalities.onItemClickListener =
+        listCountries.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                val selectedNationality = adapter.getItem(position)
+                val selectedCountry = adapter.getItem(position)
 
                 val parentFragment = parentFragment
                 if (parentFragment is AddEditPatientFragment) {
-                    parentFragment.onNationalitySelected(selectedNationality)
+                    parentFragment.onCountrySelected(selectedCountry)
                 }
                 dialog?.dismiss()
             }

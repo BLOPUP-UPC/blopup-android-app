@@ -50,7 +50,7 @@ class PatientValidatorTest : ACUnitTestBase() {
     @Test
     fun `validate patient with invalid family name`() {
         val validator = PatientValidator(
-            createValidPatient().apply { name.familyName = INVALID_NAME_3 },
+            createValidPatient().apply { name.familyName = INVALID_NAME_2 },
             isLegalRecordingPresent = true
         )
 
@@ -84,7 +84,7 @@ class PatientValidatorTest : ACUnitTestBase() {
     }
 
     @Test
-    fun `validate patient missing nationality`() {
+    fun `validate patient missing country of birth`() {
         val validator = PatientValidator(
             createValidPatient().apply { attributes = emptyList() },
             isLegalRecordingPresent = true
@@ -119,13 +119,13 @@ class PatientValidatorTest : ACUnitTestBase() {
         assert(isValid)
     }
 
-    private fun createValidPatient() = updatePatientData(1L, newPatientWithNationality())
+    private fun createValidPatient() = updatePatientData(1L, newPatientWithCountryOfBirth())
 
-    private fun newPatientWithNationality() = Patient().apply {
+    private fun newPatientWithCountryOfBirth() = Patient().apply {
         attributes.apply {
             listOf(PersonAttribute().apply {
                 attributeType = PersonAttributeType().apply {
-                    uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
+                    uuid = BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID
                 }
             })
         }
@@ -134,7 +134,6 @@ class PatientValidatorTest : ACUnitTestBase() {
 
     companion object {
         private const val INVALID_NAME_1 = "#James"
-        private const val INVALID_NAME_2 = "John@Doe"
-        private const val INVALID_NAME_3 = "Em*%ile"
+        private const val INVALID_NAME_2 = "Em*%ile"
     }
 }

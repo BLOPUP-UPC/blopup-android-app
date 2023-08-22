@@ -5,9 +5,8 @@ import android.content.res.Configuration
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.R
-import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
-import edu.upc.openmrs.activities.addeditpatient.nationality.NationalityAdapter
-import io.mockk.*
+import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
+import edu.upc.openmrs.activities.addeditpatient.countryofbirth.CountryAdapter
 import junit.framework.TestCase.assertEquals
 
 import org.junit.Before
@@ -16,18 +15,18 @@ import org.junit.runner.RunWith
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class NationalityAdapterTest {
-    private lateinit var adapter: NationalityAdapter
+class CountryAdapterTest {
+    private lateinit var adapter: CountryAdapter
 
     @Before
     internal fun setup() {
         val data = arrayOf(
-            Nationality.ALBANIA,
-            Nationality.ALGERIA,
-            Nationality.ANDORRA,
-            Nationality.ARGENTINA
+            Country.ALBANIA,
+            Country.ALGERIA,
+            Country.ANDORRA,
+            Country.ARGENTINA
         )
-        adapter = NationalityAdapter(ApplicationProvider.getApplicationContext(), R.layout.item_nationality, data)
+        adapter = CountryAdapter(ApplicationProvider.getApplicationContext(), R.layout.item_country, data)
     }
 
     @Test
@@ -38,7 +37,7 @@ class NationalityAdapterTest {
     @Test
     fun `when search for Algeria then the list should only return one item`(){
 
-        val expected = arrayOf(Nationality.ALGERIA)
+        val expected = arrayOf(Country.ALGERIA)
 
         adapter.filter.filter("Algeria")
 
@@ -51,7 +50,7 @@ class NationalityAdapterTest {
     fun `when search for 'Al' then the list should return 2 items`(){
 
         val expected = arrayOf(
-            Nationality.ALBANIA, Nationality.ALGERIA)
+            Country.ALBANIA, Country.ALGERIA)
 
         adapter.filter.filter("Al")
 
@@ -63,7 +62,7 @@ class NationalityAdapterTest {
     @Test
     fun `when search for 'z' then the list should be empty`(){
 
-        val expected = emptyArray<Nationality>()
+        val expected = emptyArray<Country>()
 
         adapter.filter.filter("z")
 
@@ -74,13 +73,13 @@ class NationalityAdapterTest {
 
     @Test
     fun `when language is set to Spain should sort alphabetically by translated names`() {
-        val data = arrayOf(Nationality.SOUTH_SUDAN, Nationality.SPAIN)
+        val data = arrayOf(Country.SOUTH_SUDAN, Country.SPAIN)
 
         val context: Context = getContextWithSpanishLocale()
 
-        adapter = NationalityAdapter(context, R.layout.item_nationality, data)
+        adapter = CountryAdapter(context, R.layout.item_country, data)
 
-        val expected = arrayOf(Nationality.SPAIN, Nationality.SOUTH_SUDAN)
+        val expected = arrayOf(Country.SPAIN, Country.SOUTH_SUDAN)
 
         adapter.filter.filter("")
 

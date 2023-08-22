@@ -27,7 +27,7 @@ import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
-import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
+import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.sdk.library.models.OperationType.PatientFetching
@@ -120,11 +120,11 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                 patientDetailsBirthDate.text = convertTime(longTime)
             }
             patient.attributes?.forEach { attribute ->
-                val nationalityValue = attribute.value?.uppercase()
-                if (attribute.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID) {
-                    val nationality = nationalityValue?.let { Nationality.valueOf(it) }
-                    if (nationality != null) {
-                        patientDetailsNationality.text = nationality.getLabel(requireContext())
+                val countryOfBirthValue = attribute.value?.uppercase()
+                if (attribute.attributeType?.uuid == BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID) {
+                    val country = countryOfBirthValue?.let { Country.valueOf(it) }
+                    if (country != null) {
+                        patientDetailsCountryOfBirth.text = country.getLabel(requireContext())
                     }
                 }
             }

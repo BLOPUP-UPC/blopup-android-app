@@ -106,13 +106,13 @@ ACUnitTestBase {
         patient.setBirthdate("25-02-2016");
         patient.setDeceased(false);
         patient.setCauseOfDeath(new Resource());
-        patient.setAttributes(createNationalityAttribute());
+        patient.setAttributes(createCountryOfBirthAttribute());
         return patient;
     }
 
-    private List<PersonAttribute> createNationalityAttribute() {
+    private List<PersonAttribute> createCountryOfBirthAttribute() {
         PersonAttributeType attributeType = new PersonAttributeType();
-        attributeType.setUuid(BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID);
+        attributeType.setUuid(BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID);
         PersonAttribute personAttribute = new PersonAttribute();
         personAttribute.setAttributeType(attributeType);
         return Collections.singletonList(personAttribute);

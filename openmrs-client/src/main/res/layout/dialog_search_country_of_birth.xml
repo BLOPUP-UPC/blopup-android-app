@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nationalitySpinner"
+    android:id="@+id/countryOfBirthSpinner"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_toStartOf="@+id/img_dismiss"
-                android:text="@string/nationality_default"
+                android:text="@string/country_of_birth_default"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/secondary_text_light" />
 

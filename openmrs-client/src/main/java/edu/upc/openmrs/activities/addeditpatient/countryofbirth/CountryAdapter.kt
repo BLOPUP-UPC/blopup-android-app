@@ -1,22 +1,25 @@
-package edu.upc.openmrs.activities.addeditpatient.nationality
+package edu.upc.openmrs.activities.addeditpatient.countryofbirth
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Filter
+import android.widget.ImageView
+import android.widget.TextView
 import edu.upc.R
 import java.util.*
 
-class NationalityAdapter(
+class CountryAdapter(
     context: Context,
     resource: Int,
-    nationalityList: Array<Nationality>
-) : ArrayAdapter<Nationality>(context, resource, nationalityList) {
+    countryList: Array<Country>
+) : ArrayAdapter<Country>(context, resource, countryList) {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var originalList: Array<Nationality> = nationalityList.sortedBy { it.getLabel(context) }.toTypedArray()
-    var filteredList: Array<Nationality> = nationalityList.sortedBy { it.getLabel(context) }.toTypedArray()
+    private var originalList: Array<Country> = countryList.sortedBy { it.getLabel(context) }.toTypedArray()
+    var filteredList: Array<Country> = countryList.sortedBy { it.getLabel(context) }.toTypedArray()
 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -24,33 +27,33 @@ class NationalityAdapter(
         val holder: ViewHolder
 
         if (convertView == null) {
-            view = inflater.inflate(R.layout.item_nationality, parent, false)
+            view = inflater.inflate(R.layout.item_country, parent, false)
             holder = ViewHolder()
             holder.imageViewFlag = view.findViewById(R.id.flag_image)
-            holder.textViewNationality = view.findViewById(R.id.country_name)
+            holder.textViewCountry = view.findViewById(R.id.country_name)
             view.tag = holder
         } else {
             view = convertView
             holder = convertView.tag as ViewHolder
         }
 
-        val nationality = getItem(position)
-        holder.textViewNationality?.text = nationality.getLabel(context)
-        nationality.flag.let { holder.imageViewFlag?.setImageResource(it) }
+        val country = getItem(position)
+        holder.textViewCountry?.text = country.getLabel(context)
+        country.flag.let { holder.imageViewFlag?.setImageResource(it) }
 
         return view
     }
 
     private class ViewHolder {
         var imageViewFlag: ImageView? = null
-        var textViewNationality: TextView? = null
+        var textViewCountry: TextView? = null
     }
 
     override fun getCount(): Int {
         return filteredList.size
     }
 
-    override fun getItem(position: Int): Nationality {
+    override fun getItem(position: Int): Country {
         return filteredList[position]
     }
 
@@ -61,8 +64,8 @@ class NationalityAdapter(
                 val searchText = text.toString().lowercase(Locale.getDefault())
 
                 filteredList = if (searchText.isNotEmpty()) {
-                    originalList.filter { nationality ->
-                        nationality.getLabel(context).lowercase(Locale.getDefault()).contains(searchText)
+                    originalList.filter { country ->
+                        country.getLabel(context).lowercase(Locale.getDefault()).contains(searchText)
                     }.toTypedArray()
                 } else {
                     originalList
@@ -75,7 +78,7 @@ class NationalityAdapter(
             }
 
             override fun publishResults(constraint: CharSequence, results: FilterResults) {
-                filteredList = results.values as Array<Nationality>
+                filteredList = results.values as Array<Country>
                 notifyDataSetChanged()
             }
         }

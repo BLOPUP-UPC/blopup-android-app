@@ -41,8 +41,8 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.BaseFragment
-import edu.upc.openmrs.activities.addeditpatient.nationality.Nationality
-import edu.upc.openmrs.activities.addeditpatient.nationality.NationalityDialogFragment
+import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
+import edu.upc.openmrs.activities.addeditpatient.countryofbirth.CountryOfBirthDialogFragment
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.listeners.watcher.DateOfBirthTextWatcher
@@ -77,8 +77,8 @@ import java.util.*
 @AndroidEntryPoint
 class AddEditPatientFragment : BaseFragment() {
     private var legalConsentDialog: LegalConsentDialogFragment? = null
-    private var nationalityDialogFragment: NationalityDialogFragment? = null
-    private var patientNationality: Nationality? = null
+    private var countryOfBirthDialogFragment: CountryOfBirthDialogFragment? = null
+    private var patientCountry: Country? = null
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
 
@@ -100,7 +100,7 @@ class AddEditPatientFragment : BaseFragment() {
         setupObservers()
 
         setupViewsListeners()
-        setNationalitySpinner()
+        setCountrySpinner()
 
         fillFormFields()
 
@@ -117,25 +117,25 @@ class AddEditPatientFragment : BaseFragment() {
     private fun addBottomMargin() {
         val densityOperator = context?.resources?.displayMetrics?.density?.toInt()
 
-        val bottomMargin = binding.linearLayoutNationality.layoutParams as LayoutParams
+        val bottomMargin = binding.linearLayoutCountryOfBirth.layoutParams as LayoutParams
         bottomMargin.bottomMargin = densityOperator!! * 90
-        binding.linearLayoutNationality.layoutParams = bottomMargin
+        binding.linearLayoutCountryOfBirth.layoutParams = bottomMargin
     }
 
-    private fun setNationalitySpinner() {
-        val nationalityTextView = binding.nationality
+    private fun setCountrySpinner() {
+        val countryOfBirthTextView = binding.countryOfBirth
 
-        nationalityTextView.setOnClickListener {
+        countryOfBirthTextView.setOnClickListener {
             // Initialize dialog
-            nationalityDialogFragment = NationalityDialogFragment()
-            nationalityDialogFragment?.show(childFragmentManager, null)
-            childFragmentManager.findFragmentById(R.id.nationalitySpinner)?.onStart()
+            countryOfBirthDialogFragment = CountryOfBirthDialogFragment()
+            countryOfBirthDialogFragment?.show(childFragmentManager, null)
+            childFragmentManager.findFragmentById(R.id.countryOfBirthSpinner)?.onStart()
         }
     }
 
-    fun onNationalitySelected(nationality: Nationality) {
-        patientNationality = nationality
-        binding.nationality.text = nationality.getLabel(requireContext())
+    fun onCountrySelected(country: Country) {
+        patientCountry = country
+        binding.countryOfBirth.text = country.getLabel(requireContext())
     }
 
     private fun setupObservers() {
@@ -252,14 +252,14 @@ class AddEditPatientFragment : BaseFragment() {
                 binding.gender.check(R.id.nonBinary)
             }
 
-            val nationalityLabel = attributes
-                                    .firstOrNull { it.attributeType?.uuid == BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID }
+            val countryOfBirthLabel = attributes
+                                    .firstOrNull { it.attributeType?.uuid == BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID }
                                     ?.value
                                     ?.uppercase()
 
-            if (nationalityLabel === null) { binding.nationality.text = context?.getString(R.string.nationality_default)}
-            else Nationality.valueOf(nationalityLabel).getLabel(requireContext())
-                .also { binding.nationality.text = it }
+            if (countryOfBirthLabel === null) { binding.countryOfBirth.text = context?.getString(R.string.country_of_birth_default)}
+            else Country.valueOf(countryOfBirthLabel).getLabel(requireContext())
+                .also { binding.countryOfBirth.text = it }
 
             binding.linearLayoutConsent.makeGone()
             addBottomMargin()
@@ -354,16 +354,16 @@ class AddEditPatientFragment : BaseFragment() {
                     .print(viewModel.dateHolder)
         }
 
-        /* Nationality */
-        if (binding.nationality.text == context?.getString(R.string.nationality_default)) {
-            nationalityerror.makeVisible()
+        /* Country of Birth */
+        if (binding.countryOfBirth.text == context?.getString(R.string.country_of_birth_default)) {
+            countryOfBirthError.makeVisible()
             scrollToTop()
         } else {
-            nationalityerror.makeGone()
+            countryOfBirthError.makeGone()
             viewModel.patient.attributes = listOf(PersonAttribute().apply {
                 attributeType = PersonAttributeType().apply {
-                    uuid = BuildConfig.NATIONALITY_ATTRIBUTE_TYPE_UUID
-                    value = patientNationality?.name
+                    uuid = BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID
+                    value = patientCountry?.name
                 }
             })
         }
@@ -582,7 +582,7 @@ class AddEditPatientFragment : BaseFragment() {
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()
-        nationalityerror.makeGone()
+        countryOfBirthError.makeGone()
         recordConsentError.makeGone()
         textInputLayoutFirstName.error = ""
         textInputLayoutSurname.error = ""

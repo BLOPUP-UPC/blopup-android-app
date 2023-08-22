@@ -319,7 +319,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/linearLayout_nationality"
+                        android:id="@+id/linearLayout_country_of_birth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
@@ -330,12 +330,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:text="@string/reg_ques_nationality"
+                            android:text="@string/country_of_birth_label"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/nationalityerror"
+                            android:id="@+id/country_of_birth_error"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="2dp"
@@ -374,12 +374,12 @@
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <TextView
-                                    android:id="@+id/nationality"
+                                    android:id="@+id/country_of_birth"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
                                     android:padding="12dp"
-                                    android:text="@string/nationality_default"
+                                    android:text="@string/country_of_birth_default"
                                     app:drawableEndCompat="@drawable/black_arrow_down" />
 
                             </LinearLayout>
