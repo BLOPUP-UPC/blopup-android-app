@@ -17,23 +17,18 @@ package edu.upc.openmrs.activities.syncedpatients;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.upc.R;
-import edu.upc.openmrs.activities.ACBaseActivity;
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
 import edu.upc.sdk.library.api.repository.PatientRepository;
 import edu.upc.sdk.library.api.repository.VisitRepository;
@@ -43,36 +38,8 @@ import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.DateUtils;
 
 public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<SyncedPatientsRecyclerViewAdapter.PatientViewHolder> {
-    private SyncedPatientsFragment mContext;
+    private final SyncedPatientsFragment mContext;
     private List<Patient> mItems;
-    private boolean multiSelect = false;
-    private ArrayList<Patient> selectedItems = new ArrayList<>();
-    private androidx.appcompat.view.ActionMode.Callback actionModeCallbacks = new androidx.appcompat.view.ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
-            multiSelect = true;
-            mode.getMenuInflater().inflate(R.menu.delete_multi_patient_menu, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(androidx.appcompat.view.ActionMode mode, MenuItem item) {
-            ((ACBaseActivity) mContext.requireActivity()).showMultiDeletePatientDialog(selectedItems);
-            return true;
-        }
-
-        @Override
-        public void onDestroyActionMode(androidx.appcompat.view.ActionMode mode) {
-            multiSelect = false;
-            selectedItems.clear();
-            notifyDataSetChanged();
-        }
-    };
 
     public SyncedPatientsRecyclerViewAdapter(SyncedPatientsFragment context, List<Patient> items) {
         this.mContext = context;
@@ -81,8 +48,6 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
 
     public void updateList(List<Patient> patientList) {
         this.mItems = patientList;
-        this.selectedItems = new ArrayList();
-        this.multiSelect = false;
         notifyDataSetChanged();
     }
 
@@ -144,48 +109,21 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
             cardBackgroundColor = mRowLayout.getCardBackgroundColor();
         }
 
-        void selectItem(Patient item) {
-            if (multiSelect) {
-                if (selectedItems.contains(item)) {
-                    selectedItems.remove(item);
-                    mRowLayout.setCardBackgroundColor(cardBackgroundColor);
-                } else {
-                    selectedItems.add(item);
-                    mRowLayout.setCardBackgroundColor(mContext.getResources().getColor(R.color.selected_card));
-                }
-            }
-        }
-
         void update(final Patient value) {
-            if (selectedItems.contains(value)) {
-                mRowLayout.setCardBackgroundColor(mContext.getResources().getColor(R.color.selected_card));
-            } else {
-                mRowLayout.setCardBackgroundColor(cardBackgroundColor);
-            }
-            itemView.setOnLongClickListener(view -> {
-                ((AppCompatActivity) mContext.requireActivity()).startSupportActionMode(actionModeCallbacks);
-                selectItem(value);
-                return true;
-            });
             itemView.setOnClickListener(view -> {
-                if (!multiSelect) {
-                    Intent intent = new Intent(mContext.getActivity(), PatientDashboardActivity.class);
-                    if (value.getId() == null) {
-                        Patient patient = retrieveOrDownloadPatient(value.getUuid());
-                        intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient.getId());
-                    } else
-                        intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, value.getId());
-                    mContext.startActivity(intent);
-                } else {
-                    selectItem(value);
-                }
+                Intent intent = new Intent(mContext.getActivity(), PatientDashboardActivity.class);
+                if (value.getId() == null) {
+                    Patient patient = retrieveOrDownloadPatient(value.getUuid());
+                    intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient.getId());
+                } else
+                    intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, value.getId());
+                mContext.startActivity(intent);
             });
         }
 
         private Patient retrieveOrDownloadPatient(final String patientUuid) {
             PatientDAO patientDAO = new PatientDAO();
             PatientRepository patientRepository = new PatientRepository();
-
 
             //region == Check if it exist in the db before attempting a download ==
             Patient patient = patientDAO.findPatientByUUID(patientUuid);
@@ -212,6 +150,5 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
 
             return patient;
         }
-
     }
 }

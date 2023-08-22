@@ -60,7 +60,6 @@ import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.ToastUtil;
@@ -301,40 +300,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         bundle.setLeftButtonAction(CustomFragmentDialog.OnClickAction.DISMISS);
         bundle.setLeftButtonText(getString(R.string.dialog_button_cancel));
         createAndShowDialog(bundle, ApplicationConstants.DialogTAG.START_VISIT_DIALOG_TAG);
-    }
-
-    public void showDeletePatientDialog() {
-        CustomDialogBundle bundle = new CustomDialogBundle();
-        bundle.setTitleViewMessage(getString(R.string.action_delete_patient));
-        bundle.setTextViewMessage(getString(R.string.delete_patient_dialog_message));
-        bundle.setRightButtonAction(CustomFragmentDialog.OnClickAction.DELETE_PATIENT);
-        bundle.setRightButtonText(getString(R.string.dialog_button_confirm));
-        bundle.setLeftButtonAction(CustomFragmentDialog.OnClickAction.DISMISS);
-        bundle.setLeftButtonText(getString(R.string.dialog_button_cancel));
-        createAndShowDialog(bundle, ApplicationConstants.DialogTAG.DELETE_PATIENT_DIALOG_TAG);
-    }
-
-    public void showDeleteProviderDialog() {
-        CustomDialogBundle bundle = new CustomDialogBundle();
-        bundle.setTitleViewMessage(getString(R.string.dialog_title_are_you_sure));
-        bundle.setTextViewMessage(getString(R.string.dialog_provider_retired));
-        bundle.setRightButtonAction(CustomFragmentDialog.OnClickAction.DELETE_PROVIDER);
-        bundle.setRightButtonText(getString(R.string.dialog_button_confirm));
-        bundle.setLeftButtonAction(CustomFragmentDialog.OnClickAction.DISMISS);
-        bundle.setLeftButtonText(getString(R.string.dialog_button_cancel));
-        createAndShowDialog(bundle, ApplicationConstants.DialogTAG.DELETE_PROVIDER_DIALOG_TAG);
-    }
-
-    public void showMultiDeletePatientDialog(ArrayList<Patient> selectedItems) {
-        CustomDialogBundle bundle = new CustomDialogBundle();
-        bundle.setTitleViewMessage(getString(edu.upc.R.string.delete_multiple_patients));
-        bundle.setTextViewMessage(getString(edu.upc.R.string.delete_multiple_patients_dialog_message));
-        bundle.setRightButtonAction(CustomFragmentDialog.OnClickAction.MULTI_DELETE_PATIENT);
-        bundle.setRightButtonText(getString(R.string.dialog_button_confirm));
-        bundle.setSelectedItems(selectedItems);
-        bundle.setLeftButtonAction(CustomFragmentDialog.OnClickAction.DISMISS);
-        bundle.setLeftButtonText(getString(R.string.dialog_button_cancel));
-        createAndShowDialog(bundle, ApplicationConstants.DialogTAG.MULTI_DELETE_PATIENT_DIALOG_TAG);
     }
 
     private void showLocationDialog(List<String> locationList) {

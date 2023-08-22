@@ -51,14 +51,4 @@ class SyncedPatientsViewModel @Inject constructor(
                 ))
         }
     }
-
-    fun deleteSyncedPatient(patient: Patient) {
-        setLoading()
-        patientDAO.deletePatient(patient.id!!)
-        addSubscription(
-            visitDAO.deleteVisitPatient(patient)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
-        )
-    }
 }

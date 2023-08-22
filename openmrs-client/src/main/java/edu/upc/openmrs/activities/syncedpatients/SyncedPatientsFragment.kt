@@ -20,15 +20,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Result
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentSyncedPatientsBinding
-import edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsViewModel
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeInvisible
 import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 
 @AndroidEntryPoint
 class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -82,10 +81,6 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
     fun fetchSyncedPatients(query: String) {
         //search remote
         viewModel.fetchSyncedPatients(query)
-    }
-
-    fun deletePatient(patient: Patient) {
-        viewModel.deleteSyncedPatient(patient)
     }
 
     private fun showLoading() {

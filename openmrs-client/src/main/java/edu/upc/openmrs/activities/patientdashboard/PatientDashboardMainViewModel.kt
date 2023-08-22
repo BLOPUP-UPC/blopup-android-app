@@ -10,7 +10,6 @@ import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.OperationType
-import edu.upc.sdk.library.models.OperationType.PatientDeleting
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
@@ -34,18 +33,6 @@ class PatientDashboardMainViewModel @Inject constructor(
 
     private var runningSyncs = 0
 
-    fun deletePatient() {
-        setLoading(PatientDeleting)
-        patientDAO.deletePatient(patientId.toLong())
-        addSubscription(visitDAO.deleteVisitPatient(patient)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { setContent(Unit, PatientDeleting) },
-                { setError(it, PatientDeleting) }
-            )
-        )
-    }
-
     fun hasActiveVisit(): LiveData<Boolean> {
         val liveData = MutableLiveData<Boolean>()
         addSubscription(visitDAO.getActiveVisitByPatientId(patientId.toLong())
@@ -59,20 +46,6 @@ class PatientDashboardMainViewModel @Inject constructor(
         syncDetails()
         syncVisits()
         syncVitals()
-    }
-
-    // TODO to be removed when implementing card #145
-    fun deleteLocalPatientIfDeletedInServer(): Boolean {
-        if (isDeletedOnTheServer()) {
-            deletePatient()
-            return true
-        }
-        return false
-    }
-
-    private fun isDeletedOnTheServer(): Boolean {
-        return patientRepository.downloadPatientByUuid(patientUuid).single().toBlocking()
-            .first().isVoided
     }
 
     private fun syncDetails() {

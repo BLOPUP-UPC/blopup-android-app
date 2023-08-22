@@ -27,7 +27,6 @@ import edu.upc.R
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.utilities.observeOnce
-import edu.upc.sdk.library.models.OperationType.PatientDeleting
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -58,9 +57,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         setupObserver()
         setupActionFABs()
         if (NetworkUtils.isOnline()) {
-            if (!viewModel.deleteLocalPatientIfDeletedInServer()) { // TODO to be removed when implementing card #145
                 viewModel.syncPatientData()
-            }
         } else {
             initViewPager()
         }
@@ -84,12 +81,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                             ToastUtil.success(getString(R.string.synchronize_patient_successful))
                             initViewPager()
                         }
-
-                        PatientDeleting -> {
-                            ToastUtil.success(getString(R.string.delete_patient_successful))
-                            finish()
-                        }
-
                         else -> {
                         }
                     }
@@ -102,8 +93,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                             ToastUtil.error(getString(R.string.synchronize_patient_error))
                             initViewPager()
                         }
-
-                        PatientDeleting -> ToastUtil.error(getString(R.string.delete_patient_error))
                         else -> {
                         }
                     }
@@ -117,10 +106,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     private fun syncPatient() {
         if (NetworkUtils.isOnline()) viewModel.syncPatientData()
         else ToastUtil.notify(getString(R.string.synchronize_patient_network_error))
-    }
-
-    fun deletePatient() {
-        viewModel.deletePatient()
     }
 
     private fun initViewPager() {
@@ -178,14 +163,12 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.patient_details_menu, menu)
-        menuInflater.inflate(R.menu.patient_dashboard_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionSynchronize -> syncPatient()
-            R.id.actionDelete -> showDeletePatientDialog()
             else -> return super.onOptionsItemSelected(item)
         }
         return true

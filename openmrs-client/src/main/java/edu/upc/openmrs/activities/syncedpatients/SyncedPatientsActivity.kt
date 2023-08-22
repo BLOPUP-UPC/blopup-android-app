@@ -13,18 +13,15 @@
  */
 package edu.upc.openmrs.activities.syncedpatients
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
-import edu.upc.sdk.library.OpenmrsAndroid
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.utilities.StringUtils.notEmpty
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.ACBaseActivity
-import edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsActivity
+import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.utilities.StringUtils.notEmpty
 
 @AndroidEntryPoint
 class SyncedPatientsActivity : ACBaseActivity() {
@@ -53,12 +50,6 @@ class SyncedPatientsActivity : ACBaseActivity() {
                 syncedPatientsFragment, R.id.syncedPatientsContentFrame
             )
         }
-    }
-
-    fun deletePatient(patient: Patient) {
-        val syncedPatientsFragment =
-            supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
-        syncedPatientsFragment?.deletePatient(patient)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

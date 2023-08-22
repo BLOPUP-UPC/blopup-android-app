@@ -97,37 +97,6 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
         inOrder.verify(patientDAO).findPatientByID(PATIENT_ID.toString())
         inOrder.verify(patientDAO, never()).updatePatient(PATIENT_ID, patient)
     }
-
-    // TODO to be removed when implementing card #145
-    @Test
-    fun returnTrueWhenPatientIsDeletedInServer() {
-        patient.isVoided = true
-        Mockito.`when`(patientRepository.downloadPatientByUuid(any()))
-            .thenReturn(Observable.just(patient))
-        Mockito.doNothing().`when`(patientDAO).deletePatient(PATIENT_ID)
-        Mockito.`when`(visitDAO.deleteVisitPatient(patient))
-            .thenReturn(Observable.just(true))
-
-        val result = viewModel.deleteLocalPatientIfDeletedInServer()
-
-        assert(result)
-    }
-
-    // TODO to be removed when implementing card #145
-    @Test
-    fun returnFalseWhenPatientIsDeletedInServer() {
-        patient.isVoided = false
-        Mockito.`when`(patientRepository.downloadPatientByUuid(any()))
-            .thenReturn(Observable.just(patient))
-        Mockito.doNothing().`when`(patientDAO).deletePatient(PATIENT_ID)
-        Mockito.`when`(visitDAO.deleteVisitPatient(patient))
-            .thenReturn(Observable.just(true))
-
-        val result = viewModel.deleteLocalPatientIfDeletedInServer()
-
-        assert(!result)
-    }
-
     companion object {
         const val PATIENT_ID = 1L
     }

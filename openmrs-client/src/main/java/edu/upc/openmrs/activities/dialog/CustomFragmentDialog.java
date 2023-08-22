@@ -55,7 +55,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import edu.upc.R;
 import edu.upc.blopup.vitalsform.VitalsFormActivity;
@@ -67,7 +66,6 @@ import edu.upc.openmrs.activities.login.LoginActivity;
 import edu.upc.openmrs.activities.login.LoginFragment;
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientVisitsFragment;
-import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity;
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardFragment;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;
@@ -432,21 +430,6 @@ public class CustomFragmentDialog extends DialogFragment {
                 case CANCEL_REGISTERING:
                     ((AddEditPatientActivity) getActivity()).finish();
                     dismiss();
-                    break;
-                case DELETE_PATIENT:
-                    ((PatientDashboardActivity) getActivity()).deletePatient();
-                    dismiss();
-                    break;
-                case MULTI_DELETE_PATIENT:
-                    SyncedPatientsActivity syncedPatientsActivity = (SyncedPatientsActivity) getActivity();
-                    for (Patient patientItem : itemsToDelete) {
-                        if (syncedPatientsActivity != null) {
-                            syncedPatientsActivity.deletePatient(patientItem);
-                        }
-                    }
-                    dismiss();
-                    Objects.requireNonNull(syncedPatientsActivity).recreate();
-                    ToastUtil.showShortToast(getContext(), ToastUtil.ToastType.SUCCESS, edu.upc.R.string.multiple_patients_deleted);
                     break;
                 case SELECT_LOCATION:
                     OpenmrsAndroid.setLocation(locationListView.getAdapter().getItem(locationListView.getCheckedItemPosition()).toString());

@@ -20,7 +20,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import rx.Observable
 
@@ -117,19 +116,6 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         val actualResult = (viewModel.result.value as Result.Error).throwable.message
 
         assertEquals(errorMsg, actualResult)
-    }
-
-    @Test
-    fun deleteSyncedPatient_success() {
-        val patientToDelete = patientList[0]
-        val patientId = patientToDelete.id!!
-        Mockito.`when`(visitDAO.deleteVisitPatient(patientToDelete))
-            .thenReturn(Observable.just(true))
-
-        viewModel.deleteSyncedPatient(patientToDelete)
-
-        verify(patientDAO).deletePatient(patientId)
-        verify(visitDAO).deleteVisitPatient(patientToDelete)
     }
 
     private fun mockOnlineMode(isOnline: Boolean) {
