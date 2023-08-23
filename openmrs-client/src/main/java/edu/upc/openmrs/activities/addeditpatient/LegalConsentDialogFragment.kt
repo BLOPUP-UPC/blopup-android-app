@@ -23,6 +23,7 @@ import edu.upc.openmrs.utilities.FileUtils.getFileByLanguage
 import edu.upc.openmrs.utilities.FileUtils.getRecordingFilePath
 import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 import java.util.*
 
@@ -142,6 +143,7 @@ class LegalConsentDialogFragment : DialogFragment() {
                 val parent = parentFragment
                 parent?.record_consent_saved?.makeVisible()
                 parent?.record_legal_consent?.text = context?.getString(R.string.record_again_legal_consent)
+                ToastUtil.showShortToast(context!!, ToastUtil.ToastType.SUCCESS, R.string.recording_success)
             }
         }
     }
