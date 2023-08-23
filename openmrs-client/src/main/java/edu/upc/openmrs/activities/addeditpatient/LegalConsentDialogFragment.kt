@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
@@ -163,8 +162,6 @@ class LegalConsentDialogFragment : DialogFragment() {
             stopButton.isVisible = true
             stopButton.isClickable = false
             recordButton.visibility = View.GONE
-            legalConsentBinding.legalConsentContainer.background =
-                context?.let { it1 -> ContextCompat.getDrawable(it1, R.drawable.orange_border) }
 
             legalConsentBinding.recordingInProgress.makeVisible()
 
