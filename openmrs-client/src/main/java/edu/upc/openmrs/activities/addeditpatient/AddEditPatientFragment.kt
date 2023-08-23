@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -111,6 +112,7 @@ class AddEditPatientFragment : BaseFragment() {
 
             addBottomMargin()
         })
+
         return rootView
     }
 
@@ -394,6 +396,8 @@ class AddEditPatientFragment : BaseFragment() {
 
     private fun setupViewsListeners() = with(binding) {
 
+        makeRecordLegalConsentUnderlined()
+
         setLanguagesOptionsInSpinner()
 
         languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -417,8 +421,12 @@ class AddEditPatientFragment : BaseFragment() {
         }
 
         recordLegalConsent.setOnClickListener {
+            var filePath = ""
+            if(recordLegalConsent.text == context?.getString(R.string.record_again_legal_consent)){
+                filePath = legalConsentDialog!!.fileName()
+            }
             val selectedLanguage = languageSpinner.selectedItem.toString()
-            showLegalConsent(selectedLanguage)
+            showLegalConsent(selectedLanguage, filePath)
         }
 
         submitButton.setOnClickListener {
@@ -471,6 +479,10 @@ class AddEditPatientFragment : BaseFragment() {
         }
     }
 
+    private fun FragmentPatientInfoBinding.makeRecordLegalConsentUnderlined() {
+        recordLegalConsent.paintFlags = recordLegalConsent.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+    }
+
     private fun setLanguagesOptionsInSpinner() {
         val spinner = _binding!!.languageSpinner
         val languagesArray = resources.getStringArray(R.array.languages)
@@ -482,10 +494,10 @@ class AddEditPatientFragment : BaseFragment() {
         spinner.adapter = languagesAdapter
     }
 
-    private fun showLegalConsent(language: String) {
+    private fun showLegalConsent(language: String, filePath: String?) {
 
         if (isMicrophonePresent()) {
-            legalConsentDialog = LegalConsentDialogFragment.newInstance(language)
+            legalConsentDialog = LegalConsentDialogFragment.newInstance(language, filePath)
             legalConsentDialog?.show(childFragmentManager, LegalConsentDialogFragment.TAG)
             childFragmentManager.findFragmentById(R.id.linearLayout_consent)?.onStart()
         } else {

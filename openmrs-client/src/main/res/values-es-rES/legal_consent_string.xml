@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="legal_consent"><![CDATA[Necesitamos grabar el consentimiento del paciente para poder registrar sus datos personales. A continuación leeremos el siguiente texto en voz alta.<br><br>Una vez que comience la grabación podrás <b>pausar</b> y retomar las veces que quieras.<br>Una vez finalizado presiona <b>Detener y enviar grabación</b> para grabar el consentimiento y poder continuar el proceso de registro del paciente.<br><br>Los puntos principales de la información que te hemos dado oralmente y por escrito son:<br>]]></string>
+    <string name="record_again_legal_consent"><u>Grabar nuevamente</u></string>
     <string name="first_bullet_point">Participarás en un estidio de Salud Sense Sostre que implica la medición de la tensión arterial.</string>
     <string name="second_bullet_point">Te daremos pautas de actuación si es demasiado elevada y te haremos un seguimiento. Esta medida no comporta ningún riesgo.</string>
     <string name="third_bullet_point">Tus datos personales y médicos sólo los sabremos nosotros y tú. Podrás verlos y pedir que los destruyamos. Nunca comunicaremos tus datos individuales, sólo de forma agregada y estadística.</string>

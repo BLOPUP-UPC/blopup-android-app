@@ -17,11 +17,11 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import edu.upc.R
 import edu.upc.blopup.AudioRecorder
 import edu.upc.databinding.LegalConsentBinding
+import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.FileUtils.fileIsCreatedSuccessfully
 import edu.upc.openmrs.utilities.FileUtils.getFileByLanguage
 import edu.upc.openmrs.utilities.FileUtils.getRecordingFilePath
 import edu.upc.openmrs.utilities.LanguageUtils
-import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import kotlinx.android.synthetic.main.fragment_patient_info.*
 import java.util.*
@@ -35,6 +35,8 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var playPauseButton: TextView
     private lateinit var stopButton: BottomAppBar
     private lateinit var mFileName: String
+    private lateinit var fileName: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,13 +46,14 @@ class LegalConsentDialogFragment : DialogFragment() {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
 
         val language = arguments?.getString(ARG_LANGUAGE)
+        fileName = arguments?.getString(ARG_FILE_PATH)!!
         val languageCode = context?.let { LanguageUtils.getLanguageCode(language, it) }
 
         getRecordingFilePath().also { mFileName = it }
         audioRecorder = AudioRecorder(
             mFileName,
             requireContext(),
-            getFileByLanguage(requireActivity(), TAG, languageCode)
+            getFileByLanguage(requireActivity(), TAG, languageCode),
         )
 
         setLegalConsentWordingLanguage(languageCode!!)
@@ -137,10 +140,8 @@ class LegalConsentDialogFragment : DialogFragment() {
 
             if (fileIsCreatedSuccessfully(mFileName)) {
                 val parent = parentFragment
-                parent?.record_consent_saved?.isEnabled = false
                 parent?.record_consent_saved?.makeVisible()
-                parent?.language_spinner?.isEnabled = false
-                parent?.record_legal_consent?.makeGone()
+                parent?.record_legal_consent?.text = context?.getString(R.string.record_again_legal_consent)
             }
         }
     }
@@ -154,6 +155,9 @@ class LegalConsentDialogFragment : DialogFragment() {
 
     private fun startRecordingAndPlayingAudio() {
         recordButton.setOnClickListener {
+            if(fileName.isNotEmpty()){
+                FileUtils.removeLocalRecordingFile(fileName)
+            }
             audioRecorder.startRecording()
             audioRecorder.startPlaying()
 
@@ -185,11 +189,13 @@ class LegalConsentDialogFragment : DialogFragment() {
     companion object {
         const val TAG: String = "legal_consent"
         private const val ARG_LANGUAGE = "language"
+        private const val ARG_FILE_PATH = "filePath"
 
-        fun newInstance(language: String): LegalConsentDialogFragment {
+        fun newInstance(language: String, filePath: String?): LegalConsentDialogFragment {
             val fragment = LegalConsentDialogFragment()
             val args = Bundle()
             args.putString(ARG_LANGUAGE, language)
+            args.putString(ARG_FILE_PATH, filePath)
             fragment.arguments = args
             return fragment
         }
