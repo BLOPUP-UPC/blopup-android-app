@@ -47,7 +47,6 @@ import edu.upc.sdk.library.models.PatientDtoUpdate;
 import edu.upc.sdk.library.models.PatientIdentifier;
 import edu.upc.sdk.library.models.ResultType;
 import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.library.models.SystemProperty;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.ModuleUtils;
 import edu.upc.sdk.utilities.NetworkUtils;
@@ -305,23 +304,6 @@ public class PatientRepository extends BaseRepository {
                 return response.body();
             } else {
                 throw new Exception("Error with loading last viewed patients: " + response.message());
-            }
-        });
-    }
-
-    /**
-     * Gets cause of death global id.
-     *
-     * @return Observable string UUID for cause of death Concept
-     */
-    public Observable<String> getCauseOfDeathGlobalConceptID() {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            Call<Results<SystemProperty>> call = restApi.getSystemProperty(ApplicationConstants.CAUSE_OF_DEATH, ApplicationConstants.API.FULL);
-            Response<Results<SystemProperty>> response = call.execute();
-            if (response.isSuccessful()) {
-                return response.body().getResults().get(0).getConceptUUID();
-            } else {
-                throw new Exception("Error with fetching Cause of Death Concept: " + response.message());
             }
         });
     }

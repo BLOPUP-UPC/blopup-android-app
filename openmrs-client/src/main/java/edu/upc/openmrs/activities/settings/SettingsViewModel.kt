@@ -3,20 +3,18 @@ package edu.upc.openmrs.activities.settings
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import edu.upc.sdk.library.OpenMRSLogger
-import edu.upc.sdk.library.OpenmrsAndroid
-import edu.upc.sdk.library.api.repository.ConceptRepository
-import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_CODE
-import edu.upc.sdk.utilities.ApplicationConstants.PACKAGE_NAME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.R
 import edu.upc.openmrs.utilities.LanguageUtils
+import edu.upc.sdk.library.OpenMRSLogger
+import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_CODE
+import edu.upc.sdk.utilities.ApplicationConstants.PACKAGE_NAME
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-        private val conceptRepository: ConceptRepository,
         private val openMRSLogger: OpenMRSLogger
 ) : edu.upc.openmrs.activities.BaseViewModel<Unit>() {
 
@@ -74,8 +72,6 @@ class SettingsViewModel @Inject constructor(
 
         return versionName + context.getString(R.string.frag_settings_build) + buildVersion
     }
-
-    fun getConceptsCount(): String = conceptRepository.getConceptCountFromDb().toString()
 
     companion object {
         private const val ONE_KB = 1024

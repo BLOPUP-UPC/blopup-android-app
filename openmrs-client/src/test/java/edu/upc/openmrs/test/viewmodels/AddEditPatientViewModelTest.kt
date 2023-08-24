@@ -5,11 +5,13 @@ import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.RecordingHelper
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
-import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.*
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonAddress
+import edu.upc.sdk.library.models.PersonName
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType.PatientUpdateSuccess
 import edu.upc.sdk.library.models.ResultType.RecordingSuccess
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
@@ -45,9 +47,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     lateinit var patientRepository: PatientRepository
 
     @Mock
-    lateinit var conceptRepository: ConceptRepository
-
-    @Mock
     lateinit var savedStateHandle: SavedStateHandle
 
     @Mock
@@ -70,7 +69,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel = AddEditPatientViewModel(
             patientDAO,
             patientRepository,
-            conceptRepository,
             recordingHelper,
             savedStateHandle
         )
@@ -102,7 +100,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel = AddEditPatientViewModel(
             patientDAO,
             patientRepository,
-            conceptRepository,
             recordingHelper,
             savedStateHandle
         )
@@ -131,7 +128,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel = AddEditPatientViewModel(
             patientDAO,
             patientRepository,
-            conceptRepository,
             recordingHelper,
             savedStateHandle
         )
@@ -155,7 +151,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel = AddEditPatientViewModel(
             patientDAO,
             patientRepository,
-            conceptRepository,
             recordingHelper,
             savedStateHandle
         )
@@ -179,7 +174,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel = AddEditPatientViewModel(
             patientDAO,
             patientRepository,
-            conceptRepository,
             recordingHelper,
             savedStateHandle
         )
@@ -204,15 +198,8 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel = AddEditPatientViewModel(
             patientDAO,
             patientRepository,
-            conceptRepository,
             recordingHelper,
             savedStateHandle
-        )
-        `when`(patientRepository.getCauseOfDeathGlobalConceptID()).thenReturn(Observable.just(String()))
-        `when`(conceptRepository.getConceptByUuid(anyString())).thenReturn(
-            Observable.just(
-                ConceptAnswers()
-            )
         )
     }
 
@@ -223,7 +210,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel = AddEditPatientViewModel(
             patientDAO,
             patientRepository,
-            conceptRepository,
             recordingHelper,
             savedStateHandle
         )
@@ -246,7 +232,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel = AddEditPatientViewModel(
             patientDAO,
             patientRepository,
-            conceptRepository,
             recordingHelper,
             savedStateHandle
         )

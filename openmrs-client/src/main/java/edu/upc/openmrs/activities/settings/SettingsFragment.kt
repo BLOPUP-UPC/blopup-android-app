@@ -13,8 +13,8 @@
  */
 package edu.upc.openmrs.activities.settings
 
-import android.content.*
-import android.graphics.Typeface
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,24 +24,18 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentSettingsBinding
 import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.openmrs.activities.logs.LogsActivity
-import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
-import edu.upc.sdk.utilities.ApplicationConstants.ServiceActions.START_CONCEPT_DOWNLOAD_ACTION
 
 @AndroidEntryPoint
 class SettingsFragment :  BaseFragment() {
-    private var broadcastReceiver: BroadcastReceiver? = null
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
@@ -61,50 +55,18 @@ class SettingsFragment :  BaseFragment() {
         setupContactUsButton()
         setupLanguageSpinner()
 
-        broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                updateConceptsInDbText()
-            }
-        }
-        setupConceptsView()
+        updateLanguageView()
         return binding.root
     }
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(broadcastReceiver!!)
+        LocalBroadcastManager.getInstance(requireActivity())
     }
 
     override fun onResume() {
         super.onResume()
-        updateConceptsInDbText()
         LocalBroadcastManager.getInstance(requireActivity())
-            .registerReceiver(
-                broadcastReceiver!!,
-                IntentFilter(ApplicationConstants.BroadcastActions.CONCEPT_DOWNLOAD_BROADCAST_INTENT_ID)
-            )
-    }
-
-    private fun updateConceptsInDbText() {
-        val conceptsCount = viewModel.getConceptsCount()
-        if (conceptsCount == "0") {
-            binding.conceptsDownloadButton.isEnabled = true
-            val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_INDEFINITE)
-            val customSnackBarView = layoutInflater.inflate(R.layout.snackbar, null)
-            val snackBarLayout = snackbar.view as SnackbarLayout
-            snackBarLayout.setPadding(0, 0, 0, 0)
-            val dismissButton =
-                customSnackBarView.findViewById<TextView>(R.id.snackbar_action_button)
-            val typeface =
-                Typeface.createFromAsset(requireActivity().assets, "fonts/Roboto/Roboto-Medium.ttf")
-            dismissButton.typeface = typeface
-            dismissButton.setOnClickListener { snackbar.dismiss() }
-            snackBarLayout.addView(customSnackBarView, 0)
-            snackbar.show()
-        } else {
-            binding.conceptsDownloadButton.isEnabled = false
-        }
-        binding.conceptsCountTextView.text = conceptsCount
     }
 
     private fun addLogsInfo() = with(binding) {
@@ -115,14 +77,8 @@ class SettingsFragment :  BaseFragment() {
         }
     }
 
-    private fun setupConceptsView() = with(binding) {
+    private fun updateLanguageView() = with(binding) {
         languageApplyButton.setOnClickListener { requireActivity().recreate() }
-        conceptsDownloadButton.setOnClickListener {
-            conceptsDownloadButton.isEnabled = false
-            Intent(activity, edu.upc.openmrs.services.ConceptDownloadService::class.java)
-                .apply { action = START_CONCEPT_DOWNLOAD_ACTION }
-                .let { activity?.startService(it) }
-        }
     }
 
     private fun addBuildVersionInfo() {

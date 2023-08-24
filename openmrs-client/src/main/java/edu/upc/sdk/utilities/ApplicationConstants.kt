@@ -48,7 +48,6 @@ object ApplicationConstants {
     const val URI_CONTENT = "content://"
     const val MIME_TYPE_VND = "vnd"
     const val ASPECT_RATIO_FOR_CROPPING = 5f
-    const val CAUSE_OF_DEATH = "concept.causeOfDeath"
     const val MALE = "M";
     const val EMPTY_DASH_REPRESENTATION = "---"
     const val COMMA_WITH_SPACE = ", "
@@ -113,13 +112,6 @@ object ApplicationConstants {
         const val PATIENT_UUID = "patient_uuid"
     }
 
-    object ServiceActions {
-        const val START_CONCEPT_DOWNLOAD_ACTION =
-            "com.openmrs.mobile.services.conceptdownloadservice.action.startforeground"
-        const val STOP_CONCEPT_DOWNLOAD_ACTION =
-            "com.openmrs.mobile.services.conceptdownloadservice.action.stopforeground"
-    }
-
     object BroadcastActions {
         const val CONCEPT_DOWNLOAD_BROADCAST_INTENT_ID =
             "com.openmrs.mobile.services.conceptdownloadservice.action.broadcastintent"
@@ -127,10 +119,6 @@ object ApplicationConstants {
             "com.openmrs.mobile.services.conceptdownloadservice.broadcastintent.key.count"
         const val AUTHENTICATION_CHECK_BROADCAST_ACTION =
             "edu.upc.openmrs.services.AuthenticateCheckService"
-    }
-
-    object ServiceNotificationId {
-        const val CONCEPT_DOWNLOADFOREGROUND_SERVICE = 101
     }
 
     object SystemSettingKeys {

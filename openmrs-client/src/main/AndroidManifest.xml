@@ -65,8 +65,6 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="edu.upc.openmrs.services.ConceptDownloadService" />
-
         <activity
             android:name="edu.upc.openmrs.activities.dashboard.DashboardActivity"
             android:label="@string/app_name"

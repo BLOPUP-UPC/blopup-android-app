@@ -8,7 +8,6 @@ import edu.upc.blopup.RecordingHelper
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.openmrs.activities.BaseViewModel
-import edu.upc.sdk.library.api.repository.ConceptRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.LegalConsent
@@ -25,7 +24,6 @@ import javax.inject.Inject
 class AddEditPatientViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val patientRepository: PatientRepository,
-    private val conceptRepository: ConceptRepository,
     private val recordingHelper: RecordingHelper,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Patient>() {
