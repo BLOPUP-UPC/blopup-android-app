@@ -116,7 +116,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private fun listenForPlayCompletion() {
         audioRecorder.hasFinishedPlaying().observe(requireActivity()) {
             if (it) {
-                playPauseButton.visibility = View.GONE
+                playPauseButton.visibility = View.INVISIBLE
                 stopButton.isClickable = true
                 stopButton.backgroundTintList =
                     ColorStateList.valueOf(resources.getColor(R.color.color_accent, null))

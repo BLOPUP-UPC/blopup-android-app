@@ -168,7 +168,7 @@
                 android:id="@+id/play_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:paddingBottom="17dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/pause"
