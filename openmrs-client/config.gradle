@@ -11,8 +11,8 @@ android{
             buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "false"
         }
         staging {
-            buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"ded1bbd8-8e43-4f76-a107-67b7eb170823\""
-            buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"7f3ff161-276f-4de4-b146-ceea7a6b093d\""
+            buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"1b7f89cb-197a-4922-bb0c-2b780b85a1ac\""
+            buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"51a806b3-f716-4583-b4f4-b29b522648a9\""
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-staging.upc.edu/openmrs\""
 
             // Release toggles
