@@ -18,14 +18,11 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import android.view.animation.AnimationUtils
-import edu.upc.sdk.utilities.ApplicationConstants
+import android.view.animation.*
 import edu.upc.R
 import edu.upc.databinding.ActivitySplashBinding
+import edu.upc.openmrs.utilities.LanguageUtils
+import edu.upc.sdk.utilities.ApplicationConstants
 
 class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
@@ -37,6 +34,8 @@ class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        LanguageUtils.setAppToDeviceLanguage(this)
 
         val typeface = Typeface.createFromAsset(assets, ApplicationConstants.TypeFacePathConstants.MONTSERRAT)
         with(binding) {

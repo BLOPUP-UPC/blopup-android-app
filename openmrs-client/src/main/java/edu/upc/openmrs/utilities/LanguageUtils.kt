@@ -79,4 +79,21 @@ object LanguageUtils {
         )
         return languageMap[language ?: "English"]?.lowercase(currentLocale)
     }
+
+    @JvmStatic
+    fun setAppToDeviceLanguage(context: Context) {
+        val sharedPreferences = context.getSharedPreferences(ApplicationConstants.OpenMRSSharedPreferenceNames.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        val isFirstTimeLaunch = sharedPreferences.getBoolean(ApplicationConstants.PREF_FIRST_TIME_LAUNCH, true)
+
+        if (isFirstTimeLaunch) {
+            val deviceLanguage = Locale.getDefault().language
+            val supportedLanguages = setOf("ca", "es", "en")
+
+            if (supportedLanguages.contains(deviceLanguage)) {
+                setLanguage(deviceLanguage)
+                setupLanguage(context.resources)
+            }
+            sharedPreferences.edit().putBoolean(ApplicationConstants.PREF_FIRST_TIME_LAUNCH, false).apply()
+        }
+    }
 }

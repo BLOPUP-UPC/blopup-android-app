@@ -17,12 +17,10 @@ import edu.upc.sdk.library.models.EncounterType
 
 
 object ApplicationConstants {
-    const val UUID_LENGTH = 36
     const val EMPTY_STRING = ""
     const val SERVER_URL = "server_url"
     const val SESSION_TOKEN = "session_id"
     const val AUTHORIZATION_TOKEN = "authorisation"
-    const val SECRET_KEY = "secretKey"
     const val LOCATION = "location"
     const val FIRST = true
     const val VISIT_TYPE_UUID = "visit_type_uuid"
@@ -40,20 +38,11 @@ object ApplicationConstants {
     const val FLAG = "flag"
     const val ERROR = "error"
     const val URI_FILE = "file://"
-    const val INTENT_KEY_NAME = "name"
-    const val READ_MODE = "r"
-    const val MIME_TYPE_MAILTO = "mailto:"
     const val OPENMRS_PREF_FILE = "OpenMRSPrefFile"
     const val BUNDLE = "bundle"
-    const val URI_CONTENT = "content://"
-    const val MIME_TYPE_VND = "vnd"
-    const val ASPECT_RATIO_FOR_CROPPING = 5f
-    const val MALE = "M";
-    const val EMPTY_DASH_REPRESENTATION = "---"
-    const val COMMA_WITH_SPACE = ", "
     const val PRIMARY_KEY_ID = "_id"
-    const val MIN_NUMBER_OF_PATIENTS_TO_SHOW = 7
     const val ABOUT_OPENMRS_URL = "https://openmrs.org/about/"
+    const val PREF_FIRST_TIME_LAUNCH = "first_time_launch"
 
     object OpenMRSSharedPreferenceNames {
         const val SHARED_PREFERENCES_NAME = "shared_preferences"
@@ -83,11 +72,8 @@ object ApplicationConstants {
         const val START_VISIT_IMPOSSIBLE_DIALOG_TAG = "startVisitImpossibleDialog"
         const val WARNING_LOST_DATA_DIALOG_TAG = "warningLostDataDialog"
         const val SIMILAR_PATIENTS_TAG = "similarPatientsDialogTag"
-        const val DELETE_PATIENT_DIALOG_TAG = "deletePatientDialogTag"
-        const val DELETE_PROVIDER_DIALOG_TAG = "deleteProviderDialogTag"
         const val LOCATION_DIALOG_TAG = "locationDialogTag"
         const val CREDENTIAL_CHANGED_DIALOG_TAG = "locationDialogTag"
-        const val MULTI_DELETE_PATIENT_DIALOG_TAG = "multiDeletePatientDialogTag"
     }
 
     object RegisterPatientRequirements {
@@ -103,13 +89,7 @@ object ApplicationConstants {
         const val FORM_NAME = "formName"
         const val CALCULATED_LOCALLY = "CALCULATED_LOCALLY"
         const val PATIENTS_AND_MATCHES = "PATIENTS_AND_MATCHES"
-        const val FORM_FIELDS_BUNDLE = "formFieldsBundle"
         const val FORM_FIELDS_LIST_BUNDLE = "formFieldsListBundle"
-        const val PATIENT_QUERY_BUNDLE = "patientQuery"
-        const val PATIENTS_START_INDEX = "patientsStartIndex"
-        const val PROVIDER_ID_BUNDLE = "providerID"
-        const val EXISTING_PROVIDERS_BUNDLE = "existingProviders"
-        const val PATIENT_UUID = "patient_uuid"
     }
 
     object BroadcastActions {
