@@ -127,7 +127,12 @@ class VitalsFormActivity : ACBaseActivity() {
         }
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
 
+    override fun onResume() {
+        super.onResume()
+
+        updateLanguageFields()
     }
 
     fun sendVitals(view: View) {
@@ -207,6 +212,14 @@ class VitalsFormActivity : ACBaseActivity() {
         setSupportActionBar(mToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+    }
+
+    private fun updateLanguageFields() {
+        mBinding.textInputSystolic.hint = getString(R.string.systolic_label)
+        mBinding.textInputDiastolic.hint = getString(R.string.diastolic_label)
+        mBinding.textInputPulse.hint = getString(R.string.pulse_label)
+        mBinding.textInputWeight.hint = getString(R.string.weight_value_label)
+        mBinding.textInputHeight.hint = getString(R.string.height_value_label)
     }
 
     companion object {
