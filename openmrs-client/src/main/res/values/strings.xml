@@ -223,6 +223,7 @@
     <string name="visit_dashboard_label" tools:ignore="MissingTranslation">Encounters</string>
     <string name="list_visit_selector_show" tools:ignore="MissingTranslation">Show Details</string>
     <string name="list_visit_selector_hide" tools:ignore="MissingTranslation">Hide Details</string>
+    <string name="vitals" tools:ignore="MissingTranslation">Vitals</string>
     <string name="visit_exp_list_empty" tools:ignore="MissingTranslation">Visit has no encounters yet.</string>
     <string name="visit_fetching_error" tools:ignore="MissingTranslation">Error with fetching the visit</string>
     <string name="visit_ending_not_online_error" tools:ignore="MissingTranslation">Cannot end visit without internet connection or in offline mode</string>
@@ -231,6 +232,7 @@
 
     <string name="treatment_label" translatable="false">Treatment</string>
     <string name="diagnosis_label" translatable="false">Diagnosis</string>
+    <string name="visit_note" translatable="false">Notes</string>
     <string name="bmi_label" tools:ignore="MissingTranslation">Body Mass Index (BMI)</string>
 
     <!-- Capture Vitals activity -->
@@ -541,7 +543,9 @@
     <string name="pulse_label" tools:ignore="MissingTranslation">Pulse</string>
     <string name="receive_weight_value_button" tools:ignore="MissingTranslation">Receive weight from scale</string>
     <string name="weight_value_label" tools:ignore="MissingTranslation">Weight</string>
+    <string name="weight_value" tools:ignore="MissingTranslation">Weight (kg)</string>
     <string name="height_value_label" tools:ignore="MissingTranslation">Height</string>
+    <string name="height_value" tools:ignore="MissingTranslation">Height (cm)</string>
     <string name="weight_unit_label" translatable="false">Kg</string>
     <string name="blood_pressure_measurement_unit" translatable="false">mmHg</string>
     <string name="height_unit_label" translatable="false">Cm</string>

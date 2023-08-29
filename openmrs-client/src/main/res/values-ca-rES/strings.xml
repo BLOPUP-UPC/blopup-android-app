@@ -141,6 +141,10 @@
     <string name="visit_dashboard_label">Trobades</string>
     <string name="list_visit_selector_show">Mostrar detalls</string>
     <string name="list_visit_selector_hide">Amaga detalls</string>
+    <string name="treatment_label" translatable="false">Tractament</string>
+    <string name="diagnosis_label" translatable="false">Diagnòstic</string>
+    <string name="visit_note" translatable="false">Notes</string>
+    <string name="vitals">Vitals</string>
     <string name="visit_exp_list_empty">La visita no té cap trobada.</string>
     <string name="visit_fetching_error">Error combinant la visita</string>
     <string name="visit_ending_not_online_error">No es pot tancar una visita sense connexió a internet o amb el mode offline activat</string>
@@ -349,7 +353,9 @@
     <string name="pulse_label">Pols</string>
     <string name="receive_weight_value_button">"Rebre pes de la bàscula  "</string>
     <string name="weight_value_label">Pes</string>
+    <string name="weight_value">Pes (kg)</string>
     <string name="height_value_label">Alçada</string>
+    <string name="height_value">Alçada (cm)</string>
     <string name="send_button_label">Enviar</string>
     <string name="action_vitals_form">Prendre constants</string>
     <string name="send_email_success_toast_message">Missatge enviat</string>

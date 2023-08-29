@@ -116,6 +116,10 @@
     <string name="empty_diagnoses_list">El paciente todavía no tiene ningún diagnóstico.</string>
     <string name="list_visit_selector_show">Mostrar detalles</string>
     <string name="list_visit_selector_hide">Cerrar detalles</string>
+    <string name="vitals">Vitales</string>
+    <string name="visit_note" translatable="false">Notas</string>
+    <string name="treatment_label" translatable="false">Tratamiento</string>
+    <string name="diagnosis_label" translatable="false">Diagnóstico</string>
     <string name="action_delete_patient">Eliminar Paciente</string>
     <string name="action_register_patient">Registrar Paciente</string>
     <string name="birthdate_hint">fecha de nacimiento:</string>
@@ -350,7 +354,9 @@
     <string name="diastolic_label">Diastólica:</string>
     <string name="systolic_label">Sistólica:</string>
     <string name="height_value_label">Altura</string>
+    <string name="height_value">Altura (cm)</string>
     <string name="weight_value_label">Peso</string>
+    <string name="weight_value">Peso (kg)</string>
     <string name="pulse_label">Pulso</string>
     <string name="send_button_label">Enviar</string>
     <string name="receive_weight_value_button">Recibir peso de la báscula</string>

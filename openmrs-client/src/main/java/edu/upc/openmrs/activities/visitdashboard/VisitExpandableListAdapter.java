@@ -25,18 +25,18 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.upc.R;
+import edu.upc.openmrs.application.OpenMRSInflater;
+import edu.upc.openmrs.utilities.EncounterTranslationUtils;
 import edu.upc.sdk.library.models.Diagnosis;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.EncounterType;
 import edu.upc.sdk.library.models.Observation;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.ImageUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.upc.R;
-import edu.upc.openmrs.application.OpenMRSInflater;
 
 public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
     private static final int LEFT = 0;
@@ -71,7 +71,10 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
             switch (encounter.getEncounterType().getDisplay()) {
                 case EncounterType.VITALS:
                     for (Observation obs : encounter.getObservations()) {
-                        openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(), obs.getDisplayValue());
+                        String originalObservationDisplay = obs.getDisplay();
+                        int translatedObservationDisplay = EncounterTranslationUtils.getTranslatedResourceId(originalObservationDisplay);
+                        String translatedDisplay = mContext.getString(translatedObservationDisplay);
+                        openMRSInflater.addKeyValueStringView(contentLayout, translatedDisplay, obs.getDisplayValue());
                     }
                     String bmiData = bmiCalculator.execute(encounter.getObservations());
                     openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), bmiData);
@@ -169,7 +172,10 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
         final TextView encounterName = rowView.findViewById(R.id.listVisitGroupEncounterName);
         final TextView detailsSelector = rowView.findViewById(R.id.listVisitGroupDetailsSelector);
         final Encounter encounter = mEncounters.get(groupPosition);
-        encounterName.setText(encounter.getEncounterType().getDisplay());
+        String encounterNameString = encounter.getEncounterType().getDisplay();
+        int translatedEncounterDisplay = EncounterTranslationUtils.getTranslatedResourceId(encounterNameString);
+        String translatedEncounter = mContext.getString(translatedEncounterDisplay);
+        encounterName.setText(translatedEncounter);
         if (isExpanded) {
             detailsSelector.setText(mContext.getString(R.string.list_visit_selector_hide));
             bindDrawableResources(R.drawable.exp_list_hide_details, detailsSelector, RIGHT);
@@ -183,12 +189,6 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
                 break;
             case EncounterType.VISIT_NOTE:
                 bindDrawableResources(R.drawable.visit_note, encounterName, LEFT);
-                break;
-            case EncounterType.DISCHARGE:
-                bindDrawableResources(R.drawable.discharge, encounterName, LEFT);
-                break;
-            case EncounterType.ADMISSION:
-                bindDrawableResources(R.drawable.admission, encounterName, LEFT);
                 break;
             default:
                 break;
