@@ -286,8 +286,10 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         CustomDialogBundle bundle = new CustomDialogBundle();
         bundle.setTitleViewMessage(getString(R.string.start_visit_unsuccessful_dialog_title));
         bundle.setTextViewMessage(getString(R.string.start_visit_unsuccessful_dialog_message, title));
-        bundle.setRightButtonAction(CustomFragmentDialog.OnClickAction.DISMISS);
-        bundle.setRightButtonText(getString(R.string.dialog_button_ok));
+        bundle.setLeftButtonAction(CustomFragmentDialog.OnClickAction.DISMISS);
+        bundle.setLeftButtonText(getString(R.string.dialog_button_cancel));
+        bundle.setRightButtonAction(CustomFragmentDialog.OnClickAction.END_VISIT_START_NEW_VISIT);
+        bundle.setRightButtonText(getString(R.string.action_start_visit));
         createAndShowDialog(bundle, ApplicationConstants.DialogTAG.START_VISIT_IMPOSSIBLE_DIALOG_TAG);
     }
 

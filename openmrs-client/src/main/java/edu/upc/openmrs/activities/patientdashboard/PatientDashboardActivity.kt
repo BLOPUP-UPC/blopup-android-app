@@ -149,6 +149,14 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
+    fun endActiveVisit(){
+        viewModel.endActiveVisit().observe(this) { visitEnded ->
+            if (visitEnded) {
+                startVitalsMeasurement()
+            }
+        }
+    }
+
     private fun startVitalsMeasurement(){
         Intent(this, VitalsFormActivity::class.java).apply {
             putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, viewModel.patientId.toLong())

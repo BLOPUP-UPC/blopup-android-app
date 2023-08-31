@@ -14,6 +14,7 @@ import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -39,6 +40,27 @@ class PatientDashboardMainViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { visit: Visit? -> liveData.value = visit != null })
         return liveData
+    }
+
+    fun endActiveVisit(): LiveData<Boolean> {
+        val endVisitResult = MutableLiveData<Boolean>()
+
+        addSubscription(visitDAO.getActiveVisitByPatientId(patientId.toLong())
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap { activeVisit ->
+                if (activeVisit != null) {
+                    visitRepository.endVisit(activeVisit)
+                        .observeOn(AndroidSchedulers.mainThread())
+                } else {
+                    Observable.empty()
+                }
+            }
+            .subscribe(
+                { endVisitResult.value = true },
+                { endVisitResult.value = false }
+            )
+        )
+        return endVisitResult
     }
 
     fun syncPatientData() {

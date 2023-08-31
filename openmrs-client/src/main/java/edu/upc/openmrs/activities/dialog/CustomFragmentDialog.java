@@ -82,7 +82,7 @@ public class CustomFragmentDialog extends DialogFragment {
 
     public enum OnClickAction {
         SET_URL, SHOW_URL_DIALOG, DISMISS_URL_DIALOG, DISMISS, LOGOUT, FINISH, INTERNET, UNAUTHORIZED, END_VISIT,
-        START_VISIT, LOGIN, REGISTER_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER, END_VITALS
+        START_VISIT, LOGIN, REGISTER_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER, END_VITALS, END_VISIT_START_NEW_VISIT
     }
 
     protected LayoutInflater mInflater;
@@ -179,9 +179,9 @@ public class CustomFragmentDialog extends DialogFragment {
                     dismiss();
                 } else {
                     ((LoginFragment) getActivity()
-                        .getSupportFragmentManager()
-                        .findFragmentById(R.id.loginContentFrame))
-                        .hideURLDialog();
+                            .getSupportFragmentManager()
+                            .findFragmentById(R.id.loginContentFrame))
+                            .hideURLDialog();
                     dismiss();
                 }
             }
@@ -193,7 +193,7 @@ public class CustomFragmentDialog extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         int marginWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TYPED_DIMENSION_VALUE,
-            OpenMRS.getInstance().getResources().getDisplayMetrics());
+                OpenMRS.getInstance().getResources().getDisplayMetrics());
 
         DisplayMetrics display = this.getResources().getDisplayMetrics();
         int width = display.widthPixels;
@@ -208,7 +208,7 @@ public class CustomFragmentDialog extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         int marginWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, TYPED_DIMENSION_VALUE,
-            OpenMRS.getInstance().getResources().getDisplayMetrics());
+                OpenMRS.getInstance().getResources().getDisplayMetrics());
 
         DisplayMetrics display = this.getResources().getDisplayMetrics();
         int width = display.widthPixels;
@@ -270,7 +270,7 @@ public class CustomFragmentDialog extends DialogFragment {
         LinearLayout field = (LinearLayout) mInflater.inflate(R.layout.openmrs_single_choice_list_view, null);
         locationListView = field.findViewById(R.id.singleChoiceListView);
         locationListView.setAdapter(new ArrayAdapter<>(getActivity(),
-            R.layout.row_single_checked_layout, locationList));
+                R.layout.row_single_checked_layout, locationList));
         locationListView.setItemChecked(locationList.indexOf(OpenmrsAndroid.getLocation()), true);
         mFieldsLayout.addView(field);
     }
@@ -379,16 +379,16 @@ public class CustomFragmentDialog extends DialogFragment {
             switch (action) {
                 case DISMISS_URL_DIALOG:
                     ((LoginFragment) getActivity()
-                        .getSupportFragmentManager()
-                        .findFragmentById(R.id.loginContentFrame))
-                        .hideURLDialog();
+                            .getSupportFragmentManager()
+                            .findFragmentById(R.id.loginContentFrame))
+                            .hideURLDialog();
                     dismiss();
                     break;
                 case LOGIN:
                     ((LoginFragment) getActivity()
-                        .getSupportFragmentManager()
-                        .findFragmentById(R.id.loginContentFrame))
-                        .login(true);
+                            .getSupportFragmentManager()
+                            .findFragmentById(R.id.loginContentFrame))
+                            .login(true);
                     dismiss();
                     break;
                 case DISMISS:
@@ -441,11 +441,23 @@ public class CustomFragmentDialog extends DialogFragment {
                     ((VitalsFormActivity) requireActivity()).finish();
                     dismiss();
                     break;
+                case END_VISIT_START_NEW_VISIT:
+                    startVitals();
+                    dismiss();
+                    break;
                 default:
                     break;
             }
             //CHECKSTYLE:ON
         };
+    }
+
+    private void startVitals() {
+        Activity activity = getActivity();
+        if (activity instanceof PatientDashboardActivity) {
+            PatientDashboardActivity pda = ((PatientDashboardActivity) activity);
+            pda.endActiveVisit();
+        }
     }
 
     private void doStartVisitAction() {

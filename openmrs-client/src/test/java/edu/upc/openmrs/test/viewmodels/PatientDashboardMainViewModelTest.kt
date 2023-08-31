@@ -11,6 +11,7 @@ import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -66,6 +67,32 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
+    fun activeVisitEndsSuccessfully() {
+
+        val patient = Patient().apply {
+            id = PATIENT_ID
+            uuid = "d384d23a-a91b-11ed-afa1-0242ac120002"
+        }
+
+        val visit = Visit().apply {
+            startDatetime = "2023-08-31T10:44:10.000+0000"
+            id = 5
+            stopDatetime = null
+            uuid = "e4cc001c-884e-4cc1-b55d-30c49a48dcc5"
+        }
+
+        Mockito.`when`(visitDAO.getActiveVisitByPatientId(patient.id))
+            .thenReturn(Observable.just(visit))
+
+        Mockito.`when`(visitRepository.endVisit(visit))
+            .thenReturn(Observable.just(true))
+
+        val actual = viewModel.endActiveVisit()
+
+        assertEquals(true, actual.value)
+    }
+
+    @Test
     fun updateLocalPatientWhenSyncingData() {
         val serverPatient = Patient()
         Mockito.`when`(patientRepository.downloadPatientByUuid(any()))
@@ -97,6 +124,7 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
         inOrder.verify(patientDAO).findPatientByID(PATIENT_ID.toString())
         inOrder.verify(patientDAO, never()).updatePatient(PATIENT_ID, patient)
     }
+
     companion object {
         const val PATIENT_ID = 1L
     }
