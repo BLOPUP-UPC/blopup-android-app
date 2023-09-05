@@ -159,6 +159,8 @@ class LegalConsentDialogFragment : DialogFragment() {
         recordButton.setOnClickListener {
             if(fileName.isNotEmpty()){
                 FileUtils.removeLocalRecordingFile(fileName)
+                val parent = parentFragment as AddEditPatientFragment
+                parent.filePath = ""
             }
             audioRecorder.startRecording()
             audioRecorder.startPlaying()

@@ -82,6 +82,7 @@ class AddEditPatientFragment : BaseFragment() {
     private var patientCountry: Country? = null
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
+    internal var filePath = ""
 
     val viewModel: AddEditPatientViewModel by viewModels()
 
@@ -215,12 +216,13 @@ class AddEditPatientFragment : BaseFragment() {
 
     private fun validateLegalConsent(): Boolean {
         if (viewModel.isUpdatePatient) return true
-        if (!FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName())) {
+        if (!isLegalConsent()) {
             binding.recordConsentError.makeVisible()
             return false
-        } else
+        } else {
             binding.recordConsentError.makeGone()
-        viewModel.legalConsentFileName = legalConsentDialog?.fileName()
+            viewModel.legalConsentFileName = if (filePath.isEmpty()) legalConsentDialog?.fileName() else filePath
+        }
         return true
     }
 
@@ -421,7 +423,6 @@ class AddEditPatientFragment : BaseFragment() {
         }
 
         recordLegalConsent.setOnClickListener {
-            var filePath = ""
             if(recordLegalConsent.text == context?.getString(R.string.record_again_legal_consent)){
                 filePath = legalConsentDialog!!.fileName()
             }
@@ -614,8 +615,13 @@ class AddEditPatientFragment : BaseFragment() {
 
     fun isAnyFieldNotEmpty(): Boolean = with(binding) {
         return !isEmpty(firstName) || !isEmpty(surname) ||
-                !isEmpty(dobEditText) || !isEmpty(estimatedYear) || !isEmpty(estimatedMonth)
+                !isEmpty(dobEditText) || !isEmpty(estimatedYear) || !isEmpty(estimatedMonth) ||
+                isLegalConsent() || isNationality()
     }
+
+    private fun isNationality() = binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
+
+    private fun isLegalConsent() = FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName()) || filePath.isNotEmpty()
 
     private fun startPatientDashboardActivity() {
         Intent(requireActivity(), PatientDashboardActivity::class.java).apply {
