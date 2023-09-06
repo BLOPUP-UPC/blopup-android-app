@@ -21,6 +21,7 @@
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     style="@style/BackgroundTheme"
     android:gravity="center_vertical"
+    android:backgroundTint="@color/white"
     android:checkMark="?android:attr/listChoiceIndicatorSingle"
     android:paddingLeft="@dimen/padding_16"
     android:paddingRight="@dimen/padding_16"/>

@@ -16,7 +16,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppThemeOrig" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="AppThemeOrig" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
@@ -24,7 +24,7 @@
         <item name="textColorPrimary">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
@@ -113,6 +113,4 @@
     <style name="CustomText" parent="TextAppearance.ShowcaseView.Detail.Light">
         <item name="android:textColor">#8affffff</item>
     </style>
-
-
 </resources>

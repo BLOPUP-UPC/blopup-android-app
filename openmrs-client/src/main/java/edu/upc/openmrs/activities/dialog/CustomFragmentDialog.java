@@ -125,6 +125,7 @@ public class CustomFragmentDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.mInflater = inflater;
         View dialogLayout = mInflater.inflate(R.layout.fragment_dialog_layout, null, false);
+        dialogLayout.setBackgroundColor(Color.WHITE);
         this.mFieldsLayout = dialogLayout.findViewById(R.id.dialogForm);
         this.setRightButton(dialogLayout);
         this.setLeftButton(dialogLayout);
