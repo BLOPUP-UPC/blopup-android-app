@@ -8,7 +8,7 @@ android{
             // Release toggles
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "false"
-            buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "false"
+            buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "true"
         }
         staging {
             buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"1b7f89cb-197a-4922-bb0c-2b780b85a1ac\""
@@ -18,7 +18,7 @@ android{
             // Release toggles
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
-            buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "false"
+            buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "true"
         }
         debug {
             buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"6aba6deb-b260-4117-9a50-37c8e1a76a45\""
