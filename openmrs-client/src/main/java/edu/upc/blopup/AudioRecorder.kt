@@ -25,9 +25,9 @@ class AudioRecorder(private val outputFilePath: String?, context: Context, input
             mRecorder?.stop()
         } else {
             mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
             mRecorder?.setOutputFile(outputFilePath)
-            mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             mRecorder?.prepare()
             mRecorder?.start()
         }
