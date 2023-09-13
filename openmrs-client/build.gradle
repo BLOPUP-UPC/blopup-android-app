@@ -275,6 +275,7 @@ dependencies {
     // Debug database
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     debugImplementation 'androidx.fragment:fragment-testing:1.5.7'
+    debugImplementation "androidx.test:monitor:1.6.0"
 }
 
 kapt {
