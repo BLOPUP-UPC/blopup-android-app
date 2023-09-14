@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  release-debug:
+  e2e-debug:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,7 +39,7 @@ jobs:
       - name: Build debug artifact
         run: ./gradlew :openmrs-client:assembleDebug
 
-      - name: Execiute maestro
+      - name: Execute maestro
         uses: mobile-dev-inc/action-maestro-cloud@v1.1.0
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
