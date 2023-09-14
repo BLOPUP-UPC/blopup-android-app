@@ -1,5 +1,6 @@
 package edu.upc;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -8,11 +9,15 @@ import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.not;
 
 import android.content.Context;
 import android.view.View;
@@ -72,12 +77,59 @@ public class CreatePatientTest {
         onView(withId(R.id.country_of_birth))
                 .check(matches(withText(countrySelected.getLabel())));
 
-        onView(withId(R.id.submitButton)).perform(click());
+        onView(withId(R.id.language_spinner))
+                .perform(closeSoftKeyboard())
+                .perform(scrollTo())
+                .perform(click());
+
+        onData(anything())
+                .atPosition(3)
+                .perform(click());
+
+        onView(withId(R.id.record_legal_consent))
+                .perform(scrollTo())
+                .check(matches(isEnabled()))
+                .perform(click());
+
+        onView(withId(R.id.record))
+                .perform(click());
+
+        onView(withId(R.id.recordingInProgress))
+                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.play_pause))
+                .check(matches(isDisplayed()))
+                .perform(click())
+                .perform(click());
+
+        onView(withId(R.id.stop))
+                .check(matches(not(isClickable())));
+
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withId(R.id.stop))
+                .perform(click());
+
+        onView(withId(R.id.record_consent_saved))
+                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.record_legal_consent))
+            .check(matches(withText(R.string.record_again_legal_consent)));
+
+        onView(withId(R.id.submitButton))
+                .perform(scrollTo())
+                .perform(click());
     }
 
     @Test
     public void registerPatientFailsWhenCreateItWithoutGender() {
-        onView(withId(R.id.submitButton)).perform(click());
+        onView(withId(R.id.submitButton))
+                .perform(scrollTo())
+                .perform(click());
 
         onView(withId(R.id.gendererror))
                 .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
@@ -91,7 +143,9 @@ public class CreatePatientTest {
         onView(withId(R.id.surname))
                 .perform(clearText());
 
-        onView(withId(R.id.submitButton)).perform(click());
+        onView(withId(R.id.submitButton))
+                .perform(scrollTo())
+                .perform(click());
 
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         String errorMessage = context.getString(R.string.emptyerror);
@@ -108,7 +162,9 @@ public class CreatePatientTest {
     @Test
     public void registerPatientFailsWhenCreateItWithoutACountryOfBirth() {
 
-        onView(withId(R.id.submitButton)).perform(click());
+        onView(withId(R.id.submitButton))
+                .perform(scrollTo())
+                .perform(click());
 
         onView(withId(R.id.country_of_birth_error))
                 .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
@@ -116,8 +172,9 @@ public class CreatePatientTest {
 
     @Test
     public void registerPatientFailsWhenCreateItWithoutLegalConsent() {
-
-        onView(withId(R.id.submitButton)).perform(click());
+        onView(withId(R.id.submitButton))
+                .perform(scrollTo())
+                .perform(click());
 
         onView(withId(R.id.record_consent_error))
                 .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
@@ -148,18 +205,19 @@ public class CreatePatientTest {
             }
         };
     }
-        public static Matcher<Object> withSpinnerSelectedItem(Matcher<Object> itemMatcher) {
-            return new TypeSafeMatcher<Object>() {
-                @Override
-                public void describeTo(Description description) {
-                    description.appendText("is a spinner with selected item: ");
-                    itemMatcher.describeTo(description);
-                }
 
-                @Override
-                protected boolean matchesSafely(Object item) {
-                    return itemMatcher.matches(item);
-                }
-            };
-        }
+    public static Matcher<Object> withSpinnerSelectedItem(Matcher<Object> itemMatcher) {
+        return new TypeSafeMatcher<Object>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("is a spinner with selected item: ");
+                itemMatcher.describeTo(description);
+            }
+
+            @Override
+            protected boolean matchesSafely(Object item) {
+                return itemMatcher.matches(item);
+            }
+        };
     }
+}

@@ -40,7 +40,7 @@
                 android:layout_margin="@dimen/margin_short"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/unknown_cardview"
@@ -392,7 +392,6 @@
                         android:id="@+id/linearLayout_consent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/appintro_bottombar_height"
                         android:orientation="vertical">
 
                         <TextView
@@ -450,12 +449,12 @@
                                     <ImageView
                                         android:id="@+id/record_consent_saved"
                                         android:layout_width="wrap_content"
-                                        android:layout_marginStart="5dp"
                                         android:layout_height="30dp"
                                         android:layout_gravity="center"
-                                        android:visibility="gone"
-                                        android:src="@drawable/saved_recording_icon"
+                                        android:layout_marginStart="5dp"
                                         android:contentDescription="@string/recording_has_been_saved"
+                                        android:src="@drawable/saved_recording_icon"
+                                        android:visibility="gone"
                                         app:tint="@color/color_accent" />
 
                                 </LinearLayout>
@@ -478,6 +477,20 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/submitFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/submitButton"
+                            style="@style/loginButtonStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginVertical="14dp"
+                            android:text="@string/action_submit" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -521,21 +534,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/submitFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:behavior_hideable="true"
-        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
-        app:layout_constraintBottom_toBottomOf="@+id/addEditConstraintLayout">
-
-        <Button
-            android:id="@+id/submitButton"
-            style="@style/loginButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginVertical="14dp"
-            android:text="@string/action_submit" />
-    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
