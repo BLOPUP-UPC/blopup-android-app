@@ -1,10 +1,16 @@
 appId: edu.upc
 ---
 - launchApp
-- tapOn:
+- runFlow:
+    when:
+      visible:
         id: "edu.upc:id/next"
-- tapOn:
-        id: "edu.upc:id/skip"
+    file: "InitialTour.yaml"
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/loginUrlField"
+    file: "SetEnvironment.yaml"
 - tapOn: "Username * "
 - inputText: ${USERNAME}
 - tapOn: "Password * "
