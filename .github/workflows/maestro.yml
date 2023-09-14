@@ -1,0 +1,46 @@
+name: Maestro tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release-debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run tests
+        run: ./gradlew :openmrs-client:testDebugUnitTest
+
+      - name: Build debug artifact
+        run: ./gradlew :openmrs-client:assembleDebug
+
+      - name: Execiute maestro
+        uses: mobile-dev-inc/action-maestro-cloud@v1.1.0
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          app-file: openmrs-client/build/outputs/apk/debug/openmrs-client-debug.apk
