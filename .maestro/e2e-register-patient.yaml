@@ -5,12 +5,12 @@ appId: edu.upc
     when:
       visible:
         id: "edu.upc:id/next"
-    file: "InitialTour.yaml"
+    file: "subflows/InitialTour.yaml"
 - runFlow:
     when:
       visible:
         id: "edu.upc:id/loginUrlField"
-    file: "SetEnvironment.yaml"
+    file: "subflows/SetEnvironment.yaml"
 - tapOn: "Username * "
 - inputText: ${USERNAME}
 - tapOn: "Password * "
