@@ -33,8 +33,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build debug artifact
-        run: ./gradlew :openmrs-client:assemble
+      - name: Build artifact
+        run: ./gradlew :openmrs-client:assembleRelease
 
       - name: Execute maestro
         uses: mobile-dev-inc/action-maestro-cloud@v1.1.0
