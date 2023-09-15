@@ -3,4 +3,4 @@ appId: edu.upc
 - doubleTapOn:
     id: "edu.upc:id/loginUrlField"
 - "eraseText"
-- inputText: "https://blopup.upc.edu/openmrs"
+- inputText: "https://blopup-dev.upc.edu/openmrs"
