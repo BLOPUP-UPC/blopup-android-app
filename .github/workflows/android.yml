@@ -86,7 +86,7 @@ jobs:
           emulator-options: -no-snapshot-save
           force-avd-creation: false
           disable-animations: true
-          script: ./gradlew connectedCheck --stacktrace
+          script: java -version && ./gradlew :openmrs-client:connectedDebugAndroidTest
 
 #  notify:
 #    needs: release-debug
