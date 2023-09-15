@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build debug artifact
-        run: ./gradlew :openmrs-client:assembleDebug
+        run: ./gradlew :openmrs-client:assemble
 
       - name: Execute maestro
         uses: mobile-dev-inc/action-maestro-cloud@v1.1.0
