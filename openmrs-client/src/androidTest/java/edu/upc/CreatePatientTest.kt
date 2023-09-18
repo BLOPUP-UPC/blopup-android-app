@@ -40,13 +40,13 @@ class CreatePatientTest {
 
         onView(withId(R.id.male)).perform(click())
             .check(matches(isChecked()))
-
         onView(withId(R.id.female))
             .check(matches(isNotChecked()))
         onView(withId(R.id.nonBinary))
             .check(matches(isNotChecked()))
 
         onView(withId(R.id.estimatedYear))
+            .perform(scrollTo())
             .perform(click(), ViewActions.typeText(estimatedYear))
 
         onView(withId(R.id.country_of_birth))
