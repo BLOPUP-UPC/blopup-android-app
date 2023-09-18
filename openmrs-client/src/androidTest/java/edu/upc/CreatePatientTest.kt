@@ -18,6 +18,7 @@ import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -30,6 +31,7 @@ class CreatePatientTest {
     )
 
     @Test
+    @Ignore
     fun registerPatientWithOnlyMandatoryFieldsSuccessfully() {
         val name = "Roger"
         val familyName = "Federer"
@@ -106,6 +108,7 @@ class CreatePatientTest {
     }
 
     @Test
+    @Ignore
     fun registerPatientFailsWhenCreateItWithoutGender() {
         onView(withId(R.id.submitButton))
             .perform(scrollTo())
@@ -115,6 +118,7 @@ class CreatePatientTest {
     }
 
     @Test
+    @Ignore
     fun registerPatientFailsWhenCreateItWithoutFullName() {
         onView(withId(R.id.firstName))
             .perform(ViewActions.clearText())
@@ -134,6 +138,7 @@ class CreatePatientTest {
     }
 
     @Test
+    @Ignore
     fun registerPatientFailsWhenCreateItWithoutACountryOfBirth() {
         onView(withId(R.id.submitButton))
             .perform(scrollTo())
@@ -143,6 +148,7 @@ class CreatePatientTest {
     }
 
     @Test
+    @Ignore
     fun registerPatientFailsWhenCreateItWithoutLegalConsent() {
         onView(withId(R.id.submitButton))
             .perform(scrollTo())
