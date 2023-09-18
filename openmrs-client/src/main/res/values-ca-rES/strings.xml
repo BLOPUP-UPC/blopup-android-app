@@ -271,7 +271,6 @@
     <string name="search_patient_remote_no_results">No s\'han trobat pacients</string>
     <string name="failed_fetching_patient_data_error_message">Error al obtenir les dades del pacient</string>
     <string name="invalid_URL_message">URL no vàlida</string>
-    <string name="failed_fetching_visit_type_error_message">Error al obenir el tipus de visita.</string>
     <string name="logs_copied_to_clipboard_message">Registre copiat al portapapers</string>
     <string name="only_one_patient_can_be_selected_notification_message">Pots seleccionar únicament un pacient semblant</string>
     <string name="offline_mode_not_supported">No es pot iniciar una visita durant el mode sense connexió.</string>

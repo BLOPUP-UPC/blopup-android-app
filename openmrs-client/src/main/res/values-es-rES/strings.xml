@@ -234,7 +234,6 @@
     <string name="search_patient_remote_error">Error durante la búsqueda del paciente</string>
     <string name="search_patient_remote_no_results">No se han econtrado pacientes</string>
     <string name="failed_fetching_patient_data_error_message">Error al obtener los datos del paciente</string>
-    <string name="failed_fetching_visit_type_error_message">Error al obtener el tipo de visita.</string>
     <string name="failed_provider_details">Error al obtener los detalles del proveedor.</string>
     <string name="patient_merge_fail">Error al combinar el paciente.</string>
     <string name="patient_register_fail">Error al registrar el paciente.</string>

@@ -424,9 +424,6 @@
     <!--Login Fragment-->
     <string name="invalid_URL_message" tools:ignore="MissingTranslation">Invalid URL</string>
 
-    <!--Login presenter-->
-    <string name="failed_fetching_visit_type_error_message" tools:ignore="MissingTranslation">Failed to fetch visit type</string>
-
     <!--Logs Fragment-->
     <string name="logs_copied_to_clipboard_message" tools:ignore="MissingTranslation">Logs copied to clipboard</string>
 

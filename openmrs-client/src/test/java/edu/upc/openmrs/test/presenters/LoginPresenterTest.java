@@ -23,22 +23,6 @@ import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 
-import edu.upc.sdk.library.OpenMRSLogger;
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.api.RestApi;
-import edu.upc.sdk.library.api.RestServiceBuilder;
-import edu.upc.sdk.library.api.repository.VisitRepository;
-import edu.upc.sdk.library.dao.EncounterDAO;
-import edu.upc.sdk.library.dao.LocationDAO;
-import edu.upc.sdk.library.dao.VisitDAO;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.Session;
-import edu.upc.sdk.library.models.User;
-import edu.upc.sdk.library.models.VisitType;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.NetworkUtils;
-import edu.upc.sdk.utilities.StringUtils;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -61,6 +45,18 @@ import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.net.AuthorizationManager;
 import edu.upc.openmrs.services.UserService;
 import edu.upc.openmrs.test.ACUnitTestBaseRx;
+import edu.upc.sdk.library.OpenMRSLogger;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.RestServiceBuilder;
+import edu.upc.sdk.library.dao.LocationDAO;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.library.models.Session;
+import edu.upc.sdk.library.models.User;
+import edu.upc.sdk.library.models.VisitType;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.NetworkUtils;
+import edu.upc.sdk.utilities.StringUtils;
 import rx.Observable;
 
 @PrepareForTest({OpenMRS.class, NetworkUtils.class, LocationDAO.class, RestServiceBuilder.class,
@@ -80,10 +76,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
     @Mock
     private LocationDAO locationDAO;
     @Mock
-    private EncounterDAO encounterDAO;
-    @Mock
-    private VisitDAO visitDAO;
-    @Mock
     private UserService userService;
     private LoginPresenter presenter;
 
@@ -101,8 +93,7 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
     @Before
     public void setUp() {
         super.setUp();
-        VisitRepository visitRepository = new VisitRepository(openMRSLogger, restApi, visitDAO, locationDAO, encounterDAO);
-        presenter = new LoginPresenter(restApi, visitRepository, locationDAO, userService, view, openMRS,
+        presenter = new LoginPresenter(restApi, locationDAO, userService, view, openMRS,
             openMRSLogger, authorizationManager);
 
         Mockito.lenient().when(OpenmrsAndroid.getServerUrl()).thenReturn("http://www.some_server_url.com");

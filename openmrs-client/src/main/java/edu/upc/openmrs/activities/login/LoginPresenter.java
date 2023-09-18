@@ -16,22 +16,6 @@ package edu.upc.openmrs.activities.login;
 
 import androidx.annotation.NonNull;
 
-import edu.upc.sdk.library.OpenMRSLogger;
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.api.RestApi;
-import edu.upc.sdk.library.api.RestServiceBuilder;
-import edu.upc.sdk.library.api.repository.VisitRepository;
-import edu.upc.sdk.library.dao.LocationDAO;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.listeners.retrofitcallbacks.GetVisitTypeCallback;
-import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.library.models.Session;
-import edu.upc.sdk.library.models.VisitType;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.NetworkUtils;
-import edu.upc.sdk.utilities.StringUtils;
-import edu.upc.sdk.utilities.ToastUtil;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
@@ -42,6 +26,18 @@ import edu.upc.openmrs.activities.BasePresenter;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.net.AuthorizationManager;
 import edu.upc.openmrs.services.UserService;
+import edu.upc.sdk.library.OpenMRSLogger;
+import edu.upc.sdk.library.OpenmrsAndroid;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.RestServiceBuilder;
+import edu.upc.sdk.library.dao.LocationDAO;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.library.models.Results;
+import edu.upc.sdk.library.models.Session;
+import edu.upc.sdk.utilities.ApplicationConstants;
+import edu.upc.sdk.utilities.NetworkUtils;
+import edu.upc.sdk.utilities.StringUtils;
+import edu.upc.sdk.utilities.ToastUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,14 +45,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginPresenter extends BasePresenter implements LoginContract.Presenter {
-    private RestApi restApi;
-    private VisitRepository visitRepository;
-    private UserService userService;
-    private LoginContract.View loginView;
-    private OpenMRS mOpenMRS;
-    private OpenMRSLogger mLogger;
-    private AuthorizationManager authorizationManager;
-    private LocationDAO locationDAO;
+    private final RestApi restApi;
+    private final UserService userService;
+    private final LoginContract.View loginView;
+    private final OpenMRS mOpenMRS;
+    private final OpenMRSLogger mLogger;
+    private final AuthorizationManager authorizationManager;
+    private final LocationDAO locationDAO;
     private boolean mWipeRequired;
 
     public LoginPresenter(LoginContract.View loginView, OpenMRS openMRS) {
@@ -67,15 +62,13 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
         this.authorizationManager = new AuthorizationManager();
         this.locationDAO = new LocationDAO();
         this.restApi = RestServiceBuilder.createService(RestApi.class);
-        this.visitRepository = new VisitRepository();
         this.userService = new UserService();
     }
 
-    public LoginPresenter(RestApi restApi, VisitRepository visitRepository, LocationDAO locationDAO,
+    public LoginPresenter(RestApi restApi, LocationDAO locationDAO,
                           UserService userService, LoginContract.View loginView, OpenMRS mOpenMRS,
                           OpenMRSLogger mLogger, AuthorizationManager authorizationManager) {
         this.restApi = restApi;
-        this.visitRepository = visitRepository;
         this.locationDAO = locationDAO;
         this.userService = userService;
         this.loginView = loginView;
@@ -141,24 +134,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
                                 OpenmrsAndroid.setPasswordAndHashedPassword(password);
                             }
 
-                            visitRepository.getVisitType(new GetVisitTypeCallback() {
-                                @Override
-                                public void onGetVisitTypeResponse(VisitType visitType) {
-                                    OpenmrsAndroid.setVisitTypeUUID(visitType.getUuid());
-                                }
-
-                                @Override
-                                public void onResponse() {
-                                    // This method is intentionally empty
-                                }
-
-                                @Override
-                                public void onErrorResponse(String errorMessage) {
-
-                                    OpenmrsAndroid.setVisitTypeUUID(ApplicationConstants.DEFAULT_VISIT_TYPE_UUID);
-                                    loginView.showToast(R.string.failed_fetching_visit_type_error_message, ToastUtil.ToastType.ERROR);
-                                }
-                            });
+                            OpenmrsAndroid.setVisitTypeUUID(ApplicationConstants.DEFAULT_VISIT_TYPE_UUID);
                             setLogin(true, url);
                             userService.updateUserInformation(username);
 
