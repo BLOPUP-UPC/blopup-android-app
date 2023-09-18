@@ -2,6 +2,8 @@ name: Maestro tests
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ "main" ]
 
 jobs:
   e2e-debug:
