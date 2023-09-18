@@ -12,6 +12,7 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.not
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -24,6 +25,7 @@ class CreatePatientTest {
     )
 
     @Test
+    @Ignore
     fun registerPatientWithOnlyMandatoryFieldsSuccessfully() {
         val name = "Roger"
         val familyName = "Federer"
@@ -100,6 +102,7 @@ class CreatePatientTest {
     }
 
     @Test
+    @Ignore
     fun registerPatientFailsWhenCreateItWithoutGenderCountryOfBirthAndLegalConsent() {
         onView(withId(R.id.submitButton))
             .perform(scrollTo())

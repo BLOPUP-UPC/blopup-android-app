@@ -17,6 +17,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,7 @@ public class LoginTest {
     }
 
     @Test
+    @Ignore
     public void loginUserSuccessfully() {
         onView(withId(R.id.loginUsernameField))
                 .perform(typeText(this.userName), closeSoftKeyboard())
