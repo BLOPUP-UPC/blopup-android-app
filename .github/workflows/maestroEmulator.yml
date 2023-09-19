@@ -23,4 +23,10 @@ jobs:
           ram-size: 2048M
           target: google_apis
           script: ./github_action_install_apk.sh
-#          script: maestro  --format=junit --output=report.xml --no-ansi .maestrotest
+
+      - name: Upload results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: maestro-test-results
+          path: ./**/.maestro/tests/**
