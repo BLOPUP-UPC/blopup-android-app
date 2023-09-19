@@ -13,7 +13,8 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Gradle cache
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@2.4.2
+
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -52,7 +53,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -no-boot-anim -camera-back none
           force-avd-creation: false
           disable-animations: true
-          script: ./gradlew connectedCheck
+          script: ./github_action_emulator_command.sh connectedCheck
 
       - name: Upload results
         if: ${{ always() }}
