@@ -28,6 +28,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with: |
-          /**/.maestro/tests/**
+          ./**/.maestro/tests
+          /Users/runner/.maestro/tests/
           report.xml
           maestro.webm
