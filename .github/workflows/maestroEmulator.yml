@@ -20,7 +20,7 @@ jobs:
         with:
           api-level: 33
           arch: x86_64
-          ram-size: 2048M
+          ram-size: 8192M
           target: google_apis
           script: ./github_action_install_apk.sh
 
