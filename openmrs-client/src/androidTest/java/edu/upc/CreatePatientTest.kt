@@ -12,7 +12,6 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.not
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -91,6 +90,7 @@ class CreatePatientTest {
         onView(withId(R.id.stop))
             .perform(click())
         onView(withId(R.id.record_consent_saved))
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
         onView(withId(R.id.record_legal_consent))
             .check(matches(withText(R.string.record_again_legal_consent)))
