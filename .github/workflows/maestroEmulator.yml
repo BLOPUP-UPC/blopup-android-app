@@ -22,4 +22,5 @@ jobs:
           arch: x86_64
           ram-size: 2048M
           target: google_apis
-          script: maestro test --format=junit --output=report.xml --no-ansi .maestro
+          script: ./github_action_install_apk.sh
+#          script: maestro  --format=junit --output=report.xml --no-ansi .maestrotest
