@@ -25,7 +25,6 @@ class CreatePatientTest {
     )
 
     @Test
-    @Ignore
     fun registerPatientWithOnlyMandatoryFieldsSuccessfully() {
         val name = "Roger"
         val familyName = "Federer"
@@ -102,7 +101,6 @@ class CreatePatientTest {
     }
 
     @Test
-    @Ignore
     fun registerPatientFailsWhenCreateItWithoutGenderCountryOfBirthAndLegalConsent() {
         onView(withId(R.id.submitButton))
             .perform(scrollTo())

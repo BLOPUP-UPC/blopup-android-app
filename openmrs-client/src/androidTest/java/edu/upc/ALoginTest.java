@@ -41,7 +41,6 @@ public class ALoginTest {
     }
 
     @Test
-    @Ignore
     public void loginUserSuccessfully() {
         onView(withId(R.id.loginUsernameField))
                 .perform(typeText(this.userName), closeSoftKeyboard())
