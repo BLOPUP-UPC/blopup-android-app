@@ -26,7 +26,7 @@ import edu.upc.openmrs.activities.login.LoginActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class LoginTest {
+public class ALoginTest {
 
     private String userName, password;
 
