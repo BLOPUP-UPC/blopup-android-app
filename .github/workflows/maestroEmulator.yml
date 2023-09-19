@@ -27,6 +27,7 @@ jobs:
       - name: Upload results
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
-        with:
-          name: maestro-test-results
-          path: ./**/.maestro/tests/**
+        with: |
+          /**/.maestro/tests/**
+          report.xml
+          maestro.webm

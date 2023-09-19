@@ -8,5 +8,8 @@ echo "Build apk"
 echo "Installing APK"
 $ADB install openmrs-client/build/outputs/apk/debug/openmrs-client-debug.apk
 
+echo "Start screen recording"
+$ADB emu screenrecord start --time-limit 10 maestro.webm
+
 echo "Starting maestro"
 maestro test --format=junit --output=report.xml --no-ansi .maestro
