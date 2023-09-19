@@ -4,7 +4,7 @@ appId: edu.upc
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/next"
+        id: "edu.upc:id/description"
     file: "subflows/InitialTour.yaml"
 - runFlow:
     when:
