@@ -1,7 +1,11 @@
 appId: edu.upc
 ---
 - launchApp
-- tapOn: "SKIP"
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/description"
+    file: "subflows/InitialTour.yaml"
 - runFlow:
     when:
       visible:
