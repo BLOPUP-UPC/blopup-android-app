@@ -21,26 +21,28 @@ appId: edu.upc
 - tapOn: "Family Name*"
 - "inputRandomPersonName"
 - tapOn: "Female"
-- "scroll"
 - scrollUntilVisible:
-      element:
-          id: "edu.upc:id/datePicker"
-      visibilityPercentage: 100
+    element:
+      id: "edu.upc:id/datePicker"
+    visibilityPercentage: 100
 - tapOn: "Date of Birth (dd/MM/yyyy)"
 - inputText: "20/01/1980"
+- scrollUntilVisible:
+    element:
+      id: "edu.upc:id/country_of_birth"
 - tapOn: "Select country of birth"
 - tapOn: "Aruba"
 - scrollUntilVisible:
-      element: "Select language"
+    element: "Select language"
 - tapOn: "Select language"
 - tapOn: "Spanish"
 - scrollUntilVisible:
-      element: "Record legal consent"
+    element: "Record legal consent"
 - tapOn: "Record legal consent"
 - tapOn: "RECORD LEGAL CONSENT"
 - extendedWaitUntil:
-      notVisible: "Pause"
-      timeout: 100000
+    notVisible: "Pause"
+    timeout: 100000
 - tapOn: "Stop and save recording"
 - tapOn: "SUBMIT"
 - assertVisible: "START VISIT"
