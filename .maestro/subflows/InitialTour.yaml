@@ -2,3 +2,4 @@ appId: edu.upc
 ---
 - tapOn:
     id: "edu.upc:id/skip"
+    retryTapIfNoChange: true
