@@ -9,4 +9,4 @@ echo "Installing APK"
 $ADB install openmrs-client/build/outputs/apk/debug/openmrs-client-debug.apk
 
 echo "Starting maestro"
-maestro record --format=junit --output=report.xml --no-ansi .maestro
+maestro record  --no-ansi .maestro
