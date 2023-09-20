@@ -1,4 +1,4 @@
 appId: edu.upc
 ---
 - tapOn:
-      id: "edu.upc:id/skip"
+    id: "edu.upc:id/skip"

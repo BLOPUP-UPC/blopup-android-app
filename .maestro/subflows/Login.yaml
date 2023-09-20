@@ -6,13 +6,13 @@ appId: edu.upc
 - inputText: ${PASSWORD}
 - tapOn: "Session Location * "
 - tapOn:
-        id: "android:id/text1"
-        index: 0
+    id: "android:id/text1"
+    index: 0
 - scrollUntilVisible:
-        element: "LOGIN"
+    element: "LOGIN"
 - tapOn: "LOGIN"
 - runFlow:
-        when:
-              visible: "OK"
-        commands:
-              - tapOn: "OK"
+    when:
+      visible: "OK"
+    commands:
+      - tapOn: "OK"
