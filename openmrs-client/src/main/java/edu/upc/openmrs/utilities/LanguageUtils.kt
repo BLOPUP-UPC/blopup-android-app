@@ -16,6 +16,7 @@ package edu.upc.openmrs.utilities
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -65,6 +66,9 @@ object LanguageUtils {
     @JvmStatic
     fun getLanguageCode(language: String?, context: Context): String? {
         val currentLocale = Locale.getDefault()
+        if (BuildConfig.DEBUG) {
+            return "test"
+        }
         val languageMap = mapOf(
             context.getString(R.string.english) to "en",
             context.getString(R.string.spanish) to "es",

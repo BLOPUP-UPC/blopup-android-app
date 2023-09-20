@@ -621,7 +621,12 @@ class AddEditPatientFragment : BaseFragment() {
 
     private fun isNationality() = binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
 
-    private fun isLegalConsent() = FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName()) || filePath.isNotEmpty()
+    private fun isLegalConsent() =
+        if (BuildConfig.DEBUG) {
+            true
+        } else {
+            FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName()) || filePath.isNotEmpty()
+        }
 
     private fun startPatientDashboardActivity() {
         Intent(requireActivity(), PatientDashboardActivity::class.java).apply {
