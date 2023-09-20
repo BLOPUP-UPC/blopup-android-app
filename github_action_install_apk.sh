@@ -8,5 +8,8 @@ echo "Build apk"
 echo "Installing APK"
 $ADB install openmrs-client/build/outputs/apk/debug/openmrs-client-debug.apk
 
-echo "Starting maestro"
-maestro record  --no-ansi .maestro/e2e-register/patient.yaml
+echo "Starting maestro recording "
+maestro record --no-ansi .maestro/e2e-register-patient.yaml
+
+echo "Starting maestro test execution "
+maestro run --no-ansi .maestro/e2e-register-patient.yaml
