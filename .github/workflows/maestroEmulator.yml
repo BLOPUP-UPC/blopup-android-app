@@ -20,11 +20,13 @@ jobs:
         with:
           api-level: 33
           arch: x86_64
-          profile: Pixel_6_API_33
           ram-size: 4192M
           target: google_apis
           emulator-options: -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim -gpu auto -camera-back none
           script: ./github_action_install_apk.sh
+          env: |
+            USERNAME=${{ secrets.TEST_USERNAME }}
+            PASSWORD=${{ secrets.TEST_PASSWORD }}
 
       - name: Upload results
         if: ${{ always() }}
