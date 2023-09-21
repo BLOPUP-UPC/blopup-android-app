@@ -13,7 +13,7 @@ appId: edu.upc
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/loginButton"
+        id: "edu.upc:id/loginUsernameField"
     file: "subflows/Login.yaml"
 - tapOn: Register Patient
 - tapOn: "Name*"
