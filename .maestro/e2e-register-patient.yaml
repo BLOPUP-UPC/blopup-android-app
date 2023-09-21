@@ -13,11 +13,6 @@ appId: edu.upc
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/loginUrlField"
-    file: "subflows/SetEnvironment.yaml"
-- runFlow:
-    when:
-      visible:
         id: "edu.upc:id/loginButton"
     file: "subflows/Login.yaml"
 - tapOn: Register Patient
