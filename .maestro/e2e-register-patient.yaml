@@ -46,10 +46,10 @@ appId: edu.upc
 - tapOn: "Stop and save recording"
 - tapOn: "SUBMIT"
 - assertVisible: "START VISIT"
-#- runFlow:
-#    when:
-#      visible:
-#        id: "edu.upc:id/start_visit_fab"
-#    file: "subflows/EditPatient.yaml"
-#- runFlow:
-#    file: "subflows/TakeVitals.yaml"
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/start_visit_fab"
+    file: "subflows/EditPatient.yaml"
+- runFlow:
+    file: "subflows/TakeVitals.yaml"
