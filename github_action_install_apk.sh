@@ -12,5 +12,5 @@ echo "Starting screenrecord"
 $ADB emu screenrecord start --time-limit 460 maestro.webm
 
 echo "Starting maestro"
-export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000 # setting 60 seconds
+export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000 # setting 120 seconds
 maestro test -e MAESTRO_TEST_USERNAME=$MAESTRO_TEST_USERNAME -e MAESTRO_TEST_PASSWORD=$MAESTRO_TEST_PASSWORD --no-ansi .maestro/e2e-register-patient.yaml
