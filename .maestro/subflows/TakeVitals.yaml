@@ -1,0 +1,14 @@
+appId: edu.upc
+---
+- tapOn:
+    id: "edu.upc:id/start_visit_fab"
+- tapOn: "Receive blood pressure data"
+- pressKey: back
+- tapOn: "Receive weight from scale"
+- pressKey: back
+- tapOn: "Height"
+- inputText: "167"
+- hideKeyboard
+- tapOn:
+    id: "edu.upc:id/buttonToSentVitals"
+- assertVisible: "START VISIT"

@@ -1,0 +1,27 @@
+appId: edu.upc
+---
+- tapOn:
+      id: "edu.upc:id/edit"
+- tapOn: Register Patient
+- tapOn: "Name*"
+- "inputRandomPersonName"
+- tapOn: "Family Name*"
+- "inputRandomPersonName"
+- tapOn: "Male"
+- scrollUntilVisible:
+      element:
+          id: "edu.upc:id/datePicker"
+      visibilityPercentage: 100
+- tapOn: "Date of Birth (dd/MM/yyyy)"
+- inputText: "20/12/1982"
+- scrollUntilVisible:
+      element:
+          id: "edu.upc:id/country_of_birth"
+- tapOn:
+    id: "edu.upc:id/country_of_birth"
+- tapOn: "Angola"
+- scrollUntilVisible:
+      element:
+          id: "edu.upc:id/submitButton"
+- tapOn: "SUBMIT"
+- assertVisible: "START VISIT"
