@@ -42,5 +42,5 @@ jobs:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
           app-file: openmrs-client/build/outputs/apk/debug/openmrs-client-debug.apk
           env: |
-            USERNAME=${{ secrets.TEST_USERNAME }}
-            PASSWORD=${{ secrets.TEST_PASSWORD }}
+            MAESTRO_TEST_USERNAME=${{ secrets.TEST_USERNAME }}
+            MAESTRO_TEST_PASSWORD=${{ secrets.TEST_PASSWORD }}
