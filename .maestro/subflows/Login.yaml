@@ -4,6 +4,7 @@ appId: edu.upc
 - inputText: ${USERNAME}
 - tapOn: "Password * "
 - inputText: ${PASSWORD}
+- hideKeyboard
 - tapOn: "Session Location * "
 - tapOn:
     id: "android:id/text1"
