@@ -37,3 +37,4 @@ jobs:
             ./**/.maestro/tests
             /Users/runner/.maestro/tests/
             report.xml
+            maestro.webm
