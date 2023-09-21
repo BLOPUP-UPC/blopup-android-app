@@ -1,9 +1,9 @@
 appId: edu.upc
 ---
 - tapOn: "Username * "
-- inputText: ${USERNAME}
+- inputText: ${MAESTRO_TEST_USERNAME}
 - tapOn: "Password * "
-- inputText: ${PASSWORD}
+- inputText: ${MAESTRO_TEST_PASSWORD}
 - hideKeyboard
 - tapOn: "Session Location * "
 - tapOn:
