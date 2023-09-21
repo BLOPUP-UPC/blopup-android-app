@@ -1,10 +1,18 @@
 appId: edu.upc
 ---
 - tapOn:
+    id:
+- tapOn:
     id: "edu.upc:id/start_visit_fab"
 - tapOn: "Receive blood pressure data"
+- assertVisible:
+    id: "edu.upc:id/bp_guide"
 - pressKey: back
+- assertVisible:
+    id: "edu.upc:id/receive_weight_data_btn"
 - tapOn: "Receive weight from scale"
+- assertVisible:
+    id: "edu.upc:id/scale_diagram"
 - pressKey: back
 - tapOn: "Height"
 - inputText: "167"
