@@ -23,6 +23,9 @@ jobs:
       - uses: reactivecircus/android-emulator-runner@v2.28.0
         with:
           api-level: 33
+          env: |
+            MAESTRO_TEST_USERNAME=${{ secrets.TEST_USERNAME }}
+            MAESTRO_TEST_PASSWORD=${{ secrets.TEST_PASSWORD }}
           arch: x86_64
           ram-size: 4192M
           target: google_apis
