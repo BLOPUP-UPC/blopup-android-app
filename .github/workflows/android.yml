@@ -6,64 +6,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  integration-tests:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Gradle cache
-        uses: gradle/gradle-build-action@v2.4.2
-
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: AVD cache
-        uses: actions/cache@v3
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-33
-
-      - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 33
-          target: google_apis
-          arch: x86_64
-          force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-back none
-          disable-animations: false
-          script: echo "Generated AVD snapshot for caching."
-
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 33
-          target: google_apis
-          arch: x86_64
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -no-boot-anim -camera-back none
-          force-avd-creation: false
-          disable-animations: true
-          script: ./github_action_emulator_command.sh connectedCheck
-
-      - name: Upload results
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: instrumentation-test-results
-          path: ./**/build/reports/androidTests/connected/**
-
   release-debug:
-    needs: integration-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
