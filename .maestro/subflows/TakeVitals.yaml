@@ -1,8 +1,6 @@
 appId: edu.upc
 ---
 - tapOn:
-    id:
-- tapOn:
     id: "edu.upc:id/start_visit_fab"
 - tapOn: "Receive blood pressure data"
 - assertVisible:
