@@ -1,0 +1,30 @@
+appId: edu.upc
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "edu.upc:id/description"
+    timeout: 100000
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/description"
+    file: "subflows/InitialTour.yaml"
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/loginUsernameField"
+    file: "subflows/Login.yaml"
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/registryPatientView"
+    file: "subflows/CreatePatient.yaml"
+- assertVisible: "START VISIT"
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/start_visit_fab"
+    file: "subflows/EditPatient.yaml"
+- runFlow:
+    file: "subflows/TakeVitals.yaml"

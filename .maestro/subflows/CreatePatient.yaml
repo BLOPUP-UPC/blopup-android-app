@@ -1,21 +1,10 @@
 appId: edu.upc
 ---
-- launchApp
-- extendedWaitUntil:
-    visible:
-      id: "edu.upc:id/description"
-    timeout: 100000
-- runFlow:
-    when:
-      visible:
-        id: "edu.upc:id/description"
-    file: "subflows/InitialTour.yaml"
-- runFlow:
-    when:
-      visible:
-        id: "edu.upc:id/loginUsernameField"
-    file: "subflows/Login.yaml"
 - tapOn: Register Patient
+  when:
+   visible: "com.android.permissioncontroller:id/permission_message"
+   commands:
+    - tapOn: "com.android.permissioncontroller:id/permission_allow_foreground_only_button"
 - tapOn: "Name*"
 - "inputRandomPersonName"
 - tapOn: "Family Name*"
@@ -45,11 +34,3 @@ appId: edu.upc
     timeout: 100000
 - tapOn: "Stop and save recording"
 - tapOn: "SUBMIT"
-- assertVisible: "START VISIT"
-- runFlow:
-    when:
-      visible:
-        id: "edu.upc:id/start_visit_fab"
-    file: "subflows/EditPatient.yaml"
-- runFlow:
-    file: "subflows/TakeVitals.yaml"
