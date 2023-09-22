@@ -1,10 +1,11 @@
 appId: edu.upc
 ---
 - tapOn: Register Patient
-  when:
-   visible: "com.android.permissioncontroller:id/permission_message"
-   commands:
-    - tapOn: "com.android.permissioncontroller:id/permission_allow_foreground_only_button"
+- runFlow:
+    when:
+      visible: "com.android.permissioncontroller:id/permission_message"
+    commands:
+      - tapOn: "com.android.permissioncontroller:id/permission_allow_foreground_only_button"
 - tapOn: "Name*"
 - "inputRandomPersonName"
 - tapOn: "Family Name*"
