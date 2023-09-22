@@ -1,10 +1,11 @@
 appId: edu.upc
 ---
 - launchApp
-- extendedWaitUntil:
-    visible:
-      id: "edu.upc:id/description"
-    timeout: 100000
+- runFlow:
+      when:
+        visible: "com.android.permissioncontroller:id/permission_message"
+      commands:
+        - tapOn: "com.android.permissioncontroller:id/permission_allow_foreground_only_button"
 - runFlow:
     when:
       visible:
@@ -27,4 +28,7 @@ appId: edu.upc
         id: "edu.upc:id/start_visit_fab"
     file: "subflows/EditPatient.yaml"
 - runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/start_visit_fab"
     file: "subflows/TakeVitals.yaml"

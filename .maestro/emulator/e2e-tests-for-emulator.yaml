@@ -1,0 +1,12 @@
+appId: edu.upc
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "edu.upc:id/description"
+    timeout: 100000
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/description"
+    file: "../e2e-tests.yaml"

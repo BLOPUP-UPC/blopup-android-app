@@ -29,9 +29,16 @@ appId: edu.upc
 - scrollUntilVisible:
     element: "Record legal consent"
 - tapOn: "Record legal consent"
+- runFlow:
+    when:
+      visible: "com.android.permissioncontroller:id/permission_message"
+    commands:
+      - tapOn: "com.android.permissioncontroller:id/permission_allow_foreground_only_button"
 - tapOn: "RECORD LEGAL CONSENT"
 - extendedWaitUntil:
     notVisible: "Pause"
     timeout: 100000
 - tapOn: "Stop and save recording"
+- scrollUntilVisible:
+    element: "SUBMIT"
 - tapOn: "SUBMIT"
