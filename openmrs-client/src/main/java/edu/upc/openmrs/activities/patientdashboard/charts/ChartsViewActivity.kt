@@ -162,7 +162,7 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart.description.isEnabled = false
         mChart.setTouchEnabled(true)
         // to make it scrollable
-        mChart.setVisibleXRangeMaximum(3f)
+        mChart.setVisibleXRangeMaximum(8f)
         // to remove values in right side of screen
         mChart.axisRight.isEnabled = false
         //to display one data per date
