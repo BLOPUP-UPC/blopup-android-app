@@ -2,11 +2,6 @@ appId: edu.upc
 ---
 - launchApp
 - runFlow:
-      when:
-        visible: "com.android.permissioncontroller:id/permission_message"
-      commands:
-        - tapOn: "com.android.permissioncontroller:id/permission_allow_foreground_only_button"
-- runFlow:
     when:
       visible:
         id: "edu.upc:id/description"
