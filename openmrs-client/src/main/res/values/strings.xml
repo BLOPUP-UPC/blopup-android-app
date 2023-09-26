@@ -577,4 +577,7 @@
     <string name="pause" tools:ignore="MissingTranslation">Pause</string>
     <string name="stop_save" tools:ignore="MissingTranslation">Stop and save recording</string>
     <string name="resume" tools:ignore="MissingTranslation">Continue</string>
+    <string name="systolic_vital" tools:ignore="MissingTranslation">Systolic</string>
+    <string name="diastolic_vital" tools:ignore="MissingTranslation">Diastolic</string>
+    <string name="pulse_vital" tools:ignore="MissingTranslation">Pulse</string>
 </resources>

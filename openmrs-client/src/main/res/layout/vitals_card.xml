@@ -3,8 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="@dimen/appintro_indicator_size">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="30dp"
+        android:padding="@dimen/appintro_indicator_size">
 
     <TextView
         android:id="@+id/systolic"
@@ -12,18 +20,70 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Systolic"
-        android:textAlignment="textStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="22sp" />
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/systolic_vital"
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
-        android:id="@+id/keyValueDataRowTextData"
+        android:id="@+id/systolic_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="35dp"
-        android:text="120"
-        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/roboto_medium"
         app:layout_constraintTop_toBottomOf="@id/keyValueDataRowTextLabel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="10dp"
+        android:padding="@dimen/appintro_indicator_size">
+
+        <TextView
+            android:id="@+id/diastolic"
+            style="@style/TextLabel.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/diastolic_vital"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:id="@+id/diastolic_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/roboto_medium"
+            app:layout_constraintTop_toBottomOf="@id/keyValueDataRowTextLabel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:padding="@dimen/appintro_indicator_size">
+
+        <TextView
+            android:id="@+id/pulse"
+            style="@style/TextLabel.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/pulse_vital"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:id="@+id/pulse_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/roboto_medium"
+            app:layout_constraintTop_toBottomOf="@id/keyValueDataRowTextLabel" />
+    </LinearLayout>
+
 </LinearLayout>

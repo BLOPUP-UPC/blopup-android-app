@@ -391,4 +391,7 @@
     <string name="pause">Pausar</string>
     <string name="stop_save">Detener y guardar grabación</string>
     <string name="resume">Continuar</string>
+    <string name="systolic_vital">Sistólica</string>
+    <string name="diastolic_vital">Diastólica</string>
+    <string name="pulse_vital">Pulso</string>
 </resources>

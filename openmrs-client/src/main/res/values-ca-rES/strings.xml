@@ -388,4 +388,7 @@
     <string name="pause">Pausa</string>
     <string name="stop_save">Atura i guarda la gravació</string>
     <string name="resume">Continua</string>
+    <string name="systolic_vital">Sistòlica</string>
+    <string name="diastolic_vital">Diastòlica</string>
+    <string name="pulse_vital">Pols</string>
 </resources>

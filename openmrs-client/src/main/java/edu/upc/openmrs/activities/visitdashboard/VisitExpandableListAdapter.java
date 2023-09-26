@@ -82,7 +82,7 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
 
                     if(!bmiData.equals("N/A")) openMRSInflater.addBmiChart(contentLayout, bmiData);
 
-                    if(BuildConfig.BLOPUP_282_SHOW_ALGORITHM) openMRSInflater.addNewTextView(contentLayout);
+                    if(BuildConfig.BLOPUP_282_SHOW_ALGORITHM) openMRSInflater.addBloodPressureData(contentLayout);
 
                     layouts.add(convertView);
                     break;

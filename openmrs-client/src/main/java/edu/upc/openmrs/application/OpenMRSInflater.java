@@ -62,10 +62,15 @@ public class OpenMRSInflater {
         parentLayout.addView(view);
     }
 
-    public void addNewTextView(ViewGroup parentLayout) {
+    public void addBloodPressureData(ViewGroup parentLayout) {
         View view = mInflater.inflate(R.layout.vitals_card, null, false);
-        TextView labelText = view.findViewById(R.id.systolic);
-        labelText.setText("Diastolic");
+        TextView systolicValue = view.findViewById(R.id.systolic_value);
+        TextView diastolicValue = view.findViewById(R.id.diastolic_value);
+        TextView pulseValue = view.findViewById(R.id.pulse_value);
+
+        systolicValue.setText("120 mmHg");
+        diastolicValue.setText("80 mmHg");
+        pulseValue.setText("68 /min");
 
         parentLayout.addView(view);
     }
