@@ -14,18 +14,10 @@
 
 package edu.upc.openmrs.application;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.github.anastr.speedviewlib.Gauge;
-import com.github.anastr.speedviewlib.SpeedView;
-import com.github.anastr.speedviewlib.components.Section;
-import com.github.anastr.speedviewlib.components.indicators.Indicator;
-
-import java.util.Arrays;
 
 import edu.upc.R;
 import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
@@ -52,16 +44,14 @@ public class OpenMRSInflater {
         return parentLayout;
     }
 
-
-    public ViewGroup addSingleStringView(ViewGroup parentLayout, String label) {
+    public void addSingleStringView(ViewGroup parentLayout, String label) {
         View view = mInflater.inflate(R.layout.row_single_text_data, null, false);
         TextView labelText = view.findViewById(R.id.singleTextRowLabelText);
         labelText.setText(label);
         parentLayout.addView(view);
-        return parentLayout;
     }
 
-    public ViewGroup addBmiChart(ViewGroup parentLayout, String bmiData) {
+    public void addBmiChart(ViewGroup parentLayout, String bmiData) {
 
         BMIChartSetUp bmiChart = new BMIChartSetUp();
 
@@ -70,6 +60,13 @@ public class OpenMRSInflater {
         bmiChart.createChart(view, bmiData);
 
         parentLayout.addView(view);
-        return parentLayout;
+    }
+
+    public void addNewTextView(ViewGroup parentLayout) {
+        View view = mInflater.inflate(R.layout.vitals_card, null, false);
+        TextView labelText = view.findViewById(R.id.systolic);
+        labelText.setText("Diastolic");
+
+        parentLayout.addView(view);
     }
 }

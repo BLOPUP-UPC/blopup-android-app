@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/appintro_indicator_size">
+
+    <TextView
+        android:id="@+id/systolic"
+        style="@style/TextLabel.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/montserrat"
+        android:text="Systolic"
+        android:textAlignment="textStart"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/keyValueDataRowTextData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="35dp"
+        android:text="120"
+        style="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintTop_toBottomOf="@id/keyValueDataRowTextLabel" />
+</LinearLayout>

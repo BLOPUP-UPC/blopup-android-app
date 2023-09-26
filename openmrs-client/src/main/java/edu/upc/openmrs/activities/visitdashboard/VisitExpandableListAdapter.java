@@ -28,6 +28,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.upc.BuildConfig;
 import edu.upc.R;
 import edu.upc.openmrs.application.OpenMRSInflater;
 import edu.upc.openmrs.utilities.EncounterTranslationUtils;
@@ -80,6 +81,8 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
                     openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), bmiData);
 
                     if(!bmiData.equals("N/A")) openMRSInflater.addBmiChart(contentLayout, bmiData);
+
+                    if(BuildConfig.BLOPUP_282_SHOW_ALGORITHM) openMRSInflater.addNewTextView(contentLayout);
 
                     layouts.add(convertView);
                     break;
