@@ -229,7 +229,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle_version}")
 
     // Microlife dependencies
-    implementation('com.ideabus.ideabus_structure:ideabuslibrary:2.0.2') {
+    implementation('com.ideabus.ideabus_structure:ideabuslibrary:2.0.7') {
         exclude group: 'com.android.support', module: 'support-compat'
     }
     implementation files('libs/scale-sdk_v1.1.6_1907291543.aar')
