@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="legal_consent"><![CDATA[Hem de registrar el consentiment del pacient per registrar la informació personal. Llegirem en veu alta el text següent:<br><br>Un cop comenci la gravació, podeu fer una <b>pausa</b> i reprendre tantes vagades com vulgueu. Un cop acabat, premeu <b>Altura i envieu la gravació</b> per registrar el consentiment i poder continuar el procés de registre del pacient.<br><br>Els punts principals de la informació que t’hem donat oralment i per escrit son:<br>]]></string>
+    <string name="legal_consent_intro"><![CDATA[Hem de registrar el consentiment del pacient per registrar la informació personal. Llegirem en veu alta el text següent:<br><br>Un cop comenci la gravació, podeu fer una <b>pausa</b> i reprendre tantes vagades com vulgueu. Un cop acabat, premeu <b>Altura i envieu la gravació</b> per registrar el consentiment i poder continuar el procés de registre del pacient.<br>]]></string>
+    <string name="legal_consent">Els punts principals de la informació que t’hem donat oralment i per escrit son:\n</string>
     <string name="record_again_legal_consent"><u>Tornar a gravar</u></string>
     <string name="recording_success">Consentiment registrat correctament</string>
     <string name="first_bullet_point">Participaràs en un estudi de Salut Sense Sostre que implica la mesura de la tensió arterial.</string>

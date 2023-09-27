@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="legal_consent"><![CDATA[We need to record the patient\'s consent to register personal information. We will read out loud the following text.<br><br>Once the recording starts you can <b>pause</b> and resume as many times as you want.<br>Once finished, press <b>Stop and send recording</b> to record the consent and be able to continue the patient registration process.<br><br>The main points of the information we have explained to you verbally and in a written format are:<br>]]></string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="legal_consent_intro" tools:ignore="MissingTranslation"><![CDATA[We need to record the patient\'s consent to register personal information. We will read out loud the following text. <br> <br> Once the recording starts you can <b> pause </b> and resume as many times as you want. <br> Once finished, press <b> Stop and send recording </b> to record the consent and be able to continue the patient registration process. <br>]]></string>
+    <string name="legal_consent">The main points of the information we have explained to you verbally and in a written format are:\n</string>
     <string name="record_again_legal_consent" translatable="false"><u>Repeat recording</u></string>
     <string name="recording_success" translatable="false">Consent successfully recorded</string>
     <string name="english" translatable="false">English</string>

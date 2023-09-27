@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="legal_consent">
-        <![CDATA[Abbiamo bisogno di registrare il consenso del paziente per poter registrare i suoi dati personali. Quindi leggeremo ad alta voce il seguente testo.<br><br>Una volta iniziata la registrazione, puoi mettere in <b>pausa</b> e riprendere tutte le volte che vuoi.<br>Al termine, premi <b>Stop e invia registrazione</b> per registrare il consenso e poter continuare la registrazione del paziente processo.<br><br>I punti principali delle informazioni che ti abbiamo fornito verbalmente e per iscritto sono:<br>]]>
-    </string>
+    <string name="legal_consent">I punti principali delle informazioni che ti abbiamo fornito verbalmente e per iscritto sono:\n</string>
     <string name="first_bullet_point">Parteciperai ad uno studio di Salut Sense Sostre che prevede la misurazione della pressione sanguigna.</string>
     <string name="second_bullet_point">Ti forniremo le linee guida da seguire se la pressione dovesse essere troppo alta e ti monitoreremo. Questa misurazione non comporta alcun rischio.</string>
     <string name="third_bullet_point">I tuoi dati personali e medici saranno conosciuti solo da noi e da te. Potrai vederli e chiederci di distruggerli. Non comunicheremo mai i tuoi dati personali, solo in forma aggregata e statistica.</string>
