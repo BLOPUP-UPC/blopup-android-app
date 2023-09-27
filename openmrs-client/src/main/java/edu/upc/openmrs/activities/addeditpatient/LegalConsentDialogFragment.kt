@@ -25,6 +25,7 @@ import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.android.synthetic.main.fragment_patient_info.*
+import kotlinx.android.synthetic.main.legal_consent.legal_consent_intro
 import java.util.*
 
 
@@ -58,6 +59,7 @@ class LegalConsentDialogFragment : DialogFragment() {
         )
 
         setLegalConsentWordingLanguage(languageCode!!)
+        styleLegalConsentIntro(language!!)
         setupButtons()
         listenForPlayCompletion()
         isCancelableWhenNotRecording()
@@ -76,15 +78,25 @@ class LegalConsentDialogFragment : DialogFragment() {
             )
 
             for ((view, resourceId) in viewsAndResourceIds) {
-                val wording = LanguageUtils.getLocaleStringResource(Locale(language), resourceId, it)
-                if(view == legalConsentBinding.legalConsentWording){
-                    val styledLegalConsentText = HtmlCompat.fromHtml(wording, Html.FROM_HTML_MODE_LEGACY)
-                    legalConsentBinding.legalConsentWording.text = styledLegalConsentText
-                } else {
-                    view.text = wording
-                }
+                val wording =
+                    LanguageUtils.getLocaleStringResource(Locale(language), resourceId, it)
+                view.text = wording
             }
         }
+    }
+
+    private fun styleLegalConsentIntro(language: String) {
+        context?.let {
+            val styledLegalConsentText = HtmlCompat.fromHtml(
+                LanguageUtils.getLocaleStringResource(
+                    resources.configuration.locales[0],
+                    R.string.legal_consent_intro,
+                    it
+                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+            legalConsentBinding.legalConsentIntro.text = styledLegalConsentText
+        }
+
     }
 
     override fun onStart() {
@@ -142,8 +154,13 @@ class LegalConsentDialogFragment : DialogFragment() {
             if (fileIsCreatedSuccessfully(mFileName)) {
                 val parent = parentFragment
                 parent?.record_consent_saved?.makeVisible()
-                parent?.record_legal_consent?.text = context?.getString(R.string.record_again_legal_consent)
-                ToastUtil.showShortToast(context!!, ToastUtil.ToastType.SUCCESS, R.string.recording_success)
+                parent?.record_legal_consent?.text =
+                    context?.getString(R.string.record_again_legal_consent)
+                ToastUtil.showShortToast(
+                    requireContext(),
+                    ToastUtil.ToastType.SUCCESS,
+                    R.string.recording_success
+                )
             }
         }
     }
@@ -157,7 +174,7 @@ class LegalConsentDialogFragment : DialogFragment() {
 
     private fun startRecordingAndPlayingAudio() {
         recordButton.setOnClickListener {
-            if(fileName.isNotEmpty()){
+            if (fileName.isNotEmpty()) {
                 FileUtils.removeLocalRecordingFile(fileName)
                 val parent = parentFragment as AddEditPatientFragment
                 parent.filePath = ""
