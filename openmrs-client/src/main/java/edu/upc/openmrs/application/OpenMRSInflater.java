@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 import edu.upc.R;
 import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
@@ -41,9 +42,6 @@ public class OpenMRSInflater {
         TextView pulseValue = vitalsCardView.findViewById(R.id.pulse_value);
         TextView heightValue = vitalsCardView.findViewById(R.id.height_value);
         TextView weightValue = vitalsCardView.findViewById(R.id.weight_value);
-        TextView bmiValue = vitalsCardView.findViewById(R.id.bmi_value);
-
-        bmiValue.setText(bmiData);
 
         for (Observation observation : observations) {
             if (observation.getDisplay().contains("Systolic")) {
@@ -59,10 +57,20 @@ public class OpenMRSInflater {
             }
         }
 
+        if(!Objects.equals(bmiData, "N/A")) {
+            vitalsCardView.findViewById(R.id.bmi_layout).setVisibility(View.VISIBLE);
+            TextView bmiValue = vitalsCardView.findViewById(R.id.bmi_value);
+            bmiValue.setText(bmiData);
+
+            BMIChartSetUp bmiChart = new BMIChartSetUp();
+            bmiChart.createChart(vitalsCardView, bmiData);
+        }
+
         parentLayout.addView(vitalsCardView);
 
         return parentLayout;
     }
+
 
     public ViewGroup addKeyValueStringView(ViewGroup parentLayout, String label, String data) {
         View view = mInflater.inflate(R.layout.row_key_value_data, null, false);

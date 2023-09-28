@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
+import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.openmrs.application.OpenMRSInflater
 import edu.upc.openmrs.utilities.EncounterTranslationUtils.getTranslatedResourceId
@@ -62,16 +63,24 @@ class VisitExpandableListAdapter(
             when (encounter.encounterType!!.display) {
 
                 EncounterType.VITALS -> {
-                    for (obs in encounter.observations) {
-                        openMRSInflater.addKeyValueStringView(
-                            contentLayout,
-                            obs.display,
-                            obs.displayValue
-                        )
-                    }
                     val bmiData = bmiCalculator.execute(encounter.observations)
-                    openMRSInflater.addVitalsData(contentLayout, encounter.observations, bmiData)
-                    if (bmiData != "N/A") openMRSInflater.addBmiChart(contentLayout, bmiData)
+
+                    if (BuildConfig.BLOPUP_282_SHOW_ALGORITHM) {
+                        openMRSInflater.addVitalsData(
+                            contentLayout,
+                            encounter.observations,
+                            bmiData
+                        )
+                    } else {
+                        for (obs in encounter.observations) {
+                            openMRSInflater.addKeyValueStringView(
+                                contentLayout,
+                                obs.display,
+                                obs.displayValue
+                            )
+                        }
+                        if (bmiData != "N/A") openMRSInflater.addBmiChart(contentLayout, bmiData)
+                    }
                     layouts.add(convertView)
                 }
 

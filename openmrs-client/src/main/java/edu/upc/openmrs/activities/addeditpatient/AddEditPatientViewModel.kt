@@ -90,23 +90,24 @@ class AddEditPatientViewModel @Inject constructor(
 
     private fun registerPatient() {
         setLoading()
-        addSubscription(patientRepository.registerPatient(patient)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    setContent(it, PatientRegistering)
-                    showPatientConsentToggle.check(onToggleEnabled = {
-                        recordingHelper.saveLegalConsent(LegalConsent().apply {
-                            val patientIdentifier = patient.identifier.identifier
-                            if(patientIdentifier != null){
-                                this.patientIdentifier = patientIdentifier
-                                this.filePath = legalConsentFileName
-                            }
+        addSubscription(
+            patientRepository.registerPatient(patient)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        setContent(it, PatientRegistering)
+                        showPatientConsentToggle.check(onToggleEnabled = {
+                            recordingHelper.saveLegalConsent(LegalConsent().apply {
+                                val patientIdentifier = patient.identifier.identifier
+                                if (patientIdentifier != null) {
+                                    this.patientIdentifier = patientIdentifier
+                                    this.filePath = legalConsentFileName
+                                }
+                            })
                         })
-                    })
-                },
-                { setError(it, PatientRegistering) },
-            )
+                    },
+                    { setError(it, PatientRegistering) },
+                )
         )
     }
 
@@ -115,8 +116,10 @@ class AddEditPatientViewModel @Inject constructor(
         addSubscription(patientRepository.updatePatient(patient)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { _patientUpdateLiveData.value = ResultType.PatientUpdateError },
-                { _patientUpdateLiveData.value = ResultType.PatientUpdateError },
+                { resultType ->
+                    _patientUpdateLiveData.value = resultType
+                },
+                { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
             )
         )
     }
