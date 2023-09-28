@@ -51,6 +51,24 @@ class VisitExpandableListAdapter(
         notifyDataSetChanged()
     }
 
+    enum class HYPERTENSION_TYPE {
+        NORMAL, STAGE_I, STAGE_II_A, STAGE_II_B, STAGE_II_C
+    }
+
+    private fun hypertensionType(encounter: Encounter) : HYPERTENSION_TYPE? {
+        val systolic = encounter.observations.find { it.display?.contains("Systolic") == true }?.displayValue?.toDouble()
+        val diastolic = encounter.observations.find { it.display?.contains("Diastolic") == true }?.displayValue?.toDouble()
+
+        if (systolic == null || diastolic == null) return null;
+
+        if (systolic >= 180 || diastolic >= 110) return HYPERTENSION_TYPE.STAGE_II_C;
+        if (systolic >= 160 || diastolic >= 100) return HYPERTENSION_TYPE.STAGE_II_B;
+        if (systolic >= 140 || diastolic >= 90) return HYPERTENSION_TYPE.STAGE_II_A;
+        if (systolic >= 130 || diastolic >= 80) return HYPERTENSION_TYPE.STAGE_I;
+
+        return HYPERTENSION_TYPE.NORMAL;
+    }
+
     private fun generateChildLayouts(): List<ViewGroup> {
         val layouts: MutableList<ViewGroup> = ArrayList()
         val inflater = LayoutInflater.from(mContext)
@@ -66,6 +84,7 @@ class VisitExpandableListAdapter(
                     val bmiData = bmiCalculator.execute(encounter.observations)
 
                     if (BuildConfig.BLOPUP_282_SHOW_ALGORITHM) {
+                        hypertensionType(encounter)
                         openMRSInflater.addVitalsData(
                             contentLayout,
                             encounter.observations,
