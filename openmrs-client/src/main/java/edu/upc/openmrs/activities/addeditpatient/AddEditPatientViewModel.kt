@@ -105,7 +105,7 @@ class AddEditPatientViewModel @Inject constructor(
                         })
                     })
                 },
-                { setError(it, PatientRegistering) }
+                { setError(it, PatientRegistering) },
             )
         )
     }
@@ -115,10 +115,8 @@ class AddEditPatientViewModel @Inject constructor(
         addSubscription(patientRepository.updatePatient(patient)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { resultType ->
-                    _patientUpdateLiveData.value = resultType
-                },
-                { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
+                { _patientUpdateLiveData.value = ResultType.PatientUpdateError },
+                { _patientUpdateLiveData.value = ResultType.PatientUpdateError },
             )
         )
     }

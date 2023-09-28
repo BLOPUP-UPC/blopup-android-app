@@ -19,14 +19,49 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import edu.upc.R;
 import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
+import edu.upc.sdk.library.models.Observation;
 
 public class OpenMRSInflater {
     private LayoutInflater mInflater;
 
     public OpenMRSInflater(LayoutInflater inflater) {
         this.mInflater = inflater;
+    }
+
+    public ViewGroup addVitalsData(ViewGroup parentLayout, List<Observation> observations, String bmiData) {
+
+        View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
+
+        TextView systolicValue = vitalsCardView.findViewById(R.id.systolic_value);
+        TextView diastolicValue = vitalsCardView.findViewById(R.id.diastolic_value);
+        TextView pulseValue = vitalsCardView.findViewById(R.id.pulse_value);
+        TextView heightValue = vitalsCardView.findViewById(R.id.height_value);
+        TextView weightValue = vitalsCardView.findViewById(R.id.weight_value);
+        TextView bmiValue = vitalsCardView.findViewById(R.id.bmi_value);
+
+        bmiValue.setText(bmiData);
+
+        for (Observation observation : observations) {
+            if (observation.getDisplay().contains("Systolic")) {
+                systolicValue.setText(observation.getDisplayValue());
+            } else if (observation.getDisplay().contains("Diastolic")) {
+                diastolicValue.setText(observation.getDisplayValue());
+            } else if (observation.getDisplay().contains("Pulse")) {
+                pulseValue.setText(observation.getDisplayValue());
+            } else if (observation.getDisplay().contains("Weight")) {
+                weightValue.setText(observation.getDisplayValue());
+            } else if (observation.getDisplay().contains("Height")) {
+                heightValue.setText(observation.getDisplayValue());
+            }
+        }
+
+        parentLayout.addView(vitalsCardView);
+
+        return parentLayout;
     }
 
     public ViewGroup addKeyValueStringView(ViewGroup parentLayout, String label, String data) {
@@ -58,19 +93,6 @@ public class OpenMRSInflater {
         View view = mInflater.inflate(R.layout.bmi_chart, null, false);
 
         bmiChart.createChart(view, bmiData);
-
-        parentLayout.addView(view);
-    }
-
-    public void addBloodPressureData(ViewGroup parentLayout) {
-        View view = mInflater.inflate(R.layout.vitals_card, null, false);
-        TextView systolicValue = view.findViewById(R.id.systolic_value);
-        TextView diastolicValue = view.findViewById(R.id.diastolic_value);
-        TextView pulseValue = view.findViewById(R.id.pulse_value);
-
-        systolicValue.setText("120 mmHg");
-        diastolicValue.setText("80 mmHg");
-        pulseValue.setText("68 /min");
 
         parentLayout.addView(view);
     }

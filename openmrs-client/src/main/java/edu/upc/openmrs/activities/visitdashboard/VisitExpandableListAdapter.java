@@ -28,7 +28,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.upc.BuildConfig;
 import edu.upc.R;
 import edu.upc.openmrs.application.OpenMRSInflater;
 import edu.upc.openmrs.utilities.EncounterTranslationUtils;
@@ -69,20 +68,15 @@ public class VisitExpandableListAdapter extends BaseExpandableListAdapter {
         for (Encounter encounter : this.mEncounters) {
             ViewGroup convertView = (ViewGroup) inflater.inflate(R.layout.list_visit_item, null);
             LinearLayout contentLayout = convertView.findViewById(R.id.listVisitItemLayoutContent);
+
             switch (encounter.getEncounterType().getDisplay()) {
                 case EncounterType.VITALS:
                     for (Observation obs : encounter.getObservations()) {
-                        String originalObservationDisplay = obs.getDisplay();
-                        int translatedObservationDisplay = EncounterTranslationUtils.getTranslatedResourceId(originalObservationDisplay);
-                        String translatedDisplay = mContext.getString(translatedObservationDisplay);
-                        openMRSInflater.addKeyValueStringView(contentLayout, translatedDisplay, obs.getDisplayValue());
-                    }
+                            openMRSInflater.addKeyValueStringView(contentLayout, obs.getDisplay(), obs.getDisplayValue());
+                        }
                     String bmiData = bmiCalculator.execute(encounter.getObservations());
-                    openMRSInflater.addKeyValueStringView(contentLayout, mContext.getString(R.string.bmi_label), bmiData);
-
+                    openMRSInflater.addVitalsData(contentLayout, encounter.getObservations(), bmiData);
                     if(!bmiData.equals("N/A")) openMRSInflater.addBmiChart(contentLayout, bmiData);
-
-                    if(BuildConfig.BLOPUP_282_SHOW_ALGORITHM) openMRSInflater.addBloodPressureData(contentLayout);
 
                     layouts.add(convertView);
                     break;
