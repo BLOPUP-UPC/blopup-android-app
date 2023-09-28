@@ -5,13 +5,11 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.triplet.gradle:play-publisher:2.2.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 plugins {
     id 'com.android.application'
-    id 'com.github.triplet.play' version '3.8.4'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
@@ -280,24 +278,4 @@ dependencies {
 
 kapt {
     correctErrorTypes true
-}
-
-play {
-    enabled = rootProject.file('google_play.json').exists()
-
-    if (version.contains("alpha")) {
-        track = 'alpha'
-    } else if (version.contains("beta")) {
-        track = 'beta'
-    } else {
-        track = 'production'
-    }
-
-    serviceAccountCredentials = rootProject.file('google_play.json')
-    resolutionStrategy = "auto"
-    releaseStatus = "completed"
-
-    outputProcessor { // this: ApkVariantOutput
-        versionNameOverride = "$versionNameOverride.$versionCode"
-    }
 }
