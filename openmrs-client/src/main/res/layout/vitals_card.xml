@@ -6,9 +6,11 @@
     android:padding="@dimen/appintro_indicator_size">
 
     <LinearLayout
+        android:id="@+id/blood_pressure_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:padding="@dimen/appintro_indicator_size">
 
         <LinearLayout
@@ -94,6 +96,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/height_layout"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -116,11 +120,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textSize="18sp"
-            android:hint="50"
             android:fontFamily="@font/roboto_medium" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/weight_layout"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"

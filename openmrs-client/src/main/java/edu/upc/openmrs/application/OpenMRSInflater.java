@@ -45,19 +45,22 @@ public class OpenMRSInflater {
 
         for (Observation observation : observations) {
             if (observation.getDisplay().contains("Systolic")) {
+                if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.blood_pressure_layout).setVisibility(View.VISIBLE);
                 systolicValue.setText(observation.getDisplayValue());
             } else if (observation.getDisplay().contains("Diastolic")) {
                 diastolicValue.setText(observation.getDisplayValue());
             } else if (observation.getDisplay().contains("Pulse")) {
                 pulseValue.setText(observation.getDisplayValue());
             } else if (observation.getDisplay().contains("Weight")) {
+                if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.weight_layout).setVisibility(View.VISIBLE);
                 weightValue.setText(observation.getDisplayValue());
             } else if (observation.getDisplay().contains("Height")) {
+                if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.height_layout).setVisibility(View.VISIBLE);
                 heightValue.setText(observation.getDisplayValue());
             }
         }
 
-        if(!Objects.equals(bmiData, "N/A")) {
+        if (!Objects.equals(bmiData, "N/A")) {
             vitalsCardView.findViewById(R.id.bmi_layout).setVisibility(View.VISIBLE);
             TextView bmiValue = vitalsCardView.findViewById(R.id.bmi_value);
             bmiValue.setText(bmiData);
