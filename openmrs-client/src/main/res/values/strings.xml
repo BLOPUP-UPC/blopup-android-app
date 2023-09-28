@@ -580,4 +580,8 @@
     <string name="systolic_vital" tools:ignore="MissingTranslation">Systolic</string>
     <string name="diastolic_vital" tools:ignore="MissingTranslation">Diastolic</string>
     <string name="pulse_vital" tools:ignore="MissingTranslation">Pulse</string>
+    <string name="pressure_unit" translatable="false">mmHg</string>
+    <string name="pulse_unit" translatable="false">/Min</string>
+    <string name="weight_unit" translatable="false">Kg</string>
+    <string name="height_unit" translatable="false">cm</string>
 </resources>
