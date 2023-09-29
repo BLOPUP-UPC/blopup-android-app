@@ -68,84 +68,93 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/dashboard_text_size" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/bullet_point_1_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <View
+                        android:id="@+id/bullet_point_1"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:background="@drawable/circle" />
 
                     <TextView
-                        android:id="@+id/first_bullet_point"
+                        android:id="@+id/bullet_point_1_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/first_bullet_point"
                         android:textColor="#000000"
-                        android:textSize="@dimen/dashboard_text_size" />
-                </LinearLayout>
+                        android:textSize="@dimen/dashboard_text_size"
+                        android:layout_toEndOf="@id/bullet_point_1"/>
+                </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/bullet_point_2_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <View
+                        android:id="@+id/bullet_point_2"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:background="@drawable/circle" />
 
                     <TextView
-                        android:id="@+id/second_bullet_point"
+                        android:id="@+id/bullet_point_2_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/second_bullet_point"
                         android:textColor="#000000"
-                        android:textSize="@dimen/dashboard_text_size" />
-                </LinearLayout>
+                        android:textSize="@dimen/dashboard_text_size"
+                        android:layout_toEndOf="@id/bullet_point_2"/>
+                </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/bullet_point_3_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <View
+                        android:id="@+id/bullet_point_3"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:background="@drawable/circle" />
 
                     <TextView
-                        android:id="@+id/third_bullet_point"
+                        android:id="@+id/bullet_point_3_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/third_bullet_point"
                         android:textColor="#000000"
-                        android:textSize="@dimen/dashboard_text_size" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        android:textSize="@dimen/dashboard_text_size"
+                        android:layout_toEndOf="@id/bullet_point_3"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bullet_point_4_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <View
+                        android:id="@+id/bullet_point_4"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:background="@drawable/circle" />
 
                     <TextView
-                        android:id="@+id/forth_bullet_point"
+                        android:id="@+id/bullet_point_4_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/fourth_bullet_point"
                         android:textColor="#000000"
-                        android:textSize="@dimen/dashboard_text_size" />
-                </LinearLayout>
+                        android:textSize="@dimen/dashboard_text_size"
+                        android:layout_toEndOf="@id/bullet_point_4"/>
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/legal_consent_wording_bottom"

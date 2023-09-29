@@ -25,7 +25,6 @@ import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.android.synthetic.main.fragment_patient_info.*
-import kotlinx.android.synthetic.main.legal_consent.legal_consent_intro
 import java.util.*
 
 
@@ -70,17 +69,22 @@ class LegalConsentDialogFragment : DialogFragment() {
         context?.let {
             val viewsAndResourceIds = listOf(
                 Pair(legalConsentBinding.legalConsentWording, R.string.legal_consent),
-                Pair(legalConsentBinding.firstBulletPoint, R.string.first_bullet_point),
-                Pair(legalConsentBinding.secondBulletPoint, R.string.second_bullet_point),
-                Pair(legalConsentBinding.thirdBulletPoint, R.string.third_bullet_point),
-                Pair(legalConsentBinding.forthBulletPoint, R.string.fourth_bullet_point),
+                Pair(legalConsentBinding.bulletPoint1Text, R.string.first_bullet_point),
+                Pair(legalConsentBinding.bulletPoint2Text, R.string.second_bullet_point),
+                Pair(legalConsentBinding.bulletPoint3Text, R.string.third_bullet_point),
+                Pair(legalConsentBinding.bulletPoint4Text, R.string.fourth_bullet_point),
                 Pair(legalConsentBinding.legalConsentWordingBottom, R.string.bottom_text)
             )
 
             for ((view, resourceId) in viewsAndResourceIds) {
-                val wording =
-                    LanguageUtils.getLocaleStringResource(Locale(language), resourceId, it)
+                val wording = LanguageUtils.getLocaleStringResource(Locale(language), resourceId, it)
                 view.text = wording
+                if (language == "ar") {
+                    legalConsentBinding.bulletPoint1Layout.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                    legalConsentBinding.bulletPoint2Layout.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                    legalConsentBinding.bulletPoint3Layout.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                    legalConsentBinding.bulletPoint4Layout.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                }
             }
         }
     }
