@@ -44,19 +44,21 @@ public class OpenMRSInflater {
         TextView weightValue = vitalsCardView.findViewById(R.id.weight_value);
 
         for (Observation observation : observations) {
+            String formattedDisplayValue = formatValue(Objects.requireNonNull(observation.getDisplayValue()));
+
             if (observation.getDisplay().contains("Systolic")) {
                 if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.blood_pressure_layout).setVisibility(View.VISIBLE);
-                systolicValue.setText(observation.getDisplayValue().substring(0, observation.getDisplayValue().indexOf('.')).trim());
+                systolicValue.setText(formattedDisplayValue);
             } else if (observation.getDisplay().contains("Diastolic")) {
-                diastolicValue.setText(observation.getDisplayValue().substring(0, observation.getDisplayValue().indexOf('.')).trim());
+                diastolicValue.setText(formattedDisplayValue);
             } else if (observation.getDisplay().contains("Pulse")) {
-                pulseValue.setText(observation.getDisplayValue().substring(0, observation.getDisplayValue().indexOf('.')).trim());
+                pulseValue.setText(formattedDisplayValue);
             } else if (observation.getDisplay().contains("Weight")) {
                 if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.weight_layout).setVisibility(View.VISIBLE);
-                weightValue.setText(observation.getDisplayValue().substring(0, observation.getDisplayValue().indexOf('.')).trim());
+                weightValue.setText(formattedDisplayValue);
             } else if (observation.getDisplay().contains("Height")) {
                 if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.height_layout).setVisibility(View.VISIBLE);
-                heightValue.setText(observation.getDisplayValue().substring(0, observation.getDisplayValue().indexOf('.')).trim());
+                heightValue.setText(formattedDisplayValue);
             }
         }
 
@@ -72,6 +74,14 @@ public class OpenMRSInflater {
         parentLayout.addView(vitalsCardView);
 
         return parentLayout;
+    }
+
+    private String formatValue(String displayValue) {
+        if (displayValue.contains(".")) {
+            return displayValue.substring(0, displayValue.indexOf('.')).trim();
+        } else {
+            return displayValue.trim();
+        }
     }
 
 
