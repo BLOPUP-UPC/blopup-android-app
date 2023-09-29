@@ -217,7 +217,7 @@ dependencies {
 
     // Hilt Dependency Injection
     implementation "com.google.dagger:hilt-android:${versions.hilt}"
-    kapt 'com.google.dagger:dagger-android-processor:2.41'
+    kapt 'com.google.dagger:dagger-android-processor:2.48'
     kapt "com.google.dagger:hilt-compiler:${versions.hilt}"
 
     // ViewModel
