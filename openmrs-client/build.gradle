@@ -210,7 +210,7 @@ dependencies {
     implementation "commons-codec:commons-codec:${versions.codec}"
     implementation "org.jdeferred:jdeferred-android-aar:${versions.jdeferred}"
     implementation "com.google.guava:guava:${versions.guava}"
-    implementation "com.github.anastr:speedviewlib:1.6.0"
+    implementation "com.github.anastr:speedviewlib:1.6.1"
 
     // Google place api
     implementation "com.google.android.libraries.places:places:${versions.placesAPI}"
