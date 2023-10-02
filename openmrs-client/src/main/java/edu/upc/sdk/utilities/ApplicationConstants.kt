@@ -148,6 +148,14 @@ object ApplicationConstants {
         const val ROBOTO_REGULAR = "fonts/Roboto/Roboto-Regular.ttf"
     }
 
+    object vitalsConceptType {
+        const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        const val HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        const val WEIGHT_FIELD_CONCEPT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        const val HEIGHT_FIELD_CONCEPT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    }
+
     object PatientDashboardTabs {
         const val DETAILS_TAB_POS = 0
         const val DIAGNOSIS_TAB_POS = 1
@@ -155,11 +163,5 @@ object ApplicationConstants {
         const val VITALS_TAB_POS = 3
         const val CHARTS_TAB_POS = 4
         const val TAB_COUNT = 5
-    }
-
-    object ConceptDownloadService {
-        const val CHANNEL_ID = "conceptCount"
-        const val CHANNEL_DESC = "This channel receives new concept count notifications"
-        const val CHANNEL_NAME = "Concepts Channel"
     }
 }

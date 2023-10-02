@@ -29,8 +29,13 @@ import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEART_RATE_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEIGHT_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.WEIGHT_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ToastUtil
-import kotlinx.android.synthetic.main.activity_vitals_form.*
+import kotlinx.android.synthetic.main.activity_vitals_form.buttonToSentVitals
 
 @AndroidEntryPoint
 class VitalsFormActivity : ACBaseActivity() {
@@ -220,13 +225,5 @@ class VitalsFormActivity : ACBaseActivity() {
         mBinding.textInputPulse.hint = getString(R.string.pulse_label)
         mBinding.textInputWeight.hint = getString(R.string.weight_value_label)
         mBinding.textInputHeight.hint = getString(R.string.height_value_label)
-    }
-
-    companion object {
-        const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        const val HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        const val WEIGHT_FIELD_CONCEPT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        const val HEIGHT_FIELD_CONCEPT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     }
 }
