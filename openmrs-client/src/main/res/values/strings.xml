@@ -543,10 +543,6 @@
     <string name="weight_value" tools:ignore="MissingTranslation">Weight (kg)</string>
     <string name="height_value_label" tools:ignore="MissingTranslation">Height</string>
     <string name="height_value" tools:ignore="MissingTranslation">Height (cm)</string>
-    <string name="weight_unit_label" translatable="false">Kg</string>
-    <string name="blood_pressure_measurement_unit" translatable="false">mmHg</string>
-    <string name="height_unit_label" translatable="false">Cm</string>
-    <string name="pulse_unit_label" translatable="false">/Min</string>
     <string name="send_button_label" tools:ignore="MissingTranslation">Send</string>
     <string name="action_vitals_form" tools:ignore="MissingTranslation">Take vitals</string>
     <string name="send_email_success_toast_message" tools:ignore="MissingTranslation">Message sent</string>
@@ -581,8 +577,8 @@
     <string name="diastolic_vital" tools:ignore="MissingTranslation">Diastolic</string>
     <string name="pulse_vital" tools:ignore="MissingTranslation">Pulse</string>
     <string name="pressure_unit" translatable="false">mmHg</string>
-    <string name="pulse_unit" translatable="false">/Min</string>
-    <string name="weight_unit" translatable="false">Kg</string>
+    <string name="pulse_unit" translatable="false">/min</string>
+    <string name="weight_unit" translatable="false">kg</string>
     <string name="height_unit" translatable="false">cm</string>
     <string name="bp_normal" tools:ignore="MissingTranslation">Blood pressure - Normal</string>
     <string name="bp_ht_stage_I" tools:ignore="MissingTranslation">Hypertension - Stage I</string>

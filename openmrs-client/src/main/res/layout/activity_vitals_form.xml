@@ -82,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10dp"
-                        android:text="@string/blood_pressure_measurement_unit" />
+                        android:text="@string/pressure_unit" />
                 </TableRow>
             </TableLayout>
 
@@ -118,7 +118,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10dp"
-                        android:text="@string/pulse_unit_label" />
+                        android:text="@string/pulse_unit" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
@@ -169,7 +169,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10dp"
-                        android:text="@string/weight_unit_label" />
+                        android:text="@string/weight_unit" />
                 </TableRow>
             </TableLayout>
 
@@ -205,7 +205,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10dp"
-                        android:text="@string/height_unit_label" />
+                        android:text="@string/height_unit" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
