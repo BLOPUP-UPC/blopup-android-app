@@ -585,4 +585,9 @@
     <string name="bp_ht_stage_II_A" tools:ignore="MissingTranslation">Hypertension - Stage II A</string>
     <string name="bp_ht_stage_II_B" tools:ignore="MissingTranslation">Hypertension - Stage II B</string>
     <string name="bp_ht_stage_II_C" tools:ignore="MissingTranslation">Hypertension - Stage II C</string>
+    <string name="bp_normal_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Control between 6 months and one year.]]></string>
+    <string name="bp_ht_stage_I_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Control between 3 and 6 months.]]></string>
+    <string name="bp_ht_stage_II_A_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Control between 15 and 30 days.]]></string>
+    <string name="bp_ht_stage_II_B_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Control in 15 days and review or start treatment.]]></string>
+    <string name="bp_ht_stage_II_C_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Contact with the doctor for possible emergency hospitalization.]]></string>
 </resources>

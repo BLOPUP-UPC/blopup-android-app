@@ -163,6 +163,25 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="20dp"
+            android:paddingBottom="12dp">
+
+            <TextView
+                android:id="@+id/blood_pressure_recommendation"
+                android:textSize="18sp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/bp_normal_recommendation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
         <View
             android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"

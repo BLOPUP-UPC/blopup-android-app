@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import java.util.List;
 import java.util.Objects;
@@ -54,13 +55,15 @@ public class OpenMRSInflater {
 
     private void setBloodPressureTypeAndRecommendation(BloodPressureType bloodPressureType, View vitalsCardView) {
         if (bloodPressureType != null) {
+            vitalsCardView.findViewById(R.id.blood_pressure_layout).setVisibility(View.VISIBLE);
             TextView title = vitalsCardView.findViewById(R.id.blood_pressure_title);
+            TextView recommendation = vitalsCardView.findViewById(R.id.blood_pressure_recommendation);
             title.setText(mInflater.getContext().getString(bloodPressureType.relatedText()));
             title.getBackground().setColorFilter(
                     ContextCompat.getColor(mInflater.getContext(), bloodPressureType.relatedColor()),
                     PorterDuff.Mode.SRC_IN
             );
-            vitalsCardView.findViewById(R.id.blood_pressure_layout).setVisibility(View.VISIBLE);
+            recommendation.setText(HtmlCompat.fromHtml(mInflater.getContext().getString(bloodPressureType.relatedRecommendation()), HtmlCompat.FROM_HTML_MODE_LEGACY));
         }
     }
 

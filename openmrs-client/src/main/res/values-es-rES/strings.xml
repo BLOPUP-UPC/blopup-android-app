@@ -399,4 +399,9 @@
     <string name="bp_ht_stage_II_A">Hipertensión - Nivel II A</string>
     <string name="bp_ht_stage_II_B">Hipertensión - Nivel II B</string>
     <string name="bp_ht_stage_II_C">Hipertensión - Nivel II C</string>
+    <string name="bp_normal_recommendation"><![CDATA[<b>Recomendaciones:</b> Control entre 6 meses y un año.]]></string>
+    <string name="bp_ht_stage_I_recommendation"><![CDATA[<b>Recomendaciones:</b> Control entre 3 y 6 meses.]]></string>
+    <string name="bp_ht_stage_II_A_recommendation"><![CDATA[<b>Recomendaciones:</b> Control entre 15 y 30 días.]]></string>
+    <string name="bp_ht_stage_II_B_recommendation"><![CDATA[<b>Recomendaciones:</b> Control en 15 días y revisar o iniciar el tratamiento.]]></string>
+    <string name="bp_ht_stage_II_C_recommendation"><![CDATA[<b>Recomendaciones:</b> Contacto con el doctor/a por posible hospitalización de urgencias.]]></string>
 </resources>
