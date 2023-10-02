@@ -8,25 +8,25 @@
     <LinearLayout
         android:id="@+id/blood_pressure_layout"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="15dp">
+            android:layout_marginHorizontal="8dp">
 
             <TextView
                 android:background="@drawable/banner_bg"
                 android:layout_height="wrap_content"
-                android:paddingVertical="15dp"
+                android:paddingVertical="12dp"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
+                android:textSize="18sp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/hp_normal"
                 android:textColor="@color/white"
-                android:layout_margin="5dp"
                 android:layout_width="match_parent" />
 
         </LinearLayout>
@@ -67,13 +67,13 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:layout_marginEnd="3dp"
-                        android:fontFamily="@font/roboto_medium" />
+                        android:fontFamily="@font/roboto_regular" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:text="@string/pressure_unit"
-                        android:fontFamily="@font/roboto_medium" />
+                        android:fontFamily="@font/roboto_regular" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -108,13 +108,13 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:layout_marginEnd="3dp"
-                        android:fontFamily="@font/roboto_medium" />
+                        android:fontFamily="@font/roboto_regular" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:text="@string/pressure_unit"
-                        android:fontFamily="@font/roboto_medium" />
+                        android:fontFamily="@font/roboto_regular" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -147,13 +147,13 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:layout_marginEnd="3dp"
-                        android:fontFamily="@font/roboto_medium" />
+                        android:fontFamily="@font/roboto_regular" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:text="@string/pulse_unit"
-                        android:fontFamily="@font/roboto_medium" />
+                        android:fontFamily="@font/roboto_regular" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -197,13 +197,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_marginEnd="3dp"
-                android:fontFamily="@font/roboto_medium" />
+                android:fontFamily="@font/roboto_regular" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:text="@string/height_unit"
-                android:fontFamily="@font/roboto_medium" />
+                android:fontFamily="@font/roboto_regular" />
         </LinearLayout>
 
     </LinearLayout>
@@ -238,13 +238,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_marginEnd="3dp"
-                android:fontFamily="@font/roboto_medium" />
+                android:fontFamily="@font/roboto_regular" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:text="@string/weight_unit"
-                android:fontFamily="@font/roboto_medium" />
+                android:fontFamily="@font/roboto_regular" />
         </LinearLayout>
     </LinearLayout>
 
@@ -274,7 +274,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="20dp"
             android:textSize="18sp"
-            android:fontFamily="@font/roboto_medium" />
+            android:fontFamily="@font/roboto_regular" />
 
         <com.github.anastr.speedviewlib.SpeedView
             android:id="@+id/speedView"
