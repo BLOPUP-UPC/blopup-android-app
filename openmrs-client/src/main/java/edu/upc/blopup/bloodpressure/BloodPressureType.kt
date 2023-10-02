@@ -16,11 +16,9 @@ package edu.upc.blopup.bloodpressure
 import edu.upc.R
 import edu.upc.sdk.library.models.Encounter
 
-// Convert to anonymous enum class
-
-enum class HypertensionType {
+enum class BloodPressureType {
     NORMAL {
-        override fun relatedColor() = R.color.ht_normal
+        override fun relatedColor() = R.color.bp_normal
         override fun relatedText() = R.string.hp_normal
     },
     STAGE_I {
@@ -49,7 +47,7 @@ enum class HypertensionType {
     abstract fun relatedText(): Int
 }
 
-fun hypertensionTypeFromEncounter(encounter: Encounter): HypertensionType? {
+fun hypertensionTypeFromEncounter(encounter: Encounter): BloodPressureType? {
     val systolic =
         encounter.observations.find { it.display?.contains("Systolic") == true }?.displayValue?.toDouble()
     val diastolic =
@@ -57,10 +55,10 @@ fun hypertensionTypeFromEncounter(encounter: Encounter): HypertensionType? {
 
     if (systolic == null || diastolic == null) return null;
 
-    if (systolic >= 180 || diastolic >= 110) return HypertensionType.STAGE_II_C;
-    if (systolic >= 160 || diastolic >= 100) return HypertensionType.STAGE_II_B;
-    if (systolic >= 140 || diastolic >= 90) return HypertensionType.STAGE_II_A;
-    if (systolic >= 130 || diastolic >= 80) return HypertensionType.STAGE_I;
+    if (systolic >= 180 || diastolic >= 110) return BloodPressureType.STAGE_II_C;
+    if (systolic >= 160 || diastolic >= 100) return BloodPressureType.STAGE_II_B;
+    if (systolic >= 140 || diastolic >= 90) return BloodPressureType.STAGE_II_A;
+    if (systolic >= 130 || diastolic >= 80) return BloodPressureType.STAGE_I;
 
-    return HypertensionType.NORMAL;
+    return BloodPressureType.NORMAL;
 }

@@ -14,8 +14,6 @@
 
 package edu.upc.openmrs.application;
 
-import android.graphics.BlendMode;
-import android.graphics.BlendModeColorFilter;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 import edu.upc.R;
-import edu.upc.blopup.bloodpressure.HypertensionType;
+import edu.upc.blopup.bloodpressure.BloodPressureType;
 import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
 import edu.upc.sdk.library.models.Observation;
 
@@ -50,9 +48,9 @@ public class OpenMRSInflater {
         TextView weightValue = vitalsCardView.findViewById(R.id.weight_value);
 
         TextView title = vitalsCardView.findViewById(R.id.blood_pressure_title);
-        title.setText(mInflater.getContext().getString(HypertensionType.NORMAL.relatedText()));
+        title.setText(mInflater.getContext().getString(BloodPressureType.NORMAL.relatedText()));
         title.getBackground().setColorFilter(
-                ContextCompat.getColor(mInflater.getContext(), HypertensionType.STAGE_I.relatedColor()),
+                ContextCompat.getColor(mInflater.getContext(), BloodPressureType.STAGE_I.relatedColor()),
                 PorterDuff.Mode.SRC_IN
         );
 

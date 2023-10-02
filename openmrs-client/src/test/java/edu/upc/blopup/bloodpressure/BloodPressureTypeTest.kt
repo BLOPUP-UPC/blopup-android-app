@@ -5,7 +5,7 @@ import edu.upc.sdk.library.models.Observation
 import org.junit.jupiter.api.Assertions.*
 import org.junit.Test
 
-class HypertensionTypeTest() {
+class BloodPressureTypeTest() {
 
     @Test
     fun hypertensionTypeFromEncounter() {
@@ -21,7 +21,7 @@ class HypertensionTypeTest() {
             }
         )
         assertEquals(
-            HypertensionType.NORMAL,
+            BloodPressureType.NORMAL,
             hypertensionTypeFromEncounter(encounter)
         )
     }
@@ -40,7 +40,7 @@ class HypertensionTypeTest() {
             }
         )
         assertEquals(
-            HypertensionType.STAGE_I,
+            BloodPressureType.STAGE_I,
             hypertensionTypeFromEncounter(encounter)
         )
     }
@@ -59,7 +59,7 @@ class HypertensionTypeTest() {
             }
         )
         assertEquals(
-            HypertensionType.STAGE_II_A,
+            BloodPressureType.STAGE_II_A,
             hypertensionTypeFromEncounter(encounter)
         )
     }
@@ -78,7 +78,7 @@ class HypertensionTypeTest() {
             }
         )
         assertEquals(
-            HypertensionType.STAGE_II_B,
+            BloodPressureType.STAGE_II_B,
             hypertensionTypeFromEncounter(encounter)
         )
     }
@@ -97,7 +97,7 @@ class HypertensionTypeTest() {
             }
         )
         assertEquals(
-            HypertensionType.STAGE_II_C,
+            BloodPressureType.STAGE_II_C,
             hypertensionTypeFromEncounter(encounter)
         )
     }
