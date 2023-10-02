@@ -37,7 +37,7 @@ public class OpenMRSInflater {
         this.mInflater = inflater;
     }
 
-    public ViewGroup addVitalsData(ViewGroup parentLayout, List<Observation> observations, String bmiData) {
+    public ViewGroup addVitalsData(ViewGroup parentLayout, List<Observation> observations, String bmiData, BloodPressureType bloodPressureType) {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
@@ -47,28 +47,32 @@ public class OpenMRSInflater {
         TextView heightValue = vitalsCardView.findViewById(R.id.height_value);
         TextView weightValue = vitalsCardView.findViewById(R.id.weight_value);
 
-        TextView title = vitalsCardView.findViewById(R.id.blood_pressure_title);
-        title.setText(mInflater.getContext().getString(BloodPressureType.NORMAL.relatedText()));
-        title.getBackground().setColorFilter(
-                ContextCompat.getColor(mInflater.getContext(), BloodPressureType.STAGE_I.relatedColor()),
-                PorterDuff.Mode.SRC_IN
-        );
+        if (bloodPressureType != null) {
+            TextView title = vitalsCardView.findViewById(R.id.blood_pressure_title);
+            title.setText(mInflater.getContext().getString(bloodPressureType.relatedText()));
+            title.getBackground().setColorFilter(
+                    ContextCompat.getColor(mInflater.getContext(), bloodPressureType.relatedColor()),
+                    PorterDuff.Mode.SRC_IN
+            );
+            vitalsCardView.findViewById(R.id.blood_pressure_layout).setVisibility(View.VISIBLE);
+        }
 
         for (Observation observation : observations) {
             String formattedDisplayValue = formatValue(Objects.requireNonNull(observation.getDisplayValue()));
 
             if (observation.getDisplay().contains("Systolic")) {
-                if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.blood_pressure_layout).setVisibility(View.VISIBLE);
                 systolicValue.setText(formattedDisplayValue);
             } else if (observation.getDisplay().contains("Diastolic")) {
                 diastolicValue.setText(formattedDisplayValue);
             } else if (observation.getDisplay().contains("Pulse")) {
                 pulseValue.setText(formattedDisplayValue);
             } else if (observation.getDisplay().contains("Weight")) {
-                if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.weight_layout).setVisibility(View.VISIBLE);
+                if (!observation.getDisplayValue().isEmpty())
+                    vitalsCardView.findViewById(R.id.weight_layout).setVisibility(View.VISIBLE);
                 weightValue.setText(formattedDisplayValue);
             } else if (observation.getDisplay().contains("Height")) {
-                if (!observation.getDisplayValue().isEmpty()) vitalsCardView.findViewById(R.id.height_layout).setVisibility(View.VISIBLE);
+                if (!observation.getDisplayValue().isEmpty())
+                    vitalsCardView.findViewById(R.id.height_layout).setVisibility(View.VISIBLE);
                 heightValue.setText(formattedDisplayValue);
             }
         }

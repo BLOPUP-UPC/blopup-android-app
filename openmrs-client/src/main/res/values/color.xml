@@ -57,5 +57,5 @@
     <color name="bp_ht_stage_I">#FFF7B334</color>
     <color name="bp_ht_stage_II_A">#FFF8B11E</color>
     <color name="bp_ht_stage_II_B">@color/bp_ht_stage_II_A</color>
-    <color name="bp_ht_stage_II_C">#FFFF6C00</color>
+    <color name="bp_ht_stage_II_C">#FFF12021</color>
 </resources>

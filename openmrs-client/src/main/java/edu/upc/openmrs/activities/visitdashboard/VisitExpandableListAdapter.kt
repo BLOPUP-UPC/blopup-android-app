@@ -67,11 +67,11 @@ class VisitExpandableListAdapter(
                     val bmiData = bmiCalculator.execute(encounter.observations)
 
                     if (BuildConfig.BLOPUP_282_SHOW_ALGORITHM) {
-                        val hypertensionType = hypertensionTypeFromEncounter(encounter)
                         openMRSInflater.addVitalsData(
                             contentLayout,
                             encounter.observations,
-                            bmiData
+                            bmiData,
+                            hypertensionTypeFromEncounter(encounter)
                         )
                     } else {
                         for (obs in encounter.observations) {
