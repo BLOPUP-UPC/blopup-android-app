@@ -19,7 +19,7 @@ import edu.upc.sdk.library.models.Encounter
 enum class BloodPressureType {
     NORMAL {
         override fun relatedColor() = R.color.bp_normal
-        override fun relatedText() = R.string.hp_normal
+        override fun relatedText() = R.string.bp_normal
     },
     STAGE_I {
         override fun relatedColor() = R.color.bp_ht_stage_I

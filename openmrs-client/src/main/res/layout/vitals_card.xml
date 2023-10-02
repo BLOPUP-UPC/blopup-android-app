@@ -28,7 +28,7 @@
                 android:paddingVertical="12dp"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:text="@string/hp_normal"
+                android:text="@string/bp_normal"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 

@@ -394,5 +394,5 @@
     <string name="systolic_vital">Sistólica</string>
     <string name="diastolic_vital">Diastólica</string>
     <string name="pulse_vital">Pulso</string>
-    <string name="hp_normal">Tension arterial - Normal</string>
+    <string name="bp_normal">Tension arterial - Normal</string>
 </resources>

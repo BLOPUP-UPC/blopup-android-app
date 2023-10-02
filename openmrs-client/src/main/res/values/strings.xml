@@ -584,5 +584,5 @@
     <string name="pulse_unit" translatable="false">/Min</string>
     <string name="weight_unit" translatable="false">Kg</string>
     <string name="height_unit" translatable="false">cm</string>
-    <string name="hp_normal" tools:ignore="MissingTranslation">Blood pressure - Normal</string>
+    <string name="bp_normal" tools:ignore="MissingTranslation">Blood pressure - Normal</string>
 </resources>
