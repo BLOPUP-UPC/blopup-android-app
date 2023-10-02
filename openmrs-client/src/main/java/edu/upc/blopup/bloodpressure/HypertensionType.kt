@@ -13,15 +13,47 @@
  */
 package edu.upc.blopup.bloodpressure
 
+import edu.upc.R
 import edu.upc.sdk.library.models.Encounter
 
+// Convert to anonymous enum class
+
 enum class HypertensionType {
-    NORMAL, STAGE_I, STAGE_II_A, STAGE_II_B, STAGE_II_C
+    NORMAL {
+        override fun relatedColor() = R.color.ht_normal
+        override fun relatedText() = R.string.hp_normal
+    },
+    STAGE_I {
+        override fun relatedColor() = R.color.bp_ht_stage_I
+        override fun relatedText() = 2
+    },
+    STAGE_II_A
+    {
+        override fun relatedColor() = R.color.bp_ht_stage_II_A
+        override fun relatedText() = 3
+
+    },
+    STAGE_II_B
+    {
+        override fun relatedColor() = R.color.bp_ht_stage_II_B
+        override fun relatedText() = 4
+
+    },
+    STAGE_II_C
+    {
+        override fun relatedColor() = R.color.bp_ht_stage_II_C
+        override fun relatedText() = 5
+    };
+
+    abstract fun relatedColor(): Int
+    abstract fun relatedText(): Int
 }
 
-fun hypertensionTypeFromEncounter(encounter: Encounter) : HypertensionType? {
-    val systolic = encounter.observations.find { it.display?.contains("Systolic") == true }?.displayValue?.toDouble()
-    val diastolic = encounter.observations.find { it.display?.contains("Diastolic") == true }?.displayValue?.toDouble()
+fun hypertensionTypeFromEncounter(encounter: Encounter): HypertensionType? {
+    val systolic =
+        encounter.observations.find { it.display?.contains("Systolic") == true }?.displayValue?.toDouble()
+    val diastolic =
+        encounter.observations.find { it.display?.contains("Diastolic") == true }?.displayValue?.toDouble()
 
     if (systolic == null || diastolic == null) return null;
 

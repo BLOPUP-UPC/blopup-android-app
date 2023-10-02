@@ -20,6 +20,7 @@
             android:layout_marginHorizontal="8dp">
 
             <TextView
+                android:id="@+id/blood_pressure_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/banner_bg"

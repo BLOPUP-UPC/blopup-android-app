@@ -51,4 +51,11 @@
     <!-- neutral colors that look pleasing on both white and black background -->
     <color name="green_bg">#03BD5B</color>
     <color name="neutral_green">#249627</color>
+
+    <!-- Blood pressure types colors -->
+    <color name="ht_normal">#FF03BD5B</color>
+    <color name="bp_ht_stage_I">#FFF7B334</color>
+    <color name="bp_ht_stage_II_A">#FFF8B11E</color>
+    <color name="bp_ht_stage_II_B">@color/bp_ht_stage_II_A</color>
+    <color name="bp_ht_stage_II_C">#FFFF6C00</color>
 </resources>
