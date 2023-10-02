@@ -395,4 +395,8 @@
     <string name="diastolic_vital">Diastólica</string>
     <string name="pulse_vital">Pulso</string>
     <string name="bp_normal">Tension arterial - Normal</string>
+    <string name="bp_ht_stage_I">Hipertensión - Nivel I</string>
+    <string name="bp_ht_stage_II_A">Hipertensión - Nivel II A</string>
+    <string name="bp_ht_stage_II_B">Hipertensión - Nivel II B</string>
+    <string name="bp_ht_stage_II_C">Hipertensión - Nivel II C</string>
 </resources>

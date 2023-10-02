@@ -585,4 +585,8 @@
     <string name="weight_unit" translatable="false">Kg</string>
     <string name="height_unit" translatable="false">cm</string>
     <string name="bp_normal" tools:ignore="MissingTranslation">Blood pressure - Normal</string>
+    <string name="bp_ht_stage_I" tools:ignore="MissingTranslation">Hypertension - Stage I</string>
+    <string name="bp_ht_stage_II_A" tools:ignore="MissingTranslation">Hypertension - Stage II A</string>
+    <string name="bp_ht_stage_II_B" tools:ignore="MissingTranslation">Hypertension - Stage II B</string>
+    <string name="bp_ht_stage_II_C" tools:ignore="MissingTranslation">Hypertension - Stage II C</string>
 </resources>

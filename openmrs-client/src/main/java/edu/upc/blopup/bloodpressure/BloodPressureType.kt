@@ -23,24 +23,24 @@ enum class BloodPressureType {
     },
     STAGE_I {
         override fun relatedColor() = R.color.bp_ht_stage_I
-        override fun relatedText() = 2
+        override fun relatedText() = R.string.bp_ht_stage_I
     },
     STAGE_II_A
     {
         override fun relatedColor() = R.color.bp_ht_stage_II_A
-        override fun relatedText() = 3
+        override fun relatedText() = R.string.bp_ht_stage_II_A
 
     },
     STAGE_II_B
     {
         override fun relatedColor() = R.color.bp_ht_stage_II_B
-        override fun relatedText() = 4
+        override fun relatedText() = R.string.bp_ht_stage_II_B
 
     },
     STAGE_II_C
     {
         override fun relatedColor() = R.color.bp_ht_stage_II_C
-        override fun relatedText() = 5
+        override fun relatedText() = R.string.bp_ht_stage_II_C
     };
 
     abstract fun relatedColor(): Int
