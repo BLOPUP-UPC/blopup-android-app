@@ -14,6 +14,12 @@
 
 package edu.upc.openmrs.application;
 
+import static edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.DIASTOLIC_FIELD_CONCEPT;
+import static edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEART_RATE_FIELD_CONCEPT;
+import static edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEIGHT_FIELD_CONCEPT;
+import static edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.SYSTOLIC_FIELD_CONCEPT;
+import static edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.WEIGHT_FIELD_CONCEPT;
+
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,17 +95,17 @@ public class OpenMRSInflater {
 
             String formattedDisplayValue = formatValue(Objects.requireNonNull(observation.getDisplayValue()));
 
-            if (observation.getDisplay().contains("Systolic")) {
+            if (observation.getConcept().getUuid().equals(SYSTOLIC_FIELD_CONCEPT)) {
                 systolicValue.setText(formattedDisplayValue);
-            } else if (observation.getDisplay().contains("Diastolic")) {
+            } else if (observation.getConcept().getUuid().equals(DIASTOLIC_FIELD_CONCEPT)) {
                 diastolicValue.setText(formattedDisplayValue);
-            } else if (observation.getDisplay().contains("Pulse")) {
+            } else if (observation.getConcept().getUuid().equals(HEART_RATE_FIELD_CONCEPT)) {
                 pulseValue.setText(formattedDisplayValue);
-            } else if (observation.getDisplay().contains("Weight")) {
+            } else if (observation.getConcept().getUuid().equals(WEIGHT_FIELD_CONCEPT)) {
                 if (!observation.getDisplayValue().isEmpty())
                     vitalsCardView.findViewById(R.id.weight_layout).setVisibility(View.VISIBLE);
                 weightValue.setText(formattedDisplayValue);
-            } else if (observation.getDisplay().contains("Height")) {
+            } else if (observation.getConcept().getUuid().equals(HEIGHT_FIELD_CONCEPT)) {
                 if (!observation.getDisplayValue().isEmpty())
                     vitalsCardView.findViewById(R.id.height_layout).setVisibility(View.VISIBLE);
                 heightValue.setText(formattedDisplayValue);
