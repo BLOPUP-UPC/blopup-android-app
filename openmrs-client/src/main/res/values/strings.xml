@@ -590,4 +590,6 @@
     <string name="bp_ht_stage_II_A_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Control between 15 and 30 days.]]></string>
     <string name="bp_ht_stage_II_B_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Control in 15 days and review or start treatment.]]></string>
     <string name="bp_ht_stage_II_C_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Contact with the doctor for possible emergency hospitalization.]]></string>
+    <string name="bp_info" tools:ignore="MissingTranslation">Blood pressure information</string>
+    <string name="information_icon_description" translatable="false">information icon</string>
 </resources>

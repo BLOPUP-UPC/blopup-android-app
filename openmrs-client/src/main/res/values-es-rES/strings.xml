@@ -404,4 +404,5 @@
     <string name="bp_ht_stage_II_A_recommendation"><![CDATA[<b>Recomendaciones:</b> Control entre 15 y 30 días.]]></string>
     <string name="bp_ht_stage_II_B_recommendation"><![CDATA[<b>Recomendaciones:</b> Control en 15 días y revisar o iniciar el tratamiento.]]></string>
     <string name="bp_ht_stage_II_C_recommendation"><![CDATA[<b>Recomendaciones:</b> Contacto con el doctor/a por posible hospitalización de urgencias.]]></string>
+    <string name="bp_info">Información sobre tensión arterial</string>
 </resources>
