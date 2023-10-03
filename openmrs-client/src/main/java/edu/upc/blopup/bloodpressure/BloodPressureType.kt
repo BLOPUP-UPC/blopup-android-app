@@ -15,8 +15,6 @@ package edu.upc.blopup.bloodpressure
 
 import edu.upc.R
 import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.DIASTOLIC_FIELD_CONCEPT
-import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.SYSTOLIC_FIELD_CONCEPT
 
 enum class BloodPressureType {
     NORMAL {
@@ -56,9 +54,9 @@ enum class BloodPressureType {
 
 fun hypertensionTypeFromEncounter(encounter: Encounter): BloodPressureType? {
     val systolic =
-        encounter.observations.find { it.concept?.uuid?.equals(SYSTOLIC_FIELD_CONCEPT) == true }?.displayValue?.toDouble()
+        encounter.observations.find { it.display?.contains("Systolic") == true }?.displayValue?.toDouble()
     val diastolic =
-        encounter.observations.find { it.concept?.uuid?.equals(DIASTOLIC_FIELD_CONCEPT) == true }?.displayValue?.toDouble()
+        encounter.observations.find { it.display?.contains("Diastolic") == true }?.displayValue?.toDouble()
 
     if (systolic == null || diastolic == null) return null;
 
