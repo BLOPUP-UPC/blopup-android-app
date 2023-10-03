@@ -182,7 +182,7 @@
 
             <TextView
                 android:textSize="18sp"
-                android:paddingTop="6dp"
+                android:paddingTop="10dp"
                 android:textColor="?android:attr/textColorPrimary"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/bp_info"
