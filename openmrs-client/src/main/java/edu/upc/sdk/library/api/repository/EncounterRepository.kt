@@ -3,6 +3,7 @@ package edu.upc.sdk.library.api.repository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.databases.AppDatabaseHelper
+import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
@@ -44,6 +45,9 @@ class EncounterRepository @Inject constructor() : BaseRepository() {
                         encounter.encounterType = EncounterType(encounterCreate.formname)
                         for (i in encounterCreate.observations.indices) {
                             encounter.observations[i].displayValue = encounter.observations[i].display!!.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+                            encounter.observations[i].concept = ConceptEntity().apply {
+                                uuid = encounterCreate.observations[i].concept
+                            }
                         }
 
                         // Update the visit linked to this encounter
