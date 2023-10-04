@@ -581,6 +581,11 @@
     <string name="weight_unit" translatable="false">kg</string>
     <string name="height_unit" translatable="false">cm</string>
     <string name="bp_normal" tools:ignore="MissingTranslation">Blood pressure - Normal</string>
+    <string name="hypertension" tools:ignore="MissingTranslation">Hypertension</string>
+    <string name="bp_stage_I" tools:ignore="MissingTranslation">Stage I</string>
+    <string name="bp_stage_II_A" tools:ignore="MissingTranslation">Stage II A</string>
+    <string name="bp_stage_II_B" tools:ignore="MissingTranslation">Stage II B</string>
+    <string name="bp_stage_II_C" tools:ignore="MissingTranslation">Stage II C</string>
     <string name="bp_ht_stage_I" tools:ignore="MissingTranslation">Hypertension - Stage I</string>
     <string name="bp_ht_stage_II_A" tools:ignore="MissingTranslation">Hypertension - Stage II A</string>
     <string name="bp_ht_stage_II_B" tools:ignore="MissingTranslation">Hypertension - Stage II B</string>
@@ -592,4 +597,18 @@
     <string name="bp_ht_stage_II_C_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Contact with the doctor for possible emergency hospitalization.]]></string>
     <string name="bp_info" tools:ignore="MissingTranslation">Blood pressure information</string>
     <string name="information_icon_description" translatable="false">information icon</string>
+    <string name="hypertension_types" tools:ignore="MissingTranslation">Blood pressure types</string>
+    <string name="close_icon" translatable="false">Close icon</string>
+    <string name="sys_130" translatable="false"><![CDATA[SYS < 130]]></string>
+    <string name="diastolic_80" tools:ignore="MissingTranslation"><![CDATA[and DIA < 80]]></string>
+    <string name="sys_130_plus" translatable="false">SYS 130+</string>
+    <string name="diastolic_80_plus" tools:ignore="MissingTranslation">or DIA 80+</string>
+    <string name="sys_140_plus" translatable="false">SYS 140+</string>
+    <string name="diastolic_90_plus" tools:ignore="MissingTranslation">or DIA 90+</string>
+    <string name="sys_160_plus" translatable="false">SYS 160+</string>
+    <string name="diastolic_100_plus" tools:ignore="MissingTranslation">or DIA 100+</string>
+    <string name="sys_180_plus" translatable="false"><![CDATA[SYS ≥ 180]]></string>
+    <string name="diastolic_110_plus" tools:ignore="MissingTranslation"><![CDATA[or DIA ≥ 110]]></string>
+    <string name="blood_pressure_label" tools:ignore="MissingTranslation" >Blood pressure</string>
+    <string name="normal" translatable="false">Normal</string>
 </resources>

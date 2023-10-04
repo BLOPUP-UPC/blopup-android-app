@@ -11,7 +11,6 @@ class BloodPressureInfoDialog : DialogFragment(){
 
     private lateinit var bloodPressureInfoBinding: BloodPressureInfoBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,8 +18,9 @@ class BloodPressureInfoDialog : DialogFragment(){
     ): View {
         bloodPressureInfoBinding = BloodPressureInfoBinding.inflate(inflater, container, false)
 
-
-
+        bloodPressureInfoBinding.closeDialog.setOnClickListener {
+            dismiss()
+        }
 
         return bloodPressureInfoBinding.root
     }

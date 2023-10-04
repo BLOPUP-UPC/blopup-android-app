@@ -394,6 +394,11 @@
     <string name="systolic_vital">Sistólica</string>
     <string name="diastolic_vital">Diastólica</string>
     <string name="pulse_vital">Pulso</string>
+    <string name="hypertension">Hipertensión</string>
+    <string name="bp_stage_I">Nivel I</string>
+    <string name="bp_stage_II_A">Nivel II A</string>
+    <string name="bp_stage_II_B">Nivel II B</string>
+    <string name="bp_stage_II_C">Nivel II C</string>
     <string name="bp_normal">Tension arterial - Normal</string>
     <string name="bp_ht_stage_I">Hipertensión arterial - Nivel I</string>
     <string name="bp_ht_stage_II_A">Hipertensión arterial - Nivel II A</string>
@@ -405,4 +410,11 @@
     <string name="bp_ht_stage_II_B_recommendation"><![CDATA[<b>Recomendaciones:</b> Control en 15 días y revisar o iniciar el tratamiento.]]></string>
     <string name="bp_ht_stage_II_C_recommendation"><![CDATA[<b>Recomendaciones:</b> Contacto con el doctor/a por posible hospitalización de urgencias.]]></string>
     <string name="bp_info">Información sobre tensión arterial</string>
+    <string name="hypertension_types">Tipos de tensión arterial</string>
+    <string name="diastolic_80"><![CDATA[y DIA < 80]]></string>
+    <string name="diastolic_80_plus">o DIA 80+</string>
+    <string name="diastolic_90_plus">o DIA 90+</string>
+    <string name="diastolic_100_plus">o DIA 100+</string>
+    <string name="diastolic_110_plus"><![CDATA[o DIA ≥ 110]]></string>
+    <string name="blood_pressure_label">Tensión arterial</string>
 </resources>
