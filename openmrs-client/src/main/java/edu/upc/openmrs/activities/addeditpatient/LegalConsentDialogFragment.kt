@@ -13,6 +13,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomappbar.BottomAppBar
+import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.AudioRecorder
 import edu.upc.databinding.LegalConsentBinding
@@ -51,10 +52,11 @@ class LegalConsentDialogFragment : DialogFragment() {
         val languageCode = context?.let { LanguageUtils.getLanguageCode(language, it) }
 
         getRecordingFilePath().also { mFileName = it }
+        val inputFileId = if (BuildConfig.DEBUG) getFileByLanguage(requireActivity(), TAG, "test") else getFileByLanguage(requireActivity(), TAG, languageCode)
         audioRecorder = AudioRecorder(
             mFileName,
             requireContext(),
-            getFileByLanguage(requireActivity(), TAG, languageCode),
+            inputFileId,
         )
 
         setLegalConsentWordingLanguage(languageCode!!)
@@ -77,13 +79,18 @@ class LegalConsentDialogFragment : DialogFragment() {
             )
 
             for ((view, resourceId) in viewsAndResourceIds) {
-                val wording = LanguageUtils.getLocaleStringResource(Locale(language), resourceId, it)
+                val wording =
+                    LanguageUtils.getLocaleStringResource(Locale(language), resourceId, it)
                 view.text = wording
                 if (language == "ar") {
-                    legalConsentBinding.bulletPoint1Layout.layoutDirection = View.LAYOUT_DIRECTION_RTL
-                    legalConsentBinding.bulletPoint2Layout.layoutDirection = View.LAYOUT_DIRECTION_RTL
-                    legalConsentBinding.bulletPoint3Layout.layoutDirection = View.LAYOUT_DIRECTION_RTL
-                    legalConsentBinding.bulletPoint4Layout.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                    legalConsentBinding.bulletPoint1Layout.layoutDirection =
+                        View.LAYOUT_DIRECTION_RTL
+                    legalConsentBinding.bulletPoint2Layout.layoutDirection =
+                        View.LAYOUT_DIRECTION_RTL
+                    legalConsentBinding.bulletPoint3Layout.layoutDirection =
+                        View.LAYOUT_DIRECTION_RTL
+                    legalConsentBinding.bulletPoint4Layout.layoutDirection =
+                        View.LAYOUT_DIRECTION_RTL
                 }
             }
         }

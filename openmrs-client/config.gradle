@@ -32,9 +32,6 @@ android{
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
             buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "true"
             buildConfigField "Boolean", "BLOPUP_282_SHOW_ALGORITHM", "true"
-
-            // Debug toggles
-            buildConfigField "Boolean", "SKIP_LEGAL_CONSENT", "false"
         }
     }
 }

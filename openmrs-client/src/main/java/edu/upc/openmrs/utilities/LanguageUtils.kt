@@ -66,9 +66,6 @@ object LanguageUtils {
     @JvmStatic
     fun getLanguageCode(language: String?, context: Context): String? {
         val currentLocale = Locale.getDefault()
-        if (BuildConfig.DEBUG && BuildConfig.SKIP_LEGAL_CONSENT) {
-            return "test"
-        }
         val languageMap = mapOf(
             context.getString(R.string.english) to "en",
             context.getString(R.string.spanish) to "es",

@@ -221,7 +221,8 @@ class AddEditPatientFragment : BaseFragment() {
             return false
         } else {
             binding.recordConsentError.makeGone()
-            viewModel.legalConsentFileName = if (filePath.isEmpty()) legalConsentDialog?.fileName() else filePath
+            viewModel.legalConsentFileName =
+                if (filePath.isEmpty()) legalConsentDialog?.fileName() else filePath
         }
         return true
     }
@@ -257,12 +258,13 @@ class AddEditPatientFragment : BaseFragment() {
             }
 
             val countryOfBirthLabel = attributes
-                                    .firstOrNull { it.attributeType?.uuid == BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID }
-                                    ?.value
-                                    ?.uppercase()
+                .firstOrNull { it.attributeType?.uuid == BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID }
+                ?.value
+                ?.uppercase()
 
-            if (countryOfBirthLabel === null) { binding.countryOfBirth.text = context?.getString(R.string.country_of_birth_default)}
-            else Country.valueOf(countryOfBirthLabel).getLabel(requireContext())
+            if (countryOfBirthLabel === null) {
+                binding.countryOfBirth.text = context?.getString(R.string.country_of_birth_default)
+            } else Country.valueOf(countryOfBirthLabel).getLabel(requireContext())
                 .also { binding.countryOfBirth.text = it }
 
             binding.linearLayoutConsent.makeGone()
@@ -423,7 +425,7 @@ class AddEditPatientFragment : BaseFragment() {
         }
 
         recordLegalConsent.setOnClickListener {
-            if(recordLegalConsent.text == context?.getString(R.string.record_again_legal_consent)){
+            if (recordLegalConsent.text == context?.getString(R.string.record_again_legal_consent)) {
                 filePath = legalConsentDialog!!.fileName()
             }
             val selectedLanguage = languageSpinner.selectedItem.toString()
@@ -619,14 +621,11 @@ class AddEditPatientFragment : BaseFragment() {
                 isLegalConsent() || isNationality()
     }
 
-    private fun isNationality() = binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
+    private fun isNationality() =
+        binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
 
     private fun isLegalConsent() =
-        if (BuildConfig.DEBUG && BuildConfig.SKIP_LEGAL_CONSENT) {
-            true
-        } else {
             FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName()) || filePath.isNotEmpty()
-        }
 
     private fun startPatientDashboardActivity() {
         Intent(requireActivity(), PatientDashboardActivity::class.java).apply {
@@ -682,6 +681,7 @@ class AddEditPatientFragment : BaseFragment() {
     companion object {
         fun newInstance(patientID: String?) =
             AddEditPatientFragment().apply {
-                arguments = bundleOf(Pair(PATIENT_ID_BUNDLE, patientID)) }
+                arguments = bundleOf(Pair(PATIENT_ID_BUNDLE, patientID))
+            }
     }
 }
