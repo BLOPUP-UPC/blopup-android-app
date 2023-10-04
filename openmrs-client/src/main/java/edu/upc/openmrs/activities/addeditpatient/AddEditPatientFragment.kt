@@ -622,7 +622,7 @@ class AddEditPatientFragment : BaseFragment() {
     private fun isNationality() = binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
 
     private fun isLegalConsent() =
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG && BuildConfig.SKIP_LEGAL_CONSENT) {
             true
         } else {
             FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName()) || filePath.isNotEmpty()
