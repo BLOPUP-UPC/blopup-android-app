@@ -55,7 +55,7 @@
     <!-- Blood pressure types colors -->
     <color name="bp_normal">#FF03BD5B</color>
     <color name="bp_ht_stage_I">#FFF7B334</color>
-    <color name="bp_ht_stage_II_A">#FFF8B11E</color>
+    <color name="bp_ht_stage_II_A">#FFED7541</color>
     <color name="bp_ht_stage_II_B">@color/bp_ht_stage_II_A</color>
     <color name="bp_ht_stage_II_C">#FFF12021</color>
 </resources>

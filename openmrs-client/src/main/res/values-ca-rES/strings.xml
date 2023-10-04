@@ -361,7 +361,7 @@
     <string name="send_email_fails_toast_message">Error a l\'enviar el missatge</string>
     <string name="jake_smith">Jake Smith</string>
     <string name="contact_us_message_hint">Escriu aquí el teu missatge</string>
-    <string name="bmi_label">" Índex de Massa Corporal (IMC)"</string>
+    <string name="bmi_label">Índex de Massa Corporal (IMC)</string>
     <string name="blood_pressure_instructions_title">Triant un braçalet de la mida adequada.</string>
     <string name="blood_pressure_instructions">Mesura la circumferència del braç superior amb una cinta mètrica de sastre, a mig camí entre l\'espatlla i el colze. Tria un braçalet d\'una mida que inclogui la mesura.</string>
     <string name="blood_pressure_instructions_title_two">Posició per prendre la tensió arterial.</string>
@@ -392,11 +392,11 @@
     <string name="diastolic_vital">Diastòlica</string>
     <string name="pulse_vital">Pols</string>
     <string name="bp_normal">Tensió arterial - Normal</string>
-    <string name="bp_ht_stage_I">Hipertensió - Nivell I</string>
-    <string name="bp_ht_stage_II_A">Hipertensió - Nivell II A</string>
-    <string name="bp_ht_stage_II_B">Hipertensió - Nivell II B</string>
-    <string name="bp_ht_stage_II_C">Hipertensió - Nivell II C</string>
-    <string name="bp_normal_recommendation"><![CDATA[<b>Recomanacions:</b> Control entre 6 mesos i un any.]]></string>
+    <string name="bp_ht_stage_I">Hipertensió arterial - Nivell I</string>
+    <string name="bp_ht_stage_II_A">Hipertensió arterial - Nivell II A</string>
+    <string name="bp_ht_stage_II_B">Hipertensió arterial - Nivell II B</string>
+    <string name="bp_ht_stage_II_C">Hipertensió arterial - Nivell II C</string>
+    <string name="bp_normal_recommendation"><![CDATA[<b>Recomanacions:</b> Control entre 6 mesos i 1 any.]]></string>
     <string name="bp_ht_stage_I_recommendation"><![CDATA[<b>Recomanacions:</b> Control entre 3 i 6 mesos.]]></string>
     <string name="bp_ht_stage_II_A_recommendation"><![CDATA[<b>Recomanacions:</b> Control entre 15 i 30 dies.]]></string>
     <string name="bp_ht_stage_II_B_recommendation"><![CDATA[<b>Recomanacions:</b> Control en 15 dies i revisar o iniciar el tractament.]]></string>
