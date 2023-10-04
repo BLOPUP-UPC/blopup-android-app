@@ -44,7 +44,6 @@ versions.jodaTime = '2.10.6'
 versions.kxml2 = '2.3.0'
 versions.permissionsdispatcher = '4.8.0'
 
-versions.leakcanary = '2.10'
 versions.placesAPI = '3.0.0'
 
 versions.navfragment = '2.5.3'

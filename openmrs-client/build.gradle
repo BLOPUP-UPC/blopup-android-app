@@ -267,7 +267,7 @@ dependencies {
     kaptTest "com.google.dagger:hilt-compiler:${versions.hilt}"
 
     // Leak Canary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}"
+    // debugImplementation "com.squareup.leakcanary:leakcanary-android:2.10"
     // Debug database
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     debugImplementation 'androidx.fragment:fragment-testing:1.5.7'
