@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +30,7 @@ import java.util.Objects;
 import edu.upc.R;
 import edu.upc.blopup.bloodpressure.BloodPressureType;
 import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
+import edu.upc.openmrs.activities.visitdashboard.BloodPressureInfoDialog;
 import edu.upc.sdk.library.models.Observation;
 
 public class OpenMRSInflater {
@@ -38,7 +40,7 @@ public class OpenMRSInflater {
         this.mInflater = inflater;
     }
 
-    public ViewGroup addVitalsData(ViewGroup parentLayout, List<Observation> observations, String bmiData, BloodPressureType bloodPressureType) {
+    public ViewGroup addVitalsData(ViewGroup parentLayout, List<Observation> observations, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager) {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
@@ -48,9 +50,24 @@ public class OpenMRSInflater {
 
         setBMIValueAndChart(bmiData, vitalsCardView);
 
+        setBloodPressureInformationDialog(vitalsCardView, fragmentManager);
+
         parentLayout.addView(vitalsCardView);
 
         return parentLayout;
+    }
+
+    private void setBloodPressureInformationDialog(View vitalsCardView, FragmentManager fragmentManager) {
+
+        TextView bloodPressureInformation = vitalsCardView.findViewById(R.id.blood_pressure_info);
+
+        bloodPressureInformation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BloodPressureInfoDialog dialogFragment = new BloodPressureInfoDialog();
+                dialogFragment.show(fragmentManager, "BloodPressureInfoDialog");
+            }
+        });
     }
 
     private void setBloodPressureTypeAndRecommendation(BloodPressureType bloodPressureType, View vitalsCardView) {

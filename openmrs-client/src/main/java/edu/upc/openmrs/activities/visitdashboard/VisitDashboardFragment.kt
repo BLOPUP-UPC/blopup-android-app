@@ -24,9 +24,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.R
+import edu.upc.blopup.vitalsform.VitalsFormActivity
+import edu.upc.databinding.FragmentVisitDashboardBinding
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -35,20 +43,13 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
-import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.R
-import edu.upc.blopup.vitalsform.VitalsFormActivity
-import edu.upc.databinding.FragmentVisitDashboardBinding
-import edu.upc.openmrs.utilities.makeGone
-import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.openmrs.utilities.observeOnce
 
 @AndroidEntryPoint
 class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     private var _binding: FragmentVisitDashboardBinding? = null
     private val binding get() = _binding!!
     private var visitExpandableListAdapter: VisitExpandableListAdapter? = null
-
+    private lateinit var fragmentManager: FragmentManager
     private val viewModel: VisitDashboardViewModel by viewModels()
 
     override fun onCreateView(
@@ -58,10 +59,12 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     ): View {
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+        fragmentManager = requireActivity().supportFragmentManager
         visitExpandableListAdapter =
             VisitExpandableListAdapter(
                 requireContext(),
-                emptyList()
+                emptyList(),
+                fragmentManager
             )
         setupAdapter()
         setupObserver()

@@ -3,7 +3,6 @@ package edu.upc.openmrs.activities.addeditpatient
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +23,9 @@ import edu.upc.openmrs.utilities.FileUtils.getRecordingFilePath
 import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.utilities.ToastUtil
-import kotlinx.android.synthetic.main.fragment_patient_info.*
-import java.util.*
+import kotlinx.android.synthetic.main.fragment_patient_info.record_consent_saved
+import kotlinx.android.synthetic.main.fragment_patient_info.record_legal_consent
+import java.util.Locale
 
 
 class LegalConsentDialogFragment : DialogFragment() {

@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.hypertensionTypeFromEncounter
@@ -34,7 +35,8 @@ import edu.upc.sdk.utilities.ImageUtils.decodeBitmapFromResource
 
 class VisitExpandableListAdapter(
     private val mContext: Context,
-    private var mEncounters: List<Encounter>
+    private var mEncounters: List<Encounter>,
+    private val fragmentManager: FragmentManager
 ) :
     BaseExpandableListAdapter() {
     private var mChildLayouts: List<ViewGroup>
@@ -71,7 +73,8 @@ class VisitExpandableListAdapter(
                             contentLayout,
                             encounter.observations,
                             bmiData,
-                            hypertensionTypeFromEncounter(encounter)
+                            hypertensionTypeFromEncounter(encounter),
+                            fragmentManager
                         )
                     } else {
                         for (obs in encounter.observations) {

@@ -181,6 +181,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/blood_pressure_info"
                 android:textSize="18sp"
                 android:paddingTop="10dp"
                 android:textColor="?android:attr/textColorPrimary"
