@@ -598,6 +598,9 @@
     <string name="bp_ht_stage_II_C_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Contact with the doctor for possible emergency hospitalization.]]></string>
     <string name="bp_info" tools:ignore="MissingTranslation">Blood pressure information</string>
     <string name="information_icon_description" translatable="false">information icon</string>
+    <string name="call_doctor_banner_text">Patient with severe hypertension. Requires immediate hospitalization. Dr Xavier Cuevas has been notified by SMS at +34 629 43 35 39. Please get in touch with them as soon as possible.</string>
+    <string name="call_button_text">CALL</string>
+    <string name="cancel_capitalized">CANCEL</string>
     <string name="hypertension_types" tools:ignore="MissingTranslation">Blood pressure types</string>
     <string name="close_icon" translatable="false">Close icon</string>
     <string name="sys_130" translatable="false"><![CDATA[SYS < 130]]></string>
