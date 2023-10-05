@@ -249,7 +249,7 @@ dependencies {
             'com.jayway.android.robotium:robotium-solo:4.2')
     testImplementation(
             'org.mockito:mockito-core:2.8.9',
-            'org.mockito:mockito-inline:2.13.0',
+            'org.mockito:mockito-inline:5.2.0',
             "org.mockito.kotlin:mockito-kotlin:4.0.0",
             'junit:junit:4.+',
             "org.junit.jupiter:junit-jupiter:5.8.2",
