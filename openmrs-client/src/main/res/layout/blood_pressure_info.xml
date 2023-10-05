@@ -1,6 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@drawable/border_white_background"
     android:layout_height="wrap_content"
@@ -11,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
+        android:layout_margin="8dp"
         android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/close_dialog"
-            android:layout_marginVertical="10dp"
+            android:layout_marginVertical="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/hypertension_types"
@@ -44,18 +45,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginHorizontal="5dp"
+                android:paddingVertical="10dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="106dp"
+                    android:paddingStart="10dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
                     android:gravity="start|center_vertical"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="RtlSymmetry">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -77,15 +77,14 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
@@ -125,17 +124,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginHorizontal="5dp"
+                android:paddingVertical="10dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="106dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
-                    android:gravity="start|center_vertical"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
@@ -159,15 +156,14 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
@@ -208,17 +204,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginHorizontal="5dp"
+                android:paddingVertical="10dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="106dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
-                    android:gravity="start|center_vertical"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
@@ -242,15 +236,14 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
@@ -291,17 +284,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginHorizontal="5dp"
+                android:paddingVertical="10dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="106dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
-                    android:gravity="start|center_vertical"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
@@ -325,15 +316,14 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
@@ -375,17 +365,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginHorizontal="5dp"
+                android:paddingVertical="10dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="106dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
-                    android:gravity="start|center_vertical"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
@@ -404,26 +392,24 @@
                         android:text="@string/diastolic_110_plus"
                         android:textColor="@android:color/white" />
 
-
                 </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="4dp"
-                    android:paddingHorizontal="5dp"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/hypertension"
+                        android:text="@string/hypertension_crisis"
                         android:fontFamily="@font/roboto_regular"
                         android:textSize="16sp"
                         android:textColor="@android:color/white" />

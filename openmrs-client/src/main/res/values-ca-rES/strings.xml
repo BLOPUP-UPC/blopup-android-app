@@ -408,6 +408,7 @@
     <string name="bp_ht_stage_II_C_recommendation"><![CDATA[<b>Recomanacions:</b> Contacte amb el metge/essa per possible hospitalització d\'urgències.]]></string>
     <string name="bp_info">Informació sobre tensió arterial</string>
     <string name="hypertension_types">Tipus de tensió arterial</string>
+    <string name="hypertension_crisis">Crisi hipertensa</string>
     <string name="diastolic_80"><![CDATA[y DIA < 80]]></string>
     <string name="diastolic_80_plus">o DIA 80+</string>
     <string name="diastolic_90_plus">o DIA 90+</string>
