@@ -5,7 +5,6 @@
     android:background="@drawable/border_white_background"
     android:layout_height="wrap_content"
     android:layout_marginVertical="18dp"
-    android:layout_marginHorizontal="20dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -54,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:gravity="start|center_vertical"
                     android:orientation="vertical">
 
@@ -86,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="10dp"
+                    android:paddingHorizontal="5dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -135,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:gravity="start|center_vertical"
                     android:orientation="vertical">
 
@@ -168,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -218,7 +217,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:gravity="start|center_vertical"
                     android:orientation="vertical">
 
@@ -251,7 +250,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -301,7 +300,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:gravity="start|center_vertical"
                     android:orientation="vertical">
 
@@ -334,7 +333,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -385,7 +384,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:gravity="start|center_vertical"
                     android:orientation="vertical">
 
@@ -418,7 +417,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="4dp"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="5dp"
                     android:orientation="vertical">
 
                     <TextView

@@ -154,15 +154,4 @@ public class OpenMRSInflater {
         labelText.setText(label);
         parentLayout.addView(view);
     }
-
-    public void addBmiChart(ViewGroup parentLayout, String bmiData) {
-
-        BMIChartSetUp bmiChart = new BMIChartSetUp();
-
-        View view = mInflater.inflate(R.layout.bmi_chart, null, false);
-
-        bmiChart.createChart(view, bmiData);
-
-        parentLayout.addView(view);
-    }
 }

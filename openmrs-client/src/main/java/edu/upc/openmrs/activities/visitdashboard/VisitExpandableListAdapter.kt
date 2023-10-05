@@ -23,7 +23,6 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
-import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.hypertensionTypeFromEncounter
 import edu.upc.openmrs.application.OpenMRSInflater
@@ -68,24 +67,14 @@ class VisitExpandableListAdapter(
                 EncounterType.VITALS -> {
                     val bmiData = bmiCalculator.execute(encounter.observations)
 
-                    if (BuildConfig.BLOPUP_282_SHOW_ALGORITHM) {
-                        openMRSInflater.addVitalsData(
-                            contentLayout,
-                            encounter.observations,
-                            bmiData,
-                            hypertensionTypeFromEncounter(encounter),
-                            fragmentManager
-                        )
-                    } else {
-                        for (obs in encounter.observations) {
-                            openMRSInflater.addKeyValueStringView(
-                                contentLayout,
-                                obs.display,
-                                obs.displayValue
-                            )
-                        }
-                        if (bmiData != "N/A") openMRSInflater.addBmiChart(contentLayout, bmiData)
-                    }
+                    openMRSInflater.addVitalsData(
+                        contentLayout,
+                        encounter.observations,
+                        bmiData,
+                        hypertensionTypeFromEncounter(encounter),
+                        fragmentManager
+                    )
+
                     layouts.add(convertView)
                 }
 
