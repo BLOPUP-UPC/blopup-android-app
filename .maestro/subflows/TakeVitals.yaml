@@ -21,8 +21,5 @@ appId: edu.upc
 - tapOn:
       id: "edu.upc:id/visitRow"
       index: 0
-- tapOn:
-      text: "Show Details"
-      index: 0
 - assertVisible:
       id: "edu.upc:id/blood_pressure_title"

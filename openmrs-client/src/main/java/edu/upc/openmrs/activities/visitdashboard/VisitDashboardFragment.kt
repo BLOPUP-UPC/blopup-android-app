@@ -109,6 +109,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             visitEncounters.filter { possibleEncounterTypes.contains(it.encounterType?.display) }
 
         visitExpandableListAdapter?.updateList(displayableEncounters)
+        visitDashboardExpList.expandGroup(0);
 
         if (displayableEncounters.isEmpty()) {
             visitDashboardEmpty.makeVisible()
