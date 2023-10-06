@@ -496,6 +496,7 @@
     <string name="admission_location_in_list" translatable="false">Admitted To %1$s</string>
     <string name="discharge_location_in_list" translatable="false">Discharged From %1$s</string>
     <string name="form_submitted_successfully" translatable="false">Form Submitted Successfully</string>
+    <string name="vitals_successfully" translatable="false">Vitals completed</string>
 
     <!-- About Activity -->
     <string name="action_about_activity" tools:ignore="MissingTranslation">About us</string>

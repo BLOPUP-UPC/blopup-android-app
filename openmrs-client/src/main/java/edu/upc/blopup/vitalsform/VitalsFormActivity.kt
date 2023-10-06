@@ -178,7 +178,7 @@ class VitalsFormActivity : ACBaseActivity() {
         addVitalsToForm()
         viewModel.submitForm(vitals).observeOnce(this, Observer { result ->
             when (result) {
-                ResultType.EncounterSubmissionSuccess -> { ToastUtil.success(getString(R.string.form_submitted_successfully))
+                ResultType.EncounterSubmissionSuccess -> { ToastUtil.success(getString(R.string.vitals_successfully))
                     finish()
                 }
                 ResultType.EncounterSubmissionLocalSuccess -> {
