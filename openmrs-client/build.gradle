@@ -246,7 +246,7 @@ dependencies {
             'org.mockito:mockito-core:5.5.0',
             'com.google.dexmaker:dexmaker-mockito:1.2',
             'com.google.dexmaker:dexmaker:1.2',
-            'com.jayway.android.robotium:robotium-solo:4.2')
+            'com.jayway.android.robotium:robotium-solo:5.6.3')
     testImplementation(
             'org.mockito:mockito-core:5.5.0',
             'org.mockito:mockito-inline:5.2.0',
