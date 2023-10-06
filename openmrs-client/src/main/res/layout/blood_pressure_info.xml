@@ -3,9 +3,9 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:paddingHorizontal="8dp"
     android:background="@drawable/border_white_background"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="18dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -81,7 +81,7 @@
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="170dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     tools:ignore="RtlSymmetry"
@@ -160,7 +160,7 @@
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="170dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     tools:ignore="RtlSymmetry"
@@ -240,7 +240,7 @@
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="170dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     tools:ignore="RtlSymmetry"
@@ -320,7 +320,7 @@
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="170dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     tools:ignore="RtlSymmetry"
@@ -351,7 +351,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_vertical">
 
         <androidx.cardview.widget.CardView
@@ -400,7 +400,7 @@
                     android:background="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="170dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     tools:ignore="RtlSymmetry"

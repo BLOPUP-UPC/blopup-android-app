@@ -8,9 +8,7 @@
             <padding android:left="2dp" android:top="2dp" android:right="2dp"
                 android:bottom="1dp" />
 
-            <corners android:radius="2dp" android:bottomRightRadius="2dp"
-                android:bottomLeftRadius="2dp" android:topLeftRadius="2dp"
-                android:topRightRadius="2dp" />
+            <corners android:radius="10dp" />
         </shape>
     </item>
 </selector>
