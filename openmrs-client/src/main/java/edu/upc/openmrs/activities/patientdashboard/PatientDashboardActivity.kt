@@ -162,11 +162,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
-
-    companion object {
-        internal const val TAKE_VITALS_REQUEST_CODE = 0
-    }
-
     private fun startVitalsMeasurement(){
         vitalsFormLauncher.launch(
             Intent(this, VitalsFormActivity::class.java)
@@ -180,9 +175,8 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         if (result.resultCode == RESULT_OK) {
             val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId.toLong()).execute()
 
-            val newIntent = Intent(this, VisitDashboardActivity::class.java)
-            newIntent.putExtra(ApplicationConstants.BundleKeys.VISIT_ID, activeVisit.id)
-            startActivity(newIntent)
+            startActivity(Intent(this, VisitDashboardActivity::class.java)
+                .putExtra(ApplicationConstants.BundleKeys.VISIT_ID, activeVisit.id))
         }
     }
 

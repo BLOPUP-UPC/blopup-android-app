@@ -49,7 +49,7 @@ class VisitExpandableListAdapter(
     }
 
     fun updateList(encounters: List<Encounter>) {
-        mEncounters = encounters
+        mEncounters = encounters.sortedBy { it.encounterDatetime }.reversed()
         notifyDataSetChanged()
     }
 
