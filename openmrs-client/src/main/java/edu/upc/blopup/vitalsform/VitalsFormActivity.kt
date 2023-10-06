@@ -1,7 +1,9 @@
 package edu.upc.blopup.vitalsform
 
+import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -11,6 +13,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
@@ -132,6 +136,8 @@ class VitalsFormActivity : ACBaseActivity() {
         }
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
+        askCallPermission()
     }
 
     override fun onResume() {
@@ -143,7 +149,7 @@ class VitalsFormActivity : ACBaseActivity() {
     fun sendVitals(view: View) {
         buttonToSentVitals.isEnabled = false
         heightCm = mBinding.height.text.toString()
-        if(HeightValidator.isValid(heightCm, weight, systolic, diastolic, heartRate)) {
+        if (HeightValidator.isValid(heightCm, weight, systolic, diastolic, heartRate)) {
             submitForm()
         } else {
             mBinding.textInputHeight.error = (getString(R.string.height_range))
@@ -183,11 +189,13 @@ class VitalsFormActivity : ACBaseActivity() {
                     setResult(RESULT_OK)
                     finish()
                 }
+
                 ResultType.EncounterSubmissionLocalSuccess -> {
                     ToastUtil.notify(getString(R.string.form_data_sync_is_off_message))
                     setResult(RESULT_OK)
                     finish()
                 }
+
                 else -> ToastUtil.error(getString(R.string.form_data_submit_error))
             }
         })
@@ -209,6 +217,7 @@ class VitalsFormActivity : ACBaseActivity() {
                     val heightField = mBinding.height
                     heightField.setText(height)
                 }
+
                 else -> throw IllegalStateException()
             }
         }
@@ -228,5 +237,12 @@ class VitalsFormActivity : ACBaseActivity() {
         mBinding.textInputPulse.hint = getString(R.string.pulse_label)
         mBinding.textInputWeight.hint = getString(R.string.weight_value_label)
         mBinding.textInputHeight.hint = getString(R.string.height_value_label)
+    }
+
+    private fun askCallPermission() {
+        if (ActivityCompat.checkSelfPermission(baseContext, Manifest.permission.CALL_PHONE)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 2)
+        }
     }
 }
