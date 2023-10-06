@@ -17,9 +17,5 @@ appId: edu.upc
 - hideKeyboard
 - tapOn:
     id: "edu.upc:id/buttonToSentVitals"
-- tapOn: "VISITS"
-- tapOn:
-      id: "edu.upc:id/visitRow"
-      index: 0
 - assertVisible:
       id: "edu.upc:id/blood_pressure_title"

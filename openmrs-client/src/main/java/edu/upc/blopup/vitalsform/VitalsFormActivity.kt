@@ -178,11 +178,14 @@ class VitalsFormActivity : ACBaseActivity() {
         addVitalsToForm()
         viewModel.submitForm(vitals).observeOnce(this, Observer { result ->
             when (result) {
-                ResultType.EncounterSubmissionSuccess -> { ToastUtil.success(getString(R.string.vitals_successfully))
+                ResultType.EncounterSubmissionSuccess -> {
+                    ToastUtil.success(getString(R.string.vitals_successfully))
+                    setResult(RESULT_OK)
                     finish()
                 }
                 ResultType.EncounterSubmissionLocalSuccess -> {
                     ToastUtil.notify(getString(R.string.form_data_sync_is_off_message))
+                    setResult(RESULT_OK)
                     finish()
                 }
                 else -> ToastUtil.error(getString(R.string.form_data_submit_error))

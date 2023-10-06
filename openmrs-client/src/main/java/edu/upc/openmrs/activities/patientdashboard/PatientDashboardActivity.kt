@@ -17,6 +17,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -26,12 +28,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
+import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
 import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
+import edu.upc.sdk.utilities.execute
 
 @AndroidEntryPoint
 class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -157,10 +162,27 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
+
+    companion object {
+        internal const val TAKE_VITALS_REQUEST_CODE = 0
+    }
+
     private fun startVitalsMeasurement(){
-        Intent(this, VitalsFormActivity::class.java).apply {
-            putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, viewModel.patientId.toLong())
-            startActivity(this)
+        vitalsFormLauncher.launch(
+            Intent(this, VitalsFormActivity::class.java)
+                .putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, viewModel.patientId.toLong())
+        )
+    }
+
+    private val vitalsFormLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK) {
+            val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId.toLong()).execute()
+
+            val newIntent = Intent(this, VisitDashboardActivity::class.java)
+            newIntent.putExtra(ApplicationConstants.BundleKeys.VISIT_ID, activeVisit.id)
+            startActivity(newIntent)
         }
     }
 
