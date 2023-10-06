@@ -582,7 +582,6 @@
     <string name="height_unit" translatable="false">cm</string>
     <string name="bp_normal" tools:ignore="MissingTranslation">Blood pressure - Normal</string>
     <string name="hypertension" tools:ignore="MissingTranslation">Hypertension</string>
-    <string name="hypertension_crisis" tools:ignore="MissingTranslation">Hypertensive crisis</string>
     <string name="bp_stage_I" tools:ignore="MissingTranslation">Stage I</string>
     <string name="bp_stage_II_A" tools:ignore="MissingTranslation">Stage II A</string>
     <string name="bp_stage_II_B" tools:ignore="MissingTranslation">Stage II B</string>
