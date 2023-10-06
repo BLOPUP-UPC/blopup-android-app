@@ -19,18 +19,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.CHARTS_TAB_POS
-import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.DETAILS_TAB_POS
-import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.DIAGNOSIS_TAB_POS
-import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.TAB_COUNT
-import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.VISITS_TAB_POS
-import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.VITALS_TAB_POS
 import edu.upc.R
 import edu.upc.openmrs.activities.patientdashboard.charts.PatientChartsFragment
 import edu.upc.openmrs.activities.patientdashboard.details.PatientDetailsFragment
-import edu.upc.openmrs.activities.patientdashboard.diagnosis.PatientDiagnosisFragment
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientVisitsFragment
-import edu.upc.openmrs.activities.patientdashboard.vitals.PatientVitalsFragment
+import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.CHARTS_TAB_POS
+import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.DETAILS_TAB_POS
+import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.TAB_COUNT
+import edu.upc.sdk.utilities.ApplicationConstants.PatientDashboardTabs.VISITS_TAB_POS
 
 class PatientDashboardPagerAdapter(private val fm: FragmentManager,
                                    private val context: Context,
@@ -42,9 +38,8 @@ class PatientDashboardPagerAdapter(private val fm: FragmentManager,
     override fun getItem(i: Int): Fragment {
         return when (i) {
             DETAILS_TAB_POS -> PatientDetailsFragment.newInstance(mPatientId)
-            DIAGNOSIS_TAB_POS -> PatientDiagnosisFragment.newInstance(mPatientId)
+//            DIAGNOSIS_TAB_POS -> PatientDiagnosisFragment.newInstance(mPatientId)
             VISITS_TAB_POS -> PatientVisitsFragment.newInstance(mPatientId)
-            VITALS_TAB_POS -> PatientVitalsFragment.newInstance(mPatientId)
             CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId)
             else -> throw IllegalStateException()
         }
@@ -53,9 +48,8 @@ class PatientDashboardPagerAdapter(private val fm: FragmentManager,
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
             DETAILS_TAB_POS -> context.getString(R.string.patient_scroll_tab_details_label)
-            DIAGNOSIS_TAB_POS -> context.getString(R.string.patient_scroll_tab_diagnosis_label)
+//            DIAGNOSIS_TAB_POS -> context.getString(R.string.patient_scroll_tab_diagnosis_label)
             VISITS_TAB_POS -> context.getString(R.string.patient_scroll_tab_visits_label)
-            VITALS_TAB_POS -> context.getString(R.string.patient_scroll_tab_vitals_label)
             CHARTS_TAB_POS -> context.getString(R.string.patient_scroll_tab_charts_label)
             else -> super.getPageTitle(position)
         }

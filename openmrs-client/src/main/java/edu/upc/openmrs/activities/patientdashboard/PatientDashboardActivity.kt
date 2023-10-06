@@ -24,6 +24,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.vitalsform.VitalsFormActivity
@@ -118,6 +119,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         with(binding) {
             pager.offscreenPageLimit = adapter.count - 1
             pager.adapter = adapter
+            tabhost.tabMode = TabLayout.MODE_FIXED
             tabhost.setupWithViewPager(pager)
             setUpStartVisitFAB()
             pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -129,7 +131,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    if (position == 0 || position == 2) {
+                    if (position == 0 || position == 1) {
                         setUpStartVisitFAB()
                     } else {
                         binding.actionsFab.startVisitFab.isVisible = false
