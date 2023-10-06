@@ -1,9 +1,12 @@
 package edu.upc.openmrs.activities.visitdashboard
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.fragment.app.DialogFragment
 import edu.upc.databinding.BloodPressureInfoBinding
 
@@ -22,6 +25,15 @@ class BloodPressureInfoDialog : DialogFragment(){
             dismiss()
         }
 
+        setBorderRadius()
+
         return bloodPressureInfoBinding.root
+    }
+
+    private fun setBorderRadius() {
+        if (dialog != null && dialog!!.window != null) {
+            dialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog!!.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        }
     }
 }
