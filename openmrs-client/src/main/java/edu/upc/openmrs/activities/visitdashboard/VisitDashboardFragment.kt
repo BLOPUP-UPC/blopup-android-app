@@ -66,16 +66,15 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             )
         setupAdapter()
         setupObserver()
-        showCallDoctorBanner(requireArguments().getBoolean(IS_NEW_VITALS))
+        setupCallDoctorBannerObserver(requireArguments().getBoolean(IS_NEW_VITALS))
 
         return binding.root
     }
 
-    private fun showCallDoctorBanner(isNewVitals: Boolean) {
+    private fun setupCallDoctorBannerObserver(isNewVitals: Boolean) {
         if (!isNewVitals) {
             return
         }
-        viewModel.fetchCurrentVisit()
         viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Success -> {
@@ -84,11 +83,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                             result.data.encounters.sortedBy { it.encounterDatetime }.last()
                         )
                     if (bloodPressureType == BloodPressureType.STAGE_II_C) {
-                        binding.visitDashboardExpList.setOnGroupExpandListener { _ ->
                             val callDoctorBanner = CallDoctorBanner()
                             callDoctorBanner.show(fragmentManager, "CallDoctorBanner")
                             fragmentManager.findFragmentById(R.id.call_doctor_banner)?.onStart()
-                        }
                     }
                 }
                 else -> {
@@ -111,7 +108,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun setupObserver() {
-        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                 }
@@ -125,7 +122,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
                 else -> throw IllegalStateException()
             }
-        })
+        }
 
     }
 
