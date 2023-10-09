@@ -66,32 +66,19 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             )
         setupAdapter()
         setupObserver()
-        setupCallDoctorBannerObserver(requireArguments().getBoolean(IS_NEW_VITALS))
 
         return binding.root
     }
 
-    private fun setupCallDoctorBannerObserver(isNewVitals: Boolean) {
-        if (!isNewVitals) {
-            return
-        }
-        viewModel.result.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Result.Success -> {
-                    val bloodPressureType =
-                        hypertensionTypeFromEncounter(
-                            result.data.encounters.sortedBy { it.encounterDatetime }.last()
-                        )
-                    if (bloodPressureType == BloodPressureType.STAGE_II_C) {
-                            fragmentManager.findFragmentById(R.id.call_doctor_banner)?.view?.visibility =
-                                View.VISIBLE
-                    }
-                }
+    private fun showDoctorBannerIfNeeded(encounters: List<Encounter>) {
+        if(!requireArguments().getBoolean(IS_NEW_VITALS)) { return }
 
-                else -> {
-                    return@observe
-                }
-            }
+        val bloodPressureType =
+            hypertensionTypeFromEncounter(
+                encounters.sortedBy { it.encounterDatetime }.last()
+            )
+        if (bloodPressureType == BloodPressureType.STAGE_II_C) {
+            binding.callToDoctorBanner.visibility = View.VISIBLE
         }
     }
 
@@ -117,6 +104,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
                     updateEncountersList(encounters)
+                    showDoctorBannerIfNeeded(encounters)
                 }
 
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))

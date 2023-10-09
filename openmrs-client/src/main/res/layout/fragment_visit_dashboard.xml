@@ -19,13 +19,14 @@
     >
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/list"
+        android:id="@+id/callToDoctorBanner"
         android:name="edu.upc.openmrs.activities.visitdashboard.CallDoctorBanner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:elevation="5dp"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:visibility="gone"/>
 
     <ExpandableListView
         android:id="@+id/visitDashboardExpList"
