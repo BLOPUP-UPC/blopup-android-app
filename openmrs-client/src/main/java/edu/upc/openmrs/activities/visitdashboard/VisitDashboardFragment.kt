@@ -83,11 +83,11 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                             result.data.encounters.sortedBy { it.encounterDatetime }.last()
                         )
                     if (bloodPressureType == BloodPressureType.STAGE_II_C) {
-                            val callDoctorBanner = CallDoctorBanner()
-                            callDoctorBanner.show(fragmentManager, "CallDoctorBanner")
-                            fragmentManager.findFragmentById(R.id.call_doctor_banner)?.onStart()
+                            fragmentManager.findFragmentById(R.id.call_doctor_banner)?.view?.visibility =
+                                View.VISIBLE
                     }
                 }
+
                 else -> {
                     return@observe
                 }

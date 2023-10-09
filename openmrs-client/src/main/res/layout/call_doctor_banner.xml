@@ -3,7 +3,10 @@
     android:id="@+id/call_doctor_banner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:gravity="top"
+    android:background="@color/white"
+    android:visibility="gone">
 
     <TextView
         android:id="@+id/call_doctor_text"
@@ -11,13 +14,16 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_regular"
         android:text="@string/call_doctor_banner_text"
+        android:textSize="16sp"
+        android:lineSpacingExtra="2sp"
         android:padding="@dimen/text_padding"/>
 
     <RelativeLayout
         android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/call_doctor_text">
+        android:layout_below="@id/call_doctor_text"
+        android:paddingBottom="20dp">
 
         <TextView
             android:id="@+id/cancel_button"
@@ -25,10 +31,12 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:padding="@dimen/text_padding"
+            android:paddingStart="@dimen/text_padding"
+            android:paddingEnd="@dimen/text_padding"
             android:text="@string/cancel_capitalized"
             android:textColor="@color/color_accent"
             android:textSize="@dimen/dashboard_text_size"
+            android:lineSpacingExtra="2dp"
             android:textStyle="bold"
             android:layout_toLeftOf="@id/call_button"/>
 
@@ -38,7 +46,8 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:padding="@dimen/text_padding"
+            android:paddingStart="@dimen/text_padding"
+            android:paddingEnd="@dimen/text_padding"
             android:text="@string/call_button_text"
             android:textColor="@color/color_accent"
             android:textSize="@dimen/dashboard_text_size"
