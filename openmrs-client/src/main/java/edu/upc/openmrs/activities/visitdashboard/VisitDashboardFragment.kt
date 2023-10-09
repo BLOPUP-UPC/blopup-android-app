@@ -80,10 +80,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     private fun fetchCurrentVisit() = viewModel.fetchCurrentVisit()
 
     private fun setupAdapter() = with(binding) {
-        visitDashboardExpList.emptyView = visitDashboardEmpty
         visitDashboardExpList.setAdapter(visitExpandableListAdapter)
         visitDashboardExpList.setGroupIndicator(null)
-        visitDashboardEmpty.makeGone()
     }
 
     private fun setupObserver() {
@@ -110,11 +108,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
 
         visitExpandableListAdapter?.updateList(displayableEncounters)
         visitDashboardExpList.expandGroup(0);
-
-        if (displayableEncounters.isEmpty()) {
-            visitDashboardEmpty.makeVisible()
-            showEmptyEncountersSnackBar()
-        }
     }
 
     fun endVisit() {
@@ -126,31 +119,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             if (ended) requireActivity().finish()
             else ToastUtil.error(getString(R.string.visit_ending_error))
         })
-    }
-
-    private fun showEmptyEncountersSnackBar() = with(binding) {
-        layoutInflater.inflate(R.layout.snackbar, null).apply {
-            // Note (empty encounters) text
-            findViewById<TextView>(R.id.snackbar_text).apply {
-                setText(R.string.snackbar_empty_visit_list)
-            }
-            // Select action button text
-            findViewById<TextView>(R.id.snackbar_action_button).apply {
-                setText(R.string.snackbar_select)
-                typeface = Typeface.createFromAsset(
-                    requireActivity().assets,
-                    ApplicationConstants.TypeFacePathConstants.ROBOTO_MEDIUM
-                )
-                setOnClickListener { startVitalsMeasurement() }
-            }
-        }.let {
-            val snackBar =
-                Snackbar.make(root, ApplicationConstants.EMPTY_STRING, Snackbar.LENGTH_INDEFINITE)
-            val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
-            snackBarLayout.setPadding(0, 0, 0, 0)
-            snackBarLayout.addView(it, 0)
-            snackBar.show()
-        }
     }
 
     private fun setActionBarTitle(name: String) {
