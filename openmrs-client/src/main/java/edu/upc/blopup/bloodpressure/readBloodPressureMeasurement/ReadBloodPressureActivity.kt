@@ -138,7 +138,7 @@ class ReadBloodPressureActivity : AppCompatActivity() {
 
     private fun hardcodeBluetoothData() {
         val result = Intent().apply {
-            putExtra(EXTRAS_SYSTOLIC, (100..200).random())
+            putExtra(EXTRAS_SYSTOLIC, (190))
             putExtra(EXTRAS_DIASTOLIC, (50..99).random())
             putExtra(EXTRAS_HEART_RATE, (55..120).random())
         }

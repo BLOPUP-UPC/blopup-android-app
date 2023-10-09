@@ -35,11 +35,12 @@ class VisitDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         val visitId: Long = intent.getLongExtra(VISIT_ID, -1L).also {
             if (it == -1L) throw IllegalStateException("No valid visit id passed")
         }
+        val isNewVitals:Boolean = intent.getBooleanExtra("isNewVitals", false)
 
         // Create fragment
         var visitDashboardFragment = supportFragmentManager.findFragmentById(R.id.visitDashboardContentFrame) as VisitDashboardFragment?
         if (visitDashboardFragment == null) {
-            visitDashboardFragment = VisitDashboardFragment.newInstance(visitId)
+            visitDashboardFragment = VisitDashboardFragment.newInstance(visitId, isNewVitals)
         }
         if (!visitDashboardFragment.isActive) {
             addFragmentToActivity(supportFragmentManager, visitDashboardFragment, R.id.visitDashboardContentFrame)

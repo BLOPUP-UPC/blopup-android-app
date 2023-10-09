@@ -178,7 +178,9 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId.toLong()).execute()
 
             startActivity(Intent(this, VisitDashboardActivity::class.java)
-                .putExtra(ApplicationConstants.BundleKeys.VISIT_ID, activeVisit.id))
+                .putExtra(ApplicationConstants.BundleKeys.VISIT_ID, activeVisit.id)
+                .putExtra(ApplicationConstants.BundleKeys.IS_NEW_VITALS, true))
+
         }
     }
 

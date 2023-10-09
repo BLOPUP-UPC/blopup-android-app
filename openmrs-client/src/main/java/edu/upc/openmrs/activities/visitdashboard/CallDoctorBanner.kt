@@ -46,6 +46,7 @@ class CallDoctorBanner : DialogFragment() {
             val intent = Intent(Intent.ACTION_CALL)
             intent.data = Uri.parse("tel:+34621039238")
             startActivity(intent)
+            dismiss()
         }
         callDoctorBinding.cancelButton.setOnClickListener { dismiss() }
     }

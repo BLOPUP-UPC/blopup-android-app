@@ -14,7 +14,6 @@
 package edu.upc.openmrs.activities.visitdashboard
 
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -22,22 +21,21 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.bloodpressure.BloodPressureType
+import edu.upc.blopup.bloodpressure.hypertensionTypeFromEncounter
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
-import edu.upc.openmrs.utilities.makeGone
-import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
@@ -68,8 +66,36 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             )
         setupAdapter()
         setupObserver()
+        showCallDoctorBanner(requireArguments().getBoolean(IS_NEW_VITALS))
 
         return binding.root
+    }
+
+    private fun showCallDoctorBanner(isNewVitals: Boolean) {
+        if (!isNewVitals) {
+            return
+        }
+        viewModel.fetchCurrentVisit()
+        viewModel.result.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Result.Success -> {
+                    val bloodPressureType =
+                        hypertensionTypeFromEncounter(
+                            result.data.encounters.sortedBy { it.encounterDatetime }.last()
+                        )
+                    if (bloodPressureType == BloodPressureType.STAGE_II_C) {
+                        binding.visitDashboardExpList.setOnGroupExpandListener { _ ->
+                            val callDoctorBanner = CallDoctorBanner()
+                            callDoctorBanner.show(fragmentManager, "CallDoctorBanner")
+                            fragmentManager.findFragmentById(R.id.call_doctor_banner)?.onStart()
+                        }
+                    }
+                }
+                else -> {
+                    return@observe
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -89,11 +115,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             when (result) {
                 is Result.Loading -> {
                 }
+
                 is Result.Success -> result.data.run {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
                     updateEncountersList(encounters)
                 }
+
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
                 else -> throw IllegalStateException()
             }
@@ -158,6 +186,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                 (requireActivity() as VisitDashboardActivity)
                     .createAndShowDialog(it, ApplicationConstants.DialogTAG.END_VISIT_DIALOG_TAG)
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -169,8 +198,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     companion object {
-        fun newInstance(visitId: Long) = VisitDashboardFragment().apply {
-            arguments = bundleOf(Pair(VISIT_ID, visitId))
+        fun newInstance(visitId: Long, isNewVitals: Boolean) = VisitDashboardFragment().apply {
+            arguments = bundleOf(Pair(VISIT_ID, visitId), Pair(IS_NEW_VITALS, isNewVitals))
         }
     }
 }

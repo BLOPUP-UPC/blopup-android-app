@@ -90,6 +90,7 @@ object ApplicationConstants {
         const val CALCULATED_LOCALLY = "CALCULATED_LOCALLY"
         const val PATIENTS_AND_MATCHES = "PATIENTS_AND_MATCHES"
         const val FORM_FIELDS_LIST_BUNDLE = "formFieldsListBundle"
+        const val IS_NEW_VITALS = "isNewVitals"
     }
 
     object BroadcastActions {

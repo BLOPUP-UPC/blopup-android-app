@@ -6,18 +6,18 @@
     android:layoutDirection="rtl">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/call_doctor_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/buttons"
         android:fontFamily="@font/roboto_regular"
-        android:text="@string/call_doctor_banner_text" />
+        android:text="@string/call_doctor_banner_text"
+        android:padding="@dimen/text_padding"/>
 
     <RelativeLayout
         android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title">
+        android:layout_below="@id/call_doctor_text">
 
         <TextView
             android:id="@+id/cancel_button"
@@ -29,7 +29,8 @@
             android:text="@string/cancel_capitalized"
             android:textColor="@color/color_accent"
             android:textSize="@dimen/dashboard_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_toLeftOf="@id/call_button"/>
 
         <TextView
             android:id="@+id/call_button"
