@@ -6,7 +6,9 @@
     android:layoutDirection="rtl"
     android:gravity="top"
     android:background="@color/white"
-    android:elevation="10dp">
+    android:elevation="5dp"
+    android:paddingTop="10dp"
+    android:layout_marginBottom="10dp">
 
     <TextView
         android:id="@+id/call_doctor_text"
@@ -31,7 +33,6 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:paddingStart="@dimen/text_padding"
             android:paddingEnd="@dimen/text_padding"
             android:text="@string/cancel_capitalized"
             android:textColor="@color/color_accent"
