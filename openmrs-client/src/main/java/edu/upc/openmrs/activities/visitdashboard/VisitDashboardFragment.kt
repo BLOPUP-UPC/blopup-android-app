@@ -22,7 +22,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,10 +30,8 @@ import edu.upc.blopup.bloodpressure.BloodPressureType
 import edu.upc.blopup.bloodpressure.hypertensionTypeFromEncounter
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
-import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
-import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
@@ -51,7 +48,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     private var _binding: FragmentVisitDashboardBinding? = null
     private val binding get() = _binding!!
     private var visitExpandableListAdapter: VisitExpandableListAdapter? = null
-    private lateinit var fragmentManager: FragmentManager
     private val viewModel: VisitDashboardViewModel by viewModels()
 
     override fun onCreateView(
@@ -61,15 +57,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     ): View {
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        fragmentManager = requireActivity().supportFragmentManager
-        visitExpandableListAdapter =
-            VisitExpandableListAdapter(
-                requireContext(),
-                emptyList(),
-                fragmentManager
-            )
-        setupAdapter()
-        setupObserver()
+
+        setupExpandableListAdapter()
+        setupVisitObserver()
 
         return binding.root
     }
@@ -95,12 +85,18 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private fun fetchCurrentVisit() = viewModel.fetchCurrentVisit()
 
-    private fun setupAdapter() = with(binding) {
+    private fun setupExpandableListAdapter() = with(binding) {
+        visitExpandableListAdapter =
+            VisitExpandableListAdapter(
+                requireContext(),
+                emptyList(),
+                requireActivity().supportFragmentManager
+            )
         visitDashboardExpList.setAdapter(visitExpandableListAdapter)
         visitDashboardExpList.setGroupIndicator(null)
     }
 
-    private fun setupObserver() {
+    private fun setupVisitObserver() {
         viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
