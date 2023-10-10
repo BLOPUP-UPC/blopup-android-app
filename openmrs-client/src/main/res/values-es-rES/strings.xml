@@ -410,7 +410,7 @@
     <string name="bp_ht_stage_II_B_recommendation"><![CDATA[<b>Recomendaciones:</b> Control en 15 días y revisar o iniciar el tratamiento.]]></string>
     <string name="bp_ht_stage_II_C_recommendation"><![CDATA[<b>Recomendaciones:</b> Contacto con el doctor/a por posible hospitalización de urgencias.]]></string>
     <string name="bp_info">Información sobre tensión arterial</string>
-    <string name="call_doctor_banner_text">Paciente con hipertensión severa. Requiere hospitalización inmediata. Se ha notificado al Doctor Xavier de las Cuevas vía SMS al +34 629 43 35 39. Por favor, póngase en contacto lo antes posible.</string>
+    <string name="call_doctor_banner_text">Paciente con hipertensión severa. Puede requerir hospitalización inmediata. Se ha notificado al Doctor Xavier de las Cuevas vía SMS. Por favor, póngase en contacto con él lo antes posible.</string>
     <string name="call_button_text">LLAMAR</string>
     <string name="cancel_capitalized">CANCELAR</string>
     <string name="hypertension_types">Tipos de tensión arterial</string>
