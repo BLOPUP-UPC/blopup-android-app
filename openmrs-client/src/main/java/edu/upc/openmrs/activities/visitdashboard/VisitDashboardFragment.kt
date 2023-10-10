@@ -42,6 +42,7 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
+import edu.upc.sdk.utilities.ToastUtil.showLongToast
 
 @AndroidEntryPoint
 class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -96,7 +97,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
                     updateEncountersList(encounters)
-                    contactDoctorToggle.check({ showDoctorBannerIfNeeded(encounters) })
+                    contactDoctorToggle.check({ notifyDoctorIfNeeded(encounters) })
                 }
 
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
@@ -105,8 +106,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         }
 
     }
-
-    private fun showDoctorBannerIfNeeded(encounters: List<Encounter>) {
+    private fun notifyDoctorIfNeeded(encounters: List<Encounter>) {
         if (!requireArguments().getBoolean(IS_NEW_VITALS)) {
             return
         }
@@ -115,6 +115,15 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             hypertensionTypeFromEncounter(
                 encounters.sortedBy { it.encounterDatetime }.last()
             )
+
+        if (bloodPressureType == BloodPressureType.STAGE_II_B) {
+            showLongToast(
+                requireContext(),
+                ToastUtil.ToastType.WARNING,
+                R.string.sms_to_doctor
+            )
+        }
+
         if (bloodPressureType == BloodPressureType.STAGE_II_C) {
             binding.callToDoctorBanner.visibility = View.VISIBLE
         }
@@ -126,7 +135,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             visitEncounters.filter { possibleEncounterTypes.contains(it.encounterType?.display) }
 
         visitExpandableListAdapter?.updateList(displayableEncounters)
-        visitDashboardExpList.expandGroup(0);
+        visitDashboardExpList.expandGroup(0)
     }
 
     fun endVisit() {

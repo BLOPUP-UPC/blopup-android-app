@@ -418,4 +418,5 @@
     <string name="diastolic_110_plus"><![CDATA[o DIA ≥ 110]]></string>
     <string name="blood_pressure_label">Tensió arterial</string>
     <string name="vitals_successfully">Vitals completades</string>
+    <string name="sms_to_doctor">SMS enviat al Doctor Xavier de las Cuevas informant de la situació</string>
 </resources>
