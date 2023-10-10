@@ -410,9 +410,9 @@
     <string name="bp_ht_stage_II_B_recommendation"><![CDATA[<b>Recomendaciones:</b> Control en 15 días y revisar o iniciar el tratamiento.]]></string>
     <string name="bp_ht_stage_II_C_recommendation"><![CDATA[<b>Recomendaciones:</b> Contacto con el doctor/a por posible hospitalización de urgencias.]]></string>
     <string name="bp_info">Información sobre tensión arterial</string>
-    <string name="call_doctor_banner_text">Patient with severe hypertension. Requires immediate hospitalization. Dr Xavier Cuevas has been notified by SMS at +34 629 43 35 39. Please get in touch with them as soon as possible.</string>
-    <string name="call_button_text">CALL</string>
-    <string name="cancel_capitalized">CANCEL</string>
+    <string name="call_doctor_banner_text">Paciente con hipertensión severa. Requiere hospitalización inmediata. Se ha notificado al Doctor Xavier Cuevas vía SMS al +34 629 43 35 39. Por favor, póngase en contacto lo antes posible.</string>
+    <string name="call_button_text">LLAMAR</string>
+    <string name="cancel_capitalized">CANCELAR</string>
     <string name="hypertension_types">Tipos de tensión arterial</string>
     <string name="diastolic_80"><![CDATA[y DIA < 80]]></string>
     <string name="diastolic_80_plus">o DIA 80+</string>
