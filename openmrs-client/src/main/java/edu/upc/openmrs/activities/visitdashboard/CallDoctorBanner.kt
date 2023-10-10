@@ -26,13 +26,20 @@ class CallDoctorBanner : Fragment() {
 
     private fun setListeners() {
         callDoctorBinding.callButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_CALL)
-            val phoneNumber = BuildConfig.DOCTOR_PHONE_NUMBER
-            intent.data = Uri.parse("tel:$phoneNumber")
-            startActivity(intent)
-            callDoctorBinding.callDoctorBanner.makeGone()
+            callDoctor()
+            dismiss()
         }
-        callDoctorBinding.cancelButton.setOnClickListener { callDoctorBinding.callDoctorBanner.makeGone() }
+        callDoctorBinding.cancelButton.setOnClickListener { dismiss() }
+    }
+
+    private fun callDoctor() {
+        val intent = Intent(Intent.ACTION_CALL)
+        val phoneNumber = BuildConfig.DOCTOR_PHONE_NUMBER
+        intent.data = Uri.parse("tel:$phoneNumber")
+        startActivity(intent)
+    }
+
+    private fun dismiss() {
+        callDoctorBinding.callDoctorBanner.makeGone()
     }
 }
-

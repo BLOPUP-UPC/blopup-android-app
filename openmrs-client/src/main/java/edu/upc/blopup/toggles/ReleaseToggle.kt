@@ -4,6 +4,7 @@ import edu.upc.BuildConfig
 
 val hardcodeBluetoothDataToggle = ReleaseToggle(BuildConfig.HARDCODE_BLUETOOTH_DATA_TOGGLE)
 val showPatientConsentToggle = ReleaseToggle(BuildConfig.SHOW_PATIENT_CONSENT_TOGGLE)
+val contactDoctorToggle = ReleaseToggle(BuildConfig.CONTACT_DOCTOR_TOGGLE)
 
 typealias OnToggleEnabled = () -> Unit
 typealias OnToggleDisabled = () -> Unit

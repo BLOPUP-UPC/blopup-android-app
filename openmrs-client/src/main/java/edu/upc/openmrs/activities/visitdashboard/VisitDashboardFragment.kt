@@ -29,8 +29,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.BloodPressureType
 import edu.upc.blopup.bloodpressure.hypertensionTypeFromEncounter
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.contactDoctorToggle
+import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
+import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
@@ -71,7 +75,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun showDoctorBannerIfNeeded(encounters: List<Encounter>) {
-        if(!requireArguments().getBoolean(IS_NEW_VITALS)) { return }
+        if (!requireArguments().getBoolean(IS_NEW_VITALS)) {
+            return
+        }
 
         val bloodPressureType =
             hypertensionTypeFromEncounter(
@@ -104,7 +110,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
                     updateEncountersList(encounters)
-                    showDoctorBannerIfNeeded(encounters)
+                    contactDoctorToggle.check({ showDoctorBannerIfNeeded(encounters) })
                 }
 
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))

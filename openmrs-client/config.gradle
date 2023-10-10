@@ -10,7 +10,7 @@ android{
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "false"
             buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "true"
-            buildConfigField "Boolean", "BLOPUP_282_SHOW_ALGORITHM", "false"
+            buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "false"
         }
         staging {
             buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"1b7f89cb-197a-4922-bb0c-2b780b85a1ac\""
@@ -21,7 +21,7 @@ android{
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
             buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "true"
-            buildConfigField "Boolean", "BLOPUP_282_SHOW_ALGORITHM", "false"
+            buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "false"
         }
         debug {
             buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"6aba6deb-b260-4117-9a50-37c8e1a76a45\""
@@ -33,7 +33,7 @@ android{
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "true"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
             buildConfigField "Boolean", "SHOW_PATIENT_CONSENT_TOGGLE", "true"
-            buildConfigField "Boolean", "BLOPUP_282_SHOW_ALGORITHM", "true"
+            buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "true"
         }
     }
 }
