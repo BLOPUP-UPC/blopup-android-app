@@ -13,14 +13,19 @@
  */
 package edu.upc.openmrs.activities.visitdashboard
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.telephony.SmsManager
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -43,6 +48,8 @@ import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
+
+const val SEND_SMS_REQUEST = 1
 
 @AndroidEntryPoint
 class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -71,8 +78,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         viewModel.fetchCurrentVisit()
     }
 
@@ -117,15 +124,49 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             )
 
         if (bloodPressureType == BloodPressureType.STAGE_II_B) {
+            // We should show this only if the sms is really sent depending on permissions
             showLongToast(
                 requireContext(),
-                ToastUtil.ToastType.WARNING,
+                ToastUtil.ToastType.NOTICE,
                 R.string.sms_to_doctor
             )
+//            tryToSendSMS()
         }
 
         if (bloodPressureType == BloodPressureType.STAGE_II_C) {
             binding.callToDoctorBanner.visibility = View.VISIBLE
+//            tryToSendSMS()
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            sendSms()
+        } else {
+            // This is not working fine
+            showLongToast(
+                requireContext(),
+                ToastUtil.ToastType.ERROR,
+                "Sms permission denied" // TODO Fix this text
+            )
+        }
+    }
+
+    private fun sendSms() {
+        val sm: SmsManager = SmsManager.getDefault()
+//      TODO: Use this method in modern APIs  val sm: SmsManager = requireContext().getSystemService(SmsManager::class.java)
+        val message = "Mensaje enviado desde la app 223" // TODO: Use the doctor's message
+        val number = "666999000" // TODO: Use the doctor's number
+        sm.sendTextMessage(number, null, message, null, null)
+    }
+
+    private fun tryToSendSMS() {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.SEND_SMS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissionLauncher.launch(Manifest.permission.SEND_SMS)
         }
     }
 
