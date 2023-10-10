@@ -50,6 +50,12 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     private var visitExpandableListAdapter: VisitExpandableListAdapter? = null
     private val viewModel: VisitDashboardViewModel by viewModels()
 
+    companion object {
+        fun newInstance(visitId: Long, isNewVitals: Boolean) = VisitDashboardFragment().apply {
+            arguments = bundleOf(Pair(VISIT_ID, visitId), Pair(IS_NEW_VITALS, isNewVitals))
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,26 +70,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         return binding.root
     }
 
-    private fun showDoctorBannerIfNeeded(encounters: List<Encounter>) {
-        if (!requireArguments().getBoolean(IS_NEW_VITALS)) {
-            return
-        }
-
-        val bloodPressureType =
-            hypertensionTypeFromEncounter(
-                encounters.sortedBy { it.encounterDatetime }.last()
-            )
-        if (bloodPressureType == BloodPressureType.STAGE_II_C) {
-            binding.callToDoctorBanner.visibility = View.VISIBLE
-        }
-    }
-
     override fun onResume() {
         super.onResume()
-        fetchCurrentVisit()
+        viewModel.fetchCurrentVisit()
     }
-
-    private fun fetchCurrentVisit() = viewModel.fetchCurrentVisit()
 
     private fun setupExpandableListAdapter() = with(binding) {
         visitExpandableListAdapter =
@@ -114,6 +104,20 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             }
         }
 
+    }
+
+    private fun showDoctorBannerIfNeeded(encounters: List<Encounter>) {
+        if (!requireArguments().getBoolean(IS_NEW_VITALS)) {
+            return
+        }
+
+        val bloodPressureType =
+            hypertensionTypeFromEncounter(
+                encounters.sortedBy { it.encounterDatetime }.last()
+            )
+        if (bloodPressureType == BloodPressureType.STAGE_II_C) {
+            binding.callToDoctorBanner.visibility = View.VISIBLE
+        }
     }
 
     private fun updateEncountersList(visitEncounters: List<Encounter>) = with(binding) {
@@ -182,11 +186,5 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance(visitId: Long, isNewVitals: Boolean) = VisitDashboardFragment().apply {
-            arguments = bundleOf(Pair(VISIT_ID, visitId), Pair(IS_NEW_VITALS, isNewVitals))
-        }
     }
 }
