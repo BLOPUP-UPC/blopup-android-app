@@ -18,4 +18,4 @@ appId: edu.upc
 - tapOn:
     id: "edu.upc:id/buttonToSentVitals"
 - assertVisible:
-      id: "edu.upc:id/blood_pressure_title"
+      id: "edu.upc:id/blood_pressure_recommendation"
