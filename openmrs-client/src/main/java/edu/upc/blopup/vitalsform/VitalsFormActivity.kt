@@ -14,7 +14,6 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
@@ -137,7 +136,7 @@ class VitalsFormActivity : ACBaseActivity() {
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
-        askCallPermission()
+        askForPermissions()
     }
 
     override fun onResume() {
@@ -239,7 +238,7 @@ class VitalsFormActivity : ACBaseActivity() {
         mBinding.textInputHeight.hint = getString(R.string.height_value_label)
     }
 
-    private fun askCallPermission() {
+    private fun askForPermissions() {
         if (ActivityCompat.checkSelfPermission(baseContext, Manifest.permission.CALL_PHONE)
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 2)

@@ -24,7 +24,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import edu.upc.R
-import edu.upc.blopup.bloodpressure.hypertensionTypeFromEncounter
+import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.openmrs.application.OpenMRSInflater
 import edu.upc.openmrs.utilities.EncounterTranslationUtils.getTranslatedResourceId
 import edu.upc.sdk.library.models.Encounter
@@ -71,7 +71,7 @@ class VisitExpandableListAdapter(
                         contentLayout,
                         encounter.observations,
                         bmiData,
-                        hypertensionTypeFromEncounter(encounter),
+                        bloodPressureTypeFromEncounter(encounter),
                         fragmentManager
                     )
 

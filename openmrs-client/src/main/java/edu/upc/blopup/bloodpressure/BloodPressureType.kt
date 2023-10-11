@@ -52,7 +52,7 @@ enum class BloodPressureType {
     abstract fun relatedRecommendation(): Int
 }
 
-fun hypertensionTypeFromEncounter(encounter: Encounter): BloodPressureType? {
+fun bloodPressureTypeFromEncounter(encounter: Encounter): BloodPressureType? {
     val systolic =
         encounter.observations.find { it.display?.contains("Systolic") == true }?.displayValue?.toDouble()
     val diastolic =

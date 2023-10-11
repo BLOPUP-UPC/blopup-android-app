@@ -16,6 +16,7 @@ package edu.upc.openmrs.activities.visitdashboard
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.view.LayoutInflater
@@ -24,7 +25,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -32,7 +32,7 @@ import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.BloodPressureType
-import edu.upc.blopup.bloodpressure.hypertensionTypeFromEncounter
+import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
@@ -49,7 +49,6 @@ import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
 
-const val SEND_SMS_REQUEST = 1
 
 @AndroidEntryPoint
 class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -119,7 +118,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         }
 
         val bloodPressureType =
-            hypertensionTypeFromEncounter(
+            bloodPressureTypeFromEncounter(
                 encounters.sortedBy { it.encounterDatetime }.last()
             )
 
@@ -130,33 +129,21 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                 ToastUtil.ToastType.NOTICE,
                 R.string.sms_to_doctor
             )
-//            tryToSendSMS()
+            tryToSendSMS()
         }
 
         if (bloodPressureType == BloodPressureType.STAGE_II_C) {
             binding.callToDoctorBanner.visibility = View.VISIBLE
-//            tryToSendSMS()
-        }
-    }
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            sendSms()
-        } else {
-            // This is not working fine
-            showLongToast(
-                requireContext(),
-                ToastUtil.ToastType.ERROR,
-                "Sms permission denied" // TODO Fix this text
-            )
+            tryToSendSMS()
         }
     }
 
     private fun sendSms() {
-        val sm: SmsManager = SmsManager.getDefault()
-//      TODO: Use this method in modern APIs  val sm: SmsManager = requireContext().getSystemService(SmsManager::class.java)
+        val sm: SmsManager = if (Build.VERSION.SDK_INT >= 31) {
+            requireContext().getSystemService(SmsManager::class.java)
+        } else {
+            SmsManager.getDefault()
+        }
         val message = "Mensaje enviado desde la app 223" // TODO: Use the doctor's message
         val number = "666999000" // TODO: Use the doctor's number
         sm.sendTextMessage(number, null, message, null, null)
@@ -166,7 +153,14 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.SEND_SMS)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissionLauncher.launch(Manifest.permission.SEND_SMS)
+            // This is not working fine
+            showLongToast(
+                requireContext(),
+                ToastUtil.ToastType.ERROR,
+                "Sms permission denied" // TODO Fix this text
+            )
+        } else {
+            sendSms()
         }
     }
 
