@@ -157,7 +157,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             showLongToast(
                 requireContext(),
                 ToastUtil.ToastType.ERROR,
-                "Sms permission denied" // TODO Fix this text
+                getString(R.string.sms_permission_denied)
             )
         } else {
             sendSms()

@@ -616,4 +616,5 @@
     <string name="blood_pressure_label" tools:ignore="MissingTranslation" >Blood pressure</string>
     <string name="normal" translatable="false">Normal</string>
     <string name="sms_to_doctor" tools:ignore="MissingTranslation">SMS sent to the Doctor Xavier de las Cuevas notifying the situation</string>
+    <string name="sms_permission_denied" tools:ignore="MissingTranslation">Permission Denied: SMS permission is needed to send messages. Please grant the necessary permission in your device\'s settings.</string>
 </resources>

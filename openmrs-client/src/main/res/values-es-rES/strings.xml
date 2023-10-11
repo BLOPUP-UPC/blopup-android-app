@@ -422,4 +422,5 @@
     <string name="blood_pressure_label">Tensión arterial</string>
     <string name="vitals_successfully">Vitales completadas</string>
     <string name="sms_to_doctor">SMS enviado al Doctor Xavier de las Cuevas informando de la situación</string>
+    <string name="sms_permission_denied">Permiso denegado: es necesario el permiso de SMS para enviar mensajes. Por favor, otorgue el permiso necesario en la configuración de su dispositivo.</string>
 </resources>
