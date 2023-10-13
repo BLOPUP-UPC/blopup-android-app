@@ -115,20 +115,30 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             return
         }
 
-        viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureType ->
-            if (bloodPressureType == BloodPressureType.STAGE_II_B) {
+        viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
+            if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
                 // We should show this only if the sms is really sent depending on permissions
                 showLongToast(
                     requireContext(),
                     ToastUtil.ToastType.NOTICE,
                     R.string.sms_to_doctor
                 )
-                tryToSendSMS(patientId, "Nivel II B")
+                tryToSendSMS(patientId,
+                    getString(
+                        R.string.stage_II_b_sms,
+                        bloodPressureResult.systolicValue.toString(),
+                        bloodPressureResult.diastolicValue.toString()
+                    ))
             }
 
-            if (bloodPressureType == BloodPressureType.STAGE_II_C) {
+            if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
                 binding.callToDoctorBanner.visibility = View.VISIBLE
-                tryToSendSMS(patientId, "Nivel II C")
+                tryToSendSMS(patientId,
+                    getString(
+                        R.string.stage_II_c_sms,
+                        bloodPressureResult.systolicValue.toString(),
+                        bloodPressureResult.diastolicValue.toString()
+                    ))
             }
         }
 
@@ -154,8 +164,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         } else {
             SmsManager.getDefault()
         }
-        val message = getString(R.string.sms_message, patientId, bloodPressureType) // TODO: 1) translate to catalan and should be always in catalan. 2) Add d n s value, 3) add mobile to call.
-        val number = "666999000" // TODO: Use the doctor's number
+        val message = getString(R.string.sms_message, patientId, bloodPressureType)
+
+        val number = "666999002" // TODO: Use the doctor's number
         sm.sendTextMessage(number, null, message, null, null)
     }
 

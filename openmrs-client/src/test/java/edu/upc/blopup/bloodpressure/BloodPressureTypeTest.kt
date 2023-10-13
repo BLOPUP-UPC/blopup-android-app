@@ -22,7 +22,7 @@ class BloodPressureTypeTest {
         )
         assertEquals(
             BloodPressureType.NORMAL,
-            bloodPressureTypeFromEncounter(encounter)
+            bloodPressureTypeFromEncounter(encounter)?.bloodPressureType
         )
     }
 
@@ -41,7 +41,7 @@ class BloodPressureTypeTest {
         )
         assertEquals(
             BloodPressureType.STAGE_I,
-            bloodPressureTypeFromEncounter(encounter)
+            bloodPressureTypeFromEncounter(encounter)?.bloodPressureType
         )
     }
 
@@ -60,7 +60,7 @@ class BloodPressureTypeTest {
         )
         assertEquals(
             BloodPressureType.STAGE_II_A,
-            bloodPressureTypeFromEncounter(encounter)
+            bloodPressureTypeFromEncounter(encounter)?.bloodPressureType
         )
     }
 
@@ -79,7 +79,7 @@ class BloodPressureTypeTest {
         )
         assertEquals(
             BloodPressureType.STAGE_II_B,
-            bloodPressureTypeFromEncounter(encounter)
+            bloodPressureTypeFromEncounter(encounter)?.bloodPressureType
         )
     }
 
@@ -98,7 +98,7 @@ class BloodPressureTypeTest {
         )
         assertEquals(
             BloodPressureType.STAGE_II_C,
-            bloodPressureTypeFromEncounter(encounter)
+            bloodPressureTypeFromEncounter(encounter)?.bloodPressureType
         )
     }
 }

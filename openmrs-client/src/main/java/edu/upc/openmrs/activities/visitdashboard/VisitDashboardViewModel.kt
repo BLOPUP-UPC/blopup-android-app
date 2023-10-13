@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.blopup.bloodpressure.BloodPressureType
+import edu.upc.blopup.bloodpressure.BloodPressureResult
 import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.VisitRepository
@@ -24,8 +24,8 @@ class VisitDashboardViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Visit>() {
 
-    private val _bloodPressureType: MutableLiveData<BloodPressureType?> = MutableLiveData()
-    val bloodPressureType: LiveData<BloodPressureType?> get() = _bloodPressureType
+    private val _bloodPressureType: MutableLiveData<BloodPressureResult?> = MutableLiveData()
+    val bloodPressureType: LiveData<BloodPressureResult?> get() = _bloodPressureType
 
     private val visitId: Long = savedStateHandle[VISIT_ID]!!
     val visit: Visit?

@@ -71,7 +71,7 @@ class VisitExpandableListAdapter(
                         contentLayout,
                         encounter.observations,
                         bmiData,
-                        bloodPressureTypeFromEncounter(encounter),
+                        bloodPressureTypeFromEncounter(encounter)?.bloodPressureType,
                         fragmentManager
                     )
 
