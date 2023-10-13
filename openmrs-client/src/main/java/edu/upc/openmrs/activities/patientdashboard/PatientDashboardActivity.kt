@@ -15,8 +15,6 @@ package edu.upc.openmrs.activities.patientdashboard
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -186,20 +184,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     private fun setUpStartVisitFAB() {
         binding.actionsFab.startVisitFab.isVisible = true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.patient_details_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionSynchronize -> syncPatient()
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
     }
 
     override fun onDestroy() {

@@ -20,13 +20,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,8 +32,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,7 +56,6 @@ import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.ToastUtil;
 import rx.Observable;
 import rx.Observer;
@@ -75,8 +69,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     protected FragmentManager mFragmentManager;
     protected AuthorizationManager mAuthorizationManager;
     protected CustomFragmentDialog mCustomFragmentDialog;
-    protected Snackbar mSnackbar;
-    private MenuItem mSyncbutton;
     private List<String> locationList;
     private IntentFilter mIntentFilter;
     private AlertDialog alertDialog;
@@ -137,24 +129,11 @@ public abstract class ACBaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
-        mSyncbutton = menu.findItem(R.id.syncbutton);
         MenuItem logoutMenuItem = menu.findItem(R.id.actionLogout);
         if (logoutMenuItem != null) {
             logoutMenuItem.setTitle(getString(R.string.action_logout) + " " + OpenmrsAndroid.getUsername());
         }
-        if (mSyncbutton != null) {
-            final Boolean syncState = NetworkUtils.isOnline();
-            setSyncButtonState(syncState);
-        }
         return true;
-    }
-
-    private void setSyncButtonState(boolean syncState) {
-        if (syncState) {
-            mSyncbutton.setIcon(R.drawable.ic_sync_on);
-        } else {
-            mSyncbutton.setIcon(R.drawable.ic_sync_off);
-        }
     }
 
     @Override
@@ -186,27 +165,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
                 return true;
             case R.id.actionLogout:
                 this.showLogoutDialog();
-                return true;
-            case R.id.syncbutton:
-                boolean syncState = OpenmrsAndroid.getSyncState();
-                if (syncState) {
-                    OpenmrsAndroid.setSyncState(false);
-                    setSyncButtonState(false);
-                    showNoInternetConnectionSnackbar();
-                    ToastUtil.showShortToast(getApplicationContext(), ToastUtil.ToastType.NOTICE, R.string.disconn_server);
-                } else if (NetworkUtils.hasNetwork()) {
-                    OpenmrsAndroid.setSyncState(true);
-                    setSyncButtonState(true);
-                    Intent intent = new Intent("edu.upc.openmrs.intent.action.SYNC_PATIENTS");
-                    getApplicationContext().sendBroadcast(intent);
-                    ToastUtil.showShortToast(getApplicationContext(), ToastUtil.ToastType.NOTICE, R.string.reconn_server);
-                    if (mSnackbar != null) {
-                        mSnackbar.dismiss();
-                    }
-                    ToastUtil.showShortToast(getApplicationContext(), ToastUtil.ToastType.SUCCESS, R.string.connected_to_server_message);
-                } else {
-                    showNoInternetConnectionSnackbar();
-                }
                 return true;
             case R.id.actionLocation:
                 if (!locationList.isEmpty()) {
@@ -242,15 +200,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
                 }
             }
         };
-    }
-
-    public void showNoInternetConnectionSnackbar() {
-        mSnackbar = Snackbar.make(findViewById(android.R.id.content),
-                getString(R.string.no_internet_connection_message), Snackbar.LENGTH_INDEFINITE);
-        View sbView = mSnackbar.getView();
-        TextView textView = sbView.findViewById(com.google.android.material.R.id.snackbar_text);
-        textView.setTextColor(Color.WHITE);
-        mSnackbar.show();
     }
 
     public void logout() {

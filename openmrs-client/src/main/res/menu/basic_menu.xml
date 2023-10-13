@@ -18,12 +18,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="edu.upc.openmrs.activities.ACBaseActivity">
     <item
-        android:id="@+id/syncbutton"
-        android:icon="@drawable/ic_sync_off"
-        android:title="@string/sync"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/actionLocation"
         android:icon="@drawable/ic_location"
         android:title="@string/action_location"

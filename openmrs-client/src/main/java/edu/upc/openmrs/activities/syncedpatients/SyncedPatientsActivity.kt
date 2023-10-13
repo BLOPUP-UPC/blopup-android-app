@@ -56,7 +56,6 @@ class SyncedPatientsActivity : ACBaseActivity() {
         super.onOptionsItemSelected(item)
 
         when (item.itemId) {
-            R.id.syncbutton -> enableAddPatient(OpenmrsAndroid.getSyncState())
 //            R.id.actionAddPatients -> {
 //                val intent = Intent(this, LastViewedPatientsActivity::class.java)
 //                startActivity(intent)
