@@ -617,4 +617,5 @@
     <string name="normal" translatable="false">Normal</string>
     <string name="sms_to_doctor" tools:ignore="MissingTranslation">SMS sent to the Doctor Xavier de las Cuevas notifying the situation</string>
     <string name="sms_permission_denied" tools:ignore="MissingTranslation">Permission Denied: SMS permission is needed to send messages. Please grant the necessary permission in your device\'s settings.</string>
+    <string name="sms_message" translatable="false">"El paciente con ID %1$s, presenta hipertensión %2$s. Para ponerse en contacto con el hospital Santa Ana, llame al "</string>
 </resources>

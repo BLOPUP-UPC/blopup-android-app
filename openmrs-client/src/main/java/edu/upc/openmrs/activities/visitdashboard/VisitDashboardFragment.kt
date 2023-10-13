@@ -101,7 +101,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
                     updateEncountersList(encounters)
-                    contactDoctorToggle.check({ notifyDoctorIfNeeded() })
+                    contactDoctorToggle.check({ notifyDoctorIfNeeded(patient.identifier.identifier)})
                 }
 
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
@@ -110,7 +110,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         }
     }
 
-    private fun notifyDoctorIfNeeded(){
+    private fun notifyDoctorIfNeeded(patientId: String?) {
         if (!requireArguments().getBoolean(IS_NEW_VITALS)) {
             return
         }
@@ -123,18 +123,18 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     ToastUtil.ToastType.NOTICE,
                     R.string.sms_to_doctor
                 )
-                tryToSendSMS()
+                tryToSendSMS(patientId, "Nivel II B")
             }
 
             if (bloodPressureType == BloodPressureType.STAGE_II_C) {
                 binding.callToDoctorBanner.visibility = View.VISIBLE
-                tryToSendSMS()
+                tryToSendSMS(patientId, "Nivel II C")
             }
         }
 
     }
 
-    private fun tryToSendSMS() {
+    private fun tryToSendSMS(patientId: String?, bloodPressureType: String) {
         if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.SEND_SMS)
             != PackageManager.PERMISSION_GRANTED
         ) {
@@ -144,17 +144,17 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                 getString(R.string.sms_permission_denied)
             )
         } else {
-            sendSms()
+            sendSms(patientId, bloodPressureType)
         }
     }
 
-    private fun sendSms() {
+    private fun sendSms(patientId: String?, bloodPressureType: String) {
         val sm: SmsManager = if (Build.VERSION.SDK_INT >= 31) {
             requireContext().getSystemService(SmsManager::class.java)
         } else {
             SmsManager.getDefault()
         }
-        val message = "Mensaje enviado desde la app 223" // TODO: Use the doctor's message
+        val message = getString(R.string.sms_message, patientId, bloodPressureType) // TODO: 1) translate to catalan and should be always in catalan. 2) Add d n s value, 3) add mobile to call.
         val number = "666999000" // TODO: Use the doctor's number
         sm.sendTextMessage(number, null, message, null, null)
     }
