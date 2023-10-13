@@ -32,7 +32,6 @@ import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.BloodPressureType
-import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
@@ -44,7 +43,6 @@ import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
-import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
@@ -103,38 +101,50 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
                     updateEncountersList(encounters)
-                    contactDoctorToggle.check({ notifyDoctorIfNeeded(encounters) })
+                    contactDoctorToggle.check({ notifyDoctorIfNeeded() })
                 }
 
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
                 else -> throw IllegalStateException()
             }
         }
-
     }
-    private fun notifyDoctorIfNeeded(encounters: List<Encounter>) {
+
+    private fun notifyDoctorIfNeeded(){
         if (!requireArguments().getBoolean(IS_NEW_VITALS)) {
             return
         }
 
-        val bloodPressureType =
-            bloodPressureTypeFromEncounter(
-                encounters.sortedBy { it.encounterDatetime }.last()
-            )
+        viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureType ->
+            if (bloodPressureType == BloodPressureType.STAGE_II_B) {
+                // We should show this only if the sms is really sent depending on permissions
+                showLongToast(
+                    requireContext(),
+                    ToastUtil.ToastType.NOTICE,
+                    R.string.sms_to_doctor
+                )
+                tryToSendSMS()
+            }
 
-        if (bloodPressureType == BloodPressureType.STAGE_II_B) {
-            // We should show this only if the sms is really sent depending on permissions
-            showLongToast(
-                requireContext(),
-                ToastUtil.ToastType.NOTICE,
-                R.string.sms_to_doctor
-            )
-            tryToSendSMS()
+            if (bloodPressureType == BloodPressureType.STAGE_II_C) {
+                binding.callToDoctorBanner.visibility = View.VISIBLE
+                tryToSendSMS()
+            }
         }
 
-        if (bloodPressureType == BloodPressureType.STAGE_II_C) {
-            binding.callToDoctorBanner.visibility = View.VISIBLE
-            tryToSendSMS()
+    }
+
+    private fun tryToSendSMS() {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.SEND_SMS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            showLongToast(
+                requireContext(),
+                ToastUtil.ToastType.ERROR,
+                getString(R.string.sms_permission_denied)
+            )
+        } else {
+            sendSms()
         }
     }
 
@@ -149,27 +159,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         sm.sendTextMessage(number, null, message, null, null)
     }
 
-    private fun tryToSendSMS() {
-        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.SEND_SMS)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            // This is not working fine
-            showLongToast(
-                requireContext(),
-                ToastUtil.ToastType.ERROR,
-                getString(R.string.sms_permission_denied)
-            )
-        } else {
-            sendSms()
-        }
-    }
-
     private fun updateEncountersList(visitEncounters: List<Encounter>) = with(binding) {
-        val possibleEncounterTypes = ENCOUNTER_TYPES_DISPLAYS.toHashSet()
-        val displayableEncounters =
-            visitEncounters.filter { possibleEncounterTypes.contains(it.encounterType?.display) }
-
-        visitExpandableListAdapter?.updateList(displayableEncounters)
+        visitExpandableListAdapter?.updateList(visitEncounters)
         visitDashboardExpList.expandGroup(0)
     }
 
