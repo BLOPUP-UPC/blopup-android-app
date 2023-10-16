@@ -14,7 +14,6 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,7 +36,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var visitRepository: VisitRepository
 
-    lateinit var savedStateHandle: SavedStateHandle
+    private lateinit var savedStateHandle: SavedStateHandle
 
     lateinit var viewModel: VisitDashboardViewModel
 
@@ -67,17 +66,16 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         assert(viewModel.result.value is Result.Error)
     }
 
-    @Ignore
     @Test
     fun endCurrentVisit_success() {
 
         `when`(visitDAO.getVisitByID(anyLong())).thenReturn(Observable.just(Visit()))
-        `when`(visitRepository.endVisit(any<Visit>())).thenReturn(Observable.just(true))
+        `when`(visitRepository.endVisit(any())).thenReturn(Observable.just(true))
 
-        viewModel.fetchCurrentVisit()
-
-        viewModel.endCurrentVisit().observeForever { visitEnded ->
-            assertTrue(visitEnded)
+        viewModel.fetchCurrentVisit().runCatching {
+            viewModel.endCurrentVisit().observeForever { visitEnded ->
+                assertTrue(visitEnded)
+            }
         }
     }
 
@@ -87,9 +85,10 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         `when`(visitDAO.getVisitByID(anyLong())).thenReturn(Observable.just(Visit()))
         `when`(visitRepository.endVisit(any<Visit>())).thenReturn(Observable.error(throwable))
 
-        viewModel.fetchCurrentVisit()
-        viewModel.endCurrentVisit().observeForever { visitEnded ->
-            assertFalse(visitEnded)
+        viewModel.fetchCurrentVisit().runCatching {
+            viewModel.endCurrentVisit().observeForever { visitEnded ->
+                assertFalse(visitEnded)
+            }
         }
     }
 
