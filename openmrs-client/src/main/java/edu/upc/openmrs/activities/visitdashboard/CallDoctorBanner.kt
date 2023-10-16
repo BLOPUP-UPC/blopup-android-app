@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import edu.upc.BuildConfig
+import edu.upc.Secrets
 import edu.upc.databinding.CallDoctorBannerBinding
+import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.makeGone
 
 class CallDoctorBanner : Fragment() {
@@ -34,7 +36,7 @@ class CallDoctorBanner : Fragment() {
 
     private fun callDoctor() {
         val intent = Intent(Intent.ACTION_CALL)
-        val phoneNumber = BuildConfig.DOCTOR_PHONE_NUMBER
+        val phoneNumber = SecretsUtils.getDoctorPhoneNumber()
         intent.data = Uri.parse("tel:$phoneNumber")
         startActivity(intent)
     }

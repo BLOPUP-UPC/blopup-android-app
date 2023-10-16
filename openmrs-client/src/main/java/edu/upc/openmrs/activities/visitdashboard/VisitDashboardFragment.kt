@@ -34,11 +34,13 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
+import edu.upc.Secrets
 import edu.upc.blopup.bloodpressure.BloodPressureType
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
+import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
@@ -185,9 +187,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             SmsManager.getDefault()
         }
         val message = getString(R.string.sms_message, patientId, bloodPressureType, phoneNumber?:"")
-
         val dividedMessage = sm.divideMessage(message)
-        sm.sendMultipartTextMessage(BuildConfig.DOCTOR_PHONE_NUMBER, null, dividedMessage, null, null)
+        val phoneNumber = SecretsUtils.getDoctorPhoneNumber()
+        sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)
     }
 
     private fun updateEncountersList(visitEncounters: List<Encounter>) = with(binding) {
