@@ -28,7 +28,6 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.BloodPressureType
@@ -117,7 +116,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
 
         viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
             if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
-                // We should show this only if the sms is really sent depending on permissions
                 showLongToast(
                     requireContext(),
                     ToastUtil.ToastType.NOTICE,
@@ -167,7 +165,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         val message = getString(R.string.sms_message, patientId, bloodPressureType)
 
         val number = "666999002" // TODO: Use the doctor's number
-        sm.sendTextMessage(number, null, message, null, null)
+        val dividedMessage = sm.divideMessage(message)
+        sm.sendMultipartTextMessage(number, null, dividedMessage, null, null)
     }
 
     private fun updateEncountersList(visitEncounters: List<Encounter>) = with(binding) {
@@ -180,10 +179,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             ToastUtil.error(getString(R.string.visit_ending_not_online_error))
             return
         }
-        viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner, Observer { ended ->
+        viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { ended ->
             if (ended) requireActivity().finish()
             else ToastUtil.error(getString(R.string.visit_ending_error))
-        })
+        }
     }
 
     private fun setActionBarTitle(name: String) {
