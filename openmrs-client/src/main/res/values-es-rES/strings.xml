@@ -30,7 +30,6 @@
     <string name="non_binary">No binario</string>
     <string name="dob_hint">Fecha de Nacimiento (dd/MM/yyyy)</string>
     <string name="estyr">Años estimados</string>
-    <string name="estmonth">Meses estimados</string>
     <string name="age_out_of_bounds_message">La edad del paciente debe estar entre los 0 y los %d</string>
     <string name="register_patient_error">Paciente no registrado debido a un error del servidor</string>
     <string name="update_patient_success">El paciente %s se ha actualizado</string>

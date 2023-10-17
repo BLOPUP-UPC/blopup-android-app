@@ -162,8 +162,8 @@ object DateUtils {
      * @param monthDiff difference in months
      * @return the date as a DateTime
      */
-    fun getDateTimeFromDifference(yearDiff: Int, monthDiff: Int): DateTime {
-        return LocalDate().toDateTimeAtStartOfDay().minusYears(yearDiff).minusMonths(monthDiff)
+    fun getDateTimeFromDifference(yearDiff: Int): DateTime {
+        return LocalDate().toDateTimeAtStartOfDay().minusYears(yearDiff)
     }
 
     /**

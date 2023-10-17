@@ -321,7 +321,7 @@ class AddEditPatientFragment : BaseFragment() {
 
         /* Birth date */
         if (isEmpty(dobEditText)) {
-            if (isBlank(getInput(estimatedYear)) && isBlank(getInput(estimatedMonth))) {
+            if (isBlank(getInput(estimatedYear))) {
                 val dateTimeFormatter = DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT)
                 val minimumDate = DateTime.now().minusYears(
                     ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
@@ -335,9 +335,7 @@ class AddEditPatientFragment : BaseFragment() {
                 viewModel.patient.birthdateEstimated = true
                 val yearDiff =
                     if (isEmpty(estimatedYear)) 0 else estimatedYear.text.toString().toInt()
-                val monthDiff =
-                    if (isEmpty(estimatedMonth)) 0 else estimatedMonth.text.toString().toInt()
-                viewModel.dateHolder = getDateTimeFromDifference(yearDiff, monthDiff)
+                viewModel.dateHolder = getDateTimeFromDifference(yearDiff)
                 viewModel.patient.birthdate =
                     DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
                         .print(viewModel.dateHolder)
@@ -438,7 +436,7 @@ class AddEditPatientFragment : BaseFragment() {
 
         gender.setOnCheckedChangeListener { _, _ -> gendererror.makeGone() }
 
-        DateOfBirthTextWatcher(dobEditText, estimatedMonth, estimatedYear).let {
+        DateOfBirthTextWatcher(dobEditText, estimatedYear).let {
             dobEditText.addTextChangedListener(it)
         }
 
@@ -455,7 +453,6 @@ class AddEditPatientFragment : BaseFragment() {
                 cMonth = monthOfYear - 1
                 cDay = dayOfMonth
             }
-            estimatedMonth.text.clear()
             estimatedYear.text.clear()
 
             val dateSetListener =
@@ -476,8 +473,7 @@ class AddEditPatientFragment : BaseFragment() {
             }.show()
         }
 
-        PatientBirthdateValidatorWatcher(dobEditText, estimatedMonth, estimatedYear).let {
-            estimatedMonth.addTextChangedListener(it)
+        PatientBirthdateValidatorWatcher(dobEditText, estimatedYear).let {
             estimatedYear.addTextChangedListener(it)
         }
     }
@@ -593,7 +589,6 @@ class AddEditPatientFragment : BaseFragment() {
         surname.setText("")
         dobEditText.setText("")
         estimatedYear.setText("")
-        estimatedMonth.setText("")
         gender.clearCheck()
         dobError.text = ""
         gendererror.makeGone()
@@ -617,7 +612,7 @@ class AddEditPatientFragment : BaseFragment() {
 
     fun isAnyFieldNotEmpty(): Boolean = with(binding) {
         return !isEmpty(firstName) || !isEmpty(surname) ||
-                !isEmpty(dobEditText) || !isEmpty(estimatedYear) || !isEmpty(estimatedMonth) ||
+                !isEmpty(dobEditText) || !isEmpty(estimatedYear) ||
                 isLegalConsent() || isNationality()
     }
 

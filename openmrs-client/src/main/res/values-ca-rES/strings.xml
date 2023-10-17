@@ -38,7 +38,6 @@
     <string name="non_binary">No binari</string>
     <string name="dob_hint">Data de Naixement (dd/MM/yyyy)</string>
     <string name="estyr">Anys aproximats</string>
-    <string name="estmonth">Mesos aproximats</string>
     <string name="age_out_of_bounds_message">L\'edat del pacient ha d\'estar entre els 0 i els %d</string>
     <string name="register_patient_error">Pacient no registrat degut a un error amb el servidor</string>
     <string name="update_patient_success">El pacient %s s\'ha actualitzat</string>

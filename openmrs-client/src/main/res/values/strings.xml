@@ -64,7 +64,6 @@
     <string name="non_binary" tools:ignore="MissingTranslation">Non Binary</string>
     <string name="dob_hint" tools:ignore="MissingTranslation">Date of Birth (dd/MM/yyyy)</string>
     <string name="estyr" tools:ignore="MissingTranslation">Estimated Years</string>
-    <string name="estmonth" tools:ignore="MissingTranslation">Estimated Months</string>
     <string name="age_out_of_bounds_message" tools:ignore="MissingTranslation">Patient\'s age must be between 0 and %d</string>
     <string name="register_patient_error" tools:ignore="MissingTranslation">Patient cannot be registered due to server error</string>
     <string name="update_patient_success" tools:ignore="MissingTranslation">Patient %s updated</string>

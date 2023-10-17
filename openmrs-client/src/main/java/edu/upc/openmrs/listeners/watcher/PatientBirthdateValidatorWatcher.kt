@@ -16,12 +16,11 @@ package edu.upc.openmrs.listeners.watcher
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import edu.upc.R
 import edu.upc.sdk.utilities.ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
 import edu.upc.sdk.utilities.ToastUtil
-import edu.upc.R
 
 class PatientBirthdateValidatorWatcher(private val edDob: EditText,
-                                       private val edMonth: EditText,
                                        private val edYear: EditText) : TextWatcher {
 
     override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
@@ -35,7 +34,7 @@ class PatientBirthdateValidatorWatcher(private val edDob: EditText,
     override fun afterTextChanged(editable: Editable) {
         if (editable.isEmpty()) return
 
-        // Years or months estimation is being used instead of full date of birth
+        // Years estimation is being used instead of full date of birth
         edDob.text.clear()
 
         if (editable.isNotEmpty() && editable.toString().toInt() > MAX_PATIENT_AGE) {
@@ -45,17 +44,7 @@ class PatientBirthdateValidatorWatcher(private val edDob: EditText,
                             MAX_PATIENT_AGE
                     )
             )
-            edMonth.text.clear()
             edYear.text.clear()
-        }
-
-        // Convert estimated number of months (if >= 12) into years
-        if (edMonth.text.isNotEmpty()) {
-            val monthValue = edMonth.text.toString().toInt()
-            if (monthValue >= 12) {
-                edMonth.setText((monthValue % 12).toString())
-                edYear.setText((monthValue / 12).toString())
-            }
         }
     }
 
