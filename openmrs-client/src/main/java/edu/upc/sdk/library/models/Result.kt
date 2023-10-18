@@ -12,17 +12,12 @@ enum class OperationType {
     GeneralOperation,
     PatientRegistering,
     PatientMerging,
-    ActiveVisitsFetching,
-    ActiveVisitsSearching,
     PatientFetching,
     PatientSearching,
     PatientSynchronizing,
     PatientVisitsFetching,
     PatientVisitStarting,
-    PatientVitalsFetching,
-    PatientDeleting,
     LastViewedPatientsFetching,
-    EmailSentError
 }
 
 enum class ResultType {

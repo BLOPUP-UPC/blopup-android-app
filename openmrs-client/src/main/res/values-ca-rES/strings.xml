@@ -39,7 +39,7 @@
     <string name="dob_hint">Data de Naixement (dd/MM/yyyy)</string>
     <string name="estyr">Anys aproximats</string>
     <string name="age_out_of_bounds_message">L\'edat del pacient ha d\'estar entre els 0 i els %d</string>
-    <string name="register_patient_error">Pacient no registrat degut a un error amb el servidor</string>
+    <string name="register_patient_error">Alguna cosa va fallar del nostre costat i el pacient no ha estat creat. Si us plau, torneu-ho a provar.</string>
     <string name="update_patient_success">El pacient %s s\'ha actualitzat</string>
     <string name="update_patient_error">El pacient %s no es pot actualitzar per un error al servidor</string>
     <string name="offline_mode_unsupported_in_first_login">El mode offline no està disponible durant el primer inici de sessió. Activa el mode online i prova-ho de nou.</string>

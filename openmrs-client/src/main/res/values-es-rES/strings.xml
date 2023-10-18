@@ -31,7 +31,7 @@
     <string name="dob_hint">Fecha de Nacimiento (dd/MM/yyyy)</string>
     <string name="estyr">Años estimados</string>
     <string name="age_out_of_bounds_message">La edad del paciente debe estar entre los 0 y los %d</string>
-    <string name="register_patient_error">Paciente no registrado debido a un error del servidor</string>
+    <string name="register_patient_error">Algo falló de nuestro lado y el paciente no ha sido creado. Por favor, intentelo de nuevo.</string>
     <string name="update_patient_success">El paciente %s se ha actualizado</string>
     <string name="update_patient_error">El paciente %s no se ha actualizado por un error en el servidor</string>
     <string name="offline_mode_unsupported_in_first_login">El modo sin conexión no está disponible durante el primer inicio de sesión. Activa el modo con conexión e intenta nuevamente.</string>
