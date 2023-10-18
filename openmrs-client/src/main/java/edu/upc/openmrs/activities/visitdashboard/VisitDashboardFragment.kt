@@ -19,9 +19,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsManager
-import android.telephony.SubscriptionManager
-import android.telephony.SubscriptionManager.DEFAULT_SUBSCRIPTION_ID
-import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -32,9 +29,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.BuildConfig
 import edu.upc.R
-import edu.upc.Secrets
 import edu.upc.blopup.bloodpressure.BloodPressureType
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
@@ -127,26 +122,22 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     ToastUtil.ToastType.NOTICE,
                     R.string.sms_to_doctor
                 )
-                tryToSendSMS(
-                    patientId,
+                tryToSendSMS(patientId,
                     getString(
                         R.string.stage_II_b_sms,
                         bloodPressureResult.systolicValue.toString(),
                         bloodPressureResult.diastolicValue.toString()
-                    )
-                )
+                    ))
             }
 
             if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
                 binding.callToDoctorBanner.visibility = View.VISIBLE
-                tryToSendSMS(
-                    patientId,
+                tryToSendSMS(patientId,
                     getString(
                         R.string.stage_II_c_sms,
                         bloodPressureResult.systolicValue.toString(),
                         bloodPressureResult.diastolicValue.toString()
-                    )
-                )
+                    ))
             }
         }
 
@@ -162,31 +153,17 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                 getString(R.string.sms_permission_denied)
             )
         } else {
-            sendSms(patientId, bloodPressureType, getPhoneNumber())
+            sendSms(patientId, bloodPressureType)
         }
     }
 
-    private fun getPhoneNumber(): String? {
-        return if (ActivityCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.READ_PHONE_STATE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            null
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireContext().getSystemService(SubscriptionManager::class.java).getPhoneNumber(DEFAULT_SUBSCRIPTION_ID)
-        } else {
-            requireContext().getSystemService(TelephonyManager::class.java).line1Number
-        }
-    }
-
-    private fun sendSms(patientId: String?, bloodPressureType: String, phoneNumber: String?) {
+    private fun sendSms(patientId: String?, bloodPressureType: String) {
         val sm: SmsManager = if (Build.VERSION.SDK_INT >= 31) {
             requireContext().getSystemService(SmsManager::class.java)
         } else {
             SmsManager.getDefault()
         }
-        val message = getString(R.string.sms_message, patientId, bloodPressureType, phoneNumber?:"")
+        val message = getString(R.string.sms_message, patientId, bloodPressureType)
         val dividedMessage = sm.divideMessage(message)
         val phoneNumber = SecretsUtils.getDoctorPhoneNumber()
         sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)

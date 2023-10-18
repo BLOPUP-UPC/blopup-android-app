@@ -244,11 +244,9 @@ class VitalsFormActivity : ACBaseActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 2)
         }
 
-        if (ActivityCompat.checkSelfPermission(baseContext, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(baseContext, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(
-                Manifest.permission.SEND_SMS,
-                Manifest.permission.READ_PHONE_NUMBERS), 3)
+        if (ActivityCompat.checkSelfPermission(baseContext, Manifest.permission.SEND_SMS)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), 3)
         }
     }
 }
