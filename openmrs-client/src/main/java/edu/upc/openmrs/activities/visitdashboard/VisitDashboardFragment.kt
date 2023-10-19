@@ -186,7 +186,11 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun setActionBarTitle(name: String) {
-        (activity as VisitDashboardActivity).supportActionBar!!.title = name
+        (activity as VisitDashboardActivity).supportActionBar!!.apply {
+            elevation = 0f
+            title = name
+            setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     private fun startVitalsMeasurement() {
