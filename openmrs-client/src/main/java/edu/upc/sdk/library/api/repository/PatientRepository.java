@@ -132,14 +132,10 @@ public class PatientRepository extends BaseRepository {
      */
     public Observable<Patient> registerPatient(final Patient patient) {
         return AppDatabaseHelper.createObservableIO(() -> {
-            if (NetworkUtils.isOnline()) {
+                syncPatient(patient).single().toBlocking().first();
                 Long id = patientDAO.savePatient(patient).single().toBlocking().first();
                 patient.setId(id);
-                syncPatient(patient).single().toBlocking().first();
                 return patient;
-            } else {
-                throw new Exception("Network is offline. Patient registration failed.");
-            }
         });
     }
 
