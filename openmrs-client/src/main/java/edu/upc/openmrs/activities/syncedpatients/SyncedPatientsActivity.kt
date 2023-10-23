@@ -52,17 +52,6 @@ class SyncedPatientsActivity : ACBaseActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        super.onOptionsItemSelected(item)
-
-        when (item.itemId) {
-            android.R.id.home -> onBackPressed()
-            else -> {
-            }
-        }
-        return true
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.find_locally_and_add_patients_menu, menu)
