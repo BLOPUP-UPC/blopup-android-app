@@ -18,7 +18,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
@@ -78,7 +77,7 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
         viewModel.fetchSyncedPatients()
     }
 
-    fun fetchSyncedPatients(query: String) {
+    suspend fun fetchSyncedPatients(query: String) {
         //search remote
         viewModel.fetchSyncedPatients(query)
     }

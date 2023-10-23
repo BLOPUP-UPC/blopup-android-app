@@ -259,6 +259,10 @@ dependencies {
     // Add the Firebase SDK for Crashlytics.
     implementation 'com.google.firebase:firebase-crashlytics:18.4.3'
 
+    // Android coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
+
     // Test Implementations
     androidTestImplementation(
             'androidx.test.ext:junit-ktx:1.1.5',

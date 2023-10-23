@@ -1,16 +1,11 @@
 package edu.upc.openmrs.activities.syncedpatients
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.openmrs.utilities.FilterUtil
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.PatientRepositoryKotlin
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.dao.VisitDAO
-import edu.upc.sdk.library.models.OperationType
-import edu.upc.sdk.library.models.OperationType.*
+import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Results
-import edu.upc.sdk.utilities.NetworkUtils.isOnline
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -31,7 +26,7 @@ class SyncedPatientsViewModel @Inject constructor(
             ))
     }
 
-    fun fetchSyncedPatients(query: String) {
+    suspend fun fetchSyncedPatients(query: String) {
         setLoading()
         try {
             val patientList = patientRepositoryKotlin.findPatients(query)

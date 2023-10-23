@@ -10,9 +10,11 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -20,7 +22,6 @@ import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import rx.Observable
-import java.lang.Exception
 
 @RunWith(JUnit4::class)
 class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
@@ -83,18 +84,21 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         val patient = patientList[0]
         val filteredPatients = listOf(patient)
 
-        every { patientRepositoryKotlin.findPatients(patient.display!!) } returns filteredPatients
+        coEvery { patientRepositoryKotlin.findPatients(patient.display!!) } returns filteredPatients
 
-        viewModel.fetchSyncedPatients(patient.display!!)
-
+        runBlocking {
+            viewModel.fetchSyncedPatients(patient.display!!)
+        }
         assertEquals(Result.Success(filteredPatients), viewModel.result.value)
     }
 
     @Test
     fun fetchSyncedPatientsWithQuery_noMatchingPatients() {
-        every { patientRepositoryKotlin.findPatients("Patient99") } returns emptyList()
+        coEvery { patientRepositoryKotlin.findPatients("Patient99") } returns emptyList()
 
-        viewModel.fetchSyncedPatients("Patient99")
+        runBlocking {
+            viewModel.fetchSyncedPatients("Patient99")
+        }
 
         val actualResult = (viewModel.result.value as Result.Success).data
 
@@ -106,9 +110,11 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     fun fetchSyncedPatientsWithQuery_error() {
         val errorMsg = "Error message!"
         val exception = Exception(errorMsg)
-        every { patientRepositoryKotlin.findPatients(any()) } throws exception
+        coEvery { patientRepositoryKotlin.findPatients(any()) } throws exception
 
-        viewModel.fetchSyncedPatients(patientList[0].display!!)
+        runBlocking {
+            viewModel.fetchSyncedPatients(patientList[0].display!!)
+        }
 
         val actualResult = (viewModel.result.value as Result.Error).throwable.message
 

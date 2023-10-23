@@ -14,17 +14,24 @@
 package edu.upc.openmrs.activities.syncedpatients
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.StringUtils.notEmpty
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SyncedPatientsActivity : ACBaseActivity() {
+
+    private val handler = Handler(Looper.getMainLooper())
+
     private var query: String? = null
     private var addPatientMenuItem: MenuItem? = null
 
@@ -65,15 +72,21 @@ class SyncedPatientsActivity : ACBaseActivity() {
             searchView.setQuery(query, true)
             searchView.clearFocus()
         }
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return true
             }
 
             override fun onQueryTextChange(query: String): Boolean {
-                val syncedPatientsFragment =
-                    supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
-                syncedPatientsFragment?.fetchSyncedPatients(query)
+                handler.removeCallbacksAndMessages(null)
+                handler.postDelayed({
+                    lifecycleScope.launch {
+                        val syncedPatientsFragment = supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
+                        syncedPatientsFragment?.fetchSyncedPatients(query)
+                    }
+                }, 2000)
+
                 return true
             }
         })
