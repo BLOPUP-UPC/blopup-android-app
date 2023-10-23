@@ -22,6 +22,7 @@ import edu.upc.sdk.library.models.Results;
 import java.io.IOException;
 import java.util.List;
 
+import okhttp3.Headers;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +40,10 @@ public class MockSuccessResponse<T> implements Call<T>{
 
     public MockSuccessResponse(Object resource) {
         response = Response.success(resource);
+    }
+
+    public MockSuccessResponse(Object resource, Headers headers) {
+        response = Response.success(resource, headers);
     }
 
     @Override

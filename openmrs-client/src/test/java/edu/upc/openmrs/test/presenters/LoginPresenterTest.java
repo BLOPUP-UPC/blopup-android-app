@@ -57,6 +57,7 @@ import edu.upc.sdk.library.models.VisitType;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.StringUtils;
+import okhttp3.Headers;
 import rx.Observable;
 
 @PrepareForTest({OpenMRS.class, NetworkUtils.class, LocationDAO.class, RestServiceBuilder.class,
@@ -79,6 +80,8 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
     private UserService userService;
     private LoginPresenter presenter;
 
+    private static MockedStatic<OpenmrsAndroid> openmrsAndroid;
+
     MockedStatic<RestServiceBuilder> mockedStatic;
 
     @BeforeClass
@@ -87,7 +90,7 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
         Mockito.mockStatic(LocationDAO.class);
         Mockito.mockStatic(StringUtils.class);
         Mockito.mockStatic(NetworkUtils.class);
-        Mockito.mockStatic(OpenmrsAndroid.class);
+        openmrsAndroid = Mockito.mockStatic(OpenmrsAndroid.class);
     }
 
     @Before
@@ -132,7 +135,10 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
         mockNonEmptyCredentials(true);
         mockOnlineMode(true);
         Mockito.lenient().when(restApi.getSession())
-            .thenReturn(mockSuccessCall(new Session("someId", true, new User())));
+            .thenReturn(mockSuccessCall(
+                    new Session( true, new User()),
+                    Headers.of("Set-Cookie", "JSESSIONID=1234567890")
+            ));
         Mockito.lenient().when(restApi.getVisitType())
             .thenReturn(mockSuccessCall(Collections.singletonList(new VisitType("visitType"))));
         Mockito.lenient().when(authorizationManager.isUserNameOrServerEmpty()).thenReturn(false);
@@ -145,6 +151,7 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
         verify(view).showLoadingAnimation();
         verify(view).userAuthenticated();
         verify(view).finishLoginActivity();
+        openmrsAndroid.verify(() -> OpenmrsAndroid.setSessionToken("1234567890"));
     }
 
     @Test
@@ -152,7 +159,7 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
         mockNonEmptyCredentials(true);
         mockOnlineMode(true);
         Mockito.lenient().when(restApi.getSession())
-            .thenReturn(mockSuccessCall(new Session("someId", false, new User())));
+            .thenReturn(mockSuccessCall(new Session(false, new User())));
         Mockito.lenient().when(restApi.getVisitType())
             .thenReturn(mockSuccessCall(Collections.singletonList(new VisitType("visitType"))));
         Mockito.lenient().when(authorizationManager.isUserNameOrServerEmpty()).thenReturn(false);

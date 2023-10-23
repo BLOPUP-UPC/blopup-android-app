@@ -53,14 +53,14 @@ import edu.upc.sdk.library.models.Resource;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.library.models.VisitType;
+import okhttp3.Headers;
 import retrofit2.Call;
 
 @PrepareForTest({Context.class,
         ContentResolver.class, ContentValues.class})
 @RunWith(PowerMockRunner.class)
 @SuppressStaticInitializationFor("com.activeandroid.content.ContentProvider")
-public abstract class
-ACUnitTestBase {
+public abstract class ACUnitTestBase {
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule().silent();
@@ -189,6 +189,10 @@ ACUnitTestBase {
 
     protected <T> Call<T> mockSuccessCall(T object) {
         return new MockSuccessResponse<>(object);
+    }
+
+    protected <T> Call<T> mockSuccessCall(T object, Headers headers) {
+        return new MockSuccessResponse<>(object, headers);
     }
 
     protected <T> Call<T> mockErrorCall(int code) {
