@@ -56,10 +56,6 @@ class SyncedPatientsActivity : ACBaseActivity() {
         super.onOptionsItemSelected(item)
 
         when (item.itemId) {
-//            R.id.actionAddPatients -> {
-//                val intent = Intent(this, LastViewedPatientsActivity::class.java)
-//                startActivity(intent)
-//            }
             android.R.id.home -> onBackPressed()
             else -> {
             }
@@ -71,7 +67,6 @@ class SyncedPatientsActivity : ACBaseActivity() {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.find_locally_and_add_patients_menu, menu)
 
-//        addPatientMenuItem = menu.findItem(R.id.actionAddPatients)
         enableAddPatient(OpenmrsAndroid.getSyncState())
 
         val searchMenuItem = menu.findItem(R.id.actionSearchLocal)
@@ -83,14 +78,13 @@ class SyncedPatientsActivity : ACBaseActivity() {
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                // searchView.clearFocus()
-                val syncedPatientsFragment =
-                    supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
-                syncedPatientsFragment?.fetchSyncedPatients(query)
                 return true
             }
 
             override fun onQueryTextChange(query: String): Boolean {
+                val syncedPatientsFragment =
+                    supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
+                syncedPatientsFragment?.fetchSyncedPatients(query)
                 return true
             }
         })
