@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.upc.R;
@@ -122,15 +123,17 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
                         Session session = response.body();
                         if (session.isAuthenticated()) {
                             OpenmrsAndroid.deleteSecretKey();
+                            String sessionID = getSessionIdFromHeaders(response);
+
                             if (wipeDatabase) {
                                 mOpenMRS.deleteDatabase(ApplicationConstants.DB_NAME);
-                                setData(session.getSessionId(), url, username, password);
+                                setData(sessionID, url, username, password);
                                 mWipeRequired = false;
                             }
                             if (authorizationManager.isUserNameOrServerEmpty()) {
-                                setData(session.getSessionId(), url, username, password);
+                                setData(sessionID, url, username, password);
                             } else {
-                                OpenmrsAndroid.setSessionToken(session.getSessionId());
+                                OpenmrsAndroid.setSessionToken(sessionID);
                                 OpenmrsAndroid.setPasswordAndHashedPassword(password);
                             }
 
@@ -181,6 +184,11 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
                 loginView.hideLoadingAnimation();
             }
         }
+    }
+
+    private static String getSessionIdFromHeaders(@NonNull Response<Session> response) {
+        // Just blame OpenMRS
+        return Arrays.stream(response.headers().get("Set-Cookie").split(";")).filter(cookie -> cookie.contains("JSESSIONID")).findFirst().get().split("=")[1];
     }
 
     @Override

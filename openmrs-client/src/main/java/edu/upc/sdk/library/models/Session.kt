@@ -25,15 +25,13 @@ import com.google.gson.annotations.SerializedName
  * @property user
  * @constructor Create empty Session
  */
-class Session(@field:SerializedName("sessionId")
-              @field:Expose
-              var sessionId: String?, @field:SerializedName("authenticated")
+class Session(@field:SerializedName("authenticated")
               @field:Expose
               var isAuthenticated: Boolean, @field:SerializedName("user")
               @field:Expose
               var user: User?) {
 
     override fun toString(): String {
-        return "\tsessionId: $sessionId\tauthenticated: $isAuthenticated"
+        return "\tauthenticated: $isAuthenticated"
     }
 }
