@@ -14,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SyncedPatientsViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
-    private val visitDAO: VisitDAO,
     private val patientRepository: PatientRepository
 ) : edu.upc.openmrs.activities.BaseViewModel<List<Patient>>() {
 
@@ -30,25 +29,12 @@ class SyncedPatientsViewModel @Inject constructor(
 
     fun fetchSyncedPatients(query: String) {
         setLoading()
-        if (isOnline()) {
-            addSubscription(patientRepository.findPatients(query)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { patientList -> setContent(patientList) },
-                    { setError(it, OperationType.PatientSearching) }
-                )
+        addSubscription(patientRepository.findPatients(query)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { patientList -> setContent(patientList) },
+                { setError(it, OperationType.PatientSearching) }
             )
-        } else {
-            addSubscription(patientDAO.allPatients
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { patients: List<Patient> ->
-                        val filteredPatients =
-                            FilterUtil.getPatientsFilteredByQuery(patients, query)
-                        setContent(filteredPatients)
-                    },
-                    { setError(it, OperationType.PatientSearching) }
-                ))
-        }
+        )
     }
 }

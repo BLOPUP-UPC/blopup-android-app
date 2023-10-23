@@ -65,13 +65,13 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun setupObserver() {
-        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> showLoading()
                 is Result.Success -> showPatientsList(result.data)
                 else -> showError()
             }
-        })
+        }
     }
 
     private fun fetchSyncedPatients() {

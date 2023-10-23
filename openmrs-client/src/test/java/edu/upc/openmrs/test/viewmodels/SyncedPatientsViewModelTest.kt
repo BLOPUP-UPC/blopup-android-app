@@ -21,6 +21,7 @@ import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.any
 import rx.Observable
 
 @RunWith(JUnit4::class)
@@ -35,10 +36,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var patientRepository: PatientRepository
 
-    @Mock
-    lateinit var visitDAO: VisitDAO
-
-    lateinit var patientList: List<Patient>
+    private lateinit var patientList: List<Patient>
 
     lateinit var viewModel: SyncedPatientsViewModel
 
@@ -50,7 +48,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         patientList = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
 
 
-        viewModel = SyncedPatientsViewModel(patientDAO, visitDAO, patientRepository)
+        viewModel = SyncedPatientsViewModel(patientDAO, patientRepository)
     }
 
     @Test
@@ -79,10 +77,9 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchSyncedPatientsWithQuery_success() {
-        mockOnlineMode(false)
         val patient = patientList[0]
         val filteredPatients = listOf(patient)
-        Mockito.`when`(patientDAO.allPatients).thenReturn(Observable.just(filteredPatients))
+        Mockito.`when`(patientRepository.findPatients(any())).thenReturn(Observable.just(filteredPatients))
 
         viewModel.fetchSyncedPatients(patient.display!!)
 
@@ -93,9 +90,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchSyncedPatientsWithQuery_noMatchingPatients() {
-        val patient = patientList[0]
-        val filteredPatients = listOf(patient)
-        Mockito.`when`(patientDAO.allPatients).thenReturn(Observable.just(filteredPatients))
+        Mockito.`when`(patientRepository.findPatients(any())).thenReturn(Observable.just(emptyList()))
 
         viewModel.fetchSyncedPatients("Patient99")
 
@@ -109,17 +104,12 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     fun fetchSyncedPatientsWithQuery_error() {
         val errorMsg = "Error message!"
         val throwable = Throwable(errorMsg)
-        Mockito.`when`(patientDAO.allPatients).thenReturn(Observable.error(throwable))
+        Mockito.`when`(patientRepository.findPatients(any())).thenReturn(Observable.error(throwable))
 
         viewModel.fetchSyncedPatients(patientList[0].display!!)
 
         val actualResult = (viewModel.result.value as Result.Error).throwable.message
 
         assertEquals(errorMsg, actualResult)
-    }
-
-    private fun mockOnlineMode(isOnline: Boolean) {
-        Mockito.mockStatic(NetworkUtils::class.java)
-        Mockito.`when`(isOnline()).thenReturn(isOnline)
     }
 }
