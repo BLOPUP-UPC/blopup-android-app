@@ -5,12 +5,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.api.repository.PatientRepositoryKotlin
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.utilities.NetworkUtils
-import edu.upc.sdk.utilities.NetworkUtils.isOnline
+import io.mockk.MockKAnnotations
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -18,11 +19,8 @@ import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.any
 import rx.Observable
+import java.lang.Exception
 
 @RunWith(JUnit4::class)
 class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
@@ -30,11 +28,14 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Mock
+    @MockK
     lateinit var patientDAO: PatientDAO
 
-    @Mock
+    @MockK
     lateinit var patientRepository: PatientRepository
+
+    @MockK
+    lateinit var patientRepositoryKotlin: PatientRepositoryKotlin
 
     private lateinit var patientList: List<Patient>
 
@@ -44,16 +45,17 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     @Before
     override fun setUp() {
         super.setUp()
-        MockitoAnnotations.initMocks(this)
+        MockKAnnotations.init(this)
         patientList = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
 
 
-        viewModel = SyncedPatientsViewModel(patientDAO, patientRepository)
+        viewModel = SyncedPatientsViewModel(patientDAO, patientRepository, patientRepositoryKotlin)
     }
 
     @Test
     fun fetchSyncedPatients_success() {
-        Mockito.`when`(patientDAO.allPatients).thenReturn(Observable.just(patientList))
+
+        every { patientDAO.allPatients } returns Observable.just(patientList)
 
         viewModel.fetchSyncedPatients()
 
@@ -66,7 +68,8 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     fun fetchSyncedPatients_error() {
         val errorMsg = "Error message!"
         val throwable = Throwable(errorMsg)
-        Mockito.`when`(patientDAO.allPatients).thenReturn(Observable.error(throwable))
+
+        every { patientDAO.allPatients } returns Observable.error(throwable)
 
         viewModel.fetchSyncedPatients()
 
@@ -79,18 +82,17 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     fun fetchSyncedPatientsWithQuery_success() {
         val patient = patientList[0]
         val filteredPatients = listOf(patient)
-        Mockito.`when`(patientRepository.findPatients(any())).thenReturn(Observable.just(filteredPatients))
+
+        every { patientRepositoryKotlin.findPatients(patient.display!!) } returns filteredPatients
 
         viewModel.fetchSyncedPatients(patient.display!!)
 
-        val actualResult = (viewModel.result.value as Result.Success).data
-
-        assertIterableEquals(filteredPatients, actualResult)
+        assertEquals(Result.Success(filteredPatients), viewModel.result.value)
     }
 
     @Test
     fun fetchSyncedPatientsWithQuery_noMatchingPatients() {
-        Mockito.`when`(patientRepository.findPatients(any())).thenReturn(Observable.just(emptyList()))
+        every { patientRepositoryKotlin.findPatients("Patient99") } returns emptyList()
 
         viewModel.fetchSyncedPatients("Patient99")
 
@@ -103,8 +105,8 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun fetchSyncedPatientsWithQuery_error() {
         val errorMsg = "Error message!"
-        val throwable = Throwable(errorMsg)
-        Mockito.`when`(patientRepository.findPatients(any())).thenReturn(Observable.error(throwable))
+        val exception = Exception(errorMsg)
+        every { patientRepositoryKotlin.findPatients(any()) } throws exception
 
         viewModel.fetchSyncedPatients(patientList[0].display!!)
 
