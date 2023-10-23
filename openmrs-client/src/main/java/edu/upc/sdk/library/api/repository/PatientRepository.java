@@ -112,7 +112,6 @@ public class PatientRepository extends BaseRepository {
 
                 patient.setUuid(returnedPatientDto.getUuid());
 
-                patientDAO.updatePatient(patient.getId(), patient);
                 if (!patient.getEncounters().equals("")) {
                     addEncounters(patient);
                 }
