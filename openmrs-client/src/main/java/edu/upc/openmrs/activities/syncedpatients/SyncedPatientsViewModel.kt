@@ -28,11 +28,10 @@ class SyncedPatientsViewModel @Inject constructor(
 
     suspend fun fetchSyncedPatients(query: String) {
         setLoading()
-        try {
-            val patientList = patientRepositoryKotlin.findPatients(query)
-            setContent(patientList)
-        } catch (e: Exception) {
-            setError(e, PatientFetching)
-        }
+        patientRepositoryKotlin.findPatients(query)
+            .fold(
+                { error -> setError(error, PatientFetching) },
+                { patients -> setContent(patients) }
+            )
     }
 }

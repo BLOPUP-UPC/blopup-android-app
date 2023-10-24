@@ -1,5 +1,7 @@
 package edu.upc.sdk.library.api.repository
 
+import arrow.core.Either
+import arrow.core.right
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.Dispatchers
@@ -15,17 +17,14 @@ class PatientRepositoryKotlin @Inject constructor() : BaseRepository() {
      * @param query patient query string
      * @return observable list of patients with matching query
      */
-    suspend fun findPatients(query: String?): List<Patient> = withContext(Dispatchers.IO) {
-        try {
+    suspend fun findPatients(query: String?): Either<Error, List<Patient>> =
+        withContext(Dispatchers.IO) {
             val call = restApi.getPatients(query, ApplicationConstants.API.FULL)
             val response = call.execute()
             if (response.isSuccessful) {
-                return@withContext response.body()?.results.orEmpty()
+                Either.Right(response.body()?.results.orEmpty())
             } else {
-                throw Exception("Failed to find patients: ${response.code()} - ${response.message()}")
+                Either.Left(Error("Failed to find patients: ${response.code()} - ${response.message()}"))
             }
-        } catch (e: Exception) {
-            throw Exception("Error finding patients: ${e.message}")
         }
-    }
 }

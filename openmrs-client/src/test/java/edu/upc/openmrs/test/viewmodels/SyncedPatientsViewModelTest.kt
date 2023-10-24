@@ -2,6 +2,7 @@ package edu.upc.openmrs.test.viewmodels
 
 import android.annotation.SuppressLint
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import arrow.core.Either
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.PatientRepository
@@ -84,7 +85,9 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         val patient = patientList[0]
         val filteredPatients = listOf(patient)
 
-        coEvery { patientRepositoryKotlin.findPatients(patient.display!!) } returns filteredPatients
+        coEvery { patientRepositoryKotlin.findPatients(patient.display!!) } returns Either.Right(
+            filteredPatients
+        )
 
         runBlocking {
             viewModel.fetchSyncedPatients(patient.display!!)
@@ -94,7 +97,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchSyncedPatientsWithQuery_noMatchingPatients() {
-        coEvery { patientRepositoryKotlin.findPatients("Patient99") } returns emptyList()
+        coEvery { patientRepositoryKotlin.findPatients("Patient99") } returns Either.Right(emptyList())
 
         runBlocking {
             viewModel.fetchSyncedPatients("Patient99")
@@ -109,8 +112,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun fetchSyncedPatientsWithQuery_error() {
         val errorMsg = "Error message!"
-        val exception = Exception(errorMsg)
-        coEvery { patientRepositoryKotlin.findPatients(any()) } throws exception
+        coEvery { patientRepositoryKotlin.findPatients(any()) } returns Either.Left(Error(errorMsg))
 
         runBlocking {
             viewModel.fetchSyncedPatients(patientList[0].display!!)
