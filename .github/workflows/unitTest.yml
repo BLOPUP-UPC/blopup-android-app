@@ -1,12 +1,10 @@
-name: Release debug
+name: Build & Test
 
 on:
-  workflow_dispatch:
-  push:
-    branches: [ "main" ]
+  pull_request:
 
 jobs:
-  release-debug:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,26 +38,3 @@ jobs:
 
       - name: Build debug artifact
         run: ./gradlew :openmrs-client:assembleDebug
-
-      - name: Upload debug APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-debug
-          path: openmrs-client/build/outputs/apk/debug/openmrs-client-debug.apk
-
-  notify:
-    needs: release-debug
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Check status and notify
-        uses: BLOPUP-UPC/notify-on-workflow-failure@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workflow-file: android.yml
-          job-status: ${{ needs.release-debug.result }}
-          webhook: ${{ secrets.NOTIFICATION_WEBHOOK }}
-          actor: ${{ github.actor }}
