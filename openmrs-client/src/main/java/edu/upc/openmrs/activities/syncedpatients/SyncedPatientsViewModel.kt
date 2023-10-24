@@ -2,7 +2,7 @@ package edu.upc.openmrs.activities.syncedpatients
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.api.repository.PatientRepository
-import edu.upc.sdk.library.api.repository.PatientRepositoryKotlin
+import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class SyncedPatientsViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val patientRepository: PatientRepository,
-    private val patientRepositoryKotlin: PatientRepositoryKotlin
+    private val patientRepositoryCoroutines: PatientRepositoryCoroutines
 ) : edu.upc.openmrs.activities.BaseViewModel<List<Patient>>() {
 
     fun fetchSyncedPatients() {
@@ -28,7 +28,7 @@ class SyncedPatientsViewModel @Inject constructor(
 
     suspend fun fetchSyncedPatients(query: String) {
         setLoading()
-        patientRepositoryKotlin.findPatients(query)
+        patientRepositoryCoroutines.findPatients(query)
             .fold(
                 { error -> setError(error, PatientFetching) },
                 { patients -> setContent(patients) }

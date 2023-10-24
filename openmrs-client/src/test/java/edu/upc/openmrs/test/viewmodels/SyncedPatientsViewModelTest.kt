@@ -6,7 +6,7 @@ import arrow.core.Either
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.PatientRepository
-import edu.upc.sdk.library.api.repository.PatientRepositoryKotlin
+import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -37,7 +37,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     lateinit var patientRepository: PatientRepository
 
     @MockK
-    lateinit var patientRepositoryKotlin: PatientRepositoryKotlin
+    lateinit var patientRepositoryCoroutines: PatientRepositoryCoroutines
 
     private lateinit var patientList: List<Patient>
 
@@ -51,7 +51,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         patientList = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
 
 
-        viewModel = SyncedPatientsViewModel(patientDAO, patientRepository, patientRepositoryKotlin)
+        viewModel = SyncedPatientsViewModel(patientDAO, patientRepository, patientRepositoryCoroutines)
     }
 
     @Test
@@ -85,7 +85,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         val patient = patientList[0]
         val filteredPatients = listOf(patient)
 
-        coEvery { patientRepositoryKotlin.findPatients(patient.display!!) } returns Either.Right(
+        coEvery { patientRepositoryCoroutines.findPatients(patient.display!!) } returns Either.Right(
             filteredPatients
         )
 
@@ -97,7 +97,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchSyncedPatientsWithQuery_noMatchingPatients() {
-        coEvery { patientRepositoryKotlin.findPatients("Patient99") } returns Either.Right(emptyList())
+        coEvery { patientRepositoryCoroutines.findPatients("Patient99") } returns Either.Right(emptyList())
 
         runBlocking {
             viewModel.fetchSyncedPatients("Patient99")
@@ -112,7 +112,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun fetchSyncedPatientsWithQuery_error() {
         val errorMsg = "Error message!"
-        coEvery { patientRepositoryKotlin.findPatients(any()) } returns Either.Left(Error(errorMsg))
+        coEvery { patientRepositoryCoroutines.findPatients(any()) } returns Either.Left(Error(errorMsg))
 
         runBlocking {
             viewModel.fetchSyncedPatients(patientList[0].display!!)

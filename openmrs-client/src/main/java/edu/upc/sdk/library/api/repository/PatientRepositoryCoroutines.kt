@@ -1,7 +1,6 @@
 package edu.upc.sdk.library.api.repository
 
 import arrow.core.Either
-import arrow.core.right
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PatientRepositoryKotlin @Inject constructor() : BaseRepository() {
+class PatientRepositoryCoroutines @Inject constructor() : BaseRepository() {
     /**
      * Find patients.
      *
