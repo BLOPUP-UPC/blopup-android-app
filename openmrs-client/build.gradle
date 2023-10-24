@@ -203,7 +203,7 @@ dependencies {
 
 
     //no inspection
-    kapt 'androidx.room:room-compiler:2.5.2'
+    kapt 'androidx.room:room-compiler:2.6.0'
 
     // Noinspection GradleDependency
     annotationProcessor "androidx.room:room-compiler:${versions.roomCompiler}"
