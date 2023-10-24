@@ -25,11 +25,12 @@ class PatientRepositoryCoroutinesTest {
 
     private lateinit var patientRepositoryCoroutines: PatientRepositoryCoroutines
 
-    private val restApi: RestApi = mockk(relaxed = true)
+    private lateinit var restApi: RestApi
 
     @Before
     fun setUp() {
-        mockStaticMethodCalls()
+        restApi = mockk(relaxed = true)
+        mockStaticMethodsNeededToInstantiateBaseRepository()
         patientRepositoryCoroutines = PatientRepositoryCoroutines()
     }
 
@@ -109,7 +110,7 @@ class PatientRepositoryCoroutinesTest {
         assert(expected.message == result.fold({ it.message }, { }))
     }
 
-    private fun mockStaticMethodCalls() {
+    private fun mockStaticMethodsNeededToInstantiateBaseRepository() {
         mockkStatic(OpenmrsAndroid::class)
         every { OpenmrsAndroid.getServerUrl() } returns "http://localhost:8080/openmrs"
         mockkConstructor(Retrofit.Builder::class)
