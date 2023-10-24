@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
+  pull_request:
+    types: [opened, edited, synchronize]
 
 jobs:
   release-debug:
