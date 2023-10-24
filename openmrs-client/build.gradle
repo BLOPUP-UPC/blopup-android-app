@@ -254,7 +254,7 @@ dependencies {
 
     // add the Firebase SDK for Google Analytics
     // The app need this to init in Firebase console
-    implementation 'com.google.firebase:firebase-analytics:21.3.0'
+    implementation 'com.google.firebase:firebase-analytics:21.4.0'
 
     // Add the Firebase SDK for Crashlytics.
     implementation 'com.google.firebase:firebase-crashlytics:18.5.0'
