@@ -128,17 +128,6 @@ public interface RestApi {
                                       @Query("v") String representation);
 
     /**
-     * Gets last viewed patients.
-     *
-     * @param limit      the limit
-     * @param startIndex the start index
-     * @return the last viewed patients
-     */
-    @GET("patient?lastviewed&v=full")
-    Call<Results<Patient>> getLastViewedPatients(@Query("limit") Integer limit,
-                                                 @Query("startIndex") Integer startIndex);
-
-    /**
      * Create patient call.
      *
      * @param patientDto the patient dto

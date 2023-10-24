@@ -146,26 +146,6 @@
             android:name="edu.upc.openmrs.services.AuthenticateCheckService"
             android:enabled="true" />
 
-        <activity
-            android:name="edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsActivity"
-            android:configChanges="keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/action_download_patients"
-            android:launchMode="singleTop"
-            android:theme="@style/AppThemeOrig">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.dashboard.DashboardActivity" />
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-        </activity>
         <activity android:name="edu.upc.openmrs.activities.matchingpatients.MatchingPatientsActivity" />
         <activity
             android:name="edu.upc.openmrs.activities.logs.LogsActivity"

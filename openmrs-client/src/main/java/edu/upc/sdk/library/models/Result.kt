@@ -13,11 +13,9 @@ enum class OperationType {
     PatientRegistering,
     PatientMerging,
     PatientFetching,
-    PatientSearching,
     PatientSynchronizing,
     PatientVisitsFetching,
     PatientVisitStarting,
-    LastViewedPatientsFetching,
 }
 
 enum class ResultType {

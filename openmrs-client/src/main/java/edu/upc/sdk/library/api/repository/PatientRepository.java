@@ -271,25 +271,6 @@ public class PatientRepository extends BaseRepository {
     }
 
     /**
-     * Load more patients.
-     *
-     * @param limit      the limit
-     * @param startIndex the start index
-     * @return observable list of last viewed patients
-     */
-    public Observable<Results<Patient>> loadMorePatients(int limit, int startIndex) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            Call<Results<Patient>> call = restApi.getLastViewedPatients(limit, startIndex);
-            Response<Results<Patient>> response = call.execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            } else {
-                throw new Exception("Error with loading last viewed patients: " + response.message());
-            }
-        });
-    }
-
-    /**
      * Fetches similar patients by different strategies:
      * <br> 1. Fetch similar patients from server directly using an API.
      * <br> 2. Fetch patients with similar names, then compare their other similarities locally.
