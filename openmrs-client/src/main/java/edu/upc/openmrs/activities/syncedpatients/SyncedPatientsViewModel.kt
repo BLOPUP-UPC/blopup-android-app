@@ -12,7 +12,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SyncedPatientsViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
-    private val patientRepository: PatientRepository,
     private val patientRepositoryCoroutines: PatientRepositoryCoroutines
 ) : edu.upc.openmrs.activities.BaseViewModel<List<Patient>>() {
 

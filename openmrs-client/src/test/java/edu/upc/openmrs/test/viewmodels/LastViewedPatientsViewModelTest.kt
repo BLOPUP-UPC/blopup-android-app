@@ -1,14 +1,19 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import arrow.core.Either
+import edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsViewModel
+import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Link
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Results
-import edu.upc.openmrs.activities.lastviewedpatients.LastViewedPatientsViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -19,7 +24,6 @@ import org.junit.runners.JUnit4
 import org.mockito.AdditionalAnswers.returnsFirstArg
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -38,24 +42,30 @@ class LastViewedPatientsViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var patientRepository: PatientRepository
 
+    private lateinit var patientRepositoryCoroutines: PatientRepositoryCoroutines
+
     lateinit var viewModel: LastViewedPatientsViewModel
 
     @BeforeEach
     override fun setUp() {
         super.setUp()
-        viewModel = LastViewedPatientsViewModel(patientDAO, patientRepository)
+        patientRepositoryCoroutines = mockk(relaxed = true)
+        viewModel =
+            LastViewedPatientsViewModel(patientDAO, patientRepository, patientRepositoryCoroutines)
     }
 
     @Test
     fun `fetchLastViewedPatients when no patients saved & excluded`() {
         val limit = 2
         val patientList = listOf(createPatient(20L), createPatient(40L), createPatient(60L))
-        val expectedList = if (limit > patientList.size) patientList else patientList.subList(0, limit)
+        val expectedList =
+            if (limit > patientList.size) patientList else patientList.subList(0, limit)
         `when`(patientRepository.loadMorePatients(eq(limit), anyInt())).thenAnswer {
             val limitArg = it.arguments[0] as Int
             val startArg = it.arguments[1] as Int
             val result = Results<Patient>().apply {
-                results = if (limitArg > patientList.size) patientList else patientList.slice(startArg until limitArg)
+                results =
+                    if (limitArg > patientList.size) patientList else patientList.slice(startArg until limitArg)
             }
             return@thenAnswer Observable.just(result)
         }
@@ -99,9 +109,10 @@ class LastViewedPatientsViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun fetchPatients_success() {
         val patientList = listOf(createPatient(20L), createPatient(40L))
-        `when`(patientRepository.findPatients(anyString())).thenReturn(Observable.just(patientList))
 
-        viewModel.fetchPatients(anyString())
+        coEvery {  patientRepositoryCoroutines.findPatients("query") } returns Either.Right(patientList)
+
+        runBlocking { viewModel.fetchPatients("query") }
 
         assert(viewModel.result.value is Result.Success)
     }
@@ -110,9 +121,10 @@ class LastViewedPatientsViewModelTest : ACUnitTestBaseRx() {
     fun fetchPatientData_error() {
         val errorMsg = "Error message!"
         val throwable = Throwable(errorMsg)
-        `when`(patientRepository.findPatients(anyString())).thenReturn(Observable.error(throwable))
+        coEvery {  patientRepositoryCoroutines.findPatients("query") } returns Either.Left(Error(throwable.message))
 
-        viewModel.fetchPatients(anyString())
+        runBlocking { viewModel.fetchPatients("query") }
+
         val actualResult = (viewModel.result.value as Result.Error).throwable.message
 
         assertEquals(errorMsg, actualResult)

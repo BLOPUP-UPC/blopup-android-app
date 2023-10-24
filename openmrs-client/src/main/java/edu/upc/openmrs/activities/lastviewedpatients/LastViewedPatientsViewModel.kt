@@ -8,6 +8,7 @@ import edu.upc.sdk.library.models.OperationType.PatientSearching
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Results
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LastViewedPatientsViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
-    private val patientRepository: PatientRepository
+    private val patientRepository: PatientRepository,
+    private val patientRepositoryCoroutines: PatientRepositoryCoroutines
 ) : edu.upc.openmrs.activities.BaseViewModel<List<Patient>>() {
 
     private val paginatedPatients = mutableListOf<Patient>()
@@ -29,36 +31,36 @@ class LastViewedPatientsViewModel @Inject constructor(
         if (!isDownloadedAll) {
             setLoading(LastViewedPatientsFetching)
             addSubscription(patientRepository.loadMorePatients(limit, startIndex)
-                    .map { patientResults: Results<Patient> ->
-                        processPagination(patientResults, limit)
+                .map { patientResults: Results<Patient> ->
+                    processPagination(patientResults, limit)
 
-                        if (paginatedPatients.size >= limit) return@map patientResults.results
+                    if (paginatedPatients.size >= limit) return@map patientResults.results
 
-                        while (paginatedPatients.size < limit && !isDownloadedAll) {
-                            val moreResults = patientRepository.loadMorePatients(limit, startIndex).toSingle().toBlocking().value()
-                            processPagination(moreResults, limit)
-                        }
-                        return@map paginatedPatients
+                    while (paginatedPatients.size < limit && !isDownloadedAll) {
+                        val moreResults =
+                            patientRepository.loadMorePatients(limit, startIndex).toSingle()
+                                .toBlocking().value()
+                        processPagination(moreResults, limit)
                     }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            { patientList -> setContent(patientList, LastViewedPatientsFetching) },
-                            { setError(it, LastViewedPatientsFetching) }
-                    )
+                    return@map paginatedPatients
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { patientList -> setContent(patientList, LastViewedPatientsFetching) },
+                    { setError(it, LastViewedPatientsFetching) }
+                )
             )
         }
     }
 
-    fun fetchPatients(query: String) {
+    suspend fun fetchPatients(query: String) {
         setLoading(PatientSearching)
-        addSubscription(patientRepository.findPatients(query)
-                .map { patientList -> return@map patientDAO.excludeSavedPatients(patientList) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { patientList -> setContent(patientList, PatientSearching) },
-                        { setError(it, PatientSearching) }
-                )
-        )
+        patientRepositoryCoroutines.findPatients(query)
+            .map { patientList -> patientDAO.excludeSavedPatients(patientList) }
+            .fold(
+                { error -> setError(error, PatientSearching) },
+                { patientList -> setContent(patientList, PatientSearching) }
+            )
     }
 
     private fun updateStartIndex(links: List<Link>, limit: Int) {

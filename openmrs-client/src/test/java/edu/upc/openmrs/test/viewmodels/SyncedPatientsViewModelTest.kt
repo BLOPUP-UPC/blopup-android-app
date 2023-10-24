@@ -34,9 +34,6 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     lateinit var patientDAO: PatientDAO
 
     @MockK
-    lateinit var patientRepository: PatientRepository
-
-    @MockK
     lateinit var patientRepositoryCoroutines: PatientRepositoryCoroutines
 
     private lateinit var patientList: List<Patient>
@@ -51,7 +48,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         patientList = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
 
 
-        viewModel = SyncedPatientsViewModel(patientDAO, patientRepository, patientRepositoryCoroutines)
+        viewModel = SyncedPatientsViewModel(patientDAO, patientRepositoryCoroutines)
     }
 
     @Test

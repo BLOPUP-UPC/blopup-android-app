@@ -25,6 +25,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -43,6 +44,7 @@ import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import kotlinx.android.synthetic.main.fragment_last_viewed_patients.view.swipe_container
 import kotlinx.android.synthetic.main.snackbar.view.snackbar_text
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -57,7 +59,7 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             val isLoading = viewModel.result.value is Result.Loading
-            if (!recyclerView.canScrollVertically(1) && !isLoading) fetchPatients()
+            if (!recyclerView.canScrollVertically(1) && !isLoading) lifecycleScope.launch { fetchPatients() }
         }
     }
 
@@ -66,12 +68,16 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentLastViewedPatientsBinding.inflate(inflater, container, false)
 
         setupAdapter()
         setupObserver()
-        fetchPatients()
+        lifecycleScope.launch { fetchPatients() }
         setupSwipeRefresh()
 
         return binding.root
@@ -103,6 +109,7 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         else -> {}
                     }
                 }
+
                 is Result.Success -> {
                     when (result.operationType) {
                         LastViewedPatientsFetching -> showMorePatients(result.data)
@@ -110,6 +117,7 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         else -> {}
                     }
                 }
+
                 is Result.Error -> {
                     when (result.operationType) {
                         LastViewedPatientsFetching -> showErrorFetchingPatients()
@@ -117,12 +125,13 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         else -> {}
                     }
                 }
+
                 else -> throw IllegalStateException()
             }
         })
     }
 
-    private fun fetchPatients(query: String? = null) {
+    private suspend fun fetchPatients(query: String? = null) {
         with(binding.lastViewedPatientRecyclerView) {
             if (query == null) {
                 // Last viewed patients will be paginated
@@ -144,7 +153,7 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
             if (hasNetwork()) {
                 mAdapter.finishActionMode()
                 resetLastViewedPatients()
-                fetchPatients()
+                lifecycleScope.launch { fetchPatients() }
             } else {
                 binding.swiperefreshLastPatients.isRefreshing = false
                 ToastUtil.error(getString(R.string.no_internet_connection_message))
@@ -221,13 +230,21 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     fun showOpenPatientSnackbar(patientId: Long) {
         val frameLayout = binding.swiperefreshLastPatients.swipe_container
-        Snackbar.make(frameLayout, getString(R.string.snackbar_info_patient_downloaded), Snackbar.LENGTH_LONG)
-                .apply {
-                    setActionTextColor(Color.WHITE)
-                    view.snackbar_text.setTextColor(Color.WHITE)
-                    setAction(getString(R.string.snackbar_action_open)) { openPatientDashboardActivity(patientId) }
+        Snackbar.make(
+            frameLayout,
+            getString(R.string.snackbar_info_patient_downloaded),
+            Snackbar.LENGTH_LONG
+        )
+            .apply {
+                setActionTextColor(Color.WHITE)
+                view.snackbar_text.setTextColor(Color.WHITE)
+                setAction(getString(R.string.snackbar_action_open)) {
+                    openPatientDashboardActivity(
+                        patientId
+                    )
                 }
-                .show()
+            }
+            .show()
     }
 
     private fun openPatientDashboardActivity(patientId: Long) {
@@ -246,7 +263,7 @@ class LastViewedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
         // Search function
         searchPatientView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                fetchPatients(query)
+                lifecycleScope.launch { fetchPatients(query) }
                 return true
             }
 

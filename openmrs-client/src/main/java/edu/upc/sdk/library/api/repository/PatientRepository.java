@@ -271,24 +271,6 @@ public class PatientRepository extends BaseRepository {
     }
 
     /**
-     * Find patients.
-     *
-     * @param query patient query string
-     * @return observable list of patients with matching query
-     */
-    public Observable<List<Patient>> findPatients(String query) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            Call<Results<Patient>> call = restApi.getPatients(query, ApplicationConstants.API.FULL);
-            Response<Results<Patient>> response = call.execute();
-            if (response.isSuccessful()) {
-                return response.body().getResults();
-            } else {
-                throw new Exception("Error with finding patients: " + response.message());
-            }
-        });
-    }
-
-    /**
      * Load more patients.
      *
      * @param limit      the limit
