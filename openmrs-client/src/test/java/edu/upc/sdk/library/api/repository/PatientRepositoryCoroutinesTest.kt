@@ -1,7 +1,6 @@
 package edu.upc.sdk.library.api.repository
 
 import androidx.work.WorkManager
-import arrow.core.Either
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder
@@ -61,13 +60,13 @@ class PatientRepositoryCoroutinesTest {
         coEvery { restApi.getPatients(any(), any()) } returns call
         coEvery { call.execute() } returns response
 
-        val result: Either<Error, List<Patient>>
         runBlocking {
-            result = patientRepositoryCoroutines.findPatients("query")
+            val result = patientRepositoryCoroutines.findPatients("query")
+
+            assert(result.isRight())
+            assertEquals(emptyList<Patient>(), result.fold({ }, { it }))
         }
 
-        assert(result.isRight())
-        assertEquals(emptyList<Patient>(), result.fold({ }, { it }))
     }
 
     @Test
@@ -83,13 +82,12 @@ class PatientRepositoryCoroutinesTest {
         coEvery { restApi.getPatients(any(), any()) } returns call
         coEvery { call.execute() } returns errorResponse
 
-        val result: Either<Error, List<Patient>>
         runBlocking {
-            result = patientRepositoryCoroutines.findPatients("query")
-        }
+            val result = patientRepositoryCoroutines.findPatients("query")
 
-        assert(result.isLeft())
-        assertEquals(expected.message, result.fold({ it.message }, { }))
+            assert(result.isLeft())
+            assertEquals(expected.message, result.fold({ it.message }, { }))
+        }
     }
 
     @Test
@@ -101,13 +99,12 @@ class PatientRepositoryCoroutinesTest {
         coEvery { restApi.getPatients(any(), any()) } returns call
         coEvery { call.execute() } throws RuntimeException("RuntimeException")
 
-        val result: Either<Error, List<Patient>>
         runBlocking {
-            result = patientRepositoryCoroutines.findPatients("query")
-        }
+            val result = patientRepositoryCoroutines.findPatients("query")
 
-        assert(result.isLeft())
-        assert(expected.message == result.fold({ it.message }, { }))
+            assert(result.isLeft())
+            assert(expected.message == result.fold({ it.message }, { }))
+        }
     }
 
     private fun mockStaticMethodsNeededToInstantiateBaseRepository() {

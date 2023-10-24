@@ -278,7 +278,6 @@ public class PatientRepository extends BaseRepository {
      */
     public Observable<List<Patient>> findPatients(String query) {
         return AppDatabaseHelper.createObservableIO(() -> {
-            Thread.sleep(2_000);
             Call<Results<Patient>> call = restApi.getPatients(query, ApplicationConstants.API.FULL);
             Response<Results<Patient>> response = call.execute();
             if (response.isSuccessful()) {
