@@ -110,15 +110,6 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
 
             mGender = itemView.findViewById(R.id.patientGender);
             mBirthDate = itemView.findViewById(R.id.patientBirthDate);
-
-            mContactFirstName = itemView.findViewById(R.id.contactFirstName);
-            mContactLastName = itemView.findViewById(R.id.contactLastName);
-            mContactPhoneNumber = itemView.findViewById(R.id.contactPhoneNumber);
-
-            mAddres = itemView.findViewById(R.id.patientAddres);
-            mPostalCode = itemView.findViewById(R.id.patientPostalCode);
-            mCity = itemView.findViewById(R.id.patientCity);
-            mCountry = itemView.findViewById(R.id.patientCountry);
         }
     }
 

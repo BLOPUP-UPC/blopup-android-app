@@ -69,6 +69,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
             when (result) {
                 is Result.Loading -> {
                 }
+
                 is Result.Success -> {
                     when (result.operationType) {
                         PatientFetching -> showPatientDetails(result.data)
@@ -76,6 +77,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         }
                     }
                 }
+
                 is Result.Error -> {
                     when (result.operationType) {
                         PatientFetching -> error(getString(R.string.get_patient_from_database_error))
@@ -83,6 +85,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         }
                     }
                 }
+
                 else -> throw IllegalStateException()
             }
 
@@ -105,9 +108,11 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     "M" -> {
                         patientDetailsGender.text = getString(R.string.male)
                     }
+
                     "F" -> {
                         patientDetailsGender.text = getString(R.string.female)
                     }
+
                     else -> {
                         patientDetailsGender.text = getString(R.string.non_binary)
                     }
@@ -127,33 +132,6 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         patientDetailsCountryOfBirth.text = country.getLabel(requireContext())
                     }
                 }
-            }
-            contactFirstName.text = patient.contact.givenName
-            contactLastName.text = patient.contact.familyName
-            contactPhoneNumber.text = patient.contactPhoneNumber
-
-            patient.address?.let {
-                addressDetailsStreet.text = it.addressString
-                showAddressDetailsViewElement(
-                    addressDetailsStateLabel,
-                    addressDetailsState,
-                    it.stateProvince
-                )
-                showAddressDetailsViewElement(
-                    addressDetailsCountryLabel,
-                    addressDetailsCountry,
-                    it.country
-                )
-                showAddressDetailsViewElement(
-                    addressDetailsPostalCodeLabel,
-                    addressDetailsPostalCode,
-                    it.postalCode
-                )
-                showAddressDetailsViewElement(
-                    addressDetailsCityLabel,
-                    addressDetailsCity,
-                    it.cityVillage
-                )
             }
         }
     }
