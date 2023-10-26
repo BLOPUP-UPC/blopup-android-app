@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.R
 import edu.upc.blopup.RecordingHelper
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.showPatientConsentToggle
@@ -16,6 +17,7 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.PatientValidator
+import edu.upc.sdk.utilities.StringUtils
 import org.joda.time.DateTime
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -33,6 +35,27 @@ class AddEditPatientViewModel @Inject constructor(
 
     private val _patientUpdateLiveData = MutableLiveData<ResultType>()
     val patientUpdateLiveData: LiveData<ResultType> get() = _patientUpdateLiveData
+
+    private val _isNameValidLiveData = MutableLiveData<Pair<Boolean, Int?>>()
+    val isNameValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isNameValidLiveData
+
+    private val _isSurnameValidLiveData = MutableLiveData<Pair<Boolean, Int?>>()
+    val isSurnameValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isSurnameValidLiveData
+
+    private val _isCountryOfBirthLiveData = MutableLiveData<Boolean>()
+    val isCountryOfBirthLiveData: LiveData<Boolean> get() = _isCountryOfBirthLiveData
+
+    private val _isGenderLiveData = MutableLiveData<Boolean>()
+    val isGenderLiveData: LiveData<Boolean> get() = _isGenderLiveData
+
+    private val _isBirthDateLiveData = MutableLiveData<Boolean>()
+    val isBirthDateLiveData: LiveData<Boolean> get() = _isBirthDateLiveData
+
+    private val _isLegalConsentLiveData = MutableLiveData<Boolean>()
+    val isLegalConsentLiveData: LiveData<Boolean> get() = _isLegalConsentLiveData
+
+    private val _isPatientValidLiveData = MutableLiveData<Boolean>()
+    val isPatientValidLiveData: LiveData<Boolean> get() = _isPatientValidLiveData
 
     var patientValidator: PatientValidator
 
@@ -71,7 +94,6 @@ class AddEditPatientViewModel @Inject constructor(
     }
 
     fun confirmPatient() {
-        if (!patientValidator.validate()) return
         if (isUpdatePatient) updatePatient()
         else {
             registerPatient()
@@ -80,7 +102,6 @@ class AddEditPatientViewModel @Inject constructor(
     }
 
     fun fetchSimilarPatients() {
-        if (!patientValidator.validate()) return
         setLoading()
         addSubscription(patientRepository.fetchSimilarPatients(patient)
             .observeOn(AndroidSchedulers.mainThread())
@@ -122,5 +143,57 @@ class AddEditPatientViewModel @Inject constructor(
                 { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
             )
         )
+    }
+
+    fun validateFirstName(input: String?) {
+        if (input.isNullOrBlank()) {
+            _isNameValidLiveData.value = Pair(false, R.string.empty_value)
+        } else if (!StringUtils.validateText(input, StringUtils.ILLEGAL_CHARACTERS)) {
+            _isNameValidLiveData.value = Pair(false, R.string.fname_invalid_error)
+        } else {
+            _isNameValidLiveData.value = Pair(true, null)
+        }
+        isEverythingValid()
+    }
+
+    fun validateSurname(input: String?) {
+        if (input.isNullOrBlank()) {
+            _isSurnameValidLiveData.value = Pair(false, R.string.empty_value)
+        } else if (!StringUtils.validateText(input, StringUtils.ILLEGAL_CHARACTERS)) {
+            _isSurnameValidLiveData.value = Pair(false, R.string.fname_invalid_error)
+        } else {
+            _isSurnameValidLiveData.value = Pair(true, null)
+        }
+        isEverythingValid()
+    }
+
+    fun validateCountryOfBirth(input: String) {
+        _isCountryOfBirthLiveData.value = input != "Select country of birth"
+        isEverythingValid()
+    }
+
+    fun validateGender(input: Boolean?){
+        _isGenderLiveData.value = input == true
+        isEverythingValid()
+    }
+
+    fun validateBirthDate(input: String?){
+        _isBirthDateLiveData.value = !input.isNullOrBlank()
+        isEverythingValid()
+    }
+
+    fun validateLegalConsent(input: Boolean?){
+        _isLegalConsentLiveData.value = input == true
+        isEverythingValid()
+    }
+
+    private fun isEverythingValid() {
+        _isPatientValidLiveData.value =
+            _isNameValidLiveData.value?.first == true &&
+                    _isSurnameValidLiveData.value?.first == true &&
+                    _isCountryOfBirthLiveData.value == true &&
+                    _isGenderLiveData.value == true &&
+                    _isBirthDateLiveData.value == true &&
+                    _isLegalConsentLiveData.value == true
     }
 }

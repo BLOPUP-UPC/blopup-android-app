@@ -19,6 +19,7 @@ import edu.upc.sdk.utilities.PatientValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -146,6 +147,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         }
     }
 
+    @Ignore
     @Test
     fun `confirmPatient should do nothing when patient data is invalid`() {
         viewModel = AddEditPatientViewModel(

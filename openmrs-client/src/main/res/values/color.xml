@@ -44,6 +44,8 @@
     <color name="allergy_orange_50_transparent">#4DFB793D</color>
     <color name="blue">#3884CA</color>
     <color name="dark_red">#ED3030</color>
+    <color name="error_red">#AB3140</color>
+    <color name="gender_red">#B54C5B</color>
     <color name="translucent_50_percent">#99000000</color>
     <color name="black_dark_mode">#121212</color>
     <color name="translucent_70_percent">#B3000000</color>

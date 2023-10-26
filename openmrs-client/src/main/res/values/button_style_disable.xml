@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+	<style name="ButtonStyleDisable">
+		<item name="android:textColor">@color/login_button</item>
+		<item name="android:backgroundTint" tools:targetApi="lollipop">@color/grey</item>
+	</style>
+</resources>

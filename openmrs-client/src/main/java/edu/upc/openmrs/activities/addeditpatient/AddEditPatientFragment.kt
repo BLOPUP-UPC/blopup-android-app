@@ -22,6 +22,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Paint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -32,6 +34,7 @@ import android.widget.Toast
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -63,12 +66,11 @@ import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.DateUtils.convertTimeString
 import edu.upc.sdk.utilities.DateUtils.getDateTimeFromDifference
 import edu.upc.sdk.utilities.DateUtils.validateDate
-import edu.upc.sdk.utilities.StringUtils.ILLEGAL_CHARACTERS
 import edu.upc.sdk.utilities.StringUtils.isBlank
 import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
-import edu.upc.sdk.utilities.StringUtils.validateText
 import edu.upc.sdk.utilities.ToastUtil
+import kotlinx.android.synthetic.main.fragment_patient_info.submitButton
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
@@ -102,6 +104,9 @@ class AddEditPatientFragment : BaseFragment() {
         setupObservers()
 
         setupViewsListeners()
+
+        addListenersToAllFields()
+
         setCountrySpinner()
 
         fillFormFields()
@@ -113,6 +118,7 @@ class AddEditPatientFragment : BaseFragment() {
 
             addBottomMargin()
         })
+
 
         return rootView
     }
@@ -162,10 +168,71 @@ class AddEditPatientFragment : BaseFragment() {
                 else -> throw IllegalStateException()
             }
         }
+
         viewModel.similarPatientsLiveData.observe(viewLifecycleOwner) { similarPatients ->
             hideLoading()
             if (similarPatients.isEmpty()) registerPatient()
             else showSimilarPatientsDialog(similarPatients, viewModel.patient)
+        }
+
+        viewModel.isNameValidLiveData.observe(viewLifecycleOwner) { isValid ->
+            binding.textInputLayoutFirstName.isErrorEnabled = isValid.first
+            binding.textInputLayoutFirstName.error = isValid.second?.let { getString(it) }
+        }
+
+        viewModel.isSurnameValidLiveData.observe(viewLifecycleOwner) { isValid ->
+            binding.textInputLayoutSurname.isErrorEnabled = isValid.first
+            binding.textInputLayoutSurname.error = isValid.second?.let { getString(it) }
+        }
+
+        viewModel.isCountryOfBirthLiveData.observe(viewLifecycleOwner) { isValid ->
+            if (isValid) {
+                binding.countryOfBirthLayout.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.corner_transparent_box, null)
+            } else {
+                binding.countryOfBirthLayout.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.corner_red_box, null)
+            }
+        }
+
+        viewModel.isGenderLiveData.observe(viewLifecycleOwner) { isValid ->
+            if (isValid) {
+                binding.gendererror.makeGone()
+            } else {
+                binding.gendererror.makeVisible()
+            }
+        }
+
+        viewModel.isBirthDateLiveData.observe(viewLifecycleOwner) { isValid ->
+            if (isValid) {
+                binding.textInputLayoutDOB.isErrorEnabled = false
+                binding.textInputLayoutYear.isErrorEnabled = false
+            } else {
+                binding.textInputLayoutDOB.isErrorEnabled = true
+                binding.textInputLayoutYear.isErrorEnabled = true
+                binding.textInputLayoutDOB.error = getString(R.string.empty_value)
+                binding.textInputLayoutYear.error = getString(R.string.empty_value)
+            }
+        }
+
+        viewModel.isLegalConsentLiveData.observe(viewLifecycleOwner) { isValid ->
+            if (isValid) {
+                binding.languageSpinner.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.admission_spinner, null)
+            } else {
+                binding.languageSpinner.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.admission_spinner_error, null)
+            }
+        }
+
+        viewModel.isPatientValidLiveData.observe(viewLifecycleOwner) { isValid ->
+            if (isValid) {
+                submitButton.isEnabled = true
+                submitButton.setBackgroundColor(resources.getColor(R.color.color_accent, null))
+            } else {
+                submitButton.isEnabled = false
+                submitButton.setBackgroundColor(resources.getColor(R.color.dark_grey_for_stroke, null))
+            }
         }
     }
 
@@ -273,51 +340,97 @@ class AddEditPatientFragment : BaseFragment() {
 
     }
 
+    private fun addListenersToAllFields() = with(binding) {
+
+        viewModel.validateFirstName(getInput(firstName))
+        viewModel.validateSurname(getInput(surname))
+        viewModel.validateCountryOfBirth(countryOfBirth.text.toString())
+        viewModel.validateBirthDate(getInput(dobEditText))
+
+        if (!viewModel.isUpdatePatient) {
+            viewModel.validateGender(false)
+            viewModel.validateLegalConsent(false)
+        } else {
+            viewModel.validateGender(true)
+            viewModel.validateLegalConsent(true)
+        }
+
+        isNameValid()
+
+        isBirthDateValid()
+
+        isCountryOfBirthValid()
+    }
+
+    private fun FragmentPatientInfoBinding.isCountryOfBirthValid() {
+
+        countryOfBirth.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.validateCountryOfBirth(countryOfBirth.text.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun FragmentPatientInfoBinding.isBirthDateValid() {
+        dobEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.validateBirthDate(getInput(dobEditText))
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
+        estimatedYear.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.validateBirthDate(getInput(estimatedYear))
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
+
+    private fun FragmentPatientInfoBinding.isNameValid() {
+
+        firstName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(name: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.validateFirstName(getInput(firstName))
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        surname.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.validateSurname(getInput(surname))
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
+
     private fun validateFormInputsAndUpdateViewModel() = with(binding) {
         viewModel.patient.isDeceased = false
         viewModel.patient.causeOfDeath = null
         /* Names */
-        // First name validation
-        if (isEmpty(firstName)) {
-            textInputLayoutFirstName.isErrorEnabled = true
-            textInputLayoutFirstName.error = getString(R.string.emptyerror)
-            scrollToTop()
-        } else if (!validateText(getInput(firstName), ILLEGAL_CHARACTERS)) {
-            textInputLayoutFirstName.isErrorEnabled = true
-            textInputLayoutFirstName.error = getString(R.string.fname_invalid_error)
-            scrollToTop()
-        } else {
-            textInputLayoutFirstName.isErrorEnabled = false
-        }
-        // Family name validation
-        if (isEmpty(surname)) {
-            textInputLayoutSurname.isErrorEnabled = true
-            textInputLayoutSurname.error = getString(R.string.emptyerror)
-            scrollToTop()
-        } else if (!validateText(getInput(surname), ILLEGAL_CHARACTERS)) {
-            textInputLayoutSurname.isErrorEnabled = true
-            textInputLayoutSurname.error = getString(R.string.lname_invalid_error)
-            scrollToTop()
-        } else {
-            textInputLayoutSurname.isErrorEnabled = false
-        }
-
         viewModel.patient.names = listOf(PersonName().apply {
             givenName = getInput(firstName)
             familyName = getInput(surname)
         })
-
-        /* Gender */
-        val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
-        val index = gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
-        if (index == -1) {
-            gendererror.makeVisible()
-            scrollToTop()
-            viewModel.patient.gender = null
-        } else {
-            gendererror.makeGone()
-            viewModel.patient.gender = genderChoices[index]
-        }
 
         /* Birth date */
         if (isEmpty(dobEditText)) {
@@ -358,24 +471,28 @@ class AddEditPatientFragment : BaseFragment() {
                     .print(viewModel.dateHolder)
         }
 
-        /* Country of Birth */
-        if (binding.countryOfBirth.text == context?.getString(R.string.country_of_birth_default)) {
-            countryOfBirthError.makeVisible()
+        val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
+        val index = gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
+        if (index == -1) {
+            gendererror.makeVisible()
             scrollToTop()
+            viewModel.patient.gender = null
         } else {
-            countryOfBirthError.makeGone()
-            viewModel.patient.attributes = listOf(PersonAttribute().apply {
-                attributeType = PersonAttributeType().apply {
-                    uuid = BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID
-                    value = patientCountry?.name
-                }
-            })
+            gendererror.makeGone()
+            viewModel.patient.gender = genderChoices[index]
         }
 
-        /* Legal Consent */
-        showPatientConsentToggle.check(onToggleEnabled = {
-            viewModel.isLegalRecordingPresent = validateLegalConsent()
+        /* Country of Birth */
+        viewModel.patient.attributes = listOf(PersonAttribute().apply {
+            attributeType = PersonAttributeType().apply {
+                uuid = BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID
+                value = patientCountry?.name
+            }
         })
+
+        /* Legal Consent */
+        viewModel.isLegalRecordingPresent = validateLegalConsent()
+
     }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
@@ -423,6 +540,9 @@ class AddEditPatientFragment : BaseFragment() {
         }
 
         recordLegalConsent.setOnClickListener {
+
+            viewModel.validateLegalConsent(true)
+
             if (recordLegalConsent.text == context?.getString(R.string.record_again_legal_consent)) {
                 filePath = legalConsentDialog!!.fileName()
             }
@@ -434,7 +554,10 @@ class AddEditPatientFragment : BaseFragment() {
             submitAction()
         }
 
-        gender.setOnCheckedChangeListener { _, _ -> gendererror.makeGone() }
+        gender.setOnCheckedChangeListener { _, _ ->
+            viewModel.validateGender(true)
+            gendererror.makeGone()
+        }
 
         DateOfBirthTextWatcher(dobEditText, estimatedYear).let {
             dobEditText.addTextChangedListener(it)
@@ -620,7 +743,7 @@ class AddEditPatientFragment : BaseFragment() {
         binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
 
     private fun isLegalConsent() =
-            FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName()) || filePath.isNotEmpty()
+        FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName()) || filePath.isNotEmpty()
 
     private fun startPatientDashboardActivity() {
         Intent(requireActivity(), PatientDashboardActivity::class.java).apply {

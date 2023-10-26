@@ -40,7 +40,9 @@
 
     <!-- AddEditPatient -->
     <string name="emptyerror" tools:ignore="MissingTranslation">Required</string>
+    <string name="gender_error" tools:ignore="MissingTranslation">Please, choose an option</string>
     <string name="fname_invalid_error" tools:ignore="MissingTranslation">Given name cannot contain symbols or numbers</string>
+    <string name="empty_value" tools:ignore="MissingTranslation">\u0020</string>
     <string name="midname_invalid_error" tools:ignore="MissingTranslation">Middle name cannot contain symbols or numbers</string>
     <string name="lname_invalid_error" tools:ignore="MissingTranslation">Family name cannot contain symbols or numbers</string>
     <string name="dob_error" tools:ignore="MissingTranslation">Date should be between %1$s and %2$s</string>

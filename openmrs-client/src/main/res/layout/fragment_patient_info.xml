@@ -95,6 +95,7 @@
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                app:errorIconDrawable="@null"
                                 android:layout_weight="1">
 
                                 <EditText
@@ -116,6 +117,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:errorIconDrawable="@null"
                             android:layout_marginTop="4dp">
 
                             <EditText
@@ -151,8 +153,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="2dp"
-                            android:text="@string/emptyerror"
-                            android:textColor="@color/red"
+                            android:text="@string/gender_error"
+                            android:textColor="@color/gender_red"
                             android:textSize="14sp"
                             android:visibility="gone" />
 
@@ -219,6 +221,7 @@
                                 android:layout_alignParentTop="true"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toRightOf="parent"
+                                app:errorIconDrawable="@null"
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <EditText
@@ -240,11 +243,9 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginRight="16dp"
                                 android:background="@drawable/ic_date_range_24dp"
                                 android:backgroundTint="?android:attr/textColorPrimary"
                                 app:layout_constraintBottom_toBottomOf="@id/textInputLayoutDOB"
@@ -277,6 +278,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/textInputLayoutYear"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:errorIconDrawable="@null"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
@@ -338,7 +340,7 @@
                                 app:layout_constraintGuide_percent="0.5" />
 
                             <LinearLayout
-                                android:id="@+id/country_picker_layout"
+                                android:id="@+id/country_of_birth_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -465,6 +467,7 @@
                         <Button
                             android:id="@+id/submitButton"
                             style="@style/loginButtonStyle"
+                            android:enabled="false"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:layout_marginVertical="14dp"
