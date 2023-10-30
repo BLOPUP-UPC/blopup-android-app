@@ -33,6 +33,7 @@ import android.widget.LinearLayout.LayoutParams
 import android.widget.Toast
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -207,11 +208,13 @@ class AddEditPatientFragment : BaseFragment() {
             if (isValid) {
                 binding.textInputLayoutDOB.isErrorEnabled = false
                 binding.textInputLayoutYear.isErrorEnabled = false
+                setCalendarStyle(0.5F)
             } else {
                 binding.textInputLayoutDOB.isErrorEnabled = true
                 binding.textInputLayoutYear.isErrorEnabled = true
                 binding.textInputLayoutDOB.error = getString(R.string.empty_value)
                 binding.textInputLayoutYear.error = getString(R.string.empty_value)
+                setCalendarStyle(0.3F)
             }
         }
 
@@ -231,7 +234,12 @@ class AddEditPatientFragment : BaseFragment() {
                 submitButton.setBackgroundColor(resources.getColor(R.color.color_accent, null))
             } else {
                 submitButton.isEnabled = false
-                submitButton.setBackgroundColor(resources.getColor(R.color.dark_grey_for_stroke, null))
+                submitButton.setBackgroundColor(
+                    resources.getColor(
+                        R.color.dark_grey_for_stroke,
+                        null
+                    )
+                )
             }
         }
     }
@@ -362,7 +370,7 @@ class AddEditPatientFragment : BaseFragment() {
         isCountryOfBirthValid()
     }
 
-    private fun FragmentPatientInfoBinding.isCountryOfBirthValid() {
+    private fun isCountryOfBirthValid() = with(binding) {
 
         countryOfBirth.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -375,16 +383,23 @@ class AddEditPatientFragment : BaseFragment() {
         })
     }
 
-    private fun FragmentPatientInfoBinding.isBirthDateValid() {
+    private fun isBirthDateValid() = with(binding) {
         dobEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.validateBirthDate(getInput(dobEditText))
+                if (getInput(dobEditText)?.length == 10) {
+                    viewModel.validateBirthDate(getInput(dobEditText))
+                } else {
+                    binding.textInputLayoutDOB.isErrorEnabled = true
+                    binding.textInputLayoutYear.isErrorEnabled = true
+                    binding.textInputLayoutDOB.error = getString(R.string.empty_value)
+                    binding.textInputLayoutYear.error = getString(R.string.empty_value)
+                    setCalendarStyle(0.3F)
+                }
             }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
 
         estimatedYear.addTextChangedListener(object : TextWatcher {
@@ -399,7 +414,14 @@ class AddEditPatientFragment : BaseFragment() {
         })
     }
 
-    private fun FragmentPatientInfoBinding.isNameValid() {
+    private fun setCalendarStyle(number: Float) {
+        val calendarButton = binding.datePicker
+        val layoutParams = calendarButton.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.verticalBias = number
+        calendarButton.layoutParams = layoutParams
+    }
+
+    private fun isNameValid() = with(binding) {
 
         firstName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -434,17 +456,7 @@ class AddEditPatientFragment : BaseFragment() {
 
         /* Birth date */
         if (isEmpty(dobEditText)) {
-            if (isBlank(getInput(estimatedYear))) {
-                val dateTimeFormatter = DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT)
-                val minimumDate = DateTime.now().minusYears(
-                    ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
-                )
-                    .toString(dateTimeFormatter)
-                val maximumDate = DateTime.now().toString(dateTimeFormatter)
-                dobError.text = getString(R.string.dob_error, minimumDate, maximumDate)
-                dobError.makeVisible()
-                scrollToTop()
-            } else {
+            if (!isBlank(getInput(estimatedYear))) {
                 viewModel.patient.birthdateEstimated = true
                 val yearDiff =
                     if (isEmpty(estimatedYear)) 0 else estimatedYear.text.toString().toInt()
@@ -452,7 +464,6 @@ class AddEditPatientFragment : BaseFragment() {
                 viewModel.patient.birthdate =
                     DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
                         .print(viewModel.dateHolder)
-                dobError.makeGone()
             }
         } else {
             viewModel.patient.birthdateEstimated = false
@@ -473,17 +484,12 @@ class AddEditPatientFragment : BaseFragment() {
 
         val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
         val index = gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
-        if (index == -1) {
-            gendererror.makeVisible()
-            scrollToTop()
-            viewModel.patient.gender = null
-        } else {
-            gendererror.makeGone()
-            viewModel.patient.gender = genderChoices[index]
-        }
+
+        viewModel.patient.gender = genderChoices[index]
 
         /* Country of Birth */
-        viewModel.patient.attributes = listOf(PersonAttribute().apply {
+        viewModel.patient.attributes = listOf(PersonAttribute().apply
+        {
             attributeType = PersonAttributeType().apply {
                 uuid = BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID
                 value = patientCountry?.name

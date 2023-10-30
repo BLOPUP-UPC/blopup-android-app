@@ -1,6 +1,7 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.RecordingHelper
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
@@ -19,7 +20,6 @@ import edu.upc.sdk.utilities.PatientValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -55,6 +55,12 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Mock
     lateinit var recordingRepository: RecordingRepository
+
+    @Mock
+    private lateinit var nameValidationObserver: Observer<Pair<Boolean, Int?>>
+
+    @Mock
+    private lateinit var booleanValidationObserver: Observer<Boolean>
 
     lateinit var viewModel: AddEditPatientViewModel
 
@@ -147,30 +153,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         }
     }
 
-    @Ignore
-    @Test
-    fun `confirmPatient should do nothing when patient data is invalid`() {
-        viewModel = AddEditPatientViewModel(
-            patientDAO,
-            patientRepository,
-            recordingHelper,
-            savedStateHandle
-        )
-        `when`(patientRepository.registerPatient(any<Patient>())).thenReturn(
-            Observable.just(
-                Patient()
-            )
-        )
-        with(viewModel) {
-            patientValidator = mock(PatientValidator::class.java)
-            `when`(patientValidator.validate()).thenReturn(false)
-
-            confirmPatient()
-
-            assertNull(result.value)
-        }
-    }
-
     @Test
     fun fetchSimilarPatients() {
         viewModel = AddEditPatientViewModel(
@@ -252,5 +234,220 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
             verify(recordingHelper, times(0)).saveLegalConsent(any())
         }
+    }
+
+    @Test
+    fun `when name is valid, the isNameValidLiveData is true`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
+
+        viewModel.validateFirstName("Pilar")
+
+        assertEquals(viewModel.isNameValidLiveData.value?.first, true)
+    }
+    @Test
+    fun `when name is null, the isNameValidLiveData is false`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
+
+        viewModel.validateFirstName(null)
+
+        assertEquals(viewModel.isNameValidLiveData.value?.first, false)
+        assertEquals(viewModel.isNameValidLiveData.value?.second, edu.upc.R.string.empty_value)
+    }
+
+    @Test
+    fun `when name is invalid, the isNameValidLiveData is false`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
+
+        viewModel.validateFirstName("*")
+
+        assertEquals(viewModel.isNameValidLiveData.value?.first, false)
+        assertEquals(viewModel.isNameValidLiveData.value?.second, edu.upc.R.string.fname_invalid_error)
+    }
+
+    @Test
+    fun `when last name is valid, the isNameValidLiveData is true`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+
+        viewModel.validateSurname("Alonso")
+
+        assertEquals(viewModel.isSurnameValidLiveData.value?.first, true)
+    }
+
+    @Test
+    fun `when last name is null, the isNameValidLiveData is false`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+
+        viewModel.validateSurname(null)
+
+        assertEquals(viewModel.isSurnameValidLiveData.value?.first, false)
+        assertEquals(viewModel.isSurnameValidLiveData.value?.second, edu.upc.R.string.empty_value)
+    }
+
+    @Test
+    fun `when last name is invalid, the isNameValidLiveData is false`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+
+        viewModel.validateSurname("*")
+
+        assertEquals(viewModel.isSurnameValidLiveData.value?.first, false)
+        assertEquals(viewModel.isSurnameValidLiveData.value?.second, edu.upc.R.string.fname_invalid_error)
+    }
+
+    @Test
+    fun `when country of birth is valid, then is true`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isCountryOfBirthLiveData.observeForever(booleanValidationObserver)
+
+        viewModel.validateCountryOfBirth("Argentina")
+
+        assertEquals(viewModel.isCountryOfBirthLiveData.value, true)
+    }
+
+    @Test
+    fun `when country of birth is the default option, then is false`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isCountryOfBirthLiveData.observeForever(booleanValidationObserver)
+
+        viewModel.validateCountryOfBirth("Select country of birth")
+
+        assertEquals(viewModel.isCountryOfBirthLiveData.value, false)
+    }
+
+    @Test
+    fun `when gender is selected, then it is true`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isGenderLiveData.observeForever(booleanValidationObserver)
+
+        viewModel.validateGender(true)
+
+        assertEquals(viewModel.isGenderLiveData.value, true)
+    }
+
+    @Test
+    fun `when gender is not selected, then it is false`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isGenderLiveData.observeForever(booleanValidationObserver)
+
+        viewModel.validateGender(false)
+
+        assertEquals(viewModel.isGenderLiveData.value, false)
+    }
+
+    @Test
+    fun `when all fields are completed, then everything is valid`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isGenderLiveData.observeForever(booleanValidationObserver)
+        viewModel.isCountryOfBirthLiveData.observeForever(booleanValidationObserver)
+        viewModel.isBirthDateLiveData.observeForever(booleanValidationObserver)
+        viewModel.isLegalConsentLiveData.observeForever(booleanValidationObserver)
+
+        viewModel.validateFirstName("Pilar")
+        viewModel.validateSurname("Alonso")
+        viewModel.validateGender(true)
+        viewModel.validateCountryOfBirth("Argentina")
+        viewModel.validateBirthDate("01/01/2020")
+        viewModel.validateLegalConsent(true)
+
+        assertEquals(viewModel.isPatientValidLiveData.value, true)
+    }
+
+    @Test
+    fun `when all fields are not completed, then patient is not valid`() {
+        viewModel = AddEditPatientViewModel(
+            patientDAO,
+            patientRepository,
+            recordingHelper,
+            savedStateHandle
+        )
+
+        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isGenderLiveData.observeForever(booleanValidationObserver)
+        viewModel.isCountryOfBirthLiveData.observeForever(booleanValidationObserver)
+        viewModel.isBirthDateLiveData.observeForever(booleanValidationObserver)
+        viewModel.isLegalConsentLiveData.observeForever(booleanValidationObserver)
+
+        viewModel.validateFirstName("*")
+        viewModel.validateSurname(null)
+        viewModel.validateGender(true)
+        viewModel.validateCountryOfBirth("Argentina")
+        viewModel.validateBirthDate("01/01/2020")
+        viewModel.validateLegalConsent(true)
+
+        assertEquals(viewModel.isPatientValidLiveData.value, false)
     }
 }
