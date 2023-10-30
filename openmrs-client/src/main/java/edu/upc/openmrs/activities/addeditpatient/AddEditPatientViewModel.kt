@@ -94,6 +94,7 @@ class AddEditPatientViewModel @Inject constructor(
     }
 
     fun confirmPatient() {
+        if (!patientValidator.validate()) return
         if (isUpdatePatient) updatePatient()
         else {
             registerPatient()
