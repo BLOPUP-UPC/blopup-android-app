@@ -172,17 +172,17 @@ class AddEditPatientViewModel @Inject constructor(
         isEverythingValid()
     }
 
-    fun validateGender(input: Boolean?){
+    fun validateGender(input: Boolean?) {
         _isGenderLiveData.value = input == true
         isEverythingValid()
     }
 
-    fun validateBirthDate(input: String?){
+    fun validateBirthDate(input: String?) {
         _isBirthDateLiveData.value = !input.isNullOrBlank()
         isEverythingValid()
     }
 
-    fun validateLegalConsent(input: Boolean?){
+    fun validateLegalConsent(input: Boolean?) {
         _isLegalConsentLiveData.value = input == true
         isEverythingValid()
     }
