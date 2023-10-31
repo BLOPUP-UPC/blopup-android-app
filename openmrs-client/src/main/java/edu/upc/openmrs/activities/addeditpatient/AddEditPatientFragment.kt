@@ -222,6 +222,14 @@ class AddEditPatientFragment : BaseFragment() {
             if (isValid) {
                 binding.languageSpinner.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.admission_spinner, null)
+                binding.recordConsentSaved.makeVisible()
+                binding.recordLegalConsent.text =
+                    context?.getString(R.string.record_again_legal_consent)
+                ToastUtil.showShortToast(
+                    requireContext(),
+                    ToastUtil.ToastType.SUCCESS,
+                    R.string.recording_success
+                )
             } else {
                 binding.languageSpinner.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.admission_spinner_error, null)
@@ -305,6 +313,9 @@ class AddEditPatientFragment : BaseFragment() {
     private fun fillFormFields() {
 
         if (!viewModel.isUpdatePatient) return
+
+        validateFieldsForUpdatePatient()
+
         with(viewModel.patient) {
             // Change to Update Patient Form
             requireActivity().title = getString(R.string.action_update_patient_data)
@@ -350,24 +361,22 @@ class AddEditPatientFragment : BaseFragment() {
 
     private fun addListenersToAllFields() = with(binding) {
 
-        viewModel.validateFirstName(getInput(firstName))
-        viewModel.validateSurname(getInput(surname))
-        viewModel.validateCountryOfBirth(countryOfBirth.text.toString())
-        viewModel.validateBirthDate(getInput(dobEditText))
-
-        if (!viewModel.isUpdatePatient) {
-            viewModel.validateGender(false)
-            viewModel.validateLegalConsent(false)
-        } else {
-            viewModel.validateGender(true)
-            viewModel.validateLegalConsent(true)
-        }
-
         isNameValid()
 
         isBirthDateValid()
 
         isCountryOfBirthValid()
+    }
+
+    private fun validateFieldsForUpdatePatient() {
+        with(binding) {
+            viewModel.validateFirstName(getInput(firstName))
+            viewModel.validateSurname(getInput(surname))
+            viewModel.validateCountryOfBirth(countryOfBirth.text.toString())
+            viewModel.validateBirthDate(getInput(dobEditText))
+            viewModel.validateGender(true)
+            viewModel.validateLegalConsent(true)
+        }
     }
 
     private fun isCountryOfBirthValid() = with(binding) {
@@ -546,8 +555,6 @@ class AddEditPatientFragment : BaseFragment() {
         }
 
         recordLegalConsent.setOnClickListener {
-
-            viewModel.validateLegalConsent(true)
 
             if (recordLegalConsent.text == context?.getString(R.string.record_again_legal_consent)) {
                 filePath = legalConsentDialog!!.fileName()

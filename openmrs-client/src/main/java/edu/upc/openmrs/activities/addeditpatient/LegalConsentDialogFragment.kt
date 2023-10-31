@@ -12,7 +12,9 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomappbar.BottomAppBar
+import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.AudioRecorder
@@ -23,12 +25,9 @@ import edu.upc.openmrs.utilities.FileUtils.getFileByLanguage
 import edu.upc.openmrs.utilities.FileUtils.getRecordingFilePath
 import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.sdk.utilities.ToastUtil
-import kotlinx.android.synthetic.main.fragment_patient_info.record_consent_saved
-import kotlinx.android.synthetic.main.fragment_patient_info.record_legal_consent
 import java.util.Locale
 
-
+@AndroidEntryPoint
 class LegalConsentDialogFragment : DialogFragment() {
 
     private lateinit var legalConsentBinding: LegalConsentBinding
@@ -39,6 +38,7 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var mFileName: String
     private lateinit var fileName: String
 
+    val viewModel: AddEditPatientViewModel by viewModels({requireParentFragment()})
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -163,15 +163,7 @@ class LegalConsentDialogFragment : DialogFragment() {
             this.dismiss()
 
             if (fileIsCreatedSuccessfully(mFileName)) {
-                val parent = parentFragment
-                parent?.record_consent_saved?.makeVisible()
-                parent?.record_legal_consent?.text =
-                    context?.getString(R.string.record_again_legal_consent)
-                ToastUtil.showShortToast(
-                    requireContext(),
-                    ToastUtil.ToastType.SUCCESS,
-                    R.string.recording_success
-                )
+                viewModel.validateLegalConsent(true)
             }
         }
     }
