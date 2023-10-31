@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.RecordingHelper
 import edu.upc.blopup.toggles.check
@@ -14,10 +15,15 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonAttribute
+import edu.upc.sdk.library.models.PersonAttributeType
+import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.StringUtils
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -35,10 +41,12 @@ class AddEditPatientViewModel @Inject constructor(
     private val _patientUpdateLiveData = MutableLiveData<ResultType>()
     val patientUpdateLiveData: LiveData<ResultType> get() = _patientUpdateLiveData
 
-    private val _isNameValidLiveData = MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
+    private val _isNameValidLiveData =
+        MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
     val isNameValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isNameValidLiveData
 
-    private val _isSurnameValidLiveData = MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
+    private val _isSurnameValidLiveData =
+        MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
     val isSurnameValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isSurnameValidLiveData
 
     private val _isCountryOfBirthValidLiveData = MutableLiveData<Boolean>(false)
@@ -88,6 +96,48 @@ class AddEditPatientViewModel @Inject constructor(
         }
 
     }
+
+    fun setPatientData(
+        firstName: String,
+        lastName: String,
+        dobEditText: String,
+        estimatedYear: String,
+        gender: String,
+        country: String
+    ) {
+        with(patient) {
+            isDeceased = false
+            names = listOf(PersonName().apply {
+                givenName = firstName
+                familyName = lastName
+            })
+
+            if (estimatedYear.isNotEmpty()) {
+                birthdateEstimated = true
+                val approximateBirthdate =
+                    DateUtils.getDateTimeFromDifference(estimatedYear.toInt())
+                birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
+                    .print(approximateBirthdate)
+            } else {
+                birthdateEstimated = false
+                val parsedBirthdate = DateTime.parse(dobEditText, DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT))
+                birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
+                    .print(parsedBirthdate)
+            }
+
+            this.gender = gender
+
+            attributes = listOf(
+                PersonAttribute().apply
+                {
+                    attributeType = PersonAttributeType().apply {
+                        uuid = BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID
+                        value = country
+                    }
+                })
+        }
+    }
+
 
     fun fetchSimilarPatients() {
         setLoading()

@@ -30,6 +30,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.LinearLayout.LayoutParams
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
@@ -38,7 +39,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
@@ -64,16 +64,10 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.DateUtils.convertTimeString
-import edu.upc.sdk.utilities.DateUtils.getDateTimeFromDifference
-import edu.upc.sdk.utilities.DateUtils.validateDate
-import edu.upc.sdk.utilities.StringUtils.isBlank
 import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil
-import kotlinx.android.synthetic.main.fragment_patient_info.submitButton
-import org.joda.time.DateTime
 import org.joda.time.LocalDate
-import org.joda.time.format.DateTimeFormat
 import java.util.*
 
 
@@ -236,11 +230,11 @@ class AddEditPatientFragment : BaseFragment() {
 
         viewModel.isPatientValidLiveData.observe(viewLifecycleOwner) { isValid ->
             if (isValid) {
-                submitButton.isEnabled = true
-                submitButton.setBackgroundColor(resources.getColor(R.color.color_accent, null))
+                binding.submitButton.isEnabled = true
+                binding.submitButton.setBackgroundColor(resources.getColor(R.color.color_accent, null))
             } else {
-                submitButton.isEnabled = false
-                submitButton.setBackgroundColor(
+                binding.submitButton.isEnabled = false
+                binding.submitButton.setBackgroundColor(
                     resources.getColor(
                         R.color.dark_grey_for_stroke,
                         null
@@ -251,19 +245,15 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     private fun findSimilarPatients() {
-        validateFormInputsAndUpdateViewModel()
         viewModel.fetchSimilarPatients()
     }
 
     fun registerPatient() {
-        validateFormInputsAndUpdateViewModel()
-
         viewModel.confirmPatient()
     }
 
     private fun updatePatient() {
-        validateFormInputsAndUpdateViewModel()
-        viewModel.patientUpdateLiveData.observeOnce(viewLifecycleOwner, Observer {
+        viewModel.patientUpdateLiveData.observeOnce(viewLifecycleOwner) {
             val patientName = viewModel.patient.name.nameString
             when (it) {
                 ResultType.PatientUpdateSuccess -> {
@@ -291,23 +281,11 @@ class AddEditPatientFragment : BaseFragment() {
                     hideLoading()
                 }
             }
-        })
+        }
         viewModel.confirmPatient()
     }
 
-    private fun validateLegalConsent(): Boolean {
-        if (viewModel.isUpdatePatient) return true
-        if (!isLegalConsent()) {
-            binding.recordConsentError.makeVisible()
-            return false
-        } else {
-            binding.recordConsentError.makeGone()
-        }
-        return true
-    }
-
     private fun fillFormFields() {
-
         if (!viewModel.isUpdatePatient) return
 
         validateFieldsForUpdatePatient()
@@ -352,7 +330,6 @@ class AddEditPatientFragment : BaseFragment() {
             binding.linearLayoutConsent.makeGone()
             addBottomMargin()
         }
-
     }
 
     private fun addListenersToAllFields() = with(binding) {
@@ -450,56 +427,6 @@ class AddEditPatientFragment : BaseFragment() {
         })
     }
 
-    private fun validateFormInputsAndUpdateViewModel() = with(binding) {
-        viewModel.patient.isDeceased = false
-        viewModel.patient.causeOfDeath = null
-        /* Names */
-        viewModel.patient.names = listOf(PersonName().apply {
-            givenName = getInput(firstName)
-            familyName = getInput(surname)
-        })
-
-        /* Birth date */
-        if (isEmpty(dobEditText)) {
-            if (!isBlank(getInput(estimatedYear))) {
-                viewModel.patient.birthdateEstimated = true
-                val yearDiff =
-                    if (isEmpty(estimatedYear)) 0 else estimatedYear.text.toString().toInt()
-                viewModel.dateHolder = getDateTimeFromDifference(yearDiff)
-                viewModel.patient.birthdate =
-                    DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-                        .print(viewModel.dateHolder)
-            }
-        } else {
-            viewModel.patient.birthdateEstimated = false
-            val insertedDate = dobEditText.text.toString().trim { it <= ' ' }
-            val minDateOfBirth = DateTime.now().minusYears(
-                ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
-            )
-            val maxDateOfBirth = DateTime.now()
-            if (validateDate(insertedDate, minDateOfBirth, maxDateOfBirth)) {
-                val dateTimeFormatter = DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT)
-                viewModel.dateHolder = dateTimeFormatter.parseDateTime(insertedDate)
-            }
-            viewModel.patient.birthdate =
-                DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-                    .print(viewModel.dateHolder)
-        }
-
-        val genderChoices = arrayOf(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
-        val index = gender.indexOfChild(requireActivity().findViewById(gender.checkedRadioButtonId))
-
-        viewModel.patient.gender = genderChoices[index]
-
-        /* Country of Birth */
-        viewModel.patient.attributes = listOf(PersonAttribute().apply
-        {
-            attributeType = PersonAttributeType().apply {
-                uuid = BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID
-                value = patientCountry?.name
-            }
-        })
-    }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
         edu.upc.openmrs.bundle.CustomDialogBundle().apply {
@@ -699,6 +626,20 @@ class AddEditPatientFragment : BaseFragment() {
     fun isLoading(): Boolean = viewModel.result.value is Result.Loading
 
     private fun submitAction() = with(viewModel) {
+        val selectedGender =
+            view?.findViewById<RadioButton>(binding.gender.checkedRadioButtonId)?.text.toString()
+
+        with(binding) {
+            viewModel.setPatientData(
+                firstName.text.toString(),
+                surname.text.toString(),
+                dobEditText.text.toString(),
+                estimatedYear.text.toString(),
+                selectedGender,
+                patientCountry!!.name
+            )
+        }
+
         // New patient registering
         if (!isUpdatePatient) {
             findSimilarPatients()
@@ -721,8 +662,6 @@ class AddEditPatientFragment : BaseFragment() {
         textInputLayoutSurname.error = ""
         viewModel.resetPatient()
     }
-
-    private fun scrollToTop() = binding.run { scrollView.smoothScrollTo(0, scrollView.paddingTop) }
 
     private fun hideSoftKeys() {
         requireActivity().let {
@@ -786,7 +725,7 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     @Retention(AnnotationRetention.SOURCE)
-    @StringDef(StringValue.MALE, StringValue.FEMALE)
+    @StringDef(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
     annotation class StringValue {
         companion object {
             const val FEMALE = "F"
