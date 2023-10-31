@@ -16,7 +16,6 @@ import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.PatientValidator
 import edu.upc.sdk.utilities.StringUtils
 import org.joda.time.DateTime
 import rx.android.schedulers.AndroidSchedulers
@@ -42,32 +41,24 @@ class AddEditPatientViewModel @Inject constructor(
     private val _isSurnameValidLiveData = MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
     val isSurnameValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isSurnameValidLiveData
 
-    private val _isCountryOfBirthLiveData = MutableLiveData<Boolean>(false)
-    val isCountryOfBirthLiveData: LiveData<Boolean> get() = _isCountryOfBirthLiveData
+    private val _isCountryOfBirthValidLiveData = MutableLiveData<Boolean>(false)
+    val isCountryOfBirthValidLiveData: LiveData<Boolean> get() = _isCountryOfBirthValidLiveData
 
-    private val _isGenderLiveData = MutableLiveData<Boolean>(false)
-    val isGenderLiveData: LiveData<Boolean> get() = _isGenderLiveData
+    private val _isGenderValidLiveData = MutableLiveData<Boolean>(false)
+    val isGenderValidLiveData: LiveData<Boolean> get() = _isGenderValidLiveData
 
-    private val _isBirthDateLiveData = MutableLiveData<Boolean>(false)
-    val isBirthDateLiveData: LiveData<Boolean> get() = _isBirthDateLiveData
+    private val _isBirthDateValidLiveData = MutableLiveData<Boolean>(false)
+    val isBirthDateValidLiveData: LiveData<Boolean> get() = _isBirthDateValidLiveData
 
-    private val _isLegalConsentLiveData = MutableLiveData<Boolean>(false)
-    val isLegalConsentLiveData: LiveData<Boolean> get() = _isLegalConsentLiveData
+    private val _isLegalConsentValidLiveData = MutableLiveData<Boolean>(false)
+    val isLegalConsentValidLiveData: LiveData<Boolean> get() = _isLegalConsentValidLiveData
 
     private val _isPatientValidLiveData = MutableLiveData<Boolean>(false)
     val isPatientValidLiveData: LiveData<Boolean> get() = _isPatientValidLiveData
 
-    var patientValidator: PatientValidator
-
     var isUpdatePatient = false
         private set
     lateinit var patient: Patient
-
-    var isLegalRecordingPresent = false
-        set(value) {
-            field = value
-            patientValidator.isLegalRecordingPresent = value
-        }
 
     var dateHolder: DateTime? = null
     var legalConsentFileName: String? = null
@@ -82,9 +73,6 @@ class AddEditPatientViewModel @Inject constructor(
         } else {
             resetPatient()
         }
-
-        // Initialize patient data validator
-        patientValidator = PatientValidator(patient, isLegalRecordingPresent)
     }
 
     fun resetPatient() {
@@ -94,7 +82,6 @@ class AddEditPatientViewModel @Inject constructor(
     }
 
     fun confirmPatient() {
-        if (!patientValidator.validate()) return
         if (isUpdatePatient) updatePatient()
         else {
             registerPatient()
@@ -169,22 +156,22 @@ class AddEditPatientViewModel @Inject constructor(
     }
 
     fun validateCountryOfBirth(input: String) {
-        _isCountryOfBirthLiveData.value = input != "Select country of birth"
+        _isCountryOfBirthValidLiveData.value = input != "Select country of birth"
         isEverythingValid()
     }
 
     fun validateGender(input: Boolean?) {
-        _isGenderLiveData.value = input == true
+        _isGenderValidLiveData.value = input == true
         isEverythingValid()
     }
 
     fun validateBirthDate(input: String?) {
-        _isBirthDateLiveData.value = !input.isNullOrBlank()
+        _isBirthDateValidLiveData.value = !input.isNullOrBlank()
         isEverythingValid()
     }
 
     fun validateLegalConsent(input: Boolean?) {
-        _isLegalConsentLiveData.value = input == true
+        _isLegalConsentValidLiveData.value = input == true
         isEverythingValid()
     }
 
@@ -192,9 +179,9 @@ class AddEditPatientViewModel @Inject constructor(
         _isPatientValidLiveData.value =
             _isNameValidLiveData.value?.first == true &&
                     _isSurnameValidLiveData.value?.first == true &&
-                    _isCountryOfBirthLiveData.value == true &&
-                    _isGenderLiveData.value == true &&
-                    _isBirthDateLiveData.value == true &&
-                    _isLegalConsentLiveData.value == true
+                    _isCountryOfBirthValidLiveData.value == true &&
+                    _isGenderValidLiveData.value == true &&
+                    _isBirthDateValidLiveData.value == true &&
+                    _isLegalConsentValidLiveData.value == true
     }
 }

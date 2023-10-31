@@ -16,7 +16,6 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType.PatientUpdateSuccess
 import edu.upc.sdk.library.models.ResultType.RecordingSuccess
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.PatientValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -120,8 +119,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         )
 
         with(viewModel) {
-            patientValidator = mock(PatientValidator::class.java)
-            `when`(patientValidator.validate()).thenReturn(true)
 
             confirmPatient()
 
@@ -144,8 +141,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             )
         )
         with(viewModel) {
-            patientValidator = mock(PatientValidator::class.java)
-            `when`(patientValidator.validate()).thenReturn(true)
 
             confirmPatient()
 
@@ -163,8 +158,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         )
         with(viewModel) {
             val similarPatients = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
-            patientValidator = mock(PatientValidator::class.java)
-            `when`(patientValidator.validate()).thenReturn(true)
             `when`(patientRepository.fetchSimilarPatients(any<Patient>())).thenReturn(
                 Observable.just(
                     similarPatients
@@ -201,9 +194,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         `when`(recordingRepository.saveRecording(any())).thenReturn(Observable.just(RecordingSuccess))
 
         with(viewModel) {
-            patientValidator = mock(PatientValidator::class.java)
-            `when`(patientValidator.validate()).thenReturn(true)
-
             confirmPatient()
 
             verify(recordingHelper, times(0)).saveLegalConsent(any())
@@ -227,9 +217,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         )
 
         with(viewModel) {
-            patientValidator = mock(PatientValidator::class.java)
-            `when`(patientValidator.validate()).thenReturn(true)
-
             confirmPatient()
 
             verify(recordingHelper, times(0)).saveLegalConsent(any())
@@ -344,11 +331,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isCountryOfBirthLiveData.observeForever(booleanValidationObserver)
+        viewModel.isCountryOfBirthValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateCountryOfBirth("Argentina")
 
-        assertEquals(viewModel.isCountryOfBirthLiveData.value, true)
+        assertEquals(viewModel.isCountryOfBirthValidLiveData.value, true)
     }
 
     @Test
@@ -360,11 +347,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isCountryOfBirthLiveData.observeForever(booleanValidationObserver)
+        viewModel.isCountryOfBirthValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateCountryOfBirth("Select country of birth")
 
-        assertEquals(viewModel.isCountryOfBirthLiveData.value, false)
+        assertEquals(viewModel.isCountryOfBirthValidLiveData.value, false)
     }
 
     @Test
@@ -376,11 +363,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isGenderLiveData.observeForever(booleanValidationObserver)
+        viewModel.isGenderValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateGender(true)
 
-        assertEquals(viewModel.isGenderLiveData.value, true)
+        assertEquals(viewModel.isGenderValidLiveData.value, true)
     }
 
     @Test
@@ -392,11 +379,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isGenderLiveData.observeForever(booleanValidationObserver)
+        viewModel.isGenderValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateGender(false)
 
-        assertEquals(viewModel.isGenderLiveData.value, false)
+        assertEquals(viewModel.isGenderValidLiveData.value, false)
     }
 
     @Test
@@ -410,10 +397,10 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
         viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
         viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
-        viewModel.isGenderLiveData.observeForever(booleanValidationObserver)
-        viewModel.isCountryOfBirthLiveData.observeForever(booleanValidationObserver)
-        viewModel.isBirthDateLiveData.observeForever(booleanValidationObserver)
-        viewModel.isLegalConsentLiveData.observeForever(booleanValidationObserver)
+        viewModel.isGenderValidLiveData.observeForever(booleanValidationObserver)
+        viewModel.isCountryOfBirthValidLiveData.observeForever(booleanValidationObserver)
+        viewModel.isBirthDateValidLiveData.observeForever(booleanValidationObserver)
+        viewModel.isLegalConsentValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateFirstName("Pilar")
         viewModel.validateSurname("Alonso")
@@ -436,10 +423,10 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
         viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
         viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
-        viewModel.isGenderLiveData.observeForever(booleanValidationObserver)
-        viewModel.isCountryOfBirthLiveData.observeForever(booleanValidationObserver)
-        viewModel.isBirthDateLiveData.observeForever(booleanValidationObserver)
-        viewModel.isLegalConsentLiveData.observeForever(booleanValidationObserver)
+        viewModel.isGenderValidLiveData.observeForever(booleanValidationObserver)
+        viewModel.isCountryOfBirthValidLiveData.observeForever(booleanValidationObserver)
+        viewModel.isBirthDateValidLiveData.observeForever(booleanValidationObserver)
+        viewModel.isLegalConsentValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateFirstName("*")
         viewModel.validateSurname(null)

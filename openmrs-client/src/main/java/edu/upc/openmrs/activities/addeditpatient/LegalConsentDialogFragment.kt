@@ -176,7 +176,7 @@ class LegalConsentDialogFragment : DialogFragment() {
 
     private fun startRecordingAndPlayingAudio() {
         recordButton.setOnClickListener {
-            if (viewModel.isLegalConsentLiveData.value == true) {
+            if (viewModel.isLegalConsentValidLiveData.value == true) {
                 FileUtils.removeLocalRecordingFile(viewModel.legalConsentFileName!!)
                 viewModel.legalConsentFileName = ""
             }

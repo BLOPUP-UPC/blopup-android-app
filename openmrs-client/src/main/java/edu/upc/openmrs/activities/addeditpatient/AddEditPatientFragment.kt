@@ -184,7 +184,7 @@ class AddEditPatientFragment : BaseFragment() {
             binding.textInputLayoutSurname.error = isValid.second?.let { getString(it) }
         }
 
-        viewModel.isCountryOfBirthLiveData.observe(viewLifecycleOwner) { isValid ->
+        viewModel.isCountryOfBirthValidLiveData.observe(viewLifecycleOwner) { isValid ->
             if (isValid) {
                 binding.countryOfBirthLayout.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.corner_transparent_box, null)
@@ -194,7 +194,7 @@ class AddEditPatientFragment : BaseFragment() {
             }
         }
 
-        viewModel.isGenderLiveData.observe(viewLifecycleOwner) { isValid ->
+        viewModel.isGenderValidLiveData.observe(viewLifecycleOwner) { isValid ->
             if (isValid) {
                 binding.gendererror.makeGone()
             } else {
@@ -202,7 +202,7 @@ class AddEditPatientFragment : BaseFragment() {
             }
         }
 
-        viewModel.isBirthDateLiveData.observe(viewLifecycleOwner) { isValid ->
+        viewModel.isBirthDateValidLiveData.observe(viewLifecycleOwner) { isValid ->
             if (isValid) {
                 binding.textInputLayoutDOB.isErrorEnabled = false
                 binding.textInputLayoutYear.isErrorEnabled = false
@@ -216,7 +216,7 @@ class AddEditPatientFragment : BaseFragment() {
             }
         }
 
-        viewModel.isLegalConsentLiveData.observe(viewLifecycleOwner) { isValid ->
+        viewModel.isLegalConsentValidLiveData.observe(viewLifecycleOwner) { isValid ->
             if (isValid) {
                 binding.languageSpinner.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.admission_spinner, null)
@@ -481,7 +481,6 @@ class AddEditPatientFragment : BaseFragment() {
                 val dateTimeFormatter = DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT)
                 viewModel.dateHolder = dateTimeFormatter.parseDateTime(insertedDate)
             }
-            dobError.makeGone()
             viewModel.patient.birthdate =
                 DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
                     .print(viewModel.dateHolder)
@@ -500,10 +499,6 @@ class AddEditPatientFragment : BaseFragment() {
                 value = patientCountry?.name
             }
         })
-
-        /* Legal Consent */
-        viewModel.isLegalRecordingPresent = validateLegalConsent()
-
     }
 
     private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
@@ -707,7 +702,7 @@ class AddEditPatientFragment : BaseFragment() {
         // New patient registering
         if (!isUpdatePatient) {
             findSimilarPatients()
-            return@with
+            return
         }
         updatePatient()
     }
@@ -747,7 +742,7 @@ class AddEditPatientFragment : BaseFragment() {
     private fun isNationality() =
         binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
 
-    private fun isLegalConsent() = viewModel.isLegalConsentLiveData.value == true
+    private fun isLegalConsent() = viewModel.isLegalConsentValidLiveData.value == true
 
     private fun startPatientDashboardActivity() {
         Intent(requireActivity(), PatientDashboardActivity::class.java).apply {
