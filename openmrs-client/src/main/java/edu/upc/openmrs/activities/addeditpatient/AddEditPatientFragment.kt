@@ -34,7 +34,6 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -200,11 +199,6 @@ class AddEditPatientFragment : BaseFragment() {
             binding.textInputLayoutYear.isErrorEnabled = isValid.first
             binding.textInputLayoutDOB.error = isValid.second?.let { getString(R.string.empty_value) }
             binding.textInputLayoutYear.error = isValid.second?.let { getString(it) }
-            if (isValid.first) {
-                setCalendarStyle(0.5F)
-            } else {
-                setCalendarStyle(0.3F)
-            }
         }
 
         viewModel.isLegalConsentValidLiveData.observe(viewLifecycleOwner) { isValid ->
@@ -374,7 +368,6 @@ class AddEditPatientFragment : BaseFragment() {
                     binding.textInputLayoutYear.isErrorEnabled = true
                     binding.textInputLayoutDOB.error = getString(R.string.empty_value)
                     binding.textInputLayoutYear.error = getString(R.string.empty_value)
-                    setCalendarStyle(0.3F)
                 }
             }
 
@@ -391,13 +384,6 @@ class AddEditPatientFragment : BaseFragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
-    }
-
-    private fun setCalendarStyle(number: Float) {
-        val calendarButton = binding.datePicker
-        val layoutParams = calendarButton.layoutParams as ConstraintLayout.LayoutParams
-        layoutParams.verticalBias = number
-        calendarButton.layoutParams = layoutParams
     }
 
     private fun isNameValid() = with(binding) {
@@ -487,7 +473,7 @@ class AddEditPatientFragment : BaseFragment() {
             dobEditText.addTextChangedListener(it)
         }
 
-        datePicker.setOnClickListener {
+        textInputLayoutDOB.setEndIconOnClickListener {
             val cYear: Int
             val cMonth: Int
             val cDay: Int

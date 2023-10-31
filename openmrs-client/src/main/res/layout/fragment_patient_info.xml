@@ -222,6 +222,9 @@
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:errorIconDrawable="@null"
+                                app:endIconDrawable="@drawable/ic_date_range_24dp"
+                                app:endIconTint="?android:attr/textColorPrimary"
+                                app:endIconMode="custom"
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <EditText
@@ -238,19 +241,19 @@
                                     android:textSize="14sp" />
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <ImageButton
-                                android:id="@+id/datePicker"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="16dp"
-                                android:background="@drawable/ic_date_range_24dp"
-                                android:backgroundTint="?android:attr/textColorPrimary"
-                                app:layout_constraintEnd_toEndOf="@id/textInputLayoutDOB"
-                                app:layout_constraintBottom_toBottomOf="@id/textInputLayoutDOB"
-                                app:layout_constraintRight_toRightOf="@id/textInputLayoutDOB"
-                                app:layout_constraintTop_toTopOf="@id/textInputLayoutDOB" />
+<!--                            <ImageButton-->
+<!--                                android:id="@+id/datePicker"-->
+<!--                                android:layout_width="24dp"-->
+<!--                                android:layout_height="24dp"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_centerVertical="true"-->
+<!--                                android:layout_marginEnd="16dp"-->
+<!--                                android:background="@drawable/ic_date_range_24dp"-->
+<!--                                android:backgroundTint="?android:attr/textColorPrimary"-->
+<!--                                app:layout_constraintEnd_toEndOf="@id/textInputLayoutDOB"-->
+<!--                                app:layout_constraintBottom_toBottomOf="@id/textInputLayoutDOB"-->
+<!--                                app:layout_constraintRight_toRightOf="@id/textInputLayoutDOB"-->
+<!--                                app:layout_constraintTop_toTopOf="@id/textInputLayoutDOB" />-->
 
                             <TextView
                                 android:layout_width="0dp"
