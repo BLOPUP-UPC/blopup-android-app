@@ -52,7 +52,6 @@ import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.listeners.watcher.DateOfBirthTextWatcher
 import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
-import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.ViewUtils.getInput
 import edu.upc.openmrs.utilities.ViewUtils.isEmpty
 import edu.upc.openmrs.utilities.makeGone
@@ -85,7 +84,6 @@ class AddEditPatientFragment : BaseFragment() {
     private var patientCountry: Country? = null
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
-    internal var filePath = ""
 
     val viewModel: AddEditPatientViewModel by viewModels()
 
@@ -304,8 +302,6 @@ class AddEditPatientFragment : BaseFragment() {
             return false
         } else {
             binding.recordConsentError.makeGone()
-            viewModel.legalConsentFileName =
-                if (filePath.isEmpty()) legalConsentDialog?.fileName() else filePath
         }
         return true
     }
@@ -555,12 +551,8 @@ class AddEditPatientFragment : BaseFragment() {
         }
 
         recordLegalConsent.setOnClickListener {
-
-            if (recordLegalConsent.text == context?.getString(R.string.record_again_legal_consent)) {
-                filePath = legalConsentDialog!!.fileName()
-            }
             val selectedLanguage = languageSpinner.selectedItem.toString()
-            showLegalConsent(selectedLanguage, filePath)
+            showLegalConsent(selectedLanguage)
         }
 
         submitButton.setOnClickListener {
@@ -629,10 +621,10 @@ class AddEditPatientFragment : BaseFragment() {
         spinner.adapter = languagesAdapter
     }
 
-    private fun showLegalConsent(language: String, filePath: String?) {
+    private fun showLegalConsent(language: String) {
 
         if (isMicrophonePresent()) {
-            legalConsentDialog = LegalConsentDialogFragment.newInstance(language, filePath)
+            legalConsentDialog = LegalConsentDialogFragment.newInstance(language)
             legalConsentDialog?.show(childFragmentManager, LegalConsentDialogFragment.TAG)
             childFragmentManager.findFragmentById(R.id.linearLayout_consent)?.onStart()
         } else {
@@ -755,8 +747,7 @@ class AddEditPatientFragment : BaseFragment() {
     private fun isNationality() =
         binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
 
-    private fun isLegalConsent() =
-        FileUtils.fileIsCreatedSuccessfully(legalConsentDialog?.fileName()) || filePath.isNotEmpty()
+    private fun isLegalConsent() = viewModel.isLegalConsentLiveData.value == true
 
     private fun startPatientDashboardActivity() {
         Intent(requireActivity(), PatientDashboardActivity::class.java).apply {

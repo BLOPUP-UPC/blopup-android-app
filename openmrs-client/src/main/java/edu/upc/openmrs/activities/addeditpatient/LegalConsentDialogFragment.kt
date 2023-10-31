@@ -36,7 +36,6 @@ class LegalConsentDialogFragment : DialogFragment() {
     private lateinit var playPauseButton: TextView
     private lateinit var stopButton: BottomAppBar
     private lateinit var mFileName: String
-    private lateinit var fileName: String
 
     val viewModel: AddEditPatientViewModel by viewModels({requireParentFragment()})
 
@@ -48,7 +47,6 @@ class LegalConsentDialogFragment : DialogFragment() {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
 
         val language = arguments?.getString(ARG_LANGUAGE)
-        fileName = arguments?.getString(ARG_FILE_PATH)!!
         val languageCode = context?.let { LanguageUtils.getLanguageCode(language, it) }
 
         getRecordingFilePath().also { mFileName = it }
@@ -163,6 +161,7 @@ class LegalConsentDialogFragment : DialogFragment() {
             this.dismiss()
 
             if (fileIsCreatedSuccessfully(mFileName)) {
+                viewModel.legalConsentFileName = mFileName
                 viewModel.validateLegalConsent(true)
             }
         }
@@ -177,10 +176,9 @@ class LegalConsentDialogFragment : DialogFragment() {
 
     private fun startRecordingAndPlayingAudio() {
         recordButton.setOnClickListener {
-            if (fileName.isNotEmpty()) {
-                FileUtils.removeLocalRecordingFile(fileName)
-                val parent = parentFragment as AddEditPatientFragment
-                parent.filePath = ""
+            if (viewModel.isLegalConsentLiveData.value == true) {
+                FileUtils.removeLocalRecordingFile(viewModel.legalConsentFileName!!)
+                viewModel.legalConsentFileName = ""
             }
             audioRecorder.startRecording()
             audioRecorder.startPlaying()
@@ -213,13 +211,11 @@ class LegalConsentDialogFragment : DialogFragment() {
     companion object {
         const val TAG: String = "legal_consent"
         private const val ARG_LANGUAGE = "language"
-        private const val ARG_FILE_PATH = "filePath"
 
-        fun newInstance(language: String, filePath: String?): LegalConsentDialogFragment {
+        fun newInstance(language: String): LegalConsentDialogFragment {
             val fragment = LegalConsentDialogFragment()
             val args = Bundle()
             args.putString(ARG_LANGUAGE, language)
-            args.putString(ARG_FILE_PATH, filePath)
             fragment.arguments = args
             return fragment
         }
