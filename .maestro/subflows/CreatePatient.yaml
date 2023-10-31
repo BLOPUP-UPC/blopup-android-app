@@ -13,7 +13,7 @@ appId: edu.upc
 - tapOn: "Female"
 - scrollUntilVisible:
     element:
-      id: "edu.upc:id/datePicker"
+      id: "edu.upc:id/dobEditText"
     visibilityPercentage: 100
 - tapOn: "Date of Birth (dd/MM/yyyy)"
 - inputText: "20/01/1980"
