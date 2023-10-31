@@ -51,7 +51,6 @@ import edu.upc.openmrs.activities.addeditpatient.countryofbirth.CountryOfBirthDi
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.listeners.watcher.DateOfBirthTextWatcher
-import edu.upc.openmrs.listeners.watcher.PatientBirthdateValidatorWatcher
 import edu.upc.openmrs.utilities.ViewUtils.getInput
 import edu.upc.openmrs.utilities.ViewUtils.isEmpty
 import edu.upc.openmrs.utilities.makeGone
@@ -197,15 +196,13 @@ class AddEditPatientFragment : BaseFragment() {
         }
 
         viewModel.isBirthDateValidLiveData.observe(viewLifecycleOwner) { isValid ->
-            if (isValid) {
-                binding.textInputLayoutDOB.isErrorEnabled = false
-                binding.textInputLayoutYear.isErrorEnabled = false
+            binding.textInputLayoutDOB.isErrorEnabled = isValid.first
+            binding.textInputLayoutYear.isErrorEnabled = isValid.first
+            binding.textInputLayoutDOB.error = isValid.second?.let { getString(R.string.empty_value) }
+            binding.textInputLayoutYear.error = isValid.second?.let { getString(it) }
+            if (isValid.first) {
                 setCalendarStyle(0.5F)
             } else {
-                binding.textInputLayoutDOB.isErrorEnabled = true
-                binding.textInputLayoutYear.isErrorEnabled = true
-                binding.textInputLayoutDOB.error = getString(R.string.empty_value)
-                binding.textInputLayoutYear.error = getString(R.string.empty_value)
                 setCalendarStyle(0.3F)
             }
         }
@@ -521,10 +518,6 @@ class AddEditPatientFragment : BaseFragment() {
                 datePicker.maxDate = System.currentTimeMillis()
                 setTitle(getString(R.string.date_picker_title))
             }.show()
-        }
-
-        PatientBirthdateValidatorWatcher(dobEditText, estimatedYear).let {
-            estimatedYear.addTextChangedListener(it)
         }
     }
 

@@ -20,6 +20,7 @@ import edu.upc.sdk.library.models.PersonAttributeType
 import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.StringUtils
 import org.joda.time.DateTime
@@ -55,8 +56,8 @@ class AddEditPatientViewModel @Inject constructor(
     private val _isGenderValidLiveData = MutableLiveData<Boolean>(false)
     val isGenderValidLiveData: LiveData<Boolean> get() = _isGenderValidLiveData
 
-    private val _isBirthDateValidLiveData = MutableLiveData<Boolean>(false)
-    val isBirthDateValidLiveData: LiveData<Boolean> get() = _isBirthDateValidLiveData
+    private val _isBirthDateValidLiveData = MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
+    val isBirthDateValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isBirthDateValidLiveData
 
     private val _isLegalConsentValidLiveData = MutableLiveData<Boolean>(false)
     val isLegalConsentValidLiveData: LiveData<Boolean> get() = _isLegalConsentValidLiveData
@@ -216,7 +217,13 @@ class AddEditPatientViewModel @Inject constructor(
     }
 
     fun validateBirthDate(input: String?) {
-        _isBirthDateValidLiveData.value = !input.isNullOrBlank()
+        if (input.isNullOrBlank()) {
+            _isBirthDateValidLiveData.value = Pair(false, R.string.empty_value)
+        } else if (input.toIntOrNull() != null && input.toInt() > MAX_PATIENT_AGE) {
+            _isBirthDateValidLiveData.value = Pair(false, R.string.age_out_of_bounds_message)
+        } else {
+            _isBirthDateValidLiveData.value = Pair(true, null)
+        }
         isEverythingValid()
     }
 
@@ -231,7 +238,7 @@ class AddEditPatientViewModel @Inject constructor(
                     _isSurnameValidLiveData.value?.first == true &&
                     _isCountryOfBirthValidLiveData.value == true &&
                     _isGenderValidLiveData.value == true &&
-                    _isBirthDateValidLiveData.value == true &&
+                    _isBirthDateValidLiveData.value?.first == true &&
                     _isLegalConsentValidLiveData.value == true
     }
 }

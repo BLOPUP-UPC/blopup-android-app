@@ -27,7 +27,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.times
@@ -56,7 +55,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     lateinit var recordingRepository: RecordingRepository
 
     @Mock
-    private lateinit var nameValidationObserver: Observer<Pair<Boolean, Int?>>
+    private lateinit var pairValidationObserver: Observer<Pair<Boolean, Int?>>
 
     @Mock
     private lateinit var booleanValidationObserver: Observer<Boolean>
@@ -232,7 +231,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isNameValidLiveData.observeForever(pairValidationObserver)
 
         viewModel.validateFirstName("Pilar")
 
@@ -247,7 +246,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isNameValidLiveData.observeForever(pairValidationObserver)
 
         viewModel.validateFirstName(null)
 
@@ -264,7 +263,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isNameValidLiveData.observeForever(pairValidationObserver)
 
         viewModel.validateFirstName("*")
 
@@ -281,7 +280,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isSurnameValidLiveData.observeForever(pairValidationObserver)
 
         viewModel.validateSurname("Alonso")
 
@@ -297,7 +296,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isSurnameValidLiveData.observeForever(pairValidationObserver)
 
         viewModel.validateSurname(null)
 
@@ -314,7 +313,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isSurnameValidLiveData.observeForever(pairValidationObserver)
 
         viewModel.validateSurname("*")
 
@@ -395,11 +394,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
-        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isNameValidLiveData.observeForever(pairValidationObserver)
+        viewModel.isSurnameValidLiveData.observeForever(pairValidationObserver)
         viewModel.isGenderValidLiveData.observeForever(booleanValidationObserver)
         viewModel.isCountryOfBirthValidLiveData.observeForever(booleanValidationObserver)
-        viewModel.isBirthDateValidLiveData.observeForever(booleanValidationObserver)
+        viewModel.isBirthDateValidLiveData.observeForever(pairValidationObserver)
         viewModel.isLegalConsentValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateFirstName("Pilar")
@@ -421,11 +420,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.isNameValidLiveData.observeForever(nameValidationObserver)
-        viewModel.isSurnameValidLiveData.observeForever(nameValidationObserver)
+        viewModel.isNameValidLiveData.observeForever(pairValidationObserver)
+        viewModel.isSurnameValidLiveData.observeForever(pairValidationObserver)
         viewModel.isGenderValidLiveData.observeForever(booleanValidationObserver)
         viewModel.isCountryOfBirthValidLiveData.observeForever(booleanValidationObserver)
-        viewModel.isBirthDateValidLiveData.observeForever(booleanValidationObserver)
+        viewModel.isBirthDateValidLiveData.observeForever(pairValidationObserver)
         viewModel.isLegalConsentValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateFirstName("*")
