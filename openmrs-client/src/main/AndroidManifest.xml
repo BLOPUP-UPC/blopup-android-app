@@ -146,7 +146,7 @@
             android:name="edu.upc.openmrs.services.AuthenticateCheckService"
             android:enabled="true" />
 
-        <activity android:name="edu.upc.openmrs.activities.matchingpatients.MatchingPatientsActivity" />
+        <activity android:name="edu.upc.openmrs.activities.matchingpatients.MatchingPatientsActivity" android:theme="@style/AppTheme" />
         <activity
             android:name="edu.upc.openmrs.activities.logs.LogsActivity"
             android:label="@string/title_activity_logs"
@@ -156,7 +156,8 @@
             android:name="edu.upc.openmrs.activities.patientdashboard.charts.ChartsViewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:parentActivityName="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name="edu.upc.openmrs.activities.community.contact.ContactUsActivity"
             android:label="@string/contact_us"
@@ -167,10 +168,12 @@
 
         <activity
             android:name="edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <activity
             android:name="edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <activity
             android:name="edu.upc.blopup.vitalsform.VitalsFormActivity"
             android:exported="false"

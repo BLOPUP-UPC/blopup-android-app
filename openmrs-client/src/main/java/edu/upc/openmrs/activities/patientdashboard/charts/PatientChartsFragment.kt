@@ -108,8 +108,8 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     @RequiresApi(Build.VERSION_CODES.O)
     override fun showChartActivity(vitalName: String) {
         try {
-            val systolicData = observationList!!.getJSONObject("Systolic")
-            val diastolicData = observationList!!.getJSONObject("Diastolic")
+            val systolicData = observationList!!.getJSONObject("Systolic blood pressure")
+            val diastolicData = observationList!!.getJSONObject("Diastolic blood pressure")
 
             val map = HashMap<String, Pair<Float, Float>>()
             val dates = systolicData.keys()
