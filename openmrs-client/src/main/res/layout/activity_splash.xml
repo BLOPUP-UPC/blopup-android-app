@@ -40,13 +40,4 @@
         android:textSize="30sp"
         app:layout_constraintTop_toBottomOf="@id/logo" />
 
-    <TextView
-        android:id="@+id/client_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/dark_grey_8x"
-        android:textSize="21sp"
-        app:layout_constraintTop_toBottomOf="@id/organization_name" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

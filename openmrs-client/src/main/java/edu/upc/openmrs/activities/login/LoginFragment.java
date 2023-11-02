@@ -91,15 +91,6 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
     }
 
     private void initListeners() {
-        binding.loginSyncButton.setOnClickListener(view -> {
-            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(OpenMRS.getInstance());
-            boolean syncState = prefs.getBoolean("sync", true);
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(OpenMRS.getInstance()).edit();
-            editor.putBoolean("sync", !syncState);
-            editor.apply();
-            setSyncButtonState(!syncState);
-        });
-
         loginValidatorWatcher = new LoginValidatorWatcher(binding.loginUrlField, binding.loginUsernameField,
                 binding.loginPasswordField, binding.locationSpinner, binding.loginButton);
 
@@ -160,7 +151,6 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(OpenMRS.getInstance());
         boolean syncState = prefs.getBoolean("sync", true);
-        setSyncButtonState(syncState);
         hideUrlLoadingAnimation();
     }
 
@@ -179,15 +169,6 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(userGuideUrl));
         startActivity(intent);
-    }
-
-    private void setSyncButtonState(boolean syncEnabled) {
-        if (syncEnabled) {
-            binding.syncLabel.setText(getString(R.string.login_online));
-        } else {
-            binding.syncLabel.setText(getString(R.string.login_offline));
-        }
-        binding.loginSyncButton.setChecked(syncEnabled);
     }
 
     @Override

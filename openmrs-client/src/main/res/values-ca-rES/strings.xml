@@ -37,7 +37,7 @@
     <string name="male">Masculí</string>
     <string name="female">Femení</string>
     <string name="non_binary">No binari</string>
-    <string name="dob_hint">Data de Naixement (dd/MM/yyyy)</string>
+    <string name="dob_hint">Data de naixement (dd/mm/yyyy)</string>
     <string name="estyr">Anys aproximats</string>
     <string name="age_out_of_bounds_message">L\'edat del pacient ha d\'estar entre els 0 i els %d</string>
     <string name="register_patient_error">Alguna cosa va fallar del nostre costat i el pacient no ha estat creat. Si us plau, torneu-ho a provar.</string>
@@ -48,8 +48,8 @@
     <string name="auth_failed_dialog_message">Nom d\'usuari o paraula de pas incorrectes. Si us plau, prova-ho un altre cop.</string>
     <string name="no_internet_conn_dialog_message">No hi ha connexió a internet. [...]</string>
     <string name="similar_patients_dialog_title">S\'han trobat pacient similars</string>
-    <string name="logout_dialog_title">Tancant sessió</string>
-    <string name="logout_dialog_message">Segur que vols tancar la sessió amb el servidor?</string>
+    <string name="logout_dialog_title">Tancant Sessió</string>
+    <string name="logout_dialog_message">Segur que vols tancar la sessió?</string>
     <string name="logout_dialog_button">Tancar sessió</string>
     <string name="credentials_changed_dialog_title">Credencials modificades</string>
     <string name="credentials_changed_dialog_message">Les credencials s\'han modificat a l\'aplicació web. La sessió s\'ha tancat automàticament.</string>
@@ -57,11 +57,11 @@
     <string name="end_visit_dialog_message">Confirmes que vols finalitzar aquesta visita?</string>
     <string name="start_visit_dialog_title">Iniciar visita</string>
     <string name="start_visit_dialog_message">Confirmes que vols iniciar una visita per %1$s ara?</string>
-    <string name="start_visit_unsuccessful_dialog_title">Iniciar nova visita</string>
+    <string name="start_visit_unsuccessful_dialog_title">Iniciar Nova Visita</string>
     <string name="start_visit_unsuccessful_dialog_message">Hi ha una visita activa per a %1$s. Pots cancel·lar i tornar a la visita activa, o tancar-la i iniciar-ne una de nova.</string>
     <string name="delete_patient_dialog_message">Confirmes que vols eliminar aquest pacient?</string>
     <string name="location_dialog_title">Selecciona Ubicació</string>
-    <string name="location_dialog_current_location">Ubicació Actual:</string>
+    <string name="location_dialog_current_location">Ubicació actual:</string>
     <string name="reset_dialog_message">Tota la informació del pacient serà esborrada</string>
     <string name="dialog_button_cancel">Cancel·lar</string>
     <string name="dialog_button_confirm">Confirmar</string>
@@ -116,7 +116,7 @@
     <string name="patient_postal_label">Codi postal</string>
     <string name="patient_state_label">Estat</string>
     <string name="patient_country_label">País</string>
-    <string name="date_picker_title">Seleccionar Data de Naixement</string>
+    <string name="date_picker_title">Seleccionar data de naixement</string>
     <string name="action_active_visits">Visites actives</string>
     <string name="action_form_entry">Formulari d\'entrada</string>
     <string name="action_find_visits">Trobar visites Actives</string>
@@ -198,7 +198,7 @@
     <string name="dialog_button_leave">Sortir</string>
     <string name="logout_success">Sessió tancada correctament</string>
     <string name="url_privacy_policy">https://www.upc.edu/ca/avis-legal/condicions-dus-i-privacitat</string>
-    <string name="settings_privacy_policy">Política de Privacitat</string>
+    <string name="settings_privacy_policy">Política de privacitat</string>
     <string name="action_submit">Enviar</string>
     <string name="action_reset">Reiniciar</string>
     <string name="delete_multiple_patients">Esborrar pacients?</string>
@@ -287,8 +287,8 @@
     <string name="go_to_irc">IRC</string>
     <string name="open">Anar a</string>
     <string name="email_us">Envia\'ns un email</string>
-    <string name="help_message">El nostre equip farà tot el possible per ajudar-te, comunica\'t amb nosaltres fent servir els formulari.</string>
     <string name="contact_us">Contacta\'ns</string>
+    <string name="contact_us_text">Contacta\'ns</string>
     <string name="no_mailing_client_found">No hi ha correus electrònics del client instal·lats</string>
     <string name="contact_us_or">O</string>
     <string name="showcase_find_patients">Prem aquí per buscar tots els pacients</string>
@@ -314,7 +314,7 @@
     <string name="admission_admitted_by">Admès per:</string>
     <string name="admission_encounter_role">Rol:</string>
     <string name="admission_admitted_to">Admès a:</string>
-    <string name="action_about_activity">Sobre nosaltres</string>
+    <string name="action_about_activity">Sobre Nosaltres</string>
     <string name="action_about">Sobre nosaltres</string>
     <string name="about_openmrs_1">OpenMRS és una comunitat global dedicada, virtuosa i generosa de contribuïdors que construeixen i mantenen la plataforma OpenMRS i altres productes tècnis fonamentals.</string>
     <string name="about_openmrs_2">OpenMRS és una plataforma que el països i els implementadors usen per crear un EMR customitzat en resposta a les necesitats actuals.</string>
@@ -376,7 +376,7 @@
     <string name="recording_info">Please wait until this recording is completed</string>
     <string name="recording_in_progress">Gravació en procés</string>
     <string name="edit"><u>Editar</u></string>
-    <string name="remove_vitals">Eliminar vitals</string>
+    <string name="remove_vitals">Eliminar Vitals</string>
     <string name="end_vitals_dialog_message">Si, cancel·la</string>
     <string name="keep_vitals_dialog_message">No, mantingues</string>
     <string name="cancel_vitals_dialog_message">Si cancel les la presa de les teves dades vitals, també s\'anul·lará la visita mèdica. Vols continuar?</string>

@@ -18,7 +18,11 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
-import android.view.animation.*
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import edu.upc.R
 import edu.upc.databinding.ActivitySplashBinding
 import edu.upc.openmrs.utilities.LanguageUtils
@@ -40,9 +44,6 @@ class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         val typeface = Typeface.createFromAsset(assets, ApplicationConstants.TypeFacePathConstants.MONTSERRAT)
         with(binding) {
             organizationName.typeface = typeface
-//            organizationName.setText(R.string.organization_name)
-            clientName.typeface = typeface
-            clientName.setText(R.string.client_name)
         }
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         val move = AnimationUtils.loadAnimation(applicationContext, R.anim.splash_screen_logo_anim)

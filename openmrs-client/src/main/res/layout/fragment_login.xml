@@ -37,7 +37,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:contentDescription="@string/openmrs_logo"
             app:srcCompat="@drawable/logo_blopup"
             android:visibility="visible"
@@ -56,17 +56,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/openmrsLogo" />
 
-        <TextView
-            android:id="@+id/client_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/client_name"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/organization_name" />
-
         <LinearLayout
             android:id="@+id/loginFormView"
             android:layout_width="fill_parent"
@@ -75,7 +64,7 @@
             android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/client_name">
+            app:layout_constraintTop_toBottomOf="@id/organization_name">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/textInputLayoutLoginURL"
@@ -212,31 +201,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/loginSyncButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp" />
-
-                    <TextView
-                        android:id="@+id/syncLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:fontFamily="@font/montserrat"
-                        android:text="@string/login_offline"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

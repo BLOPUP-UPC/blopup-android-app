@@ -15,7 +15,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:ignore="MissingTranslation">BLOPUP</string>
     <string name="organization_name" translatable="false">BLOPUP</string>
-    <string name="client_name" translatable="false">Client</string>
     <string name="action_settings" tools:ignore="MissingTranslation">Settings</string>
     <string name="action_logout" tools:ignore="MissingTranslation">Logout</string>
     <string name="action_location" tools:ignore="MissingTranslation">Location</string>
@@ -30,12 +29,11 @@
     <string name="login_button" tools:ignore="MissingTranslation">Login</string>
     <string name="login_username_hint" tools:ignore="MissingTranslation">Username</string>
     <string name="login_password_hint" tools:ignore="MissingTranslation">Password</string>
-    <string name="login_location_select" tools:ignore="MissingTranslation">Session Location</string>
+    <string name="login_location_select" tools:ignore="MissingTranslation">Session location</string>
     <string name="req_star" tools:ignore="MissingTranslation"><![CDATA[<font color=\'#616161\'> * </font>]]></string>
     <string name="warning_dialog_title" tools:ignore="MissingTranslation">Warning</string>
     <string name="warning_lost_data_dialog" tools:ignore="MissingTranslation">Changing the URL, username or password will erase all the data. Are you sure?</string>
     <string name="forgot_button_ok" tools:ignore="MissingTranslation">Dismiss</string>
-    <string name="login_offline" translatable="false">Offline</string>
     <string name="login_online" translatable="false">Online</string>
 
     <!-- AddEditPatient -->
@@ -49,13 +47,13 @@
     <string name="reg_firstname_hint" tools:ignore="MissingTranslation">Name*</string>
     <string name="reg_contact_firstname_hint" tools:ignore="MissingTranslation">First Name</string>
     <string name="reg_midname_hint" tools:ignore="MissingTranslation">Middle Name</string>
-    <string name="reg_surname_hint" tools:ignore="MissingTranslation">Family Name*</string>
+    <string name="reg_surname_hint" tools:ignore="MissingTranslation">Family name*</string>
     <string name="reg_document_id_hint" tools:ignore="MissingTranslation">Document ID</string>
-    <string name="reg_phone_number_hint" tools:ignore="MissingTranslation">Phone Number</string>
-    <string name="reg_ques_name" tools:ignore="MissingTranslation">Patient\’s Name</string>
+    <string name="reg_phone_number_hint" tools:ignore="MissingTranslation">Phone number</string>
+    <string name="reg_ques_name" tools:ignore="MissingTranslation">Patient\’s name</string>
     <string name="reg_ques_gender" tools:ignore="MissingTranslation">Patient\'s gender*</string>
     <string name="reg_ques_dob" tools:ignore="MissingTranslation">Patient\'s birth date*</string>
-    <string name="label_or" tools:ignore="MissingTranslation">OR</string>
+    <string name="label_or" tools:ignore="MissingTranslation">Or</string>
     <string name="country_of_birth_label" tools:ignore="MissingTranslation">Country of birth*</string>
     <string name="addr1_hint" tools:ignore="MissingTranslation">Address Line 1</string>
     <string name="addr2_hint" tools:ignore="MissingTranslation">Address Line 2</string>
@@ -63,9 +61,9 @@
     <string name="atleastone" tools:ignore="MissingTranslation">Fill at least one address field</string>
     <string name="male" tools:ignore="MissingTranslation">Male</string>
     <string name="female" tools:ignore="MissingTranslation">Female</string>
-    <string name="non_binary" tools:ignore="MissingTranslation">Non Binary</string>
-    <string name="dob_hint" tools:ignore="MissingTranslation">Date of Birth (dd/MM/yyyy)</string>
-    <string name="estyr" tools:ignore="MissingTranslation">Estimated Years</string>
+    <string name="non_binary" tools:ignore="MissingTranslation">Non binary</string>
+    <string name="dob_hint" tools:ignore="MissingTranslation">Date of birth (dd/mm/yyyy)</string>
+    <string name="estyr" tools:ignore="MissingTranslation">Estimated years</string>
     <string name="age_out_of_bounds_message" tools:ignore="MissingTranslation">Patient\'s age must be between 0 and %d</string>
     <string name="register_patient_error" tools:ignore="MissingTranslation">Something went wrong and the patient has not been created. Please, try again.</string>
     <string name="update_patient_success" tools:ignore="MissingTranslation">Patient %s updated</string>
@@ -84,26 +82,26 @@
     <string name="similar_patients_dialog_title" tools:ignore="MissingTranslation">Similar patients found</string>
 
     <!-- Logout dialog -->
-    <string name="logout_dialog_title" tools:ignore="MissingTranslation">Logging out</string>
-    <string name="logout_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to logout from OpenMRS client?</string>
+    <string name="logout_dialog_title" tools:ignore="MissingTranslation">Logging Out</string>
+    <string name="logout_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to logout?</string>
     <string name="logout_dialog_button" tools:ignore="MissingTranslation">Logout</string>
     <!--Credentials Changed dialog-->
     <string name="credentials_changed_dialog_title" tools:ignore="MissingTranslation">Credentials changed</string>
     <string name="credentials_changed_dialog_message" tools:ignore="MissingTranslation">Your credentials have been changed in the web app. You are logged out automatically.</string>
     <!-- End Visit dialog -->
-    <string name="end_visit_dialog_title" tools:ignore="MissingTranslation">End Visit</string>
+    <string name="end_visit_dialog_title" tools:ignore="MissingTranslation">End visit</string>
     <string name="end_visit_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to end this visit?</string>
     <!-- Start visit dialog -->
     <string name="start_visit_dialog_title" tools:ignore="MissingTranslation">Start Visit</string>
     <string name="start_visit_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to start visit for %1$s now?</string>
     <!-- Start visit dialog unsuccessful-->
-    <string name="start_visit_unsuccessful_dialog_title" tools:ignore="MissingTranslation">Start new visit</string>
+    <string name="start_visit_unsuccessful_dialog_title" tools:ignore="MissingTranslation">Start New Visit</string>
     <string name="start_visit_unsuccessful_dialog_message" tools:ignore="MissingTranslation">There is an active visit for %1$s. You can cancel and return to the active visit, or close it and start a new one.</string>
     <!-- Delete patient dialog message -->
     <string name="delete_patient_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to delete this patient?</string>
     <!-- Location dialog  -->
     <string name="location_dialog_title" tools:ignore="MissingTranslation">Select Location</string>
-    <string name="location_dialog_current_location" tools:ignore="MissingTranslation">Current Location: </string>
+    <string name="location_dialog_current_location" tools:ignore="MissingTranslation">Current location: </string>
 
     <!-- Reset patient info dialog -->
     <string name="reset_dialog_message" tools:ignore="MissingTranslation">All patient information entered will be erased</string>
@@ -179,7 +177,7 @@
     <string name="patient_postal_label" tools:ignore="MissingTranslation">Postal Code</string>
     <string name="patient_state_label" tools:ignore="MissingTranslation">State</string>
     <string name="patient_country_label" tools:ignore="MissingTranslation">Country</string>
-    <string name="date_picker_title" tools:ignore="MissingTranslation">Select Date of Birth</string>
+    <string name="date_picker_title" tools:ignore="MissingTranslation">Select date of birth</string>
 
     <!-- Find Active visit activity -->
     <string name="action_active_visits" tools:ignore="MissingTranslation">Active Visits</string>
@@ -220,10 +218,10 @@
     <string name="no_vitals_recorded" tools:ignore="MissingTranslation">No vitals recorded</string>
 
     <!-- Visit dashboard activity -->
-    <string name="action_end_visit" tools:ignore="MissingTranslation">End Visit</string>
+    <string name="action_end_visit" tools:ignore="MissingTranslation">End visit</string>
     <string name="visit_dashboard_label" tools:ignore="MissingTranslation">Encounters</string>
-    <string name="list_visit_selector_show" tools:ignore="MissingTranslation">Show Details</string>
-    <string name="list_visit_selector_hide" tools:ignore="MissingTranslation">Hide Details</string>
+    <string name="list_visit_selector_show" tools:ignore="MissingTranslation">Show details</string>
+    <string name="list_visit_selector_hide" tools:ignore="MissingTranslation">Hide details</string>
     <string name="vitals" tools:ignore="MissingTranslation">Vitals</string>
     <string name="visit_exp_list_empty" tools:ignore="MissingTranslation">Visit has no encounters yet.</string>
     <string name="visit_fetching_error" tools:ignore="MissingTranslation">Error with fetching the visit</string>
@@ -247,7 +245,7 @@
     <string name="title_activity_form_create" translatable="false">FormCreateActivity</string>
 
     <!-- Recording Legal Consent -->
-    <string name="record_patient_consent" tools:ignore="MissingTranslation">Record Patient Consent*</string>
+    <string name="record_patient_consent" tools:ignore="MissingTranslation">Record patient consent*</string>
      <string name="recording_info" tools:ignore="MissingTranslation">Please wait until this recording is completed</string>
     <string name="recording_inprogress" tools:ignore="MissingTranslation">Recording In Progress …</string>
 
@@ -314,7 +312,7 @@
 
     <string name="logout_success" tools:ignore="MissingTranslation">Logged out successfully!</string>
     <string name="url_privacy_policy" tools:ignore="MissingTranslation">https://www.upc.edu/en/disclaimer/terms-of-use-and-privacy-policy</string>
-    <string name="settings_privacy_policy" tools:ignore="MissingTranslation">Privacy Policy</string>
+    <string name="settings_privacy_policy" tools:ignore="MissingTranslation">Privacy policy</string>
 
     <string name="action_submit" tools:ignore="MissingTranslation">Submit</string>
     <string name="action_reset" tools:ignore="MissingTranslation">Reset</string>
@@ -324,7 +322,7 @@
     <string name="multiple_patients_deleted" tools:ignore="MissingTranslation">Patients Deleted Successfully</string>
     <string name="location_successfully_updated" tools:ignore="MissingTranslation">Location Updated Successfully</string>
     <string name="delete" tools:ignore="MissingTranslation">delete</string>
-    <string name="rate_us_string" tools:ignore="MissingTranslation">Rate Us</string>
+    <string name="rate_us_string" tools:ignore="MissingTranslation">Rate us</string>
     <string name="settings_frag_size" tools:ignore="MissingTranslation">Size:</string>
     <string name="frag_settings_build" tools:ignore="MissingTranslation">Build:</string>
     <string name="action_provider_management" tools:ignore="MissingTranslation">Manage Providers</string>
@@ -453,10 +451,10 @@
     <string name="go_to_irc" tools:ignore="MissingTranslation">IRC</string>
     <string name="open" tools:ignore="MissingTranslation">Go to</string>
     <string name="email_us" tools:ignore="MissingTranslation">Email us</string>
-    <string name="help_message" tools:ignore="MissingTranslation">Our Team will try our best to help you. Please reach out to us by using the services above.</string>
     <string name="contact_forum_url" translatable="false">https://talk.openmrs.org/</string>
     <string name="contact_irc_url" translatable="false">https://wiki.openmrs.org/display/IRC/Home</string>
     <string name="contact_us" tools:ignore="MissingTranslation">Contact Us</string>
+    <string name="contact_us_text" tools:ignore="MissingTranslation">Contact us</string>
     <string name="no_mailing_client_found" tools:ignore="MissingTranslation">There are no email clients installed.</string>
     <string name="contact_us_or" tools:ignore="MissingTranslation">OR</string>
     <string name="blopup_helpdesk" translatable="false">Blopup helpdesk</string>
@@ -500,7 +498,7 @@
     <string name="vitals_successfully" translatable="false">Vitals completed</string>
 
     <!-- About Activity -->
-    <string name="action_about_activity" tools:ignore="MissingTranslation">About us</string>
+    <string name="action_about_activity" tools:ignore="MissingTranslation">About Us</string>
     <string name="action_about" tools:ignore="MissingTranslation">About us</string>
     <string name="about_openmrs_1" tools:ignore="MissingTranslation">OpenMRS is a global community of truly dedicated, talented, and generous contributors who build and maintain the OpenMRS platform and other, foundational OpenMRS technical products.</string>
     <string name="about_openmrs_2" tools:ignore="MissingTranslation">OpenMRS is a platform that countries and implementers use to create a customized EMR system in response to actual needs on the ground.</string>
@@ -563,7 +561,7 @@
     <string name="start" tools:ignore="MissingTranslation">Start:</string>
     <string name="end" tools:ignore="MissingTranslation">End:</string>
     <string name="edit" translatable="false"><u>Edit</u></string>
-    <string name="remove_vitals" tools:ignore="MissingTranslation">Remove vitals</string>
+    <string name="remove_vitals" tools:ignore="MissingTranslation">Remove Vitals</string>
     <string name="end_vitals_dialog_message" tools:ignore="MissingTranslation">Yes, cancel</string>
     <string name="keep_vitals_dialog_message" tools:ignore="MissingTranslation">No, continue</string>
     <string name="cancel_vitals_dialog_message" tools:ignore="MissingTranslation">If you cancel the vitals recording, the medical visit will also be canceled. Do you want to proceed?</string>

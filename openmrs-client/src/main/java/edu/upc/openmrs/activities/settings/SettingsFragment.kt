@@ -71,7 +71,6 @@ class SettingsFragment :  BaseFragment() {
 
     private fun addLogsInfo() = with(binding) {
         logsDesc1TextView.text = viewModel.logsFileName
-        logsDesc2TextView.text = "${getString(R.string.settings_frag_size)} ${viewModel.logSize} kB"
         logsLayout.setOnClickListener {
             startActivity(Intent(context, LogsActivity::class.java))
         }

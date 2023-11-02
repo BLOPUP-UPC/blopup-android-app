@@ -14,7 +14,7 @@
     <string name="reg_surname_hint">Apellido*</string>
     <string name="reg_document_id_hint">DNI</string>
     <string name="reg_phone_number_hint">Número de teléfono</string>
-    <string name="reg_ques_name">Nombre del Paciente</string>
+    <string name="reg_ques_name">Nombre del paciente</string>
     <string name="forgot_button_ok">Cancelar</string>
     <string name="emptyerror">Obligatorio</string>
     <string name="gender_error">Por favor, elige una opción</string>
@@ -29,7 +29,7 @@
     <string name="male">Masculino</string>
     <string name="female">Femenino</string>
     <string name="non_binary">No binario</string>
-    <string name="dob_hint">Fecha de Nacimiento (dd/MM/yyyy)</string>
+    <string name="dob_hint">Fecha de nacimiento (dd/mm/yyyy)</string>
     <string name="estyr">Años estimados</string>
     <string name="age_out_of_bounds_message">La edad del paciente debe estar entre los 0 y los %d</string>
     <string name="register_patient_error">Algo falló de nuestro lado y el paciente no ha sido creado. Por favor, intentelo de nuevo.</string>
@@ -40,8 +40,8 @@
     <string name="auth_failed_dialog_message">Nombre de usuario o contraseña incorrectos. Por favor, intentar nuevamente.</string>
     <string name="no_internet_conn_dialog_message">No hay conexión a internet. [...]</string>
     <string name="similar_patients_dialog_title">Fueron encontrados pacientes similares</string>
-    <string name="logout_dialog_title">Cerrando sesión</string>
-    <string name="logout_dialog_message">¿Confirmas que quieres cerrar la sesión con el servidor?</string>
+    <string name="logout_dialog_title">Cerrando Sesión</string>
+    <string name="logout_dialog_message">¿Confirmas que quieres cerrar la sesión?</string>
     <string name="logout_dialog_button">Cerrar sesión</string>
     <string name="credentials_changed_dialog_title">Credenciales cambiadas</string>
     <string name="credentials_changed_dialog_message">Las credenciales han sido cambiadas en la aplicación web. La sesión se ha cerrado automaticamente.</string>
@@ -49,7 +49,7 @@
     <string name="start_visit_dialog_message">¿Está seguro que desea iniciar una consulta para %1$s ahora?</string>
     <string name="end_visit_dialog_message">¿Está seguro que desea concluir esta consulta?</string>
     <string name="start_visit_dialog_title">Iniciar visita</string>
-    <string name="start_visit_unsuccessful_dialog_title">Iniciar nueva visita</string>
+    <string name="start_visit_unsuccessful_dialog_title">Iniciar Nueva Visita</string>
     <string name="start_visit_unsuccessful_dialog_message">Hay una visita activa para %1$s. Puedes cancelar y volver a la visita activa, o cerrarla e iniciar una nueva.</string>
     <string name="delete_patient_dialog_message">¿Usted está seguro que desea eliminar a este paciente?</string>
     <string name="location_dialog_title">Selecciona Ubicación</string>
@@ -104,7 +104,7 @@
     <string name="patient_postal_label">Código Postal</string>
     <string name="patient_state_label">Estado</string>
     <string name="patient_country_label">País</string>
-    <string name="date_picker_title">Seleccionar Fecha de Nacimiento</string>
+    <string name="date_picker_title">Seleccionar fecha de nacimiento</string>
     <string name="action_active_visits">Visitas Activas</string>
     <string name="action_form_entry">Formulario de entrada</string>
     <string name="action_find_visits">Buscar Visitas Activas</string>
@@ -186,6 +186,7 @@
     <string name="showcase_register_patient">Haz click aquí para registrar un nuevo paciente.</string>
     <string name="showcase_find_patients">Haz click aquí para buscar en todos los pacientes</string>
     <string name="contact_us">Contáctenos</string>
+    <string name="contact_us_text">Contáctenos</string>
     <string name="dialog_matching_provider_positive_btn">Crear de todas formas</string>
     <string name="label_dark_mode">Modo Oscuro</string>
     <string name="dob_error">La fecha debe estar entre %1$s y %2$s</string>
@@ -195,7 +196,7 @@
     <string name="edit_form">Editar formulario</string>
     <string name="email_us">Envíenos un correo electrónico</string>
     <string name="visit_dashboard_label">Encuentros</string>
-    <string name="action_about_activity">Acerca de nosotros</string>
+    <string name="action_about_activity">Acerca de Nosotros</string>
     <string name="action_about">Acerca de nosotros</string>
     <string name="about_openmrs_1">OpenMRS es una comunidad global de colaboradores verdaderamente dedicados, talentosos y generosos que construyen y mantienen la plataforma OpenMRS y otros productos técnicos fundamentales de OpenMRS.</string>
     <string name="about_openmrs_2">OpenMRS es una plataforma que los países y los implementadores utilizan para crear un sistema EMR customizado en respuesta a las necesidades reales.</string>
@@ -210,7 +211,6 @@
     <string name="data_not_available_for_this_field">No hay datos disponibles para el cuadro.</string>
     <string name="showcase_manage_providers">Haz click aquí para administrar los proveedores para un paciente en una visita.</string>
     <string name="no_mailing_client_found">No hay correos electrónicos de clientes instalados.</string>
-    <string name="help_message">Nuestro equipo hará todo lo posible para ayudarle. Comuníquese con nosotros utilizando el formulario.</string>
     <string name="open">Ir a</string>
     <string name="go_to_irc">IRC</string>
     <string name="go_to_forum">Foro</string>
@@ -281,7 +281,7 @@
     <string name="patients_tab_title">Pacientes</string>
     <string name="multiple_patients_deleted">Pacientes eliminados con éxito</string>
     <string name="dashboard_exit_toast_message">Por favor, seleccionar ATRÁS nuevamente para salir</string>
-    <string name="settings_privacy_policy">Política de Privacidad</string>
+    <string name="settings_privacy_policy">Política de privacidad</string>
     <string name="title_provider_info">Información del Proveedor</string>
     <string name="provider_manager">Administrador de proveedores</string>
     <string name="provider_patient">Proveedor - Relación del Paciente</string>
@@ -379,7 +379,7 @@
     <string name="recording_info">Please wait until this recording is completed</string>
     <string name="recording_in_progress">Grabación en curso</string>
     <string name="edit"><u>Editar</u></string>
-    <string name="remove_vitals">Eliminar vitales</string>
+    <string name="remove_vitals">Eliminar Vitales</string>
     <string name="end_vitals_dialog_message">Si, cancelar</string>
     <string name="keep_vitals_dialog_message">No, conservar</string>
     <string name="cancel_vitals_dialog_message">Al cancelar la toma de signos vitales, también se anulara la visita médica. Desea proceder con la cancelación de los vitales?</string>
