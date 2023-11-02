@@ -15,23 +15,6 @@
   -->
 
 <resources>
-
-    <style name="Theme.Openmrs" parent="@style/AppTheme">
-        <item name="actionBarItemBackground">@drawable/selectable_background_openmrs</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Openmrs</item>
-        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Openmrs</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Openmrs</item>
-        <item name="actionBarStyle">@style/ActionBar.Solid.Openmrs</item>
-        <item name="actionModeBackground">@drawable/cab_background_top_openmrs</item>
-        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_openmrs</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Openmrs</item>
-        <item name="android:itemTextAppearance">@style/menuTextApearance</item>
-
-                <!-- Light.DarkActionBar specific -->
-        <item name="actionBarWidgetTheme">@style/Theme.Openmrs.Widget</item>
-
-    </style>
-
     <style name="ActionBar.Solid.Openmrs" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_openmrs</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_openmrs</item>
@@ -60,11 +43,6 @@
     
     <style name="ActionButton.CloseMode.Openmrs" parent="Widget.AppCompat.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_openmrs</item>
-    </style>
-    
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Openmrs.Widget" parent="Theme.AppCompat">
-        <item name="dropDownListViewStyle">@style/DropDownListView.Openmrs</item>
     </style>
 
     <style name="menuTextApearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">

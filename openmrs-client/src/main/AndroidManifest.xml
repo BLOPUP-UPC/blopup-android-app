@@ -34,7 +34,7 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Openmrs">
+        android:theme="@style/AppThemeOrig">
         <activity
             android:name="edu.upc.openmrs.activities.community.contact.AboutActivity"
             android:label="@string/action_about_activity"
