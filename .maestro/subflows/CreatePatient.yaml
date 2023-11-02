@@ -8,14 +8,14 @@ appId: edu.upc
       - tapOn: "com.android.permissioncontroller:id/permission_allow_foreground_only_button"
 - tapOn: "Name*"
 - "inputRandomPersonName"
-- tapOn: "Family Name*"
+- tapOn: "Family name*"
 - "inputRandomPersonName"
 - tapOn: "Female"
 - scrollUntilVisible:
     element:
       id: "edu.upc:id/dobEditText"
     visibilityPercentage: 100
-- tapOn: "Date of Birth (dd/MM/yyyy)"
+- tapOn: "Date of birth (dd/mm/yyyy)"
 - inputText: "20/01/1980"
 - scrollUntilVisible:
     element:
