@@ -25,7 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
         <TextView
             android:id="@+id/edit"
@@ -33,53 +35,45 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:fontFamily="@font/roboto_medium"
             android:text="@string/edit"
+            android:gravity="start"
             android:textStyle="bold"
             android:textColor="@color/color_accent"
-            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/patientDetailsName"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.918"
-            tools:layout_editor_absoluteY="38dp"
-            tools:ignore="MissingConstraints" />
+            />
 
         <TextView
             android:id="@+id/patientDetailsName"
-            style="@style/AddressFields"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
+            android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
-            tools:layout_editor_absoluteX="157dp"
-            tools:layout_editor_absoluteY="46dp"
-            tools:ignore="MissingConstraints" />
+            tools:hint="Patient's name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <TextView
             android:id="@+id/patientDetailsGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/montserrat"
-            android:paddingStart="10dp"
-            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsName"
-            tools:ignore="MissingConstraints,RtlSymmetry"
-            tools:layout_editor_absoluteX="141dp" />
+            tools:hint="Female" />
 
         <TextView
             android:id="@+id/patientDetailsBirthDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:paddingStart="10dp"
             android:text="@string/patient_details_birth_date_label"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsGender"
-            tools:ignore="MissingConstraints,RtlSymmetry"
-            tools:layout_editor_absoluteX="141dp" />
+            />
 
         <TextView
             android:id="@+id/patientDetailsBirthDate"
@@ -87,24 +81,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat"
-            android:paddingStart="10dp"
-            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDateLabel"
-            tools:ignore="MissingConstraints,RtlSymmetry"
-            tools:layout_editor_absoluteX="141dp" />
+            tools:hint="12/31/1990" />
 
         <TextView
             android:id="@+id/patientDetailsCountryOfBirthLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:paddingStart="10dp"
             android:text="@string/country_of_birth"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDate"
-            tools:ignore="MissingConstraints,RtlSymmetry"
-            tools:layout_editor_absoluteX="141dp" />
+            />
 
         <TextView
             android:id="@+id/patient_details_country_of_birth"
@@ -112,17 +102,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat"
-            android:paddingStart="10dp"
-            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/patientDetailsCountryOfBirthLabel"
-            tools:ignore="MissingConstraints,RtlSymmetry"
-            tools:layout_editor_absoluteX="141dp" />
+            tools:hint="Spain" />
 
         <View
             android:id="@+id/view5"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginHorizontal="@dimen/padding_16"
             android:layout_marginTop="24dp"
             android:background="@drawable/rectangle_shape_with_primary_text_color"
             app:layout_constraintEnd_toEndOf="parent"

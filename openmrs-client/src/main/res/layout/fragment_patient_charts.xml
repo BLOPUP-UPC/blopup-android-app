@@ -29,7 +29,6 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/no_vitals_recorded"
-        android:textSize="18sp"
         android:textStyle="bold" />
 
 </LinearLayout>

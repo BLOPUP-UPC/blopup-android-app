@@ -51,7 +51,6 @@
             android:insetBottom="0dp"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp"
             android:visibility="gone"
             tools:targetApi="lollipop" />
 
@@ -66,7 +65,6 @@
             android:insetBottom="0dp"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp"
             android:visibility="gone"
             tools:targetApi="lollipop" />
     </LinearLayout>
