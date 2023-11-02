@@ -51,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/blopup_helpdesk"
-                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -75,8 +74,7 @@
                     android:scrollbars="vertical"
                     android:lines="6"
                     android:maxLength="2000"
-                    android:scrollHorizontally="false"
-                    android:textSize="14sp" />
+                    android:scrollHorizontally="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
