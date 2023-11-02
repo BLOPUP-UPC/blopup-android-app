@@ -22,6 +22,7 @@
         <item name="colorAccent">@color/color_accent</item>
         <item name="actionModeStyle">@style/LongPress</item>
         <item name="textColorPrimary">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_base</item>
     </style>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -30,6 +31,7 @@
         <item name="colorAccent">@color/color_accent</item>
         <item name="actionModeStyle">@style/LongPress</item>
         <item name="android:textColorSecondary">@color/card_shadow_1</item>
+        <item name="android:textSize">@dimen/text_base</item>
     </style>
 
     <style name="LongPress" parent="@style/Widget.AppCompat.ActionMode">

@@ -35,7 +35,7 @@
             android:padding="10dp"
             android:text="@string/bluetooth_scale_instructions"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_lg"
             android:textStyle="bold" />
 
     </LinearLayout>

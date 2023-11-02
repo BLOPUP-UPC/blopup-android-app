@@ -32,7 +32,6 @@
         android:maxLines="2"
         android:textColor="@color/black"
         android:layout_marginTop="10dp"
-        android:textSize="22sp"
         />
     </com.google.android.material.textfield.TextInputLayout>
 

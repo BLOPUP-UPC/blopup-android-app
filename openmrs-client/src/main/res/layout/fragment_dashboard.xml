@@ -68,7 +68,7 @@
                     android:layout_marginTop="@dimen/dashboard_text_top_margin"
                     android:layout_marginBottom="@dimen/dashboard_text_bottom_margin"
                     android:text="@string/dashboard_search_icon_label"
-                    android:textSize="@dimen/dashboard_text_size" />
+                    />
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>

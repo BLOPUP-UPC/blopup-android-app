@@ -39,4 +39,10 @@
     <dimen name="custom_fab_standard_21">21dp</dimen>
     <dimen name="padding_16">16dp</dimen>
 
+    # BlopUp
+    <dimen name="text_sm">12sp</dimen>
+    <dimen name="text_base">16sp</dimen>
+    <dimen name="text_lg">20sp</dimen>
+    <dimen name="text_xl">24sp</dimen>
+
 </resources>
