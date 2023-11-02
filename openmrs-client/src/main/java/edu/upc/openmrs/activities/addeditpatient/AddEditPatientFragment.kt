@@ -371,7 +371,9 @@ class AddEditPatientFragment : BaseFragment() {
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                if(estimatedYear.text.isNotEmpty()) estimatedYear.text.clear()
+            }
         })
 
         estimatedYear.addTextChangedListener(object : TextWatcher {
@@ -382,6 +384,7 @@ class AddEditPatientFragment : BaseFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
+                if(dobEditText.text.isNotEmpty()) dobEditText.text.clear()
             }
         })
     }
