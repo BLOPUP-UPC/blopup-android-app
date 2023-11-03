@@ -24,9 +24,11 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository() {
                 if (response.isSuccessful) {
                     Either.Right(response.body()?.results.orEmpty())
                 } else {
+                    crashlytics.reportUnsuccessfulResponse(response, "Failed to find patients")
                     Either.Left(Error("Failed to find patients: ${response.code()} - ${response.message()}"))
                 }
             } catch (e: Exception) {
+                crashlytics.reportException(e, "Failed to find patients")
                 Either.Left(Error("Failed to find patients: ${e.message}"))
             }
         }

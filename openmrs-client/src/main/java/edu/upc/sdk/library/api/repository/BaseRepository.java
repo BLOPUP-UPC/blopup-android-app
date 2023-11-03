@@ -18,11 +18,11 @@ import android.content.Context;
 
 import androidx.work.WorkManager;
 
+import edu.upc.CrashlyticsLogger;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
-import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.databases.AppDatabase;
 
 /**
@@ -55,6 +55,8 @@ public abstract class BaseRepository {
      */
     protected OpenMRSLogger logger;
 
+    protected CrashlyticsLogger crashlytics;
+
     /**
      * Instantiates a new Base repository.
      */
@@ -64,6 +66,7 @@ public abstract class BaseRepository {
         this.db = AppDatabase.getDatabase(context);
         this.workManager = WorkManager.getInstance(context);
         this.logger = new OpenMRSLogger();
+        this.crashlytics = new CrashlyticsLogger();
     }
 
     /**
