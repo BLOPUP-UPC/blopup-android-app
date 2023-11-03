@@ -32,7 +32,6 @@ import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
-import edu.upc.sdk.library.api.services.EncounterService;
 import edu.upc.sdk.library.api.workers.UpdatePatientWorker;
 import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
 import edu.upc.sdk.library.dao.PatientDAO;
@@ -228,7 +227,6 @@ public class PatientRepository extends BaseRepository {
             Encountercreate encountercreate = dao.getCreatedEncountersByID(id);
             encountercreate.setPatient(patient.getUuid());
             dao.updateExistingEncounter(encountercreate);
-            new EncounterService().addEncounter(encountercreate);
         }
     }
 

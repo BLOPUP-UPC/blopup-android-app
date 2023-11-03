@@ -64,7 +64,6 @@ class EncounterRepository @Inject constructor() : BaseRepository() {
                 patient.addEncounters(encounterCreate.id)
                 PatientDAO()
                     .updatePatient(patient.id!!, patient)
-                // EncounterService will run to upload the encounter when online
                 return@Callable ResultType.EncounterSubmissionLocalSuccess
             }
         })

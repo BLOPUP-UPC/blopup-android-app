@@ -46,7 +46,6 @@ import retrofit2.Response;
 public class AuthenticateCheckService extends Service {
     private IBinder mBinder = new SocketServerBinder();
     private boolean mRunning = false;
-    private OpenMRS mOpenMRS = OpenMRS.getInstance();
 
     @Override
     public void onCreate() {
