@@ -55,17 +55,8 @@
             android:name="buildVersion"
             android:value="0" />
 
-        <receiver
-            android:name="edu.upc.openmrs.api.SyncStateReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="edu.upc.openmrs.intent.action.SYNC_PATIENTS" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name="edu.upc.openmrs.activities.dashboard.DashboardActivity"
-            android:label="@string/app_name"
             android:theme="@style/AppThemeOrig" />
         <activity
             android:name="edu.upc.openmrs.activities.introduction.IntroActivity"
@@ -134,9 +125,6 @@
         </activity>
 
         <service
-            android:name="edu.upc.openmrs.services.PatientService"
-            android:enabled="true" />
-        <service
             android:name=".sdk.library.api.services.EncounterService"
             android:enabled="true" />
         <service
@@ -146,7 +134,6 @@
             android:name="edu.upc.openmrs.services.AuthenticateCheckService"
             android:enabled="true" />
 
-        <activity android:name="edu.upc.openmrs.activities.matchingpatients.MatchingPatientsActivity" android:theme="@style/AppTheme" />
         <activity
             android:name="edu.upc.openmrs.activities.logs.LogsActivity"
             android:label="@string/title_activity_logs"
