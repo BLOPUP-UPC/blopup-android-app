@@ -30,7 +30,7 @@
         android:text="@string/treatment_label"
         android:textAlignment="textStart"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="22sp" />
+        android:textSize="@dimen/text_lg" />
 
     <TextView
         android:id="@+id/keyValueDataRowTextData"

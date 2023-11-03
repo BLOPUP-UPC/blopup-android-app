@@ -24,12 +24,12 @@
     android:clickable="true"
     android:elevation="16dp"
     android:focusable="true"
-    android:foreground="?android:selectableItemBackground"
-    tools:targetApi="lollipop">
+    android:foreground="?android:selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/syncedPatientDisplayName"
@@ -38,11 +38,10 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="2dp"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/guideline"
-            app:layout_constraintEnd_toStartOf="@id/syncedPatientGender"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:hint="John Doe" />
 
         <TextView
             android:id="@+id/syncedPatientIdentifier"
@@ -51,30 +50,19 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="2dp"
             android:fontFamily="@font/roboto_medium"
-            android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline" />
+            app:layout_constraintTop_toBottomOf="@id/guideline"
+            tools:hint="# 1006A2" />
 
         <TextView
             android:id="@+id/syncedPatientBirthDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@id/syncedPatientIdentifier"
             app:layout_constraintLeft_toRightOf="@id/syncedPatientIdentifier"
-            app:layout_constraintTop_toTopOf="@id/syncedPatientIdentifier" />
-
-        <ImageView
-            android:id="@+id/syncedPatientGender"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="12dp"
-            android:scaleType="fitXY"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/syncedPatientIdentifier"
+            tools:hint="20/01/1980" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

@@ -94,19 +94,14 @@ public class SyncedPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sync
         private CardView mRowLayout;
         private TextView mIdentifier;
         private TextView mDisplayName;
-        private ImageView mGender;
         private TextView mBirthDate;
-        private ColorStateList cardBackgroundColor;
 
         public PatientViewHolder(View itemView) {
             super(itemView);
             mRowLayout = (CardView) itemView;
             mIdentifier = itemView.findViewById(R.id.syncedPatientIdentifier);
             mDisplayName = itemView.findViewById(R.id.syncedPatientDisplayName);
-            mGender = itemView.findViewById(R.id.syncedPatientGender);
             mBirthDate = itemView.findViewById(R.id.syncedPatientBirthDate);
-
-            cardBackgroundColor = mRowLayout.getCardBackgroundColor();
         }
 
         void update(final Patient value) {

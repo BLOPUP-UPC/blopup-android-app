@@ -36,7 +36,6 @@
             android:fontFamily="@font/roboto_medium"
             android:text="@string/start"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,11 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:fontFamily="@font/roboto_medium"
-            android:textSize="16sp"
             app:layout_constraintLeft_toRightOf="@id/startDate"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:hint="03/11/2023 12:08"/>
 
         <TextView
             android:id="@+id/endDate"
@@ -59,7 +57,6 @@
             android:fontFamily="@font/roboto_medium"
             android:text="@string/end"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/startDate" />
 
@@ -70,7 +67,6 @@
             android:layout_below="@id/patientVisitStartDate"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/roboto_medium"
-            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="@id/patientVisitStartDate"
             app:layout_constraintTop_toBottomOf="@id/patientVisitStartDate" />
 
@@ -80,9 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
-            android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/endDate" />
+            app:layout_constraintTop_toBottomOf="@id/endDate"
+            android:hint="in Pharmacy"/>
 
         <LinearLayout
             android:id="@+id/visitStatus"
@@ -99,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:textSize="16sp" />
+                android:hint="Active visit" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

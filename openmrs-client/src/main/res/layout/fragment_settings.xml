@@ -51,8 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_logs"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="18sp" />
+                android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/logs_desc1_textView"
@@ -198,7 +197,6 @@
             android:paddingLeft="20dp"
             android:text="@string/language"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/language_apply_button"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/language_apply_button"
