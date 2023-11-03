@@ -14,6 +14,47 @@
   -->
 
 <resources>
+    <style name="AppThemeOrig" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="actionModeStyle">@style/LongPress</item>
+        <item name="textColorPrimary">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_base</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="actionModeStyle">@style/LongPress</item>
+        <item name="android:textColorSecondary">@color/card_shadow_1</item>
+        <item name="android:textSize">@dimen/text_base</item>
+    </style>
+
+    <style name="NoActionBarTheme" parent="AppThemeOrig">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item> <!-- For 2.x version  -->
+    </style>
+
+    <!--Showcase view styles -->
+    <style name="CustomShowcaseTheme" parent="ShowcaseView">
+        <item name="sv_backgroundColor">#d200463f</item>
+        <item name="sv_showcaseColor">#0D9556</item>
+        <item name="sv_buttonText">Next</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
+        <item name="sv_detailTextAppearance">@style/CustomText</item>
+    </style>
+
+    <style name="CustomShowcaseThemeExit" parent="ShowcaseView">
+        <item name="sv_backgroundColor">#d200463f</item>
+        <item name="sv_showcaseColor">#0D9556</item>
+        <item name="sv_buttonText">Close</item>
+        <item name="sv_tintButtonColor">true</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
+        <item name="sv_detailTextAppearance">@style/CustomText</item>
+    </style>
+
     <style name="DialogTheme" parent="android:Theme.Dialog">
     </style>
     <style name="LoadingDialogTheme.DialogTheme" parent="android:Theme.Dialog">
