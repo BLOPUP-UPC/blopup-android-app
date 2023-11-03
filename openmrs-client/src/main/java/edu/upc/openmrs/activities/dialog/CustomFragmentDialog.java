@@ -300,9 +300,6 @@ public class CustomFragmentDialog extends DialogFragment {
         }
         textView.setSingleLine(false);
 
-        if (null != mCustomDialogBundle.getLocationList()) {
-            textView.setTextSize(R.dimen.text_base);
-        }
         mFieldsLayout.addView(field, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         return textView;
     }
@@ -317,7 +314,6 @@ public class CustomFragmentDialog extends DialogFragment {
             field.setLayoutParams(p);
             field.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             textView.setGravity(Gravity.CENTER);
-            textView.setTextSize(R.dimen.text_base);
             textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             textView.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         }
