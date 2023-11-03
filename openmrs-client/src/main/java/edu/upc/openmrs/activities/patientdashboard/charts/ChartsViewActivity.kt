@@ -184,16 +184,28 @@ class ChartsViewActivity : ACBaseActivity() {
 
     private fun setColorIconsToEntries(entries: List<Entry>, type: String): List<Entry> {
         entries.forEach {
-            if (type == SYSTOLIC && isSystolicHigh(it)) {
+            if (type == SYSTOLIC && isSystolicStageIIC(it)) {
                 it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
-            } else if (type == DIASTOLIC && isDiastolicHigh(it)) {
+            } else if (type == DIASTOLIC && isDiastolicStageIIC(it)) {
                 it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
+            } else if (type == SYSTOLIC && isSystolicStageIIAOrB(it)) {
+                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.orange)
+            } else if (type == DIASTOLIC && isDiastolicStageIIAOrB(it)) {
+                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.orange)
+            } else if (type == SYSTOLIC && isSystolicStageI(it)) {
+                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.yellow)
+            } else if (type == DIASTOLIC && isDiastolicStageI(it)) {
+                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.yellow)
             } else {
                 it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.green)
             }
         }
         return entries
     }
-    private fun isSystolicHigh(it: Entry) = it.y >= 130F
-    private fun isDiastolicHigh(it: Entry) = it.y >= 80F
+    private fun isSystolicStageIIC(it: Entry) = it.y >= 180F
+    private fun isDiastolicStageIIC(it: Entry) = it.y >= 110F
+    private fun isSystolicStageIIAOrB(it: Entry) = it.y >= 140F && it.y < 180F
+    private fun isDiastolicStageIIAOrB(it: Entry) = it.y >= 90F && it.y < 110F
+    private fun isSystolicStageI(it: Entry) = it.y >= 130F && it.y < 140F
+    private fun isDiastolicStageI(it: Entry) = it.y >= 80F && it.y < 90F
 }
