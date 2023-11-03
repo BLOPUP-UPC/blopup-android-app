@@ -45,10 +45,6 @@
         <item name="android:background">@drawable/btn_cab_done_openmrs</item>
     </style>
 
-    <style name="menuTextApearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textSize">22sp</item>
-    </style>
-
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="colorPrimary">@color/neutral_green</item>
     </style>

@@ -12,7 +12,6 @@
         android:layout_marginHorizontal="20dp"
         android:text="@string/settings_no_concepts_toast"
         android:textColor="@color/white"
-        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
