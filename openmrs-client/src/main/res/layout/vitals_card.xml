@@ -27,7 +27,6 @@
                 android:paddingVertical="12dp"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:textSize="18sp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/bp_normal"
                 android:textColor="@color/white"
@@ -58,8 +57,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/systolic_vital"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="18sp" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -70,13 +68,11 @@
                         android:id="@+id/systolic_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:layout_marginEnd="3dp"
                         android:fontFamily="@font/roboto_regular" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:text="@string/pressure_unit"
                         android:fontFamily="@font/roboto_regular" />
                 </LinearLayout>
@@ -95,7 +91,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textSize="18sp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/diastolic_vital"
                     android:textColor="?android:attr/textColorPrimary" />
@@ -110,13 +105,11 @@
                         android:id="@+id/diastolic_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:layout_marginEnd="3dp"
                         android:fontFamily="@font/roboto_regular" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:text="@string/pressure_unit"
                         android:fontFamily="@font/roboto_regular" />
                 </LinearLayout>
@@ -138,7 +131,6 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/pulse_vital"
-                    android:textSize="18sp"
                     android:textColor="?android:attr/textColorPrimary" />
 
                 <LinearLayout
@@ -150,13 +142,11 @@
                         android:id="@+id/pulse_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:layout_marginEnd="3dp"
                         android:fontFamily="@font/roboto_regular" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
                         android:text="@string/pulse_unit"
                         android:fontFamily="@font/roboto_regular" />
                 </LinearLayout>
@@ -173,7 +163,6 @@
 
             <TextView
                 android:id="@+id/blood_pressure_recommendation"
-                android:textSize="18sp"
                 android:textColor="?android:attr/textColorPrimary"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/bp_normal_recommendation"
@@ -182,7 +171,6 @@
 
             <TextView
                 android:id="@+id/blood_pressure_info"
-                android:textSize="18sp"
                 android:paddingTop="10dp"
                 android:textColor="?android:attr/textColorPrimary"
                 android:fontFamily="@font/roboto_regular"
@@ -218,7 +206,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="18sp"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/height_value_label"
             android:textColor="?android:attr/textColorPrimary" />
@@ -232,13 +219,11 @@
                 android:id="@+id/height_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_marginEnd="3dp"
                 android:fontFamily="@font/roboto_regular" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:text="@string/height_unit"
                 android:fontFamily="@font/roboto_regular" />
         </LinearLayout>
@@ -260,7 +245,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="18sp"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/weight_value_label"
             android:textColor="?android:attr/textColorPrimary" />
@@ -274,13 +258,11 @@
                 android:id="@+id/weight_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_marginEnd="3dp"
                 android:fontFamily="@font/roboto_regular" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:text="@string/weight_unit"
                 android:fontFamily="@font/roboto_regular" />
         </LinearLayout>
@@ -301,7 +283,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="18sp"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/bmi_label"
             android:textColor="?android:attr/textColorPrimary" />
@@ -312,7 +293,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
-            android:textSize="18sp"
             android:fontFamily="@font/roboto_regular" />
 
         <com.github.anastr.speedviewlib.SpeedView
