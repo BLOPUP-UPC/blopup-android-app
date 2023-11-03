@@ -25,7 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/montserrat"
         android:text="@string/treatment_label"
         android:textStyle="bold"
         android:textAlignment="textStart"

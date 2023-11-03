@@ -33,9 +33,9 @@
             android:id="@+id/startDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
             android:text="@string/start"
             android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,19 +44,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:fontFamily="@font/roboto_medium"
+            android:hint="03/11/2023 12:08"
+            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/startDate"
-            app:layout_constraintTop_toTopOf="parent"
-            android:hint="03/11/2023 12:08"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/endDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/roboto_medium"
             android:text="@string/end"
             android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/startDate" />
 
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/patientVisitStartDate"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/roboto_medium"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="@id/patientVisitStartDate"
             app:layout_constraintTop_toBottomOf="@id/patientVisitStartDate" />
 
@@ -75,10 +75,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/montserrat"
+            android:hint="in Pharmacy"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/endDate"
-            android:hint="in Pharmacy"/>
+            app:layout_constraintTop_toBottomOf="@id/endDate" />
 
         <LinearLayout
             android:id="@+id/visitStatus"
@@ -94,8 +93,8 @@
                 android:id="@+id/visitStatusLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:hint="Active visit" />
+                android:hint="Active visit"
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

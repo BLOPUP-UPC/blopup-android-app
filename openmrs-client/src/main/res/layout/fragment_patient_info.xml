@@ -215,7 +215,6 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/textInputLayoutDOB"
                             android:layout_marginTop="8dp"
-                            android:fontFamily="@font/montserrat"
                             android:gravity="center"
                             android:text="@string/label_or"
                             android:textSize="@dimen/text_lg"
@@ -401,7 +400,6 @@
                                 android:clickable="true"
                                 android:enabled="false"
                                 android:focusable="true"
-                                android:fontFamily="@font/roboto_medium"
                                 android:text="@string/record_legal_consent_u"
                                 android:textStyle="bold" />
 

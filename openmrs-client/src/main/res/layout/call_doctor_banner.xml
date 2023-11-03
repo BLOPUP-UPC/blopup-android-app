@@ -12,7 +12,6 @@
         android:id="@+id/call_doctor_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_regular"
         android:text="@string/call_doctor_banner_text"
         android:lineSpacingExtra="2sp"
         android:padding="@dimen/text_padding"/>

@@ -21,6 +21,7 @@
         <item name="actionModeStyle">@style/LongPress</item>
         <item name="textColorPrimary">?android:attr/textColorPrimary</item>
         <item name="android:textSize">@dimen/text_base</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -30,6 +31,7 @@
         <item name="actionModeStyle">@style/LongPress</item>
         <item name="android:textColorSecondary">@color/card_shadow_1</item>
         <item name="android:textSize">@dimen/text_base</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="NoActionBarTheme" parent="AppThemeOrig">

@@ -21,7 +21,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/hypertension_types"
-            android:fontFamily="@font/roboto_medium"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -61,13 +60,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sys_130"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/diastolic_80"
                         android:textColor="@android:color/white" />
 
@@ -89,13 +86,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/blood_pressure_label"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/normal"
                         android:textColor="@android:color/white" />
 
@@ -135,13 +130,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sys_130_plus"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/diastolic_80_plus"
                         android:textColor="@android:color/white" />
 
@@ -164,13 +157,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/hypertension"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/bp_stage_I"
                         android:textColor="@android:color/white" />
 
@@ -211,13 +202,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sys_140_plus"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/diastolic_90_plus"
                         android:textColor="@android:color/white" />
 
@@ -240,13 +229,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/hypertension"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/bp_stage_II_A"
                         android:textColor="@android:color/white" />
 
@@ -287,13 +274,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sys_160_plus"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/diastolic_100_plus"
                         android:textColor="@android:color/white" />
 
@@ -316,13 +301,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/hypertension"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/bp_stage_II_B"
                         android:textColor="@android:color/white" />
 
@@ -364,13 +347,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sys_180_plus"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/diastolic_110_plus"
                         android:textColor="@android:color/white" />
 
@@ -392,13 +373,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/hypertension"
-                        android:fontFamily="@font/roboto_regular"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
                         android:text="@string/bp_stage_II_C"
                         android:textColor="@android:color/white" />
                 </LinearLayout>

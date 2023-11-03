@@ -41,7 +41,6 @@ class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         LanguageUtils.setAppToDeviceLanguage(this)
 
-        val typeface = Typeface.createFromAsset(assets, ApplicationConstants.TypeFacePathConstants.MONTSERRAT)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         val move = AnimationUtils.loadAnimation(applicationContext, R.anim.splash_screen_logo_anim)
         val set = AnimationSet(true)
