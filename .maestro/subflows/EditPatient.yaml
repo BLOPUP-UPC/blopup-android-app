@@ -2,7 +2,6 @@ appId: edu.upc
 ---
 - tapOn:
     id: "edu.upc:id/edit"
-- tapOn: Register Patient
 - tapOn: "Name*"
 - "inputRandomPersonName"
 - tapOn: "Family name*"
@@ -23,5 +22,6 @@ appId: edu.upc
 - scrollUntilVisible:
     element:
       id: "edu.upc:id/submitButton"
-- tapOn: "SUBMIT"
+- tapOn: "REGISTER"
+- assertVisible: "Male"
 - assertVisible: "START VISIT"

@@ -24,7 +24,13 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -32,7 +38,6 @@ import android.widget.DatePicker
 import android.widget.LinearLayout.LayoutParams
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.annotation.StringDef
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
@@ -55,8 +60,10 @@ import edu.upc.openmrs.utilities.ViewUtils.isEmpty
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
-import edu.upc.sdk.library.models.*
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils
@@ -66,7 +73,7 @@ import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil
 import org.joda.time.LocalDate
-import java.util.*
+import java.util.Calendar
 
 
 @AndroidEntryPoint
@@ -197,7 +204,8 @@ class AddEditPatientFragment : BaseFragment() {
         viewModel.isBirthDateValidLiveData.observe(viewLifecycleOwner) { isValid ->
             binding.textInputLayoutDOB.isErrorEnabled = isValid.first
             binding.textInputLayoutYear.isErrorEnabled = isValid.first
-            binding.textInputLayoutDOB.error = isValid.second?.let { getString(R.string.empty_value) }
+            binding.textInputLayoutDOB.error =
+                isValid.second?.let { getString(R.string.empty_value) }
             binding.textInputLayoutYear.error = isValid.second?.let { getString(it) }
         }
 
@@ -222,7 +230,12 @@ class AddEditPatientFragment : BaseFragment() {
         viewModel.isPatientValidLiveData.observe(viewLifecycleOwner) { isValid ->
             if (isValid) {
                 binding.submitButton.isEnabled = true
-                binding.submitButton.setBackgroundColor(resources.getColor(R.color.color_accent, null))
+                binding.submitButton.setBackgroundColor(
+                    resources.getColor(
+                        R.color.color_accent,
+                        null
+                    )
+                )
             } else {
                 binding.submitButton.isEnabled = false
                 binding.submitButton.setBackgroundColor(
@@ -300,12 +313,16 @@ class AddEditPatientFragment : BaseFragment() {
                     )
                 )
             }
-            if (StringValue.MALE == gender) {
-                binding.gender.check(R.id.male)
-            } else if (StringValue.FEMALE == gender) {
-                binding.gender.check(R.id.female)
-            } else if (StringValue.NON_BINARY == gender) {
-                binding.gender.check(R.id.nonBinary)
+            when (gender) {
+                "M" -> {
+                    binding.gender.check(R.id.male)
+                }
+                "F" -> {
+                    binding.gender.check(R.id.female)
+                }
+                "N" -> {
+                    binding.gender.check(R.id.nonBinary)
+                }
             }
 
             val countryOfBirthLabel = attributes
@@ -315,8 +332,10 @@ class AddEditPatientFragment : BaseFragment() {
 
             if (countryOfBirthLabel === null) {
                 binding.countryOfBirth.text = context?.getString(R.string.country_of_birth_default)
-            } else Country.valueOf(countryOfBirthLabel).getLabel(requireContext())
-                .also { binding.countryOfBirth.text = it }
+            } else {
+                patientCountry = Country.valueOf(countryOfBirthLabel)
+                binding.countryOfBirth.text = patientCountry?.getLabel(requireContext())
+            }
 
             binding.linearLayoutConsent.makeGone()
             addBottomMargin()
@@ -372,7 +391,7 @@ class AddEditPatientFragment : BaseFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if(estimatedYear.text.isNotEmpty()) estimatedYear.text.clear()
+                if (estimatedYear.text.isNotEmpty()) estimatedYear.text.clear()
             }
         })
 
@@ -384,7 +403,7 @@ class AddEditPatientFragment : BaseFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if(dobEditText.text.isNotEmpty()) dobEditText.text.clear()
+                if (dobEditText.text.isNotEmpty()) dobEditText.text.clear()
             }
         })
     }
@@ -608,19 +627,25 @@ class AddEditPatientFragment : BaseFragment() {
     fun isLoading(): Boolean = viewModel.result.value is Result.Loading
 
     private fun submitAction() = with(viewModel) {
-        val selectedGender =
+        var selectedGender =
             view?.findViewById<RadioButton>(binding.gender.checkedRadioButtonId)?.text.toString()
 
-        with(binding) {
-            viewModel.setPatientData(
-                firstName.text.toString(),
-                surname.text.toString(),
-                dobEditText.text.toString(),
-                estimatedYear.text.toString(),
-                selectedGender,
-                patientCountry!!.name
-            )
+        when (selectedGender) {
+            "Male" -> { selectedGender = "M" }
+            "Female" -> { selectedGender = "F" }
+            "Non-binary" -> { selectedGender = "N" }
         }
+
+        with(binding) {
+                viewModel.setPatientData(
+                    firstName.text.toString(),
+                    surname.text.toString(),
+                    dobEditText.text.toString(),
+                    estimatedYear.text.toString(),
+                    selectedGender,
+                    patientCountry!!.name
+                )
+            }
 
         // New patient registering
         if (!isUpdatePatient) {
@@ -704,16 +729,6 @@ class AddEditPatientFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    @Retention(AnnotationRetention.SOURCE)
-    @StringDef(StringValue.MALE, StringValue.FEMALE, StringValue.NON_BINARY)
-    annotation class StringValue {
-        companion object {
-            const val FEMALE = "F"
-            const val MALE = "M"
-            const val NON_BINARY = "N"
-        }
     }
 
     companion object {

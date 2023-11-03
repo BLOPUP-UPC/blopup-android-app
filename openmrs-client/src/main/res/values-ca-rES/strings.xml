@@ -199,7 +199,7 @@
     <string name="logout_success">Sessió tancada correctament</string>
     <string name="url_privacy_policy">https://www.upc.edu/ca/avis-legal/condicions-dus-i-privacitat</string>
     <string name="settings_privacy_policy">Política de privacitat</string>
-    <string name="action_submit">Enviar</string>
+    <string name="action_submit">Registrar</string>
     <string name="action_reset">Reiniciar</string>
     <string name="delete_multiple_patients">Esborrar pacients?</string>
     <string name="delete_multiple_patients_dialog_message">Confirmes que vols esborrar aquests pacients?</string>

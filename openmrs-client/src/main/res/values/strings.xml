@@ -314,7 +314,7 @@
     <string name="url_privacy_policy" tools:ignore="MissingTranslation">https://www.upc.edu/en/disclaimer/terms-of-use-and-privacy-policy</string>
     <string name="settings_privacy_policy" tools:ignore="MissingTranslation">Privacy policy</string>
 
-    <string name="action_submit" tools:ignore="MissingTranslation">Submit</string>
+    <string name="action_submit" tools:ignore="MissingTranslation">Register</string>
     <string name="action_reset" tools:ignore="MissingTranslation">Reset</string>
 
     <string name="delete_multiple_patients" tools:ignore="MissingTranslation">Delete Patients?</string>

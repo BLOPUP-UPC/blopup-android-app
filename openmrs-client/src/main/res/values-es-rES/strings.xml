@@ -318,7 +318,7 @@
     <string name="patent_and_form_data_sync_resumed">Sincronización activada, intentando sincronizar pacientes y datos de formularios</string>
     <string name="sync">Sincronizar</string>
     <string name="surgeon">Cirujano/a</string>
-    <string name="action_submit">Enviar</string>
+    <string name="action_submit">Registrar</string>
     <string name="add_provider_success_msg">Proveedor añadido con éxito.</string>
     <string name="delete_provider_success_msg">Proveedor eliminado con éxito.</string>
     <string name="edit_provider_success_msg">Proveedor editado con éxito.</string>

@@ -40,5 +40,5 @@ appId: edu.upc
     timeout: 100000
 - tapOn: "Stop and save recording"
 - scrollUntilVisible:
-    element: "SUBMIT"
-- tapOn: "SUBMIT"
+    element: "REGISTER"
+- tapOn: "REGISTER"
