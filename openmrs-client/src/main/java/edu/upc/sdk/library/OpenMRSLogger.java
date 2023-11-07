@@ -31,7 +31,7 @@ import java.io.PrintWriter;
  */
 public class OpenMRSLogger {
     private static String mTAG = "OpenMRS";
-    private static final boolean IS_DEBUGGING_ON = true;
+    private static final boolean IS_DEBUGGING_ON = false;
     private static final String LOG_FILENAME = "OpenMRS.log";
     private static final int MAX_SIZE = 64 * 1024; // 64kB;
     private static File mLogFile = null;
@@ -136,48 +136,6 @@ public class OpenMRSLogger {
     }
 
     /**
-     * Saves a custom message to the log file. Use this method
-     * to make the Log file more readable by formatting and
-     * adding messages or to add analytics data to the Log file.
-     * The message will not appear in the logcat window.
-     * <p>
-     * This method always works in the background and does not
-     * return anything.
-     *
-     * @param msg a custom message
-     */
-    public static void saveMsgToFile(String msg) {
-        WriteMsgToFileAsyncTask asyncTask = new WriteMsgToFileAsyncTask();
-        // pass the custom message for execution
-        asyncTask.execute(msg);
-    }
-
-    private static class WriteMsgToFileAsyncTask extends AsyncTask<String, Void, Void> {
-        @Override
-        // custom message as string parameter
-        protected Void doInBackground(String... strings) {
-            String msg = strings[0];
-            if (isFolderExist() && isSaveToFileEnable()) {
-
-                try {
-                    FileWriter writer = new FileWriter(mLogFile, true);
-                    writer.write(msg + "\n");
-
-                    writer.flush();
-                    writer.close();
-                } catch (IOException e) {
-                    setErrorCount();
-                    if (isSaveToFileEnable()) {
-                        logger.e("Error while saving log: ", e);
-                    }
-                }
-                rotateLogFile();
-            }
-            return null;
-        }
-    }
-
-    /**
      * V.
      *
      * @param msg the msg
@@ -254,16 +212,6 @@ public class OpenMRSLogger {
         saveToFile();
     }
 
-    /**
-     * W.
-     *
-     * @param msg the msg
-     * @param tr  the tr
-     */
-    public void w(final String msg, Throwable tr) {
-        Log.w(mTAG, getMessage(msg), tr);
-        saveToFile();
-    }
 
     /**
      * E.
