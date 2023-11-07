@@ -18,8 +18,8 @@ import android.content.Context;
 
 import androidx.work.WorkManager;
 
-import edu.upc.CrashlyticsLogger;
-import edu.upc.CrashlyticsLoggerImpl;
+import edu.upc.sdk.library.CrashlyticsLogger;
+import edu.upc.sdk.library.CrashlyticsLoggerImpl;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;

@@ -1,7 +1,7 @@
 package edu.upc.sdk.library.api.repository
 
 import androidx.work.WorkManager
-import edu.upc.MockCrashlyticsLogger
+import edu.upc.openmrs.MockCrashlyticsLogger
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder

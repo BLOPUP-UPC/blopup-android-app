@@ -1,5 +1,6 @@
-package edu.upc
+package edu.upc.openmrs
 
+import edu.upc.sdk.library.CrashlyticsLogger
 import retrofit2.Response
 
 class MockCrashlyticsLogger : CrashlyticsLogger {

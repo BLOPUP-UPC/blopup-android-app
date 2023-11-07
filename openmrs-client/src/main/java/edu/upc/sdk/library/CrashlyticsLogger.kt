@@ -1,4 +1,4 @@
-package edu.upc
+package edu.upc.sdk.library
 
 import retrofit2.Response
 

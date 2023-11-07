@@ -1,9 +1,7 @@
 package edu.upc.sdk.library.api.repository
 
 import arrow.core.Either
-import dagger.Provides
-import edu.upc.CrashlyticsLogger
-import edu.upc.CrashlyticsLoggerImpl
+import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.Dispatchers
