@@ -28,6 +28,7 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.DateUtils.convertTime
+import edu.upc.sdk.utilities.ToastUtil
 
 class SyncedPatientsRecyclerViewAdapter(
     private val mContext: SyncedPatientsFragment,
@@ -91,41 +92,46 @@ class SyncedPatientsRecyclerViewAdapter(
 
         fun update(value: Patient) {
             itemView.setOnClickListener { view: View? ->
-                val intent = Intent(
-                    mContext.activity,
-                    PatientDashboardActivity::class.java
-                )
-                if (value.id == null) {
-                    val patient = retrieveOrDownloadPatient(value.uuid)
-                    intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient!!.id)
-                } else intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, value.id)
-                mContext.startActivity(intent)
+                val patient = retrieveOrDownloadPatient(value.uuid)
+                if (null == patient) {
+                    ToastUtil.error(mContext.getString(R.string.patient_has_been_removed))
+                    value.id?.let { PatientDAO().deletePatient(it) }
+                    mItems = mItems.filter { it.uuid != value.uuid }
+                    notifyDataSetChanged()
+                } else {
+                    val intent = Intent(mContext.activity, PatientDashboardActivity::class.java)
+                    intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient.id)
+                    mContext.startActivity(intent)
+                }
             }
         }
+    }
 
-        private fun retrieveOrDownloadPatient(patientUuid: String?): Patient? {
-            val patientDAO = PatientDAO()
-            val patientRepository = PatientRepository()
+    private fun retrieveOrDownloadPatient(patientUuid: String?): Patient? {
+        val patientDAO = PatientDAO()
+        val patientRepository = PatientRepository()
 
-            //region == Check if it exist in the db before attempting a download ==
-            var patient = patientDAO.findPatientByUUID(patientUuid)
-            if (patient != null) return patient
-            //endregion
+        val patient = patientRepository.downloadPatientByUuid(patientUuid!!)
+            .single()
+            .toBlocking()
+            .first()
 
-            //region == Download Patient From Remote & Save To DB ==
-            patient = patientRepository.downloadPatientByUuid(patientUuid!!)
-                .single()
-                .toBlocking()
-                .first()
-            val id = patientDAO.savePatient(patient)
-                .single()
-                .toBlocking()
-                .first()
-            patient.id = id
-            VisitRepository().syncVisitsData(patient)
-            VisitRepository().syncLastVitals(patientUuid)
-            //endregion
-            return patient
+        return if (patient.names.isEmpty()) {
+            null
+        } else {
+            val patientLocal = patientDAO.findPatientByUUID(patientUuid)
+            if (patientLocal != null) {
+                return patientLocal
+            } else {
+                val id = patientDAO.savePatient(patient)
+                    .single()
+                    .toBlocking()
+                    .first()
+                patient.id = id
+                VisitRepository().syncVisitsData(patient)
+                VisitRepository().syncLastVitals(patientUuid)
+                patient
+            }
         }
     }
 }
