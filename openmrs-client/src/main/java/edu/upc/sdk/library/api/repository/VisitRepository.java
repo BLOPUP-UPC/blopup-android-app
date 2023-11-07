@@ -62,6 +62,7 @@ public class VisitRepository extends BaseRepository {
      */
     @Inject
     public VisitRepository() {
+        super(null);
         visitDAO = new VisitDAO();
         encounterDAO = new EncounterDAO();
         locationDAO = new LocationDAO();

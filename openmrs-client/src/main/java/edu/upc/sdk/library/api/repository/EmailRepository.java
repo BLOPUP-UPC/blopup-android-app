@@ -16,12 +16,11 @@ package edu.upc.sdk.library.api.repository;
 
 import android.util.Log;
 
-import edu.upc.sdk.library.models.EmailRequest;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
+import edu.upc.sdk.library.models.EmailRequest;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
@@ -30,7 +29,9 @@ import rx.Observable;
 public class EmailRepository extends BaseRepository {
 
     @Inject
-    public  EmailRepository(){}
+    public  EmailRepository(){
+        super(null);
+    }
 
     public Observable<String> sendEmail(EmailRequest emailRequest) {
         return AppDatabaseHelper.createObservableIO(() -> {

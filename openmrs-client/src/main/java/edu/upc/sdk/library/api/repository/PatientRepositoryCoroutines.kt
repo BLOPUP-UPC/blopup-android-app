@@ -1,6 +1,9 @@
 package edu.upc.sdk.library.api.repository
 
 import arrow.core.Either
+import dagger.Provides
+import edu.upc.CrashlyticsLogger
+import edu.upc.CrashlyticsLoggerImpl
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.Dispatchers
@@ -9,13 +12,18 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PatientRepositoryCoroutines @Inject constructor() : BaseRepository() {
+class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
     /**
      * Find patients.
      *
      * @param query patient query string
      * @return observable list of patients with matching query
      */
+
+    constructor(crashlyticsLogger: CrashlyticsLogger? = null) : this() {
+        this.crashlytics = crashlyticsLogger
+    }
+
     suspend fun findPatients(query: String?): Either<Error, List<Patient>> =
         withContext(Dispatchers.IO) {
             try {

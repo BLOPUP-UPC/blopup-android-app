@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class EncounterRepository @Inject constructor() : BaseRepository() {
+class EncounterRepository @Inject constructor() : BaseRepository(null) {
 
     /**
      * Saves an encounter to local database and to server when online.

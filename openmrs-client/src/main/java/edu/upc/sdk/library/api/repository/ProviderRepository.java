@@ -14,30 +14,10 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import static edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO;
-import static edu.upc.sdk.utilities.ApplicationConstants.API.FULL;
-import static edu.upc.sdk.utilities.ApplicationConstants.API.REST_ENDPOINT;
-import static edu.upc.sdk.utilities.ApplicationConstants.API.TAG_ADMISSION_LOCATION;
-
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
-
-import edu.upc.R;
-import edu.upc.sdk.library.OpenMRSLogger;
-import edu.upc.sdk.library.api.RestApi;
-import edu.upc.sdk.library.api.workers.provider.AddProviderWorker;
-import edu.upc.sdk.library.api.workers.provider.DeleteProviderWorker;
-import edu.upc.sdk.library.api.workers.provider.UpdateProviderWorker;
-import edu.upc.sdk.library.dao.ProviderRoomDAO;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.listeners.retrofitcallbacks.DefaultResponseCallback;
-import edu.upc.sdk.library.models.Provider;
-import edu.upc.sdk.library.models.Resource;
-import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.utilities.NetworkUtils;
-import edu.upc.sdk.utilities.ToastUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -47,6 +27,12 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import edu.upc.R;
+import edu.upc.sdk.library.OpenMRSLogger;
+import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.api.workers.provider.AddProviderWorker;
+import edu.upc.sdk.library.api.workers.provider.DeleteProviderWorker;
+import edu.upc.sdk.library.api.workers.provider.UpdateProviderWorker;
 import edu.upc.sdk.library.dao.ProviderRoomDAO;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
@@ -76,6 +62,7 @@ public class ProviderRepository extends BaseRepository {
      */
     @Inject
     public ProviderRepository() {
+        super(null);
         providerRoomDao = db.providerRoomDAO();
     }
 

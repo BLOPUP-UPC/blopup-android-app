@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.api.repository
 
 import androidx.work.WorkManager
+import edu.upc.MockCrashlyticsLogger
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder
@@ -30,7 +31,7 @@ class PatientRepositoryCoroutinesTest {
     fun setUp() {
         restApi = mockk(relaxed = true)
         mockStaticMethodsNeededToInstantiateBaseRepository()
-        patientRepositoryCoroutines = PatientRepositoryCoroutines()
+        patientRepositoryCoroutines = PatientRepositoryCoroutines(MockCrashlyticsLogger())
     }
 
     @Test

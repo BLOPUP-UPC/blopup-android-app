@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FormRepository @Inject constructor() : BaseRepository() {
+class FormRepository @Inject constructor() : BaseRepository(null) {
 
     /**
      * Fetches forms as a list of resources.

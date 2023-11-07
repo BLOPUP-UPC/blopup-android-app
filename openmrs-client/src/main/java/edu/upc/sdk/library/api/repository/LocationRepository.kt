@@ -19,7 +19,7 @@ import edu.upc.sdk.library.databases.entities.LocationEntity
 /**
  * The type Location repository.
  */
-class LocationRepository : BaseRepository() {
+class LocationRepository : BaseRepository(null) {
     /**
      * Gets location (only has uuid).
      *

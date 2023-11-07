@@ -26,7 +26,7 @@ import javax.inject.Singleton
 
 @Singleton
 class RecordingRepository @Inject constructor(val legalConsentDAO: LegalConsentDAO) :
-    BaseRepository() {
+    BaseRepository(null) {
 
     fun saveRecording(legalConsent: LegalConsent): Observable<ResultType> {
 

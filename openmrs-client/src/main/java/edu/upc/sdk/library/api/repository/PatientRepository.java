@@ -68,6 +68,7 @@ public class PatientRepository extends BaseRepository {
      */
     @Inject
     public PatientRepository() {
+        super(null);
         this.patientDAO = new PatientDAO();
         this.locationRepository = new LocationRepository();
     }
