@@ -502,7 +502,7 @@
     <string name="action_about" tools:ignore="MissingTranslation">About us</string>
     <string name="about_openmrs_1" tools:ignore="MissingTranslation">OpenMRS is a global community of truly dedicated, talented, and generous contributors who build and maintain the OpenMRS platform and other, foundational OpenMRS technical products.</string>
     <string name="about_openmrs_2" tools:ignore="MissingTranslation">OpenMRS is a platform that countries and implementers use to create a customized EMR system in response to actual needs on the ground.</string>
-    <string name="more_about_openmrs" tools:ignore="MissingTranslation"><![CDATA[more]]></string>
+    <string name="more_about_openmrs" tools:ignore="MissingTranslation">MORE</string>
     <string name="receive_vitals_from_bluetooth_button_text" tools:ignore="MissingTranslation">Receive vitals from blood pressure device</string>
     <string name="receive_vitals_from_bluetooth_button_error_message" tools:ignore="MissingTranslation">No app was found for receiving bluetooh data</string>
 

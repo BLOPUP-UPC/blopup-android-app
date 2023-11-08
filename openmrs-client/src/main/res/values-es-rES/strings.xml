@@ -175,7 +175,7 @@
     <string name="hiv_unknown">Desconocido</string>
     <string name="unidentified_patient_name">DESCONOCIDO</string>
     <string name="req_star"><![CDATA[<font color=\'#616161\'> * </font>]]></string>
-    <string name="more_about_openmrs"><![CDATA[más]]></string>
+    <string name="more_about_openmrs">MÁS</string>
     <string name="alphanumeric_postal_code">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "</string>
     <string name="offline_mode_not_supported">No se puede iniciar una visita en modo sin conexión.</string>
     <string name="data_type_not_available_for_this_field">Gráfico no disponible para este campo.</string>

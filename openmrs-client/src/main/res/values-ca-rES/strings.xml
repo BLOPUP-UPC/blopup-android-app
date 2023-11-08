@@ -318,7 +318,7 @@
     <string name="action_about">Sobre nosaltres</string>
     <string name="about_openmrs_1">OpenMRS és una comunitat global dedicada, virtuosa i generosa de contribuïdors que construeixen i mantenen la plataforma OpenMRS i altres productes tècnis fonamentals.</string>
     <string name="about_openmrs_2">OpenMRS és una plataforma que el països i els implementadors usen per crear un EMR customitzat en resposta a les necesitats actuals.</string>
-    <string name="more_about_openmrs"><![CDATA[més]]></string>
+    <string name="more_about_openmrs">MÉS></string>
     <string name="receive_vitals_from_bluetooth_button_text">Rebeu les dades des del dispositiu bluetooth</string>
     <string name="receive_vitals_from_bluetooth_button_error_message">No s\'ha trobat cap aplicació per obtenir les dades bluetooth</string>
 

@@ -31,7 +31,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="14dp"
         android:layout_marginBottom="14dp"
-        android:background="@color/dark_teal"
-        android:textSize="@dimen/text_lg" />
+        android:background="@color/dark_teal" />
 
 </LinearLayout>
