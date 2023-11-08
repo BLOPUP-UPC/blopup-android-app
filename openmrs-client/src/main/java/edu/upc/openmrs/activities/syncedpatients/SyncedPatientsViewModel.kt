@@ -41,23 +41,26 @@ class SyncedPatientsViewModel @Inject constructor(
         return if (patient.names.isEmpty()) {
             null
         } else {
-            val localDBPatient = patientDAO.findPatientByUUID(patientUuid)
-            if (localDBPatient != null) {
-                return localDBPatient
-            } else {
-                val id = patientDAO.savePatient(patient)
-                    .single()
-                    .toBlocking()
-                    .first()
-                patient.id = id
-                VisitRepository().syncVisitsData(patient)
-                VisitRepository().syncLastVitals(patientUuid)
-                patient
+            var localDBPatient = patientDAO.findPatientByUUID(patientUuid)
+            if (localDBPatient == null) {
+                localDBPatient = savePatientLocally(patient)
             }
+            localDBPatient
         }
     }
 
-    fun deletePatient(patientId: Long) {
+    private fun savePatientLocally(patient: Patient): Patient {
+        val id = patientDAO.savePatient(patient)
+            .single()
+            .toBlocking()
+            .first()
+        patient.id = id
+        VisitRepository().syncVisitsData(patient)
+        VisitRepository().syncLastVitals(patient.uuid)
+        return patient
+    }
+
+    fun deletePatientLocally(patientId: Long) {
         patientDAO.deletePatient(patientId)
     }
 }

@@ -127,7 +127,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    fun `when patient is removed from server then return null`() {
+    fun `when patient doesn't exist then return null`() {
         val patient = Patient().apply {
             uuid = "def218bb-a25a-4b40-9b77-b7c26628f0c9"
             names = emptyList()

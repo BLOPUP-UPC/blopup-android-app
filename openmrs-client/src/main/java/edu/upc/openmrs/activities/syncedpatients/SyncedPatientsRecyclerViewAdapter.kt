@@ -94,21 +94,26 @@ class SyncedPatientsRecyclerViewAdapter(
             itemView.setOnClickListener {
                 runBlocking {
                     val patient = viewModel.retrieveOrDownloadPatient(value.uuid)
-                    if (null == patient) {
-                        ToastUtil.error(mContext.getString(R.string.patient_has_been_removed))
-                        value.id?.let { viewModel.deletePatient(it) }
-                        mItems = mItems.filter { it.uuid != value.uuid }
-                        notifyDataSetChanged()
-                    } else {
-                        val intent = Intent(mContext.activity, PatientDashboardActivity::class.java)
-                        intent.putExtra(
-                            ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                            patient.id
-                        )
-                        mContext.startActivity(intent)
-                    }
-                }
+
+                    patient?.let { startPatientDashboardActivity(patient) } ?: removePatientFromList(value)
                 }
             }
         }
+
+        private fun removePatientFromList(value: Patient) {
+            ToastUtil.error(mContext.getString(R.string.patient_has_been_removed))
+            value.id?.let { viewModel.deletePatientLocally(it) }
+            mItems = mItems.filter { it.uuid != value.uuid }
+            notifyDataSetChanged()
+        }
+
+        private fun startPatientDashboardActivity(patient: Patient) {
+            val intent = Intent(mContext.activity, PatientDashboardActivity::class.java)
+            intent.putExtra(
+                ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                patient.id
+            )
+            mContext.startActivity(intent)
+        }
     }
+}
