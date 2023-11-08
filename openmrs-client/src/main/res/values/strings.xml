@@ -64,7 +64,7 @@
     <string name="non_binary" tools:ignore="MissingTranslation">Non binary</string>
     <string name="dob_hint" tools:ignore="MissingTranslation">Date of birth (dd/mm/yyyy)</string>
     <string name="estyr" tools:ignore="MissingTranslation">Estimated years</string>
-    <string name="age_out_of_bounds_message" tools:ignore="MissingTranslation">Patient\'s age must be between 0 and %d</string>
+    <string name="age_out_of_bounds_message" tools:ignore="MissingTranslation">Patient\'s age must be between 0 and 120</string>
     <string name="register_patient_error" tools:ignore="MissingTranslation">Something went wrong and the patient has not been created. Please, try again.</string>
     <string name="update_patient_success" tools:ignore="MissingTranslation">Patient %s updated</string>
     <string name="update_patient_error" tools:ignore="MissingTranslation">Patient %s cannot be updated due to server error</string>
@@ -144,7 +144,7 @@
 
     <!-- Patient Dashboard Activity -->
     <string name="action_synchronize_patients" tools:ignore="MissingTranslation">Synchronizing patient</string>
-    <string name="action_connecting_to_the_hardware" tools:ignore="MissingTranslation">Connecting to the hardware...</string>
+    <string name="action_connecting_to_the_hardware" tools:ignore="MissingTranslation">Connecting to the hardware…</string>
     <string name="action_update_patient_data" tools:ignore="MissingTranslation">Update Patient</string>
     <string name="synchronize_patient_successful" tools:ignore="MissingTranslation">Successfully synchronized patient data.</string>
     <string name="synchronize_patient_error" tools:ignore="MissingTranslation">Synchronizing patient data was unsuccessful</string>

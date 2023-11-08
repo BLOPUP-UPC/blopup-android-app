@@ -39,14 +39,14 @@
     <string name="non_binary">No binari</string>
     <string name="dob_hint">Data de naixement (dd/mm/yyyy)</string>
     <string name="estyr">Anys aproximats</string>
-    <string name="age_out_of_bounds_message">L\'edat del pacient ha d\'estar entre els 0 i els %d</string>
+    <string name="age_out_of_bounds_message">L\'edat del pacient ha d\'estar entre els 0 i els 120</string>
     <string name="register_patient_error">Alguna cosa va fallar del nostre costat i el pacient no ha estat creat. Si us plau, torneu-ho a provar.</string>
     <string name="update_patient_success">El pacient %s s\'ha actualitzat</string>
     <string name="update_patient_error">El pacient %s no es pot actualitzar per un error al servidor</string>
     <string name="offline_mode_unsupported_in_first_login">El mode offline no està disponible durant el primer inici de sessió. Activa el mode online i prova-ho de nou.</string>
     <string name="login_offline_toast_message">Ara estàs al mode offline.</string>
     <string name="auth_failed_dialog_message">Nom d\'usuari o paraula de pas incorrectes. Si us plau, prova-ho un altre cop.</string>
-    <string name="no_internet_conn_dialog_message">No hi ha connexió a internet. [...]</string>
+    <string name="no_internet_conn_dialog_message">No hi ha connexió a internet. […]</string>
     <string name="similar_patients_dialog_title">S\'han trobat pacient similars</string>
     <string name="logout_dialog_title">Tancant Sessió</string>
     <string name="logout_dialog_message">Segur que vols tancar la sessió?</string>
@@ -89,7 +89,7 @@
     <string name="dashboard_exit_toast_message">Si us plau, selecciona ENRERE un altre cop per sortir</string>
     <string name="find_patients_row_checkbox_download_label">Descarregar</string>
     <string name="action_synchronize_patients">Sincronitzar pacient</string>
-    <string name="action_connecting_to_the_hardware">Connectant amb el hardware...</string>
+    <string name="action_connecting_to_the_hardware">Connectant amb el hardware…</string>
     <string name="action_update_patient_data">Actualitzar Pacient</string>
     <string name="synchronize_patient_successful">Pacient sincronitzat correctament</string>
     <string name="synchronize_patient_error">No s\'ha pogut sincronitzar el pacient correctament</string>
@@ -103,7 +103,7 @@
     <string name="patient_scroll_tab_visits_label">Visites</string>
     <string name="patient_scroll_tab_vitals_label">Constants vitals</string>
     <string name="patient_scroll_tab_charts_label">Gràfics</string>
-    <string name="download_started">Descarregant...</string>
+    <string name="download_started">Descarregant…</string>
     <string name="action_starting_visit">Iniciant visita</string>
     <string name="visit_start_error">Error al iniciar la visita</string>
     <string name="patient_update_successful">Pacient %1$s actualitzat</string>
@@ -260,7 +260,7 @@
     <string name="authenticate_check_service_error_response_message">Error a la resposta del servei de verificació d\'autenticació</string>
     <string name="authenticate_service_error_message">Error en el servei de verificació d\'autenticació</string>
     <string name="dataset_entry_label">Etiqueta</string>
-    <string name="downloading_concepts_notification_message">Descarregant Conceptes...</string>
+    <string name="downloading_concepts_notification_message">Descarregant Conceptes…</string>
     <string name="application_exit_logger_message">Sortir de l\'aplicació</string>
     <string name="form_data_sync_is_off_message">La sincronització està desactivada. Activi-la per desar les dades del formulari.</string>
     <string name="form_data_submit_error">Error al enviar el formulari</string>

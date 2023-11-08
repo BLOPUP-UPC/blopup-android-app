@@ -31,14 +31,14 @@
     <string name="non_binary">No binario</string>
     <string name="dob_hint">Fecha de nacimiento (dd/mm/yyyy)</string>
     <string name="estyr">Años estimados</string>
-    <string name="age_out_of_bounds_message">La edad del paciente debe estar entre los 0 y los %d</string>
+    <string name="age_out_of_bounds_message">La edad del paciente debe estar entre los 0 y los 120</string>
     <string name="register_patient_error">Algo falló de nuestro lado y el paciente no ha sido creado. Por favor, intentelo de nuevo.</string>
     <string name="update_patient_success">El paciente %s se ha actualizado</string>
     <string name="update_patient_error">El paciente %s no se ha actualizado por un error en el servidor</string>
     <string name="offline_mode_unsupported_in_first_login">El modo sin conexión no está disponible durante el primer inicio de sesión. Activa el modo con conexión e intenta nuevamente.</string>
     <string name="login_offline_toast_message">Ahora estás en modo sin conexión.</string>
     <string name="auth_failed_dialog_message">Nombre de usuario o contraseña incorrectos. Por favor, intentar nuevamente.</string>
-    <string name="no_internet_conn_dialog_message">No hay conexión a internet. [...]</string>
+    <string name="no_internet_conn_dialog_message">No hay conexión a internet. […]</string>
     <string name="similar_patients_dialog_title">Fueron encontrados pacientes similares</string>
     <string name="logout_dialog_title">Cerrando Sesión</string>
     <string name="logout_dialog_message">¿Confirmas que quieres cerrar la sesión?</string>
@@ -79,7 +79,7 @@
     <string name="dashboard_forms_icon_label">Formulario de entrada</string>
     <string name="find_patients_row_checkbox_download_label">Descargar</string>
     <string name="action_synchronize_patients">Sincronizar paciente</string>
-    <string name="action_connecting_to_the_hardware">Conectando con el hardware...</string>
+    <string name="action_connecting_to_the_hardware">Conectando con el hardware…</string>
     <string name="action_update_patient_data">Actualizar Paciente</string>
     <string name="synchronize_patient_successful">Paciente sincronizado con éxito.</string>
     <string name="synchronize_patient_error">Paciente NO sincronizado.</string>
@@ -93,7 +93,7 @@
     <string name="patient_scroll_tab_visits_label">Visitas</string>
     <string name="patient_scroll_tab_vitals_label">Signos vitales</string>
     <string name="patient_scroll_tab_charts_label">Gráficos</string>
-    <string name="download_started">Descargando...</string>
+    <string name="download_started">Descargando…</string>
     <string name="action_starting_visit">Iniciando Visita</string>
     <string name="visit_start_error">Error al iniciar la visita</string>
     <string name="patient_details_birth_date_label">Fecha de nacimiento</string>
@@ -192,7 +192,7 @@
     <string name="dob_error">La fecha debe estar entre %1$s y %2$s</string>
     <string name="button_deny">Rechazar</string>
     <string name="device_offline_msg">Dispositivo sin conexión!</string>
-    <string name="downloading_concepts_notification_message">Descargando Conceptos...</string>
+    <string name="downloading_concepts_notification_message">Descargando Conceptos…</string>
     <string name="edit_form">Editar formulario</string>
     <string name="email_us">Envíenos un correo electrónico</string>
     <string name="visit_dashboard_label">Encuentros</string>
