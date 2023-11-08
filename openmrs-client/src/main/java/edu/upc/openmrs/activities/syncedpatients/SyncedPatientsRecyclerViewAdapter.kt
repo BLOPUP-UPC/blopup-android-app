@@ -22,9 +22,6 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import edu.upc.R
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
-import edu.upc.sdk.library.api.repository.PatientRepository
-import edu.upc.sdk.library.api.repository.VisitRepository
-import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.DateUtils.convertTime
@@ -32,9 +29,11 @@ import edu.upc.sdk.utilities.ToastUtil
 
 class SyncedPatientsRecyclerViewAdapter(
     private val mContext: SyncedPatientsFragment,
-    private var mItems: List<Patient>
+    private var mItems: List<Patient>,
+    private val viewModel: SyncedPatientsViewModel
 ) :
     RecyclerView.Adapter<SyncedPatientsRecyclerViewAdapter.PatientViewHolder>() {
+
     fun updateList(patientList: List<Patient>) {
         mItems = patientList
         notifyDataSetChanged()
@@ -91,11 +90,11 @@ class SyncedPatientsRecyclerViewAdapter(
         }
 
         fun update(value: Patient) {
-            itemView.setOnClickListener { view: View? ->
-                val patient = retrieveOrDownloadPatient(value.uuid)
+            itemView.setOnClickListener {
+                val patient = viewModel.retrieveOrDownloadPatient(value.uuid)
                 if (null == patient) {
                     ToastUtil.error(mContext.getString(R.string.patient_has_been_removed))
-                    value.id?.let { PatientDAO().deletePatient(it) }
+                    value.id?.let { viewModel.deletePatient(it) }
                     mItems = mItems.filter { it.uuid != value.uuid }
                     notifyDataSetChanged()
                 } else {
@@ -103,34 +102,6 @@ class SyncedPatientsRecyclerViewAdapter(
                     intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient.id)
                     mContext.startActivity(intent)
                 }
-            }
-        }
-    }
-
-    private fun retrieveOrDownloadPatient(patientUuid: String?): Patient? {
-        val patientDAO = PatientDAO()
-        val patientRepository = PatientRepository()
-
-        val patient = patientRepository.downloadPatientByUuid(patientUuid!!)
-            .single()
-            .toBlocking()
-            .first()
-
-        return if (patient.names.isEmpty()) {
-            null
-        } else {
-            val patientLocal = patientDAO.findPatientByUUID(patientUuid)
-            if (patientLocal != null) {
-                return patientLocal
-            } else {
-                val id = patientDAO.savePatient(patient)
-                    .single()
-                    .toBlocking()
-                    .first()
-                patient.id = id
-                VisitRepository().syncVisitsData(patient)
-                VisitRepository().syncLastVitals(patientUuid)
-                patient
             }
         }
     }

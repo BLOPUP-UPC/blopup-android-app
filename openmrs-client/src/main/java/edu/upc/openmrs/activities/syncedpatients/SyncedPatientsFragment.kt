@@ -49,7 +49,8 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
             syncedPatientRecyclerView.adapter =
                 SyncedPatientsRecyclerViewAdapter(
                     this@SyncedPatientsFragment,
-                    ArrayList()
+                    ArrayList(),
+                    viewModel
                 )
 
             setupObserver()
