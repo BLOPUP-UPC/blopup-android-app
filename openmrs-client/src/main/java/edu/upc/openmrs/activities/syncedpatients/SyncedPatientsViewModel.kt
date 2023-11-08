@@ -1,7 +1,6 @@
 package edu.upc.openmrs.activities.syncedpatients
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
@@ -35,21 +34,16 @@ class SyncedPatientsViewModel @Inject constructor(
             )
     }
 
-    fun retrieveOrDownloadPatient(patientUuid: String?): Patient? {
-        val patientDAO = PatientDAO()
-        val patientRepository = PatientRepository()
+    suspend fun retrieveOrDownloadPatient(patientUuid: String?): Patient? {
 
-        val patient = patientRepository.downloadPatientByUuid(patientUuid!!)
-            .single()
-            .toBlocking()
-            .first()
+        val patient = patientRepositoryCoroutines.downloadPatientByUuid(patientUuid!!)
 
         return if (patient.names.isEmpty()) {
             null
         } else {
-            val patientLocal = patientDAO.findPatientByUUID(patientUuid)
-            if (patientLocal != null) {
-                return patientLocal
+            val localDBPatient = patientDAO.findPatientByUUID(patientUuid)
+            if (localDBPatient != null) {
+                return localDBPatient
             } else {
                 val id = patientDAO.savePatient(patient)
                     .single()

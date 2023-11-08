@@ -26,6 +26,7 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.ToastUtil
+import kotlinx.coroutines.runBlocking
 
 class SyncedPatientsRecyclerViewAdapter(
     private val mContext: SyncedPatientsFragment,
@@ -91,18 +92,23 @@ class SyncedPatientsRecyclerViewAdapter(
 
         fun update(value: Patient) {
             itemView.setOnClickListener {
-                val patient = viewModel.retrieveOrDownloadPatient(value.uuid)
-                if (null == patient) {
-                    ToastUtil.error(mContext.getString(R.string.patient_has_been_removed))
-                    value.id?.let { viewModel.deletePatient(it) }
-                    mItems = mItems.filter { it.uuid != value.uuid }
-                    notifyDataSetChanged()
-                } else {
-                    val intent = Intent(mContext.activity, PatientDashboardActivity::class.java)
-                    intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient.id)
-                    mContext.startActivity(intent)
+                runBlocking {
+                    val patient = viewModel.retrieveOrDownloadPatient(value.uuid)
+                    if (null == patient) {
+                        ToastUtil.error(mContext.getString(R.string.patient_has_been_removed))
+                        value.id?.let { viewModel.deletePatient(it) }
+                        mItems = mItems.filter { it.uuid != value.uuid }
+                        notifyDataSetChanged()
+                    } else {
+                        val intent = Intent(mContext.activity, PatientDashboardActivity::class.java)
+                        intent.putExtra(
+                            ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                            patient.id
+                        )
+                        mContext.startActivity(intent)
+                    }
+                }
                 }
             }
         }
     }
-}

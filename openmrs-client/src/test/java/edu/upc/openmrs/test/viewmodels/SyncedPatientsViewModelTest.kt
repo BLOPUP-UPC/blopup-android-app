@@ -5,10 +5,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import arrow.core.Either
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
-import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.library.models.Result
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -94,7 +94,9 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun fetchSyncedPatientsWithQuery_noMatchingPatients() {
-        coEvery { patientRepositoryCoroutines.findPatients("Patient99") } returns Either.Right(emptyList())
+        coEvery { patientRepositoryCoroutines.findPatients("Patient99") } returns Either.Right(
+            emptyList()
+        )
 
         runBlocking {
             viewModel.fetchSyncedPatients("Patient99")
@@ -109,7 +111,11 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun fetchSyncedPatientsWithQuery_error() {
         val errorMsg = "Error message!"
-        coEvery { patientRepositoryCoroutines.findPatients(any()) } returns Either.Left(Error(errorMsg))
+        coEvery { patientRepositoryCoroutines.findPatients(any()) } returns Either.Left(
+            Error(
+                errorMsg
+            )
+        )
 
         runBlocking {
             viewModel.fetchSyncedPatients(patientList[0].display!!)
@@ -118,5 +124,40 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         val actualResult = (viewModel.result.value as Result.Error).throwable.message
 
         assertEquals(errorMsg, actualResult)
+    }
+
+    @Test
+    fun `when patient is removed from server then return null`() {
+        val patient = Patient().apply {
+            uuid = "def218bb-a25a-4b40-9b77-b7c26628f0c9"
+            names = emptyList()
+        }
+        coEvery { patient.uuid?.let { patientRepositoryCoroutines.downloadPatientByUuid(it) } } returns patient
+
+        runBlocking {
+            val result = viewModel.retrieveOrDownloadPatient(patient.uuid)
+            assertEquals(null, result)
+        }
+    }
+
+    @Test
+    fun `when patient exists in remote and in local database then return the local patient`() {
+        val patient = Patient().apply {
+            id = 1L
+            uuid = "def218bb-a25a-4b40-9b77-b7c26628f0c6"
+            names = PersonName().let {
+                it.givenName = "Cristina"
+                it.familyName = "Aguilera"
+                listOf(it)
+            }
+        }
+
+        coEvery { patientRepositoryCoroutines.downloadPatientByUuid(patient.uuid!!) } returns patient
+        coEvery { patientDAO.findPatientByUUID(patient.uuid) } returns patient
+
+        runBlocking {
+            val result = viewModel.retrieveOrDownloadPatient(patient.uuid)
+            assertEquals(patient, result)
+        }
     }
 }
