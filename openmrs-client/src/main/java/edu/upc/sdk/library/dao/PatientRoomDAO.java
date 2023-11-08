@@ -62,7 +62,7 @@ public interface PatientRoomDAO {
      *
      * @return the all patients
      */
-    @Query("SELECT * FROM patients")
+    @Query("SELECT * FROM patients ORDER BY _id DESC")
     Single<List<PatientEntity>> getAllPatients();
 
     /**
