@@ -2,6 +2,7 @@ package edu.upc.sdk.library.api.repository
 
 import arrow.core.Either
 import edu.upc.sdk.library.CrashlyticsLogger
+import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.Dispatchers
@@ -9,9 +10,11 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
-
 @Singleton
 class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
+
+    @Inject
+    lateinit var patientDAO: PatientDAO
     /**
      * Find patients.
      *
@@ -57,4 +60,27 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
                 throw IOException("Error with downloading patient: " + e.message)
             }
         }
+
+    fun deletePatient(patientId: Long) {
+        patientDAO.deletePatient(patientId)
+    }
+
+    suspend fun savePatientLocally(patient: Patient) : Patient =
+        withContext(Dispatchers.IO) {
+            try{
+                val id = patientDAO.savePatient(patient)
+                    .single()
+                    .toBlocking()
+                    .first()
+                patient.id = id
+                VisitRepository().syncVisitsData(patient)
+                VisitRepository().syncLastVitals(patient.uuid)
+                return@withContext patient
+            } catch (e: Exception) {
+                crashlytics.reportException(e, "Failed to save patient locally")
+                throw IOException("Error with saving patient locally: " + e.message)
+            }
+    }
+
+    fun findPatientByUUID(patientUuid: String): Patient? = patientDAO.findPatientByUUID(patientUuid)
 }

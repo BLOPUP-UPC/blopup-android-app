@@ -153,7 +153,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
         }
 
         coEvery { patientRepositoryCoroutines.downloadPatientByUuid(patient.uuid!!) } returns patient
-        coEvery { patientDAO.findPatientByUUID(patient.uuid) } returns patient
+        coEvery { patient.uuid?.let { patientRepositoryCoroutines.findPatientByUUID(it) } } returns patient
 
         runBlocking {
             val result = viewModel.retrieveOrDownloadPatient(patient.uuid)
