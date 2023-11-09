@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import edu.upc.R
@@ -101,7 +102,7 @@ class SyncedPatientsRecyclerViewAdapter(
         }
 
         private fun removePatientFromList(value: Patient) {
-            ToastUtil.error(mContext.getString(R.string.patient_has_been_removed))
+            ToastUtil.error(mContext.getString(R.string.patient_has_been_removed), Toast.LENGTH_LONG)
             value.id?.let { viewModel.deletePatientLocally(it) }
             mItems = mItems.filter { it.uuid != value.uuid }
             notifyDataSetChanged()

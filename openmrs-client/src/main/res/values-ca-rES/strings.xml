@@ -420,5 +420,5 @@
     <string name="vitals_successfully">Vitals completades</string>
     <string name="sms_to_doctor">SMS enviat al Doctor Xavier de las Cuevas informant de la situació</string>
     <string name="sms_permission_denied">Permís denegat: és necessari el permís de SMS per enviar missatges. Si us plau, concedeixi el permís necessari a la configuració del seu dispositiu.</string>
-    <string name="patient_has_been_removed">El pacient ha estat eliminat.</string>
+    <string name="patient_has_been_removed">No es pot mostrar el pacient. Aquest ha siguit esborrat de la base de dades.</string>
 </resources>
