@@ -79,6 +79,9 @@ class SyncedPatientsActivity : ACBaseActivity() {
             }
 
             override fun onQueryTextChange(query: String): Boolean {
+                if(query.isEmpty()) {
+                    return true
+                }
                 handler.removeCallbacksAndMessages(null)
                 handler.postDelayed({
                     lifecycleScope.launch {
@@ -86,7 +89,6 @@ class SyncedPatientsActivity : ACBaseActivity() {
                         syncedPatientsFragment?.fetchSyncedPatients(query)
                     }
                 }, 2000)
-
                 return true
             }
         })
