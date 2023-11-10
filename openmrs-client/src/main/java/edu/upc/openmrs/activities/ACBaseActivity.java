@@ -72,6 +72,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     private List<String> locationList;
     private IntentFilter mIntentFilter;
     private AlertDialog alertDialog;
+    private ForceClose forceClose;
     private BroadcastReceiver mPasswordChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -82,7 +83,8 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new ForceClose(this));
+        forceClose = new ForceClose();
+        Thread.setDefaultUncaughtExceptionHandler(forceClose);
 
         LanguageUtils.setupLanguage(getResources());
 
@@ -337,6 +339,8 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.cancel();
         }
+        forceClose = null;
+        Thread.setDefaultUncaughtExceptionHandler(forceClose);
         super.onDestroy();
     }
 }

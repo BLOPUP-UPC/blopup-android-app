@@ -1,6 +1,5 @@
 package edu.upc.openmrs.utilities
 
-import android.app.Activity
 import android.os.Build
 import android.os.Process
 import edu.upc.sdk.library.OpenMRSLogger
@@ -15,7 +14,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import kotlin.system.exitProcess
 
-class ForceClose(private val myContext: Activity) : Thread.UncaughtExceptionHandler {
+class ForceClose : Thread.UncaughtExceptionHandler {
     companion object {
         private const val LINE_SEPARATOR = "\n"
     }
@@ -54,15 +53,11 @@ class ForceClose(private val myContext: Activity) : Thread.UncaughtExceptionHand
         errorReport.append(LINE_SEPARATOR)
         errorReport.append("\n************ APP LOGS ************\n")
         errorReport.append(getLogs())
-        val i = myContext.packageManager.getLaunchIntentForPackage("edu.upc")
-        i?.putExtra("flag", true)
-        i?.putExtra("error", errorReport.toString())
-        myContext.startActivity(i)
         Process.killProcess(Process.myPid())
         exitProcess(10)
     }
 
-    fun getLogs(): String? {
+    private fun getLogs(): String? {
         val mOpenMRSLogger = OpenMRSLogger()
         var textLogs: String? = ""
         val filename = "${OpenmrsAndroid.getOpenMRSDir()}${File.separator}${mOpenMRSLogger.logFilename}"
