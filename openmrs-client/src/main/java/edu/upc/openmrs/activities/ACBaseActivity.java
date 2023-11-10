@@ -286,6 +286,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     public void dismissCustomFragmentDialog() {
         if (mCustomFragmentDialog != null) {
             mCustomFragmentDialog.dismiss();
+            mCustomFragmentDialog = null;
         }
     }
 
@@ -339,8 +340,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.cancel();
         }
-        forceClose = null;
-        Thread.setDefaultUncaughtExceptionHandler(forceClose);
         super.onDestroy();
     }
 }
