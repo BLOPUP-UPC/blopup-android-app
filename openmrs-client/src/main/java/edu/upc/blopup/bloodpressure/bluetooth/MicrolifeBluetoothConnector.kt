@@ -61,6 +61,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
         bpmProtocol.mOnNotifyStateListener = null
         bpmProtocol.mOnWriteStateListener = null
         bpmProtocol.onConnectStateListener = null
+        bpmProtocol.onDataResponseListener = null
     }
 
     override fun onBtStateChanged(isEnabled: Boolean) {
