@@ -1,5 +1,6 @@
 package edu.upc.blopup.bloodpressure.readBloodPressureMeasurement
 
+import android.os.Parcel
 import android.os.Parcelable
 import com.ideabus.model.data.CurrentAndMData
 import edu.upc.blopup.exceptions.BluetoothConnectionException

@@ -18,7 +18,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
 ) : BluetoothConnectorInterface,
     BpmProtocolListener {
 
-    private val bpmProtocol: BPMProtocol
+    private var bpmProtocol: BPMProtocol
 
     private lateinit var updateConnectionState: (ConnectionViewState) -> Unit
     private lateinit var updateMeasurementState: (BloodPressureViewState) -> Unit
@@ -58,6 +58,9 @@ class MicrolifeBluetoothConnector @Inject constructor(
     private fun releaseActivity() {
         bpmProtocol.myAty = null
         bpmProtocol.myBluetooth.context = null
+        bpmProtocol.mOnNotifyStateListener = null
+        bpmProtocol.mOnWriteStateListener = null
+        bpmProtocol.onConnectStateListener = null
     }
 
     override fun onBtStateChanged(isEnabled: Boolean) {

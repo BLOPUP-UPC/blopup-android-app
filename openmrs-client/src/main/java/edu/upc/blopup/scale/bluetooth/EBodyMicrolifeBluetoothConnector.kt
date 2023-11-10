@@ -1,6 +1,7 @@
 package edu.upc.blopup.scale.bluetooth
 
 import android.bluetooth.BluetoothDevice
+import com.ideabus.model.XlogUtils
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
 import com.ideabus.model.protocol.EBodyProtocol.ConnectState
