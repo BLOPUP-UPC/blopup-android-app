@@ -159,7 +159,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private fun sendSms(patientId: String?, bloodPressureType: String) {
         val sm: SmsManager = if (Build.VERSION.SDK_INT >= 31) {
-            requireContext().getSystemService(SmsManager::class.java)
+            requireContext().applicationContext.getSystemService(SmsManager::class.java)
         } else {
             SmsManager.getDefault()
         }
