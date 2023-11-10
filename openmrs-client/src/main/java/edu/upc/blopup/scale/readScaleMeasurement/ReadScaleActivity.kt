@@ -11,18 +11,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import com.google.android.material.snackbar.Snackbar
+import com.ideabus.model.XlogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.databinding.ActivityReadScaleBinding
+import edu.upc.openmrs.utilities.observeOnce
 
 const val EXTRAS_WEIGHT = "weight"
 const val LOCATION_REQUEST = 1
 
 @AndroidEntryPoint
-class ReadWeightActivity : AppCompatActivity() {
+class ReadScaleActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityReadScaleBinding
     private lateinit var mToolbar: Toolbar
@@ -55,8 +57,9 @@ class ReadWeightActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        XlogUtils.baseActivity = null
         viewModel.disconnect()
+        super.onDestroy()
     }
 
     private fun setUpToolbar() {
@@ -101,7 +104,7 @@ class ReadWeightActivity : AppCompatActivity() {
     }
 
     private fun observeWeightData() {
-        viewModel.viewState.observe(this) { state ->
+        viewModel.viewState.observeOnce(this) { state ->
             when (state) {
                 is ScaleViewState.Error -> handleError(state.exception)
                 is ScaleViewState.Content -> {

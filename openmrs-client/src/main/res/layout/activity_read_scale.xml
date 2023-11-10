@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity">
+        tools:context="edu.upc.blopup.scale.readScaleMeasurement.ReadScaleActivity">
 
         <include
             android:id="@+id/toolbar_include"

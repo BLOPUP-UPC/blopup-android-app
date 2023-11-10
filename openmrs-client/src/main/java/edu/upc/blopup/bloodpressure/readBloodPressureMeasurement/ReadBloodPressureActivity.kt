@@ -17,6 +17,7 @@ import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.databinding.ActivityReadBloodPressureBinding
+import edu.upc.openmrs.utilities.observeOnce
 
 const val EXTRAS_SYSTOLIC = "systolic"
 const val EXTRAS_DIASTOLIC = "diastolic"
@@ -73,7 +74,7 @@ class ReadBloodPressureActivity : AppCompatActivity() {
             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, locationPermission, LOCATION_REQUEST);
+            ActivityCompat.requestPermissions(this, locationPermission, LOCATION_REQUEST)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && (
                     ActivityCompat.checkSelfPermission(
@@ -103,7 +104,7 @@ class ReadBloodPressureActivity : AppCompatActivity() {
     }
 
     private fun observeBloodPressureData() {
-        viewModel.viewState.observe(this) { state ->
+        viewModel.viewState.observeOnce(this) { state ->
             when (state) {
                 is BloodPressureViewState.Error -> handleError(state.exception)
                 is BloodPressureViewState.Content -> {

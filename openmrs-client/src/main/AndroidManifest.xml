@@ -155,7 +155,7 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity"
+            android:name="edu.upc.blopup.scale.readScaleMeasurement.ReadScaleActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity

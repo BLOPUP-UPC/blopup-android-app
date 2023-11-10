@@ -6,11 +6,11 @@ import com.ideabus.model.data.DeviceInfo
 import com.ideabus.model.data.User
 import com.ideabus.model.data.VersionData
 import com.ideabus.model.protocol.BPMProtocol
-import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.blopup.hilt.CurrentActivityProvider
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
+import edu.upc.blopup.exceptions.BluetoothConnectionException
+import edu.upc.blopup.hilt.CurrentActivityProvider
 import javax.inject.Inject
 
 class MicrolifeBluetoothConnector @Inject constructor(

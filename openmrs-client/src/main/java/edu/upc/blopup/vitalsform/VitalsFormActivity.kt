@@ -23,7 +23,7 @@ import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_HEART_RA
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_SYSTOLIC
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureActivity
 import edu.upc.blopup.scale.readScaleMeasurement.EXTRAS_WEIGHT
-import edu.upc.blopup.scale.readScaleMeasurement.ReadWeightActivity
+import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleActivity
 import edu.upc.databinding.ActivityVitalsFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
@@ -116,7 +116,7 @@ class VitalsFormActivity : ACBaseActivity() {
 
         mBinding.receiveWeightDataBtn.setOnClickListener {
             try {
-                val input = Intent(this, ReadWeightActivity::class.java)
+                val input = Intent(this, ReadScaleActivity::class.java)
                 bluetoothScaleDataLauncher.launch(input)
                 mBinding.buttonToSentVitals.isEnabled = true
                 receivedButtonModified = true
