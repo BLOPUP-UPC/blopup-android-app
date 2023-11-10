@@ -44,14 +44,20 @@ class MicrolifeBluetoothConnector @Inject constructor(
 
     override fun disconnect() {
         try {
-            if (bpmProtocol.isConnected()) {
+            if (bpmProtocol.isConnected) {
                 bpmProtocol.disconnect()
             }
             bpmProtocol.stopScan()
             updateConnectionState(ConnectionViewState.Disconnected)
+            releaseActivity()
         } catch (ignore: Exception) {
             updateMeasurementState(BloodPressureViewState.Error(BluetoothConnectionException.OnDisconnect))
         }
+    }
+
+    private fun releaseActivity() {
+        bpmProtocol.myAty = null
+        bpmProtocol.myBluetooth.context = null
     }
 
     override fun onBtStateChanged(isEnabled: Boolean) {
