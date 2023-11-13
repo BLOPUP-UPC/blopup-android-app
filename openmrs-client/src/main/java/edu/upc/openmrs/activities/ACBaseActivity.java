@@ -49,7 +49,6 @@ import edu.upc.openmrs.activities.settings.SettingsActivity;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;
 import edu.upc.openmrs.net.AuthorizationManager;
-import edu.upc.openmrs.utilities.ForceClose;
 import edu.upc.openmrs.utilities.LanguageUtils;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
@@ -72,8 +71,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     private List<String> locationList;
     private IntentFilter mIntentFilter;
     private AlertDialog alertDialog;
-    private ForceClose forceClose;
-    private BroadcastReceiver mPasswordChangedReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mPasswordChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             showCredentialChangedDialog();
@@ -83,22 +81,10 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        forceClose = new ForceClose();
-        Thread.setDefaultUncaughtExceptionHandler(forceClose);
-
         LanguageUtils.setupLanguage(getResources());
-
         mFragmentManager = getSupportFragmentManager();
         mAuthorizationManager = new AuthorizationManager();
         locationList = new ArrayList<>();
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Boolean flag = extras.getBoolean(ApplicationConstants.FLAG);
-            String errorReport = extras.getString(ApplicationConstants.ERROR);
-            if (flag) {
-                showAppCrashDialog(errorReport);
-            }
-        }
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(ApplicationConstants.BroadcastActions.AUTHENTICATION_CHECK_BROADCAST_ACTION);
     }
