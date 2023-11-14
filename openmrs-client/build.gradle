@@ -46,8 +46,8 @@ android {
 
     defaultConfig {
         applicationId "edu.upc"
-        versionName "1.9.1"
-        versionCode 191
+        versionName "1.9.2"
+        versionCode 192
         multiDexEnabled true
 
         minSdkVersion versions.minSdk
