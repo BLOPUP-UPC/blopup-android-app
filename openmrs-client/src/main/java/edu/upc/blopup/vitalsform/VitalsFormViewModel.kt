@@ -9,10 +9,15 @@ import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.*
+import edu.upc.sdk.library.models.EncounterType
+import edu.upc.sdk.library.models.Encountercreate
+import edu.upc.sdk.library.models.Obscreate
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.execute
-import org.joda.time.LocalDateTime
+import org.joda.time.Instant
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -69,7 +74,7 @@ class VitalsFormViewModel @Inject constructor(
                 observations += Obscreate().apply {
                     concept = vital.concept
                     value = vital.value
-                    obsDatetime = LocalDateTime().toString()
+                    obsDatetime = Instant.now().toString()
                     person = patient.uuid
                 }
             }

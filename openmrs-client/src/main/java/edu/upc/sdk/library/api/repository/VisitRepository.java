@@ -16,6 +16,8 @@ package edu.upc.sdk.library.api.repository;
 
 import androidx.annotation.NonNull;
 
+import org.joda.time.Instant;
+
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +41,6 @@ import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.library.models.VisitType;
 import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.DateUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -168,7 +169,7 @@ public class VisitRepository extends BaseRepository {
         return AppDatabaseHelper.createObservableIO(() -> {
             // Don't pass the full visit to the API as it will return an error, instead create an empty visit.
             Visit emptyVisitWithStopDate = new Visit();
-            emptyVisitWithStopDate.setStopDatetime(DateUtils.convertTime(System.currentTimeMillis(), DateUtils.OPEN_MRS_REQUEST_FORMAT));
+            emptyVisitWithStopDate.setStopDatetime(Instant.now().toString());
 
             Response<Visit> response = restApi.endVisitByUUID(visit.getUuid(), emptyVisitWithStopDate).execute();
             if (response.isSuccessful()) {
@@ -189,7 +190,7 @@ public class VisitRepository extends BaseRepository {
     public Observable<Visit> startVisit(final Patient patient) {
         return AppDatabaseHelper.createObservableIO(() -> {
             final Visit visit = new Visit();
-            visit.setStartDatetime(DateUtils.convertTime(System.currentTimeMillis(), DateUtils.OPEN_MRS_REQUEST_FORMAT));
+            visit.setStartDatetime(Instant.now().toString());
             visit.setPatient(patient);
             visit.setLocation(locationDAO.findLocationByName(OpenmrsAndroid.getLocation()));
             VisitType visitType = new VisitType("FACILITY", OpenmrsAndroid.getVisitTypeUUID());
