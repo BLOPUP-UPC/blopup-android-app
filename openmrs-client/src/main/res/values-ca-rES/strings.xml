@@ -46,7 +46,6 @@
     <string name="offline_mode_unsupported_in_first_login">El mode offline no està disponible durant el primer inici de sessió. Activa el mode online i prova-ho de nou.</string>
     <string name="login_offline_toast_message">Ara estàs al mode offline.</string>
     <string name="auth_failed_dialog_message">Nom d\'usuari o paraula de pas incorrectes. Si us plau, prova-ho un altre cop.</string>
-    <string name="no_internet_conn_dialog_message">No hi ha connexió a internet. […]</string>
     <string name="similar_patients_dialog_title">S\'han trobat pacient similars</string>
     <string name="logout_dialog_title">Tancant Sessió</string>
     <string name="logout_dialog_message">Segur que vols tancar la sessió?</string>
@@ -77,8 +76,7 @@
     <string name="action_download_patients">Descarregar pacients</string>
     <string name="action_add_patients">Afegir pacients</string>
     <string name="search_patient_hint">Nom del pacient</string>
-    <string name="search_patient_no_results">No trobes el teu pacient?\nProva a fer servir la lupa.</string>
-    <string name="search_patient_no_result_for_query">No s\'han trobat resultats per la visita \"%1$s\"</string>
+    <string name="search_patient_no_result_for_query">No s\'han trobat resultats per la búsqueda"</string>
     <string name="select_all_downloadable_data">Seleccionar tot</string>
     <string name="download_selected_patient_data">Descarregar la informació del pacient</string>
     <string name="download_multiple">Descàrrega múltiple</string>

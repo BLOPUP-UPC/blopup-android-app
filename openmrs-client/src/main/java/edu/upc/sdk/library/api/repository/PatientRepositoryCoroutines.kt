@@ -8,6 +8,7 @@ import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 @Singleton
@@ -39,7 +40,7 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
                 }
             } catch (e: Exception) {
                 crashlytics.reportException(e, "Failed to find patients")
-                Either.Left(Error("Failed to find patients: ${e.message}"))
+                Either.Left(Error("Failed to find patients: ${e.message}", e))
             }
         }
 

@@ -126,8 +126,7 @@
     <string name="action_download_patients" tools:ignore="MissingTranslation">Download Patients</string>
     <string name="action_add_patients" tools:ignore="MissingTranslation">Add Patients</string>
     <string name="search_patient_hint" tools:ignore="MissingTranslation">Patient name</string>
-    <string name="search_patient_no_results" tools:ignore="MissingTranslation">Not finding your patient?\nTry to use the search icon.</string>
-    <string name="search_patient_no_result_for_query" tools:ignore="MissingTranslation">No results found for query \"%1$s\"</string>
+    <string name="search_patient_no_result_for_query" tools:ignore="MissingTranslation">No results found for query"</string>
     <string name="select_all_downloadable_data" tools:ignore="MissingTranslation">Select all</string>
     <string name="download_selected_patient_data" tools:ignore="MissingTranslation">Download Patient Data</string>
     <string name="download_multiple" tools:ignore="MissingTranslation">Download Multiple</string>

@@ -27,6 +27,8 @@ import edu.upc.openmrs.utilities.makeInvisible
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.ToastUtil
+import java.net.UnknownHostException
 
 @AndroidEntryPoint
 class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -81,6 +83,9 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
     suspend fun fetchSyncedPatients(query: String) {
         //search remote
         viewModel.fetchSyncedPatients(query)
+        if (viewModel.result.value is Result.Error && (viewModel.result.value as Result.Error).throwable.cause is UnknownHostException) {
+            ToastUtil.error(getString(R.string.no_internet_connection))
+        }
     }
 
     private fun showLoading() {
@@ -116,7 +121,7 @@ class SyncedPatientsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private fun showEmptyListText() {
         binding.emptySyncedPatientList.makeVisible()
-        binding.emptySyncedPatientList.text = getString(R.string.search_patient_no_results)
+        binding.emptySyncedPatientList.text = getString(R.string.search_patient_no_result_for_query)
     }
 
     private fun hideEmptyListText() {

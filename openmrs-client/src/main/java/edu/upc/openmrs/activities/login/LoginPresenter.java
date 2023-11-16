@@ -179,7 +179,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
                         ToastUtil.ToastType.ERROR);
                 loginView.hideLoadingAnimation();
             } else {
-                loginView.showToast(R.string.no_internet_conn_dialog_message,
+                loginView.showToast(R.string.no_internet_connection_message,
                         ToastUtil.ToastType.ERROR);
                 loginView.hideLoadingAnimation();
             }
