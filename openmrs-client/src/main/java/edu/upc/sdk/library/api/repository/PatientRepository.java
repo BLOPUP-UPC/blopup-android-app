@@ -42,7 +42,6 @@ import edu.upc.sdk.library.models.IdentifierType;
 import edu.upc.sdk.library.models.Module;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
-import edu.upc.sdk.library.models.PatientDtoUpdate;
 import edu.upc.sdk.library.models.PatientIdentifier;
 import edu.upc.sdk.library.models.ResultType;
 import edu.upc.sdk.library.models.Results;
@@ -171,24 +170,6 @@ public class PatientRepository extends BaseRepository {
 
                 return ResultType.PatientUpdateLocalSuccess;
             }
-        });
-    }
-
-    /**
-     * Update matching patient.
-     *
-     * @param patient the locally merged patient
-     */
-    public Observable<Patient> updateMatchingPatient(final Patient patient) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-
-            PatientDtoUpdate patientDto = patient.getUpdatedPatientDto();
-
-            Call<PatientDto> call = restApi.updatePatient(patientDto, patient.getUuid(), ApplicationConstants.API.FULL);
-            Response<PatientDto> response = call.execute();
-
-            if (response.isSuccessful()) return patient;
-            else throw new IOException(response.message());
         });
     }
 
