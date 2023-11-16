@@ -155,12 +155,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginButton"
-                style="@style/loginButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_gravity="center_vertical|center_horizontal|center"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginVertical="@dimen/padding_16"
+                android:textColor="@color/white"
                 android:enabled="false"
                 android:gravity="center_vertical|center_horizontal"
                 android:insetTop="0dp"

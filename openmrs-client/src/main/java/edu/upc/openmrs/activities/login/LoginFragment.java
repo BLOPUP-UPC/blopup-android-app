@@ -150,7 +150,6 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
         super.onResume();
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(OpenMRS.getInstance());
-        boolean syncState = prefs.getBoolean("sync", true);
         hideUrlLoadingAnimation();
     }
 
@@ -197,7 +196,7 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
 
     @Override
     public void showLocationLoadingAnimation() {
-        binding.loginButton.setEnabled(false);
+        setLoginButtonStatus(false);
         binding.locationLoadingProgressBar.setVisibility(View.VISIBLE);
     }
 
@@ -221,13 +220,13 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
             List<String> items = getLocationStringList(locationsList);
             final LocationArrayAdapter adapter = new LocationArrayAdapter(this.getActivity(), items);
             binding.locationSpinner.setAdapter(adapter);
-            binding.loginButton.setEnabled(false);
+            setLoginButtonStatus(false);
             binding.loginLoading.setVisibility(View.GONE);
             binding.loginFormView.setVisibility(View.VISIBLE);
             if (locationsList.isEmpty()) {
-                binding.loginButton.setEnabled(true);
+                setLoginButtonStatus(true);
             } else {
-                binding.loginButton.setEnabled(false);
+                setLoginButtonStatus(false);
             }
         }
     }
@@ -295,8 +294,9 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
     @Override
     public void setLocationErrorOccurred(boolean errorOccurred) {
         this.loginValidatorWatcher.setLocationErrorOccurred(errorOccurred);
-        binding.loginButton.setEnabled(!errorOccurred);
+        setLoginButtonStatus(!errorOccurred);
     }
+
 
     @Override
     public void showToast(String message, ToastUtil.ToastType toastType) {
@@ -353,6 +353,16 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
 
     private boolean isActivityNotNull() {
         return (isAdded() && getActivity() != null);
+    }
+
+    private void setLoginButtonStatus(Boolean shouldEnable) {
+        if (shouldEnable) {
+            binding.loginButton.setEnabled(true);
+            binding.loginButton.setBackgroundColor(getResources().getColor(R.color.color_accent, null));
+        } else {
+            binding.loginButton.setEnabled(false);
+            binding.loginButton.setBackgroundColor(getResources().getColor(R.color.dark_grey_for_stroke, null));
+        }
     }
 
     @Override
