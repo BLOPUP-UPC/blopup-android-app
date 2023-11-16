@@ -34,7 +34,6 @@ import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 import edu.upc.R;
@@ -58,7 +57,6 @@ import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.StringUtils;
 import okhttp3.Headers;
-import rx.Observable;
 
 @PrepareForTest({OpenMRS.class, NetworkUtils.class, LocationDAO.class, RestServiceBuilder.class,
     StringUtils.class,OpenmrsAndroid.class})
@@ -271,26 +269,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
         verify(view).setLocationErrorOccurred(true);
         verify(view).showInvalidURLSnackbar(Mockito.any());
         verify(view).hideUrlLoadingAnimation();
-    }
-
-    @Test
-    public void shouldLoadLocationsInOfflineMode_emptyList() {
-        mockNetworkConnection(false);
-        Mockito.lenient().when(locationDAO.getLocations()).thenReturn(Observable.just(new ArrayList<>()));
-        presenter.loadLocations("someUrl");
-        verify(view).showToast(anyInt(), any());
-        verify(view).setLocationErrorOccurred(true);
-        verify(view).hideLoadingAnimation();
-    }
-
-    @Test
-    public void shouldLoadLocationsInOfflineMode_nonEmptyList() {
-        mockNetworkConnection(false);
-        Mockito.lenient().when(locationDAO.getLocations()).thenReturn(Observable.just(Collections.singletonList(new LocationEntity(""))));
-        presenter.loadLocations("someUrl");
-        verify(view).initLoginForm(any(), any());
-        verify(view).setLocationErrorOccurred(false);
-        verify(view).hideLoadingAnimation();
     }
 
     @Test

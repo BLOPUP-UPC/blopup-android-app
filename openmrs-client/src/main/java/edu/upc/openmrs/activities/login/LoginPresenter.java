@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +43,6 @@ import edu.upc.sdk.utilities.ToastUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginPresenter extends BasePresenter implements LoginContract.Presenter {
@@ -206,49 +206,38 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
     public void loadLocations(final String url) {
         loginView.showLocationLoadingAnimation();
 
-        if (NetworkUtils.hasNetwork()) {
-            String locationEndPoint = url + ApplicationConstants.API.REST_ENDPOINT + "location";
-            Call<Results<LocationEntity>> call =
-                    restApi.getLocations(locationEndPoint, "Login Location", "full");
-            call.enqueue(new Callback<Results<LocationEntity>>() {
-                @Override
-                public void onResponse(@NonNull Call<Results<LocationEntity>> call, @NonNull Response<Results<LocationEntity>> response) {
-                    if (response.isSuccessful()) {
-                        RestServiceBuilder.changeBaseUrl(url.trim());
-                        OpenmrsAndroid.setServerUrl(url);
-                        loginView.initLoginForm(response.body().getResults(), url);
-                        loginView.startFormListService();
-                        loginView.setLocationErrorOccurred(false);
-                    } else {
-                        loginView.showInvalidURLSnackbar(R.string.snackbar_server_error);
-                        loginView.setLocationErrorOccurred(true);
-                        loginView.initLoginForm(new ArrayList<>(), url);
-                    }
-                    loginView.hideUrlLoadingAnimation();
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<Results<LocationEntity>> call, @NonNull Throwable t) {
-                    loginView.hideUrlLoadingAnimation();
-                    loginView.showInvalidURLSnackbar(t.getMessage());
-                    loginView.initLoginForm(new ArrayList<>(), url);
+        String locationEndPoint = url + ApplicationConstants.API.REST_ENDPOINT + "location";
+        Call<Results<LocationEntity>> call =
+                restApi.getLocations(locationEndPoint, "Login Location", "full");
+        call.enqueue(new Callback<Results<LocationEntity>>() {
+            @Override
+            public void onResponse(@NonNull Call<Results<LocationEntity>> call, @NonNull Response<Results<LocationEntity>> response) {
+                if (response.isSuccessful()) {
+                    RestServiceBuilder.changeBaseUrl(url.trim());
+                    OpenmrsAndroid.setServerUrl(url);
+                    loginView.initLoginForm(response.body().getResults(), url);
+                    loginView.startFormListService();
+                    loginView.setLocationErrorOccurred(false);
+                } else {
+                    loginView.showInvalidURLSnackbar(R.string.snackbar_server_error);
                     loginView.setLocationErrorOccurred(true);
+                    loginView.initLoginForm(new ArrayList<>(), url);
                 }
-            });
-        } else {
-            addSubscription(locationDAO.getLocations()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(locationEntities -> {
-                        if (locationEntities.size() > 0) {
-                            loginView.initLoginForm(locationEntities, url);
-                            loginView.setLocationErrorOccurred(false);
-                        } else {
-                            loginView.showToast(R.string.no_internet_connection_message, ToastUtil.ToastType.ERROR);
-                            loginView.setLocationErrorOccurred(true);
-                        }
-                        loginView.hideLoadingAnimation();
-                    }));
-        }
+                loginView.hideUrlLoadingAnimation();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Results<LocationEntity>> call, @NonNull Throwable t) {
+                loginView.hideUrlLoadingAnimation();
+                if (t instanceof UnknownHostException) {
+                    loginView.showToast(R.string.no_internet_connection_message, ToastUtil.ToastType.ERROR);
+                } else {
+                    loginView.showInvalidURLSnackbar(t.getMessage());
+                }
+                loginView.initLoginForm(new ArrayList<>(), url);
+                loginView.setLocationErrorOccurred(true);
+            }
+        });
     }
 
     private boolean validateLoginFields(String username, String password, String url) {
