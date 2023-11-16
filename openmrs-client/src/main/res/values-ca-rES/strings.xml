@@ -421,4 +421,5 @@
     <string name="sms_to_doctor">SMS enviat al Doctor Xavier de las Cuevas informant de la situació</string>
     <string name="sms_permission_denied">Permís denegat: és necessari el permís de SMS per enviar missatges. Si us plau, concedeixi el permís necessari a la configuració del seu dispositiu.</string>
     <string name="patient_has_been_removed">No es pot mostrar el pacient. Aquest ha siguit esborrat de la base de dades.</string>
+    <string name="no_internet_connection">Error de connexió. Revisi la seva connexió a internet i torni-ho a intentar.</string>
 </resources>

@@ -73,6 +73,7 @@ import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil
 import org.joda.time.LocalDate
+import java.net.UnknownHostException
 import java.util.Calendar
 
 
@@ -85,9 +86,6 @@ class AddEditPatientFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     val viewModel: AddEditPatientViewModel by viewModels()
-
-    // constant for storing audio permission
-    private val REQUEST_AUDIO_PERMISSION_CODE = 200
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -160,7 +158,10 @@ class AddEditPatientFragment : BaseFragment() {
 
                 is Result.Error -> if (result.operationType == PatientRegistering) {
                     hideLoading()
-                    ToastUtil.error(getString(R.string.register_patient_error))
+                    if (result.throwable.cause is UnknownHostException)
+                        ToastUtil.error(getString(R.string.no_internet_connection))
+                    else
+                        ToastUtil.error(getString(R.string.register_patient_error))
                 }
 
                 else -> throw IllegalStateException()
@@ -571,7 +572,7 @@ class AddEditPatientFragment : BaseFragment() {
         ) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
-                arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO), REQUEST_AUDIO_PERMISSION_CODE
+                arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO), Companion.REQUEST_AUDIO_PERMISSION_CODE
             )
         }
     }
@@ -736,5 +737,7 @@ class AddEditPatientFragment : BaseFragment() {
             AddEditPatientFragment().apply {
                 arguments = bundleOf(Pair(PATIENT_ID_BUNDLE, patientID))
             }
+
+        private const val REQUEST_AUDIO_PERMISSION_CODE = 200
     }
 }

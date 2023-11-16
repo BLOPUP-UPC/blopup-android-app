@@ -620,4 +620,5 @@
     <string name="stage_II_c_sms" translatable="false">Nivell II C (S-%1$s, D-%2$s)</string>
     <string name="sms_message" translatable="false">El pacient ID %1$s presenta Hipertensió %2$s. Per posar-vos en contacte amb l\'Hospital Santa Anna, truqueu a aquest número.</string>
     <string name="patient_has_been_removed" tools:ignore="MissingTranslation">Patient can\'t be shown. It has been removed from database.</string>
+    <string name="no_internet_connection">Couldn\'t connect. Please check your internet connection and try again.</string>
 </resources>
