@@ -7,8 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.RecordingHelper
-import edu.upc.blopup.toggles.check
-import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
@@ -156,14 +154,12 @@ class AddEditPatientViewModel @Inject constructor(
                 .subscribe(
                     {
                         setContent(it, PatientRegistering)
-                        showPatientConsentToggle.check(onToggleEnabled = {
-                            recordingHelper.saveLegalConsent(LegalConsent().apply {
-                                val patientIdentifier = patient.identifier.identifier
-                                if (patientIdentifier != null) {
-                                    this.patientIdentifier = patientIdentifier
-                                    this.filePath = legalConsentFileName
-                                }
-                            })
+                        recordingHelper.saveLegalConsent(LegalConsent().apply {
+                            val patientIdentifier = patient.identifier.identifier
+                            if (patientIdentifier != null) {
+                                this.patientIdentifier = patientIdentifier
+                                this.filePath = legalConsentFileName
+                            }
                         })
                     },
                     { setError(it, PatientRegistering) },

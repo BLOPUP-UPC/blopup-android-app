@@ -46,8 +46,6 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
 import edu.upc.R
-import edu.upc.blopup.toggles.check
-import edu.upc.blopup.toggles.showPatientConsentToggle
 import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
@@ -108,13 +106,6 @@ class AddEditPatientFragment : BaseFragment() {
         fillFormFields()
 
         askPermissions()
-
-        showPatientConsentToggle.check(onToggleDisabled = {
-            binding.linearLayoutConsent.makeGone()
-
-            addBottomMargin()
-        })
-
 
         return rootView
     }
