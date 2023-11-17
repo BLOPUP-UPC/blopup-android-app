@@ -24,6 +24,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,7 +37,6 @@ import edu.upc.sdk.library.api.RestServiceBuilder;
 import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.models.Session;
 import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.ToastUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,41 +85,42 @@ public class AuthenticateCheckService extends Service {
     }
 
     private void authenticateCheck(String username, String password) {
-        if (NetworkUtils.hasNetwork()) {
-            RestApi restApi = RestServiceBuilder.createService(RestApi.class, username, password);
-            Call<Session> call = restApi.getSession();
-            call.enqueue(new Callback<Session>() {
-                @Override
-                public void onResponse(@NonNull Call<Session> call, @NonNull Response<Session> response) {
-                    if (response.isSuccessful()) {
-                        Session session = response.body();
-                        if (session.isAuthenticated()) {
-                            Log.e("Service Task ", "user authenticated");
-                        } else {
-                            Log.e("Service Task ", "User Credentials Changed");
-                            if (isForeground(OpenMRS.getInstance().getPackageName())) {
-                                Intent broadcastIntent = new Intent();
-                                broadcastIntent.setAction(ApplicationConstants.BroadcastActions.AUTHENTICATION_CHECK_BROADCAST_ACTION);
-                                sendBroadcast(broadcastIntent);
-                            } else {
-                                AppDatabase.getDatabase(getApplicationContext()).close();
-                                OpenmrsAndroid.clearUserPreferencesData();
-                                OpenmrsAndroid.clearCurrentLoggedInUserInfo();
-                            }
-                        }
+        RestApi restApi = RestServiceBuilder.createService(RestApi.class, username, password);
+        Call<Session> call = restApi.getSession();
+        call.enqueue(new Callback<Session>() {
+            @Override
+            public void onResponse(@NonNull Call<Session> call, @NonNull Response<Session> response) {
+                if (response.isSuccessful()) {
+                    Session session = response.body();
+                    if (session.isAuthenticated()) {
+                        Log.e("Service Task ", "user authenticated");
                     } else {
-                        ToastUtil.error(getString(R.string.authenticate_check_service_error_response_message));
+                        Log.e("Service Task ", "User Credentials Changed");
+                        if (isForeground(OpenMRS.getInstance().getPackageName())) {
+                            Intent broadcastIntent = new Intent();
+                            broadcastIntent.setAction(ApplicationConstants.BroadcastActions.AUTHENTICATION_CHECK_BROADCAST_ACTION);
+                            sendBroadcast(broadcastIntent);
+                        } else {
+                            AppDatabase.getDatabase(getApplicationContext()).close();
+                            OpenmrsAndroid.clearUserPreferencesData();
+                            OpenmrsAndroid.clearCurrentLoggedInUserInfo();
+                        }
                     }
+                } else {
+                    ToastUtil.error(getString(R.string.authenticate_check_service_error_response_message));
                 }
+            }
 
-                @Override
-                public void onFailure(@NonNull Call<Session> call, @NonNull Throwable t) {
+            @Override
+            public void onFailure(@NonNull Call<Session> call, @NonNull Throwable t) {
+                if (t instanceof UnknownHostException) {
+                    ToastUtil.error(getString(R.string.no_internet_connection));
+                    Log.e("Service Task ", "No Network");
+                } else {
                     ToastUtil.error(getString(R.string.authenticate_service_error_message));
                 }
-            });
-        } else {
-            Log.e("Service Task ", "No Network");
-        }
+            }
+        });
     }
 
     public boolean isForeground(String myPackage) {

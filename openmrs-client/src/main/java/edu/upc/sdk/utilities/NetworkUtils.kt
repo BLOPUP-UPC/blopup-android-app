@@ -19,13 +19,6 @@ import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import edu.upc.sdk.library.OpenmrsAndroid
 
 object NetworkUtils {
-    @JvmStatic
-    fun hasNetwork(): Boolean {
-        val connectivityManager = OpenmrsAndroid.getInstance()
-            ?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetworkInfo = connectivityManager.activeNetworkInfo
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
-    }
 
     @JvmStatic
     fun isOnline(): Boolean {

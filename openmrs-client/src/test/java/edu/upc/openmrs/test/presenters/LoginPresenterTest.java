@@ -15,7 +15,6 @@
 package edu.upc.openmrs.test.presenters;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -131,7 +130,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
     @Test
     public void shouldLoginUserInOnlineMode_noWipe_userAuthenticated() {
         mockNonEmptyCredentials(true);
-        mockOnlineMode(true);
         Mockito.lenient().when(restApi.getSession())
             .thenReturn(mockSuccessCall(
                     new Session( true, new User()),
@@ -155,7 +153,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
     @Test
     public void shouldLoginUserInOnlineMode_noWipe_userNotAuthenticated() {
         mockNonEmptyCredentials(true);
-        mockOnlineMode(true);
         Mockito.lenient().when(restApi.getSession())
             .thenReturn(mockSuccessCall(new Session(false, new User())));
         Mockito.lenient().when(restApi.getVisitType())
@@ -174,7 +171,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
     @Test
     public void shouldLoginUserInOnlineMode_errorResponse() {
         mockNonEmptyCredentials(true);
-        mockOnlineMode(true);
         Mockito.lenient().when(restApi.getSession()).thenReturn(mockErrorCall(401));
         String user = "user";
         String url = "url";
@@ -189,7 +185,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
     @Test
     public void shouldLoginUserInOnlineMode_failure() {
         mockNonEmptyCredentials(true);
-        mockOnlineMode(true);
         Mockito.lenient().when(restApi.getSession()).thenReturn(mockFailureCall());
         String user = "user";
         String url = "url";
@@ -202,41 +197,7 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
     }
 
     @Test
-    public void shouldLoginUserInOfflineMode_userLoggedBefore_sameUrl() {
-        String user = "user";
-        String url = "url";
-        String password = "pass";
-        mockLastUser(user, password, url);
-        mockNonEmptyCredentials(true);
-        mockOnlineMode(false);
-        Mockito.lenient().when(OpenmrsAndroid.isUserLoggedOnline()).thenReturn(true);
-        Mockito.lenient().when(OpenmrsAndroid.getLastLoginServerUrl()).thenReturn(url);
-        presenter.login(user, password, url, url);
-
-        verify(view).showToast(anyInt(), any());
-        verify(view).userAuthenticated();
-        verify(view).finishLoginActivity();
-    }
-
-    @Test
-    public void shouldShowWipingDBWarningDialogUserInOfflineMode_userLoggedBefore_wrongCredentials() {
-        String user = "user";
-        String url = "url";
-        String password = "pass";
-        mockLastUser(user, "newPass", url);
-        mockNonEmptyCredentials(true);
-        mockOnlineMode(false);
-        Mockito.lenient().when(OpenmrsAndroid.isUserLoggedOnline()).thenReturn(true);
-        Mockito.lenient().when(OpenmrsAndroid.getLastLoginServerUrl()).thenReturn(url);
-        presenter.login(user, password, url, url);
-
-        verify(view).hideSoftKeys();
-        verify(view).showWarningDialog();
-    }
-
-    @Test
     public void shouldLoadLocationsInOnlineMode_allOK() {
-        mockNetworkConnection(true);
         Mockito.lenient().when(restApi.getLocations(any(), anyString(), anyString()))
             .thenReturn(mockSuccessCall(Collections.singletonList(new LocationEntity(""))));
         presenter.loadLocations("someUrl");
@@ -248,7 +209,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
 
     @Test
     public void shouldLoadLocationsInOnlineMode_errorResponse() {
-        mockNetworkConnection(true);
         Mockito.lenient().when(restApi.getLocations(any(), anyString(), anyString()))
             .thenReturn(mockErrorCall(401));
 
@@ -261,7 +221,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
 
     @Test
     public void shouldLoadLocationsInOnlineMode_failure() {
-        mockNetworkConnection(true);
         Mockito.lenient().when(restApi.getLocations(any(), anyString(), anyString()))
             .thenReturn(mockFailureCall());
         presenter.loadLocations("someUrl");
@@ -285,16 +244,8 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
         verify(openMRS.getApplicationContext(), times(1)).startService(any());
     }
 
-    private void mockNetworkConnection(boolean isNetwork) {
-        Mockito.when(NetworkUtils.hasNetwork()).thenReturn(isNetwork);
-    }
-
     private void mockNonEmptyCredentials(boolean isNonEmpty) {
         Mockito.when(StringUtils.notEmpty(anyString())).thenReturn(isNonEmpty);
-    }
-
-    private void mockOnlineMode(boolean isOnline) {
-        Mockito.when(NetworkUtils.isOnline()).thenReturn(isOnline);
     }
 
     private void mockLastUser(String user, String password, String url) {

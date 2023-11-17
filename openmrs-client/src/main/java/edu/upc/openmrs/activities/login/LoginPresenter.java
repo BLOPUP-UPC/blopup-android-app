@@ -37,7 +37,6 @@ import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Session;
 import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.StringUtils;
 import edu.upc.sdk.utilities.ToastUtil;
 import retrofit2.Call;
@@ -88,11 +87,10 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
     public void login(String username, String password, String url, String oldUrl) {
         if (validateLoginFields(username, password, url)) {
             loginView.hideSoftKeys();
-            if ((!OpenmrsAndroid.getUsername().equals(ApplicationConstants.EMPTY_STRING) &&
-                    !OpenmrsAndroid.getUsername().equals(username)) ||
-                    ((!OpenmrsAndroid.getServerUrl().equals(ApplicationConstants.EMPTY_STRING) &&
+            if ((!OpenmrsAndroid.getUsername().isEmpty() && !OpenmrsAndroid.getUsername().equals(username)) ||
+                    ((!OpenmrsAndroid.getServerUrl().isEmpty() &&
                             !OpenmrsAndroid.getServerUrl().equals(oldUrl))) ||
-                    (!OpenmrsAndroid.getHashedPassword().equals(ApplicationConstants.EMPTY_STRING) &&
+                    (!OpenmrsAndroid.getHashedPassword().isEmpty() &&
                             !BCrypt.checkpw(password, OpenmrsAndroid.getHashedPassword())) ||
                     mWipeRequired) {
                 loginView.showWarningDialog();
@@ -110,80 +108,58 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
     @Override
     public void authenticateUser(final String username, final String password, final String url, final boolean wipeDatabase) {
         loginView.showLoadingAnimation();
-        if (NetworkUtils.isOnline()) {
-            mWipeRequired = wipeDatabase;
+        mWipeRequired = wipeDatabase;
 
-            RestApi restApi = RestServiceBuilder.createService(RestApi.class, username, password);
-            Call<Session> call = restApi.getSession();
-            call.enqueue(new Callback<Session>() {
-                @Override
-                public void onResponse(@NonNull Call<Session> call, @NonNull Response<Session> response) {
-                    if (response.isSuccessful()) {
-                        mLogger.d(response.body().toString());
-                        Session session = response.body();
-                        if (session.isAuthenticated()) {
-                            OpenmrsAndroid.deleteSecretKey();
-                            String sessionID = getSessionIdFromHeaders(response);
+        RestApi restApi = RestServiceBuilder.createService(RestApi.class, username, password);
+        Call<Session> call = restApi.getSession();
+        call.enqueue(new Callback<Session>() {
+            @Override
+            public void onResponse(@NonNull Call<Session> call, @NonNull Response<Session> response) {
+                if (response.isSuccessful()) {
+                    mLogger.d(response.body().toString());
+                    Session session = response.body();
+                    if (session.isAuthenticated()) {
+                        OpenmrsAndroid.deleteSecretKey();
+                        String sessionID = getSessionIdFromHeaders(response);
 
-                            if (wipeDatabase) {
-                                mOpenMRS.deleteDatabase(ApplicationConstants.DB_NAME);
-                                setData(sessionID, url, username, password);
-                                mWipeRequired = false;
-                            }
-                            if (authorizationManager.isUserNameOrServerEmpty()) {
-                                setData(sessionID, url, username, password);
-                            } else {
-                                OpenmrsAndroid.setSessionToken(sessionID);
-                                OpenmrsAndroid.setPasswordAndHashedPassword(password);
-                            }
-
-                            OpenmrsAndroid.setVisitTypeUUID(ApplicationConstants.DEFAULT_VISIT_TYPE_UUID);
-                            setLogin(true, url);
-                            userService.updateUserInformation(username);
-
-                            loginView.userAuthenticated();
-                            loginView.finishLoginActivity();
-                        } else {
-                            loginView.hideLoadingAnimation();
-                            loginView.showInvalidLoginOrPasswordSnackbar();
+                        if (wipeDatabase) {
+                            mOpenMRS.deleteDatabase(ApplicationConstants.DB_NAME);
+                            setData(sessionID, url, username, password);
+                            mWipeRequired = false;
                         }
+                        if (authorizationManager.isUserNameOrServerEmpty()) {
+                            setData(sessionID, url, username, password);
+                        } else {
+                            OpenmrsAndroid.setSessionToken(sessionID);
+                            OpenmrsAndroid.setPasswordAndHashedPassword(password);
+                        }
+
+                        OpenmrsAndroid.setVisitTypeUUID(ApplicationConstants.DEFAULT_VISIT_TYPE_UUID);
+                        setLogin(true, url);
+                        userService.updateUserInformation(username);
+
+                        loginView.userAuthenticated();
+                        loginView.finishLoginActivity();
                     } else {
                         loginView.hideLoadingAnimation();
-                        loginView.showToast(response.message(), ToastUtil.ToastType.ERROR);
+                        loginView.showInvalidLoginOrPasswordSnackbar();
                     }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<Session> call, @NonNull Throwable t) {
-                    loginView.hideLoadingAnimation();
-                    loginView.showToast(t.getMessage(), ToastUtil.ToastType.ERROR);
-                }
-            });
-        } else {
-            if (OpenmrsAndroid.isUserLoggedOnline() && url.equals(OpenmrsAndroid.getLastLoginServerUrl())) {
-                if (OpenmrsAndroid.getUsername().equals(username) && BCrypt.checkpw(password, OpenmrsAndroid.getHashedPassword())) {
-                    OpenmrsAndroid.deleteSecretKey();
-                    OpenmrsAndroid.setPasswordAndHashedPassword(password);
-                    OpenmrsAndroid.setSessionToken(OpenmrsAndroid.getLastSessionToken());
-                    loginView.showToast(R.string.login_offline_toast_message,
-                            ToastUtil.ToastType.NOTICE);
-                    loginView.userAuthenticated();
-                    loginView.finishLoginActivity();
                 } else {
                     loginView.hideLoadingAnimation();
-                    loginView.showToast(R.string.auth_failed_dialog_message,
-                            ToastUtil.ToastType.ERROR);
+                    loginView.showToast(response.message(), ToastUtil.ToastType.ERROR);
                 }
-            } else if (NetworkUtils.hasNetwork()) {
-                loginView.showToast(R.string.offline_mode_unsupported_in_first_login,
-                        ToastUtil.ToastType.ERROR);
-                loginView.hideLoadingAnimation();
-            } else {
-                loginView.showToast(R.string.no_internet_connection_message,
-                        ToastUtil.ToastType.ERROR);
-                loginView.hideLoadingAnimation();
             }
-        }
+
+            @Override
+            public void onFailure(@NonNull Call<Session> call, @NonNull Throwable t) {
+                loginView.hideLoadingAnimation();
+                if (t instanceof UnknownHostException) {
+                    loginView.showToast(R.string.no_internet_connection, ToastUtil.ToastType.ERROR);
+                } else {
+                    loginView.showToast(t.getMessage(), ToastUtil.ToastType.ERROR);
+                }
+            }
+        });
     }
 
     private static String getSessionIdFromHeaders(@NonNull Response<Session> response) {
