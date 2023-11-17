@@ -81,7 +81,7 @@ class VisitExpandableListAdapter(
                 EncounterType.VISIT_NOTE -> {
                     for (obs in encounter.observations) {
                         //checking the type of observation, to extract the relevant data from it to add to the layout
-                        if (obs.diagnosisNote != null && obs.diagnosisNote != ApplicationConstants.EMPTY_STRING) {
+                        if (obs.diagnosisNote != null && obs.diagnosisNote != String()) {
                             //if the observation is a Diagnosis Note, i.e. it contains a value for diagnosisNote
                             openMRSInflater.addKeyValueStringView(
                                 contentLayout,

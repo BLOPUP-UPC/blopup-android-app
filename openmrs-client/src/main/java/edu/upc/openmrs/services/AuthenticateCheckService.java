@@ -24,6 +24,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import edu.upc.R;
+import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -32,13 +38,6 @@ import edu.upc.sdk.library.models.Session;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.ToastUtil;
-
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import edu.upc.R;
-import edu.upc.openmrs.application.OpenMRS;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,8 +56,8 @@ public class AuthenticateCheckService extends Service {
                 if (mRunning) {
                     String username = OpenmrsAndroid.getUsername();
                     String password = OpenmrsAndroid.getPassword();
-                    if ((!username.equals(ApplicationConstants.EMPTY_STRING)) &&
-                            (!password.equals(ApplicationConstants.EMPTY_STRING))) {
+                    if ((!username.isEmpty()) &&
+                            (!password.isEmpty())) {
                         Log.e("Service Task ", "Running");
                         authenticateCheck(username, password);
                     }

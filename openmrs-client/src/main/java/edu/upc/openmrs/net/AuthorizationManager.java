@@ -16,26 +16,19 @@ package edu.upc.openmrs.net;
 
 import android.content.Intent;
 
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.utilities.ApplicationConstants;
-
 import edu.upc.openmrs.activities.login.LoginActivity;
 import edu.upc.openmrs.application.OpenMRS;
+import edu.upc.sdk.library.OpenmrsAndroid;
 
 public class AuthorizationManager {
     protected OpenMRS mOpenMRS = OpenMRS.getInstance();
 
     public boolean isUserNameOrServerEmpty() {
-        boolean result = false;
-        if (OpenmrsAndroid.getUsername().equals(ApplicationConstants.EMPTY_STRING) ||
-            (OpenmrsAndroid.getServerUrl().equals(ApplicationConstants.EMPTY_STRING))) {
-            result = true;
-        }
-        return result;
+        return OpenmrsAndroid.getUsername().isEmpty() || OpenmrsAndroid.getServerUrl().isEmpty();
     }
 
     public boolean isUserLoggedIn() {
-        return !ApplicationConstants.EMPTY_STRING.equals(OpenmrsAndroid.getSessionToken());
+        return !OpenmrsAndroid.getSessionToken().isEmpty();
     }
 
     public void moveToLoginActivity() {

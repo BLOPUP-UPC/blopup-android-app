@@ -17,7 +17,6 @@ import java.util.regex.Pattern
 
 object StringUtils {
     const val ILLEGAL_CHARACTERS = "[$&+:;=\\\\?@#|/'<>^*()%!]"
-    const val ILLEGAL_ADDRESS_CHARACTERS = "[$&+:;=\\\\?@|<>^%!]"
     private const val NULL_AS_STRING = "null"
     private const val SPACE_CHAR = " "
 
@@ -33,7 +32,7 @@ object StringUtils {
 
     @JvmStatic
     fun notEmpty(string: String?): Boolean {
-        return string != null && !string.isEmpty()
+        return !string.isNullOrEmpty()
     }
 
     @JvmStatic

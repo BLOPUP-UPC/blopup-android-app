@@ -67,7 +67,7 @@ class SyncedPatientsActivity : ACBaseActivity() {
 
         val searchMenuItem = menu.findItem(R.id.actionSearchLocal)
         val searchView = menu.findItem(R.id.actionSearchLocal).actionView as SearchView
-        if (notEmpty(query)) {
+        if (!query.isNullOrEmpty()) {
             searchMenuItem.expandActionView()
             searchView.setQuery(query, true)
             searchView.clearFocus()

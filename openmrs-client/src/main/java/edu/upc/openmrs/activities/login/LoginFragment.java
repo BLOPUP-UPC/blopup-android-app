@@ -74,7 +74,7 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
 
         initViewFields();
         initListeners();
-        if (mLastCorrectURL.equals(ApplicationConstants.EMPTY_STRING)) {
+        if (mLastCorrectURL.isEmpty()) {
             binding.loginUrlField.setText(OpenmrsAndroid.getServerUrl());
             mLastCorrectURL = OpenmrsAndroid.getServerUrl();
         } else {

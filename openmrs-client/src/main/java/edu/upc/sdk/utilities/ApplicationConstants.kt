@@ -17,7 +17,6 @@ import edu.upc.sdk.library.models.EncounterType
 
 
 object ApplicationConstants {
-    const val EMPTY_STRING = ""
     const val SERVER_URL = "server_url"
     const val SESSION_TOKEN = "session_id"
     const val AUTHORIZATION_TOKEN = "authorisation"
@@ -35,8 +34,6 @@ object ApplicationConstants {
     const val PACKAGE_NAME = "edu.upc"
     const val USER_GUIDE = "https://blopup-upc.github.io/blopup-android-user-guide/"
     const val MESSAGE_RFC_822 = "message/rfc822"
-    const val FLAG = "flag"
-    const val ERROR = "error"
     const val URI_FILE = "file://"
     const val OPENMRS_PREF_FILE = "OpenMRSPrefFile"
     const val BUNDLE = "bundle"
@@ -84,26 +81,12 @@ object ApplicationConstants {
         const val CUSTOM_DIALOG_BUNDLE = "customDialogBundle"
         const val PATIENT_ID_BUNDLE = "patientID"
         const val VISIT_ID = "visitID"
-        const val ENCOUNTERTYPE = "encounterType"
-        const val VALUEREFERENCE = "valueReference"
-        const val FORM_NAME = "formName"
-        const val CALCULATED_LOCALLY = "CALCULATED_LOCALLY"
-        const val PATIENTS_AND_MATCHES = "PATIENTS_AND_MATCHES"
-        const val FORM_FIELDS_LIST_BUNDLE = "formFieldsListBundle"
         const val IS_NEW_VITALS = "isNewVitals"
     }
 
     object BroadcastActions {
-        const val CONCEPT_DOWNLOAD_BROADCAST_INTENT_ID =
-            "com.openmrs.mobile.services.conceptdownloadservice.action.broadcastintent"
-        const val CONCEPT_DOWNLOAD_BROADCAST_INTENT_KEY_COUNT =
-            "com.openmrs.mobile.services.conceptdownloadservice.broadcastintent.key.count"
         const val AUTHENTICATION_CHECK_BROADCAST_ACTION =
             "edu.upc.openmrs.services.AuthenticateCheckService"
-    }
-
-    object SystemSettingKeys {
-        const val WS_REST_MAX_RESULTS_ABSOLUTE = "webservices.rest.maxResultsAbsolute"
     }
 
     object EncounterTypes {
@@ -119,11 +102,7 @@ object ApplicationConstants {
     }
 
     object RequestCodes {
-        const val ADD_PROVIDER_REQ_CODE = 100
-        const val EDIT_PROVIDER_REQ_CODE = 101
         const val START_SETTINGS_REQ_CODE = 102
-        const val IMAGE_REQUEST = 1
-        const val GALLERY_IMAGE_REQUEST = 2
     }
 
     object OpenMRSlanguage {
@@ -136,8 +115,6 @@ object ApplicationConstants {
         const val SHOW_FIND_PATIENT = 1
         const val SHOW_ACTIVE_VISITS = 2
         const val SHOW_REGISTER_PATIENT = 3
-        const val SHOW_FORM_ENTRY = 4
-        const val SHOW_MANAGE_PROVIDERS = 5
     }
 
     object vitalsConceptType {
@@ -150,7 +127,6 @@ object ApplicationConstants {
 
     object PatientDashboardTabs {
         const val DETAILS_TAB_POS = 0
-//        const val DIAGNOSIS_TAB_POS = 1
         const val VISITS_TAB_POS = 1
         const val CHARTS_TAB_POS = 2
         const val TAB_COUNT = 3

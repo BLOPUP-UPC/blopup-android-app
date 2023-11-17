@@ -98,7 +98,7 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
             openMRSLogger, authorizationManager);
 
         Mockito.lenient().when(OpenmrsAndroid.getServerUrl()).thenReturn("http://www.some_server_url.com");
-        Mockito.lenient().when(OpenmrsAndroid.getHashedPassword()).thenReturn(ApplicationConstants.EMPTY_STRING);
+        Mockito.lenient().when(OpenmrsAndroid.getHashedPassword()).thenReturn("");
         Mockito.when(OpenMRS.getInstance()).thenReturn(openMRS);
         mockedStatic = Mockito.mockStatic(RestServiceBuilder.class);
         Mockito.when(RestServiceBuilder.createService(any(), any(), any())).thenReturn(restApi);

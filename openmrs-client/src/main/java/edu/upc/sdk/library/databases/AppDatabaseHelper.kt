@@ -212,7 +212,7 @@ object AppDatabaseHelper {
         patient.addresses.add(personAddress)
         if (patientEntity.causeOfDeath != null) {
             patient.causeOfDeath = Resource(
-                ApplicationConstants.EMPTY_STRING,
+                String(),
                 patientEntity.causeOfDeath,
                 ArrayList(),
                 0

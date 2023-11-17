@@ -15,7 +15,6 @@ package edu.upc.sdk.utilities
 
 import android.annotation.SuppressLint
 import edu.upc.sdk.library.OpenmrsAndroid
-import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
@@ -119,7 +118,7 @@ object DateUtils {
 
     @JvmStatic
     fun convertTime1(dateAsString: String, dateFormat: String?): String {
-        return if (notNull(dateAsString) && notEmpty(dateAsString)) {
+        return if (notNull(dateAsString) && dateAsString.isNotEmpty()) {
             convertTime(convertTime(dateAsString)!!, dateFormat, TimeZone.getDefault())
         } else dateAsString
     }

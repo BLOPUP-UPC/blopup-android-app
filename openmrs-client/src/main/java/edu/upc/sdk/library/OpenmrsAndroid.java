@@ -22,14 +22,14 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 
-import edu.upc.BuildConfig;
-import edu.upc.sdk.utilities.ApplicationConstants;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.upc.BuildConfig;
+import edu.upc.sdk.utilities.ApplicationConstants;
 
 /**
  * The type Openmrs android.
@@ -152,7 +152,7 @@ public class OpenmrsAndroid {
      */
     public static String getPassword() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.UserKeys.PASSWORD, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.UserKeys.PASSWORD, "");
     }
 
     /**
@@ -173,7 +173,7 @@ public class OpenmrsAndroid {
      */
     public static String getHashedPassword() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.UserKeys.HASHED_PASSWORD, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.UserKeys.HASHED_PASSWORD, "");
     }
 
     /**
@@ -194,7 +194,7 @@ public class OpenmrsAndroid {
      */
     public static String getUsername() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.UserKeys.USER_NAME, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.UserKeys.USER_NAME, "");
     }
 
     /**
@@ -278,7 +278,7 @@ public class OpenmrsAndroid {
      */
     public static String getSessionToken() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.SESSION_TOKEN, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.SESSION_TOKEN, "");
     }
 
     /**
@@ -299,7 +299,7 @@ public class OpenmrsAndroid {
      */
     public static String getLastSessionToken() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.LAST_SESSION_TOKEN, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.LAST_SESSION_TOKEN, "");
     }
 
     /**
@@ -309,7 +309,7 @@ public class OpenmrsAndroid {
      */
     public static String getLocation() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.LOCATION, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.LOCATION, "");
     }
 
     /**
@@ -330,7 +330,7 @@ public class OpenmrsAndroid {
      */
     public static String getVisitTypeUUID() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.VISIT_TYPE_UUID, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.VISIT_TYPE_UUID, "");
     }
 
     /**
@@ -404,8 +404,8 @@ public class OpenmrsAndroid {
     public Map<String, String> getCurrentLoggedInUserInfo() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
         Map<String, String> infoMap = new HashMap<>();
-        infoMap.put(ApplicationConstants.UserKeys.USER_PERSON_NAME, prefs.getString(ApplicationConstants.UserKeys.USER_PERSON_NAME, ApplicationConstants.EMPTY_STRING));
-        infoMap.put(ApplicationConstants.UserKeys.USER_UUID, prefs.getString(ApplicationConstants.UserKeys.USER_UUID, ApplicationConstants.EMPTY_STRING));
+        infoMap.put(ApplicationConstants.UserKeys.USER_PERSON_NAME, prefs.getString(ApplicationConstants.UserKeys.USER_PERSON_NAME, ""));
+        infoMap.put(ApplicationConstants.UserKeys.USER_UUID, prefs.getString(ApplicationConstants.UserKeys.USER_UUID, ""));
         return infoMap;
     }
 
@@ -427,7 +427,7 @@ public class OpenmrsAndroid {
         SharedPreferences prefs = OpenmrsAndroid.getOpenMRSSharedPreferences();
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(ApplicationConstants.LAST_SESSION_TOKEN,
-                prefs.getString(ApplicationConstants.SESSION_TOKEN, ApplicationConstants.EMPTY_STRING));
+                prefs.getString(ApplicationConstants.SESSION_TOKEN, ""));
         editor.remove(ApplicationConstants.SESSION_TOKEN);
         editor.remove(ApplicationConstants.AUTHORIZATION_TOKEN);
         OpenmrsAndroid.clearCurrentLoggedInUserInfo();
@@ -456,7 +456,7 @@ public class OpenmrsAndroid {
      */
     public String getDefaultFormLoadID(String xFormName) {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(xFormName, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(xFormName, "");
     }
 
     /**
@@ -466,7 +466,7 @@ public class OpenmrsAndroid {
      */
     public String getAuthorizationToken() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.AUTHORIZATION_TOKEN, ApplicationConstants.EMPTY_STRING);
+        return prefs.getString(ApplicationConstants.AUTHORIZATION_TOKEN, "");
     }
 
     /**
