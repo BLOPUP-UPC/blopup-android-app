@@ -28,6 +28,7 @@ import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.runBlocking
+import java.net.UnknownHostException
 
 class SyncedPatientsRecyclerViewAdapter(
     private val mContext: SyncedPatientsFragment,
@@ -94,15 +95,36 @@ class SyncedPatientsRecyclerViewAdapter(
         fun update(value: Patient) {
             itemView.setOnClickListener {
                 runBlocking {
-                    val patient = viewModel.retrieveOrDownloadPatient(value.uuid)
-
-                    patient?.let { startPatientDashboardActivity(patient) } ?: removePatientFromList(value)
+                    val result = viewModel.retrieveOrDownloadPatient(value.uuid)
+                    when {
+                        result.isSuccess -> {
+                            val patient = result.getOrNull()
+                            patient?.let { startPatientDashboardActivity(patient) } ?: removePatientFromList(value)
+                        }
+                        else -> {
+                            if (result.exceptionOrNull()?.cause is UnknownHostException) {
+                                ToastUtil.error(
+                                    mContext.getString(R.string.no_internet_connection),
+                                    Toast.LENGTH_LONG
+                                )
+                            } else {
+                                ToastUtil.error(
+                                    mContext.getString(R.string.error_occurred),
+                                    Toast.LENGTH_LONG
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
 
+
         private fun removePatientFromList(value: Patient) {
-            ToastUtil.error(mContext.getString(R.string.patient_has_been_removed), Toast.LENGTH_LONG)
+            ToastUtil.error(
+                mContext.getString(R.string.patient_has_been_removed),
+                Toast.LENGTH_LONG
+            )
             value.id?.let { viewModel.deletePatientLocally(it) }
             mItems = mItems.filter { it.uuid != value.uuid }
             notifyDataSetChanged()

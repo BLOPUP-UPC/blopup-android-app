@@ -11,7 +11,6 @@ sealed class Result<out T> {
 enum class OperationType {
     GeneralOperation,
     PatientRegistering,
-    PatientMerging,
     PatientFetching,
     PatientSynchronizing,
     PatientVisitsFetching,

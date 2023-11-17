@@ -6,6 +6,7 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
 import rx.android.schedulers.AndroidSchedulers
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,17 +34,21 @@ class SyncedPatientsViewModel @Inject constructor(
             )
     }
 
-    suspend fun retrieveOrDownloadPatient(patientUuid: String?): Patient? {
-        val patient = patientRepositoryCoroutines.downloadPatientByUuid(patientUuid!!)
+    suspend fun retrieveOrDownloadPatient(patientUuid: String?): Result<Patient?> {
+        return try {
+            val patient = patientRepositoryCoroutines.downloadPatientByUuid(patientUuid!!)
 
-        return if (patient.names.isEmpty()) {
-            null
-        } else {
-            var localDBPatient = patientRepositoryCoroutines.findPatientByUUID(patientUuid)
-            if (localDBPatient == null) {
-                localDBPatient = patientRepositoryCoroutines.savePatientLocally(patient)
+            if (patient.names.isEmpty()) {
+                Result.success(null)
+            } else {
+                var localDBPatient = patientRepositoryCoroutines.findPatientByUUID(patientUuid)
+                if (localDBPatient == null) {
+                    localDBPatient = patientRepositoryCoroutines.savePatientLocally(patient)
+                }
+                Result.success(localDBPatient)
             }
-            localDBPatient
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

@@ -136,7 +136,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
 
         runBlocking {
             val result = viewModel.retrieveOrDownloadPatient(patient.uuid)
-            assertEquals(null, result)
+            assertEquals(null, result.getOrNull())
         }
     }
 
@@ -157,7 +157,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
 
         runBlocking {
             val result = viewModel.retrieveOrDownloadPatient(patient.uuid)
-            assertEquals(patient, result)
+            assertEquals(patient, result.getOrNull())
         }
     }
 }

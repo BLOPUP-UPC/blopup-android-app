@@ -58,7 +58,7 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
                 }
             } catch (e: Exception) {
                 crashlytics.reportException(e, "Failed to download patient")
-                throw IOException("Error with downloading patient: " + e.message)
+                throw IOException("Error with downloading patient: " + e.message, e)
             }
         }
 
