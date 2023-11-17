@@ -135,7 +135,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
                         }
 
                         OpenmrsAndroid.setVisitTypeUUID(ApplicationConstants.DEFAULT_VISIT_TYPE_UUID);
-                        setLogin(true, url);
+                        setLogin(url);
                         userService.updateUserInformation(username);
 
                         loginView.userAuthenticated();
@@ -206,7 +206,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
             public void onFailure(@NonNull Call<Results<LocationEntity>> call, @NonNull Throwable t) {
                 loginView.hideUrlLoadingAnimation();
                 if (t instanceof UnknownHostException) {
-                    loginView.showToast(R.string.no_internet_connection_message, ToastUtil.ToastType.ERROR);
+                    loginView.showToast(R.string.no_internet_connection, ToastUtil.ToastType.ERROR);
                 } else {
                     loginView.showInvalidURLSnackbar(t.getMessage());
                 }
@@ -229,8 +229,8 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
         OpenmrsAndroid.setPasswordAndHashedPassword(password);
     }
 
-    private void setLogin(boolean isLogin, String serverUrl) {
-        OpenmrsAndroid.setUserLoggedOnline(isLogin);
+    private void setLogin(String serverUrl) {
+        OpenmrsAndroid.setUserLoggedOnline(true);
         OpenmrsAndroid.setLastLoginServerUrl(serverUrl);
     }
 }

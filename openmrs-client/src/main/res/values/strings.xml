@@ -21,7 +21,6 @@
     <string name="snackbar_nonvisitting_patients" tools:ignore="MissingTranslation">Vital signs can only be captured in patients with an active visit.</string>
     <string name="no_death_concepts_in_server" tools:ignore="MissingTranslation">Please, add the possible causes of death on the server</string>
     <string name="admission_provider_role" tools:ignore="MissingTranslation">Provider role:</string>
-    <string name="form_data_will_be_synced_later_error_message" tools:ignore="MissingTranslation">" \"Patient not yet registered. No internet connection. Form data is saved locally and will be synced when internet connection is restored\"."</string>
 
     <string name="alphanumeric_postal_code" tools:ignore="MissingTranslation">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 </string>
 
@@ -75,8 +74,6 @@
 
     <!-- Authentication Failed dialog -->
     <string name="auth_failed_dialog_message" tools:ignore="MissingTranslation">Incorrect username or password entered. Please try again.</string>
-    <!-- No internet dialog -->
-    <string name="no_internet_conn_dialog_message" tools:ignore="MissingTranslation">You have no internet connection.\nPlease check phone or Wi-Fi connection and signal strength and try again.</string>
 
     <!-- SimilarPatients dialog -->
     <string name="similar_patients_dialog_title" tools:ignore="MissingTranslation">Similar patients found</string>
@@ -187,11 +184,6 @@
     <!-- ACBase activity -->
     <string name="error_email_subject_app_crashed" tools:ignore="MissingTranslation">OpenMRS android client crashed</string>
     <string name="choose_a_email_client" tools:ignore="MissingTranslation">Choose an Email client :</string>
-    <string name="no_internet_connection_message" tools:ignore="MissingTranslation">No internet connection</string>
-
-    <!-- Patient Service Activity-->
-    <string name="activity_no_internet_connection" tools:ignore="MissingTranslation">No internet connection. Patient Registration data is saved locally </string>
-    <string name="activity_sync_after_connection" tools:ignore="MissingTranslation">and will sync when internet connection is restored. </string>
 
     <!-- Patients Vitals Fragment -->
     <string name="form_error" tools:ignore="MissingTranslation">This form is not supported</string>
@@ -224,7 +216,6 @@
     <string name="vitals" tools:ignore="MissingTranslation">Vitals</string>
     <string name="visit_exp_list_empty" tools:ignore="MissingTranslation">Visit has no encounters yet.</string>
     <string name="visit_fetching_error" tools:ignore="MissingTranslation">Error with fetching the visit</string>
-    <string name="visit_ending_not_online_error" tools:ignore="MissingTranslation">Cannot end visit without internet connection or in offline mode</string>
     <string name="visit_ending_error" tools:ignore="MissingTranslation">Error ending this visit</string>
     <string name="patient_not_yet_registered" tools:ignore="MissingTranslation">Patient not yet registered, cannot create encounter.</string>
 
@@ -278,7 +269,6 @@
     <string name="snackbar_action_open" tools:ignore="MissingTranslation">Open</string>
     <string name="snackbar_info_patient_downloaded" tools:ignore="MissingTranslation">Patient downloaded</string>
     <string name="invalid_login_or_password_message" tools:ignore="MissingTranslation">Invalid login or password, please try again.</string>
-    <string name="snackbar_no_internet_connection" tools:ignore="MissingTranslation">No internet connection</string>
 
     <!-- Permissions -->
     <string name="permission_storage_neverask" tools:ignore="MissingTranslation">Storage write permission was denied with Never ask again, this permission is needed.</string>
@@ -404,7 +394,6 @@
     <string name="application_exit_logger_message" tools:ignore="MissingTranslation">Exit application</string>
 
     <!--FormDisplay Fragment-->
-    <string name="form_data_sync_is_off_message" tools:ignore="MissingTranslation">Form submitted locally and can\'t be viewed now. Turn on sync and internet connection to upload it.</string>
     <string name="form_data_submit_error" tools:ignore="MissingTranslation">Form submission error</string>
 
     <!--FormDisplayPage Fragment-->
@@ -619,5 +608,5 @@
     <string name="stage_II_c_sms" translatable="false">Nivell II C (S-%1$s, D-%2$s)</string>
     <string name="sms_message" translatable="false">El pacient ID %1$s presenta Hipertensió %2$s. Per posar-vos en contacte amb l\'Hospital Santa Anna, truqueu a aquest número.</string>
     <string name="patient_has_been_removed" tools:ignore="MissingTranslation">Patient can\'t be shown. It has been removed from database.</string>
-    <string name="no_internet_connection">Couldn\'t connect. Please check your internet connection and try again.</string>
+    <string name="no_internet_connection">You are currently offline. Please check your internet connection and try again.</string>
 </resources>

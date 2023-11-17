@@ -190,7 +190,7 @@ class VitalsFormActivity : ACBaseActivity() {
                 }
 
                 ResultType.EncounterSubmissionLocalSuccess -> {
-                    ToastUtil.notify(getString(R.string.form_data_sync_is_off_message))
+                    ToastUtil.notify(getString(R.string.offline_error_message))
                     setResult(RESULT_OK)
                     finish()
                 }
