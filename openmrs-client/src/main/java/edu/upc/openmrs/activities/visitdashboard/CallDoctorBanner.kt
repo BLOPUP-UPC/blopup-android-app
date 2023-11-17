@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import edu.upc.BuildConfig
-import edu.upc.Secrets
 import edu.upc.databinding.CallDoctorBannerBinding
 import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.makeGone
