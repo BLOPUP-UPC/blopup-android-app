@@ -16,11 +16,9 @@ package edu.upc.openmrs.activities.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,6 +125,11 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
             }
         });
 
+        binding.locationSpinner.setOnTouchListener((view, event) -> {
+            mPresenter.loadLocations(binding.loginUrlField.getText().toString());
+            return view.performClick();
+        });
+
         binding.loginButton.setOnClickListener(view -> mPresenter.login(binding.loginUsernameField.getText().toString(),
                 binding.loginPasswordField.getText().toString(),
                 binding.loginUrlField.getText().toString(),
@@ -148,8 +151,6 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
     @Override
     public void onResume() {
         super.onResume();
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(OpenMRS.getInstance());
         hideUrlLoadingAnimation();
     }
 
