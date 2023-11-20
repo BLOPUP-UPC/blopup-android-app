@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_screen"
+        android:enabled="true"
+        android:icon="@drawable/home_icon"
+        android:title="@string/bottom_navigation_option_home"/>
+    <item
+        android:id="@+id/search_patients"
+        android:enabled="true"
+        android:icon="@drawable/ico_search"
+        android:title="@string/bottom_navigation_option_search"/>
+    <item
+        android:id="@+id/register_patient"
+        android:enabled="true"
+        android:icon="@drawable/ico_registry"
+        android:title="@string/bottom_navigation_option_register"/>
+</menu>

@@ -14,15 +14,22 @@
 
 package edu.upc.openmrs.activities.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.navigation.fragment.NavHostFragment
-import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.databinding.ActivityDashboardBinding
+import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
+import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
+import edu.upc.sdk.utilities.ToastUtil
+
 
 @AndroidEntryPoint
 class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
+
+    private lateinit var mBinding: ActivityDashboardBinding
 
     private var doubleBackToExitPressedOnce: Boolean = false
     private var handler: Handler? = Handler()
@@ -31,7 +38,27 @@ class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+        mBinding = ActivityDashboardBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
+
+        mBinding.bottomNavigation.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.home_screen-> {
+                    startActivity(Intent(applicationContext, DashboardActivity::class.java))
+                    overridePendingTransition(0, 0)
+                }
+                R.id.search_patients-> {
+                    startActivity(Intent(applicationContext, SyncedPatientsActivity::class.java))
+                    overridePendingTransition(0, 0)
+                }
+                R.id.register_patient-> {
+                    startActivity(Intent(applicationContext, AddEditPatientActivity::class.java))
+                    overridePendingTransition(0, 0)
+                }
+
+            }
+            true
+        }
 
         // Create toolbar
         val actionBar = supportActionBar

@@ -236,7 +236,7 @@
 
     <!-- Recording Legal Consent -->
     <string name="record_patient_consent" tools:ignore="MissingTranslation">Record patient consent*</string>
-     <string name="recording_info" tools:ignore="MissingTranslation">Please wait until this recording is completed</string>
+    <string name="recording_info" tools:ignore="MissingTranslation">Please wait until this recording is completed</string>
     <string name="recording_inprogress" tools:ignore="MissingTranslation">Recording In Progress …</string>
 
     <!--Similar patient card strings-->
@@ -600,7 +600,7 @@
     <string name="diastolic_100_plus" tools:ignore="MissingTranslation">or DIA 100+</string>
     <string name="sys_180_plus" translatable="false"><![CDATA[SYS ≥ 180]]></string>
     <string name="diastolic_110_plus" tools:ignore="MissingTranslation"><![CDATA[or DIA ≥ 110]]></string>
-    <string name="blood_pressure_label" tools:ignore="MissingTranslation" >Blood pressure</string>
+    <string name="blood_pressure_label" tools:ignore="MissingTranslation">Blood pressure</string>
     <string name="normal" translatable="false">Normal</string>
     <string name="sms_to_doctor" tools:ignore="MissingTranslation">SMS sent to the Doctor Xavier de las Cuevas notifying the situation</string>
     <string name="sms_permission_denied" tools:ignore="MissingTranslation">Permission Denied: SMS permission is needed to send messages. Please grant the necessary permission in your device\'s settings.</string>
@@ -608,5 +608,8 @@
     <string name="stage_II_c_sms" translatable="false">Nivell II C (S-%1$s, D-%2$s)</string>
     <string name="sms_message" translatable="false">El pacient ID %1$s presenta Hipertensió %2$s. Per posar-vos en contacte amb l\'Hospital Santa Anna, truqueu a aquest número.</string>
     <string name="patient_has_been_removed" tools:ignore="MissingTranslation">Patient can\'t be shown. It has been removed from database.</string>
-    <string name="no_internet_connection">You are currently offline. Please check your internet connection and try again.</string>
+    <string name="no_internet_connection" tools:ignore="MissingTranslation">You are currently offline. Please check your internet connection and try again.</string>
+    <string name="bottom_navigation_option_home" tools:ignore="MissingTranslation">Home</string>
+    <string name="bottom_navigation_option_search" tools:ignore="MissingTranslation">Search</string>
+    <string name="bottom_navigation_option_register" tools:ignore="MissingTranslation">Register</string>
 </resources>

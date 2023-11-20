@@ -13,6 +13,7 @@
  */
 package edu.upc.openmrs.activities.syncedpatients
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -20,11 +21,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
+import edu.upc.openmrs.activities.dashboard.DashboardActivity
 import edu.upc.sdk.library.OpenmrsAndroid
-import edu.upc.sdk.utilities.StringUtils.notEmpty
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -38,6 +41,26 @@ class SyncedPatientsActivity : ACBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_patients)
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.search_patients
+        bottomNavigationView.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.home_screen-> {
+                    startActivity(Intent(applicationContext, DashboardActivity::class.java))
+                    overridePendingTransition(0, 0)
+                }
+                R.id.search_patients-> {
+                    startActivity(Intent(applicationContext, SyncedPatientsActivity::class.java))
+                    overridePendingTransition(0, 0)
+                }
+                R.id.register_patient-> {
+                    startActivity(Intent(applicationContext, AddEditPatientActivity::class.java))
+                    overridePendingTransition(0, 0)
+                }
+            }
+            true
+        }
 
         supportActionBar?.let {
             it.elevation = 0f
