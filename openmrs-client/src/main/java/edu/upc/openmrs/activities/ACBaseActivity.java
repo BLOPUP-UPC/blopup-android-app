@@ -50,6 +50,7 @@ import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;
 import edu.upc.openmrs.net.AuthorizationManager;
 import edu.upc.openmrs.utilities.LanguageUtils;
+import edu.upc.sdk.DefaultUncaughtExceptionHandler;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.dao.LocationDAO;
@@ -84,6 +85,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         LanguageUtils.setupLanguage(getResources());
         mFragmentManager = getSupportFragmentManager();
         mAuthorizationManager = new AuthorizationManager();
+        Thread.setDefaultUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler());
         locationList = new ArrayList<>();
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(ApplicationConstants.BroadcastActions.AUTHENTICATION_CHECK_BROADCAST_ACTION);
