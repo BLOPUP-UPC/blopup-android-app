@@ -193,6 +193,7 @@ class VitalsFormActivity : ACBaseActivity() {
                 }
                 ResultType.NoInternetError -> {
                     ToastUtil.error(getString(R.string.no_internet_connection))
+                    mBinding.buttonToSentVitals.isEnabled = true
                 }
                 else -> ToastUtil.error(getString(R.string.form_data_submit_error))
             }
