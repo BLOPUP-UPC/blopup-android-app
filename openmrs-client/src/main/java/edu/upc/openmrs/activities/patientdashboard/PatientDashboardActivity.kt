@@ -107,11 +107,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         })
     }
 
-    private fun syncPatient() {
-        if (NetworkUtils.isOnline()) viewModel.syncPatientData()
-        else ToastUtil.notify(getString(R.string.synchronize_patient_network_error))
-    }
-
     private fun initViewPager() {
         val adapter = PatientDashboardPagerAdapter(supportFragmentManager, this, patientId)
         with(binding) {

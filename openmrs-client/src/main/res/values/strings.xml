@@ -68,10 +68,6 @@
     <string name="update_patient_success" tools:ignore="MissingTranslation">Patient %s updated</string>
     <string name="update_patient_error" tools:ignore="MissingTranslation">Patient %s cannot be updated due to server error</string>
 
-    <!-- Offline Mode -->
-    <string name="offline_mode_unsupported_in_first_login" tools:ignore="MissingTranslation">Offline mode is not supported during first login.Enable online mode and then try again.</string>
-    <string name="login_offline_toast_message" tools:ignore="MissingTranslation">You are now in offline mode.</string>
-
     <!-- Authentication Failed dialog -->
     <string name="auth_failed_dialog_message" tools:ignore="MissingTranslation">Incorrect username or password entered. Please try again.</string>
 
@@ -144,7 +140,6 @@
     <string name="action_update_patient_data" tools:ignore="MissingTranslation">Update Patient</string>
     <string name="synchronize_patient_successful" tools:ignore="MissingTranslation">Successfully synchronized patient data.</string>
     <string name="synchronize_patient_error" tools:ignore="MissingTranslation">Synchronizing patient data was unsuccessful</string>
-    <string name="synchronize_patient_network_error" tools:ignore="MissingTranslation">Cannot synchronize in offline mode</string>
     <string name="delete_patient_successful" tools:ignore="MissingTranslation">Patient deleted successfully</string>
     <string name="delete_patient_error" tools:ignore="MissingTranslation">Error with deleting patient</string>
     <string name="get_patient_from_database_error" tools:ignore="MissingTranslation">Failed to fetch patient from database</string>
@@ -316,7 +311,6 @@
     <string name="frag_settings_build" tools:ignore="MissingTranslation">Build:</string>
     <string name="action_provider_management" tools:ignore="MissingTranslation">Manage Providers</string>
     <string name="unable_to_fetch_providers" tools:ignore="MissingTranslation">Unable to fetch Providers!</string>
-    <string name="device_offline_msg" tools:ignore="MissingTranslation">Device Offline!</string>
 
     <!-- Provider Management -->
     <string name="provider_manager" tools:ignore="MissingTranslation">Provider Manager</string>
@@ -343,10 +337,6 @@
 
     <!--activity_provider_dashboard  -->
     <string name="surgeon" tools:ignore="MissingTranslation">Surgeon</string>
-    <string name="offline_provider_fetch" tools:ignore="MissingTranslation">offline providers fetched couldnt sync with the database device offline</string>
-    <string name="offline_provider_add" tools:ignore="MissingTranslation">provider will be synced to the server when device gets connected to network</string>
-    <string name="offline_provider_edit" tools:ignore="MissingTranslation">updated provider will be synced to the server when device gets connected to network</string>
-    <string name="offline_provider_delete" tools:ignore="MissingTranslation">Provider will be removed from the server when you\'re back online</string>
 
     <!--fragment_patient_relationship-->
     <string name="provider_patient" tools:ignore="MissingTranslation">Provider - Patient Relationship</string>
@@ -417,14 +407,10 @@
     <!--MergePatientsRecyclerView Adapter-->
     <string name="only_one_patient_can_be_selected_notification_message" tools:ignore="MissingTranslation">You can select only one similar patient</string>
 
-    <!--PatientDashboardVisits-->
-    <string name="offline_mode_not_supported" tools:ignore="MissingTranslation">Cannot start a patient visit manually in offline mode.</string>
-
     <!--PatientRepository-->
     <string name="patient_cannot_be_synced_due_to_server_error_message" tools:ignore="MissingTranslation">"Patient[ %1$i ] cannot be synced due to server error %2$s </string>
     <string name="patient_cannot_be_synced_due_to_request_error_message" tools:ignore="MissingTranslation">"Patient[ %1$i ] cannot be synced due to request error %2$s </string>
     <string name="patient_update_unsuccessful_server_error" tools:ignore="MissingTranslation">Patient %1$s cannot be updated due to server error will retry sync %2$s</string>
-    <string name="offline_mode_patient_data_saved_locally_notification_message" tools:ignore="MissingTranslation">Sync is off. Patient Update data is saved locally and will sync when online mode is restored.</string>
     <string name="patent_and_form_data_sync_resumed" tools:ignore="MissingTranslation">Syncing switched on, attempting to sync patients and form data</string>
     <string name="patent_data_synced_successfully" tools:ignore="MissingTranslation">Patient [ %1$i ] synced to server successfully</string>
 
@@ -474,7 +460,6 @@
     <!--Admission Form -->
     <string name="admission" tools:ignore="MissingTranslation">Admission</string>
     <string name="error_occurred" tools:ignore="MissingTranslation">An error Occurred, Try Again Later !!!</string>
-    <string name="offline_error_message" tools:ignore="MissingTranslation">You are currently offline, Try again when connected !!!</string>
     <string name="admission_fields_required" tools:ignore="MissingTranslation">Please Select Required Field</string>
     <string name="admission_date" tools:ignore="MissingTranslation">Admission Date :</string>
     <string name="admission_admitted_by" tools:ignore="MissingTranslation">Admitted By :</string>

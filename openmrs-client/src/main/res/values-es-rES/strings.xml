@@ -35,8 +35,6 @@
     <string name="register_patient_error">Algo falló de nuestro lado y el paciente no ha sido creado. Por favor, intentelo de nuevo.</string>
     <string name="update_patient_success">El paciente %s se ha actualizado</string>
     <string name="update_patient_error">El paciente %s no se ha actualizado por un error en el servidor</string>
-    <string name="offline_mode_unsupported_in_first_login">El modo sin conexión no está disponible durante el primer inicio de sesión. Activa el modo con conexión e intenta nuevamente.</string>
-    <string name="login_offline_toast_message">Ahora estás en modo sin conexión.</string>
     <string name="auth_failed_dialog_message">Nombre de usuario o contraseña incorrectos. Por favor, intentar nuevamente.</string>
     <string name="similar_patients_dialog_title">Fueron encontrados pacientes similares</string>
     <string name="logout_dialog_title">Cerrando Sesión</string>
@@ -81,7 +79,6 @@
     <string name="action_update_patient_data">Actualizar Paciente</string>
     <string name="synchronize_patient_successful">Paciente sincronizado con éxito.</string>
     <string name="synchronize_patient_error">Paciente NO sincronizado.</string>
-    <string name="synchronize_patient_network_error">No se permite sincronizar en modo sin conexión</string>
     <string name="delete_patient_successful">Paciente correctamente eliminado</string>
     <string name="delete_patient_error">Error al eliminar paciente.</string>
     <string name="get_patient_from_database_error">Error al buscar paciente en la base de datos.</string>
@@ -132,7 +129,6 @@
     <string name="permission_storage_neverask">"Se denegó el permiso de escritura de almacenamiento con \"No volver a preguntar\", este permiso es necesario. "</string>
     <string name="button_allow">Permitir</string>
     <string name="dialog_message_data_lost">Toda la información ingresada del paciente se perderá</string>
-    <string name="activity_sync_after_connection">y se sincronizará cuando la conexión sea restablecida.</string>
     <string name="error_occurred">Ocurrió un error. Intentar nuevamente más tarde</string>
     <string name="apply">Aplicar</string>
     <string name="dialog_title_are_you_sure">¿Está seguro/a?</string>
@@ -160,7 +156,6 @@
     <string name="contact_us_or">O</string>
     <string name="intro_welcome">Bienvenido/a</string>
     <string name="hiv_yes">Si</string>
-    <string name="offline_error_message">Está sin conexión. Intenta nuevamente al recuperar la conectado</string>
     <string name="connected_to_server_message">¡Conectado!</string>
     <string name="intro_location_desc">Puedes cambiar la ubicación en un simple click.</string>
     <string name="intro_find_desc">Puedes buscar y monitorear a los pacientes.</string>
@@ -174,7 +169,6 @@
     <string name="req_star"><![CDATA[<font color=\'#616161\'> * </font>]]></string>
     <string name="more_about_openmrs">MÁS</string>
     <string name="alphanumeric_postal_code">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "</string>
-    <string name="offline_mode_not_supported">No se puede iniciar una visita en modo sin conexión.</string>
     <string name="data_type_not_available_for_this_field">Gráfico no disponible para este campo.</string>
     <string name="charts_view_toolbar_title">Vistas de los gráficos</string>
     <string name="snackbar_choose">Escoger</string>
@@ -188,7 +182,6 @@
     <string name="label_dark_mode">Modo Oscuro</string>
     <string name="dob_error">La fecha debe estar entre %1$s y %2$s</string>
     <string name="button_deny">Rechazar</string>
-    <string name="device_offline_msg">Dispositivo sin conexión!</string>
     <string name="downloading_concepts_notification_message">Descargando Conceptos…</string>
     <string name="edit_form">Editar formulario</string>
     <string name="email_us">Envíenos un correo electrónico</string>
@@ -253,7 +246,6 @@
     <string name="intro_monitor">Monitorear Signos Vitales</string>
     <string name="no_patient_selected">No se ha seleccionado ningún paciente</string>
     <string name="no_vitals_recorded">No se registró ningún signo vital</string>
-    <string name="offline_provider_fetch">Los proveedores offline obtenidos no pudieron sincronizarse con la base de datos del dispositivo offline</string>
     <string name="active_visit_label_capture_vitals">En la Visita</string>
     <string name="snackbar_action_open">Abrir</string>
     <string name="error_email_subject_app_crashed">OpenMRS Android Client fue interrumpido</string>
@@ -280,9 +272,7 @@
     <string name="provider_patient">Proveedor - Relación del Paciente</string>
     <string name="provider_provider">Proveedor - Relación del Proveedor</string>
     <string name="provider_tab_title">Proveedores</string>
-    <string name="offline_provider_delete">El proveedor se eliminará del servidor cuando la conexión se reestablezca</string>
     <string name="dialog_provider_retired">El proveedor será retirado.</string>
-    <string name="offline_provider_add">El proveedor se sincronizará con el servidor cuando el dispositivo se conecte a la red</string>
     <string name="rate_us_string">Calificanos</string>
     <string name="reconn_server">Reconectando con el servidor</string>
     <string name="intro_register_desc">Registrar nuevos pacientes a nuestro servidor</string>
@@ -297,7 +287,6 @@
     <string name="similar_patients_on_server">Existen pacientes similares en el servidor</string>
     <string name="settings_frag_size">Tamaño:</string>
     <string name="crash_dialog_message">Lo sentimos. Un error desconocido ha ocurrido. Informe de los detalles a los desarrolladores para que se pueda resolver lo antes posible.</string>
-    <string name="offline_provider_edit">El proveedor actualizado se sincronizará con el servidor cuando el dispositivo se conecte a la red</string>
     <string name="unable_to_login">¿No puede iniciar sesión?</string>
     <string name="unable_to_fetch_providers">¡No se puden obtener los Proveedores!</string>
     <string name="registration_core_info">Para usar una resolución de paciente similar más rápida y precisa, actualice el módulo principal de registro a 1.7 o superior</string>
@@ -306,8 +295,6 @@
     <string name="no_such_form_name_error_message">No hay ningún tipo de encuentro denominado %1$</string>
     <string name="intro_welcome_desc">La comunidad global de OpenMRS trabaja en conjunto para construir el sistema de registro médico electrónico líder de código abierto en el mundo.</string>
     <string name="diagnosis_note_label">Texto de la nota del encuentro</string>
-    <string name="form_data_sync_is_off_message">La sincronización está desactivada. Activela para guardar los datos del formulario.</string>
-    <string name="offline_mode_patient_data_saved_locally_notification_message">La sincronización está desactivada. Los datos de actualización del paciente se guardarán localmente y se sincronizarán cuando se restablezca la conexión.</string>
     <string name="patent_and_form_data_sync_resumed">Sincronización activada, intentando sincronizar pacientes y datos de formularios</string>
     <string name="sync">Sincronizar</string>
     <string name="surgeon">Cirujano/a</string>

@@ -42,8 +42,6 @@
     <string name="register_patient_error">Alguna cosa va fallar del nostre costat i el pacient no ha estat creat. Si us plau, torneu-ho a provar.</string>
     <string name="update_patient_success">El pacient %s s\'ha actualitzat</string>
     <string name="update_patient_error">El pacient %s no es pot actualitzar per un error al servidor</string>
-    <string name="offline_mode_unsupported_in_first_login">El mode offline no està disponible durant el primer inici de sessió. Activa el mode online i prova-ho de nou.</string>
-    <string name="login_offline_toast_message">Ara estàs al mode offline.</string>
     <string name="auth_failed_dialog_message">Nom d\'usuari o paraula de pas incorrectes. Si us plau, prova-ho un altre cop.</string>
     <string name="similar_patients_dialog_title">S\'han trobat pacient similars</string>
     <string name="logout_dialog_title">Tancant Sessió</string>
@@ -90,7 +88,6 @@
     <string name="action_update_patient_data">Actualitzar Pacient</string>
     <string name="synchronize_patient_successful">Pacient sincronitzat correctament</string>
     <string name="synchronize_patient_error">No s\'ha pogut sincronitzar el pacient correctament</string>
-    <string name="synchronize_patient_network_error">No es pot sincronitzar en mode offline</string>
     <string name="delete_patient_successful">Pacient esborrat correctament</string>
     <string name="delete_patient_error">Error a l\'esborrar el pacient.</string>
     <string name="get_patient_from_database_error">Error al buscar un pacient a la base de dades.</string>
@@ -203,7 +200,6 @@
     <string name="frag_settings_build">"Crear: "</string>
     <string name="action_provider_management">Administrar Proveïdors</string>
     <string name="unable_to_fetch_providers">No s\'han pogut obtenir els Proveïdors!</string>
-    <string name="device_offline_msg">Dispositiu sense connexió!</string>
     <string name="provider_manager">Administrador de proveïdors</string>
     <string name="action_find_providers">Cercar Proveïdors</string>
     <string name="delete_provider_success_msg">Proveïdor esborrat amb èxit</string>
@@ -226,9 +222,6 @@
     <string name="failed_provider_details">Error al obtenir els detalls del proveïdor</string>
     <string name="retry_action">Reintentar</string>
     <string name="surgeon">Cirurgià/na</string>
-    <string name="offline_provider_fetch">Els proveïdors obtinguts sense connexió no es poden sincronitzar amb la base de dades del dispositiu</string>
-    <string name="offline_provider_add">El proveïdor es sincronitzarà amb el servidor quan el dispositiu es conecti a la xarxa</string>
-    <string name="offline_provider_delete">El proveïdor s\'esborrarà del servidor quan la connexió es restableixi</string>
     <string name="provider_patient">Proveïdor - Relació del Proveïdor</string>
     <string name="doctor">Doctor/a</string>
     <string name="provider_provider">Proveïdor - Relació del Proveïdor</string>
@@ -253,7 +246,6 @@
     <string name="dataset_entry_label">Etiqueta</string>
     <string name="downloading_concepts_notification_message">Descarregant Conceptes…</string>
     <string name="application_exit_logger_message">Sortir de l\'aplicació</string>
-    <string name="form_data_sync_is_off_message">La sincronització està desactivada. Activi-la per desar les dades del formulari.</string>
     <string name="form_data_submit_error">Error al enviar el formulari</string>
     <string name="all_fields_empty_error_message">No poden estar tots els camps buits</string>
     <string name="no_such_form_name_error_message">No hi ha cap tipus de trobada anomenada %1$s</string>
@@ -264,11 +256,9 @@
     <string name="invalid_URL_message">URL no vàlida</string>
     <string name="logs_copied_to_clipboard_message">Registre copiat al portapapers</string>
     <string name="only_one_patient_can_be_selected_notification_message">Pots seleccionar únicament un pacient semblant</string>
-    <string name="offline_mode_not_supported">No es pot iniciar una visita durant el mode sense connexió.</string>
     <string name="patient_cannot_be_synced_due_to_server_error_message">El pacient [ %1$i ] no s\'ha pogut sincronitzar degut a un error %2$s</string>
     <string name="patient_cannot_be_synced_due_to_request_error_message">El pacient [ %1$i ] no s\'ha pogut sincronitzar degut a un error en la sol·licitud %2$s</string>
     <string name="patient_update_unsuccessful_server_error">El pacient %1$s no s\'ha pogut actualitzar degut a un error del servidor, es tornara a intentar %2$s</string>
-    <string name="offline_mode_patient_data_saved_locally_notification_message">La sincronització està desactivada. Les dades d\'actualització del pacient es desaran localment i es sincronitzaran quan hi torni a haver connexió.</string>
     <string name="patent_and_form_data_sync_resumed">Sincronització activada, s\'està intentant sincronitzar tots els pacient i les dades dels formularis</string>
     <string name="patent_data_synced_successfully">Pacient [ %1$i ] sincronitzat correctament</string>
     <string name="hiv_yes">Si</string>
@@ -299,7 +289,6 @@
     <string name="snackbar_select">Seleccionar</string>
     <string name="admission">Admissió</string>
     <string name="error_occurred">S\'ha produtït un error, torni-ho a provar mes tard</string>
-    <string name="offline_error_message">Es troba sense connexió. Provi de nou l\'operació quan hi hagi connexió</string>
     <string name="admission_fields_required">Si us plau, selecciona el camp obligatori</string>
     <string name="admission_date">Data d\'admissió:</string>
     <string name="admission_admitted_by">Admès per:</string>

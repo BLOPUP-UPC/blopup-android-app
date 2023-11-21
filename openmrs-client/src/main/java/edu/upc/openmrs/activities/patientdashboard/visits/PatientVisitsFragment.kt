@@ -153,18 +153,6 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
         }
     }
 
-    private fun showStartVisitStatus() {
-        if (!isOnline()) notify(getString(R.string.offline_mode_not_supported))
-        else {
-            viewModel.hasActiveVisit().observeOnce(viewLifecycleOwner, Observer { hasActiveVisit ->
-                with(patientDashboardActivity.supportActionBar!!) {
-                    if (hasActiveVisit) patientDashboardActivity.showStartVisitImpossibleDialog(title)
-                    else patientDashboardActivity.showStartVisitDialog(title)
-                }
-            })
-        }
-    }
-
     private fun showStartVisitProgressDialog() {
         patientDashboardActivity.showProgressDialog(R.string.action_starting_visit)
     }

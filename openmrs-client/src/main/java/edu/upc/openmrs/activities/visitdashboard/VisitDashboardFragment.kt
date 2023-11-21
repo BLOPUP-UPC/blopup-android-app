@@ -176,7 +176,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     fun endVisit() {
         if (!NetworkUtils.isOnline()) {
-            ToastUtil.error(getString(R.string.offline_error_message))
+            ToastUtil.error(getString(R.string.no_internet_connection))
             return
         }
         viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { ended ->

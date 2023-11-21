@@ -263,7 +263,7 @@ class AddEditPatientFragment : BaseFragment() {
                 }
 
                 ResultType.PatientUpdateLocalSuccess -> {
-                    ToastUtil.notify(getString(R.string.offline_mode_patient_data_saved_locally_notification_message))
+                    ToastUtil.notify(getString(R.string.no_internet_connection))
                     finishActivity()
                 }
 
