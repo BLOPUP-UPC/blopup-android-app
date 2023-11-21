@@ -14,20 +14,19 @@
 
 package edu.upc.openmrs.activities.dashboard
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityDashboardBinding
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
-import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
+import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.utilities.NavigationBarUtils
 import edu.upc.sdk.utilities.ToastUtil
 
 
 @AndroidEntryPoint
-class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
+class DashboardActivity : ACBaseActivity() {
 
     private lateinit var mBinding: ActivityDashboardBinding
 
@@ -41,24 +40,7 @@ class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         mBinding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        mBinding.bottomNavigation.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.home_screen-> {
-                    startActivity(Intent(applicationContext, DashboardActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-                R.id.search_patients-> {
-                    startActivity(Intent(applicationContext, SyncedPatientsActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-                R.id.register_patient-> {
-                    startActivity(Intent(applicationContext, AddEditPatientActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-
-            }
-            true
-        }
+        NavigationBarUtils.setBottomNavigationBar(mBinding.bottomNavigation)
 
         // Create toolbar
         val actionBar = supportActionBar
@@ -80,13 +62,13 @@ class DashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
+            super.onBackPressed()
 
-            return;
+            return
         }
-        this.doubleBackToExitPressedOnce = true;
-        ToastUtil.notify(getString(R.string.dashboard_exit_toast_message));
-        handler?.postDelayed(runnable, 2000);
+        this.doubleBackToExitPressedOnce = true
+        ToastUtil.notify(getString(R.string.dashboard_exit_toast_message))
+        handler?.postDelayed(runnable, 2000)
     }
 
     override fun onDestroy() {

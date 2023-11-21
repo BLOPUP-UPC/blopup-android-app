@@ -14,15 +14,13 @@
 package edu.upc.openmrs.activities.addeditpatient
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment.Companion.newInstance
-import edu.upc.openmrs.activities.dashboard.DashboardActivity
-import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
+import edu.upc.openmrs.utilities.NavigationBarUtils
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @AndroidEntryPoint
@@ -39,26 +37,7 @@ class AddEditPatientActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             setTitle(R.string.action_register_patient)
         }
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.selectedItemId = R.id.register_patient
-        bottomNavigationView.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.home_screen-> {
-                    startActivity(Intent(applicationContext, DashboardActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-                R.id.search_patients-> {
-                    startActivity(Intent(applicationContext, SyncedPatientsActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-                R.id.register_patient-> {
-                    startActivity(Intent(applicationContext, AddEditPatientActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-            }
-            true
-        }
-
+        setBottomNavigationBar()
 
         // Get and send patient id to the fragment (in case of updating a patient)
         val patientBundle = savedInstanceState ?: intent.extras
@@ -71,6 +50,12 @@ class AddEditPatientActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         if (!addEditPatientFragment!!.isActive) {
             addFragmentToActivity(supportFragmentManager, addEditPatientFragment!!, R.id.patientInfoContentFrame)
         }
+    }
+
+    private fun setBottomNavigationBar() {
+        val bottomNavigationBar = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationBar.selectedItemId = R.id.register_patient
+        NavigationBarUtils.setBottomNavigationBar(bottomNavigationBar)
     }
 
     override fun onBackPressed() {

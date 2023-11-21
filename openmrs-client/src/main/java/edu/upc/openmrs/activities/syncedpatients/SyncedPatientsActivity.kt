@@ -13,7 +13,6 @@
  */
 package edu.upc.openmrs.activities.syncedpatients
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,8 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.ACBaseActivity
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
-import edu.upc.openmrs.activities.dashboard.DashboardActivity
+import edu.upc.openmrs.utilities.NavigationBarUtils
 import edu.upc.sdk.library.OpenmrsAndroid
 import kotlinx.coroutines.launch
 
@@ -42,25 +40,7 @@ class SyncedPatientsActivity : ACBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_patients)
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.selectedItemId = R.id.search_patients
-        bottomNavigationView.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.home_screen-> {
-                    startActivity(Intent(applicationContext, DashboardActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-                R.id.search_patients-> {
-                    startActivity(Intent(applicationContext, SyncedPatientsActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-                R.id.register_patient-> {
-                    startActivity(Intent(applicationContext, AddEditPatientActivity::class.java))
-                    overridePendingTransition(0, 0)
-                }
-            }
-            true
-        }
+        setBottomNavigationBar()
 
         supportActionBar?.let {
             it.elevation = 0f
@@ -80,6 +60,12 @@ class SyncedPatientsActivity : ACBaseActivity() {
                 syncedPatientsFragment, R.id.syncedPatientsContentFrame
             )
         }
+    }
+
+    private fun setBottomNavigationBar() {
+        val bottomNavigationBar = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationBar.selectedItemId = R.id.search_patients
+        NavigationBarUtils.setBottomNavigationBar(bottomNavigationBar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
