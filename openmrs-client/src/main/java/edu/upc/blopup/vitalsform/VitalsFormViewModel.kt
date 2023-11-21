@@ -19,6 +19,7 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.execute
 import org.joda.time.Instant
 import rx.android.schedulers.AndroidSchedulers
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,8 +60,16 @@ class VitalsFormViewModel @Inject constructor(
         encounterCreate.observations = createObservationsFromVitals(vitals)
 
         return if (visitRepository.getActiveVisitByPatientId(patientId) == null) {
-            val visit = visitRepository.startVisit(patient).execute()
-            createRecords(encounterCreate, visit.uuid)
+            try {
+                val visit = visitRepository.startVisit(patient).execute()
+                createRecords(encounterCreate, visit.uuid)
+            } catch (e: Exception) {
+                resultLiveData.value = if (e.cause is UnknownHostException)
+                    ResultType.NoInternetError
+                else
+                    ResultType.EncounterSubmissionError
+                return resultLiveData
+            }
         } else {
             createRecords(encounterCreate, null)
         }
@@ -98,7 +107,9 @@ class VitalsFormViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { resultLiveData.value = it },
-                    { resultLiveData.value = ResultType.EncounterSubmissionError; if (visitUuid != null) {
+                    {
+                        resultLiveData.value =
+                            ResultType.EncounterSubmissionError; if (visitUuid != null) {
                         visitRepository.deleteVisitByUuid(visitUuid)
                     }
                     },

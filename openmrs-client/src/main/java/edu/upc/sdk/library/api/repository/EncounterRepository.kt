@@ -11,6 +11,7 @@ import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.execute
 import rx.Observable
+import java.net.UnknownHostException
 import java.util.concurrent.Callable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,7 +28,8 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
     fun saveEncounter(encounterCreate: Encountercreate): Observable<ResultType> {
         return AppDatabaseHelper.createObservableIO(Callable {
             val patient = PatientDAO().findPatientByID(encounterCreate.patientId.toString())
-            val activeVisit = VisitDAO().getActiveVisitByPatientId(encounterCreate.patientId).execute()
+            val activeVisit =
+                VisitDAO().getActiveVisitByPatientId(encounterCreate.patientId).execute()
             if (patient == null || activeVisit == null || encounterCreate.synced) {
                 return@Callable ResultType.EncounterSubmissionError
             }
@@ -38,33 +40,39 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
                 encounterCreate.id = saveEncounterCreateToDB(encounterCreate).execute()
             }
 
-            if (patient.isSynced && NetworkUtils.isOnline()) {
-                restApi.createEncounter(encounterCreate).execute().run {
-                    if (isSuccessful) {
-                        val encounter: Encounter = body()!!
-                        encounter.encounterType = EncounterType(encounterCreate.formname)
-                        for (i in encounterCreate.observations.indices) {
-                            encounter.observations[i].displayValue = encounter.observations[i].display!!.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+            if (patient.isSynced) {
+                try {
+                    restApi.createEncounter(encounterCreate).execute().run {
+                        if (isSuccessful) {
+                            val encounter: Encounter = body()!!
+                            encounter.encounterType = EncounterType(encounterCreate.formname)
+                            for (i in encounterCreate.observations.indices) {
+                                encounter.observations[i].displayValue =
+                                    encounter.observations[i].display!!.split(":".toRegex())
+                                        .dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+                            }
+
+                            // Update the visit linked to this encounter
+                            activeVisit.encounters += encounter
+                            VisitDAO()
+                                .saveOrUpdate(activeVisit, encounterCreate.patientId!!).execute()
+
+                            updateEncounterCreate(encounterCreate.apply { synced = true }).execute()
+
+                            return@Callable ResultType.EncounterSubmissionSuccess
+                        } else {
+                            throw Exception("syncEncounter error: ${message()}")
                         }
-
-                        // Update the visit linked to this encounter
-                        activeVisit.encounters += encounter
-                        VisitDAO()
-                            .saveOrUpdate(activeVisit, encounterCreate.patientId!!).execute()
-
-                        updateEncounterCreate(encounterCreate.apply { synced = true }).execute()
-
-                        return@Callable ResultType.EncounterSubmissionSuccess
+                    }
+                } catch (e: Exception) {
+                    if (e is UnknownHostException) {
+                        return@Callable ResultType.NoInternetError
                     } else {
-                        throw Exception("syncEncounter error: ${message()}")
+                        return@Callable ResultType.EncounterSubmissionError
                     }
                 }
             } else {
-                // Update patient locally
-                patient.addEncounters(encounterCreate.id)
-                PatientDAO()
-                    .updatePatient(patient.id!!, patient)
-                return@Callable ResultType.EncounterSubmissionLocalSuccess
+                return@Callable ResultType.EncounterSubmissionError
             }
         })
     }
@@ -101,7 +109,8 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
      */
     fun updateEncounterCreate(encounterCreate: Encountercreate): Observable<Unit> {
         return AppDatabaseHelper.createObservableIO(Callable {
-            return@Callable db.encounterCreateRoomDAO().updateExistingEncounter(encounterCreate)
+            return@Callable db.encounterCreateRoomDAO()
+                .updateExistingEncounter(encounterCreate)
         })
     }
 }

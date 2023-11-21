@@ -141,6 +141,9 @@ class VitalsFormActivity : ACBaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (vitals.isNotEmpty()) {
+            mBinding.buttonToSentVitals.isEnabled = true
+        }
 
         updateLanguageFields()
     }
@@ -181,23 +184,19 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private fun submitForm() {
         addVitalsToForm()
-        viewModel.submitForm(vitals).observeOnce(this, Observer { result ->
+        viewModel.submitForm(vitals).observeOnce(this) { result ->
             when (result) {
                 ResultType.EncounterSubmissionSuccess -> {
                     ToastUtil.success(getString(R.string.vitals_successfully))
                     setResult(RESULT_OK)
                     finish()
                 }
-
-                ResultType.EncounterSubmissionLocalSuccess -> {
-                    ToastUtil.notify(getString(R.string.offline_error_message))
-                    setResult(RESULT_OK)
-                    finish()
+                ResultType.NoInternetError -> {
+                    ToastUtil.error(getString(R.string.no_internet_connection))
                 }
-
                 else -> ToastUtil.error(getString(R.string.form_data_submit_error))
             }
-        })
+        }
     }
 
     private fun addVitalsToForm() {

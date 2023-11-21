@@ -22,10 +22,10 @@ enum class ResultType {
     PatientUpdateLocalSuccess,
     PatientUpdateError,
     EncounterSubmissionSuccess,
-    EncounterSubmissionLocalSuccess,
     EncounterSubmissionError,
     EmailSentSuccess,
     EmailSentError,
     RecordingSuccess,
-    RecordingError
+    RecordingError,
+    NoInternetError
 }
