@@ -23,8 +23,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.openmrs.NavigationBar
 import edu.upc.openmrs.activities.ACBaseActivity
-import edu.upc.openmrs.utilities.NavigationBarUtils
 import edu.upc.sdk.library.OpenmrsAndroid
 import kotlinx.coroutines.launch
 
@@ -65,7 +65,7 @@ class SyncedPatientsActivity : ACBaseActivity() {
     private fun setBottomNavigationBar() {
         val bottomNavigationBar = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationBar.selectedItemId = R.id.search_patients
-        NavigationBarUtils.setBottomNavigationBar(bottomNavigationBar)
+        NavigationBar.setBottomNavigationBar(bottomNavigationBar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -1,4 +1,4 @@
-package edu.upc.openmrs.utilities
+package edu.upc.openmrs
 
 import android.app.Activity
 import android.content.Intent
@@ -8,7 +8,7 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.dashboard.DashboardActivity
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
 
-object NavigationBarUtils {
+object NavigationBar {
     fun setBottomNavigationBar(bottomNavigationView: BottomNavigationView) {
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -22,7 +22,6 @@ object NavigationBarUtils {
 
     private fun startNewActivity(bottomNavigationView: BottomNavigationView, activityClass: Class<*>) {
         val intent = Intent(bottomNavigationView.context, activityClass)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         bottomNavigationView.context.startActivity(intent)
         (bottomNavigationView.context as Activity).overridePendingTransition(0, 0)
     }
