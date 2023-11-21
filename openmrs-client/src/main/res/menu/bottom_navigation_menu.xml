@@ -3,16 +3,16 @@
     <item
         android:id="@+id/home_screen"
         android:enabled="true"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/menu_icon"
         android:title="@string/bottom_navigation_option_home"/>
     <item
         android:id="@+id/search_patients"
         android:enabled="true"
-        android:icon="@drawable/ico_search"
+        android:icon="@drawable/search_a_patient_icon_menu"
         android:title="@string/bottom_navigation_option_search"/>
     <item
         android:id="@+id/register_patient"
         android:enabled="true"
-        android:icon="@drawable/ico_registry"
+        android:icon="@drawable/register_patient_icon_menu"
         android:title="@string/bottom_navigation_option_register"/>
 </menu>
