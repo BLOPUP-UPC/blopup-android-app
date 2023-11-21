@@ -3,8 +3,14 @@ package edu.upc.sdk.library.models
 import edu.upc.sdk.library.models.OperationType.GeneralOperation
 
 sealed class Result<out T> {
-    data class Success<out T>(val data: T, val operationType: OperationType = GeneralOperation) : Result<T>()
-    data class Error(val throwable: Throwable, val operationType: OperationType = GeneralOperation) : Result<Nothing>()
+    data class Success<out T>(val data: T, val operationType: OperationType = GeneralOperation) :
+        Result<T>()
+
+    data class Error(
+        val throwable: Throwable,
+        val operationType: OperationType = GeneralOperation
+    ) : Result<Nothing>()
+
     class Loading(val operationType: OperationType = GeneralOperation) : Result<Nothing>()
 }
 
@@ -18,6 +24,7 @@ enum class OperationType {
 }
 
 enum class ResultType {
+    Success,
     PatientUpdateSuccess,
     PatientUpdateLocalSuccess,
     PatientUpdateError,
@@ -27,5 +34,6 @@ enum class ResultType {
     EmailSentError,
     RecordingSuccess,
     RecordingError,
-    NoInternetError
+    NoInternetError,
+    Error
 }

@@ -39,6 +39,7 @@ import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
@@ -122,22 +123,26 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     ToastUtil.ToastType.NOTICE,
                     R.string.sms_to_doctor
                 )
-                tryToSendSMS(patientId,
+                tryToSendSMS(
+                    patientId,
                     getString(
                         R.string.stage_II_b_sms,
                         bloodPressureResult.systolicValue.toString(),
                         bloodPressureResult.diastolicValue.toString()
-                    ))
+                    )
+                )
             }
 
             if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
                 binding.callToDoctorBanner.visibility = View.VISIBLE
-                tryToSendSMS(patientId,
+                tryToSendSMS(
+                    patientId,
                     getString(
                         R.string.stage_II_c_sms,
                         bloodPressureResult.systolicValue.toString(),
                         bloodPressureResult.diastolicValue.toString()
-                    ))
+                    )
+                )
             }
         }
 
@@ -175,13 +180,20 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     fun endVisit() {
-        if (!NetworkUtils.isOnline()) {
-            ToastUtil.error(getString(R.string.no_internet_connection))
-            return
-        }
-        viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { ended ->
-            if (ended) requireActivity().finish()
-            else ToastUtil.error(getString(R.string.visit_ending_error))
+        viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { result ->
+            when (result) {
+                ResultType.Success -> {
+                    requireActivity().finish()
+                }
+
+                ResultType.NoInternetError -> {
+                    ToastUtil.error(getString(R.string.no_internet_connection))
+                }
+
+                else -> {
+                    ToastUtil.error(getString(R.string.visit_ending_error))
+                }
+            }
         }
     }
 

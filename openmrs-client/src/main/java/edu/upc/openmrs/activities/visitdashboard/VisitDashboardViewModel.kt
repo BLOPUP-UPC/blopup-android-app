@@ -11,10 +11,12 @@ import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import rx.android.schedulers.AndroidSchedulers
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,40 +38,38 @@ class VisitDashboardViewModel @Inject constructor(
 
     fun fetchCurrentVisit() {
         setLoading()
-        addSubscription(visitDAO.getVisitByID(visitId)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { visit ->
-                    val filteredAndSortedEncounters = filterAndSortEncounters(visit.encounters)
-                    visit.encounters = filteredAndSortedEncounters
+        addSubscription(visitDAO.getVisitByID(visitId).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ visit ->
+                val filteredAndSortedEncounters = filterAndSortEncounters(visit.encounters)
+                visit.encounters = filteredAndSortedEncounters
 
-                    val bpType = bloodPressureTypeFromEncounter(
-                        filteredAndSortedEncounters.sortedBy { it.encounterDatetime }.last()
-                    )
+                val bpType = bloodPressureTypeFromEncounter(
+                    filteredAndSortedEncounters.sortedBy { it.encounterDatetime }.last()
+                )
 
-                    _bloodPressureType.value = bpType
-                    setContent(visit)
-                },
-                { setError(it) }
-            )
+                _bloodPressureType.value = bpType
+                setContent(visit)
+            }, { setError(it) })
         )
     }
 
-    fun endCurrentVisit(): LiveData<Boolean> {
-        val endVisitResult = MutableLiveData<Boolean>()
+    fun endCurrentVisit(): LiveData<ResultType> {
+        val endVisitResult = MutableLiveData<ResultType>()
 
         if (visit != null) {
-            addSubscription(visitRepository.endVisit(visit)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { endVisitResult.value = true },
-                    { endVisitResult.value = false }
-                )
+            addSubscription(
+                visitRepository.endVisit(visit)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        if (it) {
+                            endVisitResult.value = ResultType.Success
+                        }
+                    }, {
+                        endVisitResult.value = if (it is UnknownHostException) ResultType.NoInternetError
+                        else ResultType.Error
+                    })
             )
-        } else {
-            endVisitResult.value = false
         }
-
         return endVisitResult
     }
 

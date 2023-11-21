@@ -9,9 +9,9 @@ import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -74,7 +74,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
         viewModel.fetchCurrentVisit().runCatching {
             viewModel.endCurrentVisit().observeForever { visitEnded ->
-                assertTrue(visitEnded)
+                assertTrue(visitEnded.equals(ResultType.Success))
             }
         }
     }
@@ -87,7 +87,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
         viewModel.fetchCurrentVisit().runCatching {
             viewModel.endCurrentVisit().observeForever { visitEnded ->
-                assertFalse(visitEnded)
+                assert(visitEnded.equals(ResultType.Error))
             }
         }
     }
