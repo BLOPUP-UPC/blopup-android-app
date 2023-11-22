@@ -48,19 +48,19 @@ class AddEditPatientViewModel @Inject constructor(
         MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
     val isSurnameValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isSurnameValidLiveData
 
-    private val _isCountryOfBirthValidLiveData = MutableLiveData<Boolean>(false)
+    private val _isCountryOfBirthValidLiveData = MutableLiveData(false)
     val isCountryOfBirthValidLiveData: LiveData<Boolean> get() = _isCountryOfBirthValidLiveData
 
-    private val _isGenderValidLiveData = MutableLiveData<Boolean>(false)
+    private val _isGenderValidLiveData = MutableLiveData(false)
     val isGenderValidLiveData: LiveData<Boolean> get() = _isGenderValidLiveData
 
     private val _isBirthDateValidLiveData = MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
     val isBirthDateValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isBirthDateValidLiveData
 
-    private val _isLegalConsentValidLiveData = MutableLiveData<Boolean>(false)
+    private val _isLegalConsentValidLiveData = MutableLiveData(false)
     val isLegalConsentValidLiveData: LiveData<Boolean> get() = _isLegalConsentValidLiveData
 
-    private val _isPatientValidLiveData = MutableLiveData<Boolean>(false)
+    private val _isPatientValidLiveData = MutableLiveData(false)
     val isPatientValidLiveData: LiveData<Boolean> get() = _isPatientValidLiveData
 
     var isUpdatePatient = false

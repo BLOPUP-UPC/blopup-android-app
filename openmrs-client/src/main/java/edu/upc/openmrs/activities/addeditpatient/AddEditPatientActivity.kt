@@ -14,13 +14,15 @@
 package edu.upc.openmrs.activities.addeditpatient
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.openmrs.NavigationBar
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment.Companion.newInstance
+import edu.upc.openmrs.activities.dashboard.DashboardActivity
+import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @AndroidEntryPoint
@@ -44,18 +46,47 @@ class AddEditPatientActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         val patientID = patientBundle?.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE)
 
         // Create fragment
-        addEditPatientFragment = supportFragmentManager.findFragmentById(R.id.patientInfoContentFrame) as AddEditPatientFragment?
+        addEditPatientFragment =
+            supportFragmentManager.findFragmentById(R.id.patientInfoContentFrame) as AddEditPatientFragment?
         addEditPatientFragment = addEditPatientFragment ?: newInstance(patientID)
 
         if (!addEditPatientFragment!!.isActive) {
-            addFragmentToActivity(supportFragmentManager, addEditPatientFragment!!, R.id.patientInfoContentFrame)
+            addFragmentToActivity(
+                supportFragmentManager,
+                addEditPatientFragment!!,
+                R.id.patientInfoContentFrame
+            )
         }
     }
 
     private fun setBottomNavigationBar() {
         val bottomNavigationBar = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationBar.selectedItemId = R.id.register_patient
-        NavigationBar.setBottomNavigationBar(bottomNavigationBar)
+        bottomNavigationBar.setOnItemSelectedListener { item ->
+            if (addEditPatientFragment!!.isAnyFieldNotEmpty()) {
+                showInfoLostDialog()
+                false
+            } else {
+                when (item.itemId) {
+                    R.id.home_screen -> {
+                        val intent = Intent(this, DashboardActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                    R.id.search_patients -> {
+                        val intent = Intent(this, SyncedPatientsActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                    R.id.register_patient -> {
+                        val intent = Intent(this, AddEditPatientActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+                true
+            }
+        }
+
     }
 
     override fun onBackPressed() {
@@ -68,16 +99,16 @@ class AddEditPatientActivity : edu.upc.openmrs.activities.ACBaseActivity() {
      */
     private fun showInfoLostDialog() {
         alertDialog = AlertDialog.Builder(this, R.style.AlertDialogTheme)
-                .setTitle(R.string.dialog_title_reset_patient)
-                .setMessage(R.string.dialog_message_data_lost)
-                .setCancelable(false)
-                .setPositiveButton(R.string.dialog_button_stay) { dialog: DialogInterface, id: Int -> dialog.cancel() }
-                .setNegativeButton(R.string.dialog_button_leave) { _: DialogInterface?, id: Int ->
-                    // Finish the activity
-                    super.onBackPressed()
-                    finish()
-                }
-                .create()
+            .setTitle(R.string.dialog_title_reset_patient)
+            .setMessage(R.string.dialog_message_data_lost)
+            .setCancelable(false)
+            .setPositiveButton(R.string.dialog_button_stay) { dialog: DialogInterface, id: Int -> dialog.cancel() }
+            .setNegativeButton(R.string.dialog_button_leave) { _: DialogInterface?, id: Int ->
+                // Finish the activity
+                super.onBackPressed()
+                finish()
+            }
+            .create()
         alertDialog?.show()
     }
 
