@@ -47,15 +47,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_title">
 
-            <EditText
-                android:id="@+id/editText_search"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search_hint_text"
-                android:imeOptions="actionSearch"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true"
-                android:textColor="@android:color/primary_text_light_nodisable" />
+                android:layout_marginBottom="8dp">
+
+                <EditText
+                    android:id="@+id/editText_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:hint="@string/search_hint_text"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </RelativeLayout>
 
