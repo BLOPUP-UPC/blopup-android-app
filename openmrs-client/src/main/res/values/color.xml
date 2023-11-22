@@ -43,6 +43,8 @@
     <color name="allergy_orange">#E47321</color>
     <color name="allergy_orange_50_transparent">#4DFB793D</color>
     <color name="blue">#3884CA</color>
+    <color name="bluetooth_blue">#0082FC</color>
+
     <color name="dark_red">#ED3030</color>
     <color name="error_red">#AB3140</color>
     <color name="gender_red">#B54C5B</color>

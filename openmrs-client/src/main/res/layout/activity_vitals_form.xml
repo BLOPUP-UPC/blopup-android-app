@@ -26,9 +26,13 @@
             <Button
                 android:id="@+id/receive_blood_pressure_data_btn"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:backgroundTint="@color/bluetooth_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/blood_pressure_button_label" />
+                android:drawableEnd="@android:drawable/stat_sys_data_bluetooth"
+                android:text="@string/blood_pressure_button_label"
+                android:textStyle="bold"
+                android:gravity="start|center_vertical" />
 
             <TableLayout
                 android:layout_width="fill_parent"
@@ -130,9 +134,13 @@
             <Button
                 android:id="@+id/receive_weight_data_btn"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:backgroundTint="@color/bluetooth_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/receive_weight_value_button" />
+                android:drawableEnd="@android:drawable/stat_sys_data_bluetooth"
+                android:text="@string/receive_weight_value_button"
+                android:textStyle="bold"
+                android:gravity="start|center_vertical" />
 
             <TableLayout
                 android:layout_width="fill_parent"
