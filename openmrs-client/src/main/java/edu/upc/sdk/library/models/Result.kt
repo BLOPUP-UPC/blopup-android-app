@@ -6,15 +6,13 @@ sealed class Result<out T> {
     data class Success<out T>(val data: T, val operationType: OperationType = GeneralOperation) :
         Result<T>()
 
-     class Error(
+    data class Error(
         val throwable: Throwable,
         val operationType: OperationType = GeneralOperation
     ) : Result<Nothing>() {
 
         fun throwable() = this.throwable
     }
-
-
 
     class Loading(val operationType: OperationType = GeneralOperation) : Result<Nothing>()
 
@@ -30,7 +28,6 @@ enum class OperationType {
 }
 
 enum class ResultType {
-    Success,
     PatientUpdateSuccess,
     PatientUpdateLocalSuccess,
     PatientUpdateError,
@@ -39,7 +36,5 @@ enum class ResultType {
     EmailSentSuccess,
     EmailSentError,
     RecordingSuccess,
-    RecordingError,
-    NoInternetError,
-    Error
+    RecordingError
 }

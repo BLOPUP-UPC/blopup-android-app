@@ -49,10 +49,10 @@ class VitalsFormViewModel @Inject constructor(
         return resultLiveData
     }
 
-    fun submitForm(vitals: List<Vital>): LiveData<ResultType> {
-        val resultLiveData = MutableLiveData<ResultType>()
+    fun submitForm(vitals: List<Vital>): LiveData<Result<Boolean>> {
+        val resultLiveData = MutableLiveData<Result<Boolean>>()
         if (vitals.isEmpty()) {
-            resultLiveData.value = ResultType.EncounterSubmissionError
+            resultLiveData.value = Result.Error(IllegalArgumentException("Vitals list is empty"))
             return resultLiveData
         }
         val encounterCreate = Encountercreate()
@@ -64,10 +64,7 @@ class VitalsFormViewModel @Inject constructor(
                 val visit = visitRepository.startVisit(patient).execute()
                 createRecords(encounterCreate, visit.uuid)
             } catch (e: Exception) {
-                resultLiveData.value = if (e.cause is UnknownHostException)
-                    ResultType.NoInternetError
-                else
-                    ResultType.EncounterSubmissionError
+                resultLiveData.value = Result.Error(e.cause ?: e)
                 return resultLiveData
             }
         } else {
@@ -94,8 +91,8 @@ class VitalsFormViewModel @Inject constructor(
     private fun createRecords(
         encounterCreate: Encountercreate,
         visitUuid: String?
-    ): MutableLiveData<ResultType> {
-        val resultLiveData = MutableLiveData<ResultType>()
+    ): MutableLiveData<Result<Boolean>> {
+        val resultLiveData = MutableLiveData<Result<Boolean>>()
 
         encounterCreate.patient = patient.uuid
         encounterCreate.encounterType = encounterType
@@ -108,13 +105,13 @@ class VitalsFormViewModel @Inject constructor(
                 .subscribe(
                     { resultLiveData.value = it },
                     {
-                        resultLiveData.value =
-                            ResultType.EncounterSubmissionError; if (visitUuid != null) {
-                        visitRepository.deleteVisitByUuid(visitUuid)
-                    }
+                        resultLiveData.value = Result.Error(it);
+                        if (visitUuid != null) {
+                            visitRepository.deleteVisitByUuid(visitUuid)
+                        }
                     },
                     {
-                        if (resultLiveData.value == ResultType.EncounterSubmissionError && visitUuid != null)
+                        if ((resultLiveData.value is Result.Error) && (visitUuid != null))
                             visitRepository.deleteVisitByUuid(visitUuid)
                     }
                 )

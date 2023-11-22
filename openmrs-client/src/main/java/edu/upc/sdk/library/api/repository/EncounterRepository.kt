@@ -3,15 +3,12 @@ package edu.upc.sdk.library.api.repository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.databases.AppDatabaseHelper
-import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
-import edu.upc.sdk.library.models.ResultType
-import edu.upc.sdk.utilities.NetworkUtils
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.execute
 import rx.Observable
-import java.net.UnknownHostException
 import java.util.concurrent.Callable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,13 +22,13 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
      * @param encounterCreate  the Encountercreate object submit
      * @return ResultType of operation result: full success, local success, or error.
      */
-    fun saveEncounter(encounterCreate: Encountercreate): Observable<ResultType> {
+    fun saveEncounter(encounterCreate: Encountercreate): Observable<Result<Boolean>> {
         return AppDatabaseHelper.createObservableIO(Callable {
             val patient = PatientDAO().findPatientByID(encounterCreate.patientId.toString())
             val activeVisit =
                 VisitDAO().getActiveVisitByPatientId(encounterCreate.patientId).execute()
             if (patient == null || activeVisit == null || encounterCreate.synced) {
-                return@Callable ResultType.EncounterSubmissionError
+                return@Callable Result.Error(Exception("Error saving encounter. No patient or active visit or already synced"))
             }
 
             encounterCreate.visit = activeVisit.uuid
@@ -59,20 +56,16 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
 
                             updateEncounterCreate(encounterCreate.apply { synced = true }).execute()
 
-                            return@Callable ResultType.EncounterSubmissionSuccess
+                            return@Callable Result.Success(true)
                         } else {
                             throw Exception("syncEncounter error: ${message()}")
                         }
                     }
                 } catch (e: Exception) {
-                    if (e is UnknownHostException) {
-                        return@Callable ResultType.NoInternetError
-                    } else {
-                        return@Callable ResultType.EncounterSubmissionError
-                    }
+                   Result.Error(e)
                 }
             } else {
-                return@Callable ResultType.EncounterSubmissionError
+                return@Callable Result.Error(Exception("Patient not synced"))
             }
         })
     }

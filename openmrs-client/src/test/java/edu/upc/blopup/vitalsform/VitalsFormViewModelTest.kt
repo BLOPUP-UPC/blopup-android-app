@@ -23,6 +23,8 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import rx.Observable
+import java.io.IOException
+import java.lang.IllegalStateException
 import java.util.Optional
 import java.util.UUID
 
@@ -83,7 +85,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                 uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
             })
         )
-        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(ResultType.EncounterSubmissionSuccess))
+        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(Result.Success(true)))
 
         viewModel.submitForm(vitalsList)
 
@@ -91,11 +93,13 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    fun `when empty list of vitals is sent check that encounterError is returned `() {
+    fun `when empty list of vitals is sent check that error with IllegalArgumentException is returned `() {
 
         val actualResult = viewModel.submitForm(emptyList())
 
-        assertEquals(ResultType.EncounterSubmissionError, actualResult.value)
+        val actualError = actualResult.value as Result.Error
+
+        assert(actualError.throwable is IllegalArgumentException)
 
         verify(encounterRepository, never()).saveEncounter(any())
     }
@@ -109,11 +113,11 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                 uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
             })
         )
-        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(ResultType.EncounterSubmissionSuccess))
+        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(Result.Success(true)))
 
         val actualResult = viewModel.submitForm(vitalsList)
 
-        assertEquals(ResultType.EncounterSubmissionSuccess, actualResult.value)
+        assertEquals(Result.Success(true), actualResult.value)
 
         verify(encounterRepository).saveEncounter(any())
     }
@@ -147,7 +151,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                 uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
             })
         )
-        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(ResultType.EncounterSubmissionError))
+        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(Result.Error(IOException())))
 
         viewModel.submitForm(vitalsList)
 
