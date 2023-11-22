@@ -14,19 +14,17 @@
 package edu.upc.openmrs.activities.addeditpatient
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.openmrs.activities.NavigationBarActivity
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment.Companion.newInstance
-import edu.upc.openmrs.activities.dashboard.DashboardActivity
-import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @AndroidEntryPoint
-class AddEditPatientActivity : edu.upc.openmrs.activities.ACBaseActivity() {
+class AddEditPatientActivity : NavigationBarActivity() {
     private var addEditPatientFragment: AddEditPatientFragment? = null
     private var alertDialog: AlertDialog? = null
 
@@ -62,32 +60,20 @@ class AddEditPatientActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     private fun setBottomNavigationBar() {
         val bottomNavigationBar = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationBar.selectedItemId = R.id.register_patient
-        bottomNavigationBar.setOnItemSelectedListener { item ->
+        setBottomNavigationBar(bottomNavigationBar)
+    }
+
+    override fun setBottomNavigationBar(bottomNavigationView: BottomNavigationView) {
+        bottomNavigationView.setOnItemSelectedListener { item ->
             if (addEditPatientFragment!!.isAnyFieldNotEmpty()) {
                 showInfoLostDialog()
                 false
             } else {
-                when (item.itemId) {
-                    R.id.home_screen -> {
-                        val intent = Intent(this, DashboardActivity::class.java)
-                        startActivity(intent)
-                    }
-
-                    R.id.search_patients -> {
-                        val intent = Intent(this, SyncedPatientsActivity::class.java)
-                        startActivity(intent)
-                    }
-
-                    R.id.register_patient -> {
-                        val intent = Intent(this, AddEditPatientActivity::class.java)
-                        startActivity(intent)
-                    }
-                }
-                true
+                launchSelectedActivity(item)
             }
         }
-
     }
+
 
     override fun onBackPressed() {
         if (addEditPatientFragment!!.isAnyFieldNotEmpty()) showInfoLostDialog()

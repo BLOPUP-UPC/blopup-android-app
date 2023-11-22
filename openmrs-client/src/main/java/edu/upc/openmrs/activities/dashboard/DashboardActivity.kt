@@ -20,13 +20,13 @@ import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityDashboardBinding
-import edu.upc.openmrs.NavigationBar
+import edu.upc.openmrs.activities.NavigationBarActivity
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.utilities.ToastUtil
 
 
 @AndroidEntryPoint
-class DashboardActivity : ACBaseActivity() {
+class DashboardActivity : NavigationBarActivity() {
 
     private lateinit var mBinding: ActivityDashboardBinding
 
@@ -40,7 +40,7 @@ class DashboardActivity : ACBaseActivity() {
         mBinding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        NavigationBar.setBottomNavigationBar(mBinding.bottomNavigation)
+        setBottomNavigationBar(mBinding.bottomNavigation)
 
         // Create toolbar
         val actionBar = supportActionBar
