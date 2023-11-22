@@ -6,12 +6,18 @@ sealed class Result<out T> {
     data class Success<out T>(val data: T, val operationType: OperationType = GeneralOperation) :
         Result<T>()
 
-    data class Error(
+     class Error(
         val throwable: Throwable,
         val operationType: OperationType = GeneralOperation
-    ) : Result<Nothing>()
+    ) : Result<Nothing>() {
+
+        fun throwable() = this.throwable
+    }
+
+
 
     class Loading(val operationType: OperationType = GeneralOperation) : Result<Nothing>()
+
 }
 
 enum class OperationType {

@@ -38,35 +38,33 @@ class VisitDashboardViewModel @Inject constructor(
 
     fun fetchCurrentVisit() {
         setLoading()
-        addSubscription(visitDAO.getVisitByID(visitId).observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ visit ->
-                val filteredAndSortedEncounters = filterAndSortEncounters(visit.encounters)
-                visit.encounters = filteredAndSortedEncounters
+        addSubscription(
+            visitDAO.getVisitByID(visitId).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ visit ->
+                    val filteredAndSortedEncounters = filterAndSortEncounters(visit.encounters)
+                    visit.encounters = filteredAndSortedEncounters
 
-                val bpType = bloodPressureTypeFromEncounter(
-                    filteredAndSortedEncounters.sortedBy { it.encounterDatetime }.last()
-                )
+                    val bpType = bloodPressureTypeFromEncounter(
+                        filteredAndSortedEncounters.sortedBy { it.encounterDatetime }.last()
+                    )
 
-                _bloodPressureType.value = bpType
-                setContent(visit)
-            }, { setError(it) })
+                    _bloodPressureType.value = bpType
+                    setContent(visit)
+                }, { setError(it) })
         )
     }
 
-    fun endCurrentVisit(): LiveData<ResultType> {
-        val endVisitResult = MutableLiveData<ResultType>()
+    fun endCurrentVisit(): LiveData<Result<Boolean>> {
+        val endVisitResult = MutableLiveData<Result<Boolean>>()
 
         if (visit != null) {
             addSubscription(
                 visitRepository.endVisit(visit)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        if (it) {
-                            endVisitResult.value = ResultType.Success
-                        }
+                        endVisitResult.value = Result.Success(it)
                     }, {
-                        endVisitResult.value = if (it is UnknownHostException) ResultType.NoInternetError
-                        else ResultType.Error
+                        endVisitResult.value = Result.Error(it)
                     })
             )
         }

@@ -39,14 +39,13 @@ import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
-import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
+import java.net.UnknownHostException
 
 
 @AndroidEntryPoint
@@ -182,14 +181,15 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     fun endVisit() {
         viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { result ->
             when (result) {
-                ResultType.Success -> {
+               is Result.Success -> {
                     requireActivity().finish()
                 }
 
-                ResultType.NoInternetError -> {
-                    ToastUtil.error(getString(R.string.no_internet_connection))
+                is Result.Error -> {
+                    if (result.throwable() is UnknownHostException) {
+                        ToastUtil.error(getString(R.string.no_internet_connection))
+                    }
                 }
-
                 else -> {
                     ToastUtil.error(getString(R.string.visit_ending_error))
                 }

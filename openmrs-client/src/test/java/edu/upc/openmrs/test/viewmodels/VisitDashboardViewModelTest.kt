@@ -74,7 +74,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
         viewModel.fetchCurrentVisit().runCatching {
             viewModel.endCurrentVisit().observeForever { visitEnded ->
-                assertTrue(visitEnded.equals(ResultType.Success))
+                assertTrue(visitEnded.equals(Result.Success(true)))
             }
         }
     }
@@ -87,7 +87,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
         viewModel.fetchCurrentVisit().runCatching {
             viewModel.endCurrentVisit().observeForever { visitEnded ->
-                assert(visitEnded.equals(ResultType.Error))
+                assert(visitEnded.equals(Result.Error(throwable)))
             }
         }
     }
