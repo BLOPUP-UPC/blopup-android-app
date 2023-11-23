@@ -67,6 +67,7 @@
             android:exported="false"
             android:label="@string/action_synced_patients"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppThemeOrig">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -115,6 +116,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/action_register_patient"
             android:parentActivityName="edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppThemeOrig">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
