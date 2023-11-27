@@ -106,9 +106,7 @@ class ChartsViewActivity : ACBaseActivity() {
 
     private fun sortDataPerDate(bloodPressureData: HashMap<String, Pair<Float, Float>>): SortedMap<String, Pair<Float, Float>> {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        val sortedBloodPressureData =
-            bloodPressureData.toSortedMap(compareBy { LocalDateTime.parse(it, formatter) })
-        return sortedBloodPressureData
+        return bloodPressureData.toSortedMap(compareBy { LocalDateTime.parse(it, formatter) })
     }
 
     private fun setEntries(valueDataArray: ArrayList<Float>): ArrayList<Entry> {
@@ -180,6 +178,8 @@ class ChartsViewActivity : ACBaseActivity() {
         //to add some space before the first and last values on the chart
         mChart.xAxis.axisMinimum = -0.1F
         mChart.xAxis.axisMaximum = mChart.xAxis.axisMaximum + 0.1F
+        //to open the chart focused on the most recent value
+        mChart.moveViewToX(mChart.xAxis.axisMaximum)
     }
 
     private fun setColorIconsToEntries(entries: List<Entry>, type: String): List<Entry> {
