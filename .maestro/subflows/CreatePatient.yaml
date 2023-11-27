@@ -17,6 +17,7 @@ appId: edu.upc
     visibilityPercentage: 100
 - tapOn: "Date of birth (dd/mm/yyyy)"
 - inputText: "20/01/1980"
+- tapOn: "Back"
 - scrollUntilVisible:
     element:
       id: "edu.upc:id/country_of_birth"
