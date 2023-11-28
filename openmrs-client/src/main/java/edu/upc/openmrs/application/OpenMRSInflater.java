@@ -14,10 +14,12 @@
 
 package edu.upc.openmrs.application;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -27,10 +29,12 @@ import androidx.fragment.app.FragmentManager;
 import java.util.List;
 import java.util.Objects;
 
+import edu.upc.BuildConfig;
 import edu.upc.R;
 import edu.upc.blopup.bloodpressure.BloodPressureType;
 import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
 import edu.upc.openmrs.activities.visitdashboard.BloodPressureInfoDialog;
+import edu.upc.openmrs.activities.visitdashboard.TreatmentActivity;
 import edu.upc.sdk.library.models.Observation;
 
 public class OpenMRSInflater {
@@ -44,6 +48,9 @@ public class OpenMRSInflater {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
+        if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
+            showTreatment(vitalsCardView);
+        }
         setBloodPressureTypeAndRecommendation(bloodPressureType, vitalsCardView);
 
         setVitalsValues(observations, vitalsCardView);
@@ -55,6 +62,14 @@ public class OpenMRSInflater {
         parentLayout.addView(vitalsCardView);
 
         return parentLayout;
+    }
+
+    private void showTreatment(View vitalsCardView) {
+        Button addTreatmentButton = vitalsCardView.findViewById(R.id.add_treatment_button);
+        addTreatmentButton.setOnClickListener(view -> {
+            Intent intent = new Intent(mInflater.getContext(), TreatmentActivity.class);
+            mInflater.getContext().startActivity(intent);
+        });
     }
 
     private void setBloodPressureInformationDialog(View vitalsCardView, FragmentManager fragmentManager) {
