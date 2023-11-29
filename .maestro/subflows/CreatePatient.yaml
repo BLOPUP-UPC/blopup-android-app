@@ -12,22 +12,25 @@ appId: edu.upc
 - "inputRandomPersonName"
 - tapOn: "Female"
 - scrollUntilVisible:
+    centerElement: true
     element:
       id: "edu.upc:id/dobEditText"
     visibilityPercentage: 100
 - tapOn: "Date of birth (dd/mm/yyyy)"
 - inputText: "20/01/1980"
-- tapOn: "Back"
 - scrollUntilVisible:
+    centerElement: true
     element:
       id: "edu.upc:id/country_of_birth"
 - tapOn: "Select country of birth"
 - tapOn: "Aruba"
 - scrollUntilVisible:
+    centerElement: true
     element: "Select language"
 - tapOn: "Select language"
 - tapOn: "Spanish"
 - scrollUntilVisible:
+    centerElement: true
     element: "Record legal consent"
 - tapOn: "Record legal consent"
 - runFlow:
@@ -41,6 +44,7 @@ appId: edu.upc
     timeout: 100000
 - tapOn: "Stop and save recording"
 - scrollUntilVisible:
+    centerElement: true
     element:
       id: "edu.upc:id/submitButton"
 - tapOn:

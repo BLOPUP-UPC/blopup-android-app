@@ -10,6 +10,7 @@ appId: edu.upc
     id: "android:id/text1"
     index: 0
 - scrollUntilVisible:
+    centerElement: true
     element: "LOGIN"
 - tapOn: "LOGIN"
 - runFlow:
