@@ -14,6 +14,9 @@
 
 package edu.upc.openmrs.application;
 
+import static edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE;
+import static edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID;
+
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
@@ -49,7 +52,7 @@ public class OpenMRSInflater {
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
         if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
-            showTreatment(vitalsCardView);
+            showTreatment(vitalsCardView, observations, fragmentManager);
         }
         setBloodPressureTypeAndRecommendation(bloodPressureType, vitalsCardView);
 
@@ -64,10 +67,12 @@ public class OpenMRSInflater {
         return parentLayout;
     }
 
-    private void showTreatment(View vitalsCardView) {
+    private void showTreatment(View vitalsCardView, List<Observation> observations, FragmentManager fragmentManager) {
         Button addTreatmentButton = vitalsCardView.findViewById(R.id.add_treatment_button);
         addTreatmentButton.setOnClickListener(view -> {
             Intent intent = new Intent(mInflater.getContext(), TreatmentActivity.class);
+            intent.putExtra(PATIENT_ID_BUNDLE, observations.get(0).getEncounter().getPatientUUID());
+            intent.putExtra(VISIT_ID, observations.get(0).getEncounter().getVisit().getUuid());
             mInflater.getContext().startActivity(intent);
         });
     }

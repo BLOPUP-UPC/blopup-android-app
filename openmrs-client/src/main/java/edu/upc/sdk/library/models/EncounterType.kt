@@ -30,5 +30,6 @@ class EncounterType : Resource {
         const val VISIT_NOTE = "Visit Note"
         const val DISCHARGE = "Discharge"
         const val ADMISSION = "Admission"
+        const val TREATMENT = "Treatment"
     }
 }
