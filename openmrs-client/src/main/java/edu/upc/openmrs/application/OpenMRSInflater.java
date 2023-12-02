@@ -14,7 +14,6 @@
 
 package edu.upc.openmrs.application;
 
-import static edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE;
 import static edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID;
 
 import android.content.Intent;
@@ -38,6 +37,7 @@ import edu.upc.blopup.bloodpressure.BloodPressureType;
 import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
 import edu.upc.openmrs.activities.visitdashboard.BloodPressureInfoDialog;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentActivity;
+import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Observation;
 
 public class OpenMRSInflater {
@@ -47,16 +47,16 @@ public class OpenMRSInflater {
         this.mInflater = inflater;
     }
 
-    public ViewGroup addVitalsData(ViewGroup parentLayout, List<Observation> observations, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager) {
+    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager) {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
         if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
-            showTreatment(vitalsCardView, observations, fragmentManager);
+            showTreatment(vitalsCardView, encounter);
         }
         setBloodPressureTypeAndRecommendation(bloodPressureType, vitalsCardView);
 
-        setVitalsValues(observations, vitalsCardView);
+        setVitalsValues(encounter.getObservations(), vitalsCardView);
 
         setBMIValueAndChart(bmiData, vitalsCardView);
 
@@ -67,12 +67,11 @@ public class OpenMRSInflater {
         return parentLayout;
     }
 
-    private void showTreatment(View vitalsCardView, List<Observation> observations, FragmentManager fragmentManager) {
+    private void showTreatment(View vitalsCardView, Encounter encounter) {
         Button addTreatmentButton = vitalsCardView.findViewById(R.id.add_treatment_button);
         addTreatmentButton.setOnClickListener(view -> {
             Intent intent = new Intent(mInflater.getContext(), TreatmentActivity.class);
-            intent.putExtra(PATIENT_ID_BUNDLE, observations.get(0).getEncounter().getPatientUUID());
-            intent.putExtra(VISIT_ID, observations.get(0).getEncounter().getVisit().getUuid());
+            intent.putExtra(VISIT_ID, encounter.getVisitID());
             mInflater.getContext().startActivity(intent);
         });
     }

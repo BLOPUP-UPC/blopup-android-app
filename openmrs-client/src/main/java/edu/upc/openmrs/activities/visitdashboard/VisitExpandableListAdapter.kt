@@ -69,7 +69,7 @@ class VisitExpandableListAdapter(
 
                     openMRSInflater.addVitalsData(
                         contentLayout,
-                        encounter.observations,
+                        encounter,
                         bmiData,
                         bloodPressureTypeFromEncounter(encounter)?.bloodPressureType,
                         fragmentManager

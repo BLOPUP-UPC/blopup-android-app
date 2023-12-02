@@ -1,0 +1,5 @@
+package edu.upc.sdk.library.models
+
+enum class MedicationFamily {
+    ACE_INHIBITORS, DIURETICS, CALCIUM_CHANNEL_BLOCKERS, BETA_BLOCKER, ANGIOTENSIN_RECEPTOR_BLOCKER, OTHERS
+}

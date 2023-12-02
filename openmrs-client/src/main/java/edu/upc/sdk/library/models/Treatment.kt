@@ -6,7 +6,6 @@ data class Treatment(
     var drugFamilies: Set<String>,
     var notes: String,
     var isActive: Boolean = true,
-    var patientId: String,
     var visitId: String
 ) {
 
@@ -15,6 +14,6 @@ data class Treatment(
         const val RECOMMENDED_BY_OTHER = "Other"
     }
 
-    constructor() : this("", "", emptySet(), "", true, "", "")
+    constructor() : this("", "", emptySet(), "", true, "")
 }
 

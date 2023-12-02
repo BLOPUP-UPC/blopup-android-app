@@ -25,7 +25,6 @@ class TreatmentActivity : ACBaseActivity() {
         super.onCreate(savedInstanceState)
         mBinding = TreatmentFormBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        viewModel.treatment.patientId = savedInstanceState?.getString(PATIENT_ID_BUNDLE).toString()
         viewModel.treatment.visitId = savedInstanceState?.getString(VISIT_ID).toString()
         registerTreatmentOnClick()
     }
