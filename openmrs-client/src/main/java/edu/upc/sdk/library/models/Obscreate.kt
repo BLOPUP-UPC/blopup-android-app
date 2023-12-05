@@ -40,6 +40,11 @@ class Obscreate : Serializable {
     @SerializedName("encounter")
     @Expose
     var encounter: String? = null
+
+    @SerializedName("groupMembers")
+    @Expose
+    var groupMembers: List<Obscreate>? = null
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -51,8 +56,7 @@ class Obscreate : Serializable {
         if (concept != other.concept) return false
         if (value != other.value) return false
         if (encounter != other.encounter) return false
-
-        return true
+        return groupMembers == other.groupMembers
     }
 
     override fun hashCode(): Int {
@@ -61,6 +65,7 @@ class Obscreate : Serializable {
         result = 31 * result + (concept?.hashCode() ?: 0)
         result = 31 * result + (value?.hashCode() ?: 0)
         result = 31 * result + (encounter?.hashCode() ?: 0)
+        result = 31 * result + (groupMembers?.hashCode() ?: 0)
         return result
     }
 

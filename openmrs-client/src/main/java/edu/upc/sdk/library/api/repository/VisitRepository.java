@@ -34,7 +34,6 @@ import edu.upc.sdk.library.dao.EncounterDAO;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.listeners.retrofitcallbacks.GetVisitTypeCallback;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.Results;
@@ -43,7 +42,6 @@ import edu.upc.sdk.library.models.VisitType;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -240,5 +238,9 @@ public class VisitRepository extends BaseRepository {
         } else {
             throw new IOException(response.message());
         }
+    }
+
+    public Visit getVisitById(long visitId) {
+        return visitDAO.getVisitByID(visitId).toBlocking().first();
     }
 }

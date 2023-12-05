@@ -40,9 +40,9 @@ class Observation : Resource(), Serializable {
     @Expose
     var accessionNumber: Int = 0
 
-    @SerializedName("obsGroup")
+    @SerializedName("groupMembers")
     @Expose
-    var obsGroup: Observation? = null
+    var groupMembers: List<Observation>? = null
 
     @SerializedName("valueCodedName")
     @Expose
