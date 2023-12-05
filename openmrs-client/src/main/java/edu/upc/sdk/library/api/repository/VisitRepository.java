@@ -105,32 +105,6 @@ public class VisitRepository extends BaseRepository {
         });
     }
 
-    /**
-     * This method is used for getting visitType asynchronously .
-     *
-     * @param callbackListener
-     * @see VisitType
-     * @see GetVisitTypeCallback
-     */
-    public void getVisitType(final GetVisitTypeCallback callbackListener) {
-        Call<Results<VisitType>> call = restApi.getVisitType();
-        call.enqueue(new Callback<Results<VisitType>>() {
-            @Override
-            public void onResponse(@NonNull Call<Results<VisitType>> call, @NonNull Response<Results<VisitType>> response) {
-                if (response.isSuccessful()) {
-                    callbackListener.onGetVisitTypeResponse(response.body().getResults().get(0));
-                } else {
-                    callbackListener.onErrorResponse(response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Results<VisitType>> call, @NonNull Throwable t) {
-                callbackListener.onErrorResponse(t.getMessage());
-            }
-        });
-    }
-
 
     /**
      * This method is used to sync Vitals of a patient in a visit

@@ -14,12 +14,10 @@ import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.execute
 import org.joda.time.Instant
 import rx.android.schedulers.AndroidSchedulers
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
