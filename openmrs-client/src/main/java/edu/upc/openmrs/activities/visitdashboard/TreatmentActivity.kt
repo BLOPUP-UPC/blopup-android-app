@@ -23,7 +23,7 @@ class TreatmentActivity : ACBaseActivity() {
         super.onCreate(savedInstanceState)
         mBinding = TreatmentFormBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        viewModel.treatment.visitId = savedInstanceState?.getString(VISIT_ID).toString()
+        viewModel.treatment.visitId = savedInstanceState?.getString(VISIT_ID)?.toLong() ?: 0
         registerTreatmentOnClick()
     }
 
