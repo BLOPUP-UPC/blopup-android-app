@@ -23,7 +23,7 @@ class TreatmentActivity : ACBaseActivity() {
         super.onCreate(savedInstanceState)
         mBinding = TreatmentFormBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        viewModel.treatment.visitId = savedInstanceState?.getString(VISIT_ID)?.toLong() ?: 0
+        intent.extras?.let { viewModel.treatment.visitId = it.getLong(VISIT_ID) }
         registerTreatmentOnClick()
     }
 
@@ -44,6 +44,7 @@ class TreatmentActivity : ACBaseActivity() {
         mBinding.registerMedication.setOnClickListener {
             fillTreatmentFields()
             lifecycleScope.launch { viewModel.registerTreatment() }
+            finish()
         }
     }
 }
