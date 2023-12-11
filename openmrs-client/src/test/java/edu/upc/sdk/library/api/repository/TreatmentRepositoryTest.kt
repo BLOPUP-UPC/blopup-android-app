@@ -5,12 +5,12 @@ import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.ACTIVE_CONCEPT_ID
-import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.DRUG_FAMILIES_CONCEPT_ID
+import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.MEDICATION_TYPE_CONCEPT_ID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.MEDICATION_NAME_CONCEPT_ID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.RECOMMENDED_BY_CONCEPT_ID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
 import edu.upc.sdk.library.databases.AppDatabase
-import edu.upc.sdk.library.models.DrugFamily
+import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
@@ -58,7 +58,7 @@ class TreatmentRepositoryTest {
         val treatment = Treatment(
             "BlopUp",
             "hidroclorotiazida",
-            setOf("DIURETIC"),
+            setOf(MedicationType.DIURETIC),
             "25mg/dia",
             true,
             19
@@ -86,9 +86,9 @@ class TreatmentRepositoryTest {
 
         val expectedDrugFamilyObservation = Obscreate().apply {
             encounter = "encounterUuid"
-            concept = DRUG_FAMILIES_CONCEPT_ID
+            concept = MEDICATION_TYPE_CONCEPT_ID
             groupMembers = listOf(Obscreate().apply {
-                concept = DrugFamily.DIURETIC.conceptId; value = "true"
+                concept = MedicationType.DIURETIC.conceptId; value = "true"
             })
         }
 

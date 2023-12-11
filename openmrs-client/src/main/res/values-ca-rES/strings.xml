@@ -405,4 +405,17 @@
     <string name="bottom_navigation_option_home">Inici</string>
     <string name="bottom_navigation_option_search">Cerca</string>
     <string name="bottom_navigation_option_register">Registrar</string>
+    <string name="previously_recommended" >Recomanació prèvia</string>
+    <string name="new_recommendation" >Recomanació nova</string>
+    <string name="medication" >Medicació</string>
+    <string name="diuretic" >Diuretic</string>
+    <string name="beta_blocker" >Betabloquejador</string>
+    <string name="ace_inhibitor" >Inhibidor ACE</string>
+    <string name="calcium_channel_blocker" >Bloquejador dels canals de calci</string>
+    <string name="angiotensin_receptor_blocker" >ARA II</string>
+    <string name="register_medication" >Registrar medicació</string>
+    <string name="additional_notes" >Indicacions adicionals</string>
+    <string name="register_treatment">Registrar Tractament</string>
+    <string name="drug_type">Tipus de Medicació</string>
+    <string name="when_was_it_recommended">Quan es va recomanar?</string>
 </resources>

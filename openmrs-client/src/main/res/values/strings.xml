@@ -598,14 +598,16 @@
     <string name="bottom_navigation_option_search" tools:ignore="MissingTranslation">Search</string>
     <string name="bottom_navigation_option_register" tools:ignore="MissingTranslation">Register</string>
     <string name="previously_recommended" tools:ignore="MissingTranslation">Previously recommended</string>
-    <string name="new_recommendation" tools:ignore="MissingTranslation">New recommendation</string>
-    <string name="recommended_but_not_taken" tools:ignore="MissingTranslation">Recommended but not taken</string>
+    <string name="new_recommendation" tools:ignore="MissingTranslation">New Recommendation</string>
     <string name="medication" tools:ignore="MissingTranslation">Medication name</string>
     <string name="diuretic" tools:ignore="MissingTranslation">Diuretic</string>
     <string name="beta_blocker" tools:ignore="MissingTranslation">Beta blocker</string>
     <string name="ace_inhibitor" tools:ignore="MissingTranslation">ACE inhibitor</string>
     <string name="calcium_channel_blocker" tools:ignore="MissingTranslation">Calcium channel blocker</string>
-    <string name="angiotensin_receptor_blocker" tools:ignore="MissingTranslation">Angiotensin receptor blocker</string>
+    <string name="angiotensin_receptor_blocker" tools:ignore="MissingTranslation">ARA II</string>
     <string name="register_medication" tools:ignore="MissingTranslation">Register Medication</string>
     <string name="additional_notes" tools:ignore="MissingTranslation">Additional notes</string>
+    <string name="register_treatment" tools:ignore="MissingTranslation">Register Treatment</string>
+    <string name="drug_type" tools:ignore="MissingTranslation">Drug type</string>
+    <string name="when_was_it_recommended">When was it recommended?</string>
 </resources>

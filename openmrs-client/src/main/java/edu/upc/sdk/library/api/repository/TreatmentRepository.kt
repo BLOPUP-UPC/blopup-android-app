@@ -1,8 +1,7 @@
 package edu.upc.sdk.library.api.repository
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import edu.upc.sdk.library.models.Encountercreate
+import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
@@ -57,7 +56,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                 ),
                 observation(
                     ACTIVE_CONCEPT_ID,
-                    if (treatment.isActive) 0F.toString() else 1F.toString(),
+                    if (treatment.isActive) 1F.toString() else 0F.toString(),
                     currentVisit.patient.uuid!!
                 ),
             )
@@ -66,10 +65,10 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     private fun drugFamiliesObservation(encounterUuid: String, patientUuid: String, treatment: Treatment) =
         Obscreate().apply {
             encounter = encounterUuid
-            concept = DRUG_FAMILIES_CONCEPT_ID
+            concept = MEDICATION_TYPE_CONCEPT_ID
             person = patientUuid
             obsDatetime = Instant.now().toString()
-            groupMembers = treatment.drugFamilies.map { observation(DRUG_FAMILIES_CONCEPT_ID, it, patientUuid) }
+            groupMembers = treatment.medicationType.map { observation(MEDICATION_TYPE_CONCEPT_ID, it.conceptId, patientUuid) }
         }
 
     private fun observation(concept: String, value: String, patientId: String) = Obscreate().apply {
@@ -84,7 +83,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         const val RECOMMENDED_BY_CONCEPT_ID = "c1164da7-0b4f-490f-85da-0c4aac4ca8a1"
         const val ACTIVE_CONCEPT_ID = "81f60010-961e-4bc5-aa04-435c7ace1ee3"
         const val TREATMENT_NOTES_CONCEPT_ID = "dfa881a4-5c88-4057-958b-f583c8edbdef"
-        const val DRUG_FAMILIES_CONCEPT_ID = "1a8f49cc-488b-4788-adb3-72c499108772"
+        const val MEDICATION_TYPE_CONCEPT_ID = "1a8f49cc-488b-4788-adb3-72c499108772"
 
         const val TREATMENT_ENCOUNTER_TYPE = "Treatment"
     }

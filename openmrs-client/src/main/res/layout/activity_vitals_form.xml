@@ -32,7 +32,7 @@
                 android:drawableEnd="@android:drawable/stat_sys_data_bluetooth"
                 android:text="@string/blood_pressure_button_label"
                 android:textStyle="bold"
-                android:gravity="start|center_vertical" />
+                android:gravity="start|center_vertical"/>
 
             <TableLayout
                 android:layout_width="fill_parent"

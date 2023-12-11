@@ -1,118 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <RadioGroup
-        android:id="@+id/treatment_origin"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:titleMarginStart="30dp"
+        app:titleTextColor="@color/white"/>
+
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/radio_previously_recommended"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/previously_recommended" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/recommended_but_not_taken" />
-
-        <RadioButton
-            android:id="@+id/radio_new_recommendation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_recommendation" />
-    </RadioGroup>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <EditText
-            android:id="@+id/medication_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="Medication name"
-            android:focusable="true"
-            android:hint="@string/medication"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/medication_family"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:chipSpacing="@dimen/margin_small">
+        android:orientation="vertical"
+        android:padding="@dimen/margin_long">
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:id="@+id/angiostensin_receptor_blocker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:text="@string/angiotensin_receptor_blocker" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:id="@+id/beta_blocker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:text="@string/beta_blocker" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:id="@+id/ace_inhibitor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:text="@string/ace_inhibitor" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:id="@+id/calcium_channel_blocker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:text="@string/calcium_channel_blocker" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:id="@+id/diuretic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small"
-            android:text="@string/diuretic" />
-    </com.google.android.material.chip.ChipGroup>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/additional_notes"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="63dp"
-            android:autofillHints="Additional notes"
-            android:focusable="true"
-            android:hint="@string/additional_notes"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLines="5" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:text="@string/when_was_it_recommended"
+            android:textStyle="bold"/>
 
-    <Button
-        android:id="@+id/register_medication"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_medication" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/previously_recommended"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight=".5"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:drawableTop="@mipmap/ico_previous_reco"
+                android:focusable="true"
+                android:paddingVertical="12dp"
+                android:text="@string/previously_recommended"
+                android:textAllCaps="false"
+                android:textColor="@color/dark_grey" />
+
+            <Button
+                android:id="@+id/new_recommendation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight=".5"
+                android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:drawableTop="@mipmap/ico_new_reco"
+                android:focusable="true"
+                android:paddingVertical="12dp"
+                android:text="@string/new_recommendation"
+                android:textAllCaps="false"
+                android:textColor="@color/dark_grey" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <EditText
+                android:id="@+id/medication_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Medication name"
+                android:focusable="true"
+                android:hint="@string/medication"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_short"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/drug_type"
+            android:textStyle="bold" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/medication_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacing="@dimen/margin_small">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/diuretic"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/diuretic" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/beta_blocker"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/beta_blocker" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/ace_inhibitor"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/ace_inhibitor" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/ara_ii"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/angiotensin_receptor_blocker" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/calcium_channel_blocker"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/calcium_channel_blocker" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/additional_notes"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:autofillHints="Additional notes"
+                android:focusable="true"
+                android:hint="@string/additional_notes"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="5" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/register_medication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color_accent"
+            android:text="@string/register_medication"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

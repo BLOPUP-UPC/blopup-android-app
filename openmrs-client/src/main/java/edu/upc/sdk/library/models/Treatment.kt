@@ -3,7 +3,7 @@ package edu.upc.sdk.library.models
 data class Treatment(
     var recommendedBy: String,
     var medicationName: String,
-    var drugFamilies: Set<String>,
+    var medicationType: Set<MedicationType>,
     var notes: String,
     var isActive: Boolean = true,
     var visitId: Long
