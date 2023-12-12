@@ -1,7 +1,6 @@
 package edu.upc.sdk.library.api.repository
 
 import edu.upc.sdk.library.models.Encountercreate
-import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
@@ -19,16 +18,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         val encounter = createEncounterFromTreatment(currentVisit, treatment)
 
         withContext(Dispatchers.IO) {
-
-            val response = restApi.createEncounter(encounter).execute()
-            val responseEncounter = if (response.isSuccessful) response.body() else null
-
-            val drugFamilies = drugFamiliesObservation(
-                responseEncounter!!.uuid!!,
-                currentVisit.patient.uuid!!,
-                treatment
-            )
-            restApi.createObs(drugFamilies).execute()
+            restApi.createEncounter(encounter).execute()
         }
 
     }
@@ -59,12 +49,12 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                     if (treatment.isActive) 1F.toString() else 0F.toString(),
                     currentVisit.patient.uuid!!
                 ),
+                drugFamiliesObservation(currentVisit.patient.uuid!!, treatment)
             )
         }
 
-    private fun drugFamiliesObservation(encounterUuid: String, patientUuid: String, treatment: Treatment) =
+    private fun drugFamiliesObservation(patientUuid: String, treatment: Treatment) =
         Obscreate().apply {
-            encounter = encounterUuid
             concept = MEDICATION_TYPE_CONCEPT_ID
             person = patientUuid
             obsDatetime = Instant.now().toString()

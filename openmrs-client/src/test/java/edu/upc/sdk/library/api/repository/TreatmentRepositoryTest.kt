@@ -5,14 +5,15 @@ import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.ACTIVE_CONCEPT_ID
-import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.MEDICATION_TYPE_CONCEPT_ID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.MEDICATION_NAME_CONCEPT_ID
+import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.MEDICATION_TYPE_CONCEPT_ID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.RECOMMENDED_BY_CONCEPT_ID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
+import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_NOTES_CONCEPT_ID
 import edu.upc.sdk.library.databases.AppDatabase
-import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Encountercreate
+import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
@@ -78,21 +79,23 @@ class TreatmentRepositoryTest {
                     value = "hidroclorotiazida"
                 },
                 Obscreate().apply {
+                    concept = TREATMENT_NOTES_CONCEPT_ID
+                    value = "25mg/dia"
+                },
+                Obscreate().apply {
                     concept = ACTIVE_CONCEPT_ID
                     value = "1"
+                },
+                Obscreate().apply {
+                    concept = MEDICATION_TYPE_CONCEPT_ID
+                    groupMembers = listOf(Obscreate().apply {
+                        concept = MEDICATION_TYPE_CONCEPT_ID
+                        value = MedicationType.DIURETIC.conceptId
+                    })
                 }
             )
         }
 
-        val expectedDrugFamilyObservation = Obscreate().apply {
-            encounter = "encounterUuid"
-            concept = MEDICATION_TYPE_CONCEPT_ID
-            groupMembers = listOf(Obscreate().apply {
-                concept = MedicationType.DIURETIC.conceptId; value = "true"
-            })
-        }
-
-        val capturedDrugFamilyObservation = slot<Obscreate>()
         val capturedTreatmentEncounter = slot<Encountercreate>()
 
         val call = mockk<Call<Encounter>>(relaxed = true)
@@ -108,14 +111,12 @@ class TreatmentRepositoryTest {
             treatmentRepository.saveTreatment(treatment)
 
             coVerify { restApi.createEncounter(capture(capturedTreatmentEncounter)) }
-            coVerify { restApi.createObs(capture(capturedDrugFamilyObservation)) }
 
             assertEquals(expectedTreatmentEncounter.patient, capturedTreatmentEncounter.captured.patient)
             assertEquals(expectedTreatmentEncounter.visit, capturedTreatmentEncounter.captured.visit)
             assertEquals(expectedTreatmentEncounter.encounterType, capturedTreatmentEncounter.captured.encounterType)
             assertEquals(expectedTreatmentEncounter.observations[0].concept, capturedTreatmentEncounter.captured.observations[0].concept)
-
-            assertEquals(expectedDrugFamilyObservation.encounter, capturedDrugFamilyObservation.captured.encounter)
+            assertEquals(expectedTreatmentEncounter.observations[4].groupMembers!![0].value, capturedTreatmentEncounter.captured.observations[4].groupMembers!![0].value)
         }
     }
 

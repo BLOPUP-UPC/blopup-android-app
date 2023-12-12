@@ -45,32 +45,35 @@ class TreatmentActivity : ACBaseActivity() {
 
     private fun treatmentObserver() {
         viewModel.treatment.observe(this) {
-            if (it.recommendedBy == RECOMMENDED_BY_BLOPUP) {
-                mBinding.newRecommendation.setBackgroundColor(
-                    resources.getColor(
-                        R.color.light_grey_for_solid,
-                        null
+            when (it.recommendedBy) {
+                RECOMMENDED_BY_BLOPUP -> {
+                    mBinding.newRecommendation.setBackgroundColor(
+                        resources.getColor(
+                            R.color.light_grey_for_solid,
+                            null
+                        )
                     )
-                )
-                mBinding.previouslyRecommended.setBackgroundColor(
-                    resources.getColor(
-                        R.color.white,
-                        null
+                    mBinding.previouslyRecommended.setBackgroundColor(
+                        resources.getColor(
+                            R.color.white,
+                            null
+                        )
                     )
-                )
-            } else {
-                mBinding.previouslyRecommended.setBackgroundColor(
-                    resources.getColor(
-                        R.color.light_grey_for_solid,
-                        null
+                }
+                RECOMMENDED_BY_OTHER -> {
+                    mBinding.previouslyRecommended.setBackgroundColor(
+                        resources.getColor(
+                            R.color.light_grey_for_solid,
+                            null
+                        )
                     )
-                )
-                mBinding.newRecommendation.setBackgroundColor(
-                    resources.getColor(
-                        R.color.white,
-                        null
+                    mBinding.newRecommendation.setBackgroundColor(
+                        resources.getColor(
+                            R.color.white,
+                            null
+                        )
                     )
-                )
+                }
             }
         }
     }
