@@ -34,12 +34,45 @@ class TreatmentActivity : ACBaseActivity() {
         }
 
         setContentView(mBinding.root)
-        intent.extras?.let { viewModel.treatment.visitId = it.getLong(VISIT_ID) }
+        intent.extras?.let { viewModel.treatment.value?.visitId = it.getLong(VISIT_ID) }
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
         whoRecommendedButtonsOnClickListener()
         registerTreatmentOnClickListener()
+        treatmentObserver()
+    }
+
+    private fun treatmentObserver() {
+        viewModel.treatment.observe(this) {
+            if (it.recommendedBy == RECOMMENDED_BY_BLOPUP) {
+                mBinding.newRecommendation.setBackgroundColor(
+                    resources.getColor(
+                        R.color.light_grey_for_solid,
+                        null
+                    )
+                )
+                mBinding.previouslyRecommended.setBackgroundColor(
+                    resources.getColor(
+                        R.color.white,
+                        null
+                    )
+                )
+            } else {
+                mBinding.previouslyRecommended.setBackgroundColor(
+                    resources.getColor(
+                        R.color.light_grey_for_solid,
+                        null
+                    )
+                )
+                mBinding.newRecommendation.setBackgroundColor(
+                    resources.getColor(
+                        R.color.white,
+                        null
+                    )
+                )
+            }
+        }
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -50,9 +83,9 @@ class TreatmentActivity : ACBaseActivity() {
 
     private fun fillTreatmentFields() {
         with(mBinding) {
-            viewModel.treatment.medicationName = medicationName.text.toString()
-            viewModel.treatment.notes = additionalNotes.text.toString()
-            viewModel.treatment.medicationType = medicationType.checkedChipIds
+            viewModel.treatment.value?.medicationName = medicationName.text.toString()
+            viewModel.treatment.value?.notes = additionalNotes.text.toString()
+            viewModel.treatment.value?.medicationType = medicationType.checkedChipIds
                 .map {
                     MedicationType.valueOf(findViewById<Chip>(it).resources.getResourceName(it).split("/")[1].uppercase())
                 }
@@ -62,34 +95,10 @@ class TreatmentActivity : ACBaseActivity() {
 
     private fun whoRecommendedButtonsOnClickListener() {
         mBinding.previouslyRecommended.setOnClickListener {
-            viewModel.treatment.recommendedBy = RECOMMENDED_BY_OTHER
-            mBinding.previouslyRecommended.setBackgroundColor(
-                resources.getColor(
-                    R.color.light_grey_for_solid,
-                    null
-                )
-            )
-            mBinding.newRecommendation.setBackgroundColor(
-                resources.getColor(
-                    R.color.white,
-                    null
-                )
-            )
+            viewModel.treatment.value = viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_OTHER }
         }
         mBinding.newRecommendation.setOnClickListener {
-            viewModel.treatment.recommendedBy = RECOMMENDED_BY_BLOPUP
-            mBinding.newRecommendation.setBackgroundColor(
-                resources.getColor(
-                    R.color.light_grey_for_solid,
-                    null
-                )
-            )
-            mBinding.previouslyRecommended.setBackgroundColor(
-                resources.getColor(
-                    R.color.white,
-                    null
-                )
-            )
+            viewModel.treatment.value = viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_BLOPUP }
         }
     }
 
