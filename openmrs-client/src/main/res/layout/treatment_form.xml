@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:clickable="true"
                 android:background="@drawable/treatment_buttons_on_unselected"
-                android:drawableTop="@mipmap/ico_previous_reco"
+                android:drawableTop="@mipmap/icon_pill"
                 android:focusable="true"
                 android:paddingVertical="12dp"
                 android:text="@string/previously_recommended"
