@@ -3,6 +3,7 @@ package edu.upc.openmrs.activities.visitdashboard
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +30,7 @@ class TreatmentActivity : ACBaseActivity() {
         supportActionBar?.run {
             elevation = 0f
 
-            setTitle(R.string.register_treatment)
+            setTitle(R.string.add_treatment)
             setDisplayHomeAsUpEnabled(true)
         }
 
@@ -47,31 +48,27 @@ class TreatmentActivity : ACBaseActivity() {
         viewModel.treatment.observe(this) {
             when (it.recommendedBy) {
                 RECOMMENDED_BY_BLOPUP -> {
-                    mBinding.newRecommendation.setBackgroundColor(
-                        resources.getColor(
-                            R.color.light_grey_for_solid,
-                            null
-                        )
+                    mBinding.newRecommendation.background = ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.treatment_buttons_on_selected,
+                        null
                     )
-                    mBinding.previouslyRecommended.setBackgroundColor(
-                        resources.getColor(
-                            R.color.white,
-                            null
-                        )
+                    mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.treatment_buttons_on_unselected,
+                        null
                     )
                 }
                 RECOMMENDED_BY_OTHER -> {
-                    mBinding.previouslyRecommended.setBackgroundColor(
-                        resources.getColor(
-                            R.color.light_grey_for_solid,
-                            null
-                        )
+                    mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.treatment_buttons_on_selected,
+                        null
                     )
-                    mBinding.newRecommendation.setBackgroundColor(
-                        resources.getColor(
-                            R.color.white,
-                            null
-                        )
+                    mBinding.newRecommendation.background = ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.treatment_buttons_on_unselected,
+                        null
                     )
                 }
             }

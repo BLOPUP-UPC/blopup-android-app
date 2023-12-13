@@ -405,7 +405,7 @@
     <string name="bottom_navigation_option_home">Inici</string>
     <string name="bottom_navigation_option_search">Cerca</string>
     <string name="bottom_navigation_option_register">Registrar</string>
-    <string name="previously_recommended">Recomanat prèviament</string>
+    <string name="previously_recommended">Recomanat \n prèviament</string>
     <string name="new_recommendation">Recomanat \n avui</string>
     <string name="medication">Nom del medicament</string>
     <string name="diuretic">Diuretic</string>
@@ -415,7 +415,7 @@
     <string name="angiotensin_receptor_blocker">ARA II</string>
     <string name="register_medication">Finalitzar</string>
     <string name="additional_notes">Indicacions adicionals</string>
-    <string name="register_treatment">Registrar Tractament</string>
-    <string name="drug_type">Tipus de medicaments</string>
+    <string name="add_treatment">Afegir Tractament</string>
+    <string name="drug_type">Tipus de medicament</string>
     <string name="when_was_it_recommended">Quan es va recomanar?</string>
 </resources>

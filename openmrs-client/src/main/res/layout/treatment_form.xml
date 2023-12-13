@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,8 +15,8 @@
         app:titleTextColor="@color/white"/>
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,21 +28,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/when_was_it_recommended"
-            android:textStyle="bold"/>
+            android:textColor="@color/black"
+            app:fontWeight="500"
+            android:textFontWeight="500"
+            tools:targetApi="p" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
             android:orientation="horizontal">
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/previously_recommended"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/white"
                 android:clickable="true"
+                android:background="@drawable/treatment_buttons_on_unselected"
                 android:drawableTop="@mipmap/ico_previous_reco"
                 android:focusable="true"
                 android:paddingVertical="12dp"
@@ -49,13 +54,13 @@
                 android:textAllCaps="false"
                 android:textColor="@color/dark_grey" />
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/new_recommendation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/treatment_buttons_on_unselected"
                 android:clickable="true"
                 android:drawableTop="@mipmap/ico_new_reco"
                 android:focusable="true"
@@ -69,7 +74,8 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
 
             <EditText
                 android:id="@+id/medication_name"
@@ -89,7 +95,10 @@
             android:layout_marginTop="@dimen/margin_short"
             android:fontFamily="@font/roboto_regular"
             android:text="@string/drug_type"
-            android:textStyle="bold" />
+            android:textColor="@color/black"
+            app:fontWeight="500"
+            android:textFontWeight="500"
+            tools:targetApi="p" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/medication_type"
@@ -159,7 +168,8 @@
                 android:lines="6"
                 android:maxLength="2000"
                 android:scrollHorizontally="false"
-                android:autofillHints="@string/additional_notes" />
+                android:autofillHints="@string/additional_notes"
+                android:layout_marginBottom="10dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

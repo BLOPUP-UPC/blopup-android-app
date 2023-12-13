@@ -22,7 +22,7 @@
     <string name="reg_ques_dob">Fecha de nacimiento del paciente*</string>
     <string name="label_or">O</string>
     <string name="country_of_birth_label">País de nacimiento*</string>
-    <string name="register_treatment">Registrar Tratamiento</string>
+    <string name="add_treatment">Añadir Tratamiento</string>
     <string name="addr1_hint">Dirección Línea 1</string>
     <string name="addr2_hint">Dirección Línea 2</string>
     <string name="addr_invalid_error">La dirección no puede contener caracteres inválidos.</string>
@@ -410,7 +410,7 @@
     <string name="bottom_navigation_option_search">Buscar</string>
     <string name="bottom_navigation_option_register">Registrar</string>
     <string name="previously_recommended">Recomendado previamente</string>
-    <string name="new_recommendation">Recomendado hoy</string>
+    <string name="new_recommendation">Recomendado \n hoy</string>
     <string name="medication">Nombre del medicamento</string>
     <string name="diuretic">Diurético</string>
     <string name="beta_blocker">Betabloqueante</string>
@@ -419,6 +419,6 @@
     <string name="angiotensin_receptor_blocker">ARA II</string>
     <string name="register_medication">Finalizar</string>
     <string name="additional_notes">Notas adicionales</string>
-    <string name="drug_type">Tipo de medicamentos</string>
+    <string name="drug_type">Tipo de medicamento</string>
     <string name="when_was_it_recommended">Cuándo se ha recomendado?</string>
 </resources>
