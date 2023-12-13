@@ -168,8 +168,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/color_accent"
             android:text="@string/register_medication"
-            android:textAllCaps="false"
-            android:textStyle="bold" />
+            android:textAllCaps="false" />
     </LinearLayout>
 
     </ScrollView>

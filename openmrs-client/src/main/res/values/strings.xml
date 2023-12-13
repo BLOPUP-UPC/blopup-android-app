@@ -598,7 +598,7 @@
     <string name="bottom_navigation_option_search" tools:ignore="MissingTranslation">Search</string>
     <string name="bottom_navigation_option_register" tools:ignore="MissingTranslation">Register</string>
     <string name="previously_recommended" tools:ignore="MissingTranslation">Previously recommended</string>
-    <string name="new_recommendation" tools:ignore="MissingTranslation">New Recommendation</string>
+    <string name="new_recommendation" tools:ignore="MissingTranslation">Recommended today</string>
     <string name="medication" tools:ignore="MissingTranslation">Medication name</string>
     <string name="diuretic" tools:ignore="MissingTranslation">Diuretic</string>
     <string name="beta_blocker" tools:ignore="MissingTranslation">Beta blocker</string>
@@ -609,5 +609,5 @@
     <string name="additional_notes" tools:ignore="MissingTranslation">Additional notes</string>
     <string name="register_treatment" tools:ignore="MissingTranslation">Register Treatment</string>
     <string name="drug_type" tools:ignore="MissingTranslation">Drug type</string>
-    <string name="when_was_it_recommended">When was it recommended?</string>
+    <string name="when_was_it_recommended" tools:ignore="MissingTranslation">When was it recommended?</string>
 </resources>

@@ -409,16 +409,16 @@
     <string name="bottom_navigation_option_home">Inicio</string>
     <string name="bottom_navigation_option_search">Buscar</string>
     <string name="bottom_navigation_option_register">Registrar</string>
-    <string name="previously_recommended" >Recomendación previa</string>
-    <string name="new_recommendation" >Recomendación nueva</string>
-    <string name="medication" >Medicamento</string>
-    <string name="diuretic" >Diurético</string>
-    <string name="beta_blocker" >Betabloqueante</string>
-    <string name="ace_inhibitor" >Inhibidor ACE</string>
-    <string name="calcium_channel_blocker" >Bloqueante del canal de calcio</string>
-    <string name="angiotensin_receptor_blocker" >ARA II</string>
-    <string name="register_medication" >Registrar medicación</string>
-    <string name="additional_notes" >Indicaciones adicionales</string>
-    <string name="drug_type">Tipo de medicación</string>
+    <string name="previously_recommended">Recomendado previamente</string>
+    <string name="new_recommendation">Recomendado hoy</string>
+    <string name="medication">Nombre del medicamento</string>
+    <string name="diuretic">Diurético</string>
+    <string name="beta_blocker">Betabloqueante</string>
+    <string name="ace_inhibitor">Inhibidor ACE</string>
+    <string name="calcium_channel_blocker">Bloqueante del canal de calcio</string>
+    <string name="angiotensin_receptor_blocker">ARA II</string>
+    <string name="register_medication">Finalizar</string>
+    <string name="additional_notes">Notas adicionales</string>
+    <string name="drug_type">Tipo de medicamentos</string>
     <string name="when_was_it_recommended">Cuándo se ha recomendado?</string>
 </resources>
