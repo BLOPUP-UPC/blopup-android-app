@@ -64,7 +64,11 @@
         <activity
             android:name="edu.upc.openmrs.activities.visitdashboard.TreatmentActivity"
             android:label="TreatmentActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".openmrs.activities.visitdashboard.VisitDashboardActivity"/>
+    </activity>
         <activity
             android:name="edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity"
             android:configChanges="keyboardHidden|screenSize"

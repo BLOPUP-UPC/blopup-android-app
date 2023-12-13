@@ -1,8 +1,10 @@
 package edu.upc.openmrs.activities.visitdashboard
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.core.app.NavUtils
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
@@ -32,6 +34,7 @@ class TreatmentActivity : ACBaseActivity() {
 
             setTitle(R.string.add_treatment)
             setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         }
 
         setContentView(mBinding.root)
@@ -42,6 +45,17 @@ class TreatmentActivity : ACBaseActivity() {
         whoRecommendedButtonsOnClickListener()
         registerTreatmentOnClickListener()
         treatmentObserver()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this)
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun treatmentObserver() {
