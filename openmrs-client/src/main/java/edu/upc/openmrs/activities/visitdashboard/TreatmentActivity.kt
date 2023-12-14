@@ -2,7 +2,6 @@ package edu.upc.openmrs.activities.visitdashboard
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.app.NavUtils
 import androidx.core.content.res.ResourcesCompat
@@ -27,7 +26,16 @@ class TreatmentActivity : ACBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = TreatmentFormBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
+        intent.extras?.let { viewModel.treatment.value?.visitId = it.getLong(VISIT_ID) }
 
+        setToolbar()
+        whoRecommendedButtonsOnClickListener()
+        registerTreatmentOnClickListener()
+        treatmentObserver()
+    }
+
+    private fun setToolbar() {
         setSupportActionBar(mBinding.toolbar)
         supportActionBar?.run {
             elevation = 0f
@@ -36,15 +44,6 @@ class TreatmentActivity : ACBaseActivity() {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         }
-
-        setContentView(mBinding.root)
-        intent.extras?.let { viewModel.treatment.value?.visitId = it.getLong(VISIT_ID) }
-
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-
-        whoRecommendedButtonsOnClickListener()
-        registerTreatmentOnClickListener()
-        treatmentObserver()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -86,12 +85,6 @@ class TreatmentActivity : ACBaseActivity() {
                     )
                 }
             }
-        }
-    }
-
-    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            finish()
         }
     }
 
