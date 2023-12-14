@@ -80,25 +80,44 @@ class ChartsViewActivity : ACBaseActivity() {
 
         val dataSetSystolic = LineDataSet(setColorIconsToEntries(systolicEntries, SYSTOLIC), "")
         val dataSetDiastolic = LineDataSet(setColorIconsToEntries(diastolicEntries, DIASTOLIC), "")
+        val dataSetTreatments = LineDataSet(listOf(
+            Entry(7f, 210f),
+            Entry(11f, 210f),
+        ), "")
+        dataSetTreatments.valueFormatter = TreatmentFormater("IECA")
+        val dataSetTreatments2 = LineDataSet(listOf(
+            Entry(8f, 220f),
+            Entry(10f, 220f),
+        ), "")
+        dataSetTreatments2.valueFormatter = TreatmentFormater("ARA II")
 
         //makes the line between data points transparent
         dataSetDiastolic.color = Color.TRANSPARENT
         dataSetSystolic.color = Color.TRANSPARENT
+        dataSetTreatments.color = Color.MAGENTA
+        dataSetTreatments2.color = Color.BLUE
 
         dataSetDiastolic.valueTextSize = 12f
         dataSetSystolic.valueTextSize = 12f
+        dataSetTreatments.valueTextSize = 12f
+        dataSetTreatments2.valueTextSize = 12f
 
         dataSetSystolic.circleRadius = 8F
         dataSetDiastolic.circleRadius = 8F
 
         dataSetDiastolic.setCircleColor(Color.TRANSPARENT)
         dataSetSystolic.setCircleColor(Color.TRANSPARENT)
+        dataSetTreatments.setCircleColor(Color.MAGENTA)
+        dataSetTreatments2.setCircleColor(Color.BLUE)
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(dataSetSystolic)
         dataSets.add(dataSetDiastolic)
+        dataSets.add(dataSetTreatments)
+        dataSets.add(dataSetTreatments2)
 
         val lineData = LineData(dataSets)
+
 
         mChart.data = lineData
         mChart.xAxis.valueFormatter = MyValueFormatter(datesData)
@@ -172,7 +191,7 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart.axisLeft.axisLineWidth = 2f
         mChart.axisLeft.axisLineColor = Color.BLACK
         //max and min values in the axis with the values
-        mChart.axisLeft.axisMaximum = 200f
+        mChart.axisLeft.axisMaximum = 240f
         mChart.axisLeft.axisMinimum = 40f
         mChart.axisLeft.setDrawLimitLinesBehindData(true)
         //to add some space before the first and last values on the chart
@@ -180,6 +199,7 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart.xAxis.axisMaximum = mChart.xAxis.axisMaximum + 0.1F
         //to open the chart focused on the most recent value
         mChart.moveViewToX(mChart.xAxis.axisMaximum)
+        mChart.legend.isEnabled = false
     }
 
     private fun setColorIconsToEntries(entries: List<Entry>, type: String): List<Entry> {
