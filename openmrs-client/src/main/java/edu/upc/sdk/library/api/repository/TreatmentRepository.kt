@@ -69,7 +69,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     }
 
     companion object {
-        const val MEDICATION_NAME_CONCEPT_ID = "43f8a8f3-6cf9-4a1f-bba5-8ec979f6d0b6"
+        const val MEDICATION_NAME_CONCEPT_ID = "a721776b-fd0f-41ea-821b-0d0df94d5560"
         const val RECOMMENDED_BY_CONCEPT_ID = "c1164da7-0b4f-490f-85da-0c4aac4ca8a1"
         const val ACTIVE_CONCEPT_ID = "81f60010-961e-4bc5-aa04-435c7ace1ee3"
         const val TREATMENT_NOTES_CONCEPT_ID = "dfa881a4-5c88-4057-958b-f583c8edbdef"
