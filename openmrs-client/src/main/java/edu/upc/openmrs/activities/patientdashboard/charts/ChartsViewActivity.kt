@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.MPPointF
 import edu.upc.R
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
@@ -86,8 +87,8 @@ class ChartsViewActivity : ACBaseActivity() {
         ), "")
         dataSetTreatments.valueFormatter = TreatmentFormater("IECA")
         val dataSetTreatments2 = LineDataSet(listOf(
-            Entry(8f, 220f),
-            Entry(10f, 220f),
+            Entry(8.4f, 150f, ContextCompat.getDrawable(applicationContext, R.mipmap.icon_pill)),
+            Entry(10.4f, 102f, ContextCompat.getDrawable(applicationContext, R.mipmap.icon_pill)),
         ), "")
         dataSetTreatments2.valueFormatter = TreatmentFormater("ARA II")
 
@@ -95,7 +96,7 @@ class ChartsViewActivity : ACBaseActivity() {
         dataSetDiastolic.color = Color.TRANSPARENT
         dataSetSystolic.color = Color.TRANSPARENT
         dataSetTreatments.color = Color.MAGENTA
-        dataSetTreatments2.color = Color.BLUE
+        dataSetTreatments2.color = Color.TRANSPARENT
 
         dataSetDiastolic.valueTextSize = 12f
         dataSetSystolic.valueTextSize = 12f
@@ -104,11 +105,12 @@ class ChartsViewActivity : ACBaseActivity() {
 
         dataSetSystolic.circleRadius = 8F
         dataSetDiastolic.circleRadius = 8F
+        dataSetTreatments2.iconsOffset = MPPointF(30f, 4f)
 
         dataSetDiastolic.setCircleColor(Color.TRANSPARENT)
         dataSetSystolic.setCircleColor(Color.TRANSPARENT)
         dataSetTreatments.setCircleColor(Color.MAGENTA)
-        dataSetTreatments2.setCircleColor(Color.BLUE)
+        dataSetTreatments2.setCircleColor(Color.TRANSPARENT)
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(dataSetSystolic)
