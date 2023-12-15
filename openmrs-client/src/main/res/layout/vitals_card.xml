@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,11 +9,11 @@
 
     <LinearLayout
         android:id="@+id/blood_pressure_layout"
-        tools:visibility="visible"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,26 +22,26 @@
 
             <TextView
                 android:id="@+id/blood_pressure_title"
-                android:background="@drawable/banner_bg"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="12dp"
+                android:background="@drawable/banner_bg"
+                android:paddingVertical="13dp"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 android:text="@string/bp_normal"
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:layout_width="match_parent" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_marginStart="15dp"
-            android:paddingBottom="@dimen/appintro_indicator_size"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/appintro_indicator_size">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -56,19 +56,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/systolic_vital"
-                    android:textStyle="bold"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/systolic_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="3dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -79,8 +81,8 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="@dimen/appintro_indicator_size">
 
@@ -90,8 +92,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/diastolic_vital"
-                    android:textStyle="bold"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textStyle="bold" />
 
 
                 <LinearLayout
@@ -99,11 +101,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/diastolic_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="3dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -116,8 +120,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:orientation="vertical"
                 android:layout_weight="1"
+                android:orientation="vertical"
                 android:padding="@dimen/appintro_indicator_size">
 
                 <TextView
@@ -126,19 +130,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/pulse_vital"
-                    android:textStyle="bold"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/pulse_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="3dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,43 +157,59 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginHorizontal="20dp"
+            android:orientation="vertical"
             android:paddingBottom="15dp">
 
             <TextView
                 android:id="@+id/blood_pressure_recommendation"
-                android:textColor="?android:attr/textColorPrimary"
-                android:text="@string/bp_normal_recommendation"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="@string/bp_normal_recommendation"
+                android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/blood_pressure_info"
-                android:paddingTop="10dp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:text="@string/bp_info"
-                app:drawableEndCompat="@drawable/information_icon"
-                android:drawablePadding="6dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/information_icon_description" />
+                android:contentDescription="@string/information_icon_description"
+                android:drawablePadding="6dp"
+                android:paddingTop="10dp"
+                android:text="@string/bp_info"
+                android:textColor="?android:attr/textColorPrimary"
+                app:drawableEndCompat="@drawable/information_icon" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/add_treatment_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Add Treatment"
-            />
+            android:layout_marginHorizontal="8dp"
+            android:orientation="vertical"
+            android:paddingBottom="15dp">
+
+            <android.widget.Button
+                android:id="@+id/add_treatment_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="13dp"
+                android:paddingHorizontal="15dp"
+                android:elevation="4dp"
+                android:drawableEnd="@drawable/icon_arrow_forward"
+                android:drawableStart="@drawable/ic_doctor_suitcase"
+                android:drawablePadding="15dp"
+                android:background="@drawable/treatment_buttons_on_unselected"
+                android:text="@string/add_treatment_button"
+                android:textAllCaps="false"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/black" />
+        </LinearLayout>
 
         <View
-            android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#CCCCCC"/>
+            android:layout_marginHorizontal="20dp"
+            android:background="#CCCCCC" />
 
     </LinearLayout>
 
@@ -197,9 +219,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:orientation="vertical"
+        android:padding="@dimen/appintro_indicator_size"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:padding="@dimen/appintro_indicator_size">
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/height"
@@ -207,19 +229,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/height_value_label"
-            android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/height_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="3dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -230,13 +254,13 @@
 
     <LinearLayout
         android:id="@+id/weight_layout"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:orientation="vertical"
-        android:padding="@dimen/appintro_indicator_size">
+        android:padding="@dimen/appintro_indicator_size"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/weight"
@@ -244,19 +268,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/weight_value_label"
-            android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/weight_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="3dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -266,13 +292,13 @@
 
     <LinearLayout
         android:id="@+id/bmi_layout"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:orientation="vertical"
-        android:padding="@dimen/appintro_indicator_size">
+        android:padding="@dimen/appintro_indicator_size"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/bmi"
@@ -280,8 +306,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/bmi_label"
-            android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/bmi_value"
@@ -292,9 +318,9 @@
 
         <com.github.anastr.speedviewlib.SpeedView
             android:id="@+id/speedView"
-            app:sv_speedometerMode="TOP"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:sv_speedometerMode="TOP" />
 
     </LinearLayout>
 
