@@ -69,8 +69,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
-        setupExpandableListAdapter()
         setupVisitObserver()
+        setupExpandableListAdapter()
 
         return binding.root
     }
@@ -100,7 +100,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                 is Result.Success -> result.data.run {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
-                    updateEncountersList(encounters)
+                    updateEncountersList(encounters, isActiveVisit())
                     contactDoctorToggle.check({ notifyDoctorIfNeeded(patient.identifier.identifier) })
                 }
 
@@ -173,8 +173,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)
     }
 
-    private fun updateEncountersList(visitEncounters: List<Encounter>) = with(binding) {
-        visitExpandableListAdapter?.updateList(visitEncounters)
+    private fun updateEncountersList(visitEncounters: List<Encounter>, isVisitActive: Boolean) = with(binding) {
+        visitExpandableListAdapter?.updateList(visitEncounters, isVisitActive)
         visitDashboardExpList.expandGroup(0)
     }
 

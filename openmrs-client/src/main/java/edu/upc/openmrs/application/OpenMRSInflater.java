@@ -41,18 +41,18 @@ import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Observation;
 
 public class OpenMRSInflater {
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public OpenMRSInflater(LayoutInflater inflater) {
         this.mInflater = inflater;
     }
 
-    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager) {
+    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager, Boolean isVisitActive) {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
         if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
-            showTreatment(vitalsCardView, encounter);
+            showTreatment(vitalsCardView, encounter, isVisitActive);
         }
         setBloodPressureTypeAndRecommendation(bloodPressureType, vitalsCardView);
 
@@ -67,13 +67,17 @@ public class OpenMRSInflater {
         return parentLayout;
     }
 
-    private void showTreatment(View vitalsCardView, Encounter encounter) {
+    private void showTreatment(View vitalsCardView, Encounter encounter, Boolean isVisitActive) {
         Button addTreatmentButton = vitalsCardView.findViewById(R.id.add_treatment_button);
-        addTreatmentButton.setOnClickListener(view -> {
-            Intent intent = new Intent(mInflater.getContext(), TreatmentActivity.class);
-            intent.putExtra(VISIT_ID, encounter.getVisitID());
-            mInflater.getContext().startActivity(intent);
-        });
+        if(isVisitActive){
+            addTreatmentButton.setOnClickListener(view -> {
+                Intent intent = new Intent(mInflater.getContext(), TreatmentActivity.class);
+                intent.putExtra(VISIT_ID, encounter.getVisitID());
+                mInflater.getContext().startActivity(intent);
+            });
+        } else {
+            addTreatmentButton.setVisibility(View.GONE);
+        }
     }
 
     private void setBloodPressureInformationDialog(View vitalsCardView, FragmentManager fragmentManager) {

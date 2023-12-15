@@ -29,18 +29,17 @@ import edu.upc.openmrs.application.OpenMRSInflater
 import edu.upc.openmrs.utilities.EncounterTranslationUtils.getTranslatedResourceId
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
-import edu.upc.sdk.utilities.ApplicationConstants
-import edu.upc.sdk.utilities.ImageUtils.decodeBitmapFromResource
 
 class VisitExpandableListAdapter(
     private val mContext: Context,
     private var mEncounters: List<Encounter>,
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
 ) :
     BaseExpandableListAdapter() {
     private var mChildLayouts: List<ViewGroup>
     private val mBitmapCache: SparseArray<Bitmap?>
     private val bmiCalculator: BMICalculator
+    private var isCurrentVisitActive: Boolean = false
 
     init {
         mBitmapCache = SparseArray()
@@ -48,7 +47,8 @@ class VisitExpandableListAdapter(
         bmiCalculator = BMICalculator()
     }
 
-    fun updateList(encounters: List<Encounter>) {
+    fun updateList(encounters: List<Encounter>, isVisitActive: Boolean) {
+        isCurrentVisitActive = isVisitActive
         mEncounters = encounters.sortedBy { it.encounterDatetime }.reversed()
         notifyDataSetChanged()
     }
@@ -72,7 +72,8 @@ class VisitExpandableListAdapter(
                         encounter,
                         bmiData,
                         bloodPressureTypeFromEncounter(encounter)?.bloodPressureType,
-                        fragmentManager
+                        fragmentManager,
+                        isCurrentVisitActive
                     )
 
                     layouts.add(convertView)
@@ -263,17 +264,6 @@ class VisitExpandableListAdapter(
             image.setBounds(0, 0, image.intrinsicWidth, image.intrinsicHeight)
             textView.compoundDrawablePadding = (10 * scale + 0.5f).toInt()
             textView.setCompoundDrawables(null, null, image, null)
-        }
-    }
-
-    private fun createImageBitmap(key: Int, layoutParams: ViewGroup.LayoutParams) {
-        if (mBitmapCache[key] == null) {
-            mBitmapCache.put(
-                key, decodeBitmapFromResource(
-                    mContext.resources, key,
-                    layoutParams.width, layoutParams.height
-                )
-            )
         }
     }
 
