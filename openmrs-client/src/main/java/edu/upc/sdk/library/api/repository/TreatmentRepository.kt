@@ -29,17 +29,22 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
 
     }
 
-    suspend fun fetchActiveTreatments(patient: Patient): List<Treatment> =
+    suspend fun fetchActiveTreatments(patient: Patient): List<Treatment> {
+        val visits: List<Visit>
         withContext(Dispatchers.IO) {
-            return@withContext visitRepository.syncVisitsData(patient).toBlocking().first()
-                .map { visit ->
-                    visit?.encounters?.filter { encounter ->
-                        encounter.encounterType?.display == EncounterType.TREATMENT
-                    }?.map { encounter ->
-                        getTreatmentFromEncounter(encounter)
-                    } ?: emptyList()
-                }.flatten()
+            visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
         }
+
+        val encounters = visits.flatMap { visit ->
+            visit.encounters.filter { encounter ->
+                encounter.encounterType?.display == EncounterType.TREATMENT
+            }
+        }
+
+        val treatments = encounters.map { encounter -> getTreatmentFromEncounter(encounter) }
+
+        return treatments
+    }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
         val treatment = Treatment()

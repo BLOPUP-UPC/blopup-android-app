@@ -89,22 +89,28 @@ public class VisitRepository extends BaseRepository {
      */
     public Observable<List<Visit>> syncVisitsData(@NonNull final Patient patient) {
         return AppDatabaseHelper.createObservableIO(() -> {
-            Call<Results<Visit>> call = restApi.findVisitsByPatientUUID(patient.getUuid(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)");
-            Response<Results<Visit>> response = call.execute();
-
-            if (response.isSuccessful()) {
-                List<Visit> visits = response.body().getResults();
+            try {
+                List<Visit> visits = getAllVisitsForPatient(patient).toBlocking().first();
                 visitDAO.deleteVisitPatient(patient).toBlocking().subscribe();
                 for (Visit visit : visits) {
                     visitDAO.saveOrUpdate(visit, patient.getId()).toBlocking().subscribe();
                 }
                 return visits;
-            } else {
-                throw new IOException("Error with fetching visits by patient uuid: " + response.message());
+            } catch (IOException e) {
+                throw new Exception("Error with fetching visits by patient uuid: " + e.getMessage());
             }
         });
     }
 
+    public Observable<List<Visit>> getAllVisitsForPatient(@NonNull Patient patient) throws IOException {
+        Call<Results<Visit>> call = restApi.findVisitsByPatientUUID(patient.getUuid(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)");
+        Response<Results<Visit>> response = call.execute();
+        if (response.isSuccessful()) {
+            return Observable.just(response.body().getResults());
+        } else {
+            throw new IOException("Error with fetching visits by patient uuid: " + response.message());
+        }
+    }
 
     /**
      * This method is used to sync Vitals of a patient in a visit
