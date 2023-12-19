@@ -18,33 +18,38 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
+import edu.upc.BuildConfig.SHOW_TREATMENT_TOGGLE
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
-import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.activities.visitdashboard.TreatmentRecyclerViewAdapter
+import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils.convertTime
-import edu.upc.sdk.utilities.StringUtils.notEmpty
-import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil.error
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     private var _binding: FragmentPatientDetailsBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var treatmentAdapter: TreatmentRecyclerViewAdapter
+
     private val viewModel: PatientDashboardDetailsViewModel by viewModels()
+    private val treatmentViewModel: TreatmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,8 +58,15 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     ): View {
         _binding = FragmentPatientDetailsBinding.inflate(inflater, null, false)
 
-        setupObserver()
+        setupObservers()
         fetchPatientDetails()
+
+        if(SHOW_TREATMENT_TOGGLE) {
+            binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
+            setUpActiveTreatmentsAdapter()
+        } else {
+            binding.recommendedTreatmentsLayout.visibility = View.GONE
+        }
 
         return binding.root
     }
@@ -64,7 +76,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
         fetchPatientDetails()
     }
 
-    private fun setupObserver() {
+    private fun setupObservers() {
         viewModel.result.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Result.Loading -> {
@@ -72,7 +84,10 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
                 is Result.Success -> {
                     when (result.operationType) {
-                        PatientFetching -> showPatientDetails(result.data)
+                        PatientFetching -> {
+                            showPatientDetails(result.data)
+                            lifecycleScope.launch { treatmentViewModel.fetchActiveTreatments(result.data)}
+                        }
                         else -> {
                         }
                     }
@@ -90,6 +105,10 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
             }
 
         })
+
+        treatmentViewModel.activeTreatments.observe(viewLifecycleOwner) { treatments ->
+            treatmentAdapter.updateData(treatments)
+        }
     }
 
     private fun fetchPatientDetails() {
@@ -142,24 +161,18 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
         startActivity(intent)
     }
 
-    private fun showAddressDetailsViewElement(
-        detailsViewLabel: TextView,
-        detailsView: TextView,
-        detailsText: String?
-    ) {
-        if (notNull(detailsText) && notEmpty(detailsText)) {
-            detailsView.text = detailsText
-        } else {
-            detailsView.makeGone()
-            detailsViewLabel.makeGone()
-        }
-    }
-
     private fun setMenuTitle(nameString: String, identifier: String?) {
         (activity as PatientDashboardActivity).supportActionBar?.apply {
             title = nameString
             subtitle = "#$identifier"
         }
+    }
+
+    private fun setUpActiveTreatmentsAdapter() {
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+        binding.treatmentsRecyclerView.layoutManager = linearLayoutManager
+        treatmentAdapter = TreatmentRecyclerViewAdapter(requireContext())
+        binding.treatmentsRecyclerView.adapter = treatmentAdapter
     }
 
     override fun onDestroyView() {

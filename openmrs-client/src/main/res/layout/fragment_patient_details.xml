@@ -19,15 +19,16 @@
     android:id="@+id/patientAddressDetailsLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
 
         <TextView
             android:id="@+id/edit"
@@ -35,25 +36,23 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:text="@string/edit"
             android:gravity="start"
-            android:textStyle="bold"
+            android:text="@string/edit"
             android:textColor="@color/color_accent"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.918"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/patientDetailsName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary"
-            tools:hint="Patient's name"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            tools:hint="Patient's name" />
 
         <TextView
             android:id="@+id/patientDetailsGender"
@@ -72,8 +71,7 @@
             android:text="@string/patient_details_birth_date_label"
             android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/patientDetailsGender"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsGender" />
 
         <TextView
             android:id="@+id/patientDetailsBirthDate"
@@ -92,8 +90,7 @@
             android:text="@string/country_of_birth"
             android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDate"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/patientDetailsBirthDate" />
 
         <TextView
             android:id="@+id/patient_details_country_of_birth"
@@ -122,4 +119,29 @@
             app:layout_constraintGuide_percent="0.45" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/recommended_treatments_layout"
+        android:layout_marginStart="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/recommended_treatments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="7dp"
+            android:text="@string/recommended_treatments"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/treatmentsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 </LinearLayout>

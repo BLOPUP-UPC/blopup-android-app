@@ -611,4 +611,5 @@
     <string name="drug_type" tools:ignore="MissingTranslation">Drug type</string>
     <string name="when_was_it_recommended" tools:ignore="MissingTranslation">When was it recommended?</string>
     <string name="add_treatment_button" tools:ignore="MissingTranslation">Add Treatment</string>
+    <string name="recommended_treatments" tools:ignore="MissingTranslation">Recommended treatments:</string>
 </resources>

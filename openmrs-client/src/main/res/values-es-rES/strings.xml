@@ -422,4 +422,5 @@
     <string name="drug_type">Tipo de medicamento</string>
     <string name="when_was_it_recommended">Cuándo se ha recomendado?</string>
     <string name="add_treatment_button">Añadir Tratamiento</string>
+    <string name="recommended_treatments">Tratamientos recomendados:</string>
 </resources>

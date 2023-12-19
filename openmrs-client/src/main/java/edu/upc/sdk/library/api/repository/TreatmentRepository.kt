@@ -1,7 +1,12 @@
 package edu.upc.sdk.library.api.repository
 
+import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
+import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
+import edu.upc.sdk.library.models.Observation
+import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +16,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TreatmentRepository @Inject constructor(val visitRepository: VisitRepository) : BaseRepository(null) {
+class TreatmentRepository @Inject constructor(val visitRepository: VisitRepository) :
+    BaseRepository(null) {
 
     suspend fun saveTreatment(treatment: Treatment) {
         val currentVisit = visitRepository.getVisitById(treatment.visitId)
@@ -21,6 +27,52 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             restApi.createEncounter(encounter).execute()
         }
 
+    }
+
+    fun fetchActiveTreatments(patient: Patient): List<Treatment> {
+        val visitsList = visitRepository.syncVisitsData(patient)
+            .toBlocking()
+            .first()
+
+        return visitsList.map { visit ->
+            visit?.encounters?.filter { encounter ->
+                encounter.encounterType?.display == EncounterType.TREATMENT
+            }?.map { encounter ->
+                getTreatmentFromEncounter(encounter)
+            } ?: emptyList()
+        }.flatten()
+    }
+
+    private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
+        val treatment = Treatment()
+        treatment.visitId = encounter.visitID ?: 0
+        encounter.observations.map { observation ->
+            when (observation.concept?.uuid) {
+                RECOMMENDED_BY_CONCEPT_ID -> treatment.recommendedBy =
+                    observation.displayValue ?: ""
+
+                MEDICATION_NAME_CONCEPT_ID -> treatment.medicationName =
+                    observation.displayValue ?: ""
+
+                TREATMENT_NOTES_CONCEPT_ID -> treatment.notes =
+                    observation.displayValue ?: ""
+
+                MEDICATION_TYPE_CONCEPT_ID -> treatment.medicationType =
+                    getMedicationTypesFromObservation(observation)
+
+                ACTIVE_CONCEPT_ID -> treatment.isActive =
+                    observation.displayValue == "1"
+            }
+        }
+        return treatment
+    }
+
+    private fun getMedicationTypesFromObservation(observation: Observation): Set<MedicationType> {
+        return observation.groupMembers?.map {
+            MedicationType.values().find { medicationType ->
+                medicationType.conceptId == it.concept?.uuid
+            }!!
+        }!!.toSet()
     }
 
     private fun createEncounterFromTreatment(currentVisit: Visit, treatment: Treatment) =
@@ -58,7 +110,13 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             concept = MEDICATION_TYPE_CONCEPT_ID
             person = patientUuid
             obsDatetime = Instant.now().toString()
-            groupMembers = treatment.medicationType.map { observation(MEDICATION_TYPE_CONCEPT_ID, it.conceptId, patientUuid) }
+            groupMembers = treatment.medicationType.map {
+                observation(
+                    MEDICATION_TYPE_CONCEPT_ID,
+                    it.conceptId,
+                    patientUuid
+                )
+            }
         }
 
     private fun observation(concept: String, value: String, patientId: String) = Obscreate().apply {

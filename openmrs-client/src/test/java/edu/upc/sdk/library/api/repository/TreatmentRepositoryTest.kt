@@ -11,10 +11,14 @@ import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.RECOMMEN
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_NOTES_CONCEPT_ID
 import edu.upc.sdk.library.databases.AppDatabase
+import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.EncounterType
+import edu.upc.sdk.library.models.EncounterType.Companion.TREATMENT
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
+import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
@@ -32,6 +36,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
+import rx.Observable
 import java.util.UUID
 
 class TreatmentRepositoryTest {
@@ -49,6 +54,139 @@ class TreatmentRepositoryTest {
 
         mockStaticMethodsNeededToInstantiateBaseRepository()
         treatmentRepository = TreatmentRepository(visitRepository)
+    }
+
+    @Test
+    fun `should get all active treatments`() {
+
+        val treatmentOne = Treatment().apply {
+            medicationName = "Oxycontin"
+            medicationType = setOf(MedicationType.DIURETIC)
+            notes = "25mg/dia"
+            recommendedBy = "BlopUp"
+            isActive = true
+            visitId = 14L
+        }
+
+        val treatmentTwo = Treatment().apply {
+            medicationName = "Tylenol"
+            medicationType = setOf(MedicationType.ARA_II, MedicationType.CALCIUM_CHANNEL_BLOCKER)
+            notes = "50mg/dia"
+            recommendedBy = "Other"
+            isActive = true
+            visitId = 15L
+        }
+
+        val treatmentList = listOf(treatmentOne, treatmentTwo)
+
+        val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
+
+        val visitOne = Visit().apply {
+            uuid = UUID.randomUUID().toString()
+            encounters = listOf(
+                Encounter().apply {
+                    uuid = UUID.randomUUID().toString()
+                    visitID = 14L
+                    encounterType = EncounterType(TREATMENT)
+                    observations = listOf(
+                        Observation().apply {
+                            concept = ConceptEntity().apply { uuid = RECOMMENDED_BY_CONCEPT_ID }
+                            displayValue = "BlopUp"
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply { uuid = MEDICATION_NAME_CONCEPT_ID }
+                            displayValue = "Oxycontin"
+                            display = "Medication Name: Oxycontin"
+                            uuid = UUID.randomUUID().toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = MEDICATION_TYPE_CONCEPT_ID
+                            }
+                            groupMembers = listOf(Observation().apply {
+                                concept = ConceptEntity().apply {
+                                    uuid = MedicationType.DIURETIC.conceptId
+                                }
+                            })
+                            uuid = UUID.randomUUID().toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = TREATMENT_NOTES_CONCEPT_ID
+                            }
+                            displayValue = "25mg/dia"
+                            display = "Treatment Notes: 25mg/dia"
+                            uuid = UUID.randomUUID().toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply { uuid = ACTIVE_CONCEPT_ID }
+                            displayValue = "1"
+                            display = "Active: 1"
+                            uuid = UUID.randomUUID().toString()
+                        }
+                    )
+                }
+            )
+        }
+
+        val visitTwo = Visit().apply {
+            uuid = UUID.randomUUID().toString()
+            encounters = listOf(
+                Encounter().apply {
+                    uuid = UUID.randomUUID().toString()
+                    visitID = 15L
+                    encounterType = EncounterType(TREATMENT)
+                    observations = listOf(
+                        Observation().apply {
+                            concept = ConceptEntity().apply { uuid = RECOMMENDED_BY_CONCEPT_ID }
+                            displayValue = "Other"
+                            uuid = UUID.randomUUID().toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply { uuid = MEDICATION_NAME_CONCEPT_ID }
+                            displayValue = "Tylenol"
+                            display = "Medication Name: Tylenol"
+                            uuid = UUID.randomUUID().toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = MEDICATION_TYPE_CONCEPT_ID
+                            }
+                            groupMembers = listOf(Observation().apply {
+                                concept = ConceptEntity().apply { uuid = MedicationType.ARA_II.conceptId }
+                            }, Observation().apply {
+                                concept = ConceptEntity().apply { uuid = MedicationType.CALCIUM_CHANNEL_BLOCKER.conceptId }
+                            })
+                            uuid = UUID.randomUUID().toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = TREATMENT_NOTES_CONCEPT_ID
+                            }
+                            displayValue = "50mg/dia"
+                            display = "Treatment Notes: 50mg/dia"
+                            uuid = UUID.randomUUID().toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply { uuid = ACTIVE_CONCEPT_ID }
+                            displayValue = "1"
+                            display = "Active: 1"
+                            uuid = UUID.randomUUID().toString()
+                        }
+                    )
+                }
+            )
+        }
+
+        val visitList = listOf(visitOne, visitTwo)
+
+        coEvery { visitRepository.syncVisitsData(patient) } returns Observable.just(visitList)
+
+        runBlocking {
+            val result = treatmentRepository.fetchActiveTreatments(patient)
+            assertEquals(treatmentList, result)
+        }
+
     }
 
     @Test
