@@ -228,7 +228,7 @@ class TreatmentRepositoryTest {
                     concept = MEDICATION_TYPE_CONCEPT_ID
                     groupMembers = listOf(Obscreate().apply {
                         concept = MEDICATION_TYPE_CONCEPT_ID
-                        value = MedicationType.DIURETIC.conceptId
+                        value = MedicationType.DIURETIC.name
                     })
                 }
             )
