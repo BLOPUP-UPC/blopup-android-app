@@ -46,15 +46,19 @@ class TreatmentActivity : ACBaseActivity() {
     }
 
     private fun showDialogToConfirmExit() {
-        CustomDialogBundle().apply {
-            titleViewMessage = getString(R.string.treatment_discard_dialog_title)
-            textViewMessage = getString(R.string.treatment_discard_dialog_body)
-            rightButtonText = getString(R.string.treatment_discard_button_leave)
-            leftButtonText = getString(R.string.treatment_discard_button_stay)
-            leftButtonAction = CustomFragmentDialog.OnClickAction.DISMISS
-            rightButtonAction = CustomFragmentDialog.OnClickAction.FINISH_ACTIVITY
-        }.let {
-            createAndShowDialog(it, "")
+        if (doWeHaveValues()) {
+            CustomDialogBundle().apply {
+                titleViewMessage = getString(R.string.treatment_discard_dialog_title)
+                textViewMessage = getString(R.string.treatment_discard_dialog_body)
+                rightButtonText = getString(R.string.treatment_discard_button_leave)
+                leftButtonText = getString(R.string.treatment_discard_button_stay)
+                leftButtonAction = CustomFragmentDialog.OnClickAction.DISMISS
+                rightButtonAction = CustomFragmentDialog.OnClickAction.FINISH_ACTIVITY
+            }.let {
+                createAndShowDialog(it, "")
+            }
+        } else {
+            finish()
         }
     }
 
@@ -95,6 +99,7 @@ class TreatmentActivity : ACBaseActivity() {
                         null
                     )
                 }
+
                 RECOMMENDED_BY_OTHER -> {
                     mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
                         resources,
@@ -117,18 +122,32 @@ class TreatmentActivity : ACBaseActivity() {
             viewModel.treatment.value?.notes = additionalNotes.text.toString()
             viewModel.treatment.value?.medicationType = medicationType.checkedChipIds
                 .map {
-                    MedicationType.valueOf(findViewById<Chip>(it).resources.getResourceName(it).split("/")[1].uppercase())
+                    MedicationType.valueOf(
+                        findViewById<Chip>(it).resources.getResourceName(it)
+                            .split("/")[1].uppercase()
+                    )
                 }
                 .toSet()
         }
     }
 
+    private fun doWeHaveValues(): Boolean {
+        return with(mBinding) {
+            viewModel.treatment.value?.recommendedBy?.isNotEmpty() == true ||
+                    medicationName.text.toString().isNotEmpty() ||
+                    additionalNotes.text.toString().isNotEmpty() ||
+                    !medicationType.checkedChipIds.isEmpty()
+        }
+    }
+
     private fun whoRecommendedButtonsOnClickListener() {
         mBinding.previouslyRecommended.setOnClickListener {
-            viewModel.treatment.value = viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_OTHER }
+            viewModel.treatment.value =
+                viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_OTHER }
         }
         mBinding.newRecommendation.setOnClickListener {
-            viewModel.treatment.value = viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_BLOPUP }
+            viewModel.treatment.value =
+                viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_BLOPUP }
         }
     }
 
