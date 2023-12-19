@@ -81,7 +81,7 @@ public class CustomFragmentDialog extends DialogFragment {
     private static final int TYPED_DIMENSION_VALUE = 10;
 
     public enum OnClickAction {
-        SET_URL, SHOW_URL_DIALOG, DISMISS_URL_DIALOG, DISMISS, LOGOUT, FINISH, INTERNET, UNAUTHORIZED, END_VISIT,
+        SET_URL, SHOW_URL_DIALOG, DISMISS_URL_DIALOG, DISMISS, LOGOUT, FINISH, INTERNET, UNAUTHORIZED, END_VISIT, FINISH_ACTIVITY,
         START_VISIT, LOGIN, REGISTER_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER, END_VITALS, END_VISIT_START_NEW_VISIT
     }
 
@@ -440,6 +440,10 @@ public class CustomFragmentDialog extends DialogFragment {
                     break;
                 case END_VISIT_START_NEW_VISIT:
                     startVitals();
+                    dismiss();
+                    break;
+                case FINISH_ACTIVITY:
+                    (requireActivity()).finish();
                     dismiss();
                     break;
                 default:

@@ -2,8 +2,8 @@ package edu.upc.openmrs.activities.visitdashboard
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.core.app.NavUtils
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
@@ -11,6 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.TreatmentFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
+import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_OTHER
@@ -33,6 +35,27 @@ class TreatmentActivity : ACBaseActivity() {
         whoRecommendedButtonsOnClickListener()
         registerTreatmentOnClickListener()
         treatmentObserver()
+
+        onBackPressedDispatcher.addCallback(this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    showDialogToConfirmExit()
+                }
+            }
+        )
+    }
+
+    private fun showDialogToConfirmExit() {
+        CustomDialogBundle().apply {
+            titleViewMessage = getString(R.string.treatment_discard_dialog_title)
+            textViewMessage = getString(R.string.treatment_discard_dialog_body)
+            rightButtonText = getString(R.string.treatment_discard_button_leave)
+            leftButtonText = getString(R.string.treatment_discard_button_stay)
+            leftButtonAction = CustomFragmentDialog.OnClickAction.DISMISS
+            rightButtonAction = CustomFragmentDialog.OnClickAction.FINISH_ACTIVITY
+        }.let {
+            createAndShowDialog(it, "")
+        }
     }
 
     private fun setToolbar() {
@@ -49,7 +72,7 @@ class TreatmentActivity : ACBaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                NavUtils.navigateUpFromSameTask(this)
+                showDialogToConfirmExit()
                 true
             }
 

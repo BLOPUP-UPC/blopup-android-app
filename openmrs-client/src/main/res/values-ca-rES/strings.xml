@@ -420,4 +420,8 @@
     <string name="when_was_it_recommended">Quan es va recomanar?</string>
     <string name="add_treatment_button">Afegir Tractament</string>
     <string name="recommended_treatments">Tractaments recomanats:</string>
+    <string name="treatment_discard_dialog_title">Descartar valors</string>
+    <string name="treatment_discard_dialog_body">Estàs abandonant aquesta pàgina, n\'estàs segur? Perdràs tots els camvis</string>
+    <string name="treatment_discard_button_stay">No, continuar</string>
+    <string name="treatment_discard_button_leave">Si, sortir</string>
 </resources>
