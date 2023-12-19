@@ -180,7 +180,7 @@ class TreatmentRepositoryTest {
 
         val visitList = listOf(visitOne, visitTwo)
 
-        coEvery { visitRepository.syncVisitsData(patient) } returns Observable.just(visitList)
+        coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(visitList)
 
         runBlocking {
             val result = treatmentRepository.fetchActiveTreatments(patient)

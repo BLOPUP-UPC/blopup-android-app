@@ -41,9 +41,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             }
         }
 
-        val treatments = encounters.map { encounter -> getTreatmentFromEncounter(encounter) }
-
-        return treatments
+        return encounters.map { encounter -> getTreatmentFromEncounter(encounter) }
     }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
@@ -74,8 +72,8 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         return observation.groupMembers?.map {
             MedicationType.values().find { medicationType ->
                 medicationType.conceptId == it.concept?.uuid
-            }!!
-        }!!.toSet()
+            } ?: throw IllegalStateException("Medication type not found")
+        }?.toSet() ?: emptySet()
     }
 
     private fun createEncounterFromTreatment(currentVisit: Visit, treatment: Treatment) =
