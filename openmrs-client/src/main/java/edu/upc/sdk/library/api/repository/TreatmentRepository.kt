@@ -71,7 +71,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     private fun getMedicationTypesFromObservation(observation: Observation): Set<MedicationType> {
         return observation.groupMembers?.map {
             MedicationType.values().find { medicationType ->
-                medicationType.conceptId == it.concept?.uuid
+                medicationType.conceptId == it.concept?.name
             } ?: throw IllegalStateException("Medication type not found")
         }?.toSet() ?: emptySet()
     }
@@ -114,7 +114,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             groupMembers = treatment.medicationType.map {
                 observation(
                     MEDICATION_TYPE_CONCEPT_ID,
-                    it.conceptId,
+                    it.name,
                     patientUuid
                 )
             }
