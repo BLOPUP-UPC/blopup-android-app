@@ -64,7 +64,7 @@ class ObservationDeserializer : JsonDeserializer<Observation> {
             concept.uuid = conceptJson.asJsonObject[UUID_KEY].asString
             observation.concept = concept
         }
-        if (jsonObject["groupMembers"] != JsonNull.INSTANCE && conceptJson.asJsonObject[DISPLAY_KEY].asString == "Medication Type") {
+        if (jsonObject["groupMembers"] != JsonNull.INSTANCE && jsonObject["groupMembers"] != null) {
             observation.groupMembers = emptyList()
             val groupMembers = jsonObject["groupMembers"].asJsonArray
             groupMembers.map {

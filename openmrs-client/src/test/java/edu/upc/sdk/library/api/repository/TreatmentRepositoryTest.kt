@@ -68,17 +68,6 @@ class TreatmentRepositoryTest {
             visitId = 14L
         }
 
-        val treatmentTwo = Treatment().apply {
-            medicationName = "Tylenol"
-            medicationType = setOf(MedicationType.ARA_II, MedicationType.CALCIUM_CHANNEL_BLOCKER)
-            notes = "50mg/dia"
-            recommendedBy = "Other"
-            isActive = true
-            visitId = 15L
-        }
-
-        val treatmentList = listOf(treatmentOne, treatmentTwo)
-
         val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
 
         val visitOne = Visit().apply {
@@ -116,8 +105,8 @@ class TreatmentRepositoryTest {
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply { uuid = ACTIVE_CONCEPT_ID }
-                            displayValue = "1"
-                            display = "Active: 1"
+                            displayValue = " 1.0"
+                            display = "Active: 1.0"
                             uuid = UUID.randomUUID().toString()
                         }
                     )
@@ -162,8 +151,8 @@ class TreatmentRepositoryTest {
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply { uuid = ACTIVE_CONCEPT_ID }
-                            displayValue = "1"
-                            display = "Active: 1"
+                            displayValue = " 0.0"
+                            display = "Active: 0"
                             uuid = UUID.randomUUID().toString()
                         }
                     )
@@ -177,7 +166,7 @@ class TreatmentRepositoryTest {
 
         runBlocking {
             val result = treatmentRepository.fetchActiveTreatments(patient)
-            assertEquals(treatmentList, result)
+            assertEquals(listOf(treatmentOne), result)
         }
 
     }

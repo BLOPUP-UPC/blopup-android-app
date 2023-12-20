@@ -42,6 +42,9 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         }
 
         return encounters.map { encounter -> getTreatmentFromEncounter(encounter) }
+            .filter { treatment ->
+                treatment.isActive
+            }
     }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
@@ -62,7 +65,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                     getMedicationTypesFromObservation(observation)
 
                 ACTIVE_CONCEPT_ID -> treatment.isActive =
-                    observation.displayValue == "1"
+                    observation.displayValue?.trim() == "1.0"
             }
         }
         return treatment
