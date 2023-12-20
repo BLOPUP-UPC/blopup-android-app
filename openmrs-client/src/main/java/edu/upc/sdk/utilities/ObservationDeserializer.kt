@@ -16,6 +16,7 @@ package edu.upc.sdk.utilities
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
+import com.google.gson.JsonNull
 import com.google.gson.JsonParseException
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Observation
@@ -23,7 +24,11 @@ import java.lang.reflect.Type
 
 class ObservationDeserializer : JsonDeserializer<Observation> {
     @Throws(JsonParseException::class)
-    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Observation {
+    override fun deserialize(
+        json: JsonElement,
+        typeOfT: Type,
+        context: JsonDeserializationContext
+    ): Observation {
         val jsonObject = json.asJsonObject
         val observation = Observation()
         observation.uuid = jsonObject[UUID_KEY].asString
@@ -35,15 +40,19 @@ class ObservationDeserializer : JsonDeserializer<Observation> {
                 val diagnosisDetails = diagnosisDetailJSONArray[i].asJsonObject
                 val diagnosisDetail = diagnosisDetails["concept"].asJsonObject[DISPLAY_KEY].asString
                 if ("Diagnosis order" == diagnosisDetail) {
-                    observation.diagnosisOrder = diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString
+                    observation.diagnosisOrder =
+                        diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString
                 } else if ("Diagnosis certainty" == diagnosisDetail) {
                     observation.setDiagnosisCertanity(
-                            diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString)
+                        diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString
+                    )
                 } else {
                     try {
-                        observation.diagnosisList = diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString
+                        observation.diagnosisList =
+                            diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString
                     } catch (e: IllegalStateException) {
-                        observation.diagnosisList = diagnosisDetails.asJsonObject[VALUE_KEY].asString
+                        observation.diagnosisList =
+                            diagnosisDetails.asJsonObject[VALUE_KEY].asString
                     }
                 }
             }
@@ -54,6 +63,22 @@ class ObservationDeserializer : JsonDeserializer<Observation> {
             val concept = ConceptEntity()
             concept.uuid = conceptJson.asJsonObject[UUID_KEY].asString
             observation.concept = concept
+        }
+        if (jsonObject["groupMembers"] != JsonNull.INSTANCE && conceptJson.asJsonObject[DISPLAY_KEY].asString == "Medication Type") {
+            observation.groupMembers = emptyList()
+            val groupMembers = jsonObject["groupMembers"].asJsonArray
+            groupMembers.map {
+                val groupMember = it.asJsonObject
+                val groupMemberConcept = groupMember["concept"].asJsonObject
+                val groupMemberConceptDisplay = groupMemberConcept[DISPLAY_KEY].asString
+                val groupMemberValue = groupMember["value"].asJsonObject
+                val groupMemberValueContent = groupMemberValue[UUID_KEY].asString
+
+                val groupMemberObservation = Observation()
+                groupMemberObservation.display = groupMemberConceptDisplay
+                groupMemberObservation.valueCodedName = groupMemberValueContent
+                observation.groupMembers = observation.groupMembers?.plus(groupMemberObservation)
+            }
         }
         return observation
     }

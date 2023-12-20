@@ -103,11 +103,7 @@ class TreatmentRepositoryTest {
                             concept = ConceptEntity().apply {
                                 uuid = MEDICATION_TYPE_CONCEPT_ID
                             }
-                            groupMembers = listOf(Observation().apply {
-                                concept = ConceptEntity().apply {
-                                    uuid = MedicationType.DIURETIC.conceptId
-                                }
-                            })
+                            groupMembers = listOf(Observation().apply { valueCodedName = MedicationType.DIURETIC.conceptId })
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
@@ -152,13 +148,10 @@ class TreatmentRepositoryTest {
                             concept = ConceptEntity().apply {
                                 uuid = MEDICATION_TYPE_CONCEPT_ID
                             }
-                            groupMembers = listOf(Observation().apply {
-                                concept = ConceptEntity().apply { uuid = MedicationType.ARA_II.conceptId }
-                            }, Observation().apply {
-                                concept = ConceptEntity().apply { uuid = MedicationType.CALCIUM_CHANNEL_BLOCKER.conceptId }
-                            })
-                            uuid = UUID.randomUUID().toString()
-                        },
+                            groupMembers = listOf(
+                                Observation().apply { valueCodedName = MedicationType.ARA_II.conceptId },
+                                Observation().apply { valueCodedName = MedicationType.CALCIUM_CHANNEL_BLOCKER.conceptId })
+                           uuid = UUID.randomUUID().toString()},
                         Observation().apply {
                             concept = ConceptEntity().apply {
                                 uuid = TREATMENT_NOTES_CONCEPT_ID
@@ -250,11 +243,26 @@ class TreatmentRepositoryTest {
 
             coVerify { restApi.createEncounter(capture(capturedTreatmentEncounter)) }
 
-            assertEquals(expectedTreatmentEncounter.patient, capturedTreatmentEncounter.captured.patient)
-            assertEquals(expectedTreatmentEncounter.visit, capturedTreatmentEncounter.captured.visit)
-            assertEquals(expectedTreatmentEncounter.encounterType, capturedTreatmentEncounter.captured.encounterType)
-            assertEquals(expectedTreatmentEncounter.observations[0].concept, capturedTreatmentEncounter.captured.observations[0].concept)
-            assertEquals(expectedTreatmentEncounter.observations[4].groupMembers!![0].value, capturedTreatmentEncounter.captured.observations[4].groupMembers!![0].value)
+            assertEquals(
+                expectedTreatmentEncounter.patient,
+                capturedTreatmentEncounter.captured.patient
+            )
+            assertEquals(
+                expectedTreatmentEncounter.visit,
+                capturedTreatmentEncounter.captured.visit
+            )
+            assertEquals(
+                expectedTreatmentEncounter.encounterType,
+                capturedTreatmentEncounter.captured.encounterType
+            )
+            assertEquals(
+                expectedTreatmentEncounter.observations[0].concept,
+                capturedTreatmentEncounter.captured.observations[0].concept
+            )
+            assertEquals(
+                expectedTreatmentEncounter.observations[4].groupMembers!![0].value,
+                capturedTreatmentEncounter.captured.observations[4].groupMembers!![0].value
+            )
         }
     }
 

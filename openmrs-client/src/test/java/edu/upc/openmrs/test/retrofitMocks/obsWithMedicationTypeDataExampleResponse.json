@@ -1,0 +1,531 @@
+{
+  "uuid": "4af9f31e-64a8-4c2a-9fc9-43903dc9b36e",
+  "display": "Medication Type: ",
+  "concept": {
+    "uuid": "1a8f49cc-488b-4788-adb3-72c499108772",
+    "display": "Medication Type",
+    "links": [
+      {
+        "rel": "self",
+        "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/1a8f49cc-488b-4788-adb3-72c499108772",
+        "resourceAlias": "concept"
+      }
+    ]
+  },
+  "person": {
+    "uuid": "855e20ac-64a8-420f-9b8c-6b87dd093fc3",
+    "display": "1000NG - Rachel McAdams",
+    "links": [
+      {
+        "rel": "self",
+        "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/patient/855e20ac-64a8-420f-9b8c-6b87dd093fc3",
+        "resourceAlias": "patient"
+      }
+    ]
+  },
+  "obsDatetime": "2023-12-19T21:48:48.000+0000",
+  "accessionNumber": null,
+  "obsGroup": null,
+  "valueCodedName": null,
+  "groupMembers": [
+    {
+      "uuid": "931677ac-9862-4154-9f9a-34b63ec57cb7",
+      "display": "Medication Type: ACE Inhibitor",
+      "concept": {
+        "uuid": "1a8f49cc-488b-4788-adb3-72c499108772",
+        "display": "Medication Type",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/1a8f49cc-488b-4788-adb3-72c499108772",
+            "resourceAlias": "concept"
+          }
+        ]
+      },
+      "person": {
+        "uuid": "855e20ac-64a8-420f-9b8c-6b87dd093fc3",
+        "display": "1000NG - Rachel McAdams",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/patient/855e20ac-64a8-420f-9b8c-6b87dd093fc3",
+            "resourceAlias": "patient"
+          }
+        ]
+      },
+      "obsDatetime": "2023-12-19T21:48:48.000+0000",
+      "accessionNumber": null,
+      "obsGroup": {
+        "uuid": "4af9f31e-64a8-4c2a-9fc9-43903dc9b36e",
+        "display": "Medication Type: ",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/4af9f31e-64a8-4c2a-9fc9-43903dc9b36e",
+            "resourceAlias": "obs"
+          }
+        ]
+      },
+      "valueCodedName": null,
+      "groupMembers": null,
+      "comment": null,
+      "location": null,
+      "order": null,
+      "encounter": {
+        "uuid": "280b4232-4e02-479b-88b4-b153335bc68f",
+        "display": "Treatment 19/12/2023",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/encounter/280b4232-4e02-479b-88b4-b153335bc68f",
+            "resourceAlias": "encounter"
+          }
+        ]
+      },
+      "voided": false,
+      "value": {
+        "uuid": "467f7d87-8c2e-4519-9e81-048c2c7824fd",
+        "display": "ACE Inhibitor",
+        "name": {
+          "display": "ACE Inhibitor",
+          "uuid": "0bb104e6-c1bb-4896-ae34-f594eae57198",
+          "name": "ACE Inhibitor",
+          "locale": "en",
+          "localePreferred": true,
+          "conceptNameType": "FULLY_SPECIFIED",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/467f7d87-8c2e-4519-9e81-048c2c7824fd/name/0bb104e6-c1bb-4896-ae34-f594eae57198",
+              "resourceAlias": "name"
+            },
+            {
+              "rel": "full",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/467f7d87-8c2e-4519-9e81-048c2c7824fd/name/0bb104e6-c1bb-4896-ae34-f594eae57198?v=full",
+              "resourceAlias": "name"
+            }
+          ],
+          "resourceVersion": "1.9"
+        },
+        "datatype": {
+          "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+          "display": "Boolean",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+              "resourceAlias": "conceptdatatype"
+            }
+          ]
+        },
+        "conceptClass": {
+          "uuid": "8d4918b0-c2cc-11de-8d13-0010c6dffd0f",
+          "display": "Diagnosis",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/conceptclass/8d4918b0-c2cc-11de-8d13-0010c6dffd0f",
+              "resourceAlias": "conceptclass"
+            }
+          ]
+        },
+        "set": false,
+        "version": null,
+        "retired": false,
+        "names": [
+          {
+            "uuid": "0bb104e6-c1bb-4896-ae34-f594eae57198",
+            "display": "ACE Inhibitor",
+            "links": [
+              {
+                "rel": "self",
+                "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/467f7d87-8c2e-4519-9e81-048c2c7824fd/name/0bb104e6-c1bb-4896-ae34-f594eae57198",
+                "resourceAlias": "name"
+              }
+            ]
+          }
+        ],
+        "descriptions": [],
+        "mappings": [],
+        "answers": [],
+        "setMembers": [],
+        "attributes": [],
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/467f7d87-8c2e-4519-9e81-048c2c7824fd",
+            "resourceAlias": "concept"
+          },
+          {
+            "rel": "full",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/467f7d87-8c2e-4519-9e81-048c2c7824fd?v=full",
+            "resourceAlias": "concept"
+          }
+        ],
+        "resourceVersion": "2.0"
+      },
+      "valueModifier": null,
+      "formFieldPath": null,
+      "formFieldNamespace": null,
+      "status": "FINAL",
+      "interpretation": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/931677ac-9862-4154-9f9a-34b63ec57cb7",
+          "resourceAlias": "obs"
+        },
+        {
+          "rel": "full",
+          "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/931677ac-9862-4154-9f9a-34b63ec57cb7?v=full",
+          "resourceAlias": "obs"
+        }
+      ],
+      "resourceVersion": "2.1"
+    },
+    {
+      "uuid": "6e1ae854-1eee-49e9-a49a-6b24ee424439",
+      "display": "Medication Type: Calcium Channel Blocker",
+      "concept": {
+        "uuid": "1a8f49cc-488b-4788-adb3-72c499108772",
+        "display": "Medication Type",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/1a8f49cc-488b-4788-adb3-72c499108772",
+            "resourceAlias": "concept"
+          }
+        ]
+      },
+      "person": {
+        "uuid": "855e20ac-64a8-420f-9b8c-6b87dd093fc3",
+        "display": "1000NG - Rachel McAdams",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/patient/855e20ac-64a8-420f-9b8c-6b87dd093fc3",
+            "resourceAlias": "patient"
+          }
+        ]
+      },
+      "obsDatetime": "2023-12-19T21:48:48.000+0000",
+      "accessionNumber": null,
+      "obsGroup": {
+        "uuid": "4af9f31e-64a8-4c2a-9fc9-43903dc9b36e",
+        "display": "Medication Type: ",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/4af9f31e-64a8-4c2a-9fc9-43903dc9b36e",
+            "resourceAlias": "obs"
+          }
+        ]
+      },
+      "valueCodedName": null,
+      "groupMembers": null,
+      "comment": null,
+      "location": null,
+      "order": null,
+      "encounter": {
+        "uuid": "280b4232-4e02-479b-88b4-b153335bc68f",
+        "display": "Treatment 19/12/2023",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/encounter/280b4232-4e02-479b-88b4-b153335bc68f",
+            "resourceAlias": "encounter"
+          }
+        ]
+      },
+      "voided": false,
+      "value": {
+        "uuid": "2146fbb8-8a8a-44f5-81de-2bee8ec4edce",
+        "display": "Calcium Channel Blocker",
+        "name": {
+          "display": "Calcium Channel Blocker",
+          "uuid": "0bb104e6-c1bb-4896-ae34-f594eae57100",
+          "name": "Calcium Channel Blocker",
+          "locale": "en",
+          "localePreferred": true,
+          "conceptNameType": "FULLY_SPECIFIED",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/2146fbb8-8a8a-44f5-81de-2bee8ec4edce/name/0bb104e6-c1bb-4896-ae34-f594eae57100",
+              "resourceAlias": "name"
+            },
+            {
+              "rel": "full",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/2146fbb8-8a8a-44f5-81de-2bee8ec4edce/name/0bb104e6-c1bb-4896-ae34-f594eae57100?v=full",
+              "resourceAlias": "name"
+            }
+          ],
+          "resourceVersion": "1.9"
+        },
+        "datatype": {
+          "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+          "display": "Boolean",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+              "resourceAlias": "conceptdatatype"
+            }
+          ]
+        },
+        "conceptClass": {
+          "uuid": "8d4918b0-c2cc-11de-8d13-0010c6dffd0f",
+          "display": "Diagnosis",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/conceptclass/8d4918b0-c2cc-11de-8d13-0010c6dffd0f",
+              "resourceAlias": "conceptclass"
+            }
+          ]
+        },
+        "set": false,
+        "version": null,
+        "retired": false,
+        "names": [
+          {
+            "uuid": "0bb104e6-c1bb-4896-ae34-f594eae57100",
+            "display": "Calcium Channel Blocker",
+            "links": [
+              {
+                "rel": "self",
+                "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/2146fbb8-8a8a-44f5-81de-2bee8ec4edce/name/0bb104e6-c1bb-4896-ae34-f594eae57100",
+                "resourceAlias": "name"
+              }
+            ]
+          }
+        ],
+        "descriptions": [],
+        "mappings": [],
+        "answers": [],
+        "setMembers": [],
+        "attributes": [],
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/2146fbb8-8a8a-44f5-81de-2bee8ec4edce",
+            "resourceAlias": "concept"
+          },
+          {
+            "rel": "full",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/2146fbb8-8a8a-44f5-81de-2bee8ec4edce?v=full",
+            "resourceAlias": "concept"
+          }
+        ],
+        "resourceVersion": "2.0"
+      },
+      "valueModifier": null,
+      "formFieldPath": null,
+      "formFieldNamespace": null,
+      "status": "FINAL",
+      "interpretation": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/6e1ae854-1eee-49e9-a49a-6b24ee424439",
+          "resourceAlias": "obs"
+        },
+        {
+          "rel": "full",
+          "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/6e1ae854-1eee-49e9-a49a-6b24ee424439?v=full",
+          "resourceAlias": "obs"
+        }
+      ],
+      "resourceVersion": "2.1"
+    },
+    {
+      "uuid": "52cc0313-dbb1-4aab-9078-7ca54f54bc91",
+      "display": "Medication Type: Beta Blocker",
+      "concept": {
+        "uuid": "1a8f49cc-488b-4788-adb3-72c499108772",
+        "display": "Medication Type",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/1a8f49cc-488b-4788-adb3-72c499108772",
+            "resourceAlias": "concept"
+          }
+        ]
+      },
+      "person": {
+        "uuid": "855e20ac-64a8-420f-9b8c-6b87dd093fc3",
+        "display": "1000NG - Rachel McAdams",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/patient/855e20ac-64a8-420f-9b8c-6b87dd093fc3",
+            "resourceAlias": "patient"
+          }
+        ]
+      },
+      "obsDatetime": "2023-12-19T21:48:48.000+0000",
+      "accessionNumber": null,
+      "obsGroup": {
+        "uuid": "4af9f31e-64a8-4c2a-9fc9-43903dc9b36e",
+        "display": "Medication Type: ",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/4af9f31e-64a8-4c2a-9fc9-43903dc9b36e",
+            "resourceAlias": "obs"
+          }
+        ]
+      },
+      "valueCodedName": null,
+      "groupMembers": null,
+      "comment": null,
+      "location": null,
+      "order": null,
+      "encounter": {
+        "uuid": "280b4232-4e02-479b-88b4-b153335bc68f",
+        "display": "Treatment 19/12/2023",
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/encounter/280b4232-4e02-479b-88b4-b153335bc68f",
+            "resourceAlias": "encounter"
+          }
+        ]
+      },
+      "voided": false,
+      "value": {
+        "uuid": "f2c7ec86-6fe0-4e6a-bfe9-c73380228177",
+        "display": "Beta Blocker",
+        "name": {
+          "display": "Beta Blocker",
+          "uuid": "0bb104e6-c1bb-4896-ae34-f594eae57101",
+          "name": "Beta Blocker",
+          "locale": "en",
+          "localePreferred": true,
+          "conceptNameType": "FULLY_SPECIFIED",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/f2c7ec86-6fe0-4e6a-bfe9-c73380228177/name/0bb104e6-c1bb-4896-ae34-f594eae57101",
+              "resourceAlias": "name"
+            },
+            {
+              "rel": "full",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/f2c7ec86-6fe0-4e6a-bfe9-c73380228177/name/0bb104e6-c1bb-4896-ae34-f594eae57101?v=full",
+              "resourceAlias": "name"
+            }
+          ],
+          "resourceVersion": "1.9"
+        },
+        "datatype": {
+          "uuid": "8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+          "display": "Boolean",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/conceptdatatype/8d4a5cca-c2cc-11de-8d13-0010c6dffd0f",
+              "resourceAlias": "conceptdatatype"
+            }
+          ]
+        },
+        "conceptClass": {
+          "uuid": "8d4918b0-c2cc-11de-8d13-0010c6dffd0f",
+          "display": "Diagnosis",
+          "links": [
+            {
+              "rel": "self",
+              "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/conceptclass/8d4918b0-c2cc-11de-8d13-0010c6dffd0f",
+              "resourceAlias": "conceptclass"
+            }
+          ]
+        },
+        "set": false,
+        "version": null,
+        "retired": false,
+        "names": [
+          {
+            "uuid": "0bb104e6-c1bb-4896-ae34-f594eae57101",
+            "display": "Beta Blocker",
+            "links": [
+              {
+                "rel": "self",
+                "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/f2c7ec86-6fe0-4e6a-bfe9-c73380228177/name/0bb104e6-c1bb-4896-ae34-f594eae57101",
+                "resourceAlias": "name"
+              }
+            ]
+          }
+        ],
+        "descriptions": [],
+        "mappings": [],
+        "answers": [],
+        "setMembers": [],
+        "attributes": [],
+        "links": [
+          {
+            "rel": "self",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/f2c7ec86-6fe0-4e6a-bfe9-c73380228177",
+            "resourceAlias": "concept"
+          },
+          {
+            "rel": "full",
+            "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/concept/f2c7ec86-6fe0-4e6a-bfe9-c73380228177?v=full",
+            "resourceAlias": "concept"
+          }
+        ],
+        "resourceVersion": "2.0"
+      },
+      "valueModifier": null,
+      "formFieldPath": null,
+      "formFieldNamespace": null,
+      "status": "FINAL",
+      "interpretation": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/52cc0313-dbb1-4aab-9078-7ca54f54bc91",
+          "resourceAlias": "obs"
+        },
+        {
+          "rel": "full",
+          "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/52cc0313-dbb1-4aab-9078-7ca54f54bc91?v=full",
+          "resourceAlias": "obs"
+        }
+      ],
+      "resourceVersion": "2.1"
+    }
+  ],
+  "comment": null,
+  "location": null,
+  "order": null,
+  "encounter": {
+    "uuid": "280b4232-4e02-479b-88b4-b153335bc68f",
+    "display": "Treatment 19/12/2023",
+    "links": [
+      {
+        "rel": "self",
+        "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/encounter/280b4232-4e02-479b-88b4-b153335bc68f",
+        "resourceAlias": "encounter"
+      }
+    ]
+  },
+  "voided": false,
+  "value": null,
+  "valueModifier": null,
+  "formFieldPath": null,
+  "formFieldNamespace": null,
+  "status": "FINAL",
+  "interpretation": null,
+  "links": [
+    {
+      "rel": "self",
+      "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/4af9f31e-64a8-4c2a-9fc9-43903dc9b36e",
+      "resourceAlias": "obs"
+    },
+    {
+      "rel": "full",
+      "uri": "http://blopup-dev.upc.edu/openmrs/ws/rest/v1/obs/4af9f31e-64a8-4c2a-9fc9-43903dc9b36e?v=full",
+      "resourceAlias": "obs"
+    }
+  ],
+  "resourceVersion": "2.1"
+}

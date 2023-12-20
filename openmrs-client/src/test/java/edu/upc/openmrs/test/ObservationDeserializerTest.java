@@ -21,10 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import edu.upc.sdk.library.models.Observation;
-import edu.upc.sdk.utilities.ObservationDeserializer;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -34,6 +31,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
+import edu.upc.sdk.library.models.Observation;
+import edu.upc.sdk.utilities.ObservationDeserializer;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ObservationDeserializerTest {
@@ -45,22 +45,31 @@ public class ObservationDeserializerTest {
     @Mock
     private JsonDeserializationContext context;
 
-    private JsonObject jsonObject;
-
-    @Before
-    public void setUp() throws Exception {
+    @Test
+    public void shouldDeserializeObservationWithDiagnosisData() throws IOException {
         File jsonResponseFile = new File("src/test/java/edu/upc/openmrs/test/retrofitMocks/", "obsWithDiagnosisDataExampleResponse.json");
         String response = getMockResponseFromFile(jsonResponseFile);
-        JsonParser jsonParser = new JsonParser();
-        jsonObject = jsonParser.parse(response).getAsJsonObject();
-    }
+        JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
 
-    @Test
-    public void shouldDeserializeObservationWithDiagnosisData() {
         Observation observation = new ObservationDeserializer().deserialize(jsonObject, Observation.class, context);
         assertThat(observation.getDiagnosisList(), is(equalTo(DIAGNOSIS_LIST)));
         assertThat(observation.getDiagnosisCertainty(), is(equalTo(DIAGNOSIS_CERTAINTY)));
         assertThat(observation.getDiagnosisOrder(), is(equalTo(DIAGNOSIS_ORDER)));
+    }
+
+    @Test
+    public void shouldDeserializeMedicationTypeObservationGroupMembers() throws IOException {
+        File mockResponse = new File("src/test/java/edu/upc/openmrs/test/retrofitMocks/", "obsWithMedicationTypeDataExampleResponse.json");
+        String response = getMockResponseFromFile(mockResponse);
+
+        JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
+
+        Observation observation = new ObservationDeserializer().deserialize(jsonObject, Observation.class, context);
+        assertThat(observation.getGroupMembers().get(0).getValueCodedName(), is(equalTo("467f7d87-8c2e-4519-9e81-048c2c7824fd")));
+        assertThat(observation.getGroupMembers().get(1).getValueCodedName(), is(equalTo("2146fbb8-8a8a-44f5-81de-2bee8ec4edce")));
+        assertThat(observation.getGroupMembers().get(2).getValueCodedName(), is(equalTo("f2c7ec86-6fe0-4e6a-bfe9-c73380228177")));
+        assertThat(observation.getDisplay(), is(equalTo("Medication Type: ")));
+
     }
 
     private String getMockResponseFromFile(File file) throws IOException {
