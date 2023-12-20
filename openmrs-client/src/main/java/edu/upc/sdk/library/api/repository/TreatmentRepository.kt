@@ -71,7 +71,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     private fun getMedicationTypesFromObservation(observation: Observation): Set<MedicationType> {
         return observation.groupMembers?.map {
             MedicationType.values().find { medicationType ->
-                medicationType.conceptId == it.concept?.name
+                medicationType.conceptId == it.concept?.uuid
             } ?: throw IllegalStateException("Medication type not found")
         }?.toSet() ?: emptySet()
     }
@@ -99,7 +99,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                 ),
                 observation(
                     ACTIVE_CONCEPT_ID,
-                    if (treatment.isActive) 1F.toString() else 0F.toString(),
+                    if (treatment.isActive) "1.0" else "0.0",
                     currentVisit.patient.uuid!!
                 ),
                 drugFamiliesObservation(currentVisit.patient.uuid!!, treatment)
