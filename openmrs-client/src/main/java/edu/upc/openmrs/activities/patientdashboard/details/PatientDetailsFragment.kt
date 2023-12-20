@@ -62,7 +62,6 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
         fetchPatientDetails()
 
         if(SHOW_TREATMENT_TOGGLE) {
-            binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
             setUpActiveTreatmentsAdapter()
         } else {
             binding.recommendedTreatmentsLayout.visibility = View.GONE
@@ -107,6 +106,11 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
         })
 
         treatmentViewModel.activeTreatments.observe(viewLifecycleOwner) { treatments ->
+            if(treatments.isNotEmpty()) {
+                binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
+            } else {
+                binding.recommendedTreatmentsLayout.visibility = View.GONE
+            }
             treatmentAdapter.updateData(treatments)
         }
     }

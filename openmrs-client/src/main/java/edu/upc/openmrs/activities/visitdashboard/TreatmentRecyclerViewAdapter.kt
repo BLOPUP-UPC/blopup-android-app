@@ -9,7 +9,6 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import edu.upc.R
 import edu.upc.sdk.library.models.Treatment
-import java.util.Arrays
 
 
 class TreatmentRecyclerViewAdapter(private val context: Context) :
@@ -33,7 +32,11 @@ class TreatmentRecyclerViewAdapter(private val context: Context) :
 
         // Bind data to the views in your CardView
         holder.medicationNameTextView.text = medicationName
-        holder.medicationTypeTextView.text = medicationType.map { it.getLabel(context) }.toString().replace("[", "").replace("]", "")
+        holder.medicationTypeTextView.text =
+            medicationType.map { it.getLabel(context) }.toString()
+                .replace("[", "")
+                .replace("]", "")
+                .replace(",", "  • ")
         holder.notesTextView.text = notes
     }
 

@@ -14,7 +14,6 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_small"
@@ -39,25 +38,23 @@
             android:textColorHint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:paddingBottom="3dp"
-            tools:hint="Metoprolol" />
+            android:paddingBottom="3dp" />
 
         <TextView
             android:id="@+id/medication_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@id/medication_name"
-            android:paddingBottom="5dp"
-            tools:hint="Beta-blocker - IECA - Diuretico" />
+            android:paddingBottom="5dp" />
 
         <TextView
             android:id="@+id/notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/medication_type"
-            tools:hint="50 mg. 1 después de cada semana" />
+            app:layout_constraintTop_toBottomOf="@id/medication_type" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
