@@ -35,7 +35,10 @@ class TreatmentActivity : ACBaseActivity() {
         whoRecommendedButtonsOnClickListener()
         registerTreatmentOnClickListener()
         treatmentObserver()
+        addOnBackPressedListener()
+    }
 
+    private fun addOnBackPressedListener() {
         onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {

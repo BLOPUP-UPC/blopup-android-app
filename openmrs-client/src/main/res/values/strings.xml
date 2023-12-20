@@ -612,8 +612,8 @@
     <string name="when_was_it_recommended" tools:ignore="MissingTranslation">When was it recommended?</string>
     <string name="add_treatment_button" tools:ignore="MissingTranslation">Add Treatment</string>
     <string name="recommended_treatments" tools:ignore="MissingTranslation">Recommended treatments:</string>
-    <string name="treatment_discard_dialog_title" tools:ignore="MissingTranslation">Discard values</string>
-    <string name="treatment_discard_dialog_body" tools:ignore="MissingTranslation">Are you sure you want to leave this page? You will lose any changes you’ve made on this page</string>
+    <string name="treatment_discard_dialog_title" tools:ignore="MissingTranslation">Discard Values</string>
+    <string name="treatment_discard_dialog_body" tools:ignore="MissingTranslation">Are you sure you want to leave this page? You will lose any changes.</string>
     <string name="treatment_discard_button_stay" tools:ignore="MissingTranslation">No, stay</string>
     <string name="treatment_discard_button_leave" tools:ignore="MissingTranslation">Yes, leave</string>
 </resources>
