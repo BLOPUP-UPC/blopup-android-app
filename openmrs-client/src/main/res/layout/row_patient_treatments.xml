@@ -16,16 +16,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_small"
-    android:layout_marginEnd="@dimen/margin_short"
-    android:layout_marginBottom="@dimen/margin_small"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginVertical="5dp"
     android:clickable="true"
-    android:elevation="16dp"
+    android:elevation="5dp"
     android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/border_background_treatment_card"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp">
 
@@ -33,21 +34,21 @@
             android:id="@+id/medication_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
             android:textColor="?android:attr/textColorPrimary"
-            android:textStyle="bold"
             android:textColorHint="@color/black"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:paddingBottom="3dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/medication_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingBottom="5dp"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/medication_name"
-            android:paddingBottom="5dp" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medication_name" />
 
         <TextView
             android:id="@+id/notes"
