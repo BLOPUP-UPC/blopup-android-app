@@ -56,10 +56,10 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                     observation.displayValue ?: ""
 
                 MEDICATION_NAME_CONCEPT_ID -> treatment.medicationName =
-                    observation.displayValue ?: ""
+                    observation.displayValue?.trim() ?: ""
 
                 TREATMENT_NOTES_CONCEPT_ID -> treatment.notes =
-                    observation.displayValue ?: ""
+                    observation.displayValue?.trim() ?: ""
 
                 MEDICATION_TYPE_CONCEPT_ID -> treatment.medicationType =
                     getMedicationTypesFromObservation(observation)
