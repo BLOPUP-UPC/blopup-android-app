@@ -2,7 +2,7 @@ package edu.upc.sdk.library.models
 
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.databases.entities.ConceptEntity
-import edu.upc.sdk.utilities.DateUtils
+import edu.upc.sdk.utilities.DateUtils.formatToOpenmrsDate
 import org.joda.time.Instant
 import java.util.UUID
 
@@ -16,12 +16,12 @@ object VisitExample {
         return Visit().apply {
             id = treatment.visitId
             uuid = UUID.randomUUID().toString()
-            startDatetime = DateUtils.dateFormatterToString(startDate)
+            startDatetime = startDate.formatToOpenmrsDate()
             encounters = listOf(
                 Encounter().apply {
                     uuid = UUID.randomUUID().toString()
                     visitID = treatment.visitId
-                    encounterDate = DateUtils.dateFormatterToString(treatment.creationDate)
+                    encounterDate = treatment.creationDate.formatToOpenmrsDate()
                     encounterType = EncounterType(EncounterType.TREATMENT)
                     observations = listOf(
                         Observation().apply {

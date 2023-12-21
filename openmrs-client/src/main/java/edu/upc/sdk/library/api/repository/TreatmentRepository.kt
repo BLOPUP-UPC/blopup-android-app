@@ -9,7 +9,7 @@ import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.utilities.DateUtils
+import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.joda.time.Instant
@@ -49,7 +49,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     }
 
     suspend fun fetchActiveTreatments(patient: Patient, visit: Visit): List<Treatment> {
-        val visitDate = DateUtils.dateFormatterToInstant(visit.startDatetime)
+        val visitDate = parseFromOpenmrsDate(visit.startDatetime)
         return fetchActiveTreatments(patient)
             .filter { treatment ->
                 treatment.isActive
@@ -61,7 +61,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
         val treatment = Treatment()
         treatment.visitId = encounter.visitID ?: 0
-        treatment.creationDate = DateUtils.dateFormatterToInstant(encounter.encounterDate!!)
+        treatment.creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {
                 RECOMMENDED_BY_CONCEPT_ID -> treatment.recommendedBy =

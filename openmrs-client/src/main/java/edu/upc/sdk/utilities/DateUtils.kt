@@ -37,12 +37,12 @@ object DateUtils {
     const val ZERO = 0L
     private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger();
 
-    fun dateFormatterToString (dateTime: Instant) : String {
-        return DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").withZoneUTC().print(dateTime)
+    fun parseFromOpenmrsDate(dateTime: String): Instant {
+        return Instant.parse(dateTime, DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").withZoneUTC())
     }
 
-    fun dateFormatterToInstant (dateTime: String) : Instant {
-        return Instant.parse(dateTime, DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").withZoneUTC())
+    fun Instant.formatToOpenmrsDate(): String {
+        return DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").withZoneUTC().print(this)
     }
 
     @JvmStatic
