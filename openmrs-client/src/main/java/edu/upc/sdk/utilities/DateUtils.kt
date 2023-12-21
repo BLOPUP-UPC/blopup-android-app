@@ -17,6 +17,7 @@ import android.annotation.SuppressLint
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.StringUtils.notNull
 import org.joda.time.DateTime
+import org.joda.time.Instant
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -35,6 +36,14 @@ object DateUtils {
     const val OPEN_MRS_REQUEST_PATIENT_FORMAT = "yyyy-MM-dd"
     const val ZERO = 0L
     private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger();
+
+    fun dateFormatterToString (dateTime: Instant) : String {
+        return DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").withZoneUTC().print(dateTime)
+    }
+
+    fun dateFormatterToInstant (dateTime: String) : Instant {
+        return Instant.parse(dateTime, DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").withZoneUTC())
+    }
 
     @JvmStatic
     fun convertTime(time: Long, dateFormat: String?, timeZone: TimeZone): String {

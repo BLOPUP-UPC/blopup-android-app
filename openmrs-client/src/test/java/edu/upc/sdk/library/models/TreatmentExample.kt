@@ -1,8 +1,10 @@
 package edu.upc.sdk.library.models
 
+import org.joda.time.Instant
+
 object TreatmentExample {
 
-    fun activeTreatment(): Treatment {
+    fun activeTreatment(creationDate: Instant = Instant.now()): Treatment {
         return Treatment().apply {
             medicationName = "Oxycontin"
             medicationType = setOf(MedicationType.DIURETIC)
@@ -10,6 +12,7 @@ object TreatmentExample {
             recommendedBy = "BlopUp"
             isActive = true
             visitId = 14L
+            this.creationDate = creationDate
         }
     }
 

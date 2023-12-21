@@ -28,6 +28,7 @@ import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
 import io.mockk.slot
 import kotlinx.coroutines.runBlocking
+import org.joda.time.Instant
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -67,11 +68,38 @@ class TreatmentRepositoryTest {
 
         val visitList = listOf(visitWithActiveTreatment, visitWithInactiveTreatment)
 
-        coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(visitList)
+        coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(
+            visitList
+        )
 
         runBlocking {
             val result = treatmentRepository.fetchActiveTreatments(patient)
             assertEquals(listOf(activeTreatment), result)
+        }
+    }
+
+    @Test
+    fun `should get all treatments recommended until visit date`() {
+
+        val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
+
+        val beforeVisit = Instant.parse("2023-12-20T10:10:10Z")
+        val visitDate = Instant.parse("2023-12-21T10:10:10Z")
+        val afterVisit = Instant.parse("2023-12-22T10:10:10Z")
+
+        val previousTreatment = TreatmentExample.activeTreatment(beforeVisit)
+        val futureDateTreatment = TreatmentExample.activeTreatment(afterVisit)
+
+        val visitWithPreviousTreatment = VisitExample.random(previousTreatment)
+        val visitWithFutureTreatment = VisitExample.random(futureDateTreatment)
+
+        val visitList = listOf(visitWithPreviousTreatment, visitWithFutureTreatment)
+
+        coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(visitList)
+
+        runBlocking {
+            val result = treatmentRepository.fetchActiveTreatments(patient, visitDate)
+            assertEquals(listOf(previousTreatment), result)
         }
     }
 

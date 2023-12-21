@@ -9,6 +9,7 @@ import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.utilities.DateUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.joda.time.Instant
@@ -47,9 +48,30 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             }
     }
 
+    suspend fun fetchActiveTreatments(patient: Patient, visitDate: Instant): List<Treatment> {
+        val visits: List<Visit>
+        withContext(Dispatchers.IO) {
+            visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
+        }
+
+        val encounters = visits.flatMap { visit ->
+            visit.encounters.filter { encounter ->
+                encounter.encounterType?.display == EncounterType.TREATMENT
+            }
+        }
+
+        return encounters.map { encounter -> getTreatmentFromEncounter(encounter) }
+            .filter { treatment ->
+                treatment.isActive
+            }.filter {
+                it.creationDate.isBefore(visitDate)
+            }
+    }
+
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
         val treatment = Treatment()
         treatment.visitId = encounter.visitID ?: 0
+        treatment.creationDate = DateUtils.dateFormatterToInstant(encounter.encounterDate!!)
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {
                 RECOMMENDED_BY_CONCEPT_ID -> treatment.recommendedBy =
@@ -64,8 +86,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                 MEDICATION_TYPE_CONCEPT_ID -> treatment.medicationType =
                     getMedicationTypesFromObservation(observation)
 
-                ACTIVE_CONCEPT_ID -> treatment.isActive =
-                    observation.displayValue?.trim() == "1.0"
+                ACTIVE_CONCEPT_ID -> treatment.isActive = observation.displayValue?.trim() == "1.0"
             }
         }
         return treatment

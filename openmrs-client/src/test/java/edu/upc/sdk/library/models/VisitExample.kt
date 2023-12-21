@@ -2,7 +2,9 @@ package edu.upc.sdk.library.models
 
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.databases.entities.ConceptEntity
+import edu.upc.sdk.utilities.DateUtils
 import java.util.UUID
+
 
 object VisitExample {
 
@@ -16,6 +18,7 @@ object VisitExample {
                 Encounter().apply {
                     uuid = UUID.randomUUID().toString()
                     visitID = treatment.visitId
+                    encounterDate = DateUtils.dateFormatterToString(treatment.creationDate)
                     encounterType = EncounterType(EncounterType.TREATMENT)
                     observations = listOf(
                         Observation().apply {
@@ -57,6 +60,7 @@ object VisitExample {
                             displayValue = activeText
                             display = "Active:$activeText"
                             uuid = UUID.randomUUID().toString()
+                            dateCreated = treatment.creationDate.toString()
                         }
                     )
                 }

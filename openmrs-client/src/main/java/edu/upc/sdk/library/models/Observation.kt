@@ -76,6 +76,10 @@ class Observation : Resource(), Serializable {
     @Expose
     var resourceVersion: String? = null
 
+    @SerializedName("dateCreated")
+    @Expose
+    var dateCreated: String? = null
+
     override var id: Long? = null
     var encounterID: Long? = null
     var displayValue: String? = null

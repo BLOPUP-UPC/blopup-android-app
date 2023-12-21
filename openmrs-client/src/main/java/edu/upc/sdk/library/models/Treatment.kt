@@ -1,12 +1,15 @@
 package edu.upc.sdk.library.models
 
+import org.joda.time.Instant
+
 data class Treatment(
     var recommendedBy: String,
     var medicationName: String,
     var medicationType: Set<MedicationType>,
     var notes: String,
     var isActive: Boolean = true,
-    var visitId: Long
+    var visitId: Long,
+    var creationDate: Instant = Instant.now()
 ) {
 
     companion object {
