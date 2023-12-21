@@ -21,6 +21,7 @@ import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
+import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -59,48 +60,42 @@ class TreatmentRepositoryTest {
     @Test
     fun `should get all active treatments`() {
 
-        val treatmentOne = Treatment().apply {
-            medicationName = "Oxycontin"
-            medicationType = setOf(MedicationType.DIURETIC)
-            notes = "25mg/dia"
-            recommendedBy = "BlopUp"
-            isActive = true
-            visitId = 14L
-        }
-
         val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
+
+        val activeTreatment = TreatmentExample.activeTreatment()
+        val inactiveTreatment = TreatmentExample.inactiveTreatment()
 
         val visitOne = Visit().apply {
             uuid = UUID.randomUUID().toString()
             encounters = listOf(
                 Encounter().apply {
                     uuid = UUID.randomUUID().toString()
-                    visitID = 14L
+                    visitID = activeTreatment.visitId
                     encounterType = EncounterType(TREATMENT)
                     observations = listOf(
                         Observation().apply {
                             concept = ConceptEntity().apply { uuid = RECOMMENDED_BY_CONCEPT_ID }
-                            displayValue = "BlopUp"
+                            displayValue = activeTreatment.recommendedBy
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply { uuid = MEDICATION_NAME_CONCEPT_ID }
-                            displayValue = "Oxycontin"
-                            display = "Medication Name: Oxycontin"
+                            displayValue = activeTreatment.medicationName
+                            display = "Medication Name: ${activeTreatment.medicationName}"
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply {
                                 uuid = MEDICATION_TYPE_CONCEPT_ID
                             }
-                            groupMembers = listOf(Observation().apply { valueCodedName = MedicationType.DIURETIC.conceptId })
+                            groupMembers = listOf(Observation().apply { valueCodedName = activeTreatment.medicationType.first().conceptId })
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply {
                                 uuid = TREATMENT_NOTES_CONCEPT_ID
                             }
-                            displayValue = "25mg/dia"
-                            display = "Treatment Notes: 25mg/dia"
+                            displayValue = activeTreatment.notes
+                            display = "Treatment Notes: ${activeTreatment.notes}"
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
@@ -119,18 +114,18 @@ class TreatmentRepositoryTest {
             encounters = listOf(
                 Encounter().apply {
                     uuid = UUID.randomUUID().toString()
-                    visitID = 15L
+                    visitID = inactiveTreatment.visitId
                     encounterType = EncounterType(TREATMENT)
                     observations = listOf(
                         Observation().apply {
                             concept = ConceptEntity().apply { uuid = RECOMMENDED_BY_CONCEPT_ID }
-                            displayValue = "Other"
+                            displayValue = inactiveTreatment.recommendedBy
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply { uuid = MEDICATION_NAME_CONCEPT_ID }
-                            displayValue = "Tylenol"
-                            display = "Medication Name: Tylenol"
+                            displayValue = inactiveTreatment.medicationName
+                            display = "Medication Name: ${inactiveTreatment.medicationName}"
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
@@ -138,15 +133,15 @@ class TreatmentRepositoryTest {
                                 uuid = MEDICATION_TYPE_CONCEPT_ID
                             }
                             groupMembers = listOf(
-                                Observation().apply { valueCodedName = MedicationType.ARA_II.conceptId },
-                                Observation().apply { valueCodedName = MedicationType.CALCIUM_CHANNEL_BLOCKER.conceptId })
+                                Observation().apply { valueCodedName = inactiveTreatment.medicationType.first().conceptId },
+                                Observation().apply { valueCodedName = inactiveTreatment.medicationType.last().conceptId })
                            uuid = UUID.randomUUID().toString()},
                         Observation().apply {
                             concept = ConceptEntity().apply {
                                 uuid = TREATMENT_NOTES_CONCEPT_ID
                             }
-                            displayValue = "50mg/dia"
-                            display = "Treatment Notes: 50mg/dia"
+                            displayValue = inactiveTreatment.notes
+                            display = "Treatment Notes: ${inactiveTreatment.notes}"
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
@@ -166,9 +161,8 @@ class TreatmentRepositoryTest {
 
         runBlocking {
             val result = treatmentRepository.fetchActiveTreatments(patient)
-            assertEquals(listOf(treatmentOne), result)
+            assertEquals(listOf(activeTreatment), result)
         }
-
     }
 
     @Test
