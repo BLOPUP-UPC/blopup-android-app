@@ -11,18 +11,15 @@ import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.RECOMMEN
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_NOTES_CONCEPT_ID
 import edu.upc.sdk.library.databases.AppDatabase
-import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.EncounterType
-import edu.upc.sdk.library.models.EncounterType.Companion.TREATMENT
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
-import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.library.models.VisitExample
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -65,97 +62,10 @@ class TreatmentRepositoryTest {
         val activeTreatment = TreatmentExample.activeTreatment()
         val inactiveTreatment = TreatmentExample.inactiveTreatment()
 
-        val visitOne = Visit().apply {
-            uuid = UUID.randomUUID().toString()
-            encounters = listOf(
-                Encounter().apply {
-                    uuid = UUID.randomUUID().toString()
-                    visitID = activeTreatment.visitId
-                    encounterType = EncounterType(TREATMENT)
-                    observations = listOf(
-                        Observation().apply {
-                            concept = ConceptEntity().apply { uuid = RECOMMENDED_BY_CONCEPT_ID }
-                            displayValue = activeTreatment.recommendedBy
-                        },
-                        Observation().apply {
-                            concept = ConceptEntity().apply { uuid = MEDICATION_NAME_CONCEPT_ID }
-                            displayValue = activeTreatment.medicationName
-                            display = "Medication Name: ${activeTreatment.medicationName}"
-                            uuid = UUID.randomUUID().toString()
-                        },
-                        Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = MEDICATION_TYPE_CONCEPT_ID
-                            }
-                            groupMembers = listOf(Observation().apply { valueCodedName = activeTreatment.medicationType.first().conceptId })
-                            uuid = UUID.randomUUID().toString()
-                        },
-                        Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = TREATMENT_NOTES_CONCEPT_ID
-                            }
-                            displayValue = activeTreatment.notes
-                            display = "Treatment Notes: ${activeTreatment.notes}"
-                            uuid = UUID.randomUUID().toString()
-                        },
-                        Observation().apply {
-                            concept = ConceptEntity().apply { uuid = ACTIVE_CONCEPT_ID }
-                            displayValue = " 1.0"
-                            display = "Active: 1.0"
-                            uuid = UUID.randomUUID().toString()
-                        }
-                    )
-                }
-            )
-        }
+        val visitWithActiveTreatment = VisitExample.random(activeTreatment)
+        val visitWithInactiveTreatment = VisitExample.random(inactiveTreatment)
 
-        val visitTwo = Visit().apply {
-            uuid = UUID.randomUUID().toString()
-            encounters = listOf(
-                Encounter().apply {
-                    uuid = UUID.randomUUID().toString()
-                    visitID = inactiveTreatment.visitId
-                    encounterType = EncounterType(TREATMENT)
-                    observations = listOf(
-                        Observation().apply {
-                            concept = ConceptEntity().apply { uuid = RECOMMENDED_BY_CONCEPT_ID }
-                            displayValue = inactiveTreatment.recommendedBy
-                            uuid = UUID.randomUUID().toString()
-                        },
-                        Observation().apply {
-                            concept = ConceptEntity().apply { uuid = MEDICATION_NAME_CONCEPT_ID }
-                            displayValue = inactiveTreatment.medicationName
-                            display = "Medication Name: ${inactiveTreatment.medicationName}"
-                            uuid = UUID.randomUUID().toString()
-                        },
-                        Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = MEDICATION_TYPE_CONCEPT_ID
-                            }
-                            groupMembers = listOf(
-                                Observation().apply { valueCodedName = inactiveTreatment.medicationType.first().conceptId },
-                                Observation().apply { valueCodedName = inactiveTreatment.medicationType.last().conceptId })
-                           uuid = UUID.randomUUID().toString()},
-                        Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = TREATMENT_NOTES_CONCEPT_ID
-                            }
-                            displayValue = inactiveTreatment.notes
-                            display = "Treatment Notes: ${inactiveTreatment.notes}"
-                            uuid = UUID.randomUUID().toString()
-                        },
-                        Observation().apply {
-                            concept = ConceptEntity().apply { uuid = ACTIVE_CONCEPT_ID }
-                            displayValue = " 0.0"
-                            display = "Active: 0"
-                            uuid = UUID.randomUUID().toString()
-                        }
-                    )
-                }
-            )
-        }
-
-        val visitList = listOf(visitOne, visitTwo)
+        val visitList = listOf(visitWithActiveTreatment, visitWithInactiveTreatment)
 
         coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(visitList)
 
