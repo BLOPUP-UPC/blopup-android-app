@@ -60,7 +60,8 @@ class TreatmentRepositoryTest {
 
         val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
 
-        val activeTreatment = TreatmentExample.activeTreatment()
+        val now = Instant.now().withMillis(0)
+        val activeTreatment = TreatmentExample.activeTreatment(now)
         val inactiveTreatment = TreatmentExample.inactiveTreatment()
 
         val visitWithActiveTreatment = VisitExample.random(activeTreatment)
