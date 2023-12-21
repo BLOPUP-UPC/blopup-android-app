@@ -80,7 +80,7 @@ class TreatmentRepositoryTest {
     }
 
     @Test
-    fun `should get all treatments recommended until visit date`() {
+    fun `should get all treatments recommended until visit date and in that visit`() {
 
         val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
 
@@ -89,18 +89,20 @@ class TreatmentRepositoryTest {
         val afterVisit = Instant.parse("2023-12-22T10:10:10Z")
 
         val previousTreatment = TreatmentExample.activeTreatment(beforeVisit)
+        val actualVisitTreatment = TreatmentExample.activeTreatment(visitDate)
         val futureDateTreatment = TreatmentExample.activeTreatment(afterVisit)
 
         val visitWithPreviousTreatment = VisitExample.random(previousTreatment)
+        val visitWithTreatment = VisitExample.random(actualVisitTreatment)
         val visitWithFutureTreatment = VisitExample.random(futureDateTreatment)
 
-        val visitList = listOf(visitWithPreviousTreatment, visitWithFutureTreatment)
+        val visitList = listOf(visitWithPreviousTreatment, visitWithTreatment, visitWithFutureTreatment)
 
         coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(visitList)
 
         runBlocking {
-            val result = treatmentRepository.fetchActiveTreatments(patient, visitDate)
-            assertEquals(listOf(previousTreatment), result)
+            val result = treatmentRepository.fetchActiveTreatments(patient, visitDate, actualVisitTreatment.visitId)
+            assertEquals(listOf(previousTreatment, actualVisitTreatment), result)
         }
     }
 

@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.models
 
 import org.joda.time.Instant
+import kotlin.random.Random
 
 object TreatmentExample {
 
@@ -11,7 +12,7 @@ object TreatmentExample {
             notes = "25mg/dia"
             recommendedBy = "BlopUp"
             isActive = true
-            visitId = 14L
+            visitId = Random.nextLong(1, 100)
             this.creationDate = creationDate
         }
     }
@@ -23,7 +24,7 @@ object TreatmentExample {
             notes = "50mg/dia"
             recommendedBy = "Other"
             isActive = false
-            visitId = 15L
+            visitId = Random.nextLong(1, 100)
         }
     }
 }

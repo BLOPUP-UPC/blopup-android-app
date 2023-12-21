@@ -48,7 +48,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             }
     }
 
-    suspend fun fetchActiveTreatments(patient: Patient, visitDate: Instant): List<Treatment> {
+    suspend fun fetchActiveTreatments(patient: Patient, visitDate: Instant, visitId: Long): List<Treatment> {
         val visits: List<Visit>
         withContext(Dispatchers.IO) {
             visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
@@ -64,7 +64,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             .filter { treatment ->
                 treatment.isActive
             }.filter {
-                it.creationDate.isBefore(visitDate)
+                it.creationDate.isBefore(visitDate) || it.visitId == visitId
             }
     }
 
