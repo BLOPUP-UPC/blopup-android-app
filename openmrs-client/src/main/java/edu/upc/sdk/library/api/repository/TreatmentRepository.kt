@@ -48,23 +48,13 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             }
     }
 
-    suspend fun fetchActiveTreatments(patient: Patient, visitDate: Instant, visitId: Long): List<Treatment> {
-        val visits: List<Visit>
-        withContext(Dispatchers.IO) {
-            visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
-        }
-
-        val encounters = visits.flatMap { visit ->
-            visit.encounters.filter { encounter ->
-                encounter.encounterType?.display == EncounterType.TREATMENT
-            }
-        }
-
-        return encounters.map { encounter -> getTreatmentFromEncounter(encounter) }
+    suspend fun fetchActiveTreatments(patient: Patient, visit: Visit): List<Treatment> {
+        val visitDate = DateUtils.dateFormatterToInstant(visit.startDatetime)
+        return fetchActiveTreatments(patient)
             .filter { treatment ->
                 treatment.isActive
             }.filter {
-                it.creationDate.isBefore(visitDate) || it.visitId == visitId
+                it.creationDate.isBefore(visitDate) || it.visitId == visit.id
             }
     }
 

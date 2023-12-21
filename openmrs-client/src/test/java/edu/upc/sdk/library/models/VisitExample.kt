@@ -3,17 +3,20 @@ package edu.upc.sdk.library.models
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.utilities.DateUtils
+import org.joda.time.Instant
 import java.util.UUID
 
 
 object VisitExample {
 
-    fun random(treatment: Treatment): Visit {
+    fun random(treatment: Treatment, startDate: Instant = Instant.now()): Visit {
 
         val activeText = if (treatment.isActive) " 1.0" else " 0.0"
 
         return Visit().apply {
+            id = treatment.visitId
             uuid = UUID.randomUUID().toString()
+            startDatetime = DateUtils.dateFormatterToString(startDate)
             encounters = listOf(
                 Encounter().apply {
                     uuid = UUID.randomUUID().toString()

@@ -92,16 +92,16 @@ class TreatmentRepositoryTest {
         val actualVisitTreatment = TreatmentExample.activeTreatment(visitDate)
         val futureDateTreatment = TreatmentExample.activeTreatment(afterVisit)
 
-        val visitWithPreviousTreatment = VisitExample.random(previousTreatment)
-        val visitWithTreatment = VisitExample.random(actualVisitTreatment)
-        val visitWithFutureTreatment = VisitExample.random(futureDateTreatment)
+        val visitWithPreviousTreatment = VisitExample.random(previousTreatment, beforeVisit)
+        val visitWithTreatment = VisitExample.random(actualVisitTreatment, visitDate)
+        val visitWithFutureTreatment = VisitExample.random(futureDateTreatment, afterVisit)
 
         val visitList = listOf(visitWithPreviousTreatment, visitWithTreatment, visitWithFutureTreatment)
 
         coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(visitList)
 
         runBlocking {
-            val result = treatmentRepository.fetchActiveTreatments(patient, visitDate, actualVisitTreatment.visitId)
+            val result = treatmentRepository.fetchActiveTreatments(patient, visitWithTreatment)
             assertEquals(listOf(previousTreatment, actualVisitTreatment), result)
         }
     }
