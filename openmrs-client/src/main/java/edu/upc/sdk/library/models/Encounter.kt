@@ -79,6 +79,7 @@ class Encounter constructor() : Resource(), Serializable {
     var resourceVersion: String? = null
 
     var visitID: Long? = null
+    var visitUuid: String? = null
     var patientUUID: String? = null
 
     val encounterDatetime: Long?

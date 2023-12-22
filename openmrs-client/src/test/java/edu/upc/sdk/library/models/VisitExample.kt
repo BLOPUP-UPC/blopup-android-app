@@ -15,12 +15,15 @@ object VisitExample {
 
         return Visit().apply {
             id = treatment.visitId
-            uuid = UUID.randomUUID().toString()
+            uuid = treatment.visitUuid
             startDatetime = startDate.formatToOpenmrsDate()
             encounters = listOf(
                 Encounter().apply {
                     uuid = UUID.randomUUID().toString()
-                    visitID = treatment.visitId
+                    visit = Visit().apply {
+                        id = treatment.visitId
+                        uuid = treatment.visitUuid
+                    }
                     encounterDate = treatment.creationDate.formatToOpenmrsDate()
                     encounterType = EncounterType(EncounterType.TREATMENT)
                     observations = listOf(

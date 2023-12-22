@@ -40,6 +40,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             visit.encounters.map {
                 it.apply {
                     visitID = visit.id
+                    visitUuid = visit.uuid
                 }
             }
                 .filter { encounter ->
@@ -56,16 +57,15 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     suspend fun fetchActiveTreatments(patient: Patient, visit: Visit): List<Treatment> {
         val visitDate = parseFromOpenmrsDate(visit.startDatetime)
         return fetchActiveTreatments(patient)
-            .filter { treatment ->
-                treatment.isActive
-            }.filter {
-                it.creationDate.isBefore(visitDate) || it.visitId == visit.id
+            .filter {
+                it.creationDate.isBefore(visitDate) || it.visitUuid == visit.uuid
             }
     }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
         val treatment = Treatment()
         treatment.visitId = encounter.visitID ?: 0
+        treatment.visitUuid = encounter.visit?.uuid
         treatment.creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {

@@ -9,8 +9,10 @@ data class Treatment(
     var notes: String,
     var isActive: Boolean = true,
     var visitId: Long,
+    var visitUuid: String? = null,
     var creationDate: Instant = Instant.now()
 ) {
+
 
     companion object {
         const val RECOMMENDED_BY_BLOPUP = "BlopUp"
