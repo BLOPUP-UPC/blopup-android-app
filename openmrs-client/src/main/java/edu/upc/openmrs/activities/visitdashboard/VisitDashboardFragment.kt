@@ -85,7 +85,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
             VisitExpandableListAdapter(
                 requireContext(),
                 emptyList(),
-                requireActivity().supportFragmentManager
+                requireActivity().supportFragmentManager,
             )
         visitDashboardExpList.setAdapter(visitExpandableListAdapter)
         visitDashboardExpList.setGroupIndicator(null)
@@ -106,6 +106,11 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
 
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
                 else -> throw IllegalStateException()
+            }
+        }
+        viewModel.treatments.observe(viewLifecycleOwner) { treatments ->
+            if (treatments.isNotEmpty()) {
+                visitExpandableListAdapter?.updateTreatmentList(treatments)
             }
         }
     }

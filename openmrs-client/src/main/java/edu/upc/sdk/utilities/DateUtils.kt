@@ -38,11 +38,11 @@ object DateUtils {
     private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger();
 
     fun parseFromOpenmrsDate(dateTime: String): Instant {
-        return Instant.parse(dateTime, DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").withZoneUTC())
+        return Instant.parse(dateTime, DateTimeFormat.forPattern(OPEN_MRS_RESPONSE_FORMAT).withZoneUTC())
     }
 
     fun Instant.formatToOpenmrsDate(): String {
-        return DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").withZoneUTC().print(this)
+        return DateTimeFormat.forPattern(OPEN_MRS_REQUEST_FORMAT).withZoneUTC().print(this)
     }
 
     @JvmStatic

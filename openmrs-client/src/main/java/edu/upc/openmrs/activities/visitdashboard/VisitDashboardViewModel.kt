@@ -3,31 +3,38 @@ package edu.upc.openmrs.activities.visitdashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.bloodpressure.BloodPressureResult
 import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.openmrs.activities.BaseViewModel
+import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
+import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
+import kotlinx.coroutines.launch
 import rx.android.schedulers.AndroidSchedulers
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
 class VisitDashboardViewModel @Inject constructor(
     private val visitDAO: VisitDAO,
     private val visitRepository: VisitRepository,
+    private val treatmentRepository: TreatmentRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Visit>() {
 
     private val _bloodPressureType: MutableLiveData<BloodPressureResult?> = MutableLiveData()
     val bloodPressureType: LiveData<BloodPressureResult?> get() = _bloodPressureType
+
+    private val _treatments: MutableLiveData<List<Treatment>> = MutableLiveData()
+    val treatments: LiveData<List<Treatment>> get() = _treatments
 
     private val visitId: Long = savedStateHandle[VISIT_ID]!!
     val visit: Visit?
@@ -41,6 +48,7 @@ class VisitDashboardViewModel @Inject constructor(
         addSubscription(
             visitDAO.getVisitByID(visitId).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ visit ->
+                    viewModelScope.launch {fetchActiveTreatments(visit.patient, visit) }
                     val filteredAndSortedEncounters = filterAndSortEncounters(visit.encounters)
                     visit.encounters = filteredAndSortedEncounters
 
@@ -76,5 +84,10 @@ class VisitDashboardViewModel @Inject constructor(
         val displayableEncounters =
             encounters.filter { possibleEncounterTypes.contains(it.encounterType?.display) }
         return displayableEncounters.sortedBy { it.encounterDatetime }
+    }
+
+    private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
+        val treatmentsList = treatmentRepository.fetchActiveTreatments(patient, visit)
+        _treatments.postValue(treatmentsList)
     }
 }

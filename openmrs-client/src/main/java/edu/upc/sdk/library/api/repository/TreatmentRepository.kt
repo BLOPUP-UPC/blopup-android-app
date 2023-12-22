@@ -37,9 +37,14 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         }
 
         val encounters = visits.flatMap { visit ->
-            visit.encounters.filter { encounter ->
-                encounter.encounterType?.display == EncounterType.TREATMENT
+            visit.encounters.map {
+                it.apply {
+                    visitID = visit.id
+                }
             }
+                .filter { encounter ->
+                    encounter.encounterType?.display == EncounterType.TREATMENT
+                }
         }
 
         return encounters.map { encounter -> getTreatmentFromEncounter(encounter) }

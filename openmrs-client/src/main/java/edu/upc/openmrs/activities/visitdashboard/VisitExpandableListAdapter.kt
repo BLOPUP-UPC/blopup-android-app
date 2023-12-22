@@ -29,11 +29,13 @@ import edu.upc.openmrs.application.OpenMRSInflater
 import edu.upc.openmrs.utilities.EncounterTranslationUtils.getTranslatedResourceId
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
+import edu.upc.sdk.library.models.Treatment
 
 class VisitExpandableListAdapter(
     private val mContext: Context,
     private var mEncounters: List<Encounter>,
     private val fragmentManager: FragmentManager,
+    private var treatments: List<Treatment> = emptyList()
 ) :
     BaseExpandableListAdapter() {
     private var mChildLayouts: List<ViewGroup>
@@ -52,6 +54,12 @@ class VisitExpandableListAdapter(
         mEncounters = encounters.sortedBy { it.encounterDatetime }.reversed()
         notifyDataSetChanged()
     }
+
+    fun updateTreatmentList(treatments: List<Treatment>) {
+        this.treatments = treatments
+        notifyDataSetChanged()
+    }
+
 
     private fun generateChildLayouts(): List<ViewGroup> {
         val layouts: MutableList<ViewGroup> = ArrayList()
@@ -73,7 +81,8 @@ class VisitExpandableListAdapter(
                         bmiData,
                         bloodPressureTypeFromEncounter(encounter)?.bloodPressureType,
                         fragmentManager,
-                        isCurrentVisitActive
+                        isCurrentVisitActive,
+                        treatments
                     )
 
                     layouts.add(convertView)
