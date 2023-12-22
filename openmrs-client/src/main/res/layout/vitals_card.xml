@@ -95,7 +95,6 @@
                     android:textColor="?android:attr/textColorPrimary"
                     android:textStyle="bold" />
 
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -180,6 +179,32 @@
                 app:drawableEndCompat="@drawable/information_icon" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/recommended_treatments_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="15dp"
+            android:paddingBottom="30dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/recommended_treatments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/recommended_treatments"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/treatmentsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
