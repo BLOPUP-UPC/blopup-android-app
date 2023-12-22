@@ -27,6 +27,8 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.Objects;
@@ -82,7 +84,11 @@ public class OpenMRSInflater {
         }
         if(treatments != null && !treatments.isEmpty()){
             vitalsCardView.findViewById(R.id.recommended_treatments_layout).setVisibility(View.VISIBLE);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(mInflater.getContext());
+            RecyclerView view = vitalsCardView.findViewById(R.id.treatmentsVisitRecyclerView);
+            view.setLayoutManager(layoutManager);
             TreatmentRecyclerViewAdapter treatmentAdapter = new TreatmentRecyclerViewAdapter(mInflater.getContext());
+            view.setAdapter(treatmentAdapter);
             treatmentAdapter.updateData(treatments);
         }
     }
