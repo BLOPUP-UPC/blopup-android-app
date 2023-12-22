@@ -4,12 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import org.junit.Assert.assertTrue
@@ -36,6 +36,9 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var visitRepository: VisitRepository
 
+    @Mock
+    lateinit var treatmentRepository: TreatmentRepository
+
     private lateinit var savedStateHandle: SavedStateHandle
 
     lateinit var viewModel: VisitDashboardViewModel
@@ -44,7 +47,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     override fun setUp() {
         super.setUp()
         savedStateHandle = SavedStateHandle().apply { set(VISIT_ID, 1L) }
-        viewModel = VisitDashboardViewModel(visitDAO, visitRepository, savedStateHandle)
+        viewModel = VisitDashboardViewModel(visitDAO, visitRepository, treatmentRepository, savedStateHandle)
     }
 
     @Test
