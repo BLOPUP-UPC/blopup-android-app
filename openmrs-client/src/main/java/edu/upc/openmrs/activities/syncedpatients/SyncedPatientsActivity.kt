@@ -24,7 +24,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.NavigationBarActivity
-import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.library.OpenmrsAndroid
 import kotlinx.coroutines.launch
 
@@ -97,7 +96,7 @@ class SyncedPatientsActivity : NavigationBarActivity() {
                         val syncedPatientsFragment = supportFragmentManager.findFragmentById(R.id.syncedPatientsContentFrame) as SyncedPatientsFragment?
                         syncedPatientsFragment?.fetchSyncedPatients(query)
                     }
-                }, 2000)
+                }, 300)
                 return true
             }
         })
