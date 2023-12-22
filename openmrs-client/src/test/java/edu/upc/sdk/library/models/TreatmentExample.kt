@@ -19,7 +19,7 @@ object TreatmentExample {
         }
     }
 
-    fun inactiveTreatment(): Treatment {
+    fun inactiveTreatment(creationDate: Instant = Instant.now()): Treatment {
         return Treatment().apply {
             medicationName = "Tylenol"
             medicationType = setOf(MedicationType.ARA_II, MedicationType.CALCIUM_CHANNEL_BLOCKER)
@@ -28,6 +28,8 @@ object TreatmentExample {
             isActive = false
             visitId = Random.nextLong(1, 100)
             visitUuid = UUID.randomUUID().toString()
+            this.creationDate = creationDate
+            inactiveDate = Instant("2023-12-22T10:10:10Z")
         }
     }
 }

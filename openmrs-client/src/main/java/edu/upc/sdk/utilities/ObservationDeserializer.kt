@@ -18,6 +18,7 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonNull
 import com.google.gson.JsonParseException
+import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.ACTIVE_CONCEPT_ID
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Observation
 import java.lang.reflect.Type
@@ -34,6 +35,9 @@ class ObservationDeserializer : JsonDeserializer<Observation> {
         observation.uuid = jsonObject[UUID_KEY].asString
         observation.display = jsonObject[DISPLAY_KEY].asString
         val conceptJson = jsonObject["concept"]
+        if(conceptJson != null && ACTIVE_CONCEPT_ID == conceptJson.asJsonObject[UUID_KEY].asString ) {
+            observation.obsDatetime = jsonObject["obsDatetime"].asString
+        }
         if (conceptJson != null && "Visit Diagnoses" == conceptJson.asJsonObject[DISPLAY_KEY].asString) {
             val diagnosisDetailJSONArray = jsonObject["groupMembers"].asJsonArray
             for (i in 0 until diagnosisDetailJSONArray.size()) {

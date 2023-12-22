@@ -31,12 +31,21 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     }
 
     suspend fun fetchActiveTreatments(patient: Patient): List<Treatment> {
+        val encounters = fetchAllTreatments(patient)
+
+        return encounters
+            .filter { treatment ->
+                treatment.isActive
+            }
+    }
+
+    private suspend fun fetchAllTreatments(patient: Patient): List<Treatment> {
         val visits: List<Visit>
         withContext(Dispatchers.IO) {
             visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
         }
 
-        val encounters = visits.flatMap { visit ->
+        return visits.flatMap { visit ->
             visit.encounters.map {
                 it.apply {
                     visitID = visit.id
@@ -46,20 +55,23 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                 .filter { encounter ->
                     encounter.encounterType?.display == EncounterType.TREATMENT
                 }
+                .map { encounter ->
+                    getTreatmentFromEncounter(encounter)
+                }
         }
-
-        return encounters.map { encounter -> getTreatmentFromEncounter(encounter) }
-            .filter { treatment ->
-                treatment.isActive
-            }
     }
 
     suspend fun fetchActiveTreatments(patient: Patient, visit: Visit): List<Treatment> {
         val visitDate = parseFromOpenmrsDate(visit.startDatetime)
-        return fetchActiveTreatments(patient)
+        val treatments =  fetchAllTreatments(patient)
             .filter {
                 it.creationDate.isBefore(visitDate) || it.visitUuid == visit.uuid
             }
+
+        val activeTreatments = treatments.filter { treatment -> treatment.isActive }
+        val inactiveTreatmentsBefore = treatments.filter { treatment -> !treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate) }
+
+        return listOf(activeTreatments, inactiveTreatmentsBefore).flatten()
     }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
@@ -81,7 +93,12 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                 MEDICATION_TYPE_CONCEPT_ID -> treatment.medicationType =
                     getMedicationTypesFromObservation(observation)
 
-                ACTIVE_CONCEPT_ID -> treatment.isActive = observation.displayValue?.trim() == "1.0"
+                ACTIVE_CONCEPT_ID -> {
+                    treatment.isActive = observation.displayValue?.trim() == "1.0"
+                    if(!treatment.isActive) {
+                        treatment.inactiveDate = parseFromOpenmrsDate(observation.obsDatetime!!)
+                    }
+                }
             }
         }
         return treatment
@@ -139,12 +156,13 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             }
         }
 
-    private fun observation(concept: String, value: String, patientId: String) = Obscreate().apply {
-        this.concept = concept
-        this.value = value
-        obsDatetime = Instant.now().toString()
-        person = patientId
-    }
+    private fun observation(concept: String, value: String, patientId: String) =
+        Obscreate().apply {
+            this.concept = concept
+            this.value = value
+            obsDatetime = Instant.now().toString()
+            person = patientId
+        }
 
     companion object {
         const val MEDICATION_NAME_CONCEPT_ID = "a721776b-fd0f-41ea-821b-0d0df94d5560"
