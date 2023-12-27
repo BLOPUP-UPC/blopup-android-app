@@ -90,4 +90,8 @@ class VisitDashboardViewModel @Inject constructor(
         val treatmentsList = treatmentRepository.fetchActiveTreatments(patient, visit)
         _treatments.postValue(treatmentsList)
     }
+
+    fun finaliseTreatment(treatment: Treatment) {
+        println(treatment)
+    }
 }

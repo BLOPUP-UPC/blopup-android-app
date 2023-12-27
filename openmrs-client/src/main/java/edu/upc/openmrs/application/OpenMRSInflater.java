@@ -39,6 +39,7 @@ import edu.upc.blopup.bloodpressure.BloodPressureType;
 import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
 import edu.upc.openmrs.activities.visitdashboard.BloodPressureInfoDialog;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentActivity;
+import edu.upc.openmrs.activities.visitdashboard.TreatmentListener;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentRecyclerViewAdapter;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Observation;
@@ -52,12 +53,12 @@ public class OpenMRSInflater {
         this.mInflater = inflater;
     }
 
-    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager, Pair<Boolean, String> visit, List<Treatment> treatments) {
+    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager, Pair<Boolean, String> visit, List<Treatment> treatments, TreatmentListener listener) {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
         if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
-            showTreatment(vitalsCardView, encounter, visit, treatments);
+            showTreatment(vitalsCardView, encounter, visit, treatments, listener);
         }
         setBloodPressureTypeAndRecommendation(bloodPressureType, vitalsCardView);
 
@@ -72,7 +73,7 @@ public class OpenMRSInflater {
         return parentLayout;
     }
 
-    private void showTreatment(View vitalsCardView, Encounter encounter, Pair<Boolean, String> visit, List<Treatment> treatments) {
+    private void showTreatment(View vitalsCardView, Encounter encounter, Pair<Boolean, String> visit, List<Treatment> treatments, TreatmentListener listener) {
         Button addTreatmentButton = vitalsCardView.findViewById(R.id.add_treatment_button);
         if (visit.getFirst().equals(true)) {
             addTreatmentButton.setOnClickListener(view -> {
@@ -88,7 +89,7 @@ public class OpenMRSInflater {
             LinearLayoutManager layoutManager = new LinearLayoutManager(mInflater.getContext());
             RecyclerView view = vitalsCardView.findViewById(R.id.treatmentsVisitRecyclerView);
             view.setLayoutManager(layoutManager);
-            TreatmentRecyclerViewAdapter treatmentAdapter = new TreatmentRecyclerViewAdapter(mInflater.getContext(), visit);
+            TreatmentRecyclerViewAdapter treatmentAdapter = new TreatmentRecyclerViewAdapter(mInflater.getContext(), visit, listener);
             view.setAdapter(treatmentAdapter);
             treatmentAdapter.updateData(treatments);
         }

@@ -39,6 +39,7 @@ import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
@@ -49,11 +50,12 @@ import java.net.UnknownHostException
 
 
 @AndroidEntryPoint
-class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
+class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), TreatmentListener {
     private var _binding: FragmentVisitDashboardBinding? = null
     private val binding get() = _binding!!
     private var visitExpandableListAdapter: VisitExpandableListAdapter? = null
     private val viewModel: VisitDashboardViewModel by viewModels()
+    private val listener: TreatmentListener = this
 
     companion object {
         fun newInstance(visitId: Long, isNewVitals: Boolean) = VisitDashboardFragment().apply {
@@ -101,7 +103,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
                     val visit: Pair<Boolean, String?> = Pair(isActiveVisit(), uuid)
-                    updateEncountersList(encounters, visit)
+                    updateEncountersList(encounters, visit, listener)
                     contactDoctorToggle.check({ notifyDoctorIfNeeded(patient.identifier.identifier) })
                 }
 
@@ -179,8 +181,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)
     }
 
-    private fun updateEncountersList(visitEncounters: List<Encounter>, visit: Pair<Boolean, String?>) = with(binding) {
-        visitExpandableListAdapter?.updateList(visitEncounters, visit)
+    private fun updateEncountersList(visitEncounters: List<Encounter>, visit: Pair<Boolean, String?>, listener: TreatmentListener) = with(binding) {
+        visitExpandableListAdapter?.updateList(visitEncounters, visit, listener)
         visitDashboardExpList.expandGroup(0)
     }
 
@@ -251,14 +253,17 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     override fun onResume() {
+        super.onResume()
         setupVisitObserver()
         setupExpandableListAdapter()
-        super.onResume()
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onFinaliseClicked(treatment: Treatment) {
+        viewModel.finaliseTreatment(treatment)
     }
 }

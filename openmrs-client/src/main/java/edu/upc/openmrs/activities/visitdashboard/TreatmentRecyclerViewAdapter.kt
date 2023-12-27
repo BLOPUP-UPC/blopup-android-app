@@ -14,7 +14,8 @@ import edu.upc.sdk.library.models.Treatment
 
 class TreatmentRecyclerViewAdapter(
     private val context: Context,
-    private val visit: Pair<Boolean, String>
+    private val visit: Pair<Boolean, String>,
+    private val listener: TreatmentListener?
 ) :
     RecyclerView.Adapter<TreatmentRecyclerViewAdapter.ViewHolder>() {
 
@@ -46,13 +47,17 @@ class TreatmentRecyclerViewAdapter(
         if(holder.visit.first) {
             when {
                 visitUuid == visit.second -> {
-                    holder.ellipsisTextView.setOnClickListener { showPopupMenu(it, R.menu.treatments_menu_current_visit) }
+                    holder.ellipsisTextView.setOnClickListener { showPopupMenu(it, R.menu.treatments_menu_current_visit, position) }
                 }
                 visit.second.isEmpty() -> {
                     holder.ellipsisTextView.visibility = View.GONE
                 }
                 else -> {
-                    holder.ellipsisTextView.setOnClickListener { showPopupMenu(it, R.menu.treatments_menu_previous_visit) }
+                    holder.ellipsisTextView.setOnClickListener { showPopupMenu(
+                        it,
+                        R.menu.treatments_menu_previous_visit,
+                        position
+                    ) }
                 }
             }
         } else {
@@ -60,13 +65,18 @@ class TreatmentRecyclerViewAdapter(
         }
     }
 
-    private fun showPopupMenu(view: View, menuResId: Int) {
+    private fun showPopupMenu(
+        view: View,
+        menuResId: Int,
+        position: Int
+    ) {
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menuInflater.inflate(menuResId, popupMenu.menu)
 
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_finalise -> {
+                    listener?.onFinaliseClicked(treatmentList[position])
                     return@setOnMenuItemClickListener true
                 }
                 R.id.action_edit -> {
