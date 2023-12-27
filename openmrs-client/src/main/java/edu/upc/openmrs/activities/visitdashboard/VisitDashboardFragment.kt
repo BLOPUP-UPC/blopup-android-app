@@ -249,6 +249,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         return true
     }
 
+    override fun onResume() {
+        setupVisitObserver()
+        setupExpandableListAdapter()
+        super.onResume()
+
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
