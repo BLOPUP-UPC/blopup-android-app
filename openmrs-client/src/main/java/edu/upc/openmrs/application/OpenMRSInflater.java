@@ -43,6 +43,7 @@ import edu.upc.openmrs.activities.visitdashboard.TreatmentRecyclerViewAdapter;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Observation;
 import edu.upc.sdk.library.models.Treatment;
+import kotlin.Pair;
 
 public class OpenMRSInflater {
     private final LayoutInflater mInflater;
@@ -51,12 +52,12 @@ public class OpenMRSInflater {
         this.mInflater = inflater;
     }
 
-    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager, Boolean isVisitActive, List<Treatment> treatments) {
+    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager, Pair<Boolean, String> visit, List<Treatment> treatments) {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
         if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
-            showTreatment(vitalsCardView, encounter, isVisitActive, treatments);
+            showTreatment(vitalsCardView, encounter, visit, treatments);
         }
         setBloodPressureTypeAndRecommendation(bloodPressureType, vitalsCardView);
 
@@ -71,9 +72,9 @@ public class OpenMRSInflater {
         return parentLayout;
     }
 
-    private void showTreatment(View vitalsCardView, Encounter encounter, Boolean isVisitActive, List<Treatment> treatments) {
+    private void showTreatment(View vitalsCardView, Encounter encounter, Pair<Boolean, String> visit, List<Treatment> treatments) {
         Button addTreatmentButton = vitalsCardView.findViewById(R.id.add_treatment_button);
-        if(isVisitActive){
+        if (visit.getFirst().equals(true)) {
             addTreatmentButton.setOnClickListener(view -> {
                 Intent intent = new Intent(mInflater.getContext(), TreatmentActivity.class);
                 intent.putExtra(VISIT_ID, encounter.getVisitID());
@@ -82,12 +83,12 @@ public class OpenMRSInflater {
         } else {
             addTreatmentButton.setVisibility(View.GONE);
         }
-        if(treatments != null && !treatments.isEmpty()){
+        if (treatments != null && !treatments.isEmpty()) {
             vitalsCardView.findViewById(R.id.recommended_treatments_layout).setVisibility(View.VISIBLE);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mInflater.getContext());
             RecyclerView view = vitalsCardView.findViewById(R.id.treatmentsVisitRecyclerView);
             view.setLayoutManager(layoutManager);
-            TreatmentRecyclerViewAdapter treatmentAdapter = new TreatmentRecyclerViewAdapter(mInflater.getContext(), true);
+            TreatmentRecyclerViewAdapter treatmentAdapter = new TreatmentRecyclerViewAdapter(mInflater.getContext(), visit);
             view.setAdapter(treatmentAdapter);
             treatmentAdapter.updateData(treatments);
         }

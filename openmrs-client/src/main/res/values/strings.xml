@@ -617,5 +617,7 @@
     <string name="treatment_discard_button_stay" tools:ignore="MissingTranslation">No, stay</string>
     <string name="treatment_discard_button_leave" tools:ignore="MissingTranslation">Yes, leave</string>
     <string name="ellipsis" translatable="false">⋮</string>
-    <string name="finalise" tools:ignore="MissingTranslation">Finalise</string>
+    <string name="finalise_treatment" tools:ignore="MissingTranslation">Finalise</string>
+    <string name="edit_treatment" tools:ignore="MissingTranslation">Edit</string>
+    <string name="remove_treatment" tools:ignore="MissingTranslation">Remove</string>
 </resources>

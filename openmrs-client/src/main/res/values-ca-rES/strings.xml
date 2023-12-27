@@ -424,5 +424,7 @@
     <string name="treatment_discard_dialog_body">Estàs segur que vols abandonar aquesta pàgina? Perdràs tots els canvis.</string>
     <string name="treatment_discard_button_stay">No, continuar</string>
     <string name="treatment_discard_button_leave">Si, sortir</string>
-    <string name="finalise">Finalitzar</string>
+    <string name="finalise_treatment">Finalitzar</string>
+    <string name="edit_treatment">Editar</string>
+    <string name="remove_treatment">Borrar</string>
 </resources>

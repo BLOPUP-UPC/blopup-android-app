@@ -2,5 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_finalise"
-        android:title="@string/finalise" />
+        android:title="@string/finalise_treatment" />
 </menu>

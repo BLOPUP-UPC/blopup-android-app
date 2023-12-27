@@ -41,7 +41,7 @@ class VisitExpandableListAdapter(
     private var mChildLayouts: List<ViewGroup>
     private val mBitmapCache: SparseArray<Bitmap?>
     private val bmiCalculator: BMICalculator
-    private var isCurrentVisitActive: Boolean = false
+    private var visit: Pair<Boolean, String?> = Pair(false, null)
 
     init {
         mBitmapCache = SparseArray()
@@ -49,8 +49,8 @@ class VisitExpandableListAdapter(
         bmiCalculator = BMICalculator()
     }
 
-    fun updateList(encounters: List<Encounter>, isVisitActive: Boolean) {
-        isCurrentVisitActive = isVisitActive
+    fun updateList(encounters: List<Encounter>, visit: Pair<Boolean, String?>) {
+        this.visit = visit
         mEncounters = encounters.sortedBy { it.encounterDatetime }.reversed()
         notifyDataSetChanged()
     }
@@ -81,7 +81,7 @@ class VisitExpandableListAdapter(
                         bmiData,
                         bloodPressureTypeFromEncounter(encounter)?.bloodPressureType,
                         fragmentManager,
-                        isCurrentVisitActive,
+                        visit,
                         treatments
                     )
 

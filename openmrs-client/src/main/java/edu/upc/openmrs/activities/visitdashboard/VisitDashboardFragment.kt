@@ -100,7 +100,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
                 is Result.Success -> result.data.run {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
-                    updateEncountersList(encounters, isActiveVisit())
+                    val visit: Pair<Boolean, String?> = Pair(isActiveVisit(), uuid)
+                    updateEncountersList(encounters, visit)
                     contactDoctorToggle.check({ notifyDoctorIfNeeded(patient.identifier.identifier) })
                 }
 
@@ -178,8 +179,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment() {
         sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)
     }
 
-    private fun updateEncountersList(visitEncounters: List<Encounter>, isVisitActive: Boolean) = with(binding) {
-        visitExpandableListAdapter?.updateList(visitEncounters, isVisitActive)
+    private fun updateEncountersList(visitEncounters: List<Encounter>, visit: Pair<Boolean, String?>) = with(binding) {
+        visitExpandableListAdapter?.updateList(visitEncounters, visit)
         visitDashboardExpList.expandGroup(0)
     }
 
