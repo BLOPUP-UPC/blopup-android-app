@@ -175,7 +175,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     private fun setUpActiveTreatmentsAdapter() {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         binding.treatmentsRecyclerView.layoutManager = linearLayoutManager
-        treatmentAdapter = TreatmentRecyclerViewAdapter(requireContext())
+        treatmentAdapter = TreatmentRecyclerViewAdapter(requireContext(), false)
         binding.treatmentsRecyclerView.adapter = treatmentAdapter
     }
 

@@ -87,7 +87,7 @@ public class OpenMRSInflater {
             LinearLayoutManager layoutManager = new LinearLayoutManager(mInflater.getContext());
             RecyclerView view = vitalsCardView.findViewById(R.id.treatmentsVisitRecyclerView);
             view.setLayoutManager(layoutManager);
-            TreatmentRecyclerViewAdapter treatmentAdapter = new TreatmentRecyclerViewAdapter(mInflater.getContext());
+            TreatmentRecyclerViewAdapter treatmentAdapter = new TreatmentRecyclerViewAdapter(mInflater.getContext(), true);
             view.setAdapter(treatmentAdapter);
             treatmentAdapter.updateData(treatments);
         }

@@ -41,6 +41,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/ellipsis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ellipsis"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_lg"
+            android:textColor="@color/dark_grey_for_stroke"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/medication_name"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
             android:id="@+id/medication_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

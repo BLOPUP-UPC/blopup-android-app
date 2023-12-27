@@ -616,4 +616,6 @@
     <string name="treatment_discard_dialog_body" tools:ignore="MissingTranslation">Are you sure you want to leave this page? You will lose any changes.</string>
     <string name="treatment_discard_button_stay" tools:ignore="MissingTranslation">No, stay</string>
     <string name="treatment_discard_button_leave" tools:ignore="MissingTranslation">Yes, leave</string>
+    <string name="ellipsis" translatable="false">⋮</string>
+    <string name="finalise" tools:ignore="MissingTranslation">Finalise</string>
 </resources>
