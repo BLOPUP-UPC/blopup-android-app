@@ -28,6 +28,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.BloodPressureType
@@ -46,6 +47,7 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
+import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
 
@@ -261,6 +263,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     override fun onFinaliseClicked(treatment: Treatment) {
-        viewModel.finaliseTreatment(treatment)
+        lifecycleScope.launch { viewModel.finaliseTreatment(treatment) }
     }
 }

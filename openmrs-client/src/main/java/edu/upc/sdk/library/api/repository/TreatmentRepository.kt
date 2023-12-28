@@ -164,6 +164,20 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             person = patientId
         }
 
+    suspend fun finalise(treatment: Treatment) {
+        val visit = visitRepository.getVisitByUuid(treatment.visitUuid)
+
+        val encounter = visit.encounters.find { it.encounterType?.display == EncounterType.TREATMENT }
+
+        val observation = encounter?.observations?.find { it.concept?.uuid == ACTIVE_CONCEPT_ID }
+
+        val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
+
+        withContext(Dispatchers.IO) {
+            restApi.updateObservation(observation?.uuid, value).execute()
+        }
+    }
+
     companion object {
         const val MEDICATION_NAME_CONCEPT_ID = "a721776b-fd0f-41ea-821b-0d0df94d5560"
         const val RECOMMENDED_BY_CONCEPT_ID = "c1164da7-0b4f-490f-85da-0c4aac4ca8a1"
