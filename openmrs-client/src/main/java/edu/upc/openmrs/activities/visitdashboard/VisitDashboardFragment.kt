@@ -71,10 +71,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupVisitObserver()
         setupExpandableListAdapter()
-
-        return binding.root
     }
 
     override fun onStart() {
@@ -250,12 +253,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
             else -> return super.onOptionsItemSelected(item)
         }
         return true
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setupVisitObserver()
-        setupExpandableListAdapter()
     }
 
     override fun onDestroyView() {
