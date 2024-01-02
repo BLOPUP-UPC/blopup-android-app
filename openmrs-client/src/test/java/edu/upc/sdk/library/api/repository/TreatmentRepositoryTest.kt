@@ -227,6 +227,46 @@ class TreatmentRepositoryTest {
         verify { restApi.updateObservation(any(), mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())) }
     }
 
+//    @Test
+//    fun `should finalise a treatment updating the observation as inactive`() {
+//
+//        //my current visit with the treatment active
+//        val treatment = TreatmentExample.activeTreatment()
+//        val visit = VisitExample.random(treatment, Instant("2023-12-22T10:10:10Z"))
+//
+//        //I should receive an inactive treatment as parameter
+//        val observation =  Observation().apply {
+//            concept = ConceptEntity().apply { uuid = TreatmentRepository.ACTIVE_CONCEPT_ID }
+//            displayValue = " 0"
+//            display = "Active:$displayValue"
+//            uuid = UUID.randomUUID().toString()
+//            dateCreated = treatment.creationDate.toString()
+//            obsDatetime = treatment.inactiveDate.toString()
+//        }
+//        val visitList = listOf(visit)
+//
+//        coEvery {
+//            restApi.updateObservation(
+//                visit.encounters[0].observations[3].uuid,
+//                mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
+//            )
+//        } returns mockk<Call<Observation>>().apply {
+//            every { execute() } returns Response.success(observation)
+//        }
+//
+//        coEvery { visitRepository.getVisitByUuid(visit.uuid) } returns visit
+//
+//        coEvery { visitRepository.getAllVisitsForPatient(visit.patient) } returns Observable.just(
+//            visitList
+//        )
+//        runBlocking {
+//            treatmentRepository.finalise(treatment)
+//            val result = treatmentRepository.fetchActiveTreatments(visit.patient, visit)
+//
+//            assertEquals(false, result[0].isActive)
+//        }
+//    }
+
     private fun mockStaticMethodsNeededToInstantiateBaseRepository() {
         mockkStatic(OpenmrsAndroid::class)
         every { OpenmrsAndroid.getServerUrl() } returns "http://localhost:8080/openmrs"
