@@ -79,6 +79,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupVisitObserver()
+        setUpTreatmentsObserver()
         setupExpandableListAdapter()
     }
 
@@ -116,6 +117,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 else -> throw IllegalStateException()
             }
         }
+    }
+
+    private fun setUpTreatmentsObserver() {
         viewModel.treatments.observe(viewLifecycleOwner) { treatments ->
             if (treatments.isNotEmpty()) {
                 visitExpandableListAdapter?.updateTreatmentList(treatments)
@@ -186,7 +190,11 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)
     }
 
-    private fun updateEncountersList(visitEncounters: List<Encounter>, visit: Pair<Boolean, String?>, listener: TreatmentListener) = with(binding) {
+    private fun updateEncountersList(
+        visitEncounters: List<Encounter>,
+        visit: Pair<Boolean, String?>,
+        listener: TreatmentListener
+    ) = with(binding) {
         visitExpandableListAdapter?.updateList(visitEncounters, visit, listener)
         visitDashboardExpList.expandGroup(0)
     }
@@ -194,7 +202,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     fun endVisit() {
         viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { result ->
             when (result) {
-               is Result.Success -> {
+                is Result.Success -> {
                     requireActivity().finish()
                 }
 
@@ -203,6 +211,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                         ToastUtil.error(getString(R.string.no_internet_connection))
                     }
                 }
+
                 else -> {
                     ToastUtil.error(getString(R.string.visit_ending_error))
                 }
@@ -264,5 +273,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     override fun onFinaliseClicked(treatment: Treatment) {
         lifecycleScope.launch { viewModel.finaliseTreatment(treatment) }
+        setUpTreatmentsObserver()
     }
 }

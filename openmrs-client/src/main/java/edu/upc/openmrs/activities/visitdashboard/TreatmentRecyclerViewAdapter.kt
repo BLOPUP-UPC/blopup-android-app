@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import edu.upc.R
 import edu.upc.sdk.library.models.Treatment
@@ -33,9 +35,8 @@ class TreatmentRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (_, medicationName, medicationType, notes, _, _, visitUuid) = treatmentList[position]
+        val (_, medicationName, medicationType, notes, isActive, _, visitUuid) = treatmentList[position]
 
-        // Bind data to the views in your CardView
         holder.medicationNameTextView.text = medicationName
         holder.medicationTypeTextView.text =
             medicationType.map { it.getLabel(context) }.toString()
@@ -47,17 +48,25 @@ class TreatmentRecyclerViewAdapter(
         if(holder.visit.first) {
             when {
                 visitUuid == visit.second -> {
-                    holder.ellipsisTextView.setOnClickListener { showPopupMenu(it, R.menu.treatments_menu_current_visit, position) }
+                        holder.ellipsisTextView.setOnClickListener { showPopupMenu(it, R.menu.treatments_menu_current_visit, position) }
                 }
                 visit.second.isEmpty() -> {
                     holder.ellipsisTextView.visibility = View.GONE
                 }
                 else -> {
-                    holder.ellipsisTextView.setOnClickListener { showPopupMenu(
-                        it,
-                        R.menu.treatments_menu_previous_visit,
-                        position
-                    ) }
+                    if (!isActive) {
+                        //if treatment is marked as finalise then show the background with opacity
+                        holder.treatmentCardLayout.background = ResourcesCompat.getDrawable(context.resources, R.drawable.border_background_treatment_card_finalised, null)
+                        holder.ellipsisTextView.visibility = View.GONE
+                    } else {
+                        holder.ellipsisTextView.setOnClickListener {
+                            showPopupMenu(
+                                it,
+                                R.menu.treatments_menu_previous_visit,
+                                position
+                            )
+                        }
+                    }
                 }
             }
         } else {
@@ -104,6 +113,7 @@ class TreatmentRecyclerViewAdapter(
         var medicationTypeTextView: TextView
         var notesTextView: TextView
         var ellipsisTextView: TextView
+        var treatmentCardLayout : ConstraintLayout
 
         init {
             cardView = itemView as CardView
@@ -111,6 +121,7 @@ class TreatmentRecyclerViewAdapter(
             medicationTypeTextView = itemView.findViewById(R.id.medication_type)
             notesTextView = itemView.findViewById(R.id.notes)
             ellipsisTextView = itemView.findViewById(R.id.ellipsis)
+            treatmentCardLayout = itemView.findViewById(R.id.treatment_card_layout)
         }
     }
 }
