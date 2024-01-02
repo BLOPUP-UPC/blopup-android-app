@@ -63,13 +63,15 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
 
     suspend fun fetchActiveTreatments(patient: Patient, visit: Visit): List<Treatment> {
         val visitDate = parseFromOpenmrsDate(visit.startDatetime)
-        val treatments =  fetchAllTreatments(patient)
+        val treatments = fetchAllTreatments(patient)
             .filter {
                 it.creationDate.isBefore(visitDate) || it.visitUuid == visit.uuid
             }
 
         val activeTreatments = treatments.filter { treatment -> treatment.isActive }
-        val inactiveTreatmentsBefore = treatments.filter { treatment -> !treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate) }
+        val inactiveTreatmentsBefore = treatments.filter { treatment ->
+            !treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate)
+        }
 
         return listOf(activeTreatments, inactiveTreatmentsBefore).flatten()
     }
@@ -95,7 +97,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
 
                 ACTIVE_CONCEPT_ID -> {
                     treatment.isActive = observation.displayValue?.trim() == "1.0"
-                    if(!treatment.isActive) {
+                    if (!treatment.isActive) {
                         treatment.inactiveDate = parseFromOpenmrsDate(observation.obsDatetime!!)
                     }
                 }
@@ -167,9 +169,15 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     suspend fun finalise(treatment: Treatment) {
         val visit = visitRepository.getVisitByUuid(treatment.visitUuid)
 
-        val encounter = visit.encounters.find { it.encounterType?.display == EncounterType.TREATMENT }
+        val treatmentsEncounters = visit.encounters.filter { it.encounterType?.display == EncounterType.TREATMENT }
 
-        val observation = encounter?.observations?.find { it.concept?.uuid == ACTIVE_CONCEPT_ID }
+        val treatmentToFinalise = treatmentsEncounters.find {
+            it.observations.find { it.concept?.uuid == MEDICATION_NAME_CONCEPT_ID }?.displayValue?.contains(
+                treatment.medicationName
+            ) ?: false
+        }
+        val observation =
+            treatmentToFinalise?.observations?.find { it.concept?.uuid == ACTIVE_CONCEPT_ID }
 
         val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
 
