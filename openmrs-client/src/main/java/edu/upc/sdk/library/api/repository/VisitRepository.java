@@ -223,4 +223,8 @@ public class VisitRepository extends BaseRepository {
     public Visit getVisitById(long visitId) {
         return visitDAO.getVisitByID(visitId).toBlocking().first();
     }
+
+    public Visit getVisitByUuid(String visitUuid) {
+        return visitDAO.getVisitByUuid(visitUuid).toBlocking().first();
+    }
 }

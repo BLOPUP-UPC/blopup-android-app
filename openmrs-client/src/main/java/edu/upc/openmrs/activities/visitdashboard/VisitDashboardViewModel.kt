@@ -19,6 +19,7 @@ import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import kotlinx.coroutines.launch
+import org.joda.time.Instant
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -91,7 +92,9 @@ class VisitDashboardViewModel @Inject constructor(
         _treatments.postValue(treatmentsList)
     }
 
-    fun finaliseTreatment(treatment: Treatment) {
-        println(treatment)
+    suspend fun finaliseTreatment(treatment: Treatment) {
+        treatment.inactiveDate = Instant.now()
+        treatment.isActive = false
+        treatmentRepository.finalise(treatment)
     }
 }

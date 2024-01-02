@@ -27,6 +27,7 @@ import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
 import io.mockk.slot
+import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.joda.time.Instant
 import org.junit.Before
@@ -96,15 +97,29 @@ class TreatmentRepositoryTest {
         val visitWithPreviousTreatment = VisitExample.random(previousTreatment, beforeVisit)
         val visitWithTreatment = VisitExample.random(actualVisitTreatment, visitDate)
         val visitWithFutureTreatment = VisitExample.random(futureDateTreatment, afterVisit)
-        val visitWithPreviousAndInactiveTreatment = VisitExample.random(previousAndInactiveTreatment, beforeVisit)
+        val visitWithPreviousAndInactiveTreatment =
+            VisitExample.random(previousAndInactiveTreatment, beforeVisit)
 
-        val visitList = listOf(visitWithPreviousTreatment, visitWithTreatment, visitWithFutureTreatment, visitWithPreviousAndInactiveTreatment)
+        val visitList = listOf(
+            visitWithPreviousTreatment,
+            visitWithTreatment,
+            visitWithFutureTreatment,
+            visitWithPreviousAndInactiveTreatment
+        )
 
-        coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(visitList)
+        coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(
+            visitList
+        )
 
         runBlocking {
             val result = treatmentRepository.fetchActiveTreatments(patient, visitWithTreatment)
-            assertEquals(listOf(previousTreatment, actualVisitTreatment, previousAndInactiveTreatment), result)
+            assertEquals(
+                listOf(
+                    previousTreatment,
+                    actualVisitTreatment,
+                    previousAndInactiveTreatment
+                ), result
+            )
         }
     }
 
@@ -190,6 +205,26 @@ class TreatmentRepositoryTest {
                 capturedTreatmentEncounter.captured.observations[4].groupMembers!![0].value
             )
         }
+    }
+
+    @Test
+    fun `should update the observation as inactive`() {
+        val treatment = TreatmentExample.activeTreatment()
+        val visit = VisitExample.random(treatment)
+
+        every { visitRepository.getVisitByUuid(visit.uuid) } returns visit
+        coEvery {
+            restApi.updateObservation(
+                any(),
+                mapOf("value" to 0)
+            )
+        } returns mockk(relaxed = true)
+
+        runBlocking {
+            treatmentRepository.finalise(treatment)
+        }
+        coVerify { visitRepository.getVisitByUuid(visit.uuid) }
+        verify { restApi.updateObservation(any(), mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())) }
     }
 
     private fun mockStaticMethodsNeededToInstantiateBaseRepository() {

@@ -28,6 +28,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.BloodPressureType
@@ -46,6 +47,7 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
+import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
 
@@ -71,10 +73,14 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
-        setupVisitObserver()
-        setupExpandableListAdapter()
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupVisitObserver()
+        setUpTreatmentsObserver()
+        setupExpandableListAdapter()
     }
 
     override fun onStart() {
@@ -111,6 +117,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 else -> throw IllegalStateException()
             }
         }
+    }
+
+    private fun setUpTreatmentsObserver() {
         viewModel.treatments.observe(viewLifecycleOwner) { treatments ->
             if (treatments.isNotEmpty()) {
                 visitExpandableListAdapter?.updateTreatmentList(treatments)
@@ -181,7 +190,11 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)
     }
 
-    private fun updateEncountersList(visitEncounters: List<Encounter>, visit: Pair<Boolean, String?>, listener: TreatmentListener) = with(binding) {
+    private fun updateEncountersList(
+        visitEncounters: List<Encounter>,
+        visit: Pair<Boolean, String?>,
+        listener: TreatmentListener
+    ) = with(binding) {
         visitExpandableListAdapter?.updateList(visitEncounters, visit, listener)
         visitDashboardExpList.expandGroup(0)
     }
@@ -189,7 +202,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     fun endVisit() {
         viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { result ->
             when (result) {
-               is Result.Success -> {
+                is Result.Success -> {
                     requireActivity().finish()
                 }
 
@@ -198,6 +211,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                         ToastUtil.error(getString(R.string.no_internet_connection))
                     }
                 }
+
                 else -> {
                     ToastUtil.error(getString(R.string.visit_ending_error))
                 }
@@ -252,18 +266,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         return true
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupVisitObserver()
-        setupExpandableListAdapter()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     override fun onFinaliseClicked(treatment: Treatment) {
-        viewModel.finaliseTreatment(treatment)
+        lifecycleScope.launch { viewModel.finaliseTreatment(treatment) }
+        setUpTreatmentsObserver()
     }
 }
