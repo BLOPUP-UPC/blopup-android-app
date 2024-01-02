@@ -551,7 +551,7 @@
     <string name="pulse_vital" tools:ignore="MissingTranslation">Pulse</string>
     <string name="pressure_unit" translatable="false">mmHg</string>
     <string name="pulse_unit" translatable="false">/min</string>
-    <string name="weight_unit" translatable="false">kg</string>
+    <string name="weight_unit" translatable="false">Kg</string>
     <string name="height_unit" translatable="false">cm</string>
     <string name="bp_normal" tools:ignore="MissingTranslation">Blood pressure - Normal</string>
     <string name="hypertension" tools:ignore="MissingTranslation">Hypertension</string>
