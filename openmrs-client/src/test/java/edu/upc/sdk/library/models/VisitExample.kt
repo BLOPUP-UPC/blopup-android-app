@@ -22,7 +22,7 @@ object VisitExample {
             startDatetime = startDate.formatToOpenmrsDate()
             encounters = listOf(
                 Encounter().apply {
-                    uuid = UUID.randomUUID().toString()
+                    uuid = treatment.encounterUuid
                     visit = Visit().apply {
                         id = treatment.visitId
                         uuid = treatment.visitUuid

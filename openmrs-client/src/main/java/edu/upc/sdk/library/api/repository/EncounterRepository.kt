@@ -8,6 +8,8 @@ import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.execute
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import rx.Observable
 import java.util.concurrent.Callable
 import javax.inject.Inject
@@ -105,5 +107,15 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
             return@Callable db.encounterCreateRoomDAO()
                 .updateExistingEncounter(encounterCreate)
         })
+    }
+
+    suspend fun removeEncounter(encounterUuid: String?) {
+        try {
+            withContext(Dispatchers.IO) {
+                restApi.deleteEncounter(encounterUuid).execute()
+            }
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 }

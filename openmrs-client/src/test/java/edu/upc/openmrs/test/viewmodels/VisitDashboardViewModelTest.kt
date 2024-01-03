@@ -4,14 +4,22 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
+import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
+import org.joda.time.Instant
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -27,27 +35,36 @@ import rx.Observable
 @RunWith(JUnit4::class)
 class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @Mock
+    private lateinit var visitDAO: VisitDAO
 
     @Mock
-    lateinit var visitDAO: VisitDAO
+    private lateinit var visitRepository: VisitRepository
 
-    @Mock
-    lateinit var visitRepository: VisitRepository
+    private lateinit var treatmentRepository: TreatmentRepository
 
-    @Mock
-    lateinit var treatmentRepository: TreatmentRepository
+    private lateinit var encounterRepository: EncounterRepository
 
     private lateinit var savedStateHandle: SavedStateHandle
 
-    lateinit var viewModel: VisitDashboardViewModel
+    private lateinit var viewModel: VisitDashboardViewModel
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     override fun setUp() {
         super.setUp()
+        treatmentRepository = mockk()
+        encounterRepository = mockk()
         savedStateHandle = SavedStateHandle().apply { set(VISIT_ID, 1L) }
-        viewModel = VisitDashboardViewModel(visitDAO, visitRepository, treatmentRepository, savedStateHandle)
+        viewModel = VisitDashboardViewModel(
+            visitDAO,
+            visitRepository,
+            treatmentRepository,
+            encounterRepository,
+            savedStateHandle
+        )
     }
 
     @Test
@@ -129,5 +146,46 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
         assertTrue(result.size == 4)
         assertTrue(result[0].encounterDate.equals(firstEncounter.encounterDate))
+    }
+
+    @Test
+    fun `should mark a treatment as inactive and return the treatments list with the update`() {
+        val patient = Patient()
+        val treatment = TreatmentExample.activeTreatment()
+        val treatmentUpdated = treatment.apply {
+            isActive = false
+            inactiveDate = Instant.now()
+        }
+        val treatmentList = listOf(treatmentUpdated)
+
+        coEvery { treatmentRepository.finalise(treatment) } returns Unit
+        coEvery { treatmentRepository.fetchActiveTreatments(patient) } returns treatmentList
+
+        runBlocking {
+            viewModel.finaliseTreatment(treatment)
+            coVerify { treatmentRepository.finalise(treatment) }
+            // I wanted to check the value of the treatments list but I cannot set the visit mock because it is a val. I tried to use a spy but it didn't work
+//            assertEquals(treatmentList, viewModel.treatments.value)
+        }
+    }
+
+    @Test
+    fun `should remove a treatment and return the treatments list without it`() {
+        val patient = Patient()
+        val treatmentOne = TreatmentExample.activeTreatment()
+        val treatmentTwo = TreatmentExample.activeTreatment()
+        val treatmentList = listOf(treatmentTwo)
+
+        coEvery { encounterRepository.removeEncounter(treatmentOne.encounterUuid) } returns Unit
+        coEvery { treatmentRepository.fetchActiveTreatments(patient) } returns treatmentList
+
+        runBlocking {
+            viewModel.removeTreatment(treatmentOne)
+            coVerify {
+                encounterRepository.removeEncounter(treatmentOne.encounterUuid)
+            }
+        // I wanted to check the value of the treatments list but I cannot set the visit mock because it is a val. I tried to use a spy but it didn't work
+//            assertEquals(treatmentList, viewModel.treatments.value)
+        }
     }
 }

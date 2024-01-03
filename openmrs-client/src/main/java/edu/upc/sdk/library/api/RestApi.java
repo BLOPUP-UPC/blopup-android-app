@@ -221,6 +221,16 @@ public interface RestApi {
      *
      * @return the session
      */
+
+    /**
+     * Update obs call.
+     *
+     * @param uuid the uuid of the encounter to be removed
+     * @return the call
+     */
+    @DELETE("encounter/{uuid}")
+    Call<ResponseBody> deleteEncounter(@Path("uuid") String uuid);
+
     @GET("session")
     Call<Session> getSession();
 

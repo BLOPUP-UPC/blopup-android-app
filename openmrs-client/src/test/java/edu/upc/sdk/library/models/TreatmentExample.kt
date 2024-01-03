@@ -15,6 +15,7 @@ object TreatmentExample {
             isActive = true
             visitId = Random.nextLong(1, 100)
             visitUuid = UUID.randomUUID().toString()
+            encounterUuid = UUID.randomUUID().toString()
             this.creationDate = creationDate
         }
     }
@@ -28,6 +29,7 @@ object TreatmentExample {
             isActive = false
             visitId = Random.nextLong(1, 100)
             visitUuid = UUID.randomUUID().toString()
+            encounterUuid = UUID.randomUUID().toString()
             this.creationDate = creationDate
             inactiveDate = Instant("2023-12-22T10:10:10Z")
         }

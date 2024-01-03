@@ -273,6 +273,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     override fun onFinaliseClicked(treatment: Treatment) {
         lifecycleScope.launch { viewModel.finaliseTreatment(treatment) }
-        setUpTreatmentsObserver()
+    }
+
+    override fun onEditClicked(treatment: Treatment) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRemoveClicked(treatment: Treatment) {
+        lifecycleScope.launch { viewModel.removeTreatment(treatment) }
     }
 }

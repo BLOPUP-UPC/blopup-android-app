@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.bloodpressure.BloodPressureResult
 import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.openmrs.activities.BaseViewModel
+import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
@@ -28,6 +29,7 @@ class VisitDashboardViewModel @Inject constructor(
     private val visitDAO: VisitDAO,
     private val visitRepository: VisitRepository,
     private val treatmentRepository: TreatmentRepository,
+    private val encounterRepository: EncounterRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Visit>() {
 
@@ -87,7 +89,7 @@ class VisitDashboardViewModel @Inject constructor(
         return displayableEncounters.sortedBy { it.encounterDatetime }
     }
 
-    private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
+    suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
         val treatmentsList = treatmentRepository.fetchActiveTreatments(patient, visit)
         _treatments.postValue(treatmentsList)
     }
@@ -96,5 +98,13 @@ class VisitDashboardViewModel @Inject constructor(
         treatment.inactiveDate = Instant.now()
         treatment.isActive = false
         treatmentRepository.finalise(treatment)
+
+        visit?.let { fetchActiveTreatments(it.patient, it) }
+    }
+
+    suspend fun removeTreatment(treatment: Treatment) {
+        encounterRepository.removeEncounter(treatment.encounterUuid)
+
+        visit?.let { fetchActiveTreatments(it.patient, it) }
     }
 }
