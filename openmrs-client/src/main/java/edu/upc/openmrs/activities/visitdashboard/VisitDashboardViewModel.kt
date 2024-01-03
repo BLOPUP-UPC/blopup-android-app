@@ -89,7 +89,7 @@ class VisitDashboardViewModel @Inject constructor(
         return displayableEncounters.sortedBy { it.encounterDatetime }
     }
 
-    suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
+    private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
         val treatmentsList = treatmentRepository.fetchActiveTreatments(patient, visit)
         _treatments.postValue(treatmentsList)
     }

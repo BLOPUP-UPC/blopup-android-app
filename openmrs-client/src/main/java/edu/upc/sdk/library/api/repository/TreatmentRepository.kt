@@ -63,17 +63,15 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
 
     suspend fun fetchActiveTreatments(patient: Patient, visit: Visit): List<Treatment> {
         val visitDate = parseFromOpenmrsDate(visit.startDatetime)
+
         val treatments = fetchAllTreatments(patient)
             .filter {
                 it.creationDate.isBefore(visitDate) || it.visitUuid == visit.uuid
             }
 
-        val activeTreatments = treatments.filter { treatment -> treatment.isActive }
-        val inactiveTreatmentsBefore = treatments.filter { treatment ->
-            !treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate)
+        return treatments.filter { treatment ->
+            (treatment.isActive) or (!treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate))
         }
-
-        return listOf(activeTreatments, inactiveTreatmentsBefore).flatten()
     }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
@@ -170,7 +168,8 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     suspend fun finalise(treatment: Treatment) {
         val visit = visitRepository.getVisitByUuid(treatment.visitUuid)
 
-        val treatmentsEncounters = visit.encounters.filter { it.encounterType?.display == EncounterType.TREATMENT }
+        val treatmentsEncounters =
+            visit.encounters.filter { it.encounterType?.display == EncounterType.TREATMENT }
 
         val treatmentToFinalise = treatmentsEncounters.find {
             it.observations.find { it.concept?.uuid == MEDICATION_NAME_CONCEPT_ID }?.displayValue?.contains(
