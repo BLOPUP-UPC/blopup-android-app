@@ -14,6 +14,9 @@ object VisitExample {
         val activeText = if (treatment.isActive) " 1.0" else " 0.0"
 
         return Visit().apply {
+            patient = Patient().apply {
+                uuid = UUID.randomUUID().toString()
+            }
             id = treatment.visitId
             uuid = treatment.visitUuid
             startDatetime = startDate.formatToOpenmrsDate()
