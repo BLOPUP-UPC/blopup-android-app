@@ -8,7 +8,6 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import edu.upc.R
 import edu.upc.sdk.library.models.Treatment
@@ -56,7 +55,7 @@ class TreatmentRecyclerViewAdapter(
                 else -> {
                     if (!isActive) {
                         //if treatment is marked as finalise then show the background with opacity
-                        holder.treatmentCardLayout.background = ResourcesCompat.getDrawable(context.resources, R.drawable.border_background_treatment_card_finalised, null)
+                        holder.treatmentCardLayout.alpha = 0.5f
                         holder.ellipsisTextView.visibility = View.GONE
                     } else {
                         holder.ellipsisTextView.setOnClickListener {
