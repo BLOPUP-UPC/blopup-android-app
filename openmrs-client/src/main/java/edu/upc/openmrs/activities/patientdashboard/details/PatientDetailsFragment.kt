@@ -32,7 +32,6 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.activities.visitdashboard.TreatmentRecyclerViewAdapter
-import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -49,7 +48,6 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     private lateinit var treatmentAdapter: TreatmentRecyclerViewAdapter
 
     private val viewModel: PatientDashboardDetailsViewModel by viewModels()
-    private val treatmentViewModel: TreatmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,7 +83,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     when (result.operationType) {
                         PatientFetching -> {
                             showPatientDetails(result.data)
-                            lifecycleScope.launch { treatmentViewModel.fetchActiveTreatments(result.data)}
+                            lifecycleScope.launch { viewModel.fetchActiveTreatments(result.data)}
                         }
                         else -> {
                         }
@@ -105,7 +103,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
         })
 
-        treatmentViewModel.activeTreatments.observe(viewLifecycleOwner) { treatments ->
+        viewModel.activeTreatments.observe(viewLifecycleOwner) { treatments ->
             if(treatments.isNotEmpty()) {
                 binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
             } else {

@@ -2,7 +2,6 @@ package edu.upc.openmrs.activities.visitdashboard
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -38,20 +37,6 @@ class TreatmentViewModelTest {
         runBlocking {
             treatmentViewModel.registerTreatment()
             coVerify { mockTreatmentRepo.saveTreatment(treatment) }
-        }
-    }
-
-    @Test
-    fun `should get all active treatments`() {
-        val patient = Patient()
-        val treatmentList = listOf<Treatment>()
-
-        coEvery { mockTreatmentRepo.fetchActiveTreatments(patient) } returns treatmentList
-
-        runBlocking {
-            treatmentViewModel.fetchActiveTreatments(patient)
-            coVerify { mockTreatmentRepo.fetchActiveTreatments(patient) }
-            assert(treatmentViewModel.activeTreatments.value == treatmentList)
         }
     }
 }

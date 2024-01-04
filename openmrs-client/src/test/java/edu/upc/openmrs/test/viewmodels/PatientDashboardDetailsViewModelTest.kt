@@ -2,12 +2,18 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import edu.upc.openmrs.activities.patientdashboard.details.PatientDashboardDetailsViewModel
+import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.openmrs.activities.patientdashboard.details.PatientDashboardDetailsViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,17 +31,20 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var patientDAO: PatientDAO
 
-    lateinit var savedStateHandle: SavedStateHandle
+    private lateinit var savedStateHandle: SavedStateHandle
 
-    lateinit var viewModel: PatientDashboardDetailsViewModel
+    private lateinit var viewModel: PatientDashboardDetailsViewModel
+
+    private lateinit var treatmentRepository: TreatmentRepository
 
     lateinit var patient: Patient
 
     @Before
     override fun setUp() {
         super.setUp()
+        treatmentRepository = mockk()
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, ID) }
-        viewModel = PatientDashboardDetailsViewModel(patientDAO, savedStateHandle)
+        viewModel = PatientDashboardDetailsViewModel(patientDAO, treatmentRepository, savedStateHandle)
         patient = createPatient(ID.toLong())
     }
 
@@ -55,6 +64,20 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
         viewModel.fetchPatientData()
 
         assert(viewModel.result.value is Result.Error)
+    }
+
+    @Test
+    fun `should get all active treatments`() {
+        val patient = Patient()
+        val treatmentList = listOf<Treatment>()
+
+        coEvery { treatmentRepository.fetchActiveTreatments(patient) } returns treatmentList
+
+        runBlocking {
+            viewModel.fetchActiveTreatments(patient)
+            coVerify { treatmentRepository.fetchActiveTreatments(patient) }
+            assert(viewModel.activeTreatments.value == treatmentList)
+        }
     }
 
     companion object {
