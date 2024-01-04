@@ -31,10 +31,12 @@ enum class ResultType {
     PatientUpdateSuccess,
     PatientUpdateLocalSuccess,
     PatientUpdateError,
-    EncounterSubmissionSuccess,
-    EncounterSubmissionError,
     EmailSentSuccess,
     EmailSentError,
     RecordingSuccess,
-    RecordingError
+    RecordingError,
+    FinalisedTreatmentSuccess,
+    FinalisedTreatmentError,
+    RemoveTreatmentSuccess,
+    RemoveTreatmentError
 }

@@ -15,6 +15,7 @@ import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
@@ -39,6 +40,9 @@ class VisitDashboardViewModel @Inject constructor(
     private val _treatments: MutableLiveData<List<Treatment>> = MutableLiveData()
     val treatments: LiveData<List<Treatment>> get() = _treatments
 
+    private val _treatmentOperationsLiveData = MutableLiveData<ResultType>()
+    val treatmentOperationsLiveData: LiveData<ResultType> get() = _treatmentOperationsLiveData
+
     private val visitId: Long = savedStateHandle[VISIT_ID]!!
     val visit: Visit?
         get() {
@@ -51,7 +55,7 @@ class VisitDashboardViewModel @Inject constructor(
         addSubscription(
             visitDAO.getVisitByID(visitId).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ visit ->
-                    viewModelScope.launch {fetchActiveTreatments(visit.patient, visit) }
+                    viewModelScope.launch { fetchActiveTreatments(visit.patient, visit) }
                     val filteredAndSortedEncounters = filterAndSortEncounters(visit.encounters)
                     visit.encounters = filteredAndSortedEncounters
 
@@ -97,14 +101,25 @@ class VisitDashboardViewModel @Inject constructor(
     suspend fun finaliseTreatment(treatment: Treatment) {
         treatment.inactiveDate = Instant.now()
         treatment.isActive = false
-        treatmentRepository.finalise(treatment)
 
-        visit?.let { fetchActiveTreatments(it.patient, it) }
+        val response = treatmentRepository.finalise(treatment)
+
+        if(response == ResultType.FinalisedTreatmentSuccess) {
+            visit?.let { fetchActiveTreatments(it.patient, it) }
+            _treatmentOperationsLiveData.value = ResultType.FinalisedTreatmentSuccess
+        } else {
+            _treatmentOperationsLiveData.value = ResultType.FinalisedTreatmentError
+        }
     }
 
     suspend fun removeTreatment(treatment: Treatment) {
-        encounterRepository.removeEncounter(treatment.encounterUuid)
+        val response = encounterRepository.removeEncounter(treatment.encounterUuid)
 
-        visit?.let { fetchActiveTreatments(it.patient, it) }
+        if(response == ResultType.RemoveTreatmentSuccess) {
+            visit?.let { fetchActiveTreatments(it.patient, it) }
+            _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentSuccess
+        } else {
+            _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentError
+        }
     }
 }

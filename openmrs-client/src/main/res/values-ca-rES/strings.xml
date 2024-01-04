@@ -426,5 +426,8 @@
     <string name="treatment_discard_button_leave">Si, sortir</string>
     <string name="finalise_treatment">Finalitzar</string>
     <string name="edit_treatment">Editar</string>
-    <string name="remove_treatment">Borrar</string>
+    <string name="remove_treatment">Esborrar</string>
+    <string name="treatment_finalised_successfully">Tractament finalitzat amb èxit</string> />
+    <string name="treatment_removed_successfully">Tractament esborrat amb èxit</string> />
+    <string name="treatment_operation_error">No s\'ha pogut fer l\'operació. Intenteu més tard.</string> />
 </resources>

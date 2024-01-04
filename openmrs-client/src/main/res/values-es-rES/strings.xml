@@ -429,5 +429,8 @@
     <string name="treatment_discard_button_leave">Si, salir</string>
     <string name="finalise_treatment">Finalizar</string>
     <string name="edit_treatment">Editar</string>
-    <string name="remove_treatment">Esborrar</string>
+    <string name="remove_treatment">Borrar</string>
+    <string name="treatment_finalised_successfully">Tratamiento finalizado con éxito</string> />
+    <string name="treatment_removed_successfully">Tratamiento borrado con éxito</string> />
+    <string name="treatment_operation_error">No se pudo realizar la operación. Intente más tarde.</string> />
 </resources>

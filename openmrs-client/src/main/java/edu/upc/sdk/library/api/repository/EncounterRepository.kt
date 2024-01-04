@@ -7,6 +7,7 @@ import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.execute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -64,7 +65,7 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
                         }
                     }
                 } catch (e: Exception) {
-                   Result.Error(e)
+                    Result.Error(e)
                 }
             } else {
                 return@Callable Result.Error(Exception("Patient not synced"))
@@ -109,13 +110,19 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
         })
     }
 
-    suspend fun removeEncounter(encounterUuid: String?) {
-        try {
+    suspend fun removeEncounter(encounterUuid: String?): ResultType {
+        return try {
             withContext(Dispatchers.IO) {
-                restApi.deleteEncounter(encounterUuid).execute()
+                val response = restApi.deleteEncounter(encounterUuid).execute()
+
+                if (response.isSuccessful) {
+                    ResultType.RemoveTreatmentSuccess
+                } else {
+                    throw Exception("Remove treatment error: ${response.code()} - ${response.message()}")
+                }
             }
         } catch (e: Exception) {
-            Result.Error(e)
+            ResultType.RemoveTreatmentError
         }
     }
 }

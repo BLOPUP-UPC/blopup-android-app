@@ -40,6 +40,7 @@ import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
@@ -123,6 +124,27 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         viewModel.treatments.observe(viewLifecycleOwner) { treatments ->
             if (treatments.isNotEmpty()) {
                 visitExpandableListAdapter?.updateTreatmentList(treatments)
+            }
+        }
+        viewModel.treatmentOperationsLiveData.observe(viewLifecycleOwner) { treatment ->
+            when (treatment) {
+                ResultType.FinalisedTreatmentSuccess -> {
+                    ToastUtil.success(getString(R.string.treatment_finalised_successfully))
+                }
+
+                ResultType.FinalisedTreatmentError -> {
+                    ToastUtil.error(getString(R.string.treatment_operation_error))
+                }
+
+                ResultType.RemoveTreatmentSuccess -> {
+                    ToastUtil.success(getString(R.string.treatment_removed_successfully))
+                }
+
+                ResultType.RemoveTreatmentError -> {
+                    ToastUtil.error(getString(R.string.treatment_operation_error))
+                }
+
+                else -> throw IllegalStateException()
             }
         }
     }

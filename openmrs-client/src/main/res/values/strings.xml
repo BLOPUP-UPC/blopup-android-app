@@ -620,4 +620,7 @@
     <string name="finalise_treatment" tools:ignore="MissingTranslation">Finalise</string>
     <string name="edit_treatment" tools:ignore="MissingTranslation">Edit</string>
     <string name="remove_treatment" tools:ignore="MissingTranslation">Remove</string>
+    <string name="treatment_finalised_successfully" tools:ignore="MissingTranslation">Treatment finalised successfully</string> />
+    <string name="treatment_removed_successfully" tools:ignore="MissingTranslation">Treatment removed successfully</string> />
+    <string name="treatment_operation_error" tools:ignore="MissingTranslation">The operation could\'t be performed. Try again later.</string> />
 </resources>

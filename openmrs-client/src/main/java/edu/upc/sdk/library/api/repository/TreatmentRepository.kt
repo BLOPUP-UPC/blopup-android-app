@@ -7,6 +7,7 @@ import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
@@ -70,7 +71,9 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             }
 
         return treatments.filter { treatment ->
-            (treatment.isActive) or (!treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate))
+            (treatment.isActive) or (!treatment.isActive && treatment.inactiveDate!!.isAfter(
+                visitDate
+            ))
         }
     }
 
@@ -165,24 +168,34 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             person = patientId
         }
 
-    suspend fun finalise(treatment: Treatment) {
-        val visit = visitRepository.getVisitByUuid(treatment.visitUuid)
+    suspend fun finalise(treatment: Treatment): ResultType {
+        return try {
+            val visit = visitRepository.getVisitByUuid(treatment.visitUuid)
 
-        val treatmentsEncounters =
-            visit.encounters.filter { it.encounterType?.display == EncounterType.TREATMENT }
+            val treatmentsEncounters =
+                visit.encounters.filter { it.encounterType?.display == EncounterType.TREATMENT }
 
-        val treatmentToFinalise = treatmentsEncounters.find {
-            it.observations.find { it.concept?.uuid == MEDICATION_NAME_CONCEPT_ID }?.displayValue?.contains(
-                treatment.medicationName
-            ) ?: false
-        }
-        val observation =
-            treatmentToFinalise?.observations?.find { it.concept?.uuid == ACTIVE_CONCEPT_ID }
+            val treatmentToFinalise = treatmentsEncounters.find {
+                it.observations.find { it.concept?.uuid == MEDICATION_NAME_CONCEPT_ID }?.displayValue?.contains(
+                    treatment.medicationName
+                ) ?: false
+            }
+            val observation =
+                treatmentToFinalise?.observations?.find { it.concept?.uuid == ACTIVE_CONCEPT_ID }
 
-        val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
+            val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
 
-        withContext(Dispatchers.IO) {
-            restApi.updateObservation(observation?.uuid, value).execute()
+            withContext(Dispatchers.IO) {
+                val response = restApi.updateObservation(observation?.uuid, value).execute()
+                if (response.isSuccessful) {
+                    ResultType.FinalisedTreatmentSuccess
+                } else {
+                    throw Exception("Finalised treatment error: ${response.message()}")
+                }
+            }
+            ResultType.FinalisedTreatmentSuccess
+        } catch (e: Exception) {
+            ResultType.FinalisedTreatmentError
         }
     }
 
