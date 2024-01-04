@@ -79,6 +79,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchCurrentVisit()
         setupVisitObserver()
         setUpTreatmentsObserver()
         setupExpandableListAdapter()
@@ -87,6 +88,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     override fun onStart() {
         super.onStart()
         viewModel.fetchCurrentVisit()
+        setUpTreatmentsObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchCurrentVisit()
+        setUpTreatmentsObserver()
     }
 
     private fun setupExpandableListAdapter() = with(binding) {
