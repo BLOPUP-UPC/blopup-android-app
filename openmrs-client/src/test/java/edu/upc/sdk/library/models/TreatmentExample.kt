@@ -16,6 +16,7 @@ object TreatmentExample {
             visitId = Random.nextLong(1, 100)
             visitUuid = UUID.randomUUID().toString()
             encounterUuid = UUID.randomUUID().toString()
+            observationStatusUuid = UUID.randomUUID().toString()
             this.creationDate = creationDate
         }
     }

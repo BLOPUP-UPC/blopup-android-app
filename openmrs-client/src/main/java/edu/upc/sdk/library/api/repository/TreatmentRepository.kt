@@ -98,6 +98,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                     getMedicationTypesFromObservation(observation)
 
                 ACTIVE_CONCEPT_ID -> {
+                    treatment.observationStatusUuid = observation.uuid
                     treatment.isActive = observation.displayValue?.trim() == "1.0"
                     if (!treatment.isActive) {
                         treatment.inactiveDate = parseFromOpenmrsDate(observation.obsDatetime!!)
@@ -170,18 +171,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
 
     suspend fun finalise(treatment: Treatment): ResultType {
         return try {
-            val visit = visitRepository.getVisitByUuid(treatment.visitUuid)
-
-            val treatmentsEncounters =
-                visit.encounters.filter { it.encounterType?.display == EncounterType.TREATMENT }
-
-            val treatmentToFinalise = treatmentsEncounters.find {
-                it.observations.find { it.concept?.uuid == MEDICATION_NAME_CONCEPT_ID }?.displayValue?.contains(
-                    treatment.medicationName
-                ) ?: false
-            }
-            val observation =
-                treatmentToFinalise?.observations?.find { it.concept?.uuid == ACTIVE_CONCEPT_ID }
+            val observation = getObservationByUuid(treatment.observationStatusUuid!!)
 
             val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
 
@@ -196,6 +186,17 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             ResultType.FinalisedTreatmentSuccess
         } catch (e: Exception) {
             ResultType.FinalisedTreatmentError
+        }
+    }
+
+    private suspend fun getObservationByUuid(uuid: String): Observation? {
+        return withContext(Dispatchers.IO) {
+            val response = restApi.getObservationByUuid(uuid).execute()
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                throw Exception("Get observation error: ${response.message()}")
+            }
         }
     }
 

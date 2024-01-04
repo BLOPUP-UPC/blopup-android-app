@@ -69,6 +69,7 @@ object VisitExample {
                             displayValue = activeText
                             display = "Active:$activeText"
                             uuid = UUID.randomUUID().toString()
+                            treatment.observationStatusUuid = uuid
                             dateCreated = treatment.creationDate.toString()
                             obsDatetime = treatment.inactiveDate.toString()
                         }

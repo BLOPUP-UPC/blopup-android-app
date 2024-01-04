@@ -11,6 +11,7 @@ data class Treatment(
     var visitId: Long,
     var visitUuid: String? = null,
     var encounterUuid: String? = null,
+    var observationStatusUuid: String? = null,
     var creationDate: Instant = Instant.now(),
     var inactiveDate: Instant? = null
 ) {

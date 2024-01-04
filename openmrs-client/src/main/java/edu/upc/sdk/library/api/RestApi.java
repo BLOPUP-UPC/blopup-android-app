@@ -192,6 +192,15 @@ public interface RestApi {
                                         @Body Map<String, Object> value);
 
     /**
+     * Get obs call.
+     *
+     * @param uuid the uuid of the observation to be updated
+     * @return an observation
+     */
+    @GET("obs/{uuid}")
+    Call<Observation> getObservationByUuid(@Path("uuid") String uuid);
+
+    /**
      * Create encounter call.
      *
      * @param encountercreate the encountercreate

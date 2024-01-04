@@ -11,10 +11,12 @@ import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.RECOMMEN
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_NOTES_CONCEPT_ID
 import edu.upc.sdk.library.databases.AppDatabase
+import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
+import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.TreatmentExample
@@ -27,8 +29,8 @@ import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
 import io.mockk.slot
-import io.mockk.verify
 import kotlinx.coroutines.runBlocking
+import okhttp3.Request
 import org.joda.time.Instant
 import org.junit.Before
 import org.junit.Test
@@ -210,62 +212,36 @@ class TreatmentRepositoryTest {
     @Test
     fun `should update the observation as inactive`() {
         val treatment = TreatmentExample.activeTreatment()
-        val visit = VisitExample.random(treatment)
+        val observation = Observation().apply {
+            concept = ConceptEntity().apply { uuid = ACTIVE_CONCEPT_ID }
+            displayValue = " 0"
+            display = "Active:$displayValue"
+            uuid = UUID.randomUUID().toString()
+            dateCreated = treatment.creationDate.toString()
+            obsDatetime = treatment.inactiveDate.toString()
+        }
 
-        every { visitRepository.getVisitByUuid(visit.uuid) } returns visit
+        coEvery { restApi.getObservationByUuid(treatment.observationStatusUuid!!) } returns createCall(response = Response.success(observation))
         coEvery {
             restApi.updateObservation(
-                any(),
-                mapOf("value" to 0)
+                observation.uuid,
+                mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
             )
         } returns mockk(relaxed = true)
+
 
         runBlocking {
             treatmentRepository.finalise(treatment)
         }
-        coVerify { visitRepository.getVisitByUuid(visit.uuid) }
-        verify { restApi.updateObservation(any(), mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())) }
-    }
 
-//    @Test
-//    fun `should finalise a treatment updating the observation as inactive`() {
-//
-//        //my current visit with the treatment active
-//        val treatment = TreatmentExample.activeTreatment()
-//        val visit = VisitExample.random(treatment, Instant("2023-12-22T10:10:10Z"))
-//
-//        //I should receive an inactive treatment as parameter
-//        val observation =  Observation().apply {
-//            concept = ConceptEntity().apply { uuid = TreatmentRepository.ACTIVE_CONCEPT_ID }
-//            displayValue = " 0"
-//            display = "Active:$displayValue"
-//            uuid = UUID.randomUUID().toString()
-//            dateCreated = treatment.creationDate.toString()
-//            obsDatetime = treatment.inactiveDate.toString()
-//        }
-//        val visitList = listOf(visit)
-//
-//        coEvery {
-//            restApi.updateObservation(
-//                visit.encounters[0].observations[3].uuid,
-//                mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
-//            )
-//        } returns mockk<Call<Observation>>().apply {
-//            every { execute() } returns Response.success(observation)
-//        }
-//
-//        coEvery { visitRepository.getVisitByUuid(visit.uuid) } returns visit
-//
-//        coEvery { visitRepository.getAllVisitsForPatient(visit.patient) } returns Observable.just(
-//            visitList
-//        )
-//        runBlocking {
-//            treatmentRepository.finalise(treatment)
-//            val result = treatmentRepository.fetchActiveTreatments(visit.patient, visit)
-//
-//            assertEquals(false, result[0].isActive)
-//        }
-//    }
+        coVerify { restApi.getObservationByUuid(treatment.observationStatusUuid!!) }
+        coVerify {
+            restApi.updateObservation(
+                observation.uuid,
+                mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
+            )
+        }
+    }
 
     private fun mockStaticMethodsNeededToInstantiateBaseRepository() {
         mockkStatic(OpenmrsAndroid::class)
@@ -278,5 +254,15 @@ class TreatmentRepositoryTest {
         every { AppDatabase.getDatabase(any()) } returns mockk(relaxed = true)
         mockkStatic(WorkManager::class)
         every { WorkManager.getInstance(any()) } returns mockk(relaxed = true)
+    }
+
+    private inline fun <reified T> createCall(response: Response<T>): Call<T> = object : Call<T> {
+        override fun enqueue(callback: retrofit2.Callback<T>) = TODO()
+        override fun isExecuted() = TODO()
+        override fun clone(): Call<T> = TODO()
+        override fun isCanceled() = TODO()
+        override fun request(): Request = TODO()
+        override fun cancel() = TODO()
+        override fun execute(): Response<T> = response
     }
 }
