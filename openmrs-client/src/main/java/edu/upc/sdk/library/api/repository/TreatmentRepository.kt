@@ -26,9 +26,17 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         val encounter = createEncounterFromTreatment(currentVisit, treatment)
 
         withContext(Dispatchers.IO) {
-            restApi.createEncounter(encounter).execute()
+            try {
+                val response = restApi.createEncounter(encounter).execute()
+                if (response.isSuccessful) {
+                    return@withContext response.body()
+                } else {
+                    throw Exception("Failed to create encounter: ${response.code()} - ${response.message()}")
+                }
+            } catch (e: Exception) {
+                throw Exception("Failed to create encounter: ${e.message}")
+            }
         }
-
     }
 
     suspend fun fetchActiveTreatments(patient: Patient): List<Treatment> {

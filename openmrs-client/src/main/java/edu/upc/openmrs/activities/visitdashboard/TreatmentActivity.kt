@@ -17,6 +17,7 @@ import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_OTHER
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
+import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -157,8 +158,20 @@ class TreatmentActivity : ACBaseActivity() {
     private fun registerTreatmentOnClickListener() {
         mBinding.registerMedication.setOnClickListener {
             fillTreatmentFields()
-            lifecycleScope.launch { viewModel.registerTreatment() }
-            finish()
+            lifecycleScope.launch {
+                val result = viewModel.registerTreatment()
+                if (result != null) {
+                    when {
+                        result.isSuccess -> {
+                            ToastUtil.success(getString(R.string.treatment_created_successfully))
+                            finish()
+                        }
+                        else -> {
+                            ToastUtil.error(getString(R.string.treatment_operation_error))
+                        }
+                    }
+                }
+            }
         }
     }
 }

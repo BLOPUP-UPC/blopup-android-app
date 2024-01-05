@@ -87,7 +87,7 @@ public class VisitRepositoryTest {
 
         Optional<Visit> result = visitRepository.getLatestVisitWithHeight(patientID);
 
-        assert(result.get().equals(latestVisitWithHeight));
+        assert (result.get().equals(latestVisitWithHeight));
     }
 
     @Test
@@ -121,5 +121,15 @@ public class VisitRepositoryTest {
         visitRepository.deleteVisitByUuid(visitToDelete.getUuid());
 
         verify(visitDAO, times(0)).deleteVisitByUuid(visitToDelete.getUuid());
+    }
+
+    @Test(expected = IOException.class)
+    public void shouldReturnErrorIfResponseToGetVisitByIfIsNotSuccessful() throws IOException {
+        Visit visit = new Visit();
+        visit.setId(1L);
+
+        when(visitDAO.getVisitByID(visit.getId())).thenReturn(Observable.error(new IOException("Error fetching visit by id: " + visit.getId())));
+
+        visitRepository.getVisitById(visit.getId());
     }
 }

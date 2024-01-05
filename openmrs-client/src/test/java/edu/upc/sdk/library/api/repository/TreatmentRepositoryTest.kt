@@ -35,6 +35,7 @@ import org.joda.time.Instant
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.assertThrows
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -210,6 +211,27 @@ class TreatmentRepositoryTest {
     }
 
     @Test
+    fun `should return error if create encounter call fails`() {
+
+        coEvery { visitRepository.getAllVisitsForPatient(any()) } returns Observable.just(
+            listOf(
+                Visit()
+            )
+        )
+        coEvery { restApi.createEncounter(any()) } returns createCall(
+            Response.error(
+                400,
+                mockk(relaxed = true)
+            )
+        )
+        assertThrows<Exception> {
+            runBlocking {
+                treatmentRepository.saveTreatment(TreatmentExample.activeTreatment())
+            }
+        }
+    }
+
+    @Test
     fun `should update the observation as inactive`() {
         val treatment = TreatmentExample.activeTreatment()
         val observation = Observation().apply {
@@ -221,7 +243,9 @@ class TreatmentRepositoryTest {
             obsDatetime = treatment.inactiveDate.toString()
         }
 
-        coEvery { restApi.getObservationByUuid(treatment.observationStatusUuid!!) } returns createCall(response = Response.success(observation))
+        coEvery { restApi.getObservationByUuid(treatment.observationStatusUuid!!) } returns createCall(
+            response = Response.success(observation)
+        )
         coEvery {
             restApi.updateObservation(
                 observation.uuid,

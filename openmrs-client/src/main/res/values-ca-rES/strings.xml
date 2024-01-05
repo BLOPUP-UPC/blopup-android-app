@@ -429,5 +429,7 @@
     <string name="remove_treatment">Esborrar</string>
     <string name="treatment_finalised_successfully">Tractament finalitzat amb èxit</string> />
     <string name="treatment_removed_successfully">Tractament esborrat amb èxit</string> />
-    <string name="treatment_operation_error">No s\'ha pogut fer l\'operació. Intenteu més tard.</string> />
+    <string name="treatment_operation_error">No s\'ha pogut fer l\'operació. Intenteu més tard.</string>
+    <string name="treatment_created_successfully">Tractament creat amb èxit</string>
+    />
 </resources>

@@ -10,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.runner.RunWith
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
@@ -37,6 +38,21 @@ class TreatmentViewModelTest {
         runBlocking {
             treatmentViewModel.registerTreatment()
             coVerify { mockTreatmentRepo.saveTreatment(treatment) }
+        }
+    }
+
+    @Test
+    fun `should return error if treatment couldn't be registered`() {
+        coEvery { mockTreatmentRepo.saveTreatment(any()) } throws Exception("Error")
+
+        runBlocking {
+            val result = runCatching {
+                treatmentViewModel.registerTreatment()
+            }
+
+            result.onFailure { exception ->
+                assertEquals("Error", exception.message)
+            }
         }
     }
 }
