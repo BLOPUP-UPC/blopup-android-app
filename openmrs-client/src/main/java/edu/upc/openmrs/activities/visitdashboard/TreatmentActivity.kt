@@ -133,7 +133,13 @@ class TreatmentActivity : ACBaseActivity() {
 
     private fun fieldValidationValueObserver() {
         viewModel.fieldValidation.observe(this) { validation ->
-            mBinding.registerMedication.isEnabled = validation.values.all { it }
+            if (validation.values.all { it }) {
+                mBinding.registerMedication.isEnabled = true
+                mBinding.registerMedication.setBackgroundColor(resources.getColor(R.color.color_accent, null))
+            } else {
+                mBinding.registerMedication.isEnabled = false
+                mBinding.registerMedication.setBackgroundColor(resources.getColor(R.color.dark_grey_for_stroke, null))
+            }
             mBinding.textInputLayoutMedicationName.error = getString(R.string.empty_value)
             mBinding.textInputLayoutMedicationName.isErrorEnabled = !validation[MEDICATION_NAME]!!
             if (validation[RECOMMENDED_BY]!!) { mBinding.recommendedByError.visibility = View.GONE }

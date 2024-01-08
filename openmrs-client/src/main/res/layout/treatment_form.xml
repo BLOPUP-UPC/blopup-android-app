@@ -200,8 +200,8 @@
             android:id="@+id/register_medication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/color_accent"
             android:text="@string/register_medication"
+            android:textColor="@color/white"
             android:textAllCaps="false" />
     </LinearLayout>
 
