@@ -6,8 +6,6 @@ import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.models.Treatment
 import javax.inject.Inject
-import edu.upc.sdk.library.models.Result
-
 
 @HiltViewModel
 class TreatmentViewModel @Inject constructor(private val treatmentRepository: TreatmentRepository) :
@@ -16,6 +14,16 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
     val treatment: MutableLiveData<Treatment> =
         MutableLiveData<Treatment>().apply { value = Treatment() }
 
+    val fieldValidation: MutableLiveData<MutableMap<String, Boolean>> =
+        MutableLiveData<MutableMap<String, Boolean>>().apply {
+            value =
+                mutableMapOf(
+                    RECOMMENDED_BY to false,
+                    MEDICATION_NAME to false,
+                    MEDICATION_TYPE to false
+                )
+        }
+
     suspend fun registerTreatment() =
         try {
             treatmentRepository.saveTreatment(treatment.value!!)
@@ -23,4 +31,10 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
         } catch (e: Exception) {
             setError(e)
         }
+
+    companion object {
+        const val RECOMMENDED_BY = "recommendedBy"
+        const val MEDICATION_NAME = "medicationName"
+        const val MEDICATION_TYPE = "medicationType"
+    }
 }

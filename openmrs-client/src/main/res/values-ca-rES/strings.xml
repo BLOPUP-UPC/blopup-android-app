@@ -17,7 +17,8 @@
     <string name="warning_lost_data_dialog">Modificar la URL, l\'usuari o la paraula de pas esborrarà totes les dades. Vols continuar igualment?</string>
     <string name="forgot_button_ok">Cancel·lar</string>
     <string name="emptyerror">Obligatori</string>
-    <string name="gender_error">Si us plau, esculli una opció</string>
+    <string name="choose_option_error">Si us plau, esculli una opció</string>
+    <string name="choose_options_error">Si us plau, esculli una opció com a mínim</string>
     <string name="fname_invalid_error">El nom no pot tenir ni símbols ni números.</string>
     <string name="midname_invalid_error">El segon nom no pot tenir ni símbols ni números.</string>
     <string name="lname_invalid_error">El cognom no pot tenir ni símbols ni números.</string>
@@ -416,7 +417,7 @@
     <string name="register_medication">Finalitzar</string>
     <string name="additional_notes">Indicacions adicionals</string>
     <string name="add_treatment">Afegir Tractament</string>
-    <string name="drug_type">Tipus de medicament</string>
+    <string name="medication_type">Tipus de medicament</string>
     <string name="when_was_it_recommended">Quan es va recomanar?</string>
     <string name="add_treatment_button">Afegir Tractament</string>
     <string name="recommended_treatments">Tractaments recomanats:</string>

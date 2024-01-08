@@ -33,7 +33,19 @@
             android:textFontWeight="500"
             tools:targetApi="p" />
 
+        <TextView
+            android:id="@+id/recommended_by_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="@string/choose_option_error"
+            android:textSize="@dimen/text_sm"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/error_red"
+            android:visibility="gone" />
+
         <LinearLayout
+            android:id="@+id/recommended_by"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
@@ -73,6 +85,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/text_input_layout_medication_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
@@ -94,11 +107,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_short"
             android:fontFamily="@font/roboto_regular"
-            android:text="@string/drug_type"
+            android:text="@string/medication_type"
             android:textColor="@color/black"
             app:fontWeight="500"
             android:textFontWeight="500"
             tools:targetApi="p" />
+
+        <TextView
+            android:id="@+id/medication_type_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="@string/choose_options_error"
+            android:textSize="@dimen/text_sm"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/error_red"
+            android:visibility="gone" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/medication_type"

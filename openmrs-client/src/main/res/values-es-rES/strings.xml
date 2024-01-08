@@ -17,7 +17,8 @@
     <string name="reg_ques_name">Nombre del paciente</string>
     <string name="forgot_button_ok">Cancelar</string>
     <string name="emptyerror">Obligatorio</string>
-    <string name="gender_error">Por favor, elige una opción</string>
+    <string name="choose_option_error">Por favor, elige una opción</string>
+    <string name="choose_options_error">Por favor, elige una opción como mínimo</string>
     <string name="reg_ques_gender">Género del paciente*</string>
     <string name="reg_ques_dob">Fecha de nacimiento del paciente*</string>
     <string name="label_or">O</string>
@@ -419,7 +420,7 @@
     <string name="angiotensin_receptor_blocker">ARA II</string>
     <string name="register_medication">Finalizar</string>
     <string name="additional_notes">Notas adicionales</string>
-    <string name="drug_type">Tipo de medicamento</string>
+    <string name="medication_type">Tipo de medicamento</string>
     <string name="when_was_it_recommended">Cuándo se ha recomendado?</string>
     <string name="add_treatment_button">Añadir Tratamiento</string>
     <string name="recommended_treatments">Tratamientos recomendados:</string>

@@ -125,10 +125,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="@string/gender_error"
+                        android:text="@string/choose_option_error"
                         android:textSize="@dimen/text_sm"
                         android:layout_marginStart="4dp"
-                        android:textColor="@color/gender_red"
+                        android:textColor="@color/error_red"
                         android:visibility="gone" />
 
                     <RadioGroup

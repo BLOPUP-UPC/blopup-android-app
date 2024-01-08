@@ -2,9 +2,12 @@ package edu.upc.openmrs.activities.visitdashboard
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.children
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,6 +15,9 @@ import edu.upc.R
 import edu.upc.databinding.TreatmentFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
+import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.MEDICATION_NAME
+import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.MEDICATION_TYPE
+import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.RECOMMENDED_BY
 import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Result
@@ -22,6 +28,8 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
+
+private const val s = "medicationName"
 
 @AndroidEntryPoint
 class TreatmentActivity : ACBaseActivity() {
@@ -40,6 +48,8 @@ class TreatmentActivity : ACBaseActivity() {
         registerTreatmentOnClickListener()
         treatmentObserver()
         addOnBackPressedListener()
+        addFieldValidationListeners()
+        fieldValidationValueObserver()
     }
 
     private fun addOnBackPressedListener() {
@@ -123,27 +133,39 @@ class TreatmentActivity : ACBaseActivity() {
         }
     }
 
-    private fun fillTreatmentFields() {
-        with(mBinding) {
-            viewModel.treatment.value?.medicationName = medicationName.text.toString()
-            viewModel.treatment.value?.notes = additionalNotes.text.toString()
-            viewModel.treatment.value?.medicationType = medicationType.checkedChipIds
-                .map {
-                    MedicationType.valueOf(
-                        findViewById<Chip>(it).resources.getResourceName(it)
-                            .split("/")[1].uppercase()
-                    )
-                }
-                .toSet()
+    private fun fieldValidationValueObserver() {
+        viewModel.fieldValidation.observe(this) { validation ->
+            mBinding.registerMedication.isEnabled = validation.values.all { it }
+            mBinding.textInputLayoutMedicationName.error = getString(R.string.empty_value)
+            mBinding.textInputLayoutMedicationName.isErrorEnabled = !validation[MEDICATION_NAME]!!
+            if (validation[RECOMMENDED_BY]!!) { mBinding.recommendedByError.visibility = View.GONE }
+            else { mBinding.recommendedByError.visibility = View.VISIBLE }
+            if (validation[MEDICATION_TYPE]!!) { mBinding.medicationTypeError.visibility = View.GONE }
+            else { mBinding.medicationTypeError.visibility = View.VISIBLE }
         }
     }
 
-    private fun doWeHaveValues(): Boolean {
-        return with(mBinding) {
-            viewModel.treatment.value?.recommendedBy?.isNotEmpty() == true ||
-                    medicationName.text.toString().isNotEmpty() ||
-                    additionalNotes.text.toString().isNotEmpty() ||
-                    !medicationType.checkedChipIds.isEmpty()
+    private fun addFieldValidationListeners() = with(mBinding) {
+        medicationName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                viewModel.fieldValidation.value =
+                    viewModel.fieldValidation.value?.apply { replace(MEDICATION_NAME, false) }
+            } else {
+                viewModel.fieldValidation.value =
+                    viewModel.fieldValidation.value?.apply { replace(MEDICATION_NAME, true) }
+            }
+        }
+
+        medicationType.children.forEach { chip ->
+            chip.setOnClickListener {
+                if (medicationType.checkedChipIds.isEmpty()) {
+                    viewModel.fieldValidation.value =
+                        viewModel.fieldValidation.value?.apply { replace(MEDICATION_TYPE, false) }
+                } else {
+                    viewModel.fieldValidation.value =
+                        viewModel.fieldValidation.value?.apply { replace(MEDICATION_TYPE, true) }
+                }
+            }
         }
     }
 
@@ -151,10 +173,17 @@ class TreatmentActivity : ACBaseActivity() {
         mBinding.previouslyRecommended.setOnClickListener {
             viewModel.treatment.value =
                 viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_OTHER }
+            viewModel.fieldValidation.value = viewModel.fieldValidation.value!!.apply {
+                replace(RECOMMENDED_BY, true)
+            }
         }
+
         mBinding.newRecommendation.setOnClickListener {
             viewModel.treatment.value =
                 viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_BLOPUP }
+            viewModel.fieldValidation.value = viewModel.fieldValidation.value?.apply {
+                replace(RECOMMENDED_BY, true)
+            }
         }
     }
 
@@ -173,17 +202,43 @@ class TreatmentActivity : ACBaseActivity() {
         }
     }
 
+    private fun fillTreatmentFields() {
+        with(mBinding) {
+            viewModel.treatment.value?.medicationName = medicationName.text.toString()
+            viewModel.treatment.value?.notes = additionalNotes.text.toString()
+            viewModel.treatment.value?.medicationType = medicationType.checkedChipIds
+                .map {
+                    MedicationType.valueOf(
+                        findViewById<Chip>(it).resources.getResourceName(it)
+                            .split("/")[1].uppercase()
+                    )
+                }
+                .toSet()
+        }
+    }
+
     private fun handleTreatmentResult(result: Result<Treatment>) =
         when {
             result is Result.Success -> {
                 ToastUtil.success(getString(R.string.treatment_created_successfully))
                 finish()
             }
+
             result is Result.Error && result.throwable.cause is UnknownHostException -> {
                 ToastUtil.error(getString(R.string.no_internet_connection))
             }
+
             else -> {
                 ToastUtil.error(getString(R.string.treatment_operation_error))
             }
         }
+
+    private fun doWeHaveValues(): Boolean {
+        return with(mBinding) {
+            viewModel.treatment.value?.recommendedBy?.isNotEmpty() == true ||
+                    medicationName.text.toString().isNotEmpty() ||
+                    additionalNotes.text.toString().isNotEmpty() ||
+                    medicationType.checkedChipIds.isNotEmpty()
+        }
+    }
 }
