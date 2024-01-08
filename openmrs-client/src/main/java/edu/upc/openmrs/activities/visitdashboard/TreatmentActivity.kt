@@ -14,11 +14,14 @@ import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.sdk.library.models.MedicationType
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_OTHER
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 
 @AndroidEntryPoint
 class TreatmentActivity : ACBaseActivity() {
@@ -159,19 +162,28 @@ class TreatmentActivity : ACBaseActivity() {
         mBinding.registerMedication.setOnClickListener {
             fillTreatmentFields()
             lifecycleScope.launch {
-                val result = viewModel.registerTreatment()
-                if (result != null) {
-                    when {
-                        result.isSuccess -> {
-                            ToastUtil.success(getString(R.string.treatment_created_successfully))
-                            finish()
-                        }
-                        else -> {
-                            ToastUtil.error(getString(R.string.treatment_operation_error))
-                        }
-                    }
+                viewModel.registerTreatment()
+            }
+
+            with(viewModel.result) {
+                this.observe(this@TreatmentActivity) {
+                    handleTreatmentResult(it)
                 }
             }
         }
     }
+
+    private fun handleTreatmentResult(result: Result<Treatment>) =
+        when {
+            result is Result.Success -> {
+                ToastUtil.success(getString(R.string.treatment_created_successfully))
+                finish()
+            }
+            result is Result.Error && result.throwable.cause is UnknownHostException -> {
+                ToastUtil.error(getString(R.string.no_internet_connection))
+            }
+            else -> {
+                ToastUtil.error(getString(R.string.treatment_operation_error))
+            }
+        }
 }

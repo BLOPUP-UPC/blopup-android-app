@@ -12,6 +12,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.runner.RunWith
+import edu.upc.sdk.library.models.Result
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
 class TreatmentViewModelTest {
@@ -42,17 +43,19 @@ class TreatmentViewModelTest {
     }
 
     @Test
-    fun `should return error if treatment couldn't be registered`() {
-        coEvery { mockTreatmentRepo.saveTreatment(any()) } throws Exception("Error")
+    fun `should set error if treatment couldn't be registered`() {
+        val exception = Exception("Error")
+        coEvery { mockTreatmentRepo.saveTreatment(any()) } throws exception
 
         runBlocking {
-            val result = runCatching {
+            runCatching {
                 treatmentViewModel.registerTreatment()
             }
 
-            result.onFailure { exception ->
-                assertEquals("Error", exception.message)
-            }
+            assertEquals(
+                exception,
+                treatmentViewModel.result.value?.let { (it as Result.Error).throwable }
+            )
         }
     }
 }

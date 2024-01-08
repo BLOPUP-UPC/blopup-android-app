@@ -34,7 +34,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                     throw Exception("Failed to create encounter: ${response.code()} - ${response.message()}")
                 }
             } catch (e: Exception) {
-                throw Exception("Failed to create encounter: ${e.message}")
+                throw Exception("Failed to create encounter: ${e.message}", e)
             }
         }
     }
