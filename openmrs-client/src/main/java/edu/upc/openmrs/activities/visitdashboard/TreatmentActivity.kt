@@ -29,8 +29,6 @@ import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
-private const val s = "medicationName"
-
 @AndroidEntryPoint
 class TreatmentActivity : ACBaseActivity() {
 
