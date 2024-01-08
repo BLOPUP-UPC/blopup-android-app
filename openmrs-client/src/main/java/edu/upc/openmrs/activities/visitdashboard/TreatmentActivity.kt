@@ -203,7 +203,7 @@ class TreatmentActivity : ACBaseActivity() {
     private fun fillTreatmentFields() {
         with(mBinding) {
             viewModel.treatment.value?.medicationName = medicationName.text.toString()
-            viewModel.treatment.value?.notes = additionalNotes.text.toString()
+            if (additionalNotes.text.toString().isNotEmpty()) viewModel.treatment.value?.notes = additionalNotes.text.toString()
             viewModel.treatment.value?.medicationType = medicationType.checkedChipIds
                 .map {
                     MedicationType.valueOf(

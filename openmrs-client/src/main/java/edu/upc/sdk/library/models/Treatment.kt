@@ -22,6 +22,6 @@ data class Treatment(
         const val RECOMMENDED_BY_OTHER = "Other"
     }
 
-    constructor() : this("", "", emptySet(), "", true, 0)
+    constructor() : this("", "", emptySet(), "N/A", true, 0)
 }
 
