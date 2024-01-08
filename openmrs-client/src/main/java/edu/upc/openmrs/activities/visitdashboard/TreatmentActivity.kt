@@ -132,19 +132,22 @@ class TreatmentActivity : ACBaseActivity() {
     }
 
     private fun fieldValidationValueObserver() {
-        viewModel.fieldValidation.observe(this) { validation ->
-            if (validation.values.all { it }) {
+        viewModel.fieldValidation.observe(this) { isValid ->
+            if (isValid.values.all { it }) {
                 mBinding.registerMedication.isEnabled = true
                 mBinding.registerMedication.setBackgroundColor(resources.getColor(R.color.color_accent, null))
             } else {
                 mBinding.registerMedication.isEnabled = false
                 mBinding.registerMedication.setBackgroundColor(resources.getColor(R.color.dark_grey_for_stroke, null))
             }
+
             mBinding.textInputLayoutMedicationName.error = getString(R.string.empty_value)
-            mBinding.textInputLayoutMedicationName.isErrorEnabled = !validation[MEDICATION_NAME]!!
-            if (validation[RECOMMENDED_BY]!!) { mBinding.recommendedByError.visibility = View.GONE }
+            mBinding.textInputLayoutMedicationName.isErrorEnabled = !isValid[MEDICATION_NAME]!!
+
+            if (isValid[RECOMMENDED_BY]!!) { mBinding.recommendedByError.visibility = View.GONE }
             else { mBinding.recommendedByError.visibility = View.VISIBLE }
-            if (validation[MEDICATION_TYPE]!!) { mBinding.medicationTypeError.visibility = View.GONE }
+
+            if (isValid[MEDICATION_TYPE]!!) { mBinding.medicationTypeError.visibility = View.GONE }
             else { mBinding.medicationTypeError.visibility = View.VISIBLE }
         }
     }
