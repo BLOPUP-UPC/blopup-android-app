@@ -46,7 +46,7 @@ class TreatmentActivity : ACBaseActivity() {
         registerTreatmentOnClickListener()
         treatmentObserver()
         addOnBackPressedListener()
-        addFieldValidationListeners()
+        setListenersForFieldValidation()
         fieldValidationValueObserver()
     }
 
@@ -135,42 +135,54 @@ class TreatmentActivity : ACBaseActivity() {
         viewModel.fieldValidation.observe(this) { isValid ->
             if (isValid.values.all { it }) {
                 mBinding.registerMedication.isEnabled = true
-                mBinding.registerMedication.setBackgroundColor(resources.getColor(R.color.color_accent, null))
+                mBinding.registerMedication.setBackgroundColor(
+                    resources.getColor(
+                        R.color.color_accent,
+                        null
+                    )
+                )
             } else {
                 mBinding.registerMedication.isEnabled = false
-                mBinding.registerMedication.setBackgroundColor(resources.getColor(R.color.dark_grey_for_stroke, null))
+                mBinding.registerMedication.setBackgroundColor(
+                    resources.getColor(
+                        R.color.dark_grey_for_stroke,
+                        null
+                    )
+                )
             }
 
             mBinding.textInputLayoutMedicationName.error = getString(R.string.empty_value)
             mBinding.textInputLayoutMedicationName.isErrorEnabled = !isValid[MEDICATION_NAME]!!
 
-            if (isValid[RECOMMENDED_BY]!!) { mBinding.recommendedByError.visibility = View.GONE }
-            else { mBinding.recommendedByError.visibility = View.VISIBLE }
+            if (isValid[RECOMMENDED_BY]!!) {
+                mBinding.recommendedByError.visibility = View.GONE
+            } else {
+                mBinding.recommendedByError.visibility = View.VISIBLE
+            }
 
-            if (isValid[MEDICATION_TYPE]!!) { mBinding.medicationTypeError.visibility = View.GONE }
-            else { mBinding.medicationTypeError.visibility = View.VISIBLE }
+            if (isValid[MEDICATION_TYPE]!!) {
+                mBinding.medicationTypeError.visibility = View.GONE
+            } else {
+                mBinding.medicationTypeError.visibility = View.VISIBLE
+            }
         }
     }
 
-    private fun addFieldValidationListeners() = with(mBinding) {
+    private fun setListenersForFieldValidation() = with(mBinding) {
         medicationName.doOnTextChanged { text, _, _, _ ->
             if (text.isNullOrEmpty()) {
-                viewModel.fieldValidation.value =
-                    viewModel.fieldValidation.value?.apply { replace(MEDICATION_NAME, false) }
+                viewModel.updateFieldValidation(MEDICATION_NAME, false)
             } else {
-                viewModel.fieldValidation.value =
-                    viewModel.fieldValidation.value?.apply { replace(MEDICATION_NAME, true) }
+                viewModel.updateFieldValidation(MEDICATION_NAME, true)
             }
         }
 
         medicationType.children.forEach { chip ->
             chip.setOnClickListener {
                 if (medicationType.checkedChipIds.isEmpty()) {
-                    viewModel.fieldValidation.value =
-                        viewModel.fieldValidation.value?.apply { replace(MEDICATION_TYPE, false) }
+                    viewModel.updateFieldValidation(MEDICATION_TYPE, false)
                 } else {
-                    viewModel.fieldValidation.value =
-                        viewModel.fieldValidation.value?.apply { replace(MEDICATION_TYPE, true) }
+                    viewModel.updateFieldValidation(MEDICATION_TYPE, true)
                 }
             }
         }
@@ -180,17 +192,13 @@ class TreatmentActivity : ACBaseActivity() {
         mBinding.previouslyRecommended.setOnClickListener {
             viewModel.treatment.value =
                 viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_OTHER }
-            viewModel.fieldValidation.value = viewModel.fieldValidation.value!!.apply {
-                replace(RECOMMENDED_BY, true)
-            }
+            viewModel.updateFieldValidation(RECOMMENDED_BY, true)
         }
 
         mBinding.newRecommendation.setOnClickListener {
             viewModel.treatment.value =
                 viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_BLOPUP }
-            viewModel.fieldValidation.value = viewModel.fieldValidation.value?.apply {
-                replace(RECOMMENDED_BY, true)
-            }
+            viewModel.updateFieldValidation(RECOMMENDED_BY, true)
         }
     }
 

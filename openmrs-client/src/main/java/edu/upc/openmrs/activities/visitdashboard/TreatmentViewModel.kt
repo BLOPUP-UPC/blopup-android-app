@@ -1,5 +1,6 @@
 package edu.upc.openmrs.activities.visitdashboard
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.activities.BaseViewModel
@@ -11,10 +12,7 @@ import javax.inject.Inject
 class TreatmentViewModel @Inject constructor(private val treatmentRepository: TreatmentRepository) :
     BaseViewModel<Treatment>() {
 
-    val treatment: MutableLiveData<Treatment> =
-        MutableLiveData<Treatment>().apply { value = Treatment() }
-
-    val fieldValidation: MutableLiveData<MutableMap<String, Boolean>> =
+    private val _fieldValidation: MutableLiveData<MutableMap<String, Boolean>> =
         MutableLiveData<MutableMap<String, Boolean>>().apply {
             value =
                 mutableMapOf(
@@ -24,6 +22,11 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
                 )
         }
 
+    val fieldValidation: LiveData<MutableMap<String, Boolean>> = _fieldValidation
+
+    val treatment: MutableLiveData<Treatment> =
+        MutableLiveData<Treatment>().apply { value = Treatment() }
+
     suspend fun registerTreatment() =
         try {
             treatmentRepository.saveTreatment(treatment.value!!)
@@ -31,6 +34,10 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
         } catch (e: Exception) {
             setError(e)
         }
+
+    fun updateFieldValidation(fieldName: String, isValid: Boolean) {
+        _fieldValidation.value = _fieldValidation.value?.apply { this[fieldName] = isValid }
+    }
 
     companion object {
         const val RECOMMENDED_BY = "recommendedBy"
