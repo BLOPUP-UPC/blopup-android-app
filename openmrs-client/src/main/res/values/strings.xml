@@ -625,5 +625,6 @@
     <string name="treatment_removed_successfully" tools:ignore="MissingTranslation">Treatment removed successfully</string> />
     <string name="treatment_operation_error" tools:ignore="MissingTranslation">The operation could\'t be performed. Try again later.</string>
     <string name="treatment_created_successfully" tools:ignore="MissingTranslation">Treatment created successfully</string>
+    <string name="treatment_adherence_label" tools:ignore="MissingTranslation">Is the patient following the treatments below?</string>
     />
 </resources>

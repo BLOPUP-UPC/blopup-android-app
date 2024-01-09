@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
+import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.EncounterType
@@ -14,6 +15,8 @@ import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Treatment
+import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.execute
 import org.joda.time.Instant
@@ -26,6 +29,7 @@ class VitalsFormViewModel @Inject constructor(
     private val formRepository: FormRepository,
     private val visitRepository: VisitRepository,
     private val encounterRepository: EncounterRepository,
+    private val treatmentRepository: TreatmentRepository,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Unit>() {
 
@@ -34,6 +38,9 @@ class VitalsFormViewModel @Inject constructor(
     private val formName: String = "Vitals"
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
+
+    suspend fun getActiveTreatments(): List<Treatment> =
+        treatmentRepository.fetchActiveTreatments(patient)
 
     fun getLastHeightFromVisits(): LiveData<Result<String>> {
         val resultLiveData = MutableLiveData<Result<String>>()

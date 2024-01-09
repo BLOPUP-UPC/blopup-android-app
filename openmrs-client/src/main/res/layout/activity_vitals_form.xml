@@ -211,6 +211,24 @@
                         android:text="@string/height_unit" />
                 </TableRow>
             </TableLayout>
+
+            <LinearLayout
+                android:id="@+id/treatment_adherence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/treatment_adherence_label"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/treatment_adherence_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

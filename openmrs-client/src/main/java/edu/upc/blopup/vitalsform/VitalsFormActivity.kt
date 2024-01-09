@@ -15,8 +15,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_DIASTOLIC
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_HEART_RATE
@@ -30,7 +32,6 @@ import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.DIASTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEART_RATE_FIELD_CONCEPT
@@ -44,7 +45,7 @@ import java.net.UnknownHostException
 @AndroidEntryPoint
 class VitalsFormActivity : ACBaseActivity() {
 
-    lateinit var mBinding: ActivityVitalsFormBinding
+    private lateinit var mBinding: ActivityVitalsFormBinding
     private lateinit var mToolbar: Toolbar
 
     private val viewModel: VitalsFormViewModel by viewModels()
@@ -138,6 +139,12 @@ class VitalsFormActivity : ACBaseActivity() {
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
         askForPermissions()
+
+        if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
+            setupTreatmentAdherenceAdapter()
+        } else {
+            mBinding.treatmentAdherence.visibility = View.GONE
+        }
     }
 
     override fun onResume() {
@@ -259,6 +266,27 @@ class VitalsFormActivity : ACBaseActivity() {
                 arrayOf(Manifest.permission.CALL_PHONE, Manifest.permission.SEND_SMS),
                 2
             )
+        }
+    }
+
+    private fun setupTreatmentAdherenceAdapter() {
+        val linearLayoutManager = LinearLayoutManager(applicationContext)
+        mBinding.treatmentAdherenceRecyclerView.layoutManager = linearLayoutManager
+        val treatmentAdherenceAdapter = TreatmentAdherenceRecyclerViewAdapter(applicationContext)
+        mBinding.treatmentAdherenceRecyclerView.adapter = treatmentAdherenceAdapter
+        setupActiveTreatmentsObserver(treatmentAdherenceAdapter)
+    }
+
+    private fun setupActiveTreatmentsObserver(treatmentAdherenceAdapter: TreatmentAdherenceRecyclerViewAdapter) {
+        lifecycleScope.launchWhenResumed {
+            val treatments = viewModel.getActiveTreatments()
+
+            if (treatments.isNotEmpty()) {
+                mBinding.treatmentAdherence.visibility = View.VISIBLE
+            } else {
+                mBinding.treatmentAdherence.visibility = View.GONE
+            }
+            treatmentAdherenceAdapter.updateData(treatments)
         }
     }
 }
