@@ -15,7 +15,7 @@ import javax.inject.Inject
 class PatientDashboardDetailsViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val treatmentRepository: TreatmentRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Patient>() {
 
     val activeTreatments: MutableLiveData<List<Treatment>> = MutableLiveData<List<Treatment>>()
@@ -30,7 +30,11 @@ class PatientDashboardDetailsViewModel @Inject constructor(
     }
 
     suspend fun fetchActiveTreatments(patient: Patient) {
-        val activeTreatmentsList = treatmentRepository.fetchAllActiveTreatments(patient)
-        activeTreatments.postValue(activeTreatmentsList)
+        try {
+            val activeTreatmentsList = treatmentRepository.fetchAllActiveTreatments(patient)
+            activeTreatments.postValue(activeTreatmentsList)
+        } catch (e: Exception) {
+            activeTreatments.postValue(emptyList())
+        }
     }
 }

@@ -39,7 +39,11 @@ class VitalsFormViewModel @Inject constructor(
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
     suspend fun getActiveTreatments(): List<Treatment> =
-        treatmentRepository.fetchAllActiveTreatments(patient)
+         try {
+            treatmentRepository.fetchAllActiveTreatments(patient)
+        } catch (e: Exception) {
+            emptyList()
+        }
 
     fun getLastHeightFromVisits(): LiveData<Result<String>> {
         val resultLiveData = MutableLiveData<Result<String>>()
