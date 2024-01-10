@@ -160,7 +160,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val treatmentList = listOf(treatmentUpdated)
 
         coEvery { treatmentRepository.finalise(treatment) } returns ResultType.FinalisedTreatmentSuccess
-        coEvery { treatmentRepository.fetchActiveTreatments(patient) } returns treatmentList
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns treatmentList
 
         runBlocking {
             viewModel.finaliseTreatment(treatment)
@@ -178,7 +178,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val treatmentList = listOf(treatmentTwo)
 
         coEvery { encounterRepository.removeEncounter(treatmentOne.encounterUuid) } returns ResultType.RemoveTreatmentSuccess
-        coEvery { treatmentRepository.fetchActiveTreatments(patient) } returns treatmentList
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns treatmentList
 
         runBlocking {
             viewModel.removeTreatment(treatmentOne)

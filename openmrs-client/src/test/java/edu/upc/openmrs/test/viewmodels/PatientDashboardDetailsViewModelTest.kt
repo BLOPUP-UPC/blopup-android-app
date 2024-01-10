@@ -71,11 +71,11 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
         val patient = Patient()
         val treatmentList = listOf<Treatment>()
 
-        coEvery { treatmentRepository.fetchActiveTreatments(patient) } returns treatmentList
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns treatmentList
 
         runBlocking {
             viewModel.fetchActiveTreatments(patient)
-            coVerify { treatmentRepository.fetchActiveTreatments(patient) }
+            coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
             assert(viewModel.activeTreatments.value == treatmentList)
         }
     }

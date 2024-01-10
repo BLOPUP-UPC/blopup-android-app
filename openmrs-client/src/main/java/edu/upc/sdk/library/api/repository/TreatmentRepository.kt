@@ -20,7 +20,6 @@ import javax.inject.Singleton
 @Singleton
 class TreatmentRepository @Inject constructor(val visitRepository: VisitRepository) :
     BaseRepository(null) {
-
     suspend fun saveTreatment(treatment: Treatment) {
         val currentVisit = visitRepository.getVisitById(treatment.visitId)
         val encounter = createEncounterFromTreatment(currentVisit, treatment)
@@ -39,13 +38,48 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         }
     }
 
-    suspend fun fetchActiveTreatments(patient: Patient): List<Treatment> {
+    suspend fun finalise(treatment: Treatment): ResultType {
+        return try {
+            val observation = getObservationByUuid(treatment.observationStatusUuid!!)
+
+            val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
+
+            withContext(Dispatchers.IO) {
+                val response = restApi.updateObservation(observation?.uuid, value).execute()
+                if (response.isSuccessful) {
+                    ResultType.FinalisedTreatmentSuccess
+                } else {
+                    throw Exception("Finalised treatment error: ${response.message()}")
+                }
+            }
+            ResultType.FinalisedTreatmentSuccess
+        } catch (e: Exception) {
+            ResultType.FinalisedTreatmentError
+        }
+    }
+
+    suspend fun fetchAllActiveTreatments(patient: Patient): List<Treatment> {
         val encounters = fetchAllTreatments(patient)
 
         return encounters
             .filter { treatment ->
                 treatment.isActive
             }
+    }
+
+    suspend fun fetchActiveTreatmentsAtAGivenTime(patient: Patient, visit: Visit): List<Treatment> {
+        val visitDate = parseFromOpenmrsDate(visit.startDatetime)
+
+        val treatments = fetchAllTreatments(patient)
+            .filter {
+                it.creationDate.isBefore(visitDate) || it.visitUuid == visit.uuid
+            }
+
+        return treatments.filter { treatment ->
+            (treatment.isActive) or (!treatment.isActive && treatment.inactiveDate!!.isAfter(
+                visitDate
+            ))
+        }
     }
 
     private suspend fun fetchAllTreatments(patient: Patient): List<Treatment> {
@@ -67,21 +101,6 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                 .map { encounter ->
                     getTreatmentFromEncounter(encounter)
                 }
-        }
-    }
-
-    suspend fun fetchActiveTreatments(patient: Patient, visit: Visit): List<Treatment> {
-        val visitDate = parseFromOpenmrsDate(visit.startDatetime)
-
-        val treatments = fetchAllTreatments(patient)
-            .filter {
-                it.creationDate.isBefore(visitDate) || it.visitUuid == visit.uuid
-            }
-
-        return treatments.filter { treatment ->
-            (treatment.isActive) or (!treatment.isActive && treatment.inactiveDate!!.isAfter(
-                visitDate
-            ))
         }
     }
 
@@ -176,26 +195,6 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             obsDatetime = Instant.now().toString()
             person = patientId
         }
-
-    suspend fun finalise(treatment: Treatment): ResultType {
-        return try {
-            val observation = getObservationByUuid(treatment.observationStatusUuid!!)
-
-            val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
-
-            withContext(Dispatchers.IO) {
-                val response = restApi.updateObservation(observation?.uuid, value).execute()
-                if (response.isSuccessful) {
-                    ResultType.FinalisedTreatmentSuccess
-                } else {
-                    throw Exception("Finalised treatment error: ${response.message()}")
-                }
-            }
-            ResultType.FinalisedTreatmentSuccess
-        } catch (e: Exception) {
-            ResultType.FinalisedTreatmentError
-        }
-    }
 
     private suspend fun getObservationByUuid(uuid: String): Observation? {
         return withContext(Dispatchers.IO) {

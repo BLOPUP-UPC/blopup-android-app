@@ -78,7 +78,7 @@ class TreatmentRepositoryTest {
         )
 
         runBlocking {
-            val result = treatmentRepository.fetchActiveTreatments(patient)
+            val result = treatmentRepository.fetchAllActiveTreatments(patient)
             assertEquals(listOf(activeTreatment), result)
         }
     }
@@ -115,7 +115,7 @@ class TreatmentRepositoryTest {
         )
 
         runBlocking {
-            val result = treatmentRepository.fetchActiveTreatments(patient, visitWithTreatment)
+            val result = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visitWithTreatment)
             assertEquals(
                 listOf(
                     previousTreatment,

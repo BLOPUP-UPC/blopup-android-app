@@ -5,26 +5,27 @@ import androidx.lifecycle.SavedStateHandle
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.FormRepository
+import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.databases.entities.FormResourceEntity
 import edu.upc.sdk.library.models.*
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import io.mockk.Called
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito.never
-import org.mockito.Mockito.`when`
-import org.mockito.kotlin.any
-import org.mockito.kotlin.verify
 import rx.Observable
 import java.io.IOException
-import java.lang.IllegalStateException
 import java.util.Optional
 import java.util.UUID
 
@@ -35,22 +36,24 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Mock
+    @MockK
     lateinit var patientDAO: PatientDAO
 
-    @Mock
+    @MockK
     lateinit var formRepository: FormRepository
 
-    @Mock
+    @MockK
     lateinit var encounterRepository: EncounterRepository
 
-    @Mock
+    @MockK
     lateinit var visitRepository: VisitRepository
 
-    @Mock
-    lateinit var savedStateHandle: SavedStateHandle
+    @MockK
+    lateinit var treatmentRepository: TreatmentRepository
 
-    lateinit var viewModel: VitalsFormViewModel
+    private lateinit var savedStateHandle: SavedStateHandle
+
+    private lateinit var viewModel: VitalsFormViewModel
 
     private val patientId: Long = 88L
     private val vital = Vital("weight", "50")
@@ -63,33 +66,41 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     @Before
     override fun setUp() {
         super.setUp()
+        MockKAnnotations.init(this, relaxUnitFun = true)
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, patientId) }
 
-        `when`(patientDAO.findPatientByID(ArgumentMatchers.anyString())).thenReturn(testPatient)
+        every { patientDAO.findPatientByID(any()) } returns testPatient
 
         viewModel = VitalsFormViewModel(
             patientDAO,
             formRepository,
             visitRepository,
             encounterRepository,
+            treatmentRepository,
             savedStateHandle
         )
     }
 
     @Test
-    fun `when no open visit, a visit should be created`(){
-        `when`(visitRepository.getActiveVisitByPatientId(patientId)).thenReturn(null)
-        `when`(visitRepository.startVisit(testPatient)).thenReturn(Observable.just(Visit()))
-        `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
-            Observable.just(FormResourceEntity().apply {
-                uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
-            })
-        )
-        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(Result.Success(true)))
+    fun `when no open visit, a visit should be created`() {
+        every { visitRepository.getActiveVisitByPatientId(patientId) } returns null
+        every { visitRepository.startVisit(testPatient) } returns Observable.just(Visit())
+        every { formRepository.fetchFormResourceByName("Vitals") } returns
+                Observable.just(FormResourceEntity().apply {
+                    uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
+                })
+
+        every { encounterRepository.saveEncounter(any()) } returns
+                Observable.just(
+                    Result.Success(
+                        true
+                    )
+                )
 
         viewModel.submitForm(vitalsList)
 
-        verify(visitRepository).startVisit(testPatient)
+        verify { visitRepository.startVisit(testPatient) }
+
     }
 
     @Test
@@ -101,34 +112,38 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
         assert(actualError.throwable is IllegalArgumentException)
 
-        verify(encounterRepository, never()).saveEncounter(any())
+        verify { encounterRepository wasNot Called }
     }
 
 
     @Test
     fun `when we pass vitals, vitals are sent`() {
-        `when`(visitRepository.getActiveVisitByPatientId(patientId)).thenReturn(Visit())
-        `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
-            Observable.just(FormResourceEntity().apply {
-                uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
-            })
-        )
-        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(Result.Success(true)))
+        every { visitRepository.getActiveVisitByPatientId(patientId) } returns Visit()
+        every { formRepository.fetchFormResourceByName("Vitals") } returns
+                Observable.just(FormResourceEntity().apply {
+                    uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
+                })
+
+        every { encounterRepository.saveEncounter(any()) } returns
+                Observable.just(
+                    Result.Success(
+                        true
+                    )
+                )
+
 
         val actualResult = viewModel.submitForm(vitalsList)
 
         assertEquals(Result.Success(true), actualResult.value)
 
-        verify(encounterRepository).saveEncounter(any())
+        verify { encounterRepository.saveEncounter(any()) }
     }
 
     @Test
     fun `when patient had previous visits, we are able to grab the already existing height value`() {
         val visitList = createVisitListWithHeightObservation()
 
-        `when`(visitRepository.getLatestVisitWithHeight(patientId)).thenReturn(
-            Optional.of(visitList[0])
-        )
+        every { visitRepository.getLatestVisitWithHeight(patientId) } returns Optional.of(visitList[0])
 
         val actualResult = viewModel.getLastHeightFromVisits().value as Result.Success<*>
 
@@ -143,19 +158,35 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
             uuid = UUID.randomUUID().toString()
         }
 
-        `when`(visitRepository.getActiveVisitByPatientId(patientId)).thenReturn(null)
-        `when`(visitRepository.startVisit(viewModel.patient)).thenReturn(Observable.just(visit))
+        every { visitRepository.getActiveVisitByPatientId(patientId) } returns null
+        every { visitRepository.startVisit(viewModel.patient) } returns Observable.just(visit)
 
-        `when`(formRepository.fetchFormResourceByName("Vitals")).thenReturn(
-            Observable.just(FormResourceEntity().apply {
-                uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
-            })
-        )
-        `when`(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(Result.Error(IOException())))
+        every { formRepository.fetchFormResourceByName("Vitals") } returns
+                Observable.just(FormResourceEntity().apply {
+                    uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
+                })
+
+        every { encounterRepository.saveEncounter(any()) } returns
+                Observable.just(
+                    Result.Error(
+                        IOException()
+                    )
+                )
+
 
         viewModel.submitForm(vitalsList)
 
-        verify(visitRepository).deleteVisitByUuid(visit.uuid!!)
+        verify { visitRepository.deleteVisitByUuid(visit.uuid) }
+    }
+
+    @Test
+    fun `should get active treatments from repository`() {
+        val treatment = Treatment()
+        val treatmentList = listOf(treatment)
+
+        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns treatmentList
+
+        runBlocking { assertEquals(treatmentList, viewModel.getActiveTreatments()) }
     }
 
     private fun createVisitListWithHeightObservation(): List<Visit> {

@@ -94,7 +94,7 @@ class VisitDashboardViewModel @Inject constructor(
     }
 
     private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
-        val treatmentsList = treatmentRepository.fetchActiveTreatments(patient, visit)
+        val treatmentsList = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit)
         _treatments.postValue(treatmentsList)
     }
 

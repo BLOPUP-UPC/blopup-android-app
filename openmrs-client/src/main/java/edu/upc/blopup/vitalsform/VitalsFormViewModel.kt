@@ -16,7 +16,6 @@ import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
-import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.execute
 import org.joda.time.Instant
@@ -40,7 +39,7 @@ class VitalsFormViewModel @Inject constructor(
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
     suspend fun getActiveTreatments(): List<Treatment> =
-        treatmentRepository.fetchActiveTreatments(patient)
+        treatmentRepository.fetchAllActiveTreatments(patient)
 
     fun getLastHeightFromVisits(): LiveData<Result<String>> {
         val resultLiveData = MutableLiveData<Result<String>>()
