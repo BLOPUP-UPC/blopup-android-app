@@ -27,3 +27,7 @@ appId: edu.upc
       visible:
         id: "edu.upc:id/start_visit_fab"
     file: "subflows/TakeVitals.yaml"
+- runFlow:
+    when:
+      visible: "Add Treatment"
+    file: "subflows/TreatmentFlow.yaml"

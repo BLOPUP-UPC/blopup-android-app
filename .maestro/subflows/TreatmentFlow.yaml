@@ -1,0 +1,39 @@
+appId: edu.upc
+---
+- tapOn: "Add Treatment"
+- tapOn: "Previously\ \n recommended"
+- tapOn: "Medication name"
+- inputText: "Paracetamol"
+- hideKeyboard
+- tapOn: "Diuretic"
+- tapOn: "Beta blocker"
+- tapOn: "Additional notes"
+- inputText: "Some note"
+- hideKeyboard
+- tapOn: "Finish"
+- assertVisible: "Paracetamol"
+- assertVisible: ".*Diuretic.*"
+- assertVisible: ".*Beta blocker.*"
+- assertVisible: "Some note"
+- tapOn: "Add Treatment"
+- tapOn: "Previously\ \n recommended"
+- tapOn: "Medication name"
+- inputText: "Ibuprofen"
+- hideKeyboard
+- tapOn: "ACE inhibitor"
+- tapOn: "ARA II"
+- tapOn: "Additional notes"
+- inputText: "Some other note"
+- hideKeyboard
+- tapOn: "Finish"
+- assertVisible: "Ibuprofen"
+- tapOn:
+      id: "edu.upc:id/ellipsis"
+      index: 1
+- tapOn: "Remove"
+- assertNotVisible: "Paracetamol"
+- assertVisible: "Ibuprofen"
+- pressKey: "back"
+- tapOn: "Details"
+- assertVisible: "Ibuprofen"
+- assertNotVisible: "Paracetamol"
