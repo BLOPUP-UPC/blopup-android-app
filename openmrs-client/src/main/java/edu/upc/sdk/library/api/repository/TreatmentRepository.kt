@@ -208,7 +208,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     }
 
     fun saveTreatmentAdherence(treatmentAdherence: Map<Treatment, Boolean>) {
-        throw NotImplementedError()
+//        throw NotImplementedError()
     }
 
     companion object {
