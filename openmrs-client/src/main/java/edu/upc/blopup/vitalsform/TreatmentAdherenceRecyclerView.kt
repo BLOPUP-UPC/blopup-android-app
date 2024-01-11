@@ -27,6 +27,7 @@ class TreatmentAdherenceRecyclerViewAdapter(private val context: Context) :
                 .replace("[", "")
                 .replace("]", "")
                 .replace(",", "  • ")
+        holder.itemView.tag = activeTreatments[position].treatmentUuid
     }
 
     override fun getItemCount() = activeTreatments.size

@@ -10,7 +10,7 @@ data class Treatment(
     var isActive: Boolean = true,
     var visitId: Long,
     var visitUuid: String? = null,
-    var encounterUuid: String? = null,
+    var treatmentUuid: String? = null,
     var observationStatusUuid: String? = null,
     var creationDate: Instant = Instant.now(),
     var inactiveDate: Instant? = null

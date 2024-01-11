@@ -177,13 +177,13 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val treatmentTwo = TreatmentExample.activeTreatment()
         val treatmentList = listOf(treatmentTwo)
 
-        coEvery { encounterRepository.removeEncounter(treatmentOne.encounterUuid) } returns ResultType.RemoveTreatmentSuccess
+        coEvery { encounterRepository.removeEncounter(treatmentOne.treatmentUuid) } returns ResultType.RemoveTreatmentSuccess
         coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns treatmentList
 
         runBlocking {
             viewModel.removeTreatment(treatmentOne)
             coVerify {
-                encounterRepository.removeEncounter(treatmentOne.encounterUuid)
+                encounterRepository.removeEncounter(treatmentOne.treatmentUuid)
             }
         // I wanted to check the value of the treatments list but I cannot set the visit mock because it is a val. I tried to use a spy but it didn't work
 //            assertEquals(treatmentList, viewModel.treatments.value)

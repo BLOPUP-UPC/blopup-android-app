@@ -55,6 +55,8 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
     private lateinit var viewModel: VitalsFormViewModel
 
+    private lateinit var treatmentAdherence: Map<Treatment, Boolean>
+
     private val patientId: Long = 88L
     private val vital = Vital("weight", "50")
     private val vitalsList = listOf(vital)
@@ -68,6 +70,8 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         super.setUp()
         MockKAnnotations.init(this, relaxUnitFun = true)
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, patientId) }
+
+        treatmentAdherence = mapOf(Treatment() to true)
 
         every { patientDAO.findPatientByID(any()) } returns testPatient
 
@@ -97,7 +101,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                     )
                 )
 
-        viewModel.submitForm(vitalsList)
+        viewModel.submitForm(vitalsList, treatmentAdherence)
 
         verify { visitRepository.startVisit(testPatient) }
 
@@ -106,7 +110,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun `when empty list of vitals is sent check that error with IllegalArgumentException is returned `() {
 
-        val actualResult = viewModel.submitForm(emptyList())
+        val actualResult = viewModel.submitForm(emptyList(), treatmentAdherence)
 
         val actualError = actualResult.value as Result.Error
 
@@ -132,7 +136,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                 )
 
 
-        val actualResult = viewModel.submitForm(vitalsList)
+        val actualResult = viewModel.submitForm(vitalsList, treatmentAdherence)
 
         assertEquals(Result.Success(true), actualResult.value)
 
@@ -174,7 +178,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                 )
 
 
-        viewModel.submitForm(vitalsList)
+        viewModel.submitForm(vitalsList, treatmentAdherence)
 
         verify { visitRepository.deleteVisitByUuid(visit.uuid) }
     }
@@ -187,6 +191,26 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns treatmentList
 
         runBlocking { assertEquals(treatmentList, viewModel.getActiveTreatments()) }
+    }
+
+    @Test
+    fun `should send adherence data`() {
+        every { visitRepository.getActiveVisitByPatientId(any()) } returns Visit()
+        every { formRepository.fetchFormResourceByName("Vitals") } returns
+                Observable.just(FormResourceEntity().apply {
+                    uuid = "c384d23a-a91b-11ed-afa1-0242ac120003"
+                })
+
+        every { encounterRepository.saveEncounter(any()) } returns
+                Observable.just(
+                    Result.Success(
+                        true
+                    )
+                )
+
+        viewModel.submitForm(vitalsList, treatmentAdherence)
+
+        verify { treatmentRepository.saveTreatmentAdherence(treatmentAdherence) }
     }
 
     private fun createVisitListWithHeightObservation(): List<Visit> {

@@ -57,7 +57,7 @@ class VitalsFormViewModel @Inject constructor(
         return resultLiveData
     }
 
-    fun submitForm(vitals: List<Vital>): LiveData<Result<Boolean>> {
+    fun submitForm(vitals: List<Vital>, treatmentAdherence: Map<Treatment, Boolean>): LiveData<Result<Boolean>> {
         val resultLiveData = MutableLiveData<Result<Boolean>>()
         if (vitals.isEmpty()) {
             resultLiveData.value = Result.Error(IllegalArgumentException("Vitals list is empty"))
@@ -70,13 +70,13 @@ class VitalsFormViewModel @Inject constructor(
         return if (visitRepository.getActiveVisitByPatientId(patientId) == null) {
             try {
                 val visit = visitRepository.startVisit(patient).execute()
-                createRecords(encounterCreate, visit.uuid)
+                createRecords(encounterCreate, visit.uuid, treatmentAdherence)
             } catch (e: Exception) {
                 resultLiveData.value = Result.Error(e.cause ?: e)
                 return resultLiveData
             }
         } else {
-            createRecords(encounterCreate, null)
+            createRecords(encounterCreate, null, treatmentAdherence)
         }
     }
 
@@ -98,7 +98,8 @@ class VitalsFormViewModel @Inject constructor(
 
     private fun createRecords(
         encounterCreate: Encountercreate,
-        visitUuid: String?
+        visitUuid: String?,
+        treatmentAdherence: Map<Treatment, Boolean>
     ): MutableLiveData<Result<Boolean>> {
         val resultLiveData = MutableLiveData<Result<Boolean>>()
 
@@ -111,7 +112,8 @@ class VitalsFormViewModel @Inject constructor(
             encounterRepository.saveEncounter(encounterCreate)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { resultLiveData.value = it },
+                    { resultLiveData.value = it
+                    treatmentRepository.saveTreatmentAdherence(treatmentAdherence)},
                     {
                         resultLiveData.value = Result.Error(it);
                         if (visitUuid != null) {

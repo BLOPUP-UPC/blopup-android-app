@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
@@ -14,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +34,7 @@ import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.DIASTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEART_RATE_FIELD_CONCEPT
@@ -192,7 +195,7 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private fun submitForm() {
         addVitalsToForm()
-        viewModel.submitForm(vitals).observeOnce(this) { result ->
+        viewModel.submitForm(vitals, getTreatmentAdherenceData()).observeOnce(this) { result ->
             when (result) {
                 is Result.Success -> {
                     ToastUtil.success(getString(R.string.vitals_successfully))
@@ -208,6 +211,7 @@ class VitalsFormActivity : ACBaseActivity() {
                         ToastUtil.error(getString(R.string.form_data_submit_error))
                     }
                 }
+
                 else -> ToastUtil.error(getString(R.string.form_data_submit_error))
             }
         }
@@ -220,6 +224,13 @@ class VitalsFormActivity : ACBaseActivity() {
         vitals.add(Vital(WEIGHT_FIELD_CONCEPT, weight))
         vitals.add(Vital(HEIGHT_FIELD_CONCEPT, heightCm))
     }
+
+    private fun getTreatmentAdherenceData(): Map<Treatment, Boolean> =
+        mBinding.treatmentAdherenceRecyclerView.children.map {
+            val treatment = Treatment().apply { treatmentUuid = it.tag.toString() }
+            val adherence = it.findViewById<CheckBox>(R.id.checkbox).isChecked
+            return@map Pair<Treatment, Boolean>(treatment, adherence)
+        }.toMap()
 
     private fun getHeightValueFromPreviousVisits() {
         viewModel.getLastHeightFromVisits().observe(this) { result ->

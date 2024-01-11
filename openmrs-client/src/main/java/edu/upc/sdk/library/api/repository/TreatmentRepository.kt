@@ -108,7 +108,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         val treatment = Treatment()
         treatment.visitId = encounter.visitID ?: 0
         treatment.visitUuid = encounter.visit?.uuid
-        treatment.encounterUuid = encounter.uuid
+        treatment.treatmentUuid = encounter.uuid
         treatment.creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {
@@ -205,6 +205,10 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                 throw Exception("Get observation error: ${response.message()}")
             }
         }
+    }
+
+    fun saveTreatmentAdherence(treatmentAdherence: Map<Treatment, Boolean>) {
+        throw NotImplementedError()
     }
 
     companion object {

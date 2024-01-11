@@ -117,7 +117,7 @@ class VisitDashboardViewModel @Inject constructor(
     }
 
     suspend fun removeTreatment(treatment: Treatment) {
-        val response = encounterRepository.removeEncounter(treatment.encounterUuid)
+        val response = encounterRepository.removeEncounter(treatment.treatmentUuid)
 
         if(response == ResultType.RemoveTreatmentSuccess) {
             visit?.let { fetchActiveTreatments(it.patient, it) }
