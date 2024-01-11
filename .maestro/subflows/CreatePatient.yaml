@@ -22,6 +22,7 @@ appId: edu.upc
     centerElement: true
     element:
       id: "edu.upc:id/country_of_birth"
+- hideKeyboard
 - tapOn: "Select country of birth"
 - tapOn: "Aruba"
 - scrollUntilVisible:
