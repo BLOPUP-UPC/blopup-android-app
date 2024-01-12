@@ -6,249 +6,256 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/margin_short">
 
-    <LinearLayout
-        android:id="@+id/linearLayout_vitals_info"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include
-            android:id="@+id/toolbar_vitals"
-            layout="@layout/toolbar_vitals" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/bloodPressureVariables"
+            android:id="@+id/linearLayout_vitals_info"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="14dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/receive_blood_pressure_data_btn"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:backgroundTint="@color/bluetooth_blue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@android:drawable/stat_sys_data_bluetooth"
-                android:text="@string/blood_pressure_button_label"
-                android:textStyle="bold"
-                android:gravity="start|center_vertical"/>
-
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="8dp"
-                android:stretchColumns="0,1">
-
-                <TableRow>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputSystolic"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="fill_parent"
-                        android:hint="@string/systolic_label"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dip">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/systolic"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:focusable="true"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:enabled="false"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputDiastolic"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="fill_parent"
-                        android:hint="@string/diastolic_label"
-                        android:layout_height="fill_parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/diastolic"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:enabled="false"
-                            android:focusable="true"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
-                        android:text="@string/pressure_unit" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="8dp"
-                android:stretchColumns="0">
-
-                <TableRow>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputPulse"
-                        android:hint="@string/pulse_label"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/pulse"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:enabled="false"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
-                        android:text="@string/pulse_unit" />
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/scaleVariables"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="14dp"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/receive_weight_data_btn"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:backgroundTint="@color/bluetooth_blue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@android:drawable/stat_sys_data_bluetooth"
-                android:text="@string/receive_weight_value_button"
-                android:textStyle="bold"
-                android:gravity="start|center_vertical" />
-
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="8dp"
-                android:stretchColumns="0,1">
-
-                <TableRow>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputWeight"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="fill_parent"
-                        android:hint="@string/weight_value_label"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/weight"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:focusable="true"
-                            android:enabled="false"
-                            android:imeOptions="actionNext"
-                            android:inputType="number"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
-                        android:text="@string/weight_unit" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="8dp"
-                android:stretchColumns="0,1">
-
-                <TableRow>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputHeight"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="fill_parent"
-                        android:hint="@string/height_value_label"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/height"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
-                            android:focusable="true"
-                            android:imeOptions="actionNext"
-                            android:inputType="number"
-                            android:maxLength="4"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
-                        android:text="@string/height_unit" />
-                </TableRow>
-            </TableLayout>
+            <include
+                android:id="@+id/toolbar_vitals"
+                layout="@layout/toolbar_vitals" />
 
             <LinearLayout
-                android:id="@+id/treatment_adherence"
-                android:layout_width="match_parent"
+                android:id="@+id/bloodPressureVariables"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="14dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/treatment_adherence_label"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/treatment_adherence_recycler_view"
+                <Button
+                    android:id="@+id/receive_blood_pressure_data_btn"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/bluetooth_blue"
+                    android:drawableEnd="@android:drawable/stat_sys_data_bluetooth"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/blood_pressure_button_label"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp"
+                    android:stretchColumns="0,1">
+
+                    <TableRow>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputSystolic"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="15dip"
+                            android:hint="@string/systolic_label">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/systolic"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:enabled="false"
+                                android:focusable="true"
+                                android:imeOptions="actionNext"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputDiastolic"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:hint="@string/diastolic_label">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/diastolic"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:enabled="false"
+                                android:focusable="true"
+                                android:imeOptions="actionNext"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            android:text="@string/pressure_unit" />
+                    </TableRow>
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp"
+                    android:stretchColumns="0">
+
+                    <TableRow>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputPulse"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/pulse_label">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/pulse"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:focusable="true"
+                                android:imeOptions="actionNext"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            android:text="@string/pulse_unit" />
+                    </TableRow>
+                </TableLayout>
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/sendVitalsButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="14dp"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonToSentVitals"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/scaleVariables"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/allergy_orange"
-                android:text="@string/send_button_label"
-                android:onClick="sendVitals" />
+                android:layout_margin="14dp"
+                android:orientation="vertical">
 
+                <Button
+                    android:id="@+id/receive_weight_data_btn"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/bluetooth_blue"
+                    android:drawableEnd="@android:drawable/stat_sys_data_bluetooth"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/receive_weight_value_button"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp"
+                    android:stretchColumns="0,1">
+
+                    <TableRow>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputWeight"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/weight_value_label">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/weight"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:enabled="false"
+                                android:focusable="true"
+                                android:imeOptions="actionNext"
+                                android:inputType="number" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            android:text="@string/weight_unit" />
+                    </TableRow>
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp"
+                    android:stretchColumns="0,1">
+
+                    <TableRow>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputHeight"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/height_value_label">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/height"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:focusable="true"
+                                android:imeOptions="actionNext"
+                                android:inputType="number"
+                                android:maxLength="4" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            android:text="@string/height_unit" />
+                    </TableRow>
+                </TableLayout>
+
+                <LinearLayout
+                    android:id="@+id/treatment_adherence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/treatment_adherence_label"
+                        android:textColor="@color/black" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/treatment_adherence_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_short"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sendVitalsButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="14dp"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonToSentVitals"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/allergy_orange"
+                    android:onClick="sendVitals"
+                    android:text="@string/send_button_label" />
+
+            </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
