@@ -60,7 +60,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
     private lateinit var viewModel: VitalsFormViewModel
 
-    private lateinit var treatmentAdherence: Map<Treatment, Boolean>
+    private lateinit var treatmentAdherence: Map<String, Boolean>
 
     private val patientId: Long = 88L
     private val vital = Vital("weight", "50")
@@ -78,7 +78,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         MockKAnnotations.init(this, relaxUnitFun = true)
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, patientId) }
 
-        treatmentAdherence = mapOf(Treatment() to true)
+        treatmentAdherence = mapOf("treatmentUuid" to true)
 
         every { patientDAO.findPatientByID(any()) } returns testPatient
 
@@ -200,7 +200,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `should get active treatments from repository`() {
-        val treatment = Treatment()
+        val treatment = TreatmentExample.activeTreatment().apply { treatmentUuid = "treatmentUuid" }
         val treatmentList = listOf(treatment)
 
         coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns treatmentList

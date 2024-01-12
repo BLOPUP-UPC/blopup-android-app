@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.runner.RunWith
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.TreatmentExample
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
 class TreatmentViewModelTest {
@@ -31,7 +32,7 @@ class TreatmentViewModelTest {
 
     @Test
     fun `should register treatment`() {
-        val treatment = Treatment()
+        val treatment = TreatmentExample.activeTreatment()
         treatmentViewModel.treatment.value = treatment
 
         coEvery { mockTreatmentRepo.saveTreatment(treatment) } returns Unit

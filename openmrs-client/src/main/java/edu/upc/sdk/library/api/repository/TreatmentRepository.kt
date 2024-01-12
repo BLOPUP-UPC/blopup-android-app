@@ -1,6 +1,5 @@
 package edu.upc.sdk.library.api.repository
 
-import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
@@ -26,6 +25,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     suspend fun saveTreatment(treatment: Treatment) {
         val currentVisit = visitRepository.getVisitById(treatment.visitId)
         val encounter = createEncounterFromTreatment(currentVisit, treatment)
+
 
         withContext(Dispatchers.IO) {
             try {
@@ -108,35 +108,54 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
-        val treatment = Treatment()
-        treatment.visitId = encounter.visitID ?: 0
-        treatment.visitUuid = encounter.visit?.uuid
-        treatment.treatmentUuid = encounter.uuid
-        treatment.creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
+        val visitId = encounter.visitID ?: 0
+        val visitUuid = encounter.visit?.uuid
+        val treatmentUuid = encounter.uuid
+        val creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
+
+        var recommendedBy = ""
+        var medicationName = ""
+        var notes: String? = null
+        var medicationType: Set<MedicationType> = emptySet()
+        var isActive = false
+        var observationStatusUuid: String? = null
+        var inactiveDate: Instant? = null
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {
-                RECOMMENDED_BY_CONCEPT_ID -> treatment.recommendedBy =
+                RECOMMENDED_BY_CONCEPT_ID -> recommendedBy =
                     observation.displayValue ?: ""
 
-                MEDICATION_NAME_CONCEPT_ID -> treatment.medicationName =
+                MEDICATION_NAME_CONCEPT_ID -> medicationName =
                     observation.displayValue?.trim() ?: ""
 
-                TREATMENT_NOTES_CONCEPT_ID -> treatment.notes =
+                TREATMENT_NOTES_CONCEPT_ID -> notes =
                     observation.displayValue?.trim() ?: ""
 
-                MEDICATION_TYPE_CONCEPT_ID -> treatment.medicationType =
+                MEDICATION_TYPE_CONCEPT_ID -> medicationType =
                     getMedicationTypesFromObservation(observation)
 
                 ACTIVE_CONCEPT_ID -> {
-                    treatment.observationStatusUuid = observation.uuid
-                    treatment.isActive = observation.displayValue?.trim() == "1.0"
-                    if (!treatment.isActive) {
-                        treatment.inactiveDate = parseFromOpenmrsDate(observation.obsDatetime!!)
+                    observationStatusUuid = observation.uuid
+                    isActive = observation.displayValue?.trim() == "1.0"
+                    if (!isActive) {
+                        inactiveDate = parseFromOpenmrsDate(observation.obsDatetime!!)
                     }
                 }
             }
         }
-        return treatment
+        return Treatment(
+            recommendedBy = recommendedBy,
+            medicationName = medicationName,
+            medicationType = medicationType,
+            notes = notes,
+            isActive = isActive,
+            visitUuid = visitUuid,
+            visitId = visitId,
+            treatmentUuid = treatmentUuid,
+            observationStatusUuid = observationStatusUuid,
+            inactiveDate = inactiveDate,
+            creationDate = creationDate
+        )
     }
 
     private fun getMedicationTypesFromObservation(observation: Observation): Set<MedicationType> {
@@ -164,18 +183,28 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                     currentVisit.patient.uuid!!
                 ),
                 observation(
-                    TREATMENT_NOTES_CONCEPT_ID,
-                    treatment.notes,
-                    currentVisit.patient.uuid!!
-                ),
-                observation(
                     ACTIVE_CONCEPT_ID,
                     if (treatment.isActive) "1.0" else "0.0",
                     currentVisit.patient.uuid!!
                 ),
                 drugFamiliesObservation(currentVisit.patient.uuid!!, treatment)
             )
+        }.let { encounter ->
+            addNotesIfPresent(treatment.notes, encounter)
         }
+
+    private fun addNotesIfPresent(notes: String?, encounter: Encountercreate): Encountercreate {
+        if (notes != null) {
+            encounter.observations = encounter.observations.plus(
+                observation(
+                    TREATMENT_NOTES_CONCEPT_ID,
+                    notes,
+                    encounter.patient!!
+                )
+            )
+        }
+        return encounter
+    }
 
     private fun drugFamiliesObservation(patientUuid: String, treatment: Treatment) =
         Obscreate().apply {
@@ -211,10 +240,11 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
     }
 
     suspend fun saveTreatmentAdherence(
-        treatmentAdherence: Map<Treatment, Boolean>,
+        treatmentAdherence: Map<String, Boolean>,
         patientUuid: String
     ): Result<Boolean> {
-        var result: Result<Boolean> = Result.failure(Exception("Could not save treatment adherence"))
+        var result: Result<Boolean> =
+            Result.failure(Exception("Could not save treatment adherence"))
         treatmentAdherence.map {
             val treatment = it.key
             val adherence = it.value
@@ -223,7 +253,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
                 TREATMENT_ADHERENCE_ID,
                 if (adherence) "1.0" else "0.0",
                 patientUuid
-            ).apply { encounter = treatment.treatmentUuid }
+            ).apply { encounter = treatment }
         }.map {
             withContext(Dispatchers.IO) {
                 result = try {

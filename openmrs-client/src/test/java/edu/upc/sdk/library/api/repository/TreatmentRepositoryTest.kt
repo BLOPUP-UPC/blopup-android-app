@@ -206,7 +206,7 @@ class TreatmentRepositoryTest {
             )
             assertEquals(
                 expectedTreatmentEncounter.observations[4].groupMembers!![0].value,
-                capturedTreatmentEncounter.captured.observations[4].groupMembers!![0].value
+                capturedTreatmentEncounter.captured.observations[3].groupMembers!![0].value
             )
         }
     }
@@ -270,8 +270,8 @@ class TreatmentRepositoryTest {
 
     @Test
     fun `should return result success when treatment adherence is saved`() {
-        val treatment1 = Treatment().apply { treatmentUuid = "treatmentUuid1" }
-        val treatment2 = Treatment().apply { treatmentUuid = "treatmentUuid2" }
+        val treatment1 =  "treatmentUuid1"
+        val treatment2 = "treatmentUuid2"
         val treatmentAdherenceData = mapOf(Pair(treatment1, true), Pair(treatment2, false))
         val mockCall = mockk<Call<Observation>>()
 
@@ -290,8 +290,8 @@ class TreatmentRepositoryTest {
 
     @Test
     fun `should return result failure if error occurs saving treatment adherence`() {
-        val treatment1 = Treatment().apply { treatmentUuid = "treatmentUuid1" }
-        val treatment2 = Treatment().apply { treatmentUuid = "treatmentUuid2" }
+        val treatment1 = "treatmentUuid1"
+        val treatment2 = "treatmentUuid2"
         val treatmentAdherenceData = mapOf(Pair(treatment1, true), Pair(treatment2, false))
         val mockCall = mockk<Call<Observation>>()
         val exception = Exception()

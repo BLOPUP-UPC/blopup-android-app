@@ -34,7 +34,6 @@ import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.DIASTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEART_RATE_FIELD_CONCEPT
@@ -228,11 +227,11 @@ class VitalsFormActivity : ACBaseActivity() {
         vitals.add(Vital(HEIGHT_FIELD_CONCEPT, heightCm))
     }
 
-    private fun getTreatmentAdherenceData(): Map<Treatment, Boolean> =
+    private fun getTreatmentAdherenceData(): Map<String, Boolean> =
         mBinding.treatmentAdherenceRecyclerView.children.map {
-            val treatment = Treatment().apply { treatmentUuid = it.tag.toString() }
+            val treatment = it.tag.toString()
             val adherence = it.findViewById<CheckBox>(R.id.checkbox).isChecked
-            return@map Pair<Treatment, Boolean>(treatment, adherence)
+            return@map Pair<String, Boolean>(treatment, adherence)
         }.toMap()
 
     private fun getHeightValueFromPreviousVisits() {

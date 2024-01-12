@@ -24,8 +24,7 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
 
     val fieldValidation: LiveData<MutableMap<String, Boolean>> = _fieldValidation
 
-    val treatment: MutableLiveData<Treatment> =
-        MutableLiveData<Treatment>().apply { value = Treatment() }
+    val treatment: MutableLiveData<Treatment> = MutableLiveData<Treatment>().apply { value = Treatment(recommendedBy = "", medicationName = "", medicationType = emptySet(), visitId = 0L) }
 
     suspend fun registerTreatment() =
         try {

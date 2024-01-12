@@ -61,7 +61,7 @@ class VitalsFormViewModel @Inject constructor(
 
     fun submitForm(
         vitals: List<Vital>,
-        treatmentAdherence: Map<Treatment, Boolean>
+        treatmentAdherence: Map<String, Boolean>
     ): LiveData<Result<Boolean>> {
         val resultLiveData = MutableLiveData<Result<Boolean>>()
         if (vitals.isEmpty()) {
@@ -104,7 +104,7 @@ class VitalsFormViewModel @Inject constructor(
     private fun createRecords(
         encounterCreate: Encountercreate,
         visitUuid: String?,
-        treatmentAdherence: Map<Treatment, Boolean>
+        treatmentAdherence: Map<String, Boolean>
     ): MutableLiveData<Result<Boolean>> {
         val resultLiveData = MutableLiveData<Result<Boolean>>()
 
@@ -136,7 +136,7 @@ class VitalsFormViewModel @Inject constructor(
         return resultLiveData
     }
 
-    private fun saveTreatmentAdherence(treatmentAdherence: Map<Treatment, Boolean>) {
+    private fun saveTreatmentAdherence(treatmentAdherence: Map<String, Boolean>) {
         viewModelScope.launch {
             treatmentRepository.saveTreatmentAdherence(treatmentAdherence, patient.uuid!!)
         }
