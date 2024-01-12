@@ -3,6 +3,7 @@ package edu.upc.blopup.vitalsform
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.EncounterRepository
@@ -18,6 +19,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.execute
+import kotlinx.coroutines.launch
 import org.joda.time.Instant
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -39,7 +41,7 @@ class VitalsFormViewModel @Inject constructor(
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
     suspend fun getActiveTreatments(): List<Treatment> =
-         try {
+        try {
             treatmentRepository.fetchAllActiveTreatments(patient)
         } catch (e: Exception) {
             emptyList()
@@ -57,7 +59,10 @@ class VitalsFormViewModel @Inject constructor(
         return resultLiveData
     }
 
-    fun submitForm(vitals: List<Vital>, treatmentAdherence: Map<Treatment, Boolean>): LiveData<Result<Boolean>> {
+    fun submitForm(
+        vitals: List<Vital>,
+        treatmentAdherence: Map<Treatment, Boolean>
+    ): LiveData<Result<Boolean>> {
         val resultLiveData = MutableLiveData<Result<Boolean>>()
         if (vitals.isEmpty()) {
             resultLiveData.value = Result.Error(IllegalArgumentException("Vitals list is empty"))
@@ -111,21 +116,29 @@ class VitalsFormViewModel @Inject constructor(
         addSubscription(
             encounterRepository.saveEncounter(encounterCreate)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { resultLiveData.value = it
-                    treatmentRepository.saveTreatmentAdherence(treatmentAdherence)},
+                .subscribe({
+                    resultLiveData.value = it
+                    if (resultLiveData.value is Result.Success) {
+                        saveTreatmentAdherence(treatmentAdherence)
+                    }
+                    if ((resultLiveData.value is Result.Error) && (visitUuid != null))
+                        visitRepository.deleteVisitByUuid(visitUuid)
+                },
                     {
                         resultLiveData.value = Result.Error(it);
                         if (visitUuid != null) {
                             visitRepository.deleteVisitByUuid(visitUuid)
                         }
-                    },
-                    {
-                        if ((resultLiveData.value is Result.Error) && (visitUuid != null))
-                            visitRepository.deleteVisitByUuid(visitUuid)
                     }
                 )
         )
+
         return resultLiveData
+    }
+
+    private fun saveTreatmentAdherence(treatmentAdherence: Map<Treatment, Boolean>) {
+        viewModelScope.launch {
+            treatmentRepository.saveTreatmentAdherence(treatmentAdherence, patient.uuid!!)
+        }
     }
 }

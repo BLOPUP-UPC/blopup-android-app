@@ -115,7 +115,8 @@ class TreatmentRepositoryTest {
         )
 
         runBlocking {
-            val result = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visitWithTreatment)
+            val result =
+                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visitWithTreatment)
             assertEquals(
                 listOf(
                     previousTreatment,
@@ -264,6 +265,45 @@ class TreatmentRepositoryTest {
                 observation.uuid,
                 mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
             )
+        }
+    }
+
+    @Test
+    fun `should return result success when treatment adherence is saved`() {
+        val treatment1 = Treatment().apply { treatmentUuid = "treatmentUuid1" }
+        val treatment2 = Treatment().apply { treatmentUuid = "treatmentUuid2" }
+        val treatmentAdherenceData = mapOf(Pair(treatment1, true), Pair(treatment2, false))
+        val mockCall = mockk<Call<Observation>>()
+
+
+        coEvery { restApi.createObs(any()) } returns mockCall
+        coEvery { mockCall.execute() } returns Response.success(Observation())
+
+        runBlocking {
+            val result = treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
+
+            assertEquals(Result.success(true), result)
+        }
+
+        coVerify(exactly = 2) { restApi.createObs(any()) }
+    }
+
+    @Test
+    fun `should return result failure if error occurs saving treatment adherence`() {
+        val treatment1 = Treatment().apply { treatmentUuid = "treatmentUuid1" }
+        val treatment2 = Treatment().apply { treatmentUuid = "treatmentUuid2" }
+        val treatmentAdherenceData = mapOf(Pair(treatment1, true), Pair(treatment2, false))
+        val mockCall = mockk<Call<Observation>>()
+        val exception = Exception()
+
+
+        coEvery { restApi.createObs(any()) } returns mockCall
+        coEvery { mockCall.execute() } throws exception
+
+        runBlocking {
+            val result = treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
+
+            assertEquals(Result.failure<Exception>(exception), result)
         }
     }
 

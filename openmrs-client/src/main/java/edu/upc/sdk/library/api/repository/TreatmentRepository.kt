@@ -1,5 +1,6 @@
 package edu.upc.sdk.library.api.repository
 
+import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
@@ -20,6 +21,8 @@ import javax.inject.Singleton
 @Singleton
 class TreatmentRepository @Inject constructor(val visitRepository: VisitRepository) :
     BaseRepository(null) {
+
+
     suspend fun saveTreatment(treatment: Treatment) {
         val currentVisit = visitRepository.getVisitById(treatment.visitId)
         val encounter = createEncounterFromTreatment(currentVisit, treatment)
@@ -207,8 +210,37 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         }
     }
 
-    fun saveTreatmentAdherence(treatmentAdherence: Map<Treatment, Boolean>) {
-//        throw NotImplementedError()
+    suspend fun saveTreatmentAdherence(
+        treatmentAdherence: Map<Treatment, Boolean>,
+        patientUuid: String
+    ): Result<Boolean> {
+        var result: Result<Boolean> = Result.failure(Exception("Could not save treatment adherence"))
+        treatmentAdherence.map {
+            val treatment = it.key
+            val adherence = it.value
+
+            observation(
+                TREATMENT_ADHERENCE_ID,
+                if (adherence) "1.0" else "0.0",
+                patientUuid
+            ).apply { encounter = treatment.treatmentUuid }
+        }.map {
+            withContext(Dispatchers.IO) {
+                result = try {
+                    val response = restApi.createObs(it).execute()
+                    if (response.isSuccessful) {
+                        Result.success(true)
+                    } else {
+                        crashlytics.reportUnsuccessfulResponse(response, response.message())
+                        Result.failure(Exception("Save treatment adherence error: ${response.message()}"))
+                    }
+                } catch (e: Exception) {
+                    crashlytics.reportException(e, "Save treatment adherence error")
+                    Result.failure(e)
+                }
+            }
+        }
+        return result
     }
 
     companion object {
@@ -217,6 +249,7 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
         const val ACTIVE_CONCEPT_ID = "81f60010-961e-4bc5-aa04-435c7ace1ee3"
         const val TREATMENT_NOTES_CONCEPT_ID = "dfa881a4-5c88-4057-958b-f583c8edbdef"
         const val MEDICATION_TYPE_CONCEPT_ID = "1a8f49cc-488b-4788-adb3-72c499108772"
+        const val TREATMENT_ADHERENCE_ID = "87e51329-cc96-426d-bc71-ccef8892ce72"
 
         const val TREATMENT_ENCOUNTER_TYPE = "Treatment"
     }

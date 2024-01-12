@@ -14,10 +14,18 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import io.mockk.Called
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -65,8 +73,10 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         uuid = "d384d23a-a91b-11ed-afa1-0242ac120002"
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     override fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         super.setUp()
         MockKAnnotations.init(this, relaxUnitFun = true)
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, patientId) }
@@ -101,22 +111,26 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                     )
                 )
 
-        viewModel.submitForm(vitalsList, treatmentAdherence)
+        runBlocking {
+            viewModel.submitForm(vitalsList, treatmentAdherence)
 
-        verify { visitRepository.startVisit(testPatient) }
+            verify { visitRepository.startVisit(testPatient) }
 
+        }
     }
 
     @Test
     fun `when empty list of vitals is sent check that error with IllegalArgumentException is returned `() {
 
-        val actualResult = viewModel.submitForm(emptyList(), treatmentAdherence)
+        runBlocking {
+            val actualResult = viewModel.submitForm(emptyList(), treatmentAdherence)
 
-        val actualError = actualResult.value as Result.Error
+            val actualError = actualResult.value as Result.Error
 
-        assert(actualError.throwable is IllegalArgumentException)
+            assert(actualError.throwable is IllegalArgumentException)
 
-        verify { encounterRepository wasNot Called }
+            verify { encounterRepository wasNot Called }
+        }
     }
 
 
@@ -135,19 +149,23 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                     )
                 )
 
+        coEvery { treatmentRepository.saveTreatmentAdherence(any(), any()) } returns kotlin.Result.success(true)
 
-        val actualResult = viewModel.submitForm(vitalsList, treatmentAdherence)
+            val actualResult = viewModel.submitForm(vitalsList, treatmentAdherence)
 
-        assertEquals(Result.Success(true), actualResult.value)
+            assertEquals(Result.Success(true), actualResult.value)
 
-        verify { encounterRepository.saveEncounter(any()) }
+            verify { encounterRepository.saveEncounter(any()) }
+
     }
 
     @Test
     fun `when patient had previous visits, we are able to grab the already existing height value`() {
         val visitList = createVisitListWithHeightObservation()
 
-        every { visitRepository.getLatestVisitWithHeight(patientId) } returns Optional.of(visitList[0])
+        every { visitRepository.getLatestVisitWithHeight(patientId) } returns Optional.of(
+            visitList[0]
+        )
 
         val actualResult = viewModel.getLastHeightFromVisits().value as Result.Success<*>
 
@@ -178,7 +196,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                 )
 
 
-        viewModel.submitForm(vitalsList, treatmentAdherence)
+      runBlocking {    viewModel.submitForm(vitalsList, treatmentAdherence) }
 
         verify { visitRepository.deleteVisitByUuid(visit.uuid) }
     }
@@ -208,9 +226,9 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
                     )
                 )
 
-        viewModel.submitForm(vitalsList, treatmentAdherence)
+       runBlocking {   viewModel.submitForm(vitalsList, treatmentAdherence) }
 
-        verify { treatmentRepository.saveTreatmentAdherence(treatmentAdherence) }
+        coVerify { treatmentRepository.saveTreatmentAdherence(treatmentAdherence, any()) }
     }
 
     private fun createVisitListWithHeightObservation(): List<Visit> {

@@ -43,6 +43,7 @@ import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.SYSTOLIC_FIE
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.WEIGHT_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.android.synthetic.main.activity_vitals_form.buttonToSentVitals
+import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
 @AndroidEntryPoint
@@ -195,24 +196,26 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private fun submitForm() {
         addVitalsToForm()
-        viewModel.submitForm(vitals, getTreatmentAdherenceData()).observeOnce(this) { result ->
-            when (result) {
-                is Result.Success -> {
-                    ToastUtil.success(getString(R.string.vitals_successfully))
-                    setResult(RESULT_OK)
-                    finish()
-                }
-
-                is Result.Error -> {
-                    if (result.throwable is UnknownHostException) {
-                        ToastUtil.error(getString(R.string.no_internet_connection))
-                        mBinding.buttonToSentVitals.isEnabled = true
-                    } else {
-                        ToastUtil.error(getString(R.string.form_data_submit_error))
+        lifecycleScope.launch {
+            viewModel.submitForm(vitals, getTreatmentAdherenceData()).observeOnce(this@VitalsFormActivity) { result ->
+                when (result) {
+                    is Result.Success -> {
+                        ToastUtil.success(getString(R.string.vitals_successfully))
+                        setResult(RESULT_OK)
+                        finish()
                     }
-                }
 
-                else -> ToastUtil.error(getString(R.string.form_data_submit_error))
+                    is Result.Error -> {
+                        if (result.throwable is UnknownHostException) {
+                            ToastUtil.error(getString(R.string.no_internet_connection))
+                            mBinding.buttonToSentVitals.isEnabled = true
+                        } else {
+                            ToastUtil.error(getString(R.string.form_data_submit_error))
+                        }
+                    }
+
+                    else -> ToastUtil.error(getString(R.string.form_data_submit_error))
+                }
             }
         }
     }
