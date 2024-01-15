@@ -135,7 +135,7 @@ public class OpenMRSInflater {
             TextView value = vitalsCardView.findViewById(R.id.bmi_value);
             value.setText(bmiData);
             LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) value.getLayoutParams();
-            params2.setMarginStart(marginBasedOnChartSize-10);
+            params2.setMarginStart(marginBasedOnChartSize-35);
             value.setLayoutParams(params2);
         }
     }
