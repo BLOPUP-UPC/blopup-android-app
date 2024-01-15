@@ -125,7 +125,9 @@ public class OpenMRSInflater {
 
     private static void setBMIValueAndChart(String bmiData, View vitalsCardView) {
         if (!Objects.equals(bmiData, "N/A")) {
-            int marginBasedOnChartSize = (int) ((Float.parseFloat(bmiData) - 10) / 40 * 1000);
+
+            int marginBasedOnChartSize = Float.parseFloat(bmiData) > 50 ? 990 : (int) ((Float.parseFloat(bmiData) - 10) / 40 * 1000);
+
             vitalsCardView.findViewById(R.id.bmi_layout).setVisibility(View.VISIBLE);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) vitalsCardView.findViewById(R.id.bmi_chart_pointer).getLayoutParams();
             params.setMarginStart(marginBasedOnChartSize);
