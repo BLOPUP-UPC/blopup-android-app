@@ -1,7 +1,10 @@
 package edu.upc.sdk.library.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import org.joda.time.Instant
 
+@Parcelize
 data class Treatment(
     var recommendedBy: String,
     var medicationName: String,
@@ -14,8 +17,7 @@ data class Treatment(
     var observationStatusUuid: String? = null,
     var creationDate: Instant = Instant.now(),
     var inactiveDate: Instant? = null
-) {
-
+) : Parcelable {
 
     companion object {
         const val RECOMMENDED_BY_BLOPUP = "BlopUp"

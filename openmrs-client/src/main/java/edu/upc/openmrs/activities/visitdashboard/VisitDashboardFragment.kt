@@ -45,6 +45,7 @@ import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
@@ -306,7 +307,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     override fun onEditClicked(treatment: Treatment) {
-        TODO("Not yet implemented")
+        val bundle = bundleOf(TREATMENT to treatment)
+        val intent = Intent(requireContext(), TreatmentActivity::class.java)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     override fun onRemoveClicked(treatment: Treatment) {

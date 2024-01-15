@@ -88,6 +88,7 @@ class TreatmentRecyclerViewAdapter(
                     return@setOnMenuItemClickListener true
                 }
                 R.id.action_edit -> {
+                    listener?.onEditClicked(treatmentList[position])
                     return@setOnMenuItemClickListener true
                 }
                 R.id.action_remove -> {

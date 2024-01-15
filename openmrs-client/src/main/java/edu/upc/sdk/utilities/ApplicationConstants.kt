@@ -82,6 +82,7 @@ object ApplicationConstants {
         const val PATIENT_ID_BUNDLE = "patientID"
         const val VISIT_ID = "visitID"
         const val IS_NEW_VITALS = "isNewVitals"
+        const val TREATMENT = "treatment"
     }
 
     object BroadcastActions {

@@ -18,7 +18,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TreatmentRepository @Inject constructor(val visitRepository: VisitRepository) :
+class TreatmentRepository @Inject constructor(
+    val visitRepository: VisitRepository,
+    val encounterRepository: EncounterRepository
+) :
     BaseRepository(null) {
 
 
@@ -238,6 +241,44 @@ class TreatmentRepository @Inject constructor(val visitRepository: VisitReposito
             }
         }
     }
+
+    suspend fun updateTreatment(valuesToUpdate: Map<String, Any>, encounterUuid: String) : Result<Boolean> {
+        var result: Result<Boolean> =
+            Result.failure(Exception("Could not update Treatment"))
+
+        val encounter = encounterRepository.getEncounterByUuid(encounterUuid)
+
+        val obsToUpdate = encounter?.observations?.filter { observation ->
+            valuesToUpdate.keys.any { key ->
+                observation.display!!.contains(key)
+            }
+        }
+
+        val obsMapToUpdate = obsToUpdate?.associate { observation ->
+            observation.uuid!! to valuesToUpdate.entries.find { (key, _) ->
+                observation.display?.contains(key) == true
+            }?.value
+        } ?: emptyMap()
+
+        obsMapToUpdate.forEach {
+            val value = mapOf("value" to it.value)
+
+            withContext(Dispatchers.IO) {
+                result = try {
+                    val response = restApi.updateObservation(it.key, value).execute()
+                    if (response.isSuccessful) {
+                        Result.success(true)
+                    } else {
+                        throw Exception("Update treatment error: ${response.message()}")
+                    }
+                } catch (e: Exception) {
+                    Result.failure(e)
+                }
+            }
+        }
+        return result
+    }
+
 
     suspend fun saveTreatmentAdherence(
         treatmentAdherence: Map<String, Boolean>,

@@ -24,6 +24,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_OTHER
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
@@ -35,11 +36,22 @@ class TreatmentActivity : ACBaseActivity() {
     private lateinit var mBinding: TreatmentFormBinding
     private val viewModel: TreatmentViewModel by viewModels()
 
+    private lateinit var treatmentToEdit: Treatment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = TreatmentFormBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+
         intent.extras?.let { viewModel.treatment.value?.visitId = it.getLong(VISIT_ID) }
+
+        treatmentToEdit = intent.getParcelableExtra<Treatment>(TREATMENT)?.apply {
+            viewModel.treatmentToEdit.value = this
+        } ?: Treatment(recommendedBy = "", medicationName = "", medicationType = emptySet(), visitId = 0L)
+
+        if(treatmentToEdit.medicationName.isNotEmpty()) {
+            completeFields(treatmentToEdit)
+        }
 
         setToolbar()
         whoRecommendedButtonsOnClickListener()
@@ -48,6 +60,47 @@ class TreatmentActivity : ACBaseActivity() {
         addOnBackPressedListener()
         setListenersForFieldValidation()
         fieldValidationValueObserver()
+
+    }
+
+    private fun completeFields(treatmentToEdit: Treatment) {
+        mBinding.medicationName.setText(treatmentToEdit.medicationName)
+
+        if (treatmentToEdit.notes?.isNotEmpty() == true) {
+            mBinding.additionalNotes.setText(treatmentToEdit.notes)
+        }
+        treatmentToEdit.medicationType.forEach {
+            mBinding.medicationType.check(
+                resources.getIdentifier(
+                    it.name.lowercase(),
+                    "id",
+                    packageName
+                )
+            )
+        }
+        treatmentToEdit.recommendedBy.let {
+            when (it) {
+                RECOMMENDED_BY_BLOPUP -> {
+                    mBinding.newRecommendation.background = ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.treatment_buttons_on_selected,
+                        null
+                    )
+                }
+
+                else -> {
+                    mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.treatment_buttons_on_selected,
+                        null
+                    )
+                }
+            }
+        }
+
+        viewModel.updateFieldValidation(MEDICATION_NAME, true)
+        viewModel.updateFieldValidation(MEDICATION_TYPE, true)
+        viewModel.updateFieldValidation(RECOMMENDED_BY, true)
     }
 
     private fun addOnBackPressedListener() {
@@ -205,8 +258,15 @@ class TreatmentActivity : ACBaseActivity() {
     private fun registerTreatmentOnClickListener() {
         mBinding.registerMedication.setOnClickListener {
             fillTreatmentFields()
-            lifecycleScope.launch {
-                viewModel.registerTreatment()
+
+            if(treatmentToEdit.medicationName.isNotEmpty()){
+                lifecycleScope.launch {
+                    viewModel.updateTreatment()
+                }
+            } else {
+                lifecycleScope.launch {
+                    viewModel.registerTreatment()
+                }
             }
 
             with(viewModel.result) {

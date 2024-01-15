@@ -26,6 +26,9 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
 
     val treatment: MutableLiveData<Treatment> = MutableLiveData<Treatment>().apply { value = Treatment(recommendedBy = "", medicationName = "", medicationType = emptySet(), visitId = 0L) }
 
+    val treatmentToEdit: MutableLiveData<Treatment> =
+        MutableLiveData<Treatment>().apply { value = Treatment(recommendedBy = "", medicationName = "", medicationType = emptySet(), visitId = 0L)}
+
     suspend fun registerTreatment() =
         try {
             treatmentRepository.saveTreatment(treatment.value!!)
@@ -36,6 +39,31 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
 
     fun updateFieldValidation(fieldName: String, isValid: Boolean) {
         _fieldValidation.value = _fieldValidation.value?.apply { this[fieldName] = isValid }
+    }
+
+    suspend fun updateTreatment() {
+
+        val valuesToUpdate = mutableMapOf<String, Any>()
+
+        if(treatmentToEdit.value?.recommendedBy != treatment.value?.recommendedBy) {
+            valuesToUpdate["Recommended By"] = treatment.value?.recommendedBy!!
+        }
+        if(treatmentToEdit.value?.medicationName != treatment.value?.medicationName) {
+            valuesToUpdate["Medication Name"] = treatment.value?.medicationName!!
+        }
+        if(treatmentToEdit.value?.medicationType != treatment.value?.medicationType) {
+            valuesToUpdate["Medication Type"] = treatment.value?.medicationType!!
+        }
+        if(treatmentToEdit.value?.notes != treatment.value?.notes) {
+            valuesToUpdate["Treatment Notes"] = treatment.value?.notes!!
+        }
+
+        try {
+            treatmentRepository.updateTreatment(valuesToUpdate, treatmentToEdit.value?.treatmentUuid!!)
+            setContent(treatment.value!!)
+        } catch (e: Exception) {
+            setError(e)
+        }
     }
 
     companion object {
