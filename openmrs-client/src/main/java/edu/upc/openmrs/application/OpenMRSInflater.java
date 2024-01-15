@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -36,7 +38,6 @@ import java.util.Objects;
 import edu.upc.BuildConfig;
 import edu.upc.R;
 import edu.upc.blopup.bloodpressure.BloodPressureType;
-import edu.upc.openmrs.activities.visitdashboard.BMIChartSetUp;
 import edu.upc.openmrs.activities.visitdashboard.BloodPressureInfoDialog;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentActivity;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentListener;
@@ -124,12 +125,16 @@ public class OpenMRSInflater {
 
     private static void setBMIValueAndChart(String bmiData, View vitalsCardView) {
         if (!Objects.equals(bmiData, "N/A")) {
+            int marginBasedOnChartSize = (int) ((Float.parseFloat(bmiData) - 10) / 40 * 1000);
             vitalsCardView.findViewById(R.id.bmi_layout).setVisibility(View.VISIBLE);
-            TextView bmiValue = vitalsCardView.findViewById(R.id.bmi_value);
-            bmiValue.setText(bmiData);
-
-            BMIChartSetUp bmiChart = new BMIChartSetUp();
-            bmiChart.createChart(vitalsCardView, bmiData);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) vitalsCardView.findViewById(R.id.bmi_chart_pointer).getLayoutParams();
+            params.setMarginStart(marginBasedOnChartSize);
+            vitalsCardView.findViewById(R.id.bmi_chart_pointer).setLayoutParams(params);
+            TextView value = vitalsCardView.findViewById(R.id.bmi_value);
+            value.setText(bmiData);
+            LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) value.getLayoutParams();
+            params2.setMarginStart(marginBasedOnChartSize-10);
+            value.setLayoutParams(params2);
         }
     }
 

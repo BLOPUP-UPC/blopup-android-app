@@ -61,4 +61,12 @@
     <color name="bp_ht_stage_II_A">#FFED7541</color>
     <color name="bp_ht_stage_II_B">@color/bp_ht_stage_II_A</color>
     <color name="bp_ht_stage_II_C">#FFF12021</color>
+
+    <!-- BMI types colors -->
+    <color name="bmi_underweight">#e01f1f</color>
+    <color name="bmi_normal">#449c41</color>
+    <color name="bmi_overweight">#ffde4d</color>
+    <color name="bmi_obese">#ffa640</color>
+    <color name="bmi_obese_2">#e01f1f</color>
+
 </resources>

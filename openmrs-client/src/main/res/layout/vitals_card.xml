@@ -362,18 +362,67 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/bmi_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4sp"
-            android:layout_marginBottom="8sp" />
-        <com.github.anastr.speedviewlib.SpeedView
-            android:id="@+id/speedView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:sv_speedometerMode="TOP" />
-        </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/bmi_chart_layout"
+                android:layout_width="1000px"
+                android:layout_height="20dp"
+                android:gravity="center">
 
+                <View
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/underweight_bmi"
+                    android:layout_width="250px"
+                    android:layout_height="10dp"
+                    android:background="@color/bmi_underweight" />
+
+                <View
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/normal_bmi"
+                    android:layout_width="125px"
+                    android:layout_height="10dp"
+                    android:layout_toEndOf="@id/underweight_bmi"
+                    android:background="@color/bmi_normal" />
+
+                <View
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/overweight_bmi"
+                    android:layout_width="125px"
+                    android:layout_height="10dp"
+                    android:layout_toEndOf="@id/normal_bmi"
+                    android:background="@color/bmi_overweight" />
+
+                <View
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/obese_bmi"
+                    android:layout_width="250px"
+                    android:layout_height="10dp"
+                    android:layout_toEndOf="@id/overweight_bmi"
+                    android:background="@color/bmi_obese" />
+
+                <View
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/obese_bmi_2"
+                    android:layout_width="250px"
+                    android:layout_height="10dp"
+                    android:layout_toEndOf="@id/obese_bmi"
+                    android:background="@color/bmi_obese_2" />
+
+                <View
+                    android:id="@+id/bmi_chart_pointer"
+                    android:layout_width="3dp"
+                    android:layout_height="18dp"
+                    android:background="@color/black" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/bmi_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_long"
+                android:hint="23"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
