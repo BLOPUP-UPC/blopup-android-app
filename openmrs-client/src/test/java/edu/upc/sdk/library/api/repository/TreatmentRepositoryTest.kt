@@ -2,14 +2,10 @@ package edu.upc.sdk.library.api.repository
 
 import androidx.work.WorkManager
 import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder
-import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.ACTIVE_CONCEPT_ID
-import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.MEDICATION_NAME_CONCEPT_ID
-import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.MEDICATION_TYPE_CONCEPT_ID
-import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.RECOMMENDED_BY_CONCEPT_ID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
-import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_NOTES_CONCEPT_ID
 import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Encounter
@@ -152,25 +148,25 @@ class TreatmentRepositoryTest {
             encounterType = TREATMENT_ENCOUNTER_TYPE
             observations = listOf(
                 Obscreate().apply {
-                    concept = RECOMMENDED_BY_CONCEPT_ID
+                    concept = ObservationConcept.RECOMMENDED_BY.uuid
                     value = "BlopUp"
                 },
                 Obscreate().apply {
-                    concept = MEDICATION_NAME_CONCEPT_ID
+                    concept = ObservationConcept.MEDICATION_NAME.uuid
                     value = "hidroclorotiazida"
                 },
                 Obscreate().apply {
-                    concept = TREATMENT_NOTES_CONCEPT_ID
+                    concept = ObservationConcept.TREATMENT_NOTES.uuid
                     value = "25mg/dia"
                 },
                 Obscreate().apply {
-                    concept = ACTIVE_CONCEPT_ID
+                    concept = ObservationConcept.ACTIVE.uuid
                     value = "1"
                 },
                 Obscreate().apply {
-                    concept = MEDICATION_TYPE_CONCEPT_ID
+                    concept = ObservationConcept.MEDICATION_TYPE.uuid
                     groupMembers = listOf(Obscreate().apply {
-                        concept = MEDICATION_TYPE_CONCEPT_ID
+                        concept = ObservationConcept.MEDICATION_TYPE.uuid
                         value = MedicationType.DIURETIC.conceptId
                     })
                 }
@@ -241,7 +237,7 @@ class TreatmentRepositoryTest {
     fun `should update the observation as inactive`() {
         val treatment = TreatmentExample.activeTreatment()
         val observation = Observation().apply {
-            concept = ConceptEntity().apply { uuid = ACTIVE_CONCEPT_ID }
+            concept = ConceptEntity().apply { uuid = ObservationConcept.ACTIVE.uuid }
             displayValue = " 0"
             display = "Active:$displayValue"
             uuid = UUID.randomUUID().toString()
@@ -340,21 +336,21 @@ class TreatmentRepositoryTest {
 
         val medicationNameObservation = Observation().apply {
             uuid = UUID.randomUUID().toString()
-            concept = ConceptEntity().apply { uuid = MEDICATION_NAME_CONCEPT_ID }
+            concept = ConceptEntity().apply { uuid = ObservationConcept.MEDICATION_NAME.uuid }
             displayValue = "Ibuprofen"
             display = "Medication Name: $displayValue"
         }
 
         val recommendedByObservation = Observation().apply {
             uuid = UUID.randomUUID().toString()
-            concept = ConceptEntity().apply { uuid = RECOMMENDED_BY_CONCEPT_ID }
+            concept = ConceptEntity().apply { uuid = ObservationConcept.RECOMMENDED_BY.uuid }
             displayValue = "Blopup"
             display = "Recommended By: $displayValue"
         }
 
         val notesObservation = Observation().apply {
             uuid = UUID.randomUUID().toString()
-            concept = ConceptEntity().apply { uuid = TREATMENT_NOTES_CONCEPT_ID }
+            concept = ConceptEntity().apply { uuid = ObservationConcept.TREATMENT_NOTES.uuid }
             displayValue = "notes"
             display = "Treatment Notes: $displayValue"
         }
@@ -369,19 +365,19 @@ class TreatmentRepositoryTest {
         coEvery {
             restApi.updateObservation(
                 medicationNameObservation.uuid,
-                mapOf("value" to valuesToUpdate["Medication Name"])
+                mapOf("value" to valuesToUpdate[ObservationConcept.MEDICATION_NAME.display])
             )
         } returns mockk(relaxed = true)
         coEvery {
             restApi.updateObservation(
                 recommendedByObservation.uuid,
-                mapOf("value" to valuesToUpdate["Recommended By"])
+                mapOf("value" to valuesToUpdate[ObservationConcept.RECOMMENDED_BY.display])
             )
         } returns mockk(relaxed = true)
         coEvery {
             restApi.updateObservation(
                 notesObservation.uuid,
-                mapOf("value" to valuesToUpdate["Treatment Notes"])
+                mapOf("value" to valuesToUpdate[ObservationConcept.TREATMENT_NOTES.display])
             )
         } returns mockk(relaxed = true)
 
@@ -391,15 +387,15 @@ class TreatmentRepositoryTest {
             coVerify {
                 restApi.updateObservation(
                     medicationNameObservation.uuid,
-                    mapOf("value" to valuesToUpdate["Medication Name"])
+                    mapOf("value" to valuesToUpdate[ObservationConcept.MEDICATION_NAME.display])
                 )
                 restApi.updateObservation(
                     recommendedByObservation.uuid,
-                    mapOf("value" to valuesToUpdate["Recommended By"])
+                    mapOf("value" to valuesToUpdate[ObservationConcept.RECOMMENDED_BY.display])
                 )
                 restApi.updateObservation(
                     notesObservation.uuid,
-                    mapOf("value" to valuesToUpdate["Treatment Notes"])
+                    mapOf("value" to valuesToUpdate[ObservationConcept.TREATMENT_NOTES.display])
                 )
             }
             assertEquals(Result.success(true), result)

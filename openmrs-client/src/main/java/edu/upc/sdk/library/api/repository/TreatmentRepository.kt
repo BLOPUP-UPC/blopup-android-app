@@ -1,5 +1,6 @@
 package edu.upc.sdk.library.api.repository
 
+import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
@@ -124,19 +125,19 @@ class TreatmentRepository @Inject constructor(
         var inactiveDate: Instant? = null
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {
-                RECOMMENDED_BY_CONCEPT_ID -> recommendedBy =
+                ObservationConcept.RECOMMENDED_BY.uuid -> recommendedBy =
                     observation.displayValue ?: ""
 
-                MEDICATION_NAME_CONCEPT_ID -> medicationName =
+                ObservationConcept.MEDICATION_NAME.uuid -> medicationName =
                     observation.displayValue?.trim() ?: ""
 
-                TREATMENT_NOTES_CONCEPT_ID -> notes =
+                ObservationConcept.TREATMENT_NOTES.uuid -> notes =
                     observation.displayValue?.trim() ?: ""
 
-                MEDICATION_TYPE_CONCEPT_ID -> medicationType =
+                ObservationConcept.MEDICATION_TYPE.uuid -> medicationType =
                     getMedicationTypesFromObservation(observation)
 
-                ACTIVE_CONCEPT_ID -> {
+                ObservationConcept.ACTIVE.uuid -> {
                     observationStatusUuid = observation.uuid
                     isActive = observation.displayValue?.trim() == "1.0"
                     if (!isActive) {
@@ -175,17 +176,17 @@ class TreatmentRepository @Inject constructor(
             visit = currentVisit.uuid
             observations = listOf(
                 observation(
-                    RECOMMENDED_BY_CONCEPT_ID,
+                    ObservationConcept.RECOMMENDED_BY.uuid,
                     treatment.recommendedBy,
                     currentVisit.patient.uuid!!
                 ),
                 observation(
-                    MEDICATION_NAME_CONCEPT_ID,
+                    ObservationConcept.MEDICATION_NAME.uuid,
                     treatment.medicationName,
                     currentVisit.patient.uuid!!
                 ),
                 observation(
-                    ACTIVE_CONCEPT_ID,
+                    ObservationConcept.ACTIVE.uuid,
                     if (treatment.isActive) "1.0" else "0.0",
                     currentVisit.patient.uuid!!
                 ),
@@ -199,7 +200,7 @@ class TreatmentRepository @Inject constructor(
         if (notes != null) {
             encounter.observations = encounter.observations.plus(
                 observation(
-                    TREATMENT_NOTES_CONCEPT_ID,
+                    ObservationConcept.TREATMENT_NOTES.uuid,
                     notes,
                     encounter.patient!!
                 )
@@ -210,12 +211,12 @@ class TreatmentRepository @Inject constructor(
 
     private fun drugFamiliesObservation(patientUuid: String, treatment: Treatment) =
         Obscreate().apply {
-            concept = MEDICATION_TYPE_CONCEPT_ID
+            concept = ObservationConcept.MEDICATION_TYPE.uuid
             person = patientUuid
             obsDatetime = Instant.now().toString()
             groupMembers = treatment.medicationType.map {
                 observation(
-                    MEDICATION_TYPE_CONCEPT_ID,
+                    ObservationConcept.MEDICATION_TYPE.uuid,
                     it.conceptId,
                     patientUuid
                 )
@@ -252,7 +253,7 @@ class TreatmentRepository @Inject constructor(
             val adherence = it.value
 
             observation(
-                TREATMENT_ADHERENCE_ID,
+                ObservationConcept.TREATMENT_ADHERENCE.uuid,
                 if (adherence) "1.0" else "0.0",
                 patientUuid
             ).apply { encounter = treatment }
@@ -326,29 +327,22 @@ class TreatmentRepository @Inject constructor(
 
         if (treatmentToEdit.recommendedBy != treatmentUpdated.recommendedBy) {
             if (treatmentUpdated.recommendedBy.isNotEmpty()) {
-                valuesToUpdate["Recommended By"] = treatmentUpdated.recommendedBy
+                valuesToUpdate[ObservationConcept.RECOMMENDED_BY.display] = treatmentUpdated.recommendedBy
             }
         }
         if (treatmentToEdit.medicationName != treatmentUpdated.medicationName) {
-            valuesToUpdate["Medication Name"] = treatmentUpdated.medicationName
+            valuesToUpdate[ObservationConcept.MEDICATION_NAME.display] = treatmentUpdated.medicationName
         }
         if (treatmentToEdit.medicationType != treatmentUpdated.medicationType) {
-            valuesToUpdate["Medication Type"] = treatmentUpdated.medicationType
+            valuesToUpdate[ObservationConcept.MEDICATION_TYPE.display] = treatmentUpdated.medicationType
         }
         if (treatmentToEdit.notes != treatmentUpdated.notes) {
-            valuesToUpdate["Treatment Notes"] = treatmentUpdated.notes.toString()
+            valuesToUpdate[ObservationConcept.TREATMENT_NOTES.display] = treatmentUpdated.notes.toString()
         }
         return valuesToUpdate
     }
 
     companion object {
-        const val MEDICATION_NAME_CONCEPT_ID = "a721776b-fd0f-41ea-821b-0d0df94d5560"
-        const val RECOMMENDED_BY_CONCEPT_ID = "c1164da7-0b4f-490f-85da-0c4aac4ca8a1"
-        const val ACTIVE_CONCEPT_ID = "81f60010-961e-4bc5-aa04-435c7ace1ee3"
-        const val TREATMENT_NOTES_CONCEPT_ID = "dfa881a4-5c88-4057-958b-f583c8edbdef"
-        const val MEDICATION_TYPE_CONCEPT_ID = "1a8f49cc-488b-4788-adb3-72c499108772"
-        const val TREATMENT_ADHERENCE_ID = "87e51329-cc96-426d-bc71-ccef8892ce72"
-
         const val TREATMENT_ENCOUNTER_TYPE = "Treatment"
     }
 }

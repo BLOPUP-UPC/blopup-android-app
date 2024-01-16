@@ -1,6 +1,6 @@
 package edu.upc.sdk.library.models
 
-import edu.upc.sdk.library.api.repository.TreatmentRepository
+import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.utilities.DateUtils.formatToOpenmrsDate
 import org.joda.time.Instant
@@ -32,13 +32,13 @@ object VisitExample {
                     observations = listOf(
                         Observation().apply {
                             concept = ConceptEntity().apply {
-                                uuid = TreatmentRepository.RECOMMENDED_BY_CONCEPT_ID
+                                uuid = ObservationConcept.RECOMMENDED_BY.uuid
                             }
                             displayValue = treatment.recommendedBy
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply {
-                                uuid = TreatmentRepository.MEDICATION_NAME_CONCEPT_ID
+                                uuid = ObservationConcept.MEDICATION_NAME.uuid
                             }
                             displayValue = treatment.medicationName
                             display = "Medication Name: ${treatment.medicationName}"
@@ -46,7 +46,7 @@ object VisitExample {
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply {
-                                uuid = TreatmentRepository.MEDICATION_TYPE_CONCEPT_ID
+                                uuid = ObservationConcept.MEDICATION_TYPE.uuid
                             }
                             groupMembers = treatment.medicationType.map {
                                 Observation().apply {
@@ -57,7 +57,7 @@ object VisitExample {
                         },
                         Observation().apply {
                             concept = ConceptEntity().apply {
-                                uuid = TreatmentRepository.TREATMENT_NOTES_CONCEPT_ID
+                                uuid = ObservationConcept.TREATMENT_NOTES.uuid
                             }
                             displayValue = treatment
                                 .notes
@@ -65,7 +65,7 @@ object VisitExample {
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
-                            concept = ConceptEntity().apply { uuid = TreatmentRepository.ACTIVE_CONCEPT_ID }
+                            concept = ConceptEntity().apply { uuid = ObservationConcept.ACTIVE.uuid }
                             displayValue = activeText
                             display = "Active:$activeText"
                             uuid = UUID.randomUUID().toString()
