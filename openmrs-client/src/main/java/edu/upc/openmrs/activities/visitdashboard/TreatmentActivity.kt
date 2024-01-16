@@ -20,6 +20,7 @@ import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.ME
 import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.RECOMMENDED_BY
 import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.sdk.library.models.MedicationType
+import edu.upc.sdk.library.models.OperationType
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
@@ -295,7 +296,11 @@ class TreatmentActivity : ACBaseActivity() {
     private fun handleTreatmentResult(result: Result<Treatment>) =
         when {
             result is Result.Success -> {
-                ToastUtil.success(getString(R.string.treatment_created_successfully))
+                if(result.operationType == OperationType.TreatmentUpdated) {
+                    ToastUtil.success(getString(R.string.treatment_updated_successfully))
+                } else {
+                    ToastUtil.success(getString(R.string.treatment_created_successfully))
+                }
                 finish()
             }
 
