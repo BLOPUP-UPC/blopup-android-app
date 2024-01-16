@@ -31,5 +31,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: Build Artifacts
+          name: BlopUp Client Bundle
           path: openmrs-client/build/outputs/
