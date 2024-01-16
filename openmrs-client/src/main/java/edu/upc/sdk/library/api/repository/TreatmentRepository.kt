@@ -24,7 +24,6 @@ class TreatmentRepository @Inject constructor(
 ) :
     BaseRepository(null) {
 
-
     suspend fun saveTreatment(treatment: Treatment) {
         val currentVisit = visitRepository.getVisitById(treatment.visitId)
         val encounter = createEncounterFromTreatment(currentVisit, treatment)
@@ -242,44 +241,6 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    suspend fun updateTreatment(valuesToUpdate: Map<String, Any>, encounterUuid: String) : Result<Boolean> {
-        var result: Result<Boolean> =
-            Result.failure(Exception("Could not update Treatment"))
-
-        val encounter = encounterRepository.getEncounterByUuid(encounterUuid)
-
-        val obsToUpdate = encounter?.observations?.filter { observation ->
-            valuesToUpdate.keys.any { key ->
-                observation.display!!.contains(key)
-            }
-        }
-
-        val obsMapToUpdate = obsToUpdate?.associate { observation ->
-            observation.uuid!! to valuesToUpdate.entries.find { (key, _) ->
-                observation.display?.contains(key) == true
-            }?.value
-        } ?: emptyMap()
-
-        obsMapToUpdate.forEach {
-            val value = mapOf("value" to it.value)
-
-            withContext(Dispatchers.IO) {
-                result = try {
-                    val response = restApi.updateObservation(it.key, value).execute()
-                    if (response.isSuccessful) {
-                        Result.success(true)
-                    } else {
-                        throw Exception("Update treatment error: ${response.message()}")
-                    }
-                } catch (e: Exception) {
-                    Result.failure(e)
-                }
-            }
-        }
-        return result
-    }
-
-
     suspend fun saveTreatmentAdherence(
         treatmentAdherence: Map<String, Boolean>,
         patientUuid: String
@@ -312,6 +273,72 @@ class TreatmentRepository @Inject constructor(
             }
         }
         return result
+    }
+
+    suspend fun updateTreatment(treatmentToEdit: Treatment, treatmentUpdated: Treatment) : Result<Boolean> {
+        var result: Result<Boolean> =
+            Result.failure(Exception("Could not update Treatment"))
+
+        val valuesToUpdate = updateValues(treatmentToEdit, treatmentUpdated)
+
+        if(valuesToUpdate.isNotEmpty()){
+            val encounter = encounterRepository.getEncounterByUuid(treatmentToEdit.treatmentUuid!!)
+
+            val obsToUpdate = encounter?.observations?.filter { observation ->
+                valuesToUpdate.keys.any { key ->
+                    observation.display!!.contains(key)
+                }
+            }
+
+            val obsMapToUpdate = obsToUpdate?.associate { observation ->
+                observation.uuid!! to valuesToUpdate.entries.find { (key, _) ->
+                    observation.display?.contains(key) == true
+                }?.value
+            } ?: emptyMap()
+
+            obsMapToUpdate.forEach {
+                val value = mapOf("value" to it.value)
+
+                withContext(Dispatchers.IO) {
+                    result = try {
+                        val response = restApi.updateObservation(it.key, value).execute()
+                        if (response.isSuccessful) {
+                            Result.success(true)
+                        } else {
+                            throw Exception("Update treatment error: ${response.message()}")
+                        }
+                    } catch (e: Exception) {
+                        Result.failure(e)
+                    }
+                }
+            }
+            return result
+        } else {
+            throw Exception("No changes detected")
+        }
+    }
+
+    private fun updateValues(
+        treatmentToEdit: Treatment,
+        treatmentUpdated: Treatment
+    ): MutableMap<String, Any> {
+        val valuesToUpdate = mutableMapOf<String, Any>()
+
+        if (treatmentToEdit.recommendedBy != treatmentUpdated.recommendedBy) {
+            if (treatmentUpdated.recommendedBy.isNotEmpty()) {
+                valuesToUpdate["Recommended By"] = treatmentUpdated.recommendedBy
+            }
+        }
+        if (treatmentToEdit.medicationName != treatmentUpdated.medicationName) {
+            valuesToUpdate["Medication Name"] = treatmentUpdated.medicationName
+        }
+        if (treatmentToEdit.medicationType != treatmentUpdated.medicationType) {
+            valuesToUpdate["Medication Type"] = treatmentUpdated.medicationType
+        }
+        if (treatmentToEdit.notes != treatmentUpdated.notes) {
+            valuesToUpdate["Treatment Notes"] = treatmentUpdated.notes.toString()
+        }
+        return valuesToUpdate
     }
 
     companion object {

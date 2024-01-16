@@ -37,6 +37,7 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.any
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -274,7 +275,7 @@ class TreatmentRepositoryTest {
 
     @Test
     fun `should return result success when treatment adherence is saved`() {
-        val treatment1 =  "treatmentUuid1"
+        val treatment1 = "treatmentUuid1"
         val treatment2 = "treatmentUuid2"
         val treatmentAdherenceData = mapOf(Pair(treatment1, true), Pair(treatment2, false))
         val mockCall = mockk<Call<Observation>>()
@@ -284,7 +285,8 @@ class TreatmentRepositoryTest {
         coEvery { mockCall.execute() } returns Response.success(Observation())
 
         runBlocking {
-            val result = treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
+            val result =
+                treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
 
             assertEquals(Result.success(true), result)
         }
@@ -305,7 +307,8 @@ class TreatmentRepositoryTest {
         coEvery { mockCall.execute() } throws exception
 
         runBlocking {
-            val result = treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
+            val result =
+                treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
 
             assertEquals(Result.failure<Exception>(exception), result)
         }
@@ -315,10 +318,24 @@ class TreatmentRepositoryTest {
     @Test
     fun `should return result success when treatment is updated`() {
 
+        val treatmentToEdit = TreatmentExample.activeTreatment()
+        val treatmentUpdated = treatmentToEdit.apply {
+            medicationName = "Paracetamol"
+            recommendedBy = "Other"
+            notes = "hello"
+        }
+
         val valuesToUpdate = mapOf(
             Pair("Medication Name", "Paracetamol"),
             Pair("Recommended By", "Other"),
             Pair("Treatment Notes", "hello")
+        )
+
+        val valuesToUpdate2 = mutableMapOf(
+            "Recommended By" to "BlopUp",
+            "Medication Name" to "Oxycontin",
+            "Medication Type" to setOf(MedicationType.DIURETIC),
+            "Treatment Notes" to "25mg/dia"
         )
 
         val medicationNameObservation = Observation().apply {
@@ -344,23 +361,63 @@ class TreatmentRepositoryTest {
 
         val encounter = Encounter().apply {
             uuid = UUID.randomUUID().toString()
-            observations = listOf(medicationNameObservation, recommendedByObservation, notesObservation)
+            observations =
+                listOf(medicationNameObservation, recommendedByObservation, notesObservation)
         }
 
         coEvery { encounterRepository.getEncounterByUuid(any()) } returns encounter
-        coEvery { restApi.updateObservation( medicationNameObservation.uuid, mapOf("value" to valuesToUpdate["Medication Name"])) } returns mockk(relaxed = true)
-        coEvery { restApi.updateObservation( recommendedByObservation.uuid, mapOf("value" to valuesToUpdate["Recommended By"])) } returns mockk(relaxed = true)
-        coEvery { restApi.updateObservation( notesObservation.uuid, mapOf("value" to valuesToUpdate["Treatment Notes"])) } returns mockk(relaxed = true)
+        coEvery {
+            restApi.updateObservation(
+                medicationNameObservation.uuid,
+                mapOf("value" to valuesToUpdate["Medication Name"])
+            )
+        } returns mockk(relaxed = true)
+        coEvery {
+            restApi.updateObservation(
+                recommendedByObservation.uuid,
+                mapOf("value" to valuesToUpdate["Recommended By"])
+            )
+        } returns mockk(relaxed = true)
+        coEvery {
+            restApi.updateObservation(
+                notesObservation.uuid,
+                mapOf("value" to valuesToUpdate["Treatment Notes"])
+            )
+        } returns mockk(relaxed = true)
 
         runBlocking {
-            val result = treatmentRepository.updateTreatment(valuesToUpdate, encounter.uuid!!)
+            val result = treatmentRepository.updateTreatment(treatmentToEdit, treatmentUpdated)
 
             coVerify {
-                restApi.updateObservation(medicationNameObservation.uuid, mapOf("value" to valuesToUpdate["Medication Name"]))
-                restApi.updateObservation(recommendedByObservation.uuid, mapOf("value" to valuesToUpdate["Recommended By"]))
-                restApi.updateObservation(notesObservation.uuid, mapOf("value" to valuesToUpdate["Treatment Notes"]))
+                restApi.updateObservation(
+                    medicationNameObservation.uuid,
+                    mapOf("value" to valuesToUpdate["Medication Name"])
+                )
+                restApi.updateObservation(
+                    recommendedByObservation.uuid,
+                    mapOf("value" to valuesToUpdate["Recommended By"])
+                )
+                restApi.updateObservation(
+                    notesObservation.uuid,
+                    mapOf("value" to valuesToUpdate["Treatment Notes"])
+                )
             }
             assertEquals(Result.success(true), result)
+        }
+    }
+
+    @Test
+    fun `should set error if no value changed to update a treatment`() {
+        val exceptionMessage = "No changes detected"
+
+        runBlocking {
+            runCatching {
+                val result = treatmentRepository.updateTreatment(any(), any())
+
+                assert(result.isFailure)
+                assertEquals(exceptionMessage, result.exceptionOrNull()?.message)
+
+            }
         }
     }
 

@@ -24,10 +24,24 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
 
     val fieldValidation: LiveData<MutableMap<String, Boolean>> = _fieldValidation
 
-    val treatment: MutableLiveData<Treatment> = MutableLiveData<Treatment>().apply { value = Treatment(recommendedBy = "", medicationName = "", medicationType = emptySet(), visitId = 0L) }
+    val treatment: MutableLiveData<Treatment> = MutableLiveData<Treatment>().apply {
+        value = Treatment(
+            recommendedBy = "",
+            medicationName = "",
+            medicationType = emptySet(),
+            visitId = 0L
+        )
+    }
 
     val treatmentToEdit: MutableLiveData<Treatment> =
-        MutableLiveData<Treatment>().apply { value = Treatment(recommendedBy = "", medicationName = "", medicationType = emptySet(), visitId = 0L)}
+        MutableLiveData<Treatment>().apply {
+            value = Treatment(
+                recommendedBy = "",
+                medicationName = "",
+                medicationType = emptySet(),
+                visitId = 0L
+            )
+        }
 
     suspend fun registerTreatment() =
         try {
@@ -42,33 +56,11 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
     }
 
     suspend fun updateTreatment() {
-
-        val valuesToUpdate = mutableMapOf<String, Any>()
-
-        if(treatmentToEdit.value?.recommendedBy != treatment.value?.recommendedBy) {
-            if(treatment.value?.recommendedBy?.isNotEmpty() == true) {
-                valuesToUpdate["Recommended By"] = treatment.value?.recommendedBy!!
-            }
-        }
-        if(treatmentToEdit.value?.medicationName != treatment.value?.medicationName) {
-            valuesToUpdate["Medication Name"] = treatment.value?.medicationName!!
-        }
-        if(treatmentToEdit.value?.medicationType != treatment.value?.medicationType) {
-            valuesToUpdate["Medication Type"] = treatment.value?.medicationType!!
-        }
-        if(treatmentToEdit.value?.notes != treatment.value?.notes) {
-            valuesToUpdate["Treatment Notes"] = treatment.value?.notes!!
-        }
-
-        if(valuesToUpdate.isNotEmpty()){
-            try {
-                treatmentRepository.updateTreatment(valuesToUpdate, treatmentToEdit.value?.treatmentUuid!!)
-                setContent(treatment.value!!)
-            } catch (e: Exception) {
-                setError(e)
-            }
-        } else {
-            setError(Exception("No changes detected"))
+        try {
+            treatmentRepository.updateTreatment(treatmentToEdit.value!!, treatment.value!!)
+            setContent(treatment.value!!)
+        } catch (e: Exception) {
+            setError(e)
         }
     }
 

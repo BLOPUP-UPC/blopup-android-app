@@ -2,7 +2,6 @@ package edu.upc.openmrs.activities.visitdashboard
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
 import io.mockk.coEvery
@@ -68,18 +67,10 @@ class TreatmentViewModelTest {
         val treatment = TreatmentExample.activeTreatment()
         treatmentViewModel.treatment.value = treatment
 
-        val valuesToUpdate = mutableMapOf(
-            "Recommended By" to "BlopUp",
-            "Medication Name" to "Oxycontin",
-            "Medication Type" to setOf(MedicationType.DIURETIC),
-            "Treatment Notes" to "25mg/dia"
-        )
-
         coEvery {
             treatment.treatmentUuid?.let {
                 mockTreatmentRepo.updateTreatment(
-                    valuesToUpdate,
-                    it
+                    treatmentViewModel.treatmentToEdit.value!!, treatmentViewModel.treatment.value!!
                 )
             }
         } returns kotlin.Result.success(true)
@@ -89,8 +80,8 @@ class TreatmentViewModelTest {
             coVerify {
                 treatment.treatmentUuid?.let {
                     mockTreatmentRepo.updateTreatment(
-                        valuesToUpdate,
-                        treatmentToEdit.treatmentUuid!!
+                        treatmentViewModel.treatmentToEdit.value!!,
+                        treatmentViewModel.treatment.value!!
                     )
                 }
             }
@@ -100,6 +91,10 @@ class TreatmentViewModelTest {
     @Test
     fun `should set error if no value changed to update a treatment`() {
         val exceptionMessage = "No changes detected"
+
+        coEvery {
+                mockTreatmentRepo.updateTreatment(any(), any())
+        } throws Exception(exceptionMessage)
 
         runBlocking {
             runCatching {
