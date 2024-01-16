@@ -48,9 +48,14 @@ class TreatmentActivity : ACBaseActivity() {
 
         treatmentToEdit = intent.getParcelableExtra<Treatment>(TREATMENT)?.apply {
             viewModel.treatmentToEdit.value = this
-        } ?: Treatment(recommendedBy = "", medicationName = "", medicationType = emptySet(), visitId = 0L)
+        } ?: Treatment(
+            recommendedBy = "",
+            medicationName = "",
+            medicationType = emptySet(),
+            visitId = 0L
+        )
 
-        if(treatmentToEdit.medicationName.isNotEmpty()) {
+        if (treatmentToEdit.medicationName.isNotEmpty()) {
             completeFields(treatmentToEdit)
         }
 
@@ -80,23 +85,7 @@ class TreatmentActivity : ACBaseActivity() {
             )
         }
         treatmentToEdit.recommendedBy.let {
-            when (it) {
-                RECOMMENDED_BY_BLOPUP -> {
-                    mBinding.newRecommendation.background = ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.treatment_buttons_on_selected,
-                        null
-                    )
-                }
-
-                else -> {
-                    mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.treatment_buttons_on_selected,
-                        null
-                    )
-                }
-            }
+            setRecommendationBackgrounds(it.trim())
         }
 
         viewModel.updateFieldValidation(MEDICATION_NAME, true)
@@ -155,33 +144,7 @@ class TreatmentActivity : ACBaseActivity() {
 
     private fun treatmentObserver() {
         viewModel.treatment.observe(this) {
-            when (it.recommendedBy) {
-                RECOMMENDED_BY_BLOPUP -> {
-                    mBinding.newRecommendation.background = ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.treatment_buttons_on_selected,
-                        null
-                    )
-                    mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.treatment_buttons_on_unselected,
-                        null
-                    )
-                }
-
-                RECOMMENDED_BY_OTHER -> {
-                    mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.treatment_buttons_on_selected,
-                        null
-                    )
-                    mBinding.newRecommendation.background = ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.treatment_buttons_on_unselected,
-                        null
-                    )
-                }
-            }
+            setRecommendationBackgrounds(it.recommendedBy)
         }
     }
 
@@ -260,7 +223,7 @@ class TreatmentActivity : ACBaseActivity() {
         mBinding.registerMedication.setOnClickListener {
             fillTreatmentFields()
 
-            if(treatmentToEdit.medicationName.isNotEmpty()){
+            if (treatmentToEdit.medicationName.isNotEmpty()) {
                 lifecycleScope.launch {
                     viewModel.updateTreatment()
                 }
@@ -281,7 +244,8 @@ class TreatmentActivity : ACBaseActivity() {
     private fun fillTreatmentFields() {
         with(mBinding) {
             viewModel.treatment.value?.medicationName = medicationName.text.toString()
-            if (additionalNotes.text.toString().isNotEmpty()) viewModel.treatment.value?.notes = additionalNotes.text.toString()
+            if (additionalNotes.text.toString().isNotEmpty()) viewModel.treatment.value?.notes =
+                additionalNotes.text.toString()
             viewModel.treatment.value?.medicationType = medicationType.checkedChipIds
                 .map {
                     MedicationType.valueOf(
@@ -296,7 +260,7 @@ class TreatmentActivity : ACBaseActivity() {
     private fun handleTreatmentResult(result: Result<Treatment>) =
         when {
             result is Result.Success -> {
-                if(result.operationType == OperationType.TreatmentUpdated) {
+                if (result.operationType == OperationType.TreatmentUpdated) {
                     ToastUtil.success(getString(R.string.treatment_updated_successfully))
                 } else {
                     ToastUtil.success(getString(R.string.treatment_created_successfully))
@@ -323,6 +287,36 @@ class TreatmentActivity : ACBaseActivity() {
                     medicationName.text.toString().isNotEmpty() ||
                     additionalNotes.text.toString().isNotEmpty() ||
                     medicationType.checkedChipIds.isNotEmpty()
+        }
+    }
+
+    private fun setRecommendationBackgrounds(recommendedBy: String) {
+        when (recommendedBy) {
+            RECOMMENDED_BY_BLOPUP -> {
+                mBinding.newRecommendation.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.treatment_buttons_on_selected,
+                    null
+                )
+                mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.treatment_buttons_on_unselected,
+                    null
+                )
+            }
+
+            RECOMMENDED_BY_OTHER -> {
+                mBinding.previouslyRecommended.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.treatment_buttons_on_selected,
+                    null
+                )
+                mBinding.newRecommendation.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.treatment_buttons_on_unselected,
+                    null
+                )
+            }
         }
     }
 }
