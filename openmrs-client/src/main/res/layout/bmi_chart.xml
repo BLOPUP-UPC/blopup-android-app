@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bmi_chart"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
@@ -15,64 +16,101 @@
 
     <RelativeLayout
         android:id="@+id/bmi_chart_layout"
-        android:layout_width="1000px"
-        android:layout_height="20dp"
-        android:gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <View
-            android:id="@+id/underweight_bmi"
-            android:layout_width="250px"
-            android:layout_height="10dp"
-            android:layout_marginTop="3dp"
-            android:background="@color/bmi_underweight" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp">
 
-        <View
-            android:id="@+id/normal_bmi"
-            android:layout_width="125px"
-            android:layout_height="10dp"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/underweight_bmi"
-            android:background="@color/bmi_normal" />
+            <View
+                android:id="@+id/underweight_bmi"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight=".25"
+                android:background="@color/bmi_underweight" />
 
-        <View
-            android:id="@+id/overweight_bmi"
-            android:layout_width="125px"
-            android:layout_height="10dp"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/normal_bmi"
-            android:background="@color/bmi_overweight" />
+            <View
+                android:id="@+id/normal_bmi"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight=".125"
+                android:background="@color/bmi_normal" />
 
-        <View
-            android:id="@+id/obese_bmi"
-            android:layout_width="250px"
-            android:layout_height="10dp"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/overweight_bmi"
-            android:background="@color/bmi_obese" />
+            <View
+                android:id="@+id/overweight_bmi"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight=".125"
+                android:background="@color/bmi_overweight" />
 
-        <View
-            android:id="@+id/obese_bmi_2"
-            android:layout_width="250px"
-            android:layout_height="10dp"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/obese_bmi"
-            android:background="@color/bmi_obese_2" />
+            <View
+                android:id="@+id/obese_bmi"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight=".25"
+                android:background="@color/bmi_obese" />
 
-        <View
-            android:id="@+id/bmi_chart_pointer"
-            android:layout_width="3dp"
-            android:layout_height="18dp"
-            android:background="@color/black" />
+            <View
+                android:id="@+id/obese_bmi_2"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight=".25"
+                android:background="@color/bmi_obese_2" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent">
+
+            <View
+                android:id="@+id/bmi_chart_pointer_background"
+                android:layout_width="0dp"
+                android:layout_height="18dp"
+                android:layout_weight=".25"
+                android:background="@color/transparent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:background="@color/transparent">
+
+                <View
+                    android:id="@+id/bmi_chart_pointer"
+                    android:layout_width="3dp"
+                    android:layout_height="18dp"
+                    android:layout_margin="0dp"
+                    android:background="@color/black" />
+
+                <TextView
+                    android:id="@+id/bmi_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:hint="23"
+                    android:layout_marginStart="-6dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/bmi_chart_pointer_background2"
+                android:layout_width="0dp"
+                android:layout_height="18dp"
+                android:layout_weight=".75"
+                android:background="@color/transparent" />
+
+        </LinearLayout>
+
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/bmi_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_long"
-        android:hint="23"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
 
 </LinearLayout>

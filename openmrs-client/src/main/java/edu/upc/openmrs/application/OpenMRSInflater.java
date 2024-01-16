@@ -64,7 +64,7 @@ public class OpenMRSInflater {
 
         setVitalsValues(encounter.getObservations(), vitalsCardView);
 
-        BmiChart.setBMIValueAndChart(bmiData, vitalsCardView);
+        showBmiChart(vitalsCardView, bmiData);
 
         setBloodPressureInformationDialog(vitalsCardView, fragmentManager);
 
@@ -148,6 +148,12 @@ public class OpenMRSInflater {
                     vitalsCardView.findViewById(R.id.height_layout).setVisibility(View.VISIBLE);
                 heightValue.setText(formattedDisplayValue);
             }
+        }
+    }
+
+    private void showBmiChart(View vitalsCardView, String bmiData) {
+        if (bmiData != null && !bmiData.isEmpty()) {
+            new BmiChart().setBMIValueAndChart(Float.parseFloat(bmiData), vitalsCardView);
         }
     }
 
