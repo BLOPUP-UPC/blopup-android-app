@@ -123,19 +123,22 @@ public class OpenMRSInflater {
         }
     }
 
-    private static void setBMIValueAndChart(String bmiData, View vitalsCardView) {
-        if (!Objects.equals(bmiData, "N/A")) {
+    private static void setBMIValueAndChart(String bmiValue, View vitalsCardView) {
+        if (!Objects.equals(bmiValue, "N/A")) {
+            int chartSizeInPx = 1000;
+            int bmiRange = 40;
+            int bmiStartValue = 10;
 
-            int marginBasedOnChartSize = Float.parseFloat(bmiData) > 50 ? 990 : (int) ((Float.parseFloat(bmiData) - 10) / 40 * 1000);
+            int pointerPositionBasedOnBmiValueAndChartSize = Float.parseFloat(bmiValue) > 50 ? chartSizeInPx - 10 : (int) ((Float.parseFloat(bmiValue) - bmiStartValue) / bmiRange * chartSizeInPx);
 
             vitalsCardView.findViewById(R.id.bmi_layout).setVisibility(View.VISIBLE);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) vitalsCardView.findViewById(R.id.bmi_chart_pointer).getLayoutParams();
-            params.setMarginStart(marginBasedOnChartSize);
+            params.setMarginStart(pointerPositionBasedOnBmiValueAndChartSize);
             vitalsCardView.findViewById(R.id.bmi_chart_pointer).setLayoutParams(params);
             TextView value = vitalsCardView.findViewById(R.id.bmi_value);
-            value.setText(bmiData);
+            value.setText(bmiValue);
             LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) value.getLayoutParams();
-            params2.setMarginStart(marginBasedOnChartSize-35);
+            params2.setMarginStart(pointerPositionBasedOnBmiValueAndChartSize-35);
             value.setLayoutParams(params2);
         }
     }
