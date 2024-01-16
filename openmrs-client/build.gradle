@@ -76,7 +76,15 @@ android {
 
     signingConfigs {
         release {
-            storeFile rootProject.file('release.keystore')
+            def tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
+            def allFilesFromDir = new File(tmpFilePath).listFiles()
+
+            if (allFilesFromDir != null) {
+                def keystoreFile = allFilesFromDir.first()
+                keystoreFile.renameTo("keystore/release_keystore.jks")
+            }
+
+            storeFile file("keystore/release_keystore.jks")
             storePassword System.getenv("KEYSTORE_PASSWORD") ?: "Admin123"
             keyAlias System.getenv("KEYSTORE_ALIAS_NAME") ?: "blopup-key-alias"
             keyPassword System.getenv("KEYSTORE_ALIAS_PASS") ?: "Admin123"
