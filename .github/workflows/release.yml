@@ -1,7 +1,6 @@
 name: Build Release App bundle
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - '*'
@@ -40,3 +39,10 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: openmrs-client/build/outputs/bundle/release/openmrs-client-release.aab
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: edu.upc
+          releaseFiles: openmrs-client/build/outputs/bundle/release/openmrs-client-release.aab
+          track: production
+#          status: inProgress

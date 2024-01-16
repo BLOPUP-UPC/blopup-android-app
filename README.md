@@ -19,3 +19,6 @@ maestro studio # Start Maestro studio for writing tests
 #### CI:
 The tests are executed in the maestro cloud servers. You can go to the dashboard to check the results.
 
+# Release
+
+With every tag the CI will build a release with the bundle that you can later on upload to the Play Console
