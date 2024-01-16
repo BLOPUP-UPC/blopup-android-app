@@ -29,7 +29,6 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Request
 import org.joda.time.Instant
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
@@ -310,48 +309,37 @@ class TreatmentRepositoryTest {
         }
     }
 
-    @Ignore
     @Test
     fun `should return result success when treatment is updated`() {
 
         val treatmentToEdit = TreatmentExample.activeTreatment()
-        val treatmentUpdated = treatmentToEdit.apply {
-            medicationName = "Paracetamol"
-            recommendedBy = "Other"
-            notes = "hello"
-        }
 
-        val valuesToUpdate = mapOf(
-            Pair("Medication Name", "Paracetamol"),
-            Pair("Recommended By", "Other"),
-            Pair("Treatment Notes", "hello")
-        )
-
-        val valuesToUpdate2 = mutableMapOf(
-            "Recommended By" to "BlopUp",
-            "Medication Name" to "Oxycontin",
-            "Medication Type" to setOf(MedicationType.DIURETIC),
-            "Treatment Notes" to "25mg/dia"
+        val treatmentUpdated = Treatment(
+            "Other",
+            "Paracetamol",
+            treatmentToEdit.medicationType,
+            "hello",
+            visitId = treatmentToEdit.visitId
         )
 
         val medicationNameObservation = Observation().apply {
             uuid = UUID.randomUUID().toString()
             concept = ConceptEntity().apply { uuid = ObservationConcept.MEDICATION_NAME.uuid }
-            displayValue = "Ibuprofen"
+            displayValue = "Oxycontin"
             display = "Medication Name: $displayValue"
         }
 
         val recommendedByObservation = Observation().apply {
             uuid = UUID.randomUUID().toString()
             concept = ConceptEntity().apply { uuid = ObservationConcept.RECOMMENDED_BY.uuid }
-            displayValue = "Blopup"
+            displayValue = "BlopUp"
             display = "Recommended By: $displayValue"
         }
 
         val notesObservation = Observation().apply {
             uuid = UUID.randomUUID().toString()
             concept = ConceptEntity().apply { uuid = ObservationConcept.TREATMENT_NOTES.uuid }
-            displayValue = "notes"
+            displayValue = "25mg/dia"
             display = "Treatment Notes: $displayValue"
         }
 
@@ -361,44 +349,39 @@ class TreatmentRepositoryTest {
                 listOf(medicationNameObservation, recommendedByObservation, notesObservation)
         }
 
+        val valuesToUpdate = mapOf(
+            "obs" to arrayListOf(
+                mapOf(
+                    "uuid" to medicationNameObservation.uuid!!,
+                    "value" to treatmentUpdated.medicationName
+                ),
+                mapOf(
+                    "uuid" to recommendedByObservation.uuid!!,
+                    "value" to treatmentUpdated.recommendedBy
+                ),
+                mapOf(
+                    "uuid" to notesObservation.uuid!!,
+                    "value" to treatmentUpdated.notes!!
+                )
+            )
+        )
+
         coEvery { encounterRepository.getEncounterByUuid(any()) } returns encounter
+
         coEvery {
-            restApi.updateObservation(
-                medicationNameObservation.uuid,
-                mapOf("value" to valuesToUpdate[ObservationConcept.MEDICATION_NAME.display])
-            )
-        } returns mockk(relaxed = true)
-        coEvery {
-            restApi.updateObservation(
-                recommendedByObservation.uuid,
-                mapOf("value" to valuesToUpdate[ObservationConcept.RECOMMENDED_BY.display])
-            )
-        } returns mockk(relaxed = true)
-        coEvery {
-            restApi.updateObservation(
-                notesObservation.uuid,
-                mapOf("value" to valuesToUpdate[ObservationConcept.TREATMENT_NOTES.display])
-            )
-        } returns mockk(relaxed = true)
+            restApi.updateEncounter(
+                treatmentToEdit.treatmentUuid,
+                valuesToUpdate
+            ).execute()
+        } returns Response.success(Encounter())
 
         runBlocking {
             val result = treatmentRepository.updateTreatment(treatmentToEdit, treatmentUpdated)
 
             coVerify {
-                restApi.updateObservation(
-                    medicationNameObservation.uuid,
-                    mapOf("value" to valuesToUpdate[ObservationConcept.MEDICATION_NAME.display])
-                )
-                restApi.updateObservation(
-                    recommendedByObservation.uuid,
-                    mapOf("value" to valuesToUpdate[ObservationConcept.RECOMMENDED_BY.display])
-                )
-                restApi.updateObservation(
-                    notesObservation.uuid,
-                    mapOf("value" to valuesToUpdate[ObservationConcept.TREATMENT_NOTES.display])
-                )
+                restApi.updateEncounter(treatmentToEdit.treatmentUuid, valuesToUpdate)
+                assertEquals(Result.success(true), result)
             }
-            assertEquals(Result.success(true), result)
         }
     }
 

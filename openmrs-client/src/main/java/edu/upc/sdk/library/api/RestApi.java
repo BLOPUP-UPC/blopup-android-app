@@ -219,6 +219,17 @@ public interface RestApi {
     Call<Encounter> createEncounter(@Body Encountercreate encountercreate);
 
     /**
+     * Update encounter call.
+     *
+     * @param uuid the uuid of the encounter to be updated
+     * @param value the updated encounter data
+     * @return the call
+     */
+    @POST("encounter/{uuid}")
+    Call<Encounter> updateEncounter(@Path("uuid") String uuid,
+                                    @Body Map<String, Object> value);
+
+    /**
      * Gets encounter types.
      *
      * @return the encounter types

@@ -277,9 +277,6 @@ class TreatmentRepository @Inject constructor(
     }
 
     suspend fun updateTreatment(treatmentToEdit: Treatment, treatmentUpdated: Treatment) : Result<Boolean> {
-        var result: Result<Boolean> =
-            Result.failure(Exception("Could not update Treatment"))
-
         val valuesToUpdate = updateValues(treatmentToEdit, treatmentUpdated)
 
         if(valuesToUpdate.isNotEmpty()){
@@ -297,23 +294,29 @@ class TreatmentRepository @Inject constructor(
                 }?.value
             } ?: emptyMap()
 
-            obsMapToUpdate.forEach {
-                val value = mapOf("value" to it.value)
+            if (obsMapToUpdate.isNotEmpty()) {
+                val obsList = obsMapToUpdate.map { (uuid, value) ->
+                    mapOf("uuid" to uuid, "value" to value)
+                }
 
-                withContext(Dispatchers.IO) {
-                    result = try {
-                        val response = restApi.updateObservation(it.key, value).execute()
+                val requestBody = mapOf("obs" to obsList)
+
+                return try {
+                    withContext(Dispatchers.IO) {
+                        val response = restApi.updateEncounter(treatmentToEdit.treatmentUuid!!, requestBody).execute()
+
                         if (response.isSuccessful) {
                             Result.success(true)
                         } else {
-                            throw Exception("Update treatment error: ${response.message()}")
+                            Result.failure(Exception("Update treatment error: ${response.message()}"))
                         }
-                    } catch (e: Exception) {
-                        Result.failure(e)
                     }
+                } catch (e: Exception) {
+                    Result.failure(e)
                 }
+            } else {
+                throw Exception("No changes detected")
             }
-            return result
         } else {
             throw Exception("No changes detected")
         }
