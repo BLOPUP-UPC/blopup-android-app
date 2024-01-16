@@ -96,4 +96,20 @@ class TreatmentViewModelTest {
             }
         }
     }
+
+    @Test
+    fun `should set error if no value changed to update a treatment`() {
+        val exceptionMessage = "No changes detected"
+
+        runBlocking {
+            runCatching {
+                treatmentViewModel.updateTreatment()
+            }
+
+            assertEquals(
+                exceptionMessage,
+                treatmentViewModel.result.value?.let { (it as Result.Error).throwable.message }
+            )
+        }
+    }
 }

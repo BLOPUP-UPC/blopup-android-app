@@ -46,7 +46,9 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
         val valuesToUpdate = mutableMapOf<String, Any>()
 
         if(treatmentToEdit.value?.recommendedBy != treatment.value?.recommendedBy) {
-            valuesToUpdate["Recommended By"] = treatment.value?.recommendedBy!!
+            if(treatment.value?.recommendedBy?.isNotEmpty() == true) {
+                valuesToUpdate["Recommended By"] = treatment.value?.recommendedBy!!
+            }
         }
         if(treatmentToEdit.value?.medicationName != treatment.value?.medicationName) {
             valuesToUpdate["Medication Name"] = treatment.value?.medicationName!!
@@ -58,11 +60,15 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
             valuesToUpdate["Treatment Notes"] = treatment.value?.notes!!
         }
 
-        try {
-            treatmentRepository.updateTreatment(valuesToUpdate, treatmentToEdit.value?.treatmentUuid!!)
-            setContent(treatment.value!!)
-        } catch (e: Exception) {
-            setError(e)
+        if(valuesToUpdate.isNotEmpty()){
+            try {
+                treatmentRepository.updateTreatment(valuesToUpdate, treatmentToEdit.value?.treatmentUuid!!)
+                setContent(treatment.value!!)
+            } catch (e: Exception) {
+                setError(e)
+            }
+        } else {
+            setError(Exception("No changes detected"))
         }
     }
 

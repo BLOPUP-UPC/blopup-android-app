@@ -303,6 +303,10 @@ class TreatmentActivity : ACBaseActivity() {
                 ToastUtil.error(getString(R.string.no_internet_connection))
             }
 
+            result is Result.Error && result.throwable.message == "No changes detected" -> {
+                ToastUtil.error(getString(R.string.no_changes_detected))
+            }
+
             else -> {
                 ToastUtil.error(getString(R.string.treatment_operation_error))
             }

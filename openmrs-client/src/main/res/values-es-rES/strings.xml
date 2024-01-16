@@ -436,5 +436,6 @@
     <string name="treatment_operation_error">No se pudo realizar la operación. Intente más tarde.</string>
     <string name="treatment_created_successfully">Tratamiento creado con éxito</string>
     <string name="treatment_adherence_label">El paciente sigue estos tratamientos?</string>
+    <string name="no_changes_detected">No se ha detectado ningun cambio </string>
     />
 </resources>
