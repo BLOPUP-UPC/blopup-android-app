@@ -36,4 +36,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: BlopUp Client Bundle
-          path: openmrs-client/build/outputs/
+          path: openmrs-client/build/outputs/bundle/release/openmrs-client-release.aab
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: openmrs-client/build/outputs/bundle/release/openmrs-client-release.aab
