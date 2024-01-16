@@ -22,8 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -39,6 +37,7 @@ import edu.upc.BuildConfig;
 import edu.upc.R;
 import edu.upc.blopup.bloodpressure.BloodPressureType;
 import edu.upc.openmrs.activities.visitdashboard.BloodPressureInfoDialog;
+import edu.upc.openmrs.activities.visitdashboard.BmiChart;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentActivity;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentListener;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentRecyclerViewAdapter;
@@ -65,7 +64,7 @@ public class OpenMRSInflater {
 
         setVitalsValues(encounter.getObservations(), vitalsCardView);
 
-        setBMIValueAndChart(bmiData, vitalsCardView);
+        BmiChart.setBMIValueAndChart(bmiData, vitalsCardView);
 
         setBloodPressureInformationDialog(vitalsCardView, fragmentManager);
 
@@ -120,26 +119,6 @@ public class OpenMRSInflater {
                     PorterDuff.Mode.SRC_IN
             );
             recommendation.setText(HtmlCompat.fromHtml(mInflater.getContext().getString(bloodPressureType.relatedRecommendation()), HtmlCompat.FROM_HTML_MODE_LEGACY));
-        }
-    }
-
-    private static void setBMIValueAndChart(String bmiValue, View vitalsCardView) {
-        if (!Objects.equals(bmiValue, "N/A")) {
-            int chartSizeInPx = 1000;
-            int bmiRange = 40;
-            int bmiStartValue = 10;
-
-            int pointerPositionBasedOnBmiValueAndChartSize = Float.parseFloat(bmiValue) > 50 ? chartSizeInPx - 10 : (int) ((Float.parseFloat(bmiValue) - bmiStartValue) / bmiRange * chartSizeInPx);
-
-            vitalsCardView.findViewById(R.id.bmi_layout).setVisibility(View.VISIBLE);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) vitalsCardView.findViewById(R.id.bmi_chart_pointer).getLayoutParams();
-            params.setMarginStart(pointerPositionBasedOnBmiValueAndChartSize);
-            vitalsCardView.findViewById(R.id.bmi_chart_pointer).setLayoutParams(params);
-            TextView value = vitalsCardView.findViewById(R.id.bmi_value);
-            value.setText(bmiValue);
-            LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) value.getLayoutParams();
-            params2.setMarginStart(pointerPositionBasedOnBmiValueAndChartSize-35);
-            value.setLayoutParams(params2);
         }
     }
 
