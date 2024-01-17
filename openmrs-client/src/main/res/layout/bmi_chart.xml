@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bmi_chart"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -68,45 +70,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/transparent">
+            android:orientation="horizontal">
 
             <View
                 android:id="@+id/bmi_chart_pointer_background"
                 android:layout_width="0dp"
                 android:layout_height="18dp"
-                android:layout_weight=".25"
                 android:background="@color/transparent" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:background="@color/transparent">
+                android:orientation="vertical">
 
                 <View
                     android:id="@+id/bmi_chart_pointer"
                     android:layout_width="3dp"
                     android:layout_height="18dp"
-                    android:layout_margin="0dp"
                     android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/bmi_value"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:hint="23"
-                    android:layout_marginStart="-6dp"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <View
                 android:id="@+id/bmi_chart_pointer_background2"
                 android:layout_width="0dp"
                 android:layout_height="18dp"
-                android:layout_weight=".75"
                 android:background="@color/transparent" />
 
         </LinearLayout>

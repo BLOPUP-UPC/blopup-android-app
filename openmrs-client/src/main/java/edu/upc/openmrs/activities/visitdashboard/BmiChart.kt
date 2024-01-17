@@ -1,11 +1,8 @@
 package edu.upc.openmrs.activities.visitdashboard
 
-import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.constraintlayout.solver.state.Dimension
 import edu.upc.R
 import kotlin.math.roundToInt
 
@@ -24,18 +21,19 @@ class BmiChart {
             else if (roundedBmi < 10) 0f
             else pointerValue / chartRange
 
-        val blankSpace = vitalsCardView.findViewById<View>(R.id.bmi_chart_pointer_background)
-        val blankSpaceAfter = vitalsCardView.findViewById<View>(R.id.bmi_chart_pointer_background2)
+        vitalsCardView.findViewById<TextView>(R.id.bmi_value).text = roundedBmi.toString()
 
-        val pointerParams = blankSpace.layoutParams as LinearLayout.LayoutParams
-        val afterParams = blankSpaceAfter.layoutParams as LinearLayout.LayoutParams
+        val spaceBeforePointer = vitalsCardView.findViewById<View>(R.id.bmi_chart_pointer_background)
+        val spaceAfterPointer = vitalsCardView.findViewById<View>(R.id.bmi_chart_pointer_background2)
 
-        pointerParams.weight = weight
-        afterParams.weight = 1 - weight
+        val spaceBeforeParams = spaceBeforePointer.layoutParams as LinearLayout.LayoutParams
+        val spaceAfterParams = spaceAfterPointer.layoutParams as LinearLayout.LayoutParams
 
-        blankSpace.layoutParams = pointerParams
-        blankSpaceAfter.layoutParams = afterParams
+        spaceBeforeParams.weight = weight
+        spaceAfterParams.weight = 1 - weight
 
+        spaceBeforePointer.layoutParams = spaceBeforeParams
+        spaceAfterPointer.layoutParams = spaceAfterParams
     }
 
 }
