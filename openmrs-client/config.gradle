@@ -6,7 +6,6 @@ android{
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup.upc.edu/openmrs\""
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "false"
-            buildConfigField "Boolean", "SHOW_TREATMENT_TOGGLE", "false"
 
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "false"
@@ -17,7 +16,6 @@ android{
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-staging.upc.edu/openmrs\""
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
-            buildConfigField "Boolean", "SHOW_TREATMENT_TOGGLE", "true"
 
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "false"
@@ -28,7 +26,6 @@ android{
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-dev.upc.edu/openmrs\""
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "true"
             buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
-            buildConfigField "Boolean", "SHOW_TREATMENT_TOGGLE", "true"
 
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "false"

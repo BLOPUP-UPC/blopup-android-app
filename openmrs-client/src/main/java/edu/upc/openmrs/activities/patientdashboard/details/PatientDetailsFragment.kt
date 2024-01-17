@@ -25,7 +25,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.BuildConfig
-import edu.upc.BuildConfig.SHOW_TREATMENT_TOGGLE
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
@@ -56,14 +55,9 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     ): View {
         _binding = FragmentPatientDetailsBinding.inflate(inflater, null, false)
 
+        setUpActiveTreatmentsAdapter()
         setupObservers()
         fetchPatientDetails()
-
-        if(SHOW_TREATMENT_TOGGLE) {
-            setUpActiveTreatmentsAdapter()
-        } else {
-            binding.recommendedTreatmentsLayout.visibility = View.GONE
-        }
 
         return binding.root
     }

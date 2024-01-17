@@ -57,9 +57,7 @@ public class OpenMRSInflater {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
-        if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
-            showTreatment(vitalsCardView, encounter, visit, treatments, listener);
-        }
+        showTreatment(vitalsCardView, encounter, visit, treatments, listener);
         setBloodPressureTypeAndRecommendation(bloodPressureType, vitalsCardView);
 
         setVitalsValues(encounter.getObservations(), vitalsCardView);

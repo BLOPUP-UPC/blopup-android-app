@@ -20,7 +20,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_DIASTOLIC
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.EXTRAS_HEART_RATE
@@ -143,11 +142,7 @@ class VitalsFormActivity : ACBaseActivity() {
 
         askForPermissions()
 
-        if (BuildConfig.SHOW_TREATMENT_TOGGLE) {
-            setupTreatmentAdherenceAdapter()
-        } else {
-            mBinding.treatmentAdherence.visibility = View.GONE
-        }
+        setupTreatmentAdherenceAdapter()
     }
 
     override fun onResume() {
