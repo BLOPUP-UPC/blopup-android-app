@@ -45,4 +45,3 @@ jobs:
           packageName: edu.upc
           releaseFiles: openmrs-client/build/outputs/bundle/release/openmrs-client-release.aab
           track: internal
-#          status: inProgress
