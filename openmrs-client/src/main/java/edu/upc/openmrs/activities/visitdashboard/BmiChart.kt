@@ -13,8 +13,8 @@ class BmiChart {
 
         val roundedBmi = bmiValue.roundToInt()
 
-        val pointerValue = bmiValue - 10 //10 is the start value of the chart
-        val chartRange = 40
+        val pointerValue = roundedBmi - 10f //10 is the start value of the chart
+        val chartRange = 40f
 
         val weight =
             if (roundedBmi >= 50) 1f
