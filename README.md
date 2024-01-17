@@ -21,4 +21,4 @@ The tests are executed in the maestro cloud servers. You can go to the dashboard
 
 # Release
 
-With every tag the CI will build a release with the bundle that you can later on upload to the Play Console
+With every tag the CI will build a release and upload it to the Play Console
