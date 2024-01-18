@@ -152,7 +152,7 @@ public class OpenMRSInflater {
     }
 
     private void showBmiChart(View vitalsCardView, String bmiData) {
-        if (bmiData != null && !bmiData.isEmpty()) {
+        if (bmiData != null && !bmiData.isEmpty() && !bmiData.equals("N/A")) {
             new BmiChart().setBMIValueAndChart(Float.parseFloat(bmiData), vitalsCardView);
         }
     }
