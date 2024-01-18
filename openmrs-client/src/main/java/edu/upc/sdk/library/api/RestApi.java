@@ -192,6 +192,15 @@ public interface RestApi {
                                         @Body Map<String, Object> value);
 
     /**
+     * Delete obs call.
+     *
+     * @param uuid the uuid of the observation to be removed
+     * @return the call
+     */
+    @DELETE("obs/{uuid}")
+    Call<ResponseBody> deleteObservation(@Path("uuid") String uuid);
+
+    /**
      * Get obs call.
      *
      * @param uuid the uuid of the observation to be updated
