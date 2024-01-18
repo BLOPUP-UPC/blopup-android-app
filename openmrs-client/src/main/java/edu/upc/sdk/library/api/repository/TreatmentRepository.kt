@@ -276,60 +276,62 @@ class TreatmentRepository @Inject constructor(
         return result
     }
 
-    suspend fun updateTreatment(treatmentToEdit: Treatment, treatmentUpdated: Treatment): Result<Boolean> {
+    suspend fun updateTreatment(
+        treatmentToEdit: Treatment,
+        treatmentUpdated: Treatment
+    ): Result<Boolean> {
         val valuesToUpdate = updateValues(treatmentToEdit, treatmentUpdated)
 
-        if (valuesToUpdate.isNotEmpty()) {
-            val encounterToUpdate = encounterRepository.getEncounterByUuid(treatmentToEdit.treatmentUuid!!)
+        if (valuesToUpdate.isEmpty()) return Result.success(true)
 
-            val observationsToUpdate = encounterToUpdate?.observations?.filter { observation ->
-                valuesToUpdate.keys.any { key -> observation.display!!.contains(key) }
-            }
+        val encounterToUpdate =
+            encounterRepository.getEncounterByUuid(treatmentToEdit.treatmentUuid!!)
 
-            if (valuesToUpdate.keys.contains(ObservationConcept.MEDICATION_TYPE.display)) {
-                removeOldObservationAndCreateNewOne(observationsToUpdate, valuesToUpdate, treatmentToEdit, encounterToUpdate!!)
-            }
+        val observationsToUpdate = encounterToUpdate?.observations?.filter { observation ->
+            valuesToUpdate.keys.any { key -> observation.display!!.contains(key) }
+        }
 
-            val mapWithObservationsToUpdate = mapWithObservationsUuidAndValuesToUpdate(observationsToUpdate, valuesToUpdate)
+        if (valuesToUpdate.keys.contains(ObservationConcept.MEDICATION_TYPE.display)) {
+            removeOldObservationAndCreateNewOne(
+                observationsToUpdate,
+                valuesToUpdate,
+                treatmentToEdit,
+                encounterToUpdate!!
+            )
+        }
 
-            if (mapWithObservationsToUpdate.isNotEmpty()) {
-                val observationList = mapWithObservationsToUpdate.map { (uuid, value) ->
-                    mapOf("uuid" to uuid, "value" to value)
+        if (valuesToUpdate.isEmpty()) return Result.success(true)
+
+        val mapWithObservationsToUpdate = mapObservationWithNewValues(observationsToUpdate, valuesToUpdate)
+
+        val requestBody = mapOf("obs" to mapWithObservationsToUpdate)
+
+        return try {
+            withContext(Dispatchers.IO) {
+                val response =
+                    restApi.updateEncounter(treatmentToEdit.treatmentUuid!!, requestBody)
+                        .execute()
+                if (response.isSuccessful) {
+                    Result.success(true)
+                } else {
+                    Result.failure(Exception("Update treatment error: ${response.message()}"))
                 }
-
-                val requestBody = mapOf("obs" to observationList)
-
-                return try {
-                    withContext(Dispatchers.IO) {
-                        val response =
-                            restApi.updateEncounter(treatmentToEdit.treatmentUuid!!, requestBody)
-                                .execute()
-
-                        if (response.isSuccessful) {
-                            Result.success(true)
-                        } else {
-                            Result.failure(Exception("Update treatment error: ${response.message()}"))
-                        }
-                    }
-                } catch (e: Exception) {
-                    Result.failure(e)
-                }
-            } else {
-                throw Exception("No changes detected")
             }
-        } else {
-            throw Exception("No changes detected")
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
-    private fun mapWithObservationsUuidAndValuesToUpdate(
+    private fun mapObservationWithNewValues(
         observationsToUpdate: List<Observation>?,
         valuesToUpdate: MutableMap<String, Any>
-    ) = observationsToUpdate?.associate { observation ->
-        observation.uuid!! to valuesToUpdate.entries.find { (key, _) ->
-            observation.display?.contains(key) == true
+    ) = observationsToUpdate?.map {
+        val observationUuid = it.uuid!!
+        val value = valuesToUpdate.entries.find { (key, _) ->
+            it.display?.contains(key) == true
         }?.value
-    } ?: emptyMap()
+        return@map mapOf("uuid" to observationUuid, "value" to value)
+    }?.toList()
 
     private suspend fun removeOldObservationAndCreateNewOne(
         obsToUpdate: List<Observation>?,
@@ -345,7 +347,7 @@ class TreatmentRepository @Inject constructor(
             if (response.isSuccessful) {
                 val groupMembersToCreate =
                     valuesToUpdate[ObservationConcept.MEDICATION_TYPE.display] as Set<MedicationType>
-                //create obs.
+
                 val newMedicationTypeObservation = Obscreate().apply {
                     encounter = treatmentToEdit.treatmentUuid
                     concept = ObservationConcept.MEDICATION_TYPE.uuid
@@ -362,13 +364,17 @@ class TreatmentRepository @Inject constructor(
 
                 withContext(Dispatchers.IO) {
                     try {
-                        val response = restApi.createObs(newMedicationTypeObservation).execute()
-                        if (response.isSuccessful) {
+                        val createObservationResponse =
+                            restApi.createObs(newMedicationTypeObservation).execute()
+                        if (createObservationResponse.isSuccessful) {
                             valuesToUpdate.remove(ObservationConcept.MEDICATION_TYPE.display)
                             Result.success(true)
                         } else {
-                            crashlytics.reportUnsuccessfulResponse(response, response.message())
-                            Result.failure(Exception("Create new medication type observation error: ${response.message()}"))
+                            crashlytics.reportUnsuccessfulResponse(
+                                createObservationResponse,
+                                createObservationResponse.message()
+                            )
+                            Result.failure(Exception("Create new medication type observation error: ${createObservationResponse.message()}"))
                         }
                     } catch (e: Exception) {
                         crashlytics.reportException(
@@ -392,11 +398,9 @@ class TreatmentRepository @Inject constructor(
     ): MutableMap<String, Any> {
         val valuesToUpdate = mutableMapOf<String, Any>()
 
-        if (treatmentToEdit.recommendedBy != treatmentUpdated.recommendedBy) {
-            if (treatmentUpdated.recommendedBy.isNotEmpty()) {
-                valuesToUpdate[ObservationConcept.RECOMMENDED_BY.display] =
-                    treatmentUpdated.recommendedBy
-            }
+        if (treatmentToEdit.recommendedBy != treatmentUpdated.recommendedBy && treatmentUpdated.recommendedBy.isNotEmpty()) {
+            valuesToUpdate[ObservationConcept.RECOMMENDED_BY.display] =
+                treatmentUpdated.recommendedBy
         }
         if (treatmentToEdit.medicationName != treatmentUpdated.medicationName) {
             valuesToUpdate[ObservationConcept.MEDICATION_NAME.display] =
