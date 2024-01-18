@@ -2,6 +2,7 @@ package edu.upc.openmrs.activities.visitdashboard
 
 import android.graphics.Color
 import android.view.View
+import androidx.core.view.marginBottom
 import com.github.anastr.speedviewlib.SpeedView
 import com.github.anastr.speedviewlib.components.Section
 import com.github.anastr.speedviewlib.components.indicators.Indicator.Indicators
