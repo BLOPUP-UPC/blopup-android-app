@@ -33,9 +33,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Objects;
 
-import edu.upc.BuildConfig;
 import edu.upc.R;
 import edu.upc.blopup.bloodpressure.BloodPressureType;
+import edu.upc.openmrs.activities.visitdashboard.BloodPressureChart;
 import edu.upc.openmrs.activities.visitdashboard.BloodPressureInfoDialog;
 import edu.upc.openmrs.activities.visitdashboard.BmiChart;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentActivity;
@@ -59,6 +59,8 @@ public class OpenMRSInflater {
 
         showTreatment(vitalsCardView, encounter, visit, treatments, listener);
         setBloodPressureTypeAndRecommendation(bloodPressureType, vitalsCardView);
+
+        new BloodPressureChart().createChart(vitalsCardView,bloodPressureType);
 
         setVitalsValues(encounter.getObservations(), vitalsCardView);
 

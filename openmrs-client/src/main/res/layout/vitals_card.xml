@@ -15,6 +15,9 @@
         android:visibility="gone"
         tools:visibility="visible">
 
+        <include
+            android:id="@+id/blood_pressure_chart"
+            layout="@layout/bp_chart" />
 
         <LinearLayout
             android:layout_width="match_parent"

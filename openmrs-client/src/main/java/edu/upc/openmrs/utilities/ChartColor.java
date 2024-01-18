@@ -4,10 +4,10 @@ import android.graphics.Color;
 
 public enum ChartColor {
 
-    RED(Color.rgb(255, 54, 63)),
-    GREEN(Color.rgb(60,179, 113)),
-    YELLOW(Color.rgb(255,215,0)),
-    ORANGE(Color.rgb(255, 165, 0));
+    BP_NORMAL(Color.parseColor("#FF03BD5B")),
+    BP_HT_STAGE_I(Color.parseColor("#FFF7B334")),
+    BP_HT_STAGE_II_A_AND_B(Color.parseColor("#FFED7541")),
+    BP_HT_STAGE_II_C(Color.parseColor("#FFF12021"));
 
     public final int value;
 
