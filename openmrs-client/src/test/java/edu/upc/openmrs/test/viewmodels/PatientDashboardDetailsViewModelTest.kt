@@ -71,7 +71,7 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
         val patient = Patient()
         val treatmentList = listOf<Treatment>()
 
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns treatmentList
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns kotlin.Result.success(treatmentList)
 
         runBlocking {
             viewModel.fetchActiveTreatments(patient)

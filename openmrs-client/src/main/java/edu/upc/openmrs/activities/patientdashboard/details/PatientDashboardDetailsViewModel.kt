@@ -30,11 +30,8 @@ class PatientDashboardDetailsViewModel @Inject constructor(
     }
 
     suspend fun fetchActiveTreatments(patient: Patient) {
-        try {
-            val activeTreatmentsList = treatmentRepository.fetchAllActiveTreatments(patient)
-            activeTreatments.postValue(activeTreatmentsList)
-        } catch (e: Exception) {
-            activeTreatments.postValue(emptyList())
-        }
+           treatmentRepository.fetchAllActiveTreatments(patient)
+               .onSuccess { activeTreatments.postValue(it) }
+                .onFailure { setError(it, PatientFetching) }
     }
 }

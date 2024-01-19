@@ -203,7 +203,7 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         val treatment = TreatmentExample.activeTreatment().apply { treatmentUuid = "treatmentUuid" }
         val treatmentList = listOf(treatment)
 
-        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns treatmentList
+        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.success(treatmentList)
 
         runBlocking { assertEquals(treatmentList, viewModel.getActiveTreatments()) }
     }

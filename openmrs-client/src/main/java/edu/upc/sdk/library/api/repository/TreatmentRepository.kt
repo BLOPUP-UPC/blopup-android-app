@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class TreatmentRepository @Inject constructor(
     val visitRepository: VisitRepository,
-    val encounterRepository: EncounterRepository
+    private val encounterRepository: EncounterRepository
 ) :
     BaseRepository(null) {
 
@@ -64,51 +64,58 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchAllActiveTreatments(patient: Patient): List<Treatment> {
-        val encounters = fetchAllTreatments(patient)
+    suspend fun fetchAllActiveTreatments(patient: Patient): Result<List<Treatment>> {
 
-        return encounters
-            .filter { treatment ->
-                treatment.isActive
-            }
+        val result = fetchAllTreatments(patient)
+
+        if (result.isSuccess) {
+            return Result.success(result.getOrNull()!!.filter { treatment -> treatment.isActive })
+        }
+
+        return result
     }
 
-    suspend fun fetchActiveTreatmentsAtAGivenTime(patient: Patient, visit: Visit): List<Treatment> {
+    suspend fun fetchActiveTreatmentsAtAGivenTime(
+        patient: Patient,
+        visit: Visit
+    ): Result<List<Treatment>> {
         val visitDate = parseFromOpenmrsDate(visit.startDatetime)
 
-        val treatments = fetchAllTreatments(patient)
-            .filter {
-                it.creationDate.isBefore(visitDate) || it.visitUuid == visit.uuid
-            }
+        val result = fetchAllTreatments(patient)
 
-        return treatments.filter { treatment ->
-            (treatment.isActive) or (!treatment.isActive && treatment.inactiveDate!!.isAfter(
-                visitDate
-            ))
+        if (result.isSuccess) {
+            return Result.success(result.getOrNull()!!.filter { treatment ->
+                (treatment.creationDate.isBefore(visitDate) || treatment.visitUuid == visit.uuid)
+                        && treatment.isActive
+                        || (!treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate))
+            })
         }
+        return result
     }
 
-    private suspend fun fetchAllTreatments(patient: Patient): List<Treatment> {
-        val visits: List<Visit>
-        withContext(Dispatchers.IO) {
-            visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
-        }
-
-        return visits.flatMap { visit ->
-            visit.encounters.map {
-                it.apply {
-                    visitID = visit.id
-                    visitUuid = visit.uuid
+    private suspend fun fetchAllTreatments(patient: Patient): Result<List<Treatment>> =
+        try {
+            withContext(Dispatchers.IO) {
+                val visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
+                val treatments = visits.flatMap { visit ->
+                    visit.encounters.map {
+                        it.apply {
+                            visitID = visit.id
+                            visitUuid = visit.uuid
+                        }
+                    }
+                        .filter { encounter ->
+                            encounter.encounterType?.display == EncounterType.TREATMENT
+                        }
+                        .map { encounter ->
+                            getTreatmentFromEncounter(encounter)
+                        }
                 }
+                Result.success(treatments)
             }
-                .filter { encounter ->
-                    encounter.encounterType?.display == EncounterType.TREATMENT
-                }
-                .map { encounter ->
-                    getTreatmentFromEncounter(encounter)
-                }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-    }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
         val visitId = encounter.visitID ?: 0
@@ -302,7 +309,8 @@ class TreatmentRepository @Inject constructor(
 
         if (valuesToUpdate.isEmpty()) return Result.success(true)
 
-        val mapWithObservationsToUpdate = mapObservationWithNewValues(observationsToUpdate, valuesToUpdate)
+        val mapWithObservationsToUpdate =
+            mapObservationWithNewValues(observationsToUpdate, valuesToUpdate)
 
         val requestBody = mapOf("obs" to mapWithObservationsToUpdate)
 

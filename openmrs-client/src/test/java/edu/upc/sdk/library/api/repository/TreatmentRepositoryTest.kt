@@ -79,7 +79,7 @@ class TreatmentRepositoryTest {
 
         runBlocking {
             val result = treatmentRepository.fetchAllActiveTreatments(patient)
-            assertEquals(listOf(activeTreatment), result)
+            assertEquals(Result.success(listOf(activeTreatment)), result)
         }
     }
 
@@ -118,11 +118,11 @@ class TreatmentRepositoryTest {
             val result =
                 treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visitWithTreatment)
             assertEquals(
-                listOf(
+               Result.success( listOf(
                     previousTreatment,
                     actualVisitTreatment,
                     previousAndInactiveTreatment
-                ), result
+                )), result
             )
         }
     }

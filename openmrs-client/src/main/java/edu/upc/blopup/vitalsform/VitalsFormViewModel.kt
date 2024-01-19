@@ -40,12 +40,7 @@ class VitalsFormViewModel @Inject constructor(
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
-    suspend fun getActiveTreatments(): List<Treatment> =
-        try {
-            treatmentRepository.fetchAllActiveTreatments(patient)
-        } catch (e: Exception) {
-            emptyList()
-        }
+    suspend fun getActiveTreatments(): kotlin.Result<List<Treatment>> = treatmentRepository.fetchAllActiveTreatments(patient)
 
     fun getLastHeightFromVisits(): LiveData<Result<String>> {
         val resultLiveData = MutableLiveData<Result<String>>()

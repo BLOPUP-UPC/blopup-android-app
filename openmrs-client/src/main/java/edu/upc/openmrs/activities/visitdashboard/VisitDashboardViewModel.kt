@@ -13,6 +13,8 @@ import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.OperationType
+import edu.upc.sdk.library.models.OperationType.*
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
@@ -94,12 +96,9 @@ class VisitDashboardViewModel @Inject constructor(
     }
 
     private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
-        try {
-            val response = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit)
-            _treatments.postValue(response)
-        } catch (e: Exception) {
-            _treatments.postValue(emptyList())
-        }
+        treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit)
+            .onSuccess { _treatments.postValue(it) }
+            .onFailure { setError(it, PatientFetching) }
     }
 
     suspend fun finaliseTreatment(treatment: Treatment) {

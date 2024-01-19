@@ -287,14 +287,15 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private fun setupActiveTreatmentsObserver(treatmentAdherenceAdapter: TreatmentAdherenceRecyclerViewAdapter) {
         lifecycleScope.launchWhenResumed {
-            val treatments = viewModel.getActiveTreatments()
+            viewModel.getActiveTreatments().onSuccess {
 
-            if (treatments.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 mBinding.treatmentAdherence.visibility = View.VISIBLE
             } else {
                 mBinding.treatmentAdherence.visibility = View.GONE
             }
-            treatmentAdherenceAdapter.updateData(treatments)
+            treatmentAdherenceAdapter.updateData(it)
         }
-    }
+                .onFailure {} //show error message
+    } }
 }
