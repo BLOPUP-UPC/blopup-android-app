@@ -628,5 +628,6 @@
     <string name="treatment_updated_successfully" tools:ignore="MissingTranslation">Treatment updated successfully</string>
     <string name="treatment_adherence_label" tools:ignore="MissingTranslation">Is the patient following the treatments below?</string>
     <string name="no_changes_detected" tools:ignore="MissingTranslation">No changes detected</string>
+    <string name="error_loading_treatments" tools:ignore="MissingTranslation">Treatments could not be loaded. Please, try again.</string>
     />
 </resources>

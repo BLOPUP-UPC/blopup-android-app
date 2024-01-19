@@ -25,8 +25,7 @@ enum class OperationType {
     PatientSynchronizing,
     PatientVisitsFetching,
     PatientVisitStarting,
-    TreatmentUpdated
-}
+    TreatmentUpdated}
 
 enum class ResultType {
     PatientUpdateSuccess,

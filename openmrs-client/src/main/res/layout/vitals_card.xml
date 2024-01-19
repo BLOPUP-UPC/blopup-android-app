@@ -199,6 +199,7 @@
             android:paddingBottom="16dp"
             android:visibility="gone">
 
+
             <TextView
                 android:id="@+id/recommended_treatments"
                 android:layout_width="match_parent"
@@ -207,6 +208,15 @@
                 android:text="@string/recommended_treatments"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/error_loading_treatments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/error_loading_treatments"
+                android:textColor="@color/allergy_orange"
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/treatmentsVisitRecyclerView"

@@ -14,8 +14,6 @@
 package edu.upc.openmrs.activities.visitdashboard
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,26 +28,24 @@ import edu.upc.openmrs.utilities.EncounterTranslationUtils.getTranslatedResource
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Treatment
+import edu.upc.sdk.library.models.Result
 
 class VisitExpandableListAdapter(
     private val mContext: Context,
     private var mEncounters: List<Encounter>,
     private val fragmentManager: FragmentManager,
-    private var treatments: List<Treatment> = emptyList()
+    private var treatments: Result<List<Treatment>> = Result.Success(emptyList())
 ) :
     BaseExpandableListAdapter() {
     private var mChildLayouts: List<ViewGroup>
-    private val mBitmapCache: SparseArray<Bitmap?>
     private val bmiCalculator: BMICalculator
     private var visit: Pair<Boolean, String?> = Pair(false, null)
     private var listener: TreatmentListener? = null
 
     init {
-        mBitmapCache = SparseArray()
         mChildLayouts = generateChildLayouts()
         bmiCalculator = BMICalculator()
     }
-
     fun updateList(encounters: List<Encounter>, visit: Pair<Boolean, String?>, listener: TreatmentListener) {
         this.visit = visit
         this.listener = listener
@@ -57,7 +53,7 @@ class VisitExpandableListAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateTreatmentList(treatments: List<Treatment>) {
+    fun updateTreatmentList(treatments: Result<List<Treatment>>) {
         this.treatments = treatments
         notifyDataSetChanged()
     }
@@ -277,6 +273,10 @@ class VisitExpandableListAdapter(
             textView.compoundDrawablePadding = (10 * scale + 0.5f).toInt()
             textView.setCompoundDrawables(null, null, image, null)
         }
+    }
+
+    fun showTreatmentsLoadingError() {
+        TODO("Not yet implemented")
     }
 
     companion object {

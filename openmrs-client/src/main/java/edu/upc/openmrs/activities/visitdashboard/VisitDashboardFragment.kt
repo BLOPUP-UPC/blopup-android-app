@@ -130,11 +130,15 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     private fun setUpTreatmentsObserver() {
-        viewModel.treatments.observe(viewLifecycleOwner) { treatments ->
-            if (treatments.isNotEmpty()) {
-                visitExpandableListAdapter?.updateTreatmentList(treatments)
+        viewModel.treatments.observe(viewLifecycleOwner) { result ->
+            val openMRSResult = if (result.isSuccess) {
+                Result.Success(result.getOrElse { emptyList() })
+            } else {
+                result.exceptionOrNull().let { Result.Error(it!!) }
             }
+            visitExpandableListAdapter?.updateTreatmentList(openMRSResult)
         }
+
         viewModel.treatmentOperationsLiveData.observe(viewLifecycleOwner) { treatment ->
             when (treatment) {
                 ResultType.FinalisedTreatmentSuccess -> {

@@ -13,8 +13,6 @@ import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.OperationType
-import edu.upc.sdk.library.models.OperationType.*
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
@@ -39,8 +37,8 @@ class VisitDashboardViewModel @Inject constructor(
     private val _bloodPressureType: MutableLiveData<BloodPressureResult?> = MutableLiveData()
     val bloodPressureType: LiveData<BloodPressureResult?> get() = _bloodPressureType
 
-    private val _treatments: MutableLiveData<List<Treatment>> = MutableLiveData()
-    val treatments: LiveData<List<Treatment>> get() = _treatments
+    private val _treatments: MutableLiveData<kotlin.Result<List<Treatment>>> = MutableLiveData()
+    val treatments: LiveData<kotlin.Result<List<Treatment>>> get() = _treatments
 
     private val _treatmentOperationsLiveData = MutableLiveData<ResultType>()
     val treatmentOperationsLiveData: LiveData<ResultType> get() = _treatmentOperationsLiveData
@@ -97,8 +95,8 @@ class VisitDashboardViewModel @Inject constructor(
 
     private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
         treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit)
-            .onSuccess { _treatments.postValue(it) }
-            .onFailure { setError(it, PatientFetching) }
+            .onSuccess { _treatments.value = kotlin.Result.success(it) }
+            .onFailure { _treatments.value = kotlin.Result.failure(it) }
     }
 
     suspend fun finaliseTreatment(treatment: Treatment) {

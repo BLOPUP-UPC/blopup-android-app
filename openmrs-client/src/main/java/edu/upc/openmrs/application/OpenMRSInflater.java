@@ -43,6 +43,7 @@ import edu.upc.openmrs.activities.visitdashboard.TreatmentListener;
 import edu.upc.openmrs.activities.visitdashboard.TreatmentRecyclerViewAdapter;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Observation;
+import edu.upc.sdk.library.models.Result;
 import edu.upc.sdk.library.models.Treatment;
 import kotlin.Pair;
 
@@ -53,7 +54,7 @@ public class OpenMRSInflater {
         this.mInflater = inflater;
     }
 
-    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager, Pair<Boolean, String> visit, List<Treatment> treatments, TreatmentListener listener) {
+    public ViewGroup addVitalsData(ViewGroup parentLayout, Encounter encounter, String bmiData, BloodPressureType bloodPressureType, FragmentManager fragmentManager, Pair<Boolean, String> visit, Result<List<Treatment>> treatments, TreatmentListener listener) {
 
         View vitalsCardView = mInflater.inflate(R.layout.vitals_card, null, false);
 
@@ -73,7 +74,7 @@ public class OpenMRSInflater {
         return parentLayout;
     }
 
-    private void showTreatment(View vitalsCardView, Encounter encounter, Pair<Boolean, String> visit, List<Treatment> treatments, TreatmentListener listener) {
+    private void showTreatment(View vitalsCardView, Encounter encounter, Pair<Boolean, String> visit, Result<List<Treatment>> treatments, TreatmentListener listener) {
         Button addTreatmentButton = vitalsCardView.findViewById(R.id.add_treatment_button);
         if (visit.getFirst().equals(true)) {
             addTreatmentButton.setOnClickListener(view -> {
@@ -84,14 +85,23 @@ public class OpenMRSInflater {
         } else {
             addTreatmentButton.setVisibility(View.GONE);
         }
-        if (treatments != null && !treatments.isEmpty()) {
+        if (treatments instanceof Result.Success) {
+            showTreatmentList(vitalsCardView, visit, (Result.Success<List<Treatment>>) treatments, listener);
+        } else {
+            vitalsCardView.findViewById(R.id.recommended_treatments_layout).setVisibility(View.VISIBLE);
+            vitalsCardView.findViewById(R.id.error_loading_treatments).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showTreatmentList(View vitalsCardView, Pair<Boolean,String> visit, Result.Success<List<Treatment>> treatments, TreatmentListener listener) {
+        if (treatments.getData() != null && !treatments.getData().isEmpty()) {
             vitalsCardView.findViewById(R.id.recommended_treatments_layout).setVisibility(View.VISIBLE);
             LinearLayoutManager layoutManager = new LinearLayoutManager(mInflater.getContext());
             RecyclerView view = vitalsCardView.findViewById(R.id.treatmentsVisitRecyclerView);
             view.setLayoutManager(layoutManager);
             TreatmentRecyclerViewAdapter treatmentAdapter = new TreatmentRecyclerViewAdapter(mInflater.getContext(), visit, listener);
             view.setAdapter(treatmentAdapter);
-            treatmentAdapter.updateData(treatments);
+            treatmentAdapter.updateData(treatments.getData());
         }
     }
 

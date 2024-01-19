@@ -6,7 +6,6 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
 import rx.android.schedulers.AndroidSchedulers
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
