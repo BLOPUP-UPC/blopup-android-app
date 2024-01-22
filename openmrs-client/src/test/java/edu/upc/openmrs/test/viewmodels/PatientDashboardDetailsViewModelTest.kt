@@ -68,7 +68,6 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
         assert(viewModel.result.value is Result.Error)
     }
 
-    @Ignore("This test is failing due to a bug in Kotlin that is wrapping the mocked response in an additional Result.Success")
     @Test
     fun `should get all active treatments`() {
         val patient = Patient()
@@ -79,7 +78,8 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
         runBlocking {
             viewModel.fetchActiveTreatments(patient)
             coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
-            assert(viewModel.activeTreatments.value == treatmentList)
+            //there is a bug in Kotlin that returns the value wrapped in an additional Result.Success
+            assert(viewModel.activeTreatments.value == kotlin.Result.success(kotlin.Result.success(treatmentList)))
         }
     }
 

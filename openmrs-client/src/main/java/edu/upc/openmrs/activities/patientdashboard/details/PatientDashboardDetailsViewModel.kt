@@ -18,7 +18,8 @@ class PatientDashboardDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Patient>() {
 
-    val activeTreatments: MutableLiveData<List<Treatment>> = MutableLiveData<List<Treatment>>()
+    val activeTreatments: MutableLiveData<Result<List<Treatment>>> =
+        MutableLiveData<Result<List<Treatment>>>()
 
     private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!
 
@@ -30,8 +31,6 @@ class PatientDashboardDetailsViewModel @Inject constructor(
     }
 
     suspend fun fetchActiveTreatments(patient: Patient) {
-           treatmentRepository.fetchAllActiveTreatments(patient)
-               .onSuccess { activeTreatments.postValue(it) }
-                .onFailure { setError(it, PatientFetching) }
+        activeTreatments.value = treatmentRepository.fetchAllActiveTreatments(patient)
     }
 }

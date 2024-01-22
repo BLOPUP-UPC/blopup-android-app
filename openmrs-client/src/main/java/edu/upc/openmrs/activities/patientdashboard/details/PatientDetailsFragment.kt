@@ -20,7 +20,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,7 +67,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun setupObservers() {
-        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                 }
@@ -77,8 +76,9 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     when (result.operationType) {
                         PatientFetching -> {
                             showPatientDetails(result.data)
-                            lifecycleScope.launch { viewModel.fetchActiveTreatments(result.data)}
+                            lifecycleScope.launch { viewModel.fetchActiveTreatments(result.data) }
                         }
+
                         else -> {
                         }
                     }
@@ -95,15 +95,20 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                 else -> throw IllegalStateException()
             }
 
-        })
+        }
 
-        viewModel.activeTreatments.observe(viewLifecycleOwner) { treatments ->
-            if(treatments.isNotEmpty()) {
+        viewModel.activeTreatments.observe(viewLifecycleOwner) { result ->
+            if (result.isFailure) {
                 binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
-            } else {
+                binding.errorLoadingTreatments.visibility = View.VISIBLE
+            }
+            if (result.isSuccess and (result.getOrDefault(emptyList()).isNotEmpty())) {
+                binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
+            }
+            if (result.isSuccess and (result.getOrDefault(emptyList()).isEmpty())) {
                 binding.recommendedTreatmentsLayout.visibility = View.GONE
             }
-            treatmentAdapter.updateData(treatments)
+            treatmentAdapter.updateData(result.getOrDefault(emptyList()))
         }
     }
 

@@ -25,7 +25,7 @@ class PatientDashboardMainViewModel @Inject constructor(
     private val visitDAO: VisitDAO,
     private val patientRepository: PatientRepository,
     private val visitRepository: VisitRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Unit>() {
 
     val patientId: String = savedStateHandle.get<Long>(PATIENT_ID_BUNDLE)?.toString()!!
@@ -82,7 +82,7 @@ class PatientDashboardMainViewModel @Inject constructor(
     }
 
     private fun handleSyncPatientDetails(serverPatient: Patient) {
-        if (!serverPatient.equals(patient)) {
+        if (serverPatient != patient) {
             patientDAO.updatePatient(patientId.toLong(), serverPatient)
         }
 
