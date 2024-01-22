@@ -221,6 +221,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     android:paddingTop="14dp">
 
                     <TextView
@@ -228,6 +229,15 @@
                         android:layout_height="wrap_content"
                         android:text="@string/treatment_adherence_label"
                         android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/error_loading_treatments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/error_loading_treatments"
+                        android:textColor="@color/allergy_orange"
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/treatment_adherence_recycler_view"

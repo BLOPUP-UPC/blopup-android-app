@@ -191,26 +191,27 @@ class VitalsFormActivity : ACBaseActivity() {
     private fun submitForm() {
         addVitalsToForm()
         lifecycleScope.launch {
-            viewModel.submitForm(vitals, getTreatmentAdherenceData()).observeOnce(this@VitalsFormActivity) { result ->
-                when (result) {
-                    is Result.Success -> {
-                        ToastUtil.success(getString(R.string.vitals_successfully))
-                        setResult(RESULT_OK)
-                        finish()
-                    }
-
-                    is Result.Error -> {
-                        if (result.throwable is UnknownHostException) {
-                            ToastUtil.error(getString(R.string.no_internet_connection))
-                            mBinding.buttonToSentVitals.isEnabled = true
-                        } else {
-                            ToastUtil.error(getString(R.string.form_data_submit_error))
+            viewModel.submitForm(vitals, getTreatmentAdherenceData())
+                .observeOnce(this@VitalsFormActivity) { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            ToastUtil.success(getString(R.string.vitals_successfully))
+                            setResult(RESULT_OK)
+                            finish()
                         }
-                    }
 
-                    else -> ToastUtil.error(getString(R.string.form_data_submit_error))
+                        is Result.Error -> {
+                            if (result.throwable is UnknownHostException) {
+                                ToastUtil.error(getString(R.string.no_internet_connection))
+                                mBinding.buttonToSentVitals.isEnabled = true
+                            } else {
+                                ToastUtil.error(getString(R.string.form_data_submit_error))
+                            }
+                        }
+
+                        else -> ToastUtil.error(getString(R.string.form_data_submit_error))
+                    }
                 }
-            }
         }
     }
 
@@ -289,13 +290,17 @@ class VitalsFormActivity : ACBaseActivity() {
         lifecycleScope.launchWhenResumed {
             viewModel.getActiveTreatments().onSuccess {
 
-            if (it.isNotEmpty()) {
-                mBinding.treatmentAdherence.visibility = View.VISIBLE
-            } else {
-                mBinding.treatmentAdherence.visibility = View.GONE
+                if (it.isNotEmpty()) {
+                    mBinding.treatmentAdherence.visibility = View.VISIBLE
+                } else {
+                    mBinding.treatmentAdherence.visibility = View.GONE
+                }
+                treatmentAdherenceAdapter.updateData(it)
             }
-            treatmentAdherenceAdapter.updateData(it)
+                .onFailure {
+                    mBinding.treatmentAdherence.visibility = View.VISIBLE
+                    mBinding.errorLoadingTreatments.visibility = View.VISIBLE
+                }
         }
-                .onFailure {} //show error message
-    } }
+    }
 }
