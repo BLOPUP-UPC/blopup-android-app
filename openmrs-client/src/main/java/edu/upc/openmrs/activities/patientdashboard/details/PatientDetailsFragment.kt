@@ -98,17 +98,18 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
         }
 
         viewModel.activeTreatments.observe(viewLifecycleOwner) { result ->
-            if (result.isFailure) {
-                binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
-                binding.errorLoadingTreatments.visibility = View.VISIBLE
-            }
-            if (result.isSuccess and (result.getOrDefault(emptyList()).isNotEmpty())) {
-                binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
-            }
-            if (result.isSuccess and (result.getOrDefault(emptyList()).isEmpty())) {
-                binding.recommendedTreatmentsLayout.visibility = View.GONE
-            }
-            treatmentAdapter.updateData(result.getOrDefault(emptyList()))
+            result
+                .onFailure {
+                    binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
+                    binding.errorLoadingTreatments.visibility = View.VISIBLE
+                }
+                .onSuccess {
+                    if (result.getOrDefault(emptyList()).isEmpty()) {
+                        binding.recommendedTreatmentsLayout.visibility = View.GONE
+                    } else {
+                        binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
+                    }
+                }
         }
     }
 
