@@ -94,9 +94,7 @@ class VisitDashboardViewModel @Inject constructor(
     }
 
     private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
-        treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit)
-            .onSuccess { _treatments.value = kotlin.Result.success(it) }
-            .onFailure { _treatments.value = kotlin.Result.failure(it) }
+        _treatments.value = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit)
     }
 
     suspend fun finaliseTreatment(treatment: Treatment) {
@@ -105,7 +103,7 @@ class VisitDashboardViewModel @Inject constructor(
 
         val response = treatmentRepository.finalise(treatment)
 
-        if(response == ResultType.FinalisedTreatmentSuccess) {
+        if (response == ResultType.FinalisedTreatmentSuccess) {
             visit?.let { fetchActiveTreatments(it.patient, it) }
             _treatmentOperationsLiveData.value = ResultType.FinalisedTreatmentSuccess
         } else {
@@ -116,7 +114,7 @@ class VisitDashboardViewModel @Inject constructor(
     suspend fun removeTreatment(treatment: Treatment) {
         val response = encounterRepository.removeEncounter(treatment.treatmentUuid)
 
-        if(response == ResultType.RemoveTreatmentSuccess) {
+        if (response == ResultType.RemoveTreatmentSuccess) {
             visit?.let { fetchActiveTreatments(it.patient, it) }
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentSuccess
         } else {
