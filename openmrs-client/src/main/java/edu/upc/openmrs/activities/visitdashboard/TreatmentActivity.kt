@@ -56,6 +56,7 @@ class TreatmentActivity : ACBaseActivity() {
         )
 
         if (treatmentToEdit.medicationName.isNotEmpty()) {
+            viewModel.treatment.value?.recommendedBy = treatmentToEdit.recommendedBy
             completeFields(treatmentToEdit)
         }
 

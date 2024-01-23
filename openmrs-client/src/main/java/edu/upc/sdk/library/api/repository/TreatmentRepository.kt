@@ -27,9 +27,24 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun saveTreatment(treatment: Treatment) {
         val currentVisit = visitRepository.getVisitById(treatment.visitId)
-        val encounter = createEncounterFromTreatment(currentVisit, treatment)
+        saveTreatment(treatment, currentVisit)
+    }
 
-        createEncounter(encounter)
+    private suspend fun saveTreatment(treatment: Treatment, visit: Visit) {
+        val encounter = createEncounterFromTreatment(visit, treatment)
+
+        withContext(Dispatchers.IO) {
+            try {
+                val response = restApi.createEncounter(encounter).execute()
+                if (response.isSuccessful) {
+                    return@withContext response.body()
+                } else {
+                    throw Exception("Failed to create encounter: ${response.code()} - ${response.message()}")
+                }
+            } catch (e: Exception) {
+                throw Exception("Failed to create encounter: ${e.message}", e)
+            }
+        }
     }
 
     suspend fun finalise(treatment: Treatment): ResultType {
@@ -52,47 +67,23 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    suspend fun updateTreatment(treatmentToEdit: Treatment, treatmentToUpdate: Treatment) : Result<Boolean>{
-        var result = Result.failure<Boolean>(Exception("Update treatment error"))
-        val valuesToUpdate = updateValues(treatmentToEdit, treatmentToUpdate)
+    suspend fun updateTreatment(treatmentToEdit: Treatment, treatmentToUpdate: Treatment): Result<Boolean> {
+        val needsChanges = diffValues(treatmentToEdit, treatmentToUpdate)
 
-        if (valuesToUpdate.isEmpty()) return Result.success(true)
+        if (!needsChanges) return Result.success(true)
 
         val response = encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid)
 
-        if (response == ResultType.RemoveTreatmentSuccess) {
-            val currentVisit = withContext(Dispatchers.IO) {
-                visitRepository.getVisitByUuid(treatmentToEdit.visitUuid)
+        return if (response == ResultType.RemoveTreatmentSuccess) {
+            withContext(Dispatchers.IO) {
+                val visit = visitRepository.getVisitByUuid(treatmentToEdit.visitUuid)
+                saveTreatment(treatmentToUpdate, visit)
             }
-            if(treatmentToUpdate.recommendedBy.isEmpty()) treatmentToUpdate.recommendedBy = treatmentToEdit.recommendedBy
-
-            val encounter = createEncounterFromTreatment(currentVisit, treatmentToUpdate)
-
-            createEncounter(encounter)
-
-            result = Result.success(true)
-
+            Result.success(true)
         } else {
-            throw Exception("Failed to remove encounter")
-        }
-        return result
-    }
-
-    private suspend fun createEncounter(encounter: Encountercreate) {
-        withContext(Dispatchers.IO) {
-            try {
-                val response = restApi.createEncounter(encounter).execute()
-                if (response.isSuccessful) {
-                    return@withContext response.body()
-                } else {
-                    throw Exception("Failed to create encounter: ${response.code()} - ${response.message()}")
-                }
-            } catch (e: Exception) {
-                throw Exception("Failed to create encounter: ${e.message}", e)
-            }
+            Result.failure(Exception("Failed to remove encounter"))
         }
     }
-
 
     suspend fun fetchAllActiveTreatments(patient: Patient): Result<List<Treatment>> {
 
@@ -313,28 +304,18 @@ class TreatmentRepository @Inject constructor(
         return result
     }
 
-    fun updateValues(
+    private fun diffValues(
         treatmentToEdit: Treatment,
         treatmentUpdated: Treatment
-    ): MutableMap<String, Any> {
-        val valuesToUpdate = mutableMapOf<String, Any>()
-
-        if (treatmentToEdit.recommendedBy != treatmentUpdated.recommendedBy && treatmentUpdated.recommendedBy.isNotEmpty()) {
-            valuesToUpdate[ObservationConcept.RECOMMENDED_BY.display] = treatmentUpdated.recommendedBy
+    ): Boolean {
+        if (treatmentToEdit.recommendedBy != treatmentUpdated.recommendedBy ||
+            treatmentToEdit.medicationName != treatmentUpdated.medicationName ||
+            treatmentToEdit.medicationType != treatmentUpdated.medicationType ||
+            treatmentToEdit.notes != treatmentUpdated.notes
+        ) {
+            return true
         }
-        if (treatmentToEdit.medicationName != treatmentUpdated.medicationName) {
-            valuesToUpdate[ObservationConcept.MEDICATION_NAME.display] =
-                treatmentUpdated.medicationName
-        }
-        if (treatmentToEdit.medicationType != treatmentUpdated.medicationType) {
-            valuesToUpdate[ObservationConcept.MEDICATION_TYPE.display] =
-                treatmentUpdated.medicationType
-        }
-        if (treatmentToEdit.notes != treatmentUpdated.notes) {
-            valuesToUpdate[ObservationConcept.TREATMENT_NOTES.display] =
-                treatmentUpdated.notes.toString()
-        }
-        return valuesToUpdate
+        return false
     }
 
     companion object {
