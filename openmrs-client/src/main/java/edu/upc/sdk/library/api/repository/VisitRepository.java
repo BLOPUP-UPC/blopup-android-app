@@ -232,4 +232,18 @@ public class VisitRepository extends BaseRepository {
             throw new IOException("Error fetching visit by id: " + visitId + " " + e.getMessage());
         }
     }
+
+    public Visit getVisitByUuid(String visitUuid) throws IOException {
+        try {
+            Response<Visit> response = restApi.getVisitByUuid(visitUuid).execute();
+            if (response != null) {
+                return response.body();
+            } else {
+                throw new IOException("Error fetching visit by uuid: " + visitUuid);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("Error fetching visit by uuid: " + visitUuid + " " + e.getMessage());
+        }
+    }
 }

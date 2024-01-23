@@ -192,15 +192,6 @@ public interface RestApi {
                                         @Body Map<String, Object> value);
 
     /**
-     * Delete obs call.
-     *
-     * @param uuid the uuid of the observation to be removed
-     * @return the call
-     */
-    @DELETE("obs/{uuid}")
-    Call<ResponseBody> deleteObservation(@Path("uuid") String uuid);
-
-    /**
      * Get obs call.
      *
      * @param uuid the uuid of the observation to be updated
@@ -226,17 +217,6 @@ public interface RestApi {
      */
     @POST("encounter")
     Call<Encounter> createEncounter(@Body Encountercreate encountercreate);
-
-    /**
-     * Update encounter call.
-     *
-     * @param uuid the uuid of the encounter to be updated
-     * @param value the updated encounter data
-     * @return the call
-     */
-    @POST("encounter/{uuid}")
-    Call<Encounter> updateEncounter(@Path("uuid") String uuid,
-                                    @Body Map<String, Object> value);
 
     /**
      * Gets encounter types.
@@ -309,6 +289,16 @@ public interface RestApi {
      */
     @GET("visittype")
     Call<Results<VisitType>> getVisitType();
+
+
+    /**
+     * Get visit call
+     *
+     * @param uuid the uuid of the visit
+     * @return a visit
+     */
+    @GET("visit/{uuid}")
+    Call<Visit> getVisitByUuid(@Path("uuid") String uuid);
 
     /**
      * Delete provider call.
