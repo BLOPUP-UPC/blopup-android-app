@@ -33,7 +33,20 @@ appId: edu.upc
 - tapOn: "Remove"
 - assertNotVisible: "Paracetamol"
 - assertVisible: "Ibuprofen"
+- tapOn:
+        id: "edu.upc:id/ellipsis"
+        index: 0
+- tapOn: "Edit"
+- tapOn: "Medication name"
+- eraseText
+- inputText: "Metronidazol"
+- hideKeyboard
+- tapOn: "ACE inhibitor"
+- tapOn: "Finish"
+- assertVisible: "Metronidazol"
+- assertNotVisible: "Ibuprofen"
 - pressKey: "back"
 - tapOn: "Details"
-- assertVisible: "Ibuprofen"
+- assertVisible: "Metronidazol"
 - assertNotVisible: "Paracetamol"
+- assertNotVisible: "Ibuprofen"
