@@ -438,6 +438,6 @@
     <string name="treatment_updated_successfully">Tratamiento modificado con éxito</string>
     <string name="treatment_adherence_label">El paciente sigue estos tratamientos?</string>
     <string name="no_changes_detected">No se ha detectado ningún cambio </string>
-    <string name="error_loading_treatments">No se ha podido cargar los tratamientos. Por favor inténtelo de nuevo</string>
+    <string name="error_loading_treatments">No se ha podido cargar los tratamientos. <u>Por favor inténtelo de nuevo</u></string>
     />
 </resources>

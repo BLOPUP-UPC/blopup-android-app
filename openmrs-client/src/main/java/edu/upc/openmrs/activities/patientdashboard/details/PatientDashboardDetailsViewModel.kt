@@ -10,6 +10,7 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import javax.inject.Inject
+import edu.upc.sdk.library.models.Result as OpenMrsResult
 
 @HiltViewModel
 class PatientDashboardDetailsViewModel @Inject constructor(
@@ -32,5 +33,11 @@ class PatientDashboardDetailsViewModel @Inject constructor(
 
     suspend fun fetchActiveTreatments(patient: Patient) {
         activeTreatments.value = treatmentRepository.fetchAllActiveTreatments(patient)
+    }
+
+    suspend fun refreshActiveTreatments() {
+        if (result.value is OpenMrsResult.Success) {
+            activeTreatments.value = treatmentRepository.fetchAllActiveTreatments(((result.value as OpenMrsResult.Success<Patient>).data))
+        }
     }
 }

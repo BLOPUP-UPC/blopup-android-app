@@ -116,6 +116,14 @@
         android:layout_margin="20dp"
         android:background="#CCCCCC" />
 
+
+    <ProgressBar
+        android:id="@+id/loadingTreatmentsProgressBar"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
+
     <LinearLayout
         android:id="@+id/recommended_treatments_layout"
         android:layout_width="match_parent"

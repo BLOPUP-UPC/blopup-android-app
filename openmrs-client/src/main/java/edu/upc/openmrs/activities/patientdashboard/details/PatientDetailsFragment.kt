@@ -30,6 +30,8 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.activities.visitdashboard.TreatmentRecyclerViewAdapter
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -100,14 +102,22 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
         viewModel.activeTreatments.observe(viewLifecycleOwner) { result ->
             result
                 .onFailure {
-                    binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
-                    binding.errorLoadingTreatments.visibility = View.VISIBLE
+                    binding.loadingTreatmentsProgressBar.makeGone()
+                    binding.recommendedTreatmentsLayout.makeVisible()
+                    binding.errorLoadingTreatments.makeVisible()
+                    binding.errorLoadingTreatments.setOnClickListener {
+                        binding.loadingTreatmentsProgressBar.makeVisible()
+                        binding.recommendedTreatmentsLayout.makeGone()
+                        lifecycleScope.launch { viewModel.refreshActiveTreatments() }
+                    }
                 }
                 .onSuccess {
+                    binding.loadingTreatmentsProgressBar.makeGone()
                     if (result.getOrDefault(emptyList()).isEmpty()) {
-                        binding.recommendedTreatmentsLayout.visibility = View.GONE
+                        binding.recommendedTreatmentsLayout.makeGone()
                     } else {
-                        binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
+                        binding.errorLoadingTreatments.makeGone()
+                        binding.recommendedTreatmentsLayout.makeVisible()
                     }
                 }
             treatmentAdapter.updateData(result.getOrDefault(emptyList()))

@@ -10,13 +10,11 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import io.mockk.MockKStubScope
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -80,6 +78,33 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
             coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
             //there is a bug in Kotlin that returns the value wrapped in an additional Result.Success
             assert(viewModel.activeTreatments.value == kotlin.Result.success(kotlin.Result.success(treatmentList)))
+        }
+    }
+
+    @Test
+    fun `should refresh treatments with previous patient`() {
+        val patient = Patient()
+        val treatmentList = listOf<Treatment>()
+
+        Mockito.`when`(patientDAO.findPatientByID(ID)).thenReturn(patient)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns kotlin.Result.success(treatmentList)
+
+        runBlocking {
+            viewModel.fetchPatientData()
+            viewModel.refreshActiveTreatments()
+
+            coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
+            //there is a bug in Kotlin that returns the value wrapped in an additional Result.Success
+            assert(viewModel.activeTreatments.value == kotlin.Result.success(kotlin.Result.success(treatmentList)))
+        }
+    }
+
+    @Test
+    fun `should not refresh treatments without previous patient`() {
+        runBlocking {
+            viewModel.refreshActiveTreatments()
+
+            coVerify(inverse = true) { treatmentRepository.fetchAllActiveTreatments(patient) }
         }
     }
 
