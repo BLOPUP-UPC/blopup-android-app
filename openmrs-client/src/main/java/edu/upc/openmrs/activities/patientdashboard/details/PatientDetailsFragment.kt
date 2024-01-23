@@ -110,6 +110,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         binding.recommendedTreatmentsLayout.visibility = View.VISIBLE
                     }
                 }
+            treatmentAdapter.updateData(result.getOrDefault(emptyList()))
         }
     }
 
