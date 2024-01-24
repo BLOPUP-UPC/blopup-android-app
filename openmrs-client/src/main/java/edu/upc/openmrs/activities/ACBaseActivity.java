@@ -297,32 +297,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    public void showAppCrashDialog(String error) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                this, R.style.AlertDialogTheme);
-        alertDialogBuilder.setTitle(R.string.crash_dialog_title);
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(R.string.crash_dialog_message)
-                .setCancelable(false)
-                .setPositiveButton(R.string.crash_dialog_positive_button, (dialog, id) -> dialog.cancel())
-                .setNegativeButton(R.string.crash_dialog_negative_button, (dialog, id) -> finishAffinity())
-                .setNeutralButton(R.string.crash_dialog_neutral_button, (dialog, id) -> {
-                    String filename = OpenmrsAndroid.getOpenMRSDir()
-                            + File.separator + mOpenMRSLogger.getLogFilename();
-                    Intent email = new Intent(Intent.ACTION_SEND);
-                    email.putExtra(Intent.EXTRA_SUBJECT, R.string.error_email_subject_app_crashed);
-                    email.putExtra(Intent.EXTRA_TEXT, error);
-                    email.putExtra(Intent.EXTRA_STREAM, Uri.parse(ApplicationConstants.URI_FILE + filename));
-                    //need this to prompts email client only
-                    email.setType(ApplicationConstants.MESSAGE_RFC_822);
-
-                    startActivity(Intent.createChooser(email, getString(R.string.choose_a_email_client)));
-                });
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
     @Override
     protected void onDestroy() {
         if (alertDialog != null && alertDialog.isShowing()) {

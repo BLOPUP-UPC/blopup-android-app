@@ -141,11 +141,6 @@
             android:enabled="true" />
 
         <activity
-            android:name="edu.upc.openmrs.activities.logs.LogsActivity"
-            android:label="@string/title_activity_logs"
-            android:parentActivityName=".openmrs.activities.settings.SettingsActivity"
-            android:theme="@style/AppThemeOrig" />
-        <activity
             android:name="edu.upc.openmrs.activities.patientdashboard.charts.ChartsViewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:parentActivityName="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity"

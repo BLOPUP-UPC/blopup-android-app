@@ -31,7 +31,6 @@ import edu.upc.R
 import edu.upc.databinding.FragmentSettingsBinding
 import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
-import edu.upc.openmrs.activities.logs.LogsActivity
 import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
 
 @AndroidEntryPoint
@@ -48,7 +47,6 @@ class SettingsFragment :  BaseFragment() {
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
-        addLogsInfo()
         addBuildVersionInfo()
         addPrivacyPolicyInfo()
         rateUs()
@@ -67,13 +65,6 @@ class SettingsFragment :  BaseFragment() {
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(requireActivity())
-    }
-
-    private fun addLogsInfo() = with(binding) {
-        logsDesc1TextView.text = viewModel.logsFileName
-        logsLayout.setOnClickListener {
-            startActivity(Intent(context, LogsActivity::class.java))
-        }
     }
 
     private fun updateLanguageView() = with(binding) {

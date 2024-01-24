@@ -7,10 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.R
 import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.sdk.library.OpenMRSLogger
-import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_CODE
 import edu.upc.sdk.utilities.ApplicationConstants.PACKAGE_NAME
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,8 +16,6 @@ class SettingsViewModel @Inject constructor(
         private val openMRSLogger: OpenMRSLogger
 ) : edu.upc.openmrs.activities.BaseViewModel<Unit>() {
 
-    val logsFileName = OpenmrsAndroid.getOpenMRSDir() + File.separator + openMRSLogger.logFilename
-    var logSize: Long = 0
     val appMarketUri: Uri = Uri.parse("market://details?id=${PACKAGE_NAME}")
     val appLinkUri: Uri = Uri.parse("http://play.google.com/store/apps/details?id=$PACKAGE_NAME")
     var languageListPosition: Int = 0
@@ -38,22 +34,6 @@ class SettingsViewModel @Inject constructor(
             LanguageUtils.setLanguage(LANGUAGE_CODE[position])
             field = position
         }
-
-
-    init {
-        getLogsFileInfo()
-    }
-
-    private fun getLogsFileInfo() {
-        try {
-            val file = File(logsFileName)
-            logSize = file.length()
-            logSize /= ONE_KB
-            openMRSLogger.i("File Path :${file.path} , File size: $logSize KB")
-        } catch (e: Exception) {
-            openMRSLogger.w("File not found")
-        }
-    }
 
     fun getBuildVersionInfo(context: Context): String {
         var versionName = ""
