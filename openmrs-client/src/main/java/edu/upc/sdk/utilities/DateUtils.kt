@@ -257,7 +257,7 @@ object DateUtils {
                     date = null
                 }
             } catch (exception: ParseException) {
-                openMRSLogger.w("Failed to validate date format :$dateAsString caused by $exception")
+//                openMRSLogger.w("Failed to validate date format :$dateAsString caused by $exception")
             }
             return date != null
         }
