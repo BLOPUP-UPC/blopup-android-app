@@ -124,15 +124,4 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
             kotlin.Result.failure(Exception("Remove encounter error: ${e.message}"))
         }
     }
-
-    suspend fun getEncounterByUuid(encounterUuid: String) : Encounter? {
-        return withContext(Dispatchers.IO) {
-            val response = restApi.getEncounterByUuid(encounterUuid).execute()
-            if (response.isSuccessful) {
-                response.body()
-            } else {
-                throw Exception("Get encounter error: ${response.message()}")
-            }
-        }
-    }
 }

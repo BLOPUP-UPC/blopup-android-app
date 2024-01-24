@@ -201,15 +201,6 @@ public interface RestApi {
     Call<Observation> getObservationByUuid(@Path("uuid") String uuid);
 
     /**
-     * Get encounter call
-     *
-     * @param uuid the uuid of the encounter
-     * @return an encounter
-     */
-    @GET("encounter/{uuid}")
-    Call<Encounter> getEncounterByUuid(@Path("uuid") String uuid);
-
-    /**
      * Create encounter call.
      *
      * @param encountercreate the encountercreate
