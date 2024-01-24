@@ -121,4 +121,8 @@ class VisitDashboardViewModel @Inject constructor(
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentError
         }
     }
+
+    suspend fun refreshTreatments() {
+        visit?.let { fetchActiveTreatments(it.patient, it) }
+    }
 }

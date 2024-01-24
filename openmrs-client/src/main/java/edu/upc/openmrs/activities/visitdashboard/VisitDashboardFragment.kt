@@ -320,4 +320,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     override fun onRemoveClicked(treatment: Treatment) {
         lifecycleScope.launch { viewModel.removeTreatment(treatment) }
     }
+
+    override fun onRefreshTreatments() {
+        lifecycleScope.launch { viewModel.refreshTreatments() }
+    }
 }

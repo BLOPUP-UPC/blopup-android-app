@@ -86,10 +86,18 @@ public class OpenMRSInflater {
             addTreatmentButton.setVisibility(View.GONE);
         }
         if (treatments instanceof Result.Success) {
+            vitalsCardView.findViewById(R.id.loadingTreatmentsProgressBar).setVisibility(View.GONE);
             showTreatmentList(vitalsCardView, visit, (Result.Success<List<Treatment>>) treatments, listener);
         } else {
+            vitalsCardView.findViewById(R.id.loadingTreatmentsProgressBar).setVisibility(View.GONE);
             vitalsCardView.findViewById(R.id.recommended_treatments_layout).setVisibility(View.VISIBLE);
-            vitalsCardView.findViewById(R.id.error_loading_treatments).setVisibility(View.VISIBLE);
+            View errorMessageView = vitalsCardView.findViewById(R.id.error_loading_treatments);
+            errorMessageView.setVisibility(View.VISIBLE);
+            errorMessageView.setOnClickListener(view -> {
+                vitalsCardView.findViewById(R.id.loadingTreatmentsProgressBar).setVisibility(View.VISIBLE);
+                errorMessageView.setVisibility(View.GONE);
+                listener.onRefreshTreatments();
+            });
         }
     }
 

@@ -18,7 +18,11 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.setMain
 import org.joda.time.Instant
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -52,9 +56,11 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     override fun setUp() {
         super.setUp()
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         treatmentRepository = mockk()
         encounterRepository = mockk()
         savedStateHandle = SavedStateHandle().apply { set(VISIT_ID, 1L) }
@@ -186,6 +192,31 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
             }
         // I wanted to check the value of the treatments list but I cannot set the visit mock because it is a val. I tried to use a spy but it didn't work
 //            assertEquals(treatmentList, viewModel.treatments.value)
+        }
+    }
+
+    @Test
+    fun `should refresh the treatments for the current visit`() {
+        val patient = Patient().apply {
+            id = 2L
+        }
+        val visit = Visit().apply {
+            id = 1L
+            this.patient = patient
+            encounters = listOf(Encounter().apply { encounterType = EncounterType(EncounterType.VITALS) })
+        }
+
+        `when`(visitDAO.getVisitByID(anyLong())).thenReturn(Observable.just(visit))
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit) } returns kotlin.Result.success(
+            listOf()
+        )
+
+        runBlocking {
+            viewModel.fetchCurrentVisit()
+            viewModel.refreshTreatments()
+            coVerify(exactly = 2) {
+                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit)
+            }
         }
     }
 }
