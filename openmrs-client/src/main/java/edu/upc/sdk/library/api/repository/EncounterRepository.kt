@@ -7,7 +7,6 @@ import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.execute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -110,19 +109,19 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
         })
     }
 
-    suspend fun removeEncounter(encounterUuid: String?): ResultType {
+    suspend fun removeEncounter(encounterUuid: String?): kotlin.Result<Boolean> {
         return try {
             withContext(Dispatchers.IO) {
                 val response = restApi.deleteEncounter(encounterUuid).execute()
 
                 if (response.isSuccessful) {
-                    ResultType.RemoveTreatmentSuccess
+                    kotlin.Result.success(true)
                 } else {
-                    throw Exception("Remove treatment error: ${response.code()} - ${response.message()}")
+                    kotlin.Result.failure(Exception("Remove treatment error: ${response.code()} - ${response.message()}"))
                 }
             }
         } catch (e: Exception) {
-            ResultType.RemoveTreatmentError
+            kotlin.Result.failure(Exception("Remove encounter error: ${e.message}"))
         }
     }
 

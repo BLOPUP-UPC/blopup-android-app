@@ -103,7 +103,7 @@ class VisitDashboardViewModel @Inject constructor(
 
         val response = treatmentRepository.finalise(treatment)
 
-        if (response == ResultType.FinalisedTreatmentSuccess) {
+        if (response.isSuccess) {
             visit?.let { fetchActiveTreatments(it.patient, it) }
             _treatmentOperationsLiveData.value = ResultType.FinalisedTreatmentSuccess
         } else {
@@ -114,7 +114,7 @@ class VisitDashboardViewModel @Inject constructor(
     suspend fun removeTreatment(treatment: Treatment) {
         val response = encounterRepository.removeEncounter(treatment.treatmentUuid)
 
-        if (response == ResultType.RemoveTreatmentSuccess) {
+        if (response.isSuccess) {
             visit?.let { fetchActiveTreatments(it.patient, it) }
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentSuccess
         } else {

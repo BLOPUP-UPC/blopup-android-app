@@ -8,7 +8,6 @@ import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
@@ -47,7 +46,7 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    suspend fun finalise(treatment: Treatment): ResultType {
+    suspend fun finalise(treatment: Treatment): Result<Boolean> {
         return try {
             val observation = getObservationByUuid(treatment.observationStatusUuid!!)
 
@@ -56,14 +55,14 @@ class TreatmentRepository @Inject constructor(
             withContext(Dispatchers.IO) {
                 val response = restApi.updateObservation(observation?.uuid, value).execute()
                 if (response.isSuccessful) {
-                    ResultType.FinalisedTreatmentSuccess
+                    Result.success(true)
                 } else {
-                    throw Exception("Finalised treatment error: ${response.message()}")
+                    Result.failure(Exception("Finalised treatment error: ${response.message()}"))
                 }
             }
-            ResultType.FinalisedTreatmentSuccess
+            Result.success(true)
         } catch (e: Exception) {
-            ResultType.FinalisedTreatmentError
+            Result.failure(Exception("Finalised treatment error: ${e.message}"))
         }
     }
 
@@ -74,7 +73,7 @@ class TreatmentRepository @Inject constructor(
 
         val response = encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid)
 
-        return if (response == ResultType.RemoveTreatmentSuccess) {
+        return if (response.isSuccess) {
             withContext(Dispatchers.IO) {
                 val visit = visitRepository.getVisitByUuid(treatmentToEdit.visitUuid)
                 saveTreatment(treatmentToUpdate, visit)

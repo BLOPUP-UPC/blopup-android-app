@@ -12,7 +12,6 @@ import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
@@ -159,7 +158,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         }
         val treatmentList = listOf(treatmentUpdated)
 
-        coEvery { treatmentRepository.finalise(treatment) } returns ResultType.FinalisedTreatmentSuccess
+        coEvery { treatmentRepository.finalise(treatment) } returns kotlin.Result.success(true)
         coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns kotlin.Result.success(treatmentList)
 
         runBlocking {
@@ -177,7 +176,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val treatmentTwo = TreatmentExample.activeTreatment()
         val treatmentList = listOf(treatmentTwo)
 
-        coEvery { encounterRepository.removeEncounter(treatmentOne.treatmentUuid) } returns ResultType.RemoveTreatmentSuccess
+        coEvery { encounterRepository.removeEncounter(treatmentOne.treatmentUuid) } returns kotlin.Result.success(true)
         coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns kotlin.Result.success(treatmentList)
 
         runBlocking {

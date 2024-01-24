@@ -14,7 +14,6 @@ import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
@@ -324,7 +323,7 @@ class TreatmentRepositoryTest {
             visitId = treatmentToEdit.visitId
         )
 
-        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns ResultType.RemoveTreatmentSuccess
+        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns Result.success(true)
 
         coEvery { visitRepository.getVisitByUuid(treatmentToEdit.visitUuid) } returns Visit().apply {
             uuid = treatmentToEdit.visitUuid
