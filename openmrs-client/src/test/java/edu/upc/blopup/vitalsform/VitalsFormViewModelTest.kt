@@ -206,10 +206,10 @@ class VitalsFormViewModelTest : ACUnitTestBaseRx() {
         coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.success(treatmentList)
 
         runBlocking {
-            val result : kotlin.Result<List<Treatment>> = viewModel.getActiveTreatments()
+            viewModel.fetchActiveTreatments()
 
             //there is a bug in Kotlin that returns the value wrapped in an additional Result.Success
-            assertEquals(kotlin.Result.success(treatmentList), result.getOrNull())
+            assertEquals(kotlin.Result.success(kotlin.Result.success(treatmentList)), viewModel.activeTreatments.value)
         }
     }
 

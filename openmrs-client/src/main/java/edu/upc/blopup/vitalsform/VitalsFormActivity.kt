@@ -31,6 +31,8 @@ import edu.upc.databinding.ActivityVitalsFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
 import edu.upc.openmrs.bundle.CustomDialogBundle
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -143,6 +145,8 @@ class VitalsFormActivity : ACBaseActivity() {
         askForPermissions()
 
         setupTreatmentAdherenceAdapter()
+
+        lifecycleScope.launch { viewModel.fetchActiveTreatments() }
     }
 
     override fun onResume() {
@@ -287,19 +291,28 @@ class VitalsFormActivity : ACBaseActivity() {
     }
 
     private fun setupActiveTreatmentsObserver(treatmentAdherenceAdapter: TreatmentAdherenceRecyclerViewAdapter) {
-        lifecycleScope.launchWhenResumed {
-            viewModel.getActiveTreatments().onSuccess {
-
+        viewModel.activeTreatments.observe(this) { result ->
+            result.onSuccess {
+                mBinding.loadingTreatmentsProgressBar.makeGone()
                 if (it.isNotEmpty()) {
-                    mBinding.treatmentAdherence.visibility = View.VISIBLE
+                    mBinding.treatmentAdherence.makeVisible()
+                    mBinding.treatmentAdherenceRecyclerView.makeVisible()
                 } else {
-                    mBinding.treatmentAdherence.visibility = View.GONE
+                    mBinding.treatmentAdherence.makeGone()
                 }
                 treatmentAdherenceAdapter.updateData(it)
             }
                 .onFailure {
-                    mBinding.treatmentAdherence.visibility = View.VISIBLE
-                    mBinding.errorLoadingTreatments.visibility = View.VISIBLE
+                    mBinding.treatmentAdherence.makeVisible()
+                    mBinding.errorLoadingTreatments.makeVisible()
+                    mBinding.loadingTreatmentsProgressBar.makeGone()
+                    mBinding.treatmentAdherenceRecyclerView.makeGone()
+
+                    mBinding.errorLoadingTreatments.setOnClickListener {
+                        mBinding.loadingTreatmentsProgressBar.makeVisible()
+                        mBinding.errorLoadingTreatments.makeGone()
+                        lifecycleScope.launch { viewModel.fetchActiveTreatments() }
+                    }
                 }
         }
     }
