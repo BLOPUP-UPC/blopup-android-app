@@ -45,7 +45,6 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
-import edu.upc.openmrs.application.OpenMRSInflater
 import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Encounter
@@ -98,13 +97,11 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     override fun onStart() {
         super.onStart()
         viewModel.fetchCurrentVisit()
-        setUpTreatmentsObserver()
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.fetchCurrentVisit()
-        setUpTreatmentsObserver()
     }
 
     private fun setupVisitObserver() {
@@ -116,7 +113,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 is Result.Success -> result.data.run {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
-                    val visit: Pair<Boolean, String?> = Pair(isActiveVisit(), uuid)
                     displayVisit(this)
                     contactDoctorToggle.check({ notifyDoctorIfNeeded(patient.identifier.identifier) })
                 }
@@ -128,7 +124,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     private fun displayVisit(visit: Visit) {
-        val openMRSInflater = OpenMRSInflater(layoutInflater)
         val encounter = visit.encounters.first()
 
         val bmiData = BMICalculator().execute(encounter.observations)
@@ -142,18 +137,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         setBloodPressureTypeAndRecommendation(bloodPressureType, binding.wholeLayout)
 
         setBloodPressureInformationDialog(binding.wholeLayout, requireFragmentManager())
-
-
-//        val view = openMRSInflater.addVitalsData(
-//            binding.visitDashboardExpList,
-//            encounter,
-//            bmiData,
-//            bloodPressureTypeFromEncounter(encounter)?.bloodPressureType,
-//            fragmentManager,
-//            Pair(true, visit.uuid),
-//            Result.Success(emptyList()),
-//            this
-//        )
     }
 
     private fun setVitalsValues(observations: List<Observation>, vitalsCardView: View) {

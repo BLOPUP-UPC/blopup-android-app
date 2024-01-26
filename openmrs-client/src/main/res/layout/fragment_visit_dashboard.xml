@@ -28,7 +28,7 @@
         android:layout_alignParentTop="true"
         android:visibility="gone"/>
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/wholeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,6 +37,6 @@
         <include
             android:id="@+id/vitals"
             layout="@layout/vitals_card" />
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
