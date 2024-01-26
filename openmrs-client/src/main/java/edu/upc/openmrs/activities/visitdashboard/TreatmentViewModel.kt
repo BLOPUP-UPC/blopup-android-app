@@ -44,6 +44,9 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
             )
         }
 
+    private val _doctors = MutableLiveData<List<String>>()
+    val doctors: LiveData<List<String>> get() = _doctors
+
     suspend fun registerTreatment() =
         try {
             treatmentRepository.saveTreatment(treatment.value!!)
@@ -60,6 +63,15 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
         try {
             treatmentRepository.updateTreatment(treatmentToEdit.value!!, treatment.value!!)
             setContent(treatment.value!!, OperationType.TreatmentUpdated)
+        } catch (e: Exception) {
+            setError(e)
+        }
+    }
+
+    fun getAllDoctors() {
+        try {
+            val result = treatmentRepository.getAllDoctors()
+            _doctors.value = result
         } catch (e: Exception) {
             setError(e)
         }

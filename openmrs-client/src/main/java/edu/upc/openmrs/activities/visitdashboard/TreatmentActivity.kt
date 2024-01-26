@@ -3,6 +3,8 @@ package edu.upc.openmrs.activities.visitdashboard
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
@@ -60,6 +62,7 @@ class TreatmentActivity : ACBaseActivity() {
             completeFields(treatmentToEdit)
         }
 
+        setDoctorWhoRecommendedTreatmentAdapter()
         setToolbar()
         whoRecommendedButtonsOnClickListener()
         registerTreatmentOnClickListener()
@@ -68,6 +71,25 @@ class TreatmentActivity : ACBaseActivity() {
         setListenersForFieldValidation()
         fieldValidationValueObserver()
 
+    }
+
+    private fun setDoctorWhoRecommendedTreatmentAdapter() {
+        val adapter = ArrayAdapter<String>(
+            this,
+            R.layout.doctors_name_dropdown
+        )
+
+        val dropDownWithDoctorsNames =
+            findViewById<AutoCompleteTextView>(R.id.doctors_name_dropdown)
+        dropDownWithDoctorsNames.setAdapter(adapter)
+
+        viewModel.doctors.observe(this) { doctors ->
+            adapter.clear()
+            adapter.addAll(doctors)
+            dropDownWithDoctorsNames.setText(adapter.getItem(0), false)
+        }
+
+        viewModel.getAllDoctors()
     }
 
     private fun completeFields(treatmentToEdit: Treatment) {
@@ -208,12 +230,18 @@ class TreatmentActivity : ACBaseActivity() {
 
     private fun whoRecommendedButtonsOnClickListener() {
         mBinding.previouslyRecommended.setOnClickListener {
+
+            mBinding.textInputLayoutDoctorsName.visibility = View.GONE
+
             viewModel.treatment.value =
                 viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_OTHER }
             viewModel.updateFieldValidation(RECOMMENDED_BY, true)
         }
 
         mBinding.newRecommendation.setOnClickListener {
+
+            mBinding.textInputLayoutDoctorsName.visibility = View.VISIBLE
+
             viewModel.treatment.value =
                 viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_BLOPUP }
             viewModel.updateFieldValidation(RECOMMENDED_BY, true)

@@ -317,6 +317,10 @@ class TreatmentRepository @Inject constructor(
         return false
     }
 
+    fun getAllDoctors(): List<String> {
+        return listOf("Dr. Xavier de las Huertas", "Dr. Josep Maria Gatell", "Dr. Josep Mallolas")
+    }
+
     companion object {
         const val TREATMENT_ENCOUNTER_TYPE = "Treatment"
     }

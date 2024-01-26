@@ -6,6 +6,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -106,5 +107,17 @@ class TreatmentViewModelTest {
                 treatmentViewModel.result.value?.let { (it as Result.Error).throwable.message }
             )
         }
+    }
+
+    @Test
+    fun `should get all doctors`() {
+
+        val doctors = listOf("doctor1", "doctor2")
+
+        every { mockTreatmentRepo.getAllDoctors() } returns doctors
+
+        treatmentViewModel.getAllDoctors()
+
+        assertEquals(doctors, treatmentViewModel.doctors.value)
     }
 }

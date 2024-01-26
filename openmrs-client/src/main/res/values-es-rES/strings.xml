@@ -439,5 +439,6 @@
     <string name="treatment_adherence_label">El paciente sigue estos tratamientos?</string>
     <string name="no_changes_detected">No se ha detectado ningún cambio </string>
     <string name="error_loading_treatments">No se ha podido cargar los tratamientos. <u>Por favor inténtelo de nuevo</u></string>
+    <string name="doctors_name">Nombre del doctor</string>
     />
 </resources>
