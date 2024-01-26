@@ -37,7 +37,7 @@ class VisitDashboardViewModel @Inject constructor(
     private val _bloodPressureType: MutableLiveData<BloodPressureResult?> = MutableLiveData()
     val bloodPressureType: LiveData<BloodPressureResult?> get() = _bloodPressureType
 
-    private val _treatments: MutableLiveData<kotlin.Result<List<Treatment>>> = MutableLiveData()
+    private val _treatments = MutableLiveData<kotlin.Result<List<Treatment>>>()
     val treatments: LiveData<kotlin.Result<List<Treatment>>> get() = _treatments
 
     private val _treatmentOperationsLiveData = MutableLiveData<ResultType>()

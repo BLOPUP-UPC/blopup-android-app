@@ -26,7 +26,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -34,7 +33,6 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.BloodPressureType
@@ -45,7 +43,6 @@ import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
 import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.observeOnce
-import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
@@ -59,20 +56,26 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
 import kotlinx.android.synthetic.main.bp_chart.view.bp_speedview
+import kotlinx.android.synthetic.main.visit_details.view.add_treatment_button
 import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_info
 import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_layout
 import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_recommendation
 import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_title
 import kotlinx.android.synthetic.main.visit_details.view.bmi_layout
 import kotlinx.android.synthetic.main.visit_details.view.diastolic_value
+import kotlinx.android.synthetic.main.visit_details.view.error_loading_treatments
 import kotlinx.android.synthetic.main.visit_details.view.height_layout
 import kotlinx.android.synthetic.main.visit_details.view.height_value
+import kotlinx.android.synthetic.main.visit_details.view.loadingTreatmentsProgressBar
 import kotlinx.android.synthetic.main.visit_details.view.pulse_value
+import kotlinx.android.synthetic.main.visit_details.view.recommended_treatments_layout
 import kotlinx.android.synthetic.main.visit_details.view.systolic_value
+import kotlinx.android.synthetic.main.visit_details.view.treatmentsVisitRecyclerView
 import kotlinx.android.synthetic.main.visit_details.view.weight_layout
 import kotlinx.android.synthetic.main.visit_details.view.weight_value
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
+import kotlin.Result as KotlinResult
 
 
 @AndroidEntryPoint
@@ -141,20 +144,16 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
         setVitalsValues(encounter.observations)
 
-        BloodPressureChart().createChart(binding.visitDetailsLayout.bp_speedview, bloodPressureType!!)
+        BloodPressureChart().createChart(
+            binding.visitDetailsLayout.bp_speedview,
+            bloodPressureType!!
+        )
 
         setBloodPressureTypeAndRecommendation(bloodPressureType)
 
         setBloodPressureInformationDialog()
 
         showBmiChart()
-    }
-
-    private fun showBmiChart() {
-        val bmiData = BMICalculator().execute(viewModel.visit?.encounters?.first()?.observations!!)
-            if (!bmiData.isNullOrEmpty() && bmiData != "N/A") {
-            BmiChart().setBMIValueAndChart(bmiData.toFloat(), binding.visitDetailsLayout.bmi_layout)
-        }
     }
 
     private fun setVitalsValues(observations: List<Observation>) {
@@ -169,10 +168,12 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 } else if (observation.display!!.contains("Pulse")) {
                     pulse_value.text = formattedDisplayValue
                 } else if (observation.display!!.contains("Weight")) {
-                    if (observation.displayValue!!.isNotEmpty())  weight_layout.visibility = View.VISIBLE
+                    if (observation.displayValue!!.isNotEmpty()) weight_layout.visibility =
+                        View.VISIBLE
                     weight_value.text = formattedDisplayValue
                 } else if (observation.display!!.contains("Height")) {
-                    if (observation.displayValue!!.isNotEmpty()) height_layout.visibility = View.VISIBLE
+                    if (observation.displayValue!!.isNotEmpty()) height_layout.visibility =
+                        View.VISIBLE
                     height_value.text = formattedDisplayValue
                 }
             }
@@ -183,10 +184,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         with(binding.visitDetailsLayout) {
             if (bloodPressureType != null) {
                 blood_pressure_layout.visibility = View.VISIBLE
-                blood_pressure_title.text = requireContext().getString(bloodPressureType.relatedText())
+                blood_pressure_title.text =
+                    requireContext().getString(bloodPressureType.relatedText())
                 blood_pressure_title.background.setColorFilter(
-                    ContextCompat.getColor(requireContext(),
-                        bloodPressureType.relatedColor()),
+                    ContextCompat.getColor(
+                        requireContext(),
+                        bloodPressureType.relatedColor()
+                    ),
                     PorterDuff.Mode.SRC_IN
                 )
                 blood_pressure_recommendation.text = HtmlCompat.fromHtml(
@@ -205,6 +209,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
+    private fun showBmiChart() {
+        val bmiData = BMICalculator().execute(viewModel.visit?.encounters?.first()?.observations!!)
+        if (!bmiData.isNullOrEmpty() && bmiData != "N/A") {
+            BmiChart().setBMIValueAndChart(bmiData.toFloat(), binding.visitDetailsLayout.bmi_layout)
+        }
+    }
+
     private fun formatValue(displayValue: String): String {
         return if (displayValue.contains(".")) {
             displayValue.substring(0, displayValue.indexOf('.')).trim { it <= ' ' }
@@ -215,13 +226,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     private fun setUpTreatmentsObserver() {
         viewModel.treatments.observe(viewLifecycleOwner) { result ->
-            val openMRSResult = if (result.isSuccess) {
-                Result.Success(result.getOrElse { emptyList() })
-            } else {
-                result.exceptionOrNull().let { Result.Error(it!!) }
-            }
-
-            showTreatment(binding.visitDetailsLayout, viewModel.visit?.encounters?.last()!!, Pair(viewModel.visit!!.isActiveVisit(), viewModel.visit?.uuid!!), openMRSResult, this)
+            showTreatment(Pair(viewModel.visit!!.isActiveVisit(), viewModel.visit?.uuid!!), result)
         }
 
         viewModel.treatmentOperationsLiveData.observe(viewLifecycleOwner) { treatment ->
@@ -247,67 +252,48 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun showTreatment(
-        vitalsCardView: View,
-        encounter: Encounter,
-        visit: Pair<Boolean, String>,
-        treatments: Result<List<Treatment?>>,
-        listener: TreatmentListener
-    ) {
-        val addTreatmentButton = vitalsCardView.findViewById<Button>(R.id.add_treatment_button)
-        if (visit.first) {
-            addTreatmentButton.setOnClickListener { view: View? ->
-                val intent = Intent(
-                    requireContext(),
-                    TreatmentActivity::class.java
-                )
-                intent.putExtra(VISIT_ID, encounter.visitID)
-                requireContext().startActivity(intent)
+    private fun showTreatment(isVisitActive: Pair<Boolean, String>, treatments: KotlinResult<List<Treatment>>) {
+
+        with(binding.visitDetailsLayout.add_treatment_button) {
+            if (isVisitActive.first) {
+                this.setOnClickListener {
+                    val intent = Intent(
+                        requireContext(),
+                        TreatmentActivity::class.java
+                    )
+                    intent.putExtra(VISIT_ID, viewModel.visit?.id)
+                    requireContext().startActivity(intent)
+                }
+            } else {
+                this.visibility = View.GONE
             }
-        } else {
-            addTreatmentButton.visibility = View.GONE
         }
-        if (treatments is Result.Success<*>) {
-            vitalsCardView.findViewById<View>(R.id.loadingTreatmentsProgressBar).visibility =
-                View.GONE
-            showTreatmentList(
-                vitalsCardView,
-                visit,
-                treatments as Result.Success<List<Treatment>>,
-                this
-            )
+
+        if (treatments.isSuccess) {
+            binding.visitDetailsLayout.loadingTreatmentsProgressBar.visibility = View.GONE
+            showTreatmentList(isVisitActive, treatments.getOrDefault(emptyList()))
         } else {
-            vitalsCardView.findViewById<View>(R.id.loadingTreatmentsProgressBar).visibility =
-                View.GONE
-            vitalsCardView.findViewById<View>(R.id.recommended_treatments_layout).visibility =
-                View.VISIBLE
-            val errorMessageView = vitalsCardView.findViewById<View>(R.id.error_loading_treatments)
+            binding.visitDetailsLayout.loadingTreatmentsProgressBar.visibility = View.GONE
+            binding.visitDetailsLayout.recommended_treatments_layout.visibility = View.VISIBLE
+            val errorMessageView = binding.visitDetailsLayout.error_loading_treatments
             errorMessageView.visibility = View.VISIBLE
-            errorMessageView.setOnClickListener { view: View? ->
-                vitalsCardView.findViewById<View>(R.id.loadingTreatmentsProgressBar).visibility =
-                    View.VISIBLE
+
+            errorMessageView.setOnClickListener {
+                binding.visitDetailsLayout.loadingTreatmentsProgressBar.visibility = View.VISIBLE
                 errorMessageView.visibility = View.GONE
-                listener.onRefreshTreatments()
+                onRefreshTreatments()
             }
         }
     }
 
-    private fun showTreatmentList(
-        vitalsCardView: View,
-        visit: Pair<Boolean, String>,
-        treatments: Result.Success<List<Treatment>?>,
-        listener: TreatmentListener
-    ) {
-        if (!treatments.data.isNullOrEmpty()) {
-            vitalsCardView.findViewById<View>(R.id.recommended_treatments_layout).visibility =
-                View.VISIBLE
+    private fun showTreatmentList(isVisitActive: Pair<Boolean, String>, treatments: List<Treatment>) {
+        if (treatments.isNotEmpty()) {
+            binding.visitDetailsLayout.recommended_treatments_layout.visibility = View.VISIBLE
             val layoutManager = LinearLayoutManager(requireContext())
-            val view = vitalsCardView.findViewById<RecyclerView>(R.id.treatmentsVisitRecyclerView)
-            view.layoutManager = layoutManager
-            val treatmentAdapter =
-                TreatmentRecyclerViewAdapter(requireContext(), visit, listener)
-            view.adapter = treatmentAdapter
-            treatmentAdapter.updateData(treatments.data)
+            binding.visitDetailsLayout.treatmentsVisitRecyclerView.layoutManager = layoutManager
+            val treatmentAdapter = TreatmentRecyclerViewAdapter(requireContext(), isVisitActive, this)
+            binding.visitDetailsLayout.treatmentsVisitRecyclerView.adapter = treatmentAdapter
+            treatmentAdapter.updateData(treatments)
         }
     }
 

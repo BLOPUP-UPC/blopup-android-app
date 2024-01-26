@@ -15,7 +15,7 @@ import edu.upc.sdk.library.models.Treatment
 
 class TreatmentRecyclerViewAdapter(
     private val context: Context,
-    private val visit: Pair<Boolean, String>,
+    private val isVisitActive: Pair<Boolean, String>,
     private val listener: TreatmentListener?
 ) :
     RecyclerView.Adapter<TreatmentRecyclerViewAdapter.ViewHolder>() {
@@ -30,7 +30,7 @@ class TreatmentRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context)
             .inflate(R.layout.row_patient_treatments, parent, false)
-        return ViewHolder(view, visit)
+        return ViewHolder(view, isVisitActive)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -46,10 +46,10 @@ class TreatmentRecyclerViewAdapter(
 
         if(holder.visit.first) {
             when {
-                visitUuid == visit.second -> {
+                visitUuid == isVisitActive.second -> {
                         holder.ellipsisTextView.setOnClickListener { showPopupMenu(it, R.menu.treatments_menu_current_visit, position) }
                 }
-                visit.second.isEmpty() -> {
+                isVisitActive.second.isEmpty() -> {
                     holder.ellipsisTextView.visibility = View.GONE
                 }
                 else -> {
