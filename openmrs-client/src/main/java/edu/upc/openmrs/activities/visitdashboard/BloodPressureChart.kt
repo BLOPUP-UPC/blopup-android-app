@@ -1,19 +1,14 @@
 package edu.upc.openmrs.activities.visitdashboard
 
 import android.graphics.Color
-import android.view.View
-import androidx.core.view.marginBottom
 import com.github.anastr.speedviewlib.SpeedView
 import com.github.anastr.speedviewlib.components.Section
 import com.github.anastr.speedviewlib.components.indicators.Indicator.Indicators
-import edu.upc.R
 import edu.upc.blopup.bloodpressure.BloodPressureType
 import edu.upc.openmrs.utilities.ChartColor
 
 class BloodPressureChart {
-    fun createChart(view: View, bpType: BloodPressureType) {
-
-        val speedometer = view.findViewById<SpeedView>(R.id.bp_speedview)
+    fun createChart(speedometer: SpeedView, bpType: BloodPressureType) {
         setIndicator(speedometer)
         setSections(speedometer)
         setValue(speedometer, bpType)

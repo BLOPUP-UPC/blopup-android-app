@@ -8,8 +8,8 @@ import kotlin.math.roundToInt
 
 class BmiChart {
 
-    fun setBMIValueAndChart(bmiValue: Float, vitalsCardView: View) {
-        vitalsCardView.findViewById<View>(R.id.bmi_layout).visibility = View.VISIBLE
+    fun setBMIValueAndChart(bmiValue: Float, bmiLayout: View) {
+        bmiLayout.findViewById<View>(R.id.bmi_layout).visibility = View.VISIBLE
 
         val roundedBmi = bmiValue.roundToInt()
 
@@ -21,10 +21,10 @@ class BmiChart {
             else if (roundedBmi < 10) 0f
             else pointerValue / chartRange
 
-        vitalsCardView.findViewById<TextView>(R.id.bmi_value).text = roundedBmi.toString()
+        bmiLayout.findViewById<TextView>(R.id.bmi_value).text = roundedBmi.toString()
 
-        val spaceBeforePointer = vitalsCardView.findViewById<View>(R.id.bmi_chart_pointer_background)
-        val spaceAfterPointer = vitalsCardView.findViewById<View>(R.id.bmi_chart_pointer_background2)
+        val spaceBeforePointer = bmiLayout.findViewById<View>(R.id.bmi_chart_pointer_background)
+        val spaceAfterPointer = bmiLayout.findViewById<View>(R.id.bmi_chart_pointer_background2)
 
         val spaceBeforeParams = spaceBeforePointer.layoutParams as LinearLayout.LayoutParams
         val spaceAfterParams = spaceAfterPointer.layoutParams as LinearLayout.LayoutParams

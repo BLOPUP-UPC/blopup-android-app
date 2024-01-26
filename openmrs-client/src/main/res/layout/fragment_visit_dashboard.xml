@@ -29,14 +29,13 @@
         android:visibility="gone"/>
 
     <ScrollView
-        android:id="@+id/wholeLayout"
+        android:id="@+id/visit_details_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal" >
 
         <include
-            android:id="@+id/vitals"
-            layout="@layout/vitals_card" />
+            layout="@layout/visit_details" />
     </ScrollView>
 
 </LinearLayout>

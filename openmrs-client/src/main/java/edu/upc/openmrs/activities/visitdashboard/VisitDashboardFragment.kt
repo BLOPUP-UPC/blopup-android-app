@@ -27,12 +27,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,6 +58,19 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
+import kotlinx.android.synthetic.main.bp_chart.view.bp_speedview
+import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_info
+import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_layout
+import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_recommendation
+import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_title
+import kotlinx.android.synthetic.main.visit_details.view.bmi_layout
+import kotlinx.android.synthetic.main.visit_details.view.diastolic_value
+import kotlinx.android.synthetic.main.visit_details.view.height_layout
+import kotlinx.android.synthetic.main.visit_details.view.height_value
+import kotlinx.android.synthetic.main.visit_details.view.pulse_value
+import kotlinx.android.synthetic.main.visit_details.view.systolic_value
+import kotlinx.android.synthetic.main.visit_details.view.weight_layout
+import kotlinx.android.synthetic.main.visit_details.view.weight_value
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
@@ -126,77 +137,71 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     private fun displayVisit(visit: Visit) {
         val encounter = visit.encounters.first()
 
-        val bmiData = BMICalculator().execute(encounter.observations)
         val bloodPressureType = bloodPressureTypeFromEncounter(encounter)?.bloodPressureType
 
-        setVitalsValues(encounter.observations, binding.wholeLayout)
-        BloodPressureChart().createChart(
-            binding.wholeLayout,
-            bloodPressureType!!
-        )
-        setBloodPressureTypeAndRecommendation(bloodPressureType, binding.wholeLayout)
+        setVitalsValues(encounter.observations)
 
-        setBloodPressureInformationDialog(binding.wholeLayout, requireFragmentManager())
+        BloodPressureChart().createChart(binding.visitDetailsLayout.bp_speedview, bloodPressureType!!)
+
+        setBloodPressureTypeAndRecommendation(bloodPressureType)
+
+        setBloodPressureInformationDialog()
+
+        showBmiChart()
     }
 
-    private fun setVitalsValues(observations: List<Observation>, vitalsCardView: View) {
-        for (observation in observations) {
-            val systolicValue = vitalsCardView.findViewById<TextView>(R.id.systolic_value)
-            val diastolicValue = vitalsCardView.findViewById<TextView>(R.id.diastolic_value)
-            val pulseValue = vitalsCardView.findViewById<TextView>(R.id.pulse_value)
-            val heightValue = vitalsCardView.findViewById<TextView>(R.id.height_value)
-            val weightValue = vitalsCardView.findViewById<TextView>(R.id.weight_value)
-            val formattedDisplayValue: String =
-                formatValue(observation.displayValue!!)
-            if (observation.display!!.contains("Systolic")) {
-                systolicValue.text = formattedDisplayValue
-            } else if (observation.display!!.contains("Diastolic")) {
-                diastolicValue.text = formattedDisplayValue
-            } else if (observation.display!!.contains("Pulse")) {
-                pulseValue.text = formattedDisplayValue
-            } else if (observation.display!!.contains("Weight")) {
-                if (!observation.displayValue!!.isEmpty()) vitalsCardView.findViewById<View>(R.id.weight_layout).visibility =
-                    View.VISIBLE
-                weightValue.text = formattedDisplayValue
-            } else if (observation.display!!.contains("Height")) {
-                if (!observation.displayValue!!.isEmpty()) vitalsCardView.findViewById<View>(R.id.height_layout).visibility =
-                    View.VISIBLE
-                heightValue.text = formattedDisplayValue
+    private fun showBmiChart() {
+        val bmiData = BMICalculator().execute(viewModel.visit?.encounters?.first()?.observations!!)
+            if (!bmiData.isNullOrEmpty() && bmiData != "N/A") {
+            BmiChart().setBMIValueAndChart(bmiData.toFloat(), binding.visitDetailsLayout.bmi_layout)
+        }
+    }
+
+    private fun setVitalsValues(observations: List<Observation>) {
+        with(binding.visitDetailsLayout) {
+            for (observation in observations) {
+                val formattedDisplayValue: String =
+                    formatValue(observation.displayValue!!)
+                if (observation.display!!.contains("Systolic")) {
+                    systolic_value.text = formattedDisplayValue
+                } else if (observation.display!!.contains("Diastolic")) {
+                    diastolic_value.text = formattedDisplayValue
+                } else if (observation.display!!.contains("Pulse")) {
+                    pulse_value.text = formattedDisplayValue
+                } else if (observation.display!!.contains("Weight")) {
+                    if (observation.displayValue!!.isNotEmpty())  weight_layout.visibility = View.VISIBLE
+                    weight_value.text = formattedDisplayValue
+                } else if (observation.display!!.contains("Height")) {
+                    if (observation.displayValue!!.isNotEmpty()) height_layout.visibility = View.VISIBLE
+                    height_value.text = formattedDisplayValue
+                }
             }
         }
     }
 
-    private fun setBloodPressureTypeAndRecommendation(
-        bloodPressureType: BloodPressureType?,
-        vitalsCardView: View
-    ) {
-        if (bloodPressureType != null) {
-            vitalsCardView.findViewById<View>(R.id.blood_pressure_layout).visibility =
-                View.VISIBLE
-            val title = vitalsCardView.findViewById<TextView>(R.id.blood_pressure_title)
-            val recommendation =
-                vitalsCardView.findViewById<TextView>(R.id.blood_pressure_recommendation)
-            title.setText(requireContext().getString(bloodPressureType.relatedText()))
-            title.background.setColorFilter(
-                ContextCompat.getColor(requireContext(), bloodPressureType.relatedColor()),
-                PorterDuff.Mode.SRC_IN
-            )
-            recommendation.text = HtmlCompat.fromHtml(
-                requireContext().getString(bloodPressureType.relatedRecommendation()),
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
+    private fun setBloodPressureTypeAndRecommendation(bloodPressureType: BloodPressureType?) {
+        with(binding.visitDetailsLayout) {
+            if (bloodPressureType != null) {
+                blood_pressure_layout.visibility = View.VISIBLE
+                blood_pressure_title.text = requireContext().getString(bloodPressureType.relatedText())
+                blood_pressure_title.background.setColorFilter(
+                    ContextCompat.getColor(requireContext(),
+                        bloodPressureType.relatedColor()),
+                    PorterDuff.Mode.SRC_IN
+                )
+                blood_pressure_recommendation.text = HtmlCompat.fromHtml(
+                    requireContext().getString(bloodPressureType.relatedRecommendation()),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+            }
         }
+
     }
 
-    private fun setBloodPressureInformationDialog(
-        vitalsCardView: View,
-        fragmentManager: FragmentManager
-    ) {
-        val bloodPressureInformation =
-            vitalsCardView.findViewById<TextView>(R.id.blood_pressure_info)
-        bloodPressureInformation.setOnClickListener {
+    private fun setBloodPressureInformationDialog() {
+        binding.visitDetailsLayout.blood_pressure_info.setOnClickListener {
             val dialogFragment = BloodPressureInfoDialog()
-            dialogFragment.show(fragmentManager, "BloodPressureInfoDialog")
+            dialogFragment.show(parentFragmentManager, "BloodPressureInfoDialog")
         }
     }
 
@@ -216,7 +221,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 result.exceptionOrNull().let { Result.Error(it!!) }
             }
 
-            showTreatment(binding.wholeLayout, viewModel.visit?.encounters?.last()!!, Pair(viewModel.visit!!.isActiveVisit(), viewModel.visit?.uuid!!), openMRSResult, this)
+            showTreatment(binding.visitDetailsLayout, viewModel.visit?.encounters?.last()!!, Pair(viewModel.visit!!.isActiveVisit(), viewModel.visit?.uuid!!), openMRSResult, this)
         }
 
         viewModel.treatmentOperationsLiveData.observe(viewLifecycleOwner) { treatment ->
@@ -293,7 +298,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         treatments: Result.Success<List<Treatment>?>,
         listener: TreatmentListener
     ) {
-        if (treatments.data != null && !treatments.data.isEmpty()) {
+        if (!treatments.data.isNullOrEmpty()) {
             vitalsCardView.findViewById<View>(R.id.recommended_treatments_layout).visibility =
                 View.VISIBLE
             val layoutManager = LinearLayoutManager(requireContext())
@@ -368,15 +373,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         val phoneNumber = SecretsUtils.getDoctorPhoneNumber()
         sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)
     }
-
-//    private fun updateEncountersList(
-//        visitEncounters: List<Encounter>,
-//        visit: Pair<Boolean, String?>,
-//        listener: TreatmentListener
-//    ) = with(binding) {
-//        visitExpandableListAdapter?.updateList(visitEncounters, visit, listener)
-//        visitDashboardExpList.expandGroup(0)
-//    }
 
     fun endVisit() {
         viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { result ->
