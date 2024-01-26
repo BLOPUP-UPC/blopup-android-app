@@ -11,9 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:paddingHorizontal="16dp">
 
         <include
             android:id="@+id/blood_pressure_chart"

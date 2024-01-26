@@ -28,13 +28,15 @@
         android:layout_alignParentTop="true"
         android:visibility="gone"/>
 
-    <ExpandableListView
-        android:id="@+id/visitDashboardExpList"
+    <LinearLayout
+        android:id="@+id/wholeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:childDivider="@drawable/exp_list_divider"
-        android:divider="@null"
-        android:dividerHeight="1dp"
-        android:layout_alignParentTop="true"/>
+        android:orientation="horizontal" >
+
+        <include
+            android:id="@+id/vitals"
+            layout="@layout/vitals_card" />
+    </LinearLayout>
 
 </LinearLayout>

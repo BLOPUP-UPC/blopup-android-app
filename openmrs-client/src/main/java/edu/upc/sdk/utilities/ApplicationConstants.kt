@@ -95,10 +95,7 @@ object ApplicationConstants {
 
         @JvmField
         var ENCOUNTER_TYPES_DISPLAYS = arrayOf(
-            EncounterType.VITALS,
-            EncounterType.ADMISSION,
-            EncounterType.DISCHARGE,
-            EncounterType.VISIT_NOTE
+            EncounterType.VITALS
         )
     }
 

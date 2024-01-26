@@ -148,7 +148,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
             secondEncounter
         )
 
-        val result = viewModel.filterAndSortEncounters(encounters)
+        val result = viewModel.filterLastVitalEncounter(encounters)
 
         assertTrue(result.size == 4)
         assertTrue(result[0].encounterDate.equals(firstEncounter.encounterDate))

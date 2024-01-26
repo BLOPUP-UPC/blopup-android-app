@@ -55,16 +55,14 @@ class VisitDashboardViewModel @Inject constructor(
         addSubscription(
             visitDAO.getVisitByID(visitId).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ visit ->
-                    viewModelScope.launch { fetchActiveTreatments(visit.patient, visit) }
-                    val filteredAndSortedEncounters = filterAndSortEncounters(visit.encounters)
-                    visit.encounters = filteredAndSortedEncounters
+                    val lastVitalEncounter = filterLastVitalEncounter(visit.encounters)
+                    visit.encounters = listOf(lastVitalEncounter)
 
-                    val bpType = bloodPressureTypeFromEncounter(
-                        filteredAndSortedEncounters.sortedBy { it.encounterDatetime }.last()
-                    )
+                    val bpType = bloodPressureTypeFromEncounter(lastVitalEncounter)
 
                     _bloodPressureType.value = bpType
                     setContent(visit)
+                    viewModelScope.launch { fetchActiveTreatments(visit.patient, visit) }
                 }, { setError(it) })
         )
     }
@@ -86,11 +84,11 @@ class VisitDashboardViewModel @Inject constructor(
         return endVisitResult
     }
 
-    fun filterAndSortEncounters(encounters: List<Encounter>): List<Encounter> {
+    fun filterLastVitalEncounter(encounters: List<Encounter>): Encounter {
         val possibleEncounterTypes = ENCOUNTER_TYPES_DISPLAYS.toHashSet()
         val displayableEncounters =
             encounters.filter { possibleEncounterTypes.contains(it.encounterType?.display) }
-        return displayableEncounters.sortedBy { it.encounterDatetime }
+        return displayableEncounters.sortedBy { it.encounterDatetime }.last()
     }
 
     private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
