@@ -435,7 +435,8 @@
     <string name="treatment_updated_successfully">Tractament modificat amb èxit</string>
     <string name="treatment_adherence_label">El pacient segueix aquests tractaments?</string>
     <string name="no_changes_detected">No s\'ha detectat cap canvi</string>
-    <string name="error_loading_treatments">No s\'ha pogut carregar els tractaments. <u>Siusplau, torni-ho a intentar.</u></string>
+    <string name="error_loading_treatments">No s\'han pogut carregar els tractaments.</string>
+    <string name="error_loading_treatments_try_again"><u>Siusplau, torni-ho a intentar.</u></string>
     <string name="doctors_name">Nom del doctor</string>
     />
 </resources>

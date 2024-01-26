@@ -215,14 +215,24 @@
                 android:layout_height="wrap_content"
                 android:visibility="visible" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/error_loading_treatments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/error_loading_treatments"
-                android:textColor="@color/allergy_orange"
-                android:textStyle="bold"
-                android:visibility="gone"/>
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_loading_treatments"
+                    android:textColor="@color/allergy_orange"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_loading_treatments_try_again"
+                    android:textColor="@color/allergy_orange"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/treatmentsVisitRecyclerView"
