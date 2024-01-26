@@ -136,22 +136,21 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
             encounterDate = "2023-10-12T09:23:13.000+0200"
         }
 
-        val fourthEncounter = Encounter().apply {
+        val mostRecentEncounter = Encounter().apply {
             encounterType = EncounterType("Vitals")
-            encounterDate = "2023-10-12T09:23:13.000+0200"
+            encounterDate = "2023-10-13T09:23:13.000+0200"
         }
 
         val encounters = listOf(
             thirdEncounter,
-            fourthEncounter,
+            mostRecentEncounter,
             firstEncounter,
             secondEncounter
         )
 
         val result = viewModel.filterLastVitalEncounter(encounters)
 
-        assertTrue(result.size == 4)
-        assertTrue(result[0].encounterDate.equals(firstEncounter.encounterDate))
+        assertTrue(result.encounterDate.equals(mostRecentEncounter.encounterDate))
     }
 
     @Test
