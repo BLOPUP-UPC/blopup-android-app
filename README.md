@@ -1,5 +1,9 @@
 # BlopUp Android app
 
+## Connect to local OpenMRS
+
+Use http://10.0.2.2:8080/openmrs as the server url
+
 ## Description
 This is the Android app that is used to access the BlopUp platform.
 
