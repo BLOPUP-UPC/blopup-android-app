@@ -98,7 +98,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
-        viewModel.fetchCurrentVisit()
         setupVisitObserver()
         setUpTreatmentsObserver()
 
