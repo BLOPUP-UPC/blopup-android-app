@@ -217,7 +217,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     private fun setUpTreatmentsObserver() {
         viewModel.treatments.observe(viewLifecycleOwner) { result ->
-            showTreatment(Pair(viewModel.visit!!.isActiveVisit(), viewModel.visit?.uuid!!), result)
+            showTreatment(result)
         }
 
         viewModel.treatmentOperationsLiveData.observe(viewLifecycleOwner) { treatment ->
@@ -243,10 +243,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun showTreatment(isVisitActive: Pair<Boolean, String>, treatments: KotlinResult<List<Treatment>>) {
+    private fun showTreatment(treatments: KotlinResult<List<Treatment>>) {
 
         with(binding.visitDetailsLayout.add_treatment_button) {
-            if (isVisitActive.first) {
+            if (viewModel.visit?.isActiveVisit() == true) {
                 this.setOnClickListener {
                     val intent = Intent(
                         requireContext(),
@@ -262,7 +262,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
         if (treatments.isSuccess) {
             binding.visitDetailsLayout.loadingTreatmentsProgressBar.visibility = View.GONE
-            showTreatmentList(isVisitActive, treatments.getOrDefault(emptyList()))
+            showTreatmentList(treatments.getOrDefault(emptyList()))
         } else {
             binding.visitDetailsLayout.loadingTreatmentsProgressBar.visibility = View.GONE
             binding.visitDetailsLayout.recommended_treatments_layout.visibility = View.VISIBLE
@@ -277,12 +277,12 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun showTreatmentList(isVisitActive: Pair<Boolean, String>, treatments: List<Treatment>) {
+    private fun showTreatmentList(treatments: List<Treatment>) {
         if (treatments.isNotEmpty()) {
             binding.visitDetailsLayout.recommended_treatments_layout.visibility = View.VISIBLE
             val layoutManager = LinearLayoutManager(requireContext())
             binding.visitDetailsLayout.treatmentsVisitRecyclerView.layoutManager = layoutManager
-            val treatmentAdapter = TreatmentRecyclerViewAdapter(requireContext(), isVisitActive, this)
+            val treatmentAdapter = TreatmentRecyclerViewAdapter(requireContext(), viewModel.visit?.isActiveVisit()!!, viewModel.visit?.uuid!!, this)
             binding.visitDetailsLayout.treatmentsVisitRecyclerView.adapter = treatmentAdapter
             treatmentAdapter.updateData(treatments)
         } else {
