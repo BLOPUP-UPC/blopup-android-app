@@ -98,19 +98,11 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         viewModel.fetchCurrentVisit()
         setupVisitObserver()
         setUpTreatmentsObserver()
-    }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.fetchCurrentVisit()
+        return binding.root
     }
 
     override fun onResume() {
