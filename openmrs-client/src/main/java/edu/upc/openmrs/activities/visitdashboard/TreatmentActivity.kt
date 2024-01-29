@@ -174,21 +174,9 @@ class TreatmentActivity : ACBaseActivity() {
     private fun fieldValidationValueObserver() {
         viewModel.fieldValidation.observe(this) { isValid ->
             if (isValid.values.all { it }) {
-                mBinding.registerMedication.isEnabled = true
-                mBinding.registerMedication.setBackgroundColor(
-                    resources.getColor(
-                        R.color.color_accent,
-                        null
-                    )
-                )
+                enableButton()
             } else {
-                mBinding.registerMedication.isEnabled = false
-                mBinding.registerMedication.setBackgroundColor(
-                    resources.getColor(
-                        R.color.dark_grey_for_stroke,
-                        null
-                    )
-                )
+                disableButton()
             }
 
             mBinding.textInputLayoutMedicationName.error = getString(R.string.empty_value)
@@ -206,6 +194,26 @@ class TreatmentActivity : ACBaseActivity() {
                 mBinding.medicationTypeError.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun enableButton() {
+        mBinding.registerMedication.isEnabled = true
+        mBinding.registerMedication.setBackgroundColor(
+            resources.getColor(
+                R.color.color_accent,
+                null
+            )
+        )
+    }
+
+    private fun disableButton() {
+        mBinding.registerMedication.isEnabled = false
+        mBinding.registerMedication.setBackgroundColor(
+            resources.getColor(
+                R.color.dark_grey_for_stroke,
+                null
+            )
+        )
     }
 
     private fun setListenersForFieldValidation() = with(mBinding) {
@@ -250,6 +258,9 @@ class TreatmentActivity : ACBaseActivity() {
 
     private fun registerTreatmentOnClickListener() {
         mBinding.registerMedication.setOnClickListener {
+
+            disableButton()
+
             fillTreatmentFields()
 
             if (treatmentToEdit.medicationName.isNotEmpty()) {
@@ -286,7 +297,7 @@ class TreatmentActivity : ACBaseActivity() {
         }
     }
 
-    private fun handleTreatmentResult(result: Result<Treatment>) =
+    private fun handleTreatmentResult(result: Result<Treatment>) {
         when {
             result is Result.Success -> {
                 if (result.operationType == OperationType.TreatmentUpdated) {
@@ -295,20 +306,20 @@ class TreatmentActivity : ACBaseActivity() {
                     ToastUtil.success(getString(R.string.treatment_created_successfully))
                 }
                 finish()
+                return
             }
 
             result is Result.Error && result.throwable.cause is UnknownHostException -> {
                 ToastUtil.error(getString(R.string.no_internet_connection))
             }
 
-            result is Result.Error && result.throwable.message == "No changes detected" -> {
-                ToastUtil.error(getString(R.string.no_changes_detected))
-            }
-
             else -> {
                 ToastUtil.error(getString(R.string.treatment_operation_error))
             }
         }
+        enableButton()
+    }
+
 
     private fun doWeHaveValues(): Boolean {
         return with(mBinding) {
