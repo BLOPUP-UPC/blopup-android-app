@@ -29,8 +29,7 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
         value = Treatment(
             recommendedBy = "",
             medicationName = "",
-            medicationType = emptySet(),
-            visitId = 0L
+            medicationType = emptySet()
         )
     }
 
@@ -39,8 +38,7 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
             value = Treatment(
                 recommendedBy = "",
                 medicationName = "",
-                medicationType = emptySet(),
-                visitId = 0L
+                medicationType = emptySet()
             )
         }
 

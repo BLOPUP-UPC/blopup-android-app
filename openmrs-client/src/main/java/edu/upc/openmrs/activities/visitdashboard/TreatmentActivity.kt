@@ -28,7 +28,7 @@ import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
 import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_OTHER
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
@@ -46,7 +46,7 @@ class TreatmentActivity : ACBaseActivity() {
         mBinding = TreatmentFormBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        intent.extras?.let { viewModel.treatment.value?.visitId = it.getLong(VISIT_ID) }
+        intent.extras?.let { viewModel.treatment.value?.visitUuid = it.getString(VISIT_UUID) }
 
         treatmentToEdit = intent.getParcelableExtra<Treatment>(TREATMENT)?.apply {
             viewModel.treatmentToEdit.value = this
@@ -54,11 +54,11 @@ class TreatmentActivity : ACBaseActivity() {
             recommendedBy = "",
             medicationName = "",
             medicationType = emptySet(),
-            visitId = 0L
         )
 
         if (treatmentToEdit.medicationName.isNotEmpty()) {
             viewModel.treatment.value?.recommendedBy = treatmentToEdit.recommendedBy
+            viewModel.treatment.value?.visitUuid = treatmentToEdit.visitUuid
             completeFields(treatmentToEdit)
         }
 

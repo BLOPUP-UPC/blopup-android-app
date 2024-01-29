@@ -54,7 +54,7 @@ import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
 import kotlinx.android.synthetic.main.bp_chart.view.bp_speedview
@@ -71,7 +71,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     companion object {
         fun newInstance(visitId: Long, isNewVitals: Boolean) = VisitDashboardFragment().apply {
-            arguments = bundleOf(Pair(VISIT_ID, visitId), Pair(IS_NEW_VITALS, isNewVitals))
+            arguments = bundleOf(Pair(VISIT_UUID, visitId), Pair(IS_NEW_VITALS, isNewVitals))
         }
     }
 
@@ -236,7 +236,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                         requireContext(),
                         TreatmentActivity::class.java
                     )
-                    intent.putExtra(VISIT_ID, viewModel.visit?.id)
+                    intent.putExtra(VISIT_UUID, viewModel.visit?.uuid)
                     requireContext().startActivity(intent)
                 }
             }

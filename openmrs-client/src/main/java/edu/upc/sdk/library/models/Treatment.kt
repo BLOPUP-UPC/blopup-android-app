@@ -11,7 +11,6 @@ data class Treatment(
     var medicationType: Set<MedicationType>,
     var notes: String? = null,
     var isActive: Boolean = true,
-    var visitId: Long,
     var visitUuid: String? = null,
     var treatmentUuid: String? = null,
     var observationStatusUuid: String? = null,

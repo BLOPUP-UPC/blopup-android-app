@@ -25,23 +25,22 @@ class TreatmentRepository @Inject constructor(
     BaseRepository(null) {
 
     suspend fun saveTreatment(treatment: Treatment) {
-        val currentVisit = visitRepository.getVisitById(treatment.visitId)
-        saveTreatment(treatment, currentVisit)
-    }
-
-    private suspend fun saveTreatment(treatment: Treatment, visit: Visit) {
-        val encounter = createEncounterFromTreatment(visit, treatment)
-
         withContext(Dispatchers.IO) {
-            try {
-                val response = restApi.createEncounter(encounter).execute()
-                if (response.isSuccessful) {
-                    return@withContext response.body()
-                } else {
-                    throw Exception("Failed to create encounter: ${response.code()} - ${response.message()}")
+            val currentVisit = visitRepository.getVisitByUuid(treatment.visitUuid)
+
+            val encounter = createEncounterFromTreatment(currentVisit, treatment)
+
+            withContext(Dispatchers.IO) {
+                try {
+                    val response = restApi.createEncounter(encounter).execute()
+                    if (response.isSuccessful) {
+                        return@withContext response.body()
+                    } else {
+                        throw Exception("Failed to create encounter: ${response.code()} - ${response.message()}")
+                    }
+                } catch (e: Exception) {
+                    throw Exception("Failed to create encounter: ${e.message}", e)
                 }
-            } catch (e: Exception) {
-                throw Exception("Failed to create encounter: ${e.message}", e)
             }
         }
     }
@@ -66,7 +65,10 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    suspend fun updateTreatment(treatmentToEdit: Treatment, treatmentToUpdate: Treatment): Result<Boolean> {
+    suspend fun updateTreatment(
+        treatmentToEdit: Treatment,
+        treatmentToUpdate: Treatment
+    ): Result<Boolean> {
         val needsChanges = diffValues(treatmentToEdit, treatmentToUpdate)
 
         if (!needsChanges) return Result.success(true)
@@ -74,10 +76,7 @@ class TreatmentRepository @Inject constructor(
         val response = encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid)
 
         return if (response.isSuccess) {
-            withContext(Dispatchers.IO) {
-                val visit = visitRepository.getVisitByUuid(treatmentToEdit.visitUuid)
-                saveTreatment(treatmentToUpdate, visit)
-            }
+            saveTreatment(treatmentToUpdate)
             Result.success(true)
         } else {
             Result.failure(Exception("Failed to remove encounter"))
@@ -138,7 +137,6 @@ class TreatmentRepository @Inject constructor(
         }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
-        val visitId = encounter.visitID ?: 0
         val visitUuid = encounter.visit?.uuid
         val treatmentUuid = encounter.uuid
         val creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
@@ -180,7 +178,6 @@ class TreatmentRepository @Inject constructor(
             notes = notes,
             isActive = isActive,
             visitUuid = visitUuid,
-            visitId = visitId,
             treatmentUuid = treatmentUuid,
             observationStatusUuid = observationStatusUuid,
             inactiveDate = inactiveDate,

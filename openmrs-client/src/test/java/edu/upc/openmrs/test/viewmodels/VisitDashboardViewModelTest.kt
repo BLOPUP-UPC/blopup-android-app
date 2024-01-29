@@ -14,7 +14,7 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -63,7 +63,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         treatmentRepository = mockk()
         encounterRepository = mockk()
-        savedStateHandle = SavedStateHandle().apply { set(VISIT_ID, 1L) }
+        savedStateHandle = SavedStateHandle().apply { set(VISIT_UUID, 1L) }
         viewModel = VisitDashboardViewModel(
             visitDAO,
             visitRepository,

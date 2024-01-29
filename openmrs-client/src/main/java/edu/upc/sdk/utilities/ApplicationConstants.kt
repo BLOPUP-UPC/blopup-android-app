@@ -80,7 +80,7 @@ object ApplicationConstants {
     object BundleKeys {
         const val CUSTOM_DIALOG_BUNDLE = "customDialogBundle"
         const val PATIENT_ID_BUNDLE = "patientID"
-        const val VISIT_ID = "visitID"
+        const val VISIT_UUID = "visitUUID"
         const val IS_NEW_VITALS = "isNewVitals"
         const val TREATMENT = "treatment"
     }

@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityVisitDashboardBinding
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 
 @AndroidEntryPoint
 class VisitDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -33,7 +33,7 @@ class VisitDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             setTitle(R.string.visit_dashboard_label)
         }
 
-        val visitId: Long = intent.getLongExtra(VISIT_ID, -1L).also {
+        val visitId: Long = intent.getLongExtra(VISIT_UUID, -1L).also {
             if (it == -1L) throw IllegalStateException("No valid visit id passed")
         }
         val isNewVitals:Boolean = intent.getBooleanExtra(IS_NEW_VITALS, false)

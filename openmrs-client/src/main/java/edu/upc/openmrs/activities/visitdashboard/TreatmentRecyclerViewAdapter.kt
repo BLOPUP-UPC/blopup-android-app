@@ -35,7 +35,7 @@ class TreatmentRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (_, medicationName, medicationType, notes, isActive, _, visitUuid) = treatmentList[position]
+        val (_, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
 
         holder.medicationNameTextView.text = medicationName
         holder.medicationTypeTextView.text =

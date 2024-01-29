@@ -18,7 +18,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import kotlinx.coroutines.launch
 import org.joda.time.Instant
@@ -43,7 +43,7 @@ class VisitDashboardViewModel @Inject constructor(
     private val _treatmentOperationsLiveData = MutableLiveData<ResultType>()
     val treatmentOperationsLiveData: LiveData<ResultType> get() = _treatmentOperationsLiveData
 
-    private val visitId: Long = savedStateHandle[VISIT_ID]!!
+    private val visitId: Long = savedStateHandle[VISIT_UUID]!!
     val visit: Visit?
         get() {
             val visitResult = result.value

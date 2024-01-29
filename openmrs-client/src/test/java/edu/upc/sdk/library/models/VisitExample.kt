@@ -17,14 +17,12 @@ object VisitExample {
             patient = Patient().apply {
                 uuid = UUID.randomUUID().toString()
             }
-            id = treatment.visitId
             uuid = treatment.visitUuid
             startDatetime = startDate.formatToOpenmrsDate()
             encounters = listOf(
                 Encounter().apply {
                     uuid = treatment.treatmentUuid
                     visit = Visit().apply {
-                        id = treatment.visitId
                         uuid = treatment.visitUuid
                     }
                     encounterDate = treatment.creationDate.formatToOpenmrsDate()

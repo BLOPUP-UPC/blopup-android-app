@@ -2,7 +2,6 @@ package edu.upc.sdk.library.models
 
 import org.joda.time.Instant
 import java.util.UUID
-import kotlin.random.Random
 
 object TreatmentExample {
 
@@ -13,7 +12,6 @@ object TreatmentExample {
             notes = "25mg/dia",
             recommendedBy = "BlopUp",
             isActive = true,
-            visitId = Random.nextLong(1, 100),
             visitUuid = UUID.randomUUID().toString(),
             treatmentUuid = UUID.randomUUID().toString(),
             observationStatusUuid = UUID.randomUUID().toString(),
@@ -28,7 +26,6 @@ object TreatmentExample {
             notes = "50mg/dia",
             recommendedBy = "Other",
             isActive = false,
-            visitId = Random.nextLong(1, 100),
             visitUuid = UUID.randomUUID().toString(),
             treatmentUuid = UUID.randomUUID().toString(),
             creationDate = creationDate,

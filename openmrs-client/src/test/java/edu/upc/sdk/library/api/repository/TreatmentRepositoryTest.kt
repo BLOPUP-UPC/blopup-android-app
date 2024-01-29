@@ -138,7 +138,7 @@ class TreatmentRepositoryTest {
             setOf(MedicationType.DIURETIC),
             "25mg/dia",
             true,
-            19
+            visitUuid
         )
 
         val expectedTreatmentEncounter = Encountercreate().apply {
@@ -175,7 +175,7 @@ class TreatmentRepositoryTest {
         val capturedTreatmentEncounter = slot<Encountercreate>()
 
         val call = mockk<Call<Encounter>>(relaxed = true)
-        every { visitRepository.getVisitById(any()) } returns Visit().apply {
+        every { visitRepository.getVisitByUuid(any()) } returns Visit().apply {
             uuid = visitUuid; patient = Patient().apply { uuid = patientUuid }
         }
         coEvery { restApi.createEncounter(any()) } returns call
@@ -320,7 +320,7 @@ class TreatmentRepositoryTest {
             "Paracetamol",
             treatmentToEdit.medicationType,
             "hello",
-            visitId = treatmentToEdit.visitId
+            visitUuid = treatmentToEdit.visitUuid
         )
 
         coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns Result.success(true)

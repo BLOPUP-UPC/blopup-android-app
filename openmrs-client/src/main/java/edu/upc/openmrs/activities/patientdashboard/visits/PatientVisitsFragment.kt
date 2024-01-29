@@ -19,22 +19,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import edu.upc.sdk.library.models.OperationType.PatientVisitStarting
-import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
-import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.utilities.ApplicationConstants
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.NetworkUtils.isOnline
-import edu.upc.sdk.utilities.ToastUtil.error
-import edu.upc.sdk.utilities.ToastUtil.notify
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientVisitBinding
@@ -42,7 +32,13 @@ import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.models.OperationType.PatientVisitStarting
+import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ToastUtil.error
 
 @AndroidEntryPoint
 class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -163,7 +159,7 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     fun goToVisitDashboard(visitID: Long) {
         Intent(activity, VisitDashboardActivity::class.java).apply {
-            putExtra(ApplicationConstants.BundleKeys.VISIT_ID, visitID)
+            putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, visitID)
             startActivity(this)
         }
     }
