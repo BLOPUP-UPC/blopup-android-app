@@ -113,7 +113,9 @@ class VisitDashboardViewModel @Inject constructor(
         val response = encounterRepository.removeEncounter(treatment.treatmentUuid)
 
         if (response.isSuccess) {
-            visit?.let { fetchActiveTreatments(it.patient, it) }
+            _treatments.value = _treatments.value?.getOrNull()?.toMutableList()?.apply {
+                remove(treatment)
+            }?.let { kotlin.Result.success(it) }
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentSuccess
         } else {
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentError

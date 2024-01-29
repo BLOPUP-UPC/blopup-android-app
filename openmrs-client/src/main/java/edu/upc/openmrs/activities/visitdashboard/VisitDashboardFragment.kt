@@ -286,6 +286,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
             val treatmentAdapter = TreatmentRecyclerViewAdapter(requireContext(), isVisitActive, this)
             binding.visitDetailsLayout.treatmentsVisitRecyclerView.adapter = treatmentAdapter
             treatmentAdapter.updateData(treatments)
+        } else {
+            binding.visitDetailsLayout.recommended_treatments_layout.visibility = View.GONE
         }
     }
 
