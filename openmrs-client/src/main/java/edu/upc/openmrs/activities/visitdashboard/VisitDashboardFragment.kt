@@ -42,6 +42,8 @@ import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
 import edu.upc.openmrs.utilities.SecretsUtils
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Result
@@ -56,23 +58,6 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_ID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
 import kotlinx.android.synthetic.main.bp_chart.view.bp_speedview
-import kotlinx.android.synthetic.main.visit_details.view.add_treatment_button
-import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_info
-import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_layout
-import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_recommendation
-import kotlinx.android.synthetic.main.visit_details.view.blood_pressure_title
-import kotlinx.android.synthetic.main.visit_details.view.bmi_layout
-import kotlinx.android.synthetic.main.visit_details.view.diastolic_value
-import kotlinx.android.synthetic.main.visit_details.view.error_loading_treatments
-import kotlinx.android.synthetic.main.visit_details.view.height_layout
-import kotlinx.android.synthetic.main.visit_details.view.height_value
-import kotlinx.android.synthetic.main.visit_details.view.loadingTreatmentsProgressBar
-import kotlinx.android.synthetic.main.visit_details.view.pulse_value
-import kotlinx.android.synthetic.main.visit_details.view.recommended_treatments_layout
-import kotlinx.android.synthetic.main.visit_details.view.systolic_value
-import kotlinx.android.synthetic.main.visit_details.view.treatmentsVisitRecyclerView
-import kotlinx.android.synthetic.main.visit_details.view.weight_layout
-import kotlinx.android.synthetic.main.visit_details.view.weight_value
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 import kotlin.Result as KotlinResult
@@ -134,76 +119,75 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         val bloodPressureType = bloodPressureTypeFromEncounter(encounter)?.bloodPressureType
 
         setVitalsValues(encounter.observations)
+        showBmiChart(visit)
 
-        BloodPressureChart().createChart(
-            binding.visitDetailsLayout.bp_speedview,
-            bloodPressureType!!
-        )
+        bloodPressureType?.let {
+            binding.bloodPressureLayout.makeVisible()
+            BloodPressureChart().createChart(
+                binding.visitDetailsLayout.bp_speedview,
+                bloodPressureType
+            )
+            setBloodPressureTypeAndRecommendation(bloodPressureType)
+            setBloodPressureInformationDialog()
+            showAddTreatmentButton(visit)
+        }
 
-        setBloodPressureTypeAndRecommendation(bloodPressureType)
-
-        setBloodPressureInformationDialog()
-
-        showBmiChart()
     }
 
     private fun setVitalsValues(observations: List<Observation>) {
-        with(binding.visitDetailsLayout) {
-            for (observation in observations) {
-                val formattedDisplayValue: String =
-                    formatValue(observation.displayValue!!)
-                if (observation.display!!.contains("Systolic")) {
-                    systolic_value.text = formattedDisplayValue
-                } else if (observation.display!!.contains("Diastolic")) {
-                    diastolic_value.text = formattedDisplayValue
-                } else if (observation.display!!.contains("Pulse")) {
-                    pulse_value.text = formattedDisplayValue
-                } else if (observation.display!!.contains("Weight")) {
-                    if (observation.displayValue!!.isNotEmpty()) weight_layout.visibility =
-                        View.VISIBLE
-                    weight_value.text = formattedDisplayValue
-                } else if (observation.display!!.contains("Height")) {
-                    if (observation.displayValue!!.isNotEmpty()) height_layout.visibility =
-                        View.VISIBLE
-                    height_value.text = formattedDisplayValue
-                }
+        for (observation in observations) {
+            val formattedDisplayValue: String =
+                formatValue(observation.displayValue!!)
+            if (observation.display!!.contains("Systolic")) {
+               binding.systolicValue.text = formattedDisplayValue
+            } else if (observation.display!!.contains("Diastolic")) {
+                binding.diastolicValue.text = formattedDisplayValue
+            } else if (observation.display!!.contains("Pulse")) {
+                binding.pulseValue.text = formattedDisplayValue
+            } else if (observation.display!!.contains("Weight")) {
+                binding.bmiLayout.makeVisible()
+                if (observation.displayValue!!.isNotEmpty()) binding.weightLayout.visibility =
+                    View.VISIBLE
+                binding.weightValue.text = formattedDisplayValue
+            } else if (observation.display!!.contains("Height")) {
+                binding.bmiLayout.makeVisible()
+                if (observation.displayValue!!.isNotEmpty()) binding.heightLayout.visibility =
+                    View.VISIBLE
+                binding.heightValue.text = formattedDisplayValue
             }
         }
     }
 
     private fun setBloodPressureTypeAndRecommendation(bloodPressureType: BloodPressureType?) {
-        with(binding.visitDetailsLayout) {
-            if (bloodPressureType != null) {
-                blood_pressure_layout.visibility = View.VISIBLE
-                blood_pressure_title.text =
-                    requireContext().getString(bloodPressureType.relatedText())
-                blood_pressure_title.background.setColorFilter(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        bloodPressureType.relatedColor()
-                    ),
-                    PorterDuff.Mode.SRC_IN
-                )
-                blood_pressure_recommendation.text = HtmlCompat.fromHtml(
-                    requireContext().getString(bloodPressureType.relatedRecommendation()),
-                    HtmlCompat.FROM_HTML_MODE_LEGACY
-                )
-            }
+        if (bloodPressureType != null) {
+            binding.bloodPressureTitle.text =
+                requireContext().getString(bloodPressureType.relatedText())
+            binding.bloodPressureTitle.background.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    bloodPressureType.relatedColor()
+                ),
+                PorterDuff.Mode.SRC_IN
+            )
+            binding.bloodPressureRecommendation.text = HtmlCompat.fromHtml(
+                requireContext().getString(bloodPressureType.relatedRecommendation()),
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
         }
-
     }
 
     private fun setBloodPressureInformationDialog() {
-        binding.visitDetailsLayout.blood_pressure_info.setOnClickListener {
+        binding.bloodPressureInfo.setOnClickListener {
             val dialogFragment = BloodPressureInfoDialog()
             dialogFragment.show(parentFragmentManager, "BloodPressureInfoDialog")
         }
     }
 
-    private fun showBmiChart() {
-        val bmiData = BMICalculator().execute(viewModel.visit?.encounters?.first()?.observations!!)
+    private fun showBmiChart(visit: Visit) {
+        val bmiData = BMICalculator().execute(visit.encounters.first().observations)
         if (!bmiData.isNullOrEmpty() && bmiData != "N/A") {
-            BmiChart().setBMIValueAndChart(bmiData.toFloat(), binding.visitDetailsLayout.bmi_layout)
+            binding.bmiChartInclude.bmiChart.makeVisible()
+            BmiChart().setBMIValueAndChart(bmiData.toFloat(), binding.bmiLayout)
         }
     }
 
@@ -243,10 +227,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun showTreatment(treatments: KotlinResult<List<Treatment>>) {
-
-        with(binding.visitDetailsLayout.add_treatment_button) {
-            if (viewModel.visit?.isActiveVisit() == true) {
+    private fun showAddTreatmentButton(visit: Visit) {
+        with(binding.addTreatmentButton) {
+            if (visit.isActiveVisit()) {
+                this.makeVisible()
                 this.setOnClickListener {
                     val intent = Intent(
                         requireContext(),
@@ -255,23 +239,23 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                     intent.putExtra(VISIT_ID, viewModel.visit?.id)
                     requireContext().startActivity(intent)
                 }
-            } else {
-                this.visibility = View.GONE
             }
         }
+    }
 
+    private fun showTreatment(treatments: KotlinResult<List<Treatment>>) {
         if (treatments.isSuccess) {
-            binding.visitDetailsLayout.loadingTreatmentsProgressBar.visibility = View.GONE
+            binding.loadingTreatmentsProgressBar.makeGone()
             showTreatmentList(treatments.getOrDefault(emptyList()))
         } else {
-            binding.visitDetailsLayout.loadingTreatmentsProgressBar.visibility = View.GONE
-            binding.visitDetailsLayout.recommended_treatments_layout.visibility = View.VISIBLE
-            val errorMessageView = binding.visitDetailsLayout.error_loading_treatments
-            errorMessageView.visibility = View.VISIBLE
+            binding.loadingTreatmentsProgressBar.makeGone()
+            binding.recommendedTreatmentsLayout.makeVisible()
+            val errorMessageView = binding.errorLoadingTreatments
+            errorMessageView.makeVisible()
 
             errorMessageView.setOnClickListener {
-                binding.visitDetailsLayout.loadingTreatmentsProgressBar.visibility = View.VISIBLE
-                errorMessageView.visibility = View.GONE
+                binding.loadingTreatmentsProgressBar.makeVisible()
+                errorMessageView.makeGone()
                 onRefreshTreatments()
             }
         }
@@ -279,14 +263,14 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     private fun showTreatmentList(treatments: List<Treatment>) {
         if (treatments.isNotEmpty()) {
-            binding.visitDetailsLayout.recommended_treatments_layout.visibility = View.VISIBLE
+            binding.recommendedTreatmentsLayout.makeVisible()
             val layoutManager = LinearLayoutManager(requireContext())
-            binding.visitDetailsLayout.treatmentsVisitRecyclerView.layoutManager = layoutManager
+            binding.treatmentsVisitRecyclerView.layoutManager = layoutManager
             val treatmentAdapter = TreatmentRecyclerViewAdapter(requireContext(), viewModel.visit?.isActiveVisit()!!, viewModel.visit?.uuid!!, this)
-            binding.visitDetailsLayout.treatmentsVisitRecyclerView.adapter = treatmentAdapter
+            binding.treatmentsVisitRecyclerView.adapter = treatmentAdapter
             treatmentAdapter.updateData(treatments)
         } else {
-            binding.visitDetailsLayout.recommended_treatments_layout.visibility = View.GONE
+            binding.recommendedTreatmentsLayout.makeGone()
         }
     }
 
