@@ -321,8 +321,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         if (result.isFailure) {
             if (result.exceptionOrNull() is UnknownHostException) {
                 ToastUtil.error(getString(R.string.no_internet_connection))
+            } else {
+                ToastUtil.error(getString(R.string.message_doctor_error))
             }
-            ToastUtil.error(getString(R.string.message_doctor_error))
         }
 
     }
