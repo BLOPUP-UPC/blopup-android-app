@@ -284,7 +284,6 @@
     <string name="dob_error_for_unidentified">Si us plau afegeixi una edat estimada</string>
     <string name="unidentified_patient_name">DESCONEGUT</string>
     <string name="snackbar_server_error">El servidor ha caigut. Si-us-plau, seleccioni\'n un diferent.</string>
-    <string name="snackbar_empty_visit_list">Seleccionar el formulari de constants des del menú per començar a examinar el pacient.</string>
     <string name="snackbar_no_forms_found">No s\'han trobat formularis, intenti reiniciar l\'aplicació.</string>
     <string name="snackbar_choose">Triar</string>
     <string name="snackbar_select">Seleccionar</string>

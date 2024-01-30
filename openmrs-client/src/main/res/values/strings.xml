@@ -451,7 +451,6 @@
 
     <string name="unidentified_patient_name" tools:ignore="MissingTranslation">UNKNOWN</string>
     <string name="snackbar_server_error" tools:ignore="MissingTranslation">The entered server is currently down, please select a different one.</string>
-    <string name="snackbar_empty_visit_list" tools:ignore="MissingTranslation">Select Vitals Entry from the menu to begin examining.</string>
     <string name="snackbar_no_forms_found" tools:ignore="MissingTranslation">No Forms Found, try restarting the app.</string>
     <string name="snackbar_choose" tools:ignore="MissingTranslation">Choose</string>
     <string name="snackbar_select" tools:ignore="MissingTranslation">Select</string>

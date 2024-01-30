@@ -197,7 +197,6 @@
     <string name="admission_fields_required">Por favor, seleccionar campo requerido</string>
     <string name="snackbar_select">Seleccionar</string>
     <string name="snackbar_no_forms_found">No se encontraron formularios, intente reiniciar la aplicación.</string>
-    <string name="snackbar_empty_visit_list">Seleccionar Formulario de Constantes desde el menu para comenzar a examinar.</string>
     <string name="snackbar_server_error">El servidor ingresado está caído, por favor seleccionar uno diferente.</string>
     <string name="dob_error_for_unidentified">Por favor, añada una edad estimada del paciente</string>
     <string name="data_not_available_for_this_field">No hay datos disponibles para el cuadro.</string>
