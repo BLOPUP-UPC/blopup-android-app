@@ -221,7 +221,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:paddingTop="14dp">
 
                     <TextView
@@ -241,16 +241,19 @@
                         android:id="@+id/error_loading_treatments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="@dimen/margin_short"
-                        android:visibility="gone">
+                        android:orientation="horizontal"
+                        android:padding="12dp"
+                        android:layout_marginVertical="8dp"
+                        android:visibility="visible"
+                        android:background="@color/quantum_amber50">
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/error_loading_treatments"
-                            android:textColor="@color/allergy_orange"/>
+                            android:layout_marginEnd="4dp"
+                            android:textColor="@color/places_text_black_alpha_87"/>
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/error_loading_treatments_try_again"
                             android:textColor="@color/allergy_orange"
