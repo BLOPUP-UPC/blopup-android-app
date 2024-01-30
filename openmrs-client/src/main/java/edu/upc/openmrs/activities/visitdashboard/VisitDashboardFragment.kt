@@ -303,13 +303,14 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                     bloodPressureResult.diastolicValue.toString()
                 )
                 lifecycleScope.launch {
-                    viewModel.sendMessageToDoctor(
+                    val result = viewModel.sendMessageToDoctor(
                         getString(
                             R.string.telegram_message,
                             patientId,
                             bloodPressureType
                         )
                     )
+                    handleContactDoctorResult(result)
                 }
             }
         }
@@ -321,7 +322,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
             if (result.exceptionOrNull() is UnknownHostException) {
                 ToastUtil.error(getString(R.string.no_internet_connection))
             }
-            showLongToast(requireContext(), ToastUtil.ToastType.ERROR, R.string.message_doctor_error)
+            ToastUtil.error(getString(R.string.message_doctor_error))
         }
 
     }
