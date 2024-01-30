@@ -12,6 +12,7 @@ package edu.upc.sdk.library.api;
 
 import java.util.Map;
 
+import edu.upc.sdk.library.api.repository.DoctorRepository.ContactDoctorRequest;
 import edu.upc.sdk.library.databases.entities.ConceptEntity;
 import edu.upc.sdk.library.databases.entities.FormResourceEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
@@ -452,5 +453,15 @@ public interface RestApi {
     @POST("provider/{uuid}")
     Call<Provider> UpdateProvider(@Path("uuid") String uuid,
                                   @Body Provider provider);
+
+
+    /**
+     * Add contact doctor call.
+     *
+     * @param contactDoctorRequest to Blopup
+     * @return the call
+     */
+    @POST("contactDoctor")
+    Call<ResponseBody> contactDoctor(@Body ContactDoctorRequest contactDoctorRequest);
 
 }

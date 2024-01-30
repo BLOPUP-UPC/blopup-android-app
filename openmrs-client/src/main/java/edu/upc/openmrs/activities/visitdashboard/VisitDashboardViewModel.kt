@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.bloodpressure.BloodPressureResult
 import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.openmrs.activities.BaseViewModel
+import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
@@ -31,7 +32,8 @@ class VisitDashboardViewModel @Inject constructor(
     private val visitRepository: VisitRepository,
     private val treatmentRepository: TreatmentRepository,
     private val encounterRepository: EncounterRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val doctorRepository: DoctorRepository,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Visit>() {
 
     private val _bloodPressureType: MutableLiveData<BloodPressureResult?> = MutableLiveData()
@@ -125,4 +127,6 @@ class VisitDashboardViewModel @Inject constructor(
     suspend fun refreshTreatments() {
         visit?.let { fetchActiveTreatments(it.patient, it) }
     }
+
+    suspend fun sendMessageToDoctor(message: String): kotlin.Result<Boolean> = doctorRepository.sendMessageToDoctor(message)
 }

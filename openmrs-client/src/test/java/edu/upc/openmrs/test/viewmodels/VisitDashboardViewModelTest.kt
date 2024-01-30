@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
@@ -17,39 +18,37 @@ import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 import org.joda.time.Instant
+import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mock
-import org.mockito.Mockito.anyLong
-import org.mockito.Mockito.`when`
 import rx.Observable
 
 @RunWith(JUnit4::class)
 class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
-    @Mock
     private lateinit var visitDAO: VisitDAO
 
-    @Mock
     private lateinit var visitRepository: VisitRepository
+
+    private lateinit var doctorRepository: DoctorRepository
 
     private lateinit var treatmentRepository: TreatmentRepository
 
     private lateinit var encounterRepository: EncounterRepository
-
-    private lateinit var savedStateHandle: SavedStateHandle
 
     private lateinit var viewModel: VisitDashboardViewModel
 
@@ -63,19 +62,23 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         treatmentRepository = mockk()
         encounterRepository = mockk()
-        savedStateHandle = SavedStateHandle().apply { set(VISIT_UUID, 1L) }
+        visitRepository = mockk()
+        doctorRepository = mockk()
+        visitDAO = mockk()
+        val savedStateHandle = SavedStateHandle().apply { set(VISIT_UUID, 1L) }
         viewModel = VisitDashboardViewModel(
             visitDAO,
             visitRepository,
             treatmentRepository,
             encounterRepository,
+            doctorRepository,
             savedStateHandle
         )
     }
 
     @Test
     fun fetchCurrentVisit_success() {
-        `when`(visitDAO.getVisitByID(anyLong())).thenReturn(Observable.just(Visit()))
+        every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
 
         viewModel.fetchCurrentVisit()
 
@@ -85,7 +88,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun fetchCurrentVisit_error() {
         val throwable = Throwable("Error message")
-        `when`(visitDAO.getVisitByID(anyLong())).thenReturn(Observable.error(throwable))
+        every  {visitDAO.getVisitByID(any())} returns Observable.error(throwable)
 
         viewModel.fetchCurrentVisit()
 
@@ -93,10 +96,21 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
+    fun `should send a message to the doctor`() {
+        val message = "Message"
+
+        coEvery { doctorRepository.sendMessageToDoctor(message) } returns kotlin.Result.success(true)
+
+       runBlocking { viewModel.sendMessageToDoctor(message) }
+
+        coVerify { doctorRepository.sendMessageToDoctor(message) }
+    }
+
+    @Test
     fun endCurrentVisit_success() {
 
-        `when`(visitDAO.getVisitByID(anyLong())).thenReturn(Observable.just(Visit()))
-        `when`(visitRepository.endVisit(any())).thenReturn(Observable.just(true))
+        every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
+        every { visitRepository.endVisit(any()) } returns Observable.just(true)
 
         viewModel.fetchCurrentVisit().runCatching {
             viewModel.endCurrentVisit().observeForever { visitEnded ->
@@ -108,8 +122,8 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun endCurrentVisit_error() {
         val throwable = Throwable("Error message")
-        `when`(visitDAO.getVisitByID(anyLong())).thenReturn(Observable.just(Visit()))
-        `when`(visitRepository.endVisit(any<Visit>())).thenReturn(Observable.error(throwable))
+        every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
+        every { visitRepository.endVisit(any<Visit>()) } returns Observable.error(throwable)
 
         viewModel.fetchCurrentVisit().runCatching {
             viewModel.endCurrentVisit().observeForever { visitEnded ->
@@ -205,7 +219,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
             encounters = listOf(Encounter().apply { encounterType = EncounterType(EncounterType.VITALS) })
         }
 
-        `when`(visitDAO.getVisitByID(anyLong())).thenReturn(Observable.just(visit))
+        every { visitDAO.getVisitByID(any()) } returns Observable.just(visit)
         coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit) } returns kotlin.Result.success(
             listOf()
         )

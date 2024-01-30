@@ -13,20 +13,15 @@
  */
 package edu.upc.openmrs.activities.visitdashboard
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
-import android.telephony.SmsManager
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
@@ -41,7 +36,6 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
-import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
@@ -283,60 +277,42 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
         viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
             if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
-                showLongToast(
-                    requireContext(),
-                    ToastUtil.ToastType.NOTICE,
-                    R.string.sms_to_doctor
+                showLongToast(requireContext(), ToastUtil.ToastType.NOTICE, R.string.sms_to_doctor)
+                val bloodPressureType = getString(
+                    R.string.stage_II_b_sms,
+                    bloodPressureResult.systolicValue.toString(),
+                    bloodPressureResult.diastolicValue.toString()
                 )
-                tryToSendSMS(
-                    patientId,
-                    getString(
-                        R.string.stage_II_b_sms,
-                        bloodPressureResult.systolicValue.toString(),
-                        bloodPressureResult.diastolicValue.toString()
+                lifecycleScope.launch {
+                    viewModel.sendMessageToDoctor(
+                        getString(
+                            R.string.sms_message,
+                            patientId,
+                            bloodPressureType
+                        )
                     )
-                )
+                }
             }
 
             if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
                 binding.callToDoctorBanner.visibility = View.VISIBLE
-                tryToSendSMS(
-                    patientId,
-                    getString(
-                        R.string.stage_II_c_sms,
-                        bloodPressureResult.systolicValue.toString(),
-                        bloodPressureResult.diastolicValue.toString()
-                    )
+                val bloodPressureType = getString(
+                    R.string.stage_II_c_sms,
+                    bloodPressureResult.systolicValue.toString(),
+                    bloodPressureResult.diastolicValue.toString()
                 )
+                lifecycleScope.launch {
+                    viewModel.sendMessageToDoctor(
+                        getString(
+                            R.string.sms_message,
+                            patientId,
+                            bloodPressureType
+                        )
+                    )
+                }
             }
         }
 
-    }
-
-    private fun tryToSendSMS(patientId: String?, bloodPressureType: String) {
-        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.SEND_SMS)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            showLongToast(
-                requireContext(),
-                ToastUtil.ToastType.ERROR,
-                getString(R.string.sms_permission_denied)
-            )
-        } else {
-            sendSms(patientId, bloodPressureType)
-        }
-    }
-
-    private fun sendSms(patientId: String?, bloodPressureType: String) {
-        val sm: SmsManager = if (Build.VERSION.SDK_INT >= 31) {
-            requireContext().applicationContext.getSystemService(SmsManager::class.java)
-        } else {
-            SmsManager.getDefault()
-        }
-        val message = getString(R.string.sms_message, patientId, bloodPressureType)
-        val dividedMessage = sm.divideMessage(message)
-        val phoneNumber = SecretsUtils.getDoctorPhoneNumber()
-        sm.sendMultipartTextMessage(phoneNumber, null, dividedMessage, null, null)
     }
 
     fun endVisit() {

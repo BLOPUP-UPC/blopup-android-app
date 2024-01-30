@@ -220,19 +220,6 @@ public class VisitRepository extends BaseRepository {
         }
     }
 
-    public Visit getVisitById(long visitId) throws IOException {
-        try {
-            Visit response = visitDAO.getVisitByID(visitId).toBlocking().first();
-            if (response != null) {
-                return response;
-            } else {
-                throw new IOException("Error fetching visit by id: " + visitId);
-            }
-        } catch (Exception e) {
-            throw new IOException("Error fetching visit by id: " + visitId + " " + e.getMessage());
-        }
-    }
-
     public Visit getVisitByUuid(String visitUuid) throws IOException {
         try {
             Response<Visit> response = restApi.getVisitByUuid(visitUuid).execute();
