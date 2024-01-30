@@ -45,6 +45,7 @@ import edu.upc.openmrs.utilities.SecretsUtils
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
@@ -68,6 +69,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     private var _binding: FragmentVisitDashboardBinding? = null
     private val binding get() = _binding!!
     private val viewModel: VisitDashboardViewModel by viewModels()
+    private val logger = OpenmrsAndroid.getOpenMRSLogger();
 
     companion object {
         fun newInstance(visitId: Long, isNewVitals: Boolean) = VisitDashboardFragment().apply {
@@ -100,12 +102,12 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 is Result.Loading -> {
                 }
 
-                is Result.Success -> result.data.run {
+                is Result.Success -> result.data.runCatching {
                     setActionBarTitle(patient.name.nameString)
                     recreateOptionsMenu()
                     displayVisit(this)
                     contactDoctorToggle.check({ notifyDoctorIfNeeded(patient.identifier.identifier) })
-                }
+                }.onFailure { logger.e(it.stackTraceToString()) }
 
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
                 else -> throw IllegalStateException()
