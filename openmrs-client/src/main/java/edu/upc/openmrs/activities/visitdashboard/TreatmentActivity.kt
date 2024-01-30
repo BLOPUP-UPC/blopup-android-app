@@ -85,11 +85,13 @@ class TreatmentActivity : ACBaseActivity() {
 
         viewModel.doctors.observe(this) { doctors ->
             adapter.clear()
-            adapter.addAll(doctors)
-            dropDownWithDoctorsNames.setText(adapter.getItem(0), false)
+            adapter.addAll(doctors.map { it.person?.display })
+
+            val recommendedDoctor = doctors.find { it.person?.uuid == DOCTOR_UUID }
+            if (recommendedDoctor != null) dropDownWithDoctorsNames.setText(recommendedDoctor.person?.display, false)
         }
 
-        viewModel.getAllDoctors()
+        lifecycleScope.launch { viewModel.getAllDoctors() }
     }
 
     private fun completeFields(treatmentToEdit: Treatment) {
@@ -358,5 +360,9 @@ class TreatmentActivity : ACBaseActivity() {
                 )
             }
         }
+    }
+
+    companion object {
+        const val DOCTOR_UUID = "0bf72192-5770-4a05-88c1-0edbc84f7f2c"
     }
 }

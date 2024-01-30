@@ -2,11 +2,12 @@ package edu.upc.openmrs.activities.visitdashboard
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.sdk.library.api.repository.TreatmentRepository
+import edu.upc.sdk.library.models.Person
+import edu.upc.sdk.library.models.Provider
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -94,7 +95,7 @@ class TreatmentViewModelTest {
         val exceptionMessage = "No changes detected"
 
         coEvery {
-                mockTreatmentRepo.updateTreatment(any(), any())
+            mockTreatmentRepo.updateTreatment(any(), any())
         } throws Exception(exceptionMessage)
 
         runBlocking {
@@ -112,12 +113,35 @@ class TreatmentViewModelTest {
     @Test
     fun `should get all doctors`() {
 
-        val doctors = listOf("doctor1", "doctor2")
+        val doctors = listOf(
+            Provider().apply {
+                uuid = "providerUuid1"
+                person = Person().apply {
+                    display = "Xavier de las Cuevas"
+                }
+                identifier = "doctor"
+            },
+            Provider().apply {
+                uuid = "providerUuid2"
+                person = Person().apply {
+                    display = "Alejandro de las Cuevas"
+                }
+                identifier = "doctor"
+            },
+            Provider().apply {
+                uuid = "providerUuid2"
+                person = Person().apply {
+                    display = "Rosa de las Cuevas"
+                }
+                identifier = "doctor"
+            }
+        )
 
-        every { mockTreatmentRepo.getAllDoctors() } returns doctors
+        coEvery { mockTreatmentRepo.getAllDoctors() } returns doctors
 
-        treatmentViewModel.getAllDoctors()
-
+        runBlocking {
+                treatmentViewModel.getAllDoctors()
+        }
         assertEquals(doctors, treatmentViewModel.doctors.value)
     }
 }

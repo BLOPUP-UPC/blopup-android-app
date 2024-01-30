@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.models.OperationType
+import edu.upc.sdk.library.models.Provider
 import edu.upc.sdk.library.models.Treatment
 import javax.inject.Inject
 
@@ -42,8 +43,8 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
             )
         }
 
-    private val _doctors = MutableLiveData<List<String>>()
-    val doctors: LiveData<List<String>> get() = _doctors
+    private val _doctors = MutableLiveData<List<Provider>>()
+    val doctors: LiveData<List<Provider>> get() = _doctors
 
     suspend fun registerTreatment() =
         try {
@@ -66,7 +67,7 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
         }
     }
 
-    fun getAllDoctors() {
+    suspend fun getAllDoctors() {
         try {
             val result = treatmentRepository.getAllDoctors()
             _doctors.value = result

@@ -14,6 +14,9 @@ import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Person
+import edu.upc.sdk.library.models.Provider
+import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
@@ -118,11 +121,13 @@ class TreatmentRepositoryTest {
             val result =
                 treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visitWithTreatment)
             assertEquals(
-               Result.success( listOf(
-                    previousTreatment,
-                    actualVisitTreatment,
-                    previousAndInactiveTreatment
-                )), result
+                Result.success(
+                    listOf(
+                        previousTreatment,
+                        actualVisitTreatment,
+                        previousAndInactiveTreatment
+                    )
+                ), result
             )
         }
     }
@@ -323,7 +328,9 @@ class TreatmentRepositoryTest {
             visitUuid = treatmentToEdit.visitUuid
         )
 
-        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns Result.success(true)
+        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns Result.success(
+            true
+        )
 
         coEvery { visitRepository.getVisitByUuid(treatmentToEdit.visitUuid) } returns Visit().apply {
             uuid = treatmentToEdit.visitUuid
@@ -354,6 +361,48 @@ class TreatmentRepositoryTest {
                 assertEquals(exceptionMessage, result.exceptionOrNull()?.message)
 
             }
+        }
+    }
+
+    @Test
+    fun `should return list with all the doctors`() {
+
+        val doctor = Provider().apply {
+            uuid = "providerUuid1"
+            person = Person().apply {
+                display = "Xavier de las Cuevas"
+            }
+            identifier = "doctor"
+        }
+
+        val providerList = listOf(
+            doctor,
+            Provider().apply {
+                uuid = "providerUuid2"
+                person = Person().apply {
+                    display = "Alejandro de las Cuevas"
+                }
+                identifier = "nurse"
+            },
+            Provider().apply {
+                uuid = "providerUuid2"
+                person = Person().apply {
+                    display = "Rosa de las Cuevas"
+                }
+                identifier = "nurse"
+            }
+        )
+
+        val response = Response.success(Results<Provider>().apply { results = providerList })
+        val call = mockk<Call<Results<Provider>>>(relaxed = true)
+
+        coEvery { restApi.providerList } returns call
+        coEvery { call.execute() } returns response
+
+
+        runBlocking {
+            val result = treatmentRepository.getAllDoctors()
+            assertEquals(listOf(doctor), result)
         }
     }
 

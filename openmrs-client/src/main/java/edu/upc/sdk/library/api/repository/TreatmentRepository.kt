@@ -8,6 +8,7 @@ import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Provider
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
@@ -314,11 +315,26 @@ class TreatmentRepository @Inject constructor(
         return false
     }
 
-    fun getAllDoctors(): List<String> {
-        return listOf("Dr. Xavier de las Huertas", "Dr. Josep Maria Gatell", "Dr. Josep Mallolas")
+    suspend fun getAllDoctors(): List<Provider> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = restApi.providerList.execute()
+                if (response.isSuccessful) {
+                    return@withContext response.body()?.results?.filter<Provider> { it.identifier == DOCTOR }
+                        ?.filter {
+                            it.person?.isVoided == false
+                        } ?: emptyList()
+                } else {
+                    throw Exception("Failed to get providers: ${response.code()} - ${response.message()}")
+                }
+            } catch (e: Exception) {
+                throw Exception("Failed to get providers: ${e.message}", e)
+            }
+        }
     }
 
     companion object {
         const val TREATMENT_ENCOUNTER_TYPE = "Treatment"
+        const val DOCTOR = "doctor"
     }
 }
