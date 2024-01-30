@@ -391,7 +391,7 @@
     <string name="bp_ht_stage_II_B_recommendation"><![CDATA[<b>Recomendaciones:</b> Control en 15 días y revisar o iniciar el tratamiento.]]></string>
     <string name="bp_ht_stage_II_C_recommendation"><![CDATA[<b>Recomendaciones:</b> Contacto con el doctor/a por posible hospitalización de urgencias.]]></string>
     <string name="bp_info">Información sobre tensión arterial</string>
-    <string name="call_doctor_banner_text">Paciente con hipertensión severa. Puede requerir hospitalización inmediata. Se ha notificado al Doctor Xavier de las Cuevas vía SMS. Por favor, póngase en contacto con él lo antes posible.</string>
+    <string name="call_doctor_banner_text">Paciente con hipertensión severa. Puede requerir hospitalización inmediata. Se ha notificado al Doctor Xavier de las Cuevas vía mensaje de Telegram. Por favor, póngase en contacto con él lo antes posible.</string>
     <string name="call_button_text">LLAMAR</string>
     <string name="cancel_capitalized">CANCELAR</string>
     <string name="hypertension_types">Tipos de tensión arterial</string>
@@ -402,8 +402,7 @@
     <string name="diastolic_110_plus"><![CDATA[o DIA ≥ 110]]></string>
     <string name="blood_pressure_label">Tensión arterial</string>
     <string name="vitals_successfully">Vitales completadas</string>
-    <string name="sms_to_doctor">SMS enviado al Doctor Xavier de las Cuevas informando de la situación</string>
-    <string name="sms_permission_denied">Permiso denegado: es necesario el permiso de SMS para enviar mensajes. Por favor, otorgue el permiso necesario en la configuración de su dispositivo.</string>
+    <string name="message_to_doctor">Mensja de Telegram enviado al Doctor Xavier de las Cuevas informando de la situación</string>
     <string name="patient_has_been_removed">No se puede mostrar el paciente. Este ha sido eliminado de la base de datos.</string>
     <string name="no_internet_connection">Error de conexión. Revise su conexión a internet e inténtelo de nuevo.</string>
     <string name="bottom_navigation_option_home">Inicio</string>
@@ -440,5 +439,6 @@
     <string name="error_loading_treatments">No se han podido cargar los tratamientos.</string>
     <string name="error_loading_treatments_try_again"><u>Por favor, inténtelo de nuevo</u></string>
     <string name="doctors_name">Nombre del doctor</string>
+    <string name="message_doctor_error">Ha habido un error mandando el mensaje. Por favor contacte directamente al personal médico.</string>
     />
 </resources>

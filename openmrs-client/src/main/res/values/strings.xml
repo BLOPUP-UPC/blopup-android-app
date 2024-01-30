@@ -570,7 +570,7 @@
     <string name="bp_ht_stage_II_C_recommendation" tools:ignore="MissingTranslation"><![CDATA[<b>Recommendations:</b> Contact with the doctor for possible emergency hospitalization.]]></string>
     <string name="bp_info" tools:ignore="MissingTranslation">Blood pressure information</string>
     <string name="information_icon_description" translatable="false">information icon</string>
-    <string name="call_doctor_banner_text" tools:ignore="MissingTranslation">Patient with severe hypertension. May require immediate hospitalization. Dr Xavier de las Cuevas has been notified by SMS. Please contact them as soon as possible.</string>
+    <string name="call_doctor_banner_text" tools:ignore="MissingTranslation">Patient with severe hypertension. May require immediate hospitalization. Dr Xavier de las Cuevas has been notified by Telegram message. Please contact them as soon as possible.</string>
     <string name="call_button_text" tools:ignore="MissingTranslation">CALL</string>
     <string name="cancel_capitalized" tools:ignore="MissingTranslation">CANCEL</string>
     <string name="hypertension_types" tools:ignore="MissingTranslation">Blood pressure types</string>
@@ -587,11 +587,10 @@
     <string name="diastolic_110_plus" tools:ignore="MissingTranslation"><![CDATA[or DIA ≥ 110]]></string>
     <string name="blood_pressure_label" tools:ignore="MissingTranslation">Blood pressure</string>
     <string name="normal" translatable="false">Normal</string>
-    <string name="sms_to_doctor" tools:ignore="MissingTranslation">SMS sent to the Doctor Xavier de las Cuevas notifying the situation</string>
-    <string name="sms_permission_denied" tools:ignore="MissingTranslation">Permission Denied: SMS permission is needed to send messages. Please grant the necessary permission in your device\'s settings.</string>
-    <string name="stage_II_b_sms" translatable="false">Nivell II B (S-%1$s, D-%2$s)</string>
-    <string name="stage_II_c_sms" translatable="false">Nivell II C (S-%1$s, D-%2$s)</string>
-    <string name="sms_message" translatable="false">El pacient ID %1$s presenta Hipertensió %2$s. Per posar-vos en contacte amb l\'Hospital Santa Anna, truqueu a aquest número.</string>
+    <string name="message_to_doctor" tools:ignore="MissingTranslation">Telegram message sent to the Doctor Xavier de las Cuevas notifying the situation</string>
+    <string name="stage_II_b_msg" translatable="false">Nivell II B (S-%1$s, D-%2$s)</string>
+    <string name="stage_II_c_msg" translatable="false">Nivell II C (S-%1$s, D-%2$s)</string>
+    <string name="telegram_message" translatable="false">El pacient ID %1$s presenta Hipertensió %2$s. Per posar-vos en contacte amb l\'Hospital Santa Anna, truqueu a aquest número.</string>
     <string name="patient_has_been_removed" tools:ignore="MissingTranslation">Patient can\'t be shown. It has been removed from database.</string>
     <string name="no_internet_connection" tools:ignore="MissingTranslation">You are currently offline. Please check your internet connection and try again.</string>
     <string name="bottom_navigation_option_home" tools:ignore="MissingTranslation">Home</string>
@@ -630,5 +629,6 @@
     <string name="error_loading_treatments" tools:ignore="MissingTranslation">Treatments could not be loaded.</string>
     <string name="error_loading_treatments_try_again" tools:ignore="MissingTranslation"><u>Try again</u></string>
     <string name="doctors_name" tools:ignore="MissingTranslation">Doctor\'s name</string>
+    <string name="message_doctor_error" tools:ignore="MissingTranslation">Error sending message to Doctor. Please contact them directly.</string>
     />
 </resources>

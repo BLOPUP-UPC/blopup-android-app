@@ -277,40 +277,51 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
         viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
             if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
-                showLongToast(requireContext(), ToastUtil.ToastType.NOTICE, R.string.sms_to_doctor)
+                showLongToast(requireContext(), ToastUtil.ToastType.NOTICE, R.string.message_to_doctor)
                 val bloodPressureType = getString(
-                    R.string.stage_II_b_sms,
+                    R.string.stage_II_b_msg,
                     bloodPressureResult.systolicValue.toString(),
                     bloodPressureResult.diastolicValue.toString()
                 )
                 lifecycleScope.launch {
-                    viewModel.sendMessageToDoctor(
+                    val result = viewModel.sendMessageToDoctor(
                         getString(
-                            R.string.sms_message,
+                            R.string.telegram_message,
                             patientId,
                             bloodPressureType
                         )
                     )
+                    handleContactDoctorResult(result)
                 }
             }
 
             if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
                 binding.callToDoctorBanner.visibility = View.VISIBLE
                 val bloodPressureType = getString(
-                    R.string.stage_II_c_sms,
+                    R.string.stage_II_c_msg,
                     bloodPressureResult.systolicValue.toString(),
                     bloodPressureResult.diastolicValue.toString()
                 )
                 lifecycleScope.launch {
                     viewModel.sendMessageToDoctor(
                         getString(
-                            R.string.sms_message,
+                            R.string.telegram_message,
                             patientId,
                             bloodPressureType
                         )
                     )
                 }
             }
+        }
+
+    }
+
+    private fun handleContactDoctorResult(result: kotlin.Result<Boolean>) {
+        if (result.isFailure) {
+            if (result.exceptionOrNull() is UnknownHostException) {
+                ToastUtil.error(getString(R.string.no_internet_connection))
+            }
+            showLongToast(requireContext(), ToastUtil.ToastType.ERROR, R.string.message_doctor_error)
         }
 
     }

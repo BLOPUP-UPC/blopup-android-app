@@ -387,7 +387,7 @@
     <string name="bp_ht_stage_II_B_recommendation"><![CDATA[<b>Recomanacions:</b> Control en 15 dies i revisar o iniciar el tractament.]]></string>
     <string name="bp_ht_stage_II_C_recommendation"><![CDATA[<b>Recomanacions:</b> Contacte amb el metge/essa per possible hospitalització d\'urgències.]]></string>
     <string name="bp_info">Informació sobre tensió arterial</string>
-    <string name="call_doctor_banner_text">Pacient amb hipertensió severa. Pot requerir hospitalització immediata. S\'ha notificat al doctor Xavier de las Cuevas per SMS. Siusplau posi\'s en contacte amb ell el més aviat possible.</string>
+    <string name="call_doctor_banner_text">Pacient amb hipertensió severa. Pot requerir hospitalització immediata. S\'ha notificat al doctor Xavier de las Cuevas per missatge de Telegram. Siusplau posi\'s en contacte amb ell el més aviat possible.</string>
     <string name="call_button_text">TRUCAR</string>
     <string name="cancel_capitalized">CANCEL·LAR</string>
     <string name="hypertension_types">Tipus de tensió arterial</string>
@@ -398,8 +398,7 @@
     <string name="diastolic_110_plus"><![CDATA[o DIA ≥ 110]]></string>
     <string name="blood_pressure_label">Tensió arterial</string>
     <string name="vitals_successfully">Vitals completades</string>
-    <string name="sms_to_doctor">SMS enviat al Doctor Xavier de las Cuevas informant de la situació</string>
-    <string name="sms_permission_denied">Permís denegat: és necessari el permís de SMS per enviar missatges. Si us plau, concedeixi el permís necessari a la configuració del seu dispositiu.</string>
+    <string name="message_to_doctor">Missatge de Telegram enviat al Doctor Xavier de las Cuevas informant de la situació</string>
     <string name="patient_has_been_removed">No es pot mostrar el pacient. Aquest ha siguit esborrat de la base de dades.</string>
     <string name="no_internet_connection">Error de connexió. Revisi la seva connexió a internet i torni-ho a intentar.</string>
     <string name="bottom_navigation_option_home">Inici</string>
@@ -437,5 +436,6 @@
     <string name="error_loading_treatments">No s\'han pogut carregar els tractaments.</string>
     <string name="error_loading_treatments_try_again"><u>Siusplau, torni-ho a intentar.</u></string>
     <string name="doctors_name">Nom del doctor</string>
+    <string name="message_doctor_error">Hi ha hagut un error enviant el missatge. Siusplau contacti al metge directament.</string>
     />
 </resources>
