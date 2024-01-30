@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import edu.upc.R
 import edu.upc.sdk.library.models.Treatment
+import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
+import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_OTHER
 
 
 class TreatmentRecyclerViewAdapter(
@@ -35,8 +37,12 @@ class TreatmentRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (_, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
+        val (recommendedBy, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
 
+        if(recommendedBy != RECOMMENDED_BY_BLOPUP && recommendedBy != RECOMMENDED_BY_OTHER) {
+            holder.whoRecommended.visibility = View.VISIBLE
+            holder.whoRecommended.text = recommendedBy
+        }
         holder.medicationNameTextView.text = medicationName
         holder.medicationTypeTextView.text =
             medicationType.map { it.getLabel(context) }.toString()
@@ -107,6 +113,7 @@ class TreatmentRecyclerViewAdapter(
         itemView: View,
     ) : RecyclerView.ViewHolder(itemView) {
         private var cardView: CardView
+        var whoRecommended: TextView
         var medicationNameTextView: TextView
         var medicationTypeTextView: TextView
         var notesTextView: TextView
@@ -115,6 +122,7 @@ class TreatmentRecyclerViewAdapter(
 
         init {
             cardView = itemView as CardView
+            whoRecommended = itemView.findViewById(R.id.who_recommended)
             medicationNameTextView = itemView.findViewById(R.id.medication_name)
             medicationTypeTextView = itemView.findViewById(R.id.medication_type)
             notesTextView = itemView.findViewById(R.id.notes)

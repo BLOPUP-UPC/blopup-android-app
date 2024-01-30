@@ -151,7 +151,7 @@ class TreatmentRepository @Inject constructor(
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {
                 ObservationConcept.RECOMMENDED_BY.uuid -> recommendedBy =
-                    observation.displayValue ?: ""
+                    observation.displayValue?.trim() ?: ""
 
                 ObservationConcept.MEDICATION_NAME.uuid -> medicationName =
                     observation.displayValue?.trim() ?: ""
