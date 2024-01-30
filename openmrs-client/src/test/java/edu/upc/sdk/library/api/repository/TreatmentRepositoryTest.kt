@@ -14,9 +14,6 @@ import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Person
-import edu.upc.sdk.library.models.Provider
-import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
@@ -52,14 +49,17 @@ class TreatmentRepositoryTest {
 
     private lateinit var encounterRepository: EncounterRepository
 
+    private lateinit var doctorRepository: DoctorRepository
+
     @Before
     fun setUp() {
         restApi = mockk(relaxed = true)
         visitRepository = mockk(relaxed = true)
         encounterRepository = mockk(relaxed = true)
+        doctorRepository = mockk(relaxed = true)
 
         mockStaticMethodsNeededToInstantiateBaseRepository()
-        treatmentRepository = TreatmentRepository(visitRepository, encounterRepository)
+        treatmentRepository = TreatmentRepository(visitRepository, encounterRepository, doctorRepository)
     }
 
     @Test
@@ -138,7 +138,8 @@ class TreatmentRepositoryTest {
         val visitUuid = UUID.randomUUID().toString()
 
         val treatment = Treatment(
-            "BlopUp",
+            "Other",
+            null,
             "hidroclorotiazida",
             setOf(MedicationType.DIURETIC),
             "25mg/dia",
@@ -153,7 +154,7 @@ class TreatmentRepositoryTest {
             observations = listOf(
                 Obscreate().apply {
                     concept = ObservationConcept.RECOMMENDED_BY.uuid
-                    value = "BlopUp"
+                    value = "Other"
                 },
                 Obscreate().apply {
                     concept = ObservationConcept.MEDICATION_NAME.uuid
@@ -322,6 +323,7 @@ class TreatmentRepositoryTest {
 
         val treatmentUpdated = Treatment(
             "Other",
+            null,
             "Paracetamol",
             treatmentToEdit.medicationType,
             "hello",
@@ -361,48 +363,6 @@ class TreatmentRepositoryTest {
                 assertEquals(exceptionMessage, result.exceptionOrNull()?.message)
 
             }
-        }
-    }
-
-    @Test
-    fun `should return list with all the doctors`() {
-
-        val doctor = Provider().apply {
-            uuid = "providerUuid1"
-            person = Person().apply {
-                display = "Xavier de las Cuevas"
-            }
-            identifier = "doctor"
-        }
-
-        val providerList = listOf(
-            doctor,
-            Provider().apply {
-                uuid = "providerUuid2"
-                person = Person().apply {
-                    display = "Alejandro de las Cuevas"
-                }
-                identifier = "nurse"
-            },
-            Provider().apply {
-                uuid = "providerUuid2"
-                person = Person().apply {
-                    display = "Rosa de las Cuevas"
-                }
-                identifier = "nurse"
-            }
-        )
-
-        val response = Response.success(Results<Provider>().apply { results = providerList })
-        val call = mockk<Call<Results<Provider>>>(relaxed = true)
-
-        coEvery { restApi.providerList } returns call
-        coEvery { call.execute() } returns response
-
-
-        runBlocking {
-            val result = treatmentRepository.getAllDoctors()
-            assertEquals(listOf(doctor), result)
         }
     }
 

@@ -1,6 +1,7 @@
 package edu.upc.openmrs.activities.visitdashboard
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.models.Person
 import edu.upc.sdk.library.models.Provider
@@ -20,6 +21,7 @@ import org.junit.runner.RunWith
 class TreatmentViewModelTest {
 
     private lateinit var mockTreatmentRepo: TreatmentRepository
+    private lateinit var mockDoctorRepo: DoctorRepository
     private lateinit var treatmentViewModel: TreatmentViewModel
 
     @get:Rule
@@ -28,7 +30,8 @@ class TreatmentViewModelTest {
     @Before
     fun setUp() {
         mockTreatmentRepo = mockk()
-        treatmentViewModel = TreatmentViewModel(mockTreatmentRepo)
+        mockDoctorRepo = mockk()
+        treatmentViewModel = TreatmentViewModel(mockTreatmentRepo, mockDoctorRepo)
     }
 
     @Test
@@ -137,7 +140,7 @@ class TreatmentViewModelTest {
             }
         )
 
-        coEvery { mockTreatmentRepo.getAllDoctors() } returns doctors
+        coEvery { mockDoctorRepo.getAllDoctors() } returns doctors
 
         runBlocking {
                 treatmentViewModel.getAllDoctors()

@@ -20,7 +20,7 @@ class TreatmentAdherenceRecyclerViewAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (_, medicationName, medicationType) = activeTreatments[position]
+        val (_, _, medicationName, medicationType) = activeTreatments[position]
 
         holder.medicationNameTextView.text = medicationName
         holder.medicationTypeTextView.text = medicationType.map { it.getLabel(context) }.toString()

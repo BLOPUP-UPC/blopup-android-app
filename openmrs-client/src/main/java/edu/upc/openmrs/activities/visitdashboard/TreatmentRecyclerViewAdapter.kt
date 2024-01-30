@@ -11,8 +11,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import edu.upc.R
 import edu.upc.sdk.library.models.Treatment
-import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
-import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_OTHER
 
 
 class TreatmentRecyclerViewAdapter(
@@ -37,11 +35,11 @@ class TreatmentRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (recommendedBy, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
+        val (_, provider, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
 
-        if(recommendedBy != RECOMMENDED_BY_BLOPUP && recommendedBy != RECOMMENDED_BY_OTHER) {
+        if(provider?.isNotEmpty() == true) {
             holder.whoRecommended.visibility = View.VISIBLE
-            holder.whoRecommended.text = recommendedBy
+            holder.whoRecommended.text = provider
         }
         holder.medicationNameTextView.text = medicationName
         holder.medicationTypeTextView.text =

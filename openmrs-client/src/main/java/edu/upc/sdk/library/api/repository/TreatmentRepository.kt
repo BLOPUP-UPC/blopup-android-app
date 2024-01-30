@@ -2,13 +2,13 @@ package edu.upc.sdk.library.api.repository
 
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.EncounterProviderCreate
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Provider
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
@@ -21,7 +21,8 @@ import javax.inject.Singleton
 @Singleton
 class TreatmentRepository @Inject constructor(
     val visitRepository: VisitRepository,
-    val encounterRepository: EncounterRepository
+    val encounterRepository: EncounterRepository,
+    val doctorRepository: DoctorRepository
 ) :
     BaseRepository(null) {
 
@@ -141,6 +142,7 @@ class TreatmentRepository @Inject constructor(
         val visitUuid = encounter.visit?.uuid
         val treatmentUuid = encounter.uuid
         val creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
+        val doctor = encounter.encounterProviders.firstOrNull()?.provider?.display?.substringAfter("-")?.trim()
 
         var recommendedBy = ""
         var medicationName = ""
@@ -174,6 +176,7 @@ class TreatmentRepository @Inject constructor(
         }
         return Treatment(
             recommendedBy = recommendedBy,
+            doctor = doctor,
             medicationName = medicationName,
             medicationType = medicationType,
             notes = notes,
@@ -194,8 +197,22 @@ class TreatmentRepository @Inject constructor(
         }?.toSet() ?: emptySet()
     }
 
-    private fun createEncounterFromTreatment(currentVisit: Visit, treatment: Treatment) =
-        Encountercreate().apply {
+    private suspend fun createEncounterFromTreatment(
+        currentVisit: Visit,
+        treatment: Treatment,
+    ) : Encountercreate {
+
+        var provider: EncounterProviderCreate? = null
+        if(treatment.doctor != null) {
+            val result = doctorRepository.getAllDoctors().find { it.person?.display == treatment.doctor }
+
+            provider = EncounterProviderCreate(
+                result?.uuid!!,
+                ENCOUNTER_ROLE_UUID
+            )
+        }
+
+        return Encountercreate().apply {
             encounterType = TREATMENT_ENCOUNTER_TYPE
             patient = currentVisit.patient.uuid
             visit = currentVisit.uuid
@@ -217,9 +234,14 @@ class TreatmentRepository @Inject constructor(
                 ),
                 drugFamiliesObservation(currentVisit.patient.uuid!!, treatment)
             )
+            if (provider != null) {
+                encounterProvider = listOf(provider)
+            }
+
         }.let { encounter ->
             addNotesIfPresent(treatment.notes, encounter)
         }
+    }
 
     private fun addNotesIfPresent(notes: String?, encounter: Encountercreate): Encountercreate {
         if (notes != null) {
@@ -315,26 +337,9 @@ class TreatmentRepository @Inject constructor(
         return false
     }
 
-    suspend fun getAllDoctors(): List<Provider> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = restApi.providerList.execute()
-                if (response.isSuccessful) {
-                    return@withContext response.body()?.results?.filter<Provider> { it.identifier == DOCTOR }
-                        ?.filter {
-                            it.person?.isVoided == false
-                        } ?: emptyList()
-                } else {
-                    throw Exception("Failed to get providers: ${response.code()} - ${response.message()}")
-                }
-            } catch (e: Exception) {
-                throw Exception("Failed to get providers: ${e.message}", e)
-            }
-        }
-    }
-
     companion object {
         const val TREATMENT_ENCOUNTER_TYPE = "Treatment"
-        const val DOCTOR = "doctor"
+        const val DOCTOR = "registered doctor"
+        const val ENCOUNTER_ROLE_UUID = "b09b056d-9eaf-41c9-a420-e2303e8f1c96"
     }
 }

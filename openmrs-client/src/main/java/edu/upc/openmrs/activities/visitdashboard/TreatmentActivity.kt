@@ -87,7 +87,7 @@ class TreatmentActivity : ACBaseActivity() {
             adapter.clear()
             adapter.addAll(doctors.map { it.person?.display })
 
-            val recommendedDoctor = doctors.find { it.person?.uuid == DOCTOR_UUID }
+            val recommendedDoctor = doctors.find { it.uuid == PROVIDER_UUID }
             if (recommendedDoctor != null) dropDownWithDoctorsNames.setText(recommendedDoctor.person?.display, false)
         }
 
@@ -109,8 +109,10 @@ class TreatmentActivity : ACBaseActivity() {
                 )
             )
         }
-        treatmentToEdit.recommendedBy.let {
-            setRecommendationBackgrounds(it.trim())
+        setRecommendationBackgrounds(treatmentToEdit.recommendedBy.trim())
+
+        if(treatmentToEdit.doctor?.isNotEmpty() == true) {
+            mBinding.doctorsNameDropdown.setText(treatmentToEdit.doctor, false)
         }
 
         viewModel.updateFieldValidation(MEDICATION_NAME, true)
@@ -241,16 +243,12 @@ class TreatmentActivity : ACBaseActivity() {
     private fun whoRecommendedButtonsOnClickListener() {
         mBinding.previouslyRecommended.setOnClickListener {
 
-            mBinding.textInputLayoutDoctorsName.visibility = View.GONE
-
             viewModel.treatment.value =
                 viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_OTHER }
             viewModel.updateFieldValidation(RECOMMENDED_BY, true)
         }
 
         mBinding.newRecommendation.setOnClickListener {
-
-            mBinding.textInputLayoutDoctorsName.visibility = View.VISIBLE
 
             viewModel.treatment.value =
                 viewModel.treatment.value!!.apply { recommendedBy = RECOMMENDED_BY_BLOPUP }
@@ -296,6 +294,9 @@ class TreatmentActivity : ACBaseActivity() {
                     )
                 }
                 .toSet()
+            if(viewModel.treatment.value?.recommendedBy == RECOMMENDED_BY_BLOPUP) {
+                viewModel.treatment.value?.doctor = doctorsNameDropdown.text.toString()
+            }
         }
     }
 
@@ -345,6 +346,7 @@ class TreatmentActivity : ACBaseActivity() {
                     R.drawable.treatment_buttons_on_unselected,
                     null
                 )
+                mBinding.textInputLayoutDoctorsName.visibility = View.VISIBLE
             }
 
             RECOMMENDED_BY_OTHER -> {
@@ -358,11 +360,12 @@ class TreatmentActivity : ACBaseActivity() {
                     R.drawable.treatment_buttons_on_unselected,
                     null
                 )
+                mBinding.textInputLayoutDoctorsName.visibility = View.GONE
             }
         }
     }
 
     companion object {
-        const val DOCTOR_UUID = "0bf72192-5770-4a05-88c1-0edbc84f7f2c"
+        const val PROVIDER_UUID = "2775ad68-1a28-450f-a270-6ac5d0120636"
     }
 }
