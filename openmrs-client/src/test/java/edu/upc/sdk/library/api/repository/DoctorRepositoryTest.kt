@@ -85,7 +85,7 @@ class DoctorRepositoryTest {
             val result = doctorRepository.sendMessageToDoctor("message")
 
             assertTrue(result.isFailure)
-            assertTrue(result.exceptionOrNull() is UnknownHostException)
+            assertTrue(result.exceptionOrNull()?.cause is UnknownHostException)
         }
     }
 
@@ -127,7 +127,23 @@ class DoctorRepositoryTest {
 
         runBlocking {
             val result = doctorRepository.getAllDoctors()
-            assert(result == listOf(doctor))
+            assert(Result.success(listOf(doctor)) == result)
+        }
+    }
+
+    @Test
+    fun `should return failure when get all doctors fails`() {
+        val call = mockk<Call<Results<Provider>>>()
+
+        every { restApi.providerList } returns call
+        every { call.execute() } throws UnknownHostException("No internet connection")
+
+
+        runBlocking {
+            val result = doctorRepository.getAllDoctors()
+
+            assertTrue(result.isFailure)
+            assertTrue(result.exceptionOrNull()?.cause is UnknownHostException)
         }
     }
 

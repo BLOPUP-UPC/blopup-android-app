@@ -63,7 +63,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     private var _binding: FragmentVisitDashboardBinding? = null
     private val binding get() = _binding!!
     private val viewModel: VisitDashboardViewModel by viewModels()
-    private val logger = OpenmrsAndroid.getOpenMRSLogger();
+    private val logger = OpenmrsAndroid.getOpenMRSLogger()
 
     companion object {
         fun newInstance(visitId: Long, isNewVitals: Boolean) = VisitDashboardFragment().apply {
@@ -314,18 +314,16 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 }
             }
         }
-
     }
 
     private fun handleContactDoctorResult(result: kotlin.Result<Boolean>) {
         if (result.isFailure) {
-            if (result.exceptionOrNull() is UnknownHostException) {
+            if (result.exceptionOrNull()?.cause is UnknownHostException) {
                 ToastUtil.error(getString(R.string.no_internet_connection))
             } else {
                 ToastUtil.error(getString(R.string.message_doctor_error))
             }
         }
-
     }
 
     fun endVisit() {

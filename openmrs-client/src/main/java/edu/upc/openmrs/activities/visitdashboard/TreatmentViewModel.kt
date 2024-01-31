@@ -71,7 +71,7 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
     suspend fun getAllDoctors() {
         try {
             val result = doctorRepository.getAllDoctors()
-            _doctors.value = result
+            _doctors.value = result.getOrNull()
         } catch (e: Exception) {
             setError(e)
         }

@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerImpl()) {
-    suspend fun sendMessageToDoctor(message: String): Result<Boolean> =
+    suspend fun sendMessageToDoctor(message: String): Result<Boolean>  =
         withContext(Dispatchers.IO) {
             val contactRequest = ContactDoctorRequest(DOCTOR_PROVIDER_UUID, message)
 
@@ -20,33 +20,33 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
                 val response = restApi.contactDoctor(contactRequest).execute()
                 if (!response.isSuccessful) {
                     crashlytics.reportUnsuccessfulResponse(response, FAILED_MESSAGE_DOCTOR)
-                    return@withContext Result.failure(
-                        Exception("$FAILED_MESSAGE_DOCTOR: ${response.errorBody()?.string()}")
-                    )
+                    return@withContext Result.failure(Exception("$FAILED_MESSAGE_DOCTOR: ${response.errorBody()?.string()}"))
                 }
-                return@withContext Result.success(true)
+                    return@withContext Result.success(true)
             } catch (e: Exception) {
                 crashlytics.reportException(e, FAILED_MESSAGE_DOCTOR)
-                return@withContext Result.failure(e)
+                return@withContext Result.failure(Exception("$FAILED_MESSAGE_DOCTOR: ${e.message}", e))
             }
-        }
+    }
 
-    suspend fun getAllDoctors(): List<Doctor> {
+    suspend fun getAllDoctors(): Result<List<Doctor>> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = restApi.providerList.execute()
                 if (response.isSuccessful) {
-                    return@withContext response.body()?.results?.filter<Provider> { it.identifier == TreatmentRepository.DOCTOR }
-                        ?.filter {
-                            it.person?.isVoided == false
-                        }?.map {
-                            Doctor(it.uuid!!, it.person?.display ?: "")
-                        } ?: emptyList()
+                    val result =
+                        response.body()?.results?.filter<Provider> { it.identifier == TreatmentRepository.DOCTOR }
+                            ?.filter {
+                                it.person?.isVoided == false
+                            }?.map {
+                                Doctor(it.uuid!!, it.person?.display ?: "")
+                            } ?: emptyList()
+                    Result.success(result)
                 } else {
-                    throw Exception("Failed to get providers: ${response.code()} - ${response.message()}")
+                    Result.failure(Exception("Failed to get providers: ${response.code()} - ${response.message()}"))
                 }
             } catch (e: Exception) {
-                throw Exception("Failed to get providers: ${e.message}", e)
+                Result.failure(Exception("Failed to get providers: ${e.message}", e))
             }
         }
     }
