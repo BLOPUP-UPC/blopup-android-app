@@ -62,8 +62,8 @@ class TreatmentActivity : ACBaseActivity() {
             completeFields(treatmentToEdit)
         }
 
-        setDoctorWhoRecommendedTreatmentAdapter()
         setToolbar()
+        setDoctorWhoRecommendedTreatmentAdapter()
         whoRecommendedButtonsOnClickListener()
         registerTreatmentOnClickListener()
         treatmentObserver()
@@ -87,8 +87,7 @@ class TreatmentActivity : ACBaseActivity() {
             adapter.clear()
             adapter.addAll(doctors.map { it.person?.display })
 
-            val recommendedDoctor = doctors.find { it.uuid == PROVIDER_UUID }
-            if (recommendedDoctor != null) dropDownWithDoctorsNames.setText(recommendedDoctor.person?.display, false)
+            dropDownWithDoctorsNames.setText(doctors.firstOrNull()?.person?.display, false)
         }
 
         lifecycleScope.launch { viewModel.getAllDoctors() }
@@ -363,9 +362,5 @@ class TreatmentActivity : ACBaseActivity() {
                 mBinding.textInputLayoutDoctorsName.visibility = View.GONE
             }
         }
-    }
-
-    companion object {
-        const val PROVIDER_UUID = "2775ad68-1a28-450f-a270-6ac5d0120636"
     }
 }
