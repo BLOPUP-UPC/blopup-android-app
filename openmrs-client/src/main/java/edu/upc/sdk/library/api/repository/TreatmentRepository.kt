@@ -22,7 +22,6 @@ import javax.inject.Singleton
 class TreatmentRepository @Inject constructor(
     val visitRepository: VisitRepository,
     val encounterRepository: EncounterRepository,
-    val doctorRepository: DoctorRepository
 ) :
     BaseRepository(null) {
 
@@ -176,7 +175,7 @@ class TreatmentRepository @Inject constructor(
         }
         return Treatment(
             recommendedBy = recommendedBy,
-            doctor = doctor,
+            doctorUuid = doctor,
             medicationName = medicationName,
             medicationType = medicationType,
             notes = notes,
@@ -197,20 +196,13 @@ class TreatmentRepository @Inject constructor(
         }?.toSet() ?: emptySet()
     }
 
-    private suspend fun createEncounterFromTreatment(
+    private fun createEncounterFromTreatment(
         currentVisit: Visit,
         treatment: Treatment,
     ) : Encountercreate {
 
         var provider: EncounterProviderCreate? = null
-        if(treatment.doctor != null) {
-            val result = doctorRepository.getAllDoctors().find { it.person?.display == treatment.doctor }
-
-            provider = EncounterProviderCreate(
-                result?.uuid!!,
-                ENCOUNTER_ROLE_UUID
-            )
-        }
+        treatment.doctorUuid?.let { provider = EncounterProviderCreate(it, ENCOUNTER_ROLE_UUID) }
 
         return Encountercreate().apply {
             encounterType = TREATMENT_ENCOUNTER_TYPE
@@ -234,10 +226,7 @@ class TreatmentRepository @Inject constructor(
                 ),
                 drugFamiliesObservation(currentVisit.patient.uuid!!, treatment)
             )
-            if (provider != null) {
-                encounterProvider = listOf(provider)
-            }
-
+            provider?.let { encounterProvider = listOf(it) }
         }.let { encounter ->
             addNotesIfPresent(treatment.notes, encounter)
         }

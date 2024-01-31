@@ -3,6 +3,7 @@ package edu.upc.openmrs.activities.visitdashboard
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.OnBackPressedCallback
@@ -21,6 +22,7 @@ import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.ME
 import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.MEDICATION_TYPE
 import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.RECOMMENDED_BY
 import edu.upc.openmrs.bundle.CustomDialogBundle
+import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.OperationType
 import edu.upc.sdk.library.models.Result
@@ -63,7 +65,7 @@ class TreatmentActivity : ACBaseActivity() {
         }
 
         setToolbar()
-        setDoctorWhoRecommendedTreatmentAdapter()
+        setDoctorWhoRecommendedDropDown()
         whoRecommendedButtonsOnClickListener()
         registerTreatmentOnClickListener()
         treatmentObserver()
@@ -73,8 +75,8 @@ class TreatmentActivity : ACBaseActivity() {
 
     }
 
-    private fun setDoctorWhoRecommendedTreatmentAdapter() {
-        val adapter = ArrayAdapter<String>(
+    private fun setDoctorWhoRecommendedDropDown() {
+        val adapter = ArrayAdapter<Doctor>(
             this,
             R.layout.doctors_name_dropdown
         )
@@ -85,12 +87,20 @@ class TreatmentActivity : ACBaseActivity() {
 
         viewModel.doctors.observe(this) { doctors ->
             adapter.clear()
-            adapter.addAll(doctors.map { it.person?.display })
+            adapter.addAll(doctors)
 
-            dropDownWithDoctorsNames.setText(doctors.firstOrNull()?.person?.display, false)
+            dropDownWithDoctorsNames.setText(doctors.firstOrNull()?.name, false)
+            dropDownWithDoctorsNames.tag = doctors.firstOrNull()?.uuid
         }
 
         lifecycleScope.launch { viewModel.getAllDoctors() }
+
+
+        mBinding.doctorsNameDropdown.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                val doctor = mBinding.doctorsNameDropdown.adapter.getItem(position) as Doctor
+                dropDownWithDoctorsNames.tag = doctor.uuid
+            }
     }
 
     private fun completeFields(treatmentToEdit: Treatment) {
@@ -110,8 +120,8 @@ class TreatmentActivity : ACBaseActivity() {
         }
         setRecommendationBackgrounds(treatmentToEdit.recommendedBy.trim())
 
-        if(treatmentToEdit.doctor?.isNotEmpty() == true) {
-            mBinding.doctorsNameDropdown.setText(treatmentToEdit.doctor, false)
+        if(treatmentToEdit.doctorUuid?.isNotEmpty() == true) {
+            mBinding.doctorsNameDropdown.setText(treatmentToEdit.doctorUuid, false)
         }
 
         viewModel.updateFieldValidation(MEDICATION_NAME, true)
@@ -281,6 +291,7 @@ class TreatmentActivity : ACBaseActivity() {
     }
 
     private fun fillTreatmentFields() {
+
         with(mBinding) {
             viewModel.treatment.value?.medicationName = medicationName.text.toString()
             if (additionalNotes.text.toString().isNotEmpty()) viewModel.treatment.value?.notes =
@@ -294,7 +305,8 @@ class TreatmentActivity : ACBaseActivity() {
                 }
                 .toSet()
             if(viewModel.treatment.value?.recommendedBy == RECOMMENDED_BY_BLOPUP) {
-                viewModel.treatment.value?.doctor = doctorsNameDropdown.text.toString()
+
+                viewModel.treatment.value?.doctorUuid = doctorsNameDropdown.tag as String?
             }
         }
     }

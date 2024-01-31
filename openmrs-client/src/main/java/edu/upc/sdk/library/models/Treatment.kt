@@ -7,7 +7,7 @@ import org.joda.time.Instant
 @Parcelize
 data class Treatment(
     var recommendedBy: String,
-    var doctor: String? = null,
+    var doctorUuid: String? = null,
     var medicationName: String,
     var medicationType: Set<MedicationType>,
     var notes: String? = null,

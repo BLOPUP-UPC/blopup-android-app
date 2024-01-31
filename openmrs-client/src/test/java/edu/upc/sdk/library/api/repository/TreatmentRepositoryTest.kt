@@ -49,17 +49,14 @@ class TreatmentRepositoryTest {
 
     private lateinit var encounterRepository: EncounterRepository
 
-    private lateinit var doctorRepository: DoctorRepository
-
     @Before
     fun setUp() {
         restApi = mockk(relaxed = true)
         visitRepository = mockk(relaxed = true)
         encounterRepository = mockk(relaxed = true)
-        doctorRepository = mockk(relaxed = true)
 
         mockStaticMethodsNeededToInstantiateBaseRepository()
-        treatmentRepository = TreatmentRepository(visitRepository, encounterRepository, doctorRepository)
+        treatmentRepository = TreatmentRepository(visitRepository, encounterRepository)
     }
 
     @Test

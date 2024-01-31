@@ -3,8 +3,7 @@ package edu.upc.openmrs.activities.visitdashboard
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.models.Person
-import edu.upc.sdk.library.models.Provider
+import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
 import io.mockk.coEvery
@@ -117,28 +116,10 @@ class TreatmentViewModelTest {
     fun `should get all doctors`() {
 
         val doctors = listOf(
-            Provider().apply {
-                uuid = "providerUuid1"
-                person = Person().apply {
-                    display = "Xavier de las Cuevas"
-                }
-                identifier = "doctor"
-            },
-            Provider().apply {
-                uuid = "providerUuid2"
-                person = Person().apply {
-                    display = "Alejandro de las Cuevas"
-                }
-                identifier = "doctor"
-            },
-            Provider().apply {
-                uuid = "providerUuid2"
-                person = Person().apply {
-                    display = "Rosa de las Cuevas"
-                }
-                identifier = "doctor"
-            }
-        )
+            Doctor("providerUuid1","Xavier de las Huertas"),
+            Doctor("providerUuid2","Alejandro de las Huertas"),
+            Doctor("providerUuid3","Rosa de las Huertas"),
+            Doctor("providerUuid4","Carolina de las Huertas"))
 
         coEvery { mockDoctorRepo.getAllDoctors() } returns doctors
 

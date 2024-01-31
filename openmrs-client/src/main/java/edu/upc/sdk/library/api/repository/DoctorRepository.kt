@@ -3,6 +3,7 @@ package edu.upc.sdk.library.api.repository
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import edu.upc.sdk.library.CrashlyticsLoggerImpl
+import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -30,7 +31,7 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
             }
         }
 
-    suspend fun getAllDoctors(): List<Provider> {
+    suspend fun getAllDoctors(): List<Doctor> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = restApi.providerList.execute()
@@ -38,6 +39,8 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
                     return@withContext response.body()?.results?.filter<Provider> { it.identifier == TreatmentRepository.DOCTOR }
                         ?.filter {
                             it.person?.isVoided == false
+                        }?.map {
+                            Doctor(it.uuid!!, it.person?.display ?: "")
                         } ?: emptyList()
                 } else {
                     throw Exception("Failed to get providers: ${response.code()} - ${response.message()}")

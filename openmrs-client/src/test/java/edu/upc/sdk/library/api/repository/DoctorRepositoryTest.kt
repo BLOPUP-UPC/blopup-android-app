@@ -7,6 +7,7 @@ import edu.upc.sdk.library.api.RestServiceBuilder
 import edu.upc.sdk.library.api.repository.DoctorRepository.Companion.DOCTOR_PROVIDER_UUID
 import edu.upc.sdk.library.api.repository.DoctorRepository.ContactDoctorRequest
 import edu.upc.sdk.library.databases.AppDatabase
+import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.Person
 import edu.upc.sdk.library.models.Provider
 import edu.upc.sdk.library.models.Results
@@ -23,7 +24,6 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.jupiter.api.Assertions
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -92,16 +92,16 @@ class DoctorRepositoryTest {
     @Test
     fun `should return list with all the doctors`() {
 
-        val doctor = Provider().apply {
-            uuid = "providerUuid1"
-            person = Person().apply {
-                display = "Xavier de las Cuevas"
-            }
-            identifier = TreatmentRepository.DOCTOR
-        }
+        val doctor = Doctor("providerUuid1", "Xavier de las Cuevas")
 
         val providerList = listOf(
-            doctor,
+            Provider().apply {
+                uuid = "providerUuid1"
+                person = Person().apply {
+                    display = "Xavier de las Cuevas"
+                }
+                identifier = TreatmentRepository.DOCTOR
+            },
             Provider().apply {
                 uuid = "providerUuid2"
                 person = Person().apply {
@@ -127,7 +127,7 @@ class DoctorRepositoryTest {
 
         runBlocking {
             val result = doctorRepository.getAllDoctors()
-            Assertions.assertEquals(listOf(doctor), result)
+            assert(result == listOf(doctor))
         }
     }
 
