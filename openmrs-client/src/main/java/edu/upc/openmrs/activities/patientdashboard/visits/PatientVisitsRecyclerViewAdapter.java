@@ -22,14 +22,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import edu.upc.sdk.library.models.Visit;
-import edu.upc.sdk.utilities.DateUtils;
 
 import java.util.List;
 
 import edu.upc.R;
+import edu.upc.sdk.library.models.Visit;
+import edu.upc.sdk.utilities.DateUtils;
 
 public class PatientVisitsRecyclerViewAdapter extends RecyclerView.Adapter<PatientVisitsRecyclerViewAdapter.VisitViewHolder> {
     private PatientVisitsFragment mContext;
@@ -56,13 +56,13 @@ public class PatientVisitsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
             visitViewHolder.mVisitEnd.setVisibility(View.VISIBLE);
             visitViewHolder.mVisitEnd.setText(DateUtils.convertTime1((visit.getStopDatetime()), DateUtils.DATE_WITH_TIME_FORMAT));
 
-            Drawable icon = mContext.getResources().getDrawable(R.drawable.past_visit_dot);
+            Drawable icon = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.past_visit_dot, null);
             icon.setBounds(0, 0, icon.getIntrinsicHeight(), icon.getIntrinsicWidth());
             visitViewHolder.mVisitStatus.setCompoundDrawables(icon, null, null, null);
             visitViewHolder.mVisitStatus.setText(mContext.getString(R.string.past_visit_label));
         } else {
             visitViewHolder.mVisitEnd.setVisibility(View.INVISIBLE);
-            Drawable icon = mContext.getResources().getDrawable(R.drawable.active_visit_dot);
+            Drawable icon = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.active_visit_dot, null);
             icon.setBounds(0, 0, icon.getIntrinsicHeight(), icon.getIntrinsicWidth());
             visitViewHolder.mVisitStatus.setCompoundDrawables(icon, null, null, null);
             visitViewHolder.mVisitStatus.setText(mContext.getString(R.string.active_visit_label));

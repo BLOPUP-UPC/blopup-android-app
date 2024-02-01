@@ -16,7 +16,6 @@ package edu.upc.sdk.library.models.typeConverters
 import androidx.room.TypeConverter
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import edu.upc.sdk.library.models.PersonAddress
 import edu.upc.sdk.library.models.PersonAttribute
 import java.io.Serializable
 import java.lang.reflect.Modifier

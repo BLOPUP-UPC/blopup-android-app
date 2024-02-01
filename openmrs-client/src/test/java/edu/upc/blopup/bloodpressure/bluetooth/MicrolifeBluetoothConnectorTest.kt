@@ -3,15 +3,14 @@ package edu.upc.blopup.bloodpressure.bluetooth
 import com.ideabus.model.data.CurrentAndMData
 import com.ideabus.model.data.DRecord
 import com.ideabus.model.protocol.BPMProtocol
-import edu.upc.blopup.exceptions.BluetoothConnectionException
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
+import edu.upc.blopup.exceptions.BluetoothConnectionException
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -91,17 +90,6 @@ class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
                 )
             )
         }
-    }
-
-    @Ignore
-    fun `given null bluetooth data is received then connection is stopped and measurement is updated`() {
-        val dRecord = null
-
-        subjectUnderTest.onResponseReadHistory(dRecord)
-
-        verify { bpmProtocol.stopScan() }
-        verify { updateConnectionState(ConnectionViewState.Disconnected) }
-        verify { updateMeasurementState(any()) }
     }
 
     @Test

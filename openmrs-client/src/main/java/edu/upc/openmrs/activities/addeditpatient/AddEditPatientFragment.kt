@@ -563,7 +563,7 @@ class AddEditPatientFragment : BaseFragment() {
         ) {
             ActivityCompat.requestPermissions(
                 requireActivity(),
-                arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO), Companion.REQUEST_AUDIO_PERMISSION_CODE
+                arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO), REQUEST_AUDIO_PERMISSION_CODE
             )
         }
     }

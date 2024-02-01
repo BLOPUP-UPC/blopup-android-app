@@ -16,11 +16,10 @@ package edu.upc.openmrs.utilities
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
-import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
-import java.util.*
+import java.util.Locale
 
 object LanguageUtils {
 

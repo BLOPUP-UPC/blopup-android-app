@@ -34,8 +34,7 @@ object DateUtils {
     private const val OPEN_MRS_RESPONSE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
     const val OPEN_MRS_REQUEST_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
     const val OPEN_MRS_REQUEST_PATIENT_FORMAT = "yyyy-MM-dd"
-    const val ZERO = 0L
-    private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger();
+    private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger()
 
     fun parseFromOpenmrsDate(dateTime: String): Instant {
         return Instant.parse(dateTime, DateTimeFormat.forPattern(OPEN_MRS_RESPONSE_FORMAT).withZoneUTC())
@@ -47,7 +46,7 @@ object DateUtils {
 
     @JvmStatic
     fun convertTime(time: Long, dateFormat: String?, timeZone: TimeZone): String {
-        val date:Date = Date(time)
+        val date = Date(time)
         @SuppressLint("SimpleDateFormat") val format = SimpleDateFormat(dateFormat)
         format.timeZone = timeZone
         return format.format(date)
@@ -154,14 +153,6 @@ object DateUtils {
         }
         return formattedDate
     }
-
-    @JvmStatic
-    fun getCurrentDateTime(): String {
-        val dateFormat: DateFormat = SimpleDateFormat(OPEN_MRS_RESPONSE_FORMAT)
-        val date = Date()
-        return dateFormat.format(date)
-    }
-
 
     /**
      * Converts difference in years and months into DateTime

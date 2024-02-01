@@ -1,4 +1,4 @@
-package edu.upc.sdk;
+package edu.upc.sdk
 
 import edu.upc.sdk.library.OpenMRSLogger
 

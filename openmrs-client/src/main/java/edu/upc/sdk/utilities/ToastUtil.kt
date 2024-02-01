@@ -25,7 +25,7 @@ import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ImageUtils.decodeBitmapFromResource
 
 object ToastUtil {
-    private val logger =  OpenmrsAndroid.getOpenMRSLogger();
+    private val logger =  OpenmrsAndroid.getOpenMRSLogger()
     private val toastQueue: MutableList<ToastThread> = ArrayList()
     private var isAppVisible = true
     @JvmStatic

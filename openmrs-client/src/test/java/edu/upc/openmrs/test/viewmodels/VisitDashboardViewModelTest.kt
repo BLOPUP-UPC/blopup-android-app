@@ -20,15 +20,12 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 import org.joda.time.Instant
-import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -123,7 +120,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     fun endCurrentVisit_error() {
         val throwable = Throwable("Error message")
         every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
-        every { visitRepository.endVisit(any<Visit>()) } returns Observable.error(throwable)
+        every { visitRepository.endVisit(any()) } returns Observable.error(throwable)
 
         viewModel.fetchCurrentVisit().runCatching {
             viewModel.endCurrentVisit().observeForever { visitEnded ->

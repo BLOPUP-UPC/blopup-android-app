@@ -41,7 +41,7 @@ object FormService {
                         .getFormByUuid(uuid)
                         .blockingGet()
             } catch (e: Exception) {
-                formResourceEntity = null;
+                formResourceEntity = null
             }
             if (formResourceEntity != null) {
                 val resourceList = formResourceEntity.resources

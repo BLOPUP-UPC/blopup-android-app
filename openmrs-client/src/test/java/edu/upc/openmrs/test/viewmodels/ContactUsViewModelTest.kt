@@ -5,7 +5,6 @@ import edu.upc.openmrs.activities.community.contact.ContactUsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.EmailRepository
 import edu.upc.sdk.library.models.EmailRequest
-import edu.upc.sdk.library.models.Result
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

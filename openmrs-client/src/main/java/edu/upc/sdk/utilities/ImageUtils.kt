@@ -13,15 +13,9 @@
  */
 package edu.upc.sdk.utilities
 
-import android.content.Context
-import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.core.widget.ImageViewCompat
 
 object ImageUtils {
 
@@ -52,10 +46,5 @@ object ImageUtils {
             inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
         }
         return inSampleSize
-    }
-
-    @JvmStatic
-    fun changeImageViewTint(context: Context?, imageView: ImageView?, color: Int) {
-        ImageViewCompat.setImageTintList(imageView!!, ColorStateList.valueOf(ContextCompat.getColor(context!!, color)))
     }
 }

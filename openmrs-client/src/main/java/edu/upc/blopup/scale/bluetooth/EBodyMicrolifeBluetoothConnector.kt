@@ -1,7 +1,6 @@
 package edu.upc.blopup.scale.bluetooth
 
 import android.bluetooth.BluetoothDevice
-import com.ideabus.model.XlogUtils
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
 import com.ideabus.model.protocol.EBodyProtocol.ConnectState
@@ -59,7 +58,7 @@ class EBodyMicrolifeBluetoothConnector @Inject constructor(
     override fun onDeleteAllUsersSuccess() {}
 
     override fun onResponseMeasureResult2(data: EBodyMeasureData, impedance: Float) {
-        updateMeasurementStateCallback(ScaleViewState.Content(WeightMeasurement(data.getWeight())));
+        updateMeasurementStateCallback(ScaleViewState.Content(WeightMeasurement(data.getWeight())))
     }
 
     private fun startScan() {

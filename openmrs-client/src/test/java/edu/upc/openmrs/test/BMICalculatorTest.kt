@@ -2,12 +2,12 @@ package edu.upc.openmrs.test
 
 import edu.upc.openmrs.activities.visitdashboard.BMICalculator
 import edu.upc.sdk.library.models.Observation
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class BMICalculatorTest(){
 
-    private val calculator = BMICalculator();
+    private val calculator = BMICalculator()
 
     private val weightObservation = Observation().apply {
         display = "Weight (kg): 70.0"

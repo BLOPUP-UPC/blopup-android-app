@@ -21,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityDashboardBinding
 import edu.upc.openmrs.activities.NavigationBarActivity
-import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.utilities.ToastUtil
 
 

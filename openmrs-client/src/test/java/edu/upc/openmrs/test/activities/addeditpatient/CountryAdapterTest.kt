@@ -91,8 +91,7 @@ class CountryAdapterTest {
     private fun getContextWithSpanishLocale(): Context {
         val config = Configuration()
         config.setLocale(Locale("es", "ES"))
-        val context: Context =
-            ApplicationProvider.getApplicationContext<Context?>().createConfigurationContext(config)
-        return context
+        return ApplicationProvider.getApplicationContext<Context?>()
+            .createConfigurationContext(config)
     }
 }

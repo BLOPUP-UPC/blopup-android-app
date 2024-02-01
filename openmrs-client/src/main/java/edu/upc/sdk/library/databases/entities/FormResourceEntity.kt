@@ -12,7 +12,7 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package edu.upc.sdk.library.databases.entities;
+package edu.upc.sdk.library.databases.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -125,7 +125,7 @@ class VitalsFormViewModel @Inject constructor(
                         visitRepository.deleteVisitByUuid(visitUuid)
                 },
                     {
-                        resultLiveData.value = Result.Error(it);
+                        resultLiveData.value = Result.Error(it)
                         if (visitUuid != null) {
                             visitRepository.deleteVisitByUuid(visitUuid)
                         }

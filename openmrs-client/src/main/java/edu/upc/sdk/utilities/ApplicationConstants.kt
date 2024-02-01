@@ -33,8 +33,6 @@ object ApplicationConstants {
     const val SPLASH_TIMER = 3500
     const val PACKAGE_NAME = "edu.upc"
     const val USER_GUIDE = "https://blopup-upc.github.io/blopup-android-user-guide/"
-    const val MESSAGE_RFC_822 = "message/rfc822"
-    const val URI_FILE = "file://"
     const val OPENMRS_PREF_FILE = "OpenMRSPrefFile"
     const val BUNDLE = "bundle"
     const val PRIMARY_KEY_ID = "_id"

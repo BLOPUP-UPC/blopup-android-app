@@ -134,7 +134,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             recordingHelper,
             savedStateHandle
         )
-        `when`(patientRepository.updatePatient(any<Patient>())).thenReturn(
+        `when`(patientRepository.updatePatient(any())).thenReturn(
             Observable.just(
                 PatientUpdateSuccess
             )
@@ -157,7 +157,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         )
         with(viewModel) {
             val similarPatients = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
-            `when`(patientRepository.fetchSimilarPatients(any<Patient>())).thenReturn(
+            `when`(patientRepository.fetchSimilarPatients(any())).thenReturn(
                 Observable.just(
                     similarPatients
                 )
