@@ -1,6 +1,7 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
@@ -29,12 +30,10 @@ import java.util.SortedMap
 class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
 
     private lateinit var mBinding: ActivityChartsViewBinding
-    private lateinit var mChart: LineChart
-    private lateinit var mChart2: LineChart
+    private lateinit var bloodPressureChart: LineChart
+    private lateinit var treatmentsChart: LineChart
 
     companion object {
-        const val SYSTOLIC = "systolic"
-        const val DIASTOLIC = "diastolic"
         const val BLOOD_PRESSURE = "bloodPressure"
     }
 
@@ -45,14 +44,14 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
 
         setToolbar()
 
-        mChart = mBinding.linechart
-        mChart2 = mBinding.linechart2
+        bloodPressureChart = mBinding.bloodPressureChart
+        treatmentsChart = mBinding.treatmentsChart
 
-        setChartData()
+        setBloodPressureData()
         setChartData2()
         setChartMaxAndMinimumLimitLines()
-        setChartFormat(mChart, 200f)
-        setChartFormatTreatments(mChart2)
+        setChartFormat(bloodPressureChart)
+        setChartFormatTreatments(treatmentsChart)
     }
 
     private fun setToolbar() {
@@ -65,54 +64,58 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         }
     }
 
-    private fun setChartData() {
-        val mBundle = this.intent.getBundleExtra(ApplicationConstants.BUNDLE)
+    private fun setBloodPressureData() {
+        val bloodPressureData = getBloodPressureValues()
 
-        val bloodPressureData =
-            mBundle!!.getSerializable(BLOOD_PRESSURE) as HashMap<String, Pair<Float, Float>>
+        val allDatesValues = bloodPressureData.map { it.date.toString() }
 
-        val bloodPressureDataSorted = sortDataPerDate(bloodPressureData)
+        // Create entries where x is 0 to n-1 and y is the value
+        // Then we show the date in the x axis based on the order
+        val systolicEntries = bloodPressureData.mapIndexed { index, value -> Entry(index.toFloat(), value.systolic, getSystolicPointIcon(value.systolic)) }
+        val diastolicEntries = bloodPressureData.mapIndexed { index, value -> Entry(index.toFloat(), value.diastolic, getDiastolicPointIcon(value.diastolic)) }
 
-        val systolicData = ArrayList<Float>()
-        val diastolicData = ArrayList<Float>()
-        val datesData = ArrayList<String>()
-
-        for (key in bloodPressureDataSorted.keys) {
-            systolicData.add((bloodPressureData[key]!!.first))
-            diastolicData.add((bloodPressureData[key]!!.second))
-            datesData.add(key)
-        }
-
-        val systolicEntries = setEntries(systolicData)
-        val diastolicEntries = setEntries(diastolicData)
-
-        val dataSetSystolic = LineDataSet(setColorIconsToEntries(systolicEntries, SYSTOLIC), "")
-        val dataSetDiastolic = LineDataSet(setColorIconsToEntries(diastolicEntries, DIASTOLIC), "")
+        val dataSetSystolic = LineDataSet(systolicEntries, "")
+        val dataSetDiastolic = LineDataSet(diastolicEntries, "")
 
         //makes the line between data points transparent
         dataSetDiastolic.color = Color.TRANSPARENT
         dataSetSystolic.color = Color.TRANSPARENT
 
+        // Size of the vale text (systolic or diastolic)
         dataSetDiastolic.valueTextSize = 12f
         dataSetSystolic.valueTextSize = 12f
 
+        // We set the circle radius to 8 to put the text value above the actual icon
+        // This size must be adjusted if the icon size changes
         dataSetSystolic.circleRadius = 8F
         dataSetDiastolic.circleRadius = 8F
 
+        // We remove the native circle as we are showing a custom icon (red or green point)
         dataSetDiastolic.setCircleColor(Color.TRANSPARENT)
         dataSetSystolic.setCircleColor(Color.TRANSPARENT)
 
-        val dataSets = ArrayList<ILineDataSet>()
-        dataSets.add(dataSetSystolic)
-        dataSets.add(dataSetDiastolic)
+        val dataSets = arrayListOf(dataSetSystolic, dataSetDiastolic)
+        val lineData = LineData(dataSets as List<ILineDataSet>?)
 
-        val lineData = LineData(dataSets)
-
-
-        mChart.data = lineData
-        mChart.xAxis.valueFormatter = MyValueFormatter(datesData)
-        mChart2.onChartGestureListener = this
+        bloodPressureChart.data = lineData
+        // Format the values in the x axis to show the date instead of 0 to n-1
+        bloodPressureChart.xAxis.valueFormatter = MyValueFormatter(allDatesValues)
+        // Listener to sync the two charts scroll
+        treatmentsChart.onChartGestureListener = this
     }
+
+    private fun getBloodPressureValues(): List<BloodPressureChartValue> {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+
+        val mBundle = this.intent.getBundleExtra(ApplicationConstants.BUNDLE)
+
+        val bloodPressureData =
+            mBundle!!.getSerializable(BLOOD_PRESSURE) as HashMap<String, Pair<Float, Float>>
+        val chartValues = bloodPressureData.map { BloodPressureChartValue(LocalDate.parse(it.key, formatter), it.value.first, it.value.second) }
+        return chartValues.sortedBy { it.date }.distinctBy { it.date }
+    }
+
+    data class BloodPressureChartValue(val date: LocalDate, val systolic: Float, val diastolic: Float)
 
     private fun setChartData2() {
         val mBundle = this.intent.getBundleExtra(ApplicationConstants.BUNDLE)
@@ -153,24 +156,13 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
 
         val lineData = LineData(dataSets)
 
-        mChart2.data = lineData
-        mChart2.xAxis.valueFormatter = MyValueFormatter(datesData)
+        treatmentsChart.data = lineData
+        treatmentsChart.xAxis.valueFormatter = MyValueFormatter(datesData)
     }
 
     private fun sortDataPerDate(bloodPressureData: HashMap<String, Pair<Float, Float>>): SortedMap<String, Pair<Float, Float>> {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         return bloodPressureData.toSortedMap(compareBy { LocalDate.parse(it, formatter) })
-    }
-
-    private fun setEntries(valueDataArray: ArrayList<Float>): ArrayList<Entry> {
-        val values = ArrayList<Entry>()
-        var entryNumber = 0f
-        for (value in valueDataArray) {
-            val entry = Entry(entryNumber, value)
-            values.add(entry)
-            entryNumber++
-        }
-        return values
     }
 
     private fun setChartMaxAndMinimumLimitLines() {
@@ -190,10 +182,10 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         applyRedLine(maxLimitDiastolic)
         applyLimitLineStyle(maxLimitDiastolic)
 
-        mChart.axisLeft.addLimitLine(minLimitSystolic)
-        mChart.axisLeft.addLimitLine(maxLimitSystolic)
-        mChart.axisLeft.addLimitLine(minLimitDiastolic)
-        mChart.axisLeft.addLimitLine(maxLimitDiastolic)
+        bloodPressureChart.axisLeft.addLimitLine(minLimitSystolic)
+        bloodPressureChart.axisLeft.addLimitLine(maxLimitSystolic)
+        bloodPressureChart.axisLeft.addLimitLine(minLimitDiastolic)
+        bloodPressureChart.axisLeft.addLimitLine(maxLimitDiastolic)
     }
 
     private fun applyRedLine(upperLimitDiastolic: LimitLine) {
@@ -209,7 +201,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         limitLine.enableDashedLine(10f, 10f, 0f)
     }
 
-    private fun setChartFormat(mChart: LineChart, maximun: Float = 240f) {
+    private fun setChartFormat(mChart: LineChart) {
         mChart.description.isEnabled = false
         mChart.setTouchEnabled(false)
         // to make it scrollable
@@ -225,7 +217,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         mChart.axisLeft.axisLineWidth = 2f
         mChart.axisLeft.axisLineColor = Color.BLACK
         //max and min values in the axis with the values
-        mChart.axisLeft.axisMaximum = maximun
+        mChart.axisLeft.axisMaximum = 200f
         mChart.axisLeft.axisMinimum = 40f
         mChart.axisLeft.setDrawLimitLinesBehindData(true)
         //to add some space before the first and last values on the chart
@@ -268,45 +260,46 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         mChart.xAxis.granularity = 1F
     }
 
-    private fun setColorIconsToEntries(entries: List<Entry>, type: String): List<Entry> {
-        entries.forEach {
-            if (type == SYSTOLIC && isSystolicHigh(it)) {
-                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
-            } else if (type == DIASTOLIC && isDiastolicHigh(it)) {
-                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.red)
-            } else {
-                it.icon = ContextCompat.getDrawable(applicationContext, R.drawable.green)
-            }
+    private fun isSystolicHigh(value: Float) = value >= 130F
+    private fun isDiastolicHigh(value: Float) = value >= 80F
+    private fun getSystolicPointIcon(value: Float) = getPointIcon(isSystolicHigh(value))
+    private fun getDiastolicPointIcon(value: Float) = getPointIcon(isDiastolicHigh(value))
+    private fun getPointIcon(isAboveMax: Boolean): Drawable {
+        if (isAboveMax) {
+            return ContextCompat.getDrawable(applicationContext, R.drawable.red)!!
+        } else {
+            return ContextCompat.getDrawable(applicationContext, R.drawable.green)!!
         }
-        return entries
     }
-    private fun isSystolicHigh(it: Entry) = it.y >= 130F
-    private fun isDiastolicHigh(it: Entry) = it.y >= 80F
+
+    override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
+        bloodPressureChart.moveViewToX(treatmentsChart.lowestVisibleX)
+    }
 
     override fun onChartGestureStart(
         me: MotionEvent?,
         lastPerformedGesture: ChartTouchListener.ChartGesture?
     ) {
-//        TODO("Not yet implemented")
+        // Explicit blank, not needed
     }
 
     override fun onChartGestureEnd(
         me: MotionEvent?,
         lastPerformedGesture: ChartTouchListener.ChartGesture?
     ) {
-//        TODO("Not yet implemented")
+        // Explicit blank, not needed
     }
 
     override fun onChartLongPressed(me: MotionEvent?) {
-//        TODO("Not yet implemented")
+        // Explicit blank, not needed
     }
 
     override fun onChartDoubleTapped(me: MotionEvent?) {
-//        TODO("Not yet implemented")
+        // Explicit blank, not needed
     }
 
     override fun onChartSingleTapped(me: MotionEvent?) {
-//        TODO("Not yet implemented")
+        // Explicit blank, not needed
     }
 
     override fun onChartFling(
@@ -315,14 +308,10 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         velocityX: Float,
         velocityY: Float
     ) {
-//        TODO("Not yet implemented")
+        // Explicit blank, not needed
     }
 
     override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
-//        TODO("Not yet implemented")
-    }
-
-    override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
-        mChart.moveViewToX(mChart2.lowestVisibleX)
+        // Explicit blank, not needed
     }
 }

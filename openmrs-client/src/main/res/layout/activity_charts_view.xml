@@ -21,7 +21,7 @@
         android:layout_height="match_parent">
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/linechart"
+            android:id="@+id/bloodPressureChart"
             android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/linechart2"
+            android:id="@+id/treatmentsChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toStartOf="@+id/charts_layout"
