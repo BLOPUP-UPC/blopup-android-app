@@ -13,5 +13,5 @@ public enum ChartColor {
 
     ChartColor(int value) {
         this.value = value;
-    };
+    }
 }

@@ -112,7 +112,8 @@
                 android:layout_width="20dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                app:srcCompat="@drawable/mail_setting" />
+                app:srcCompat="@drawable/mail_setting"
+                android:importantForAccessibility="no"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -141,7 +142,8 @@
                 android:layout_width="@dimen/settings_icon_size"
                 android:layout_height="@dimen/settings_icon_size"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                app:srcCompat="@drawable/ic_security_black_24dp" />
+                app:srcCompat="@drawable/ic_security_black_24dp"
+                android:importantForAccessibility="no"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -160,7 +162,6 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingStart="20dp"
-            android:paddingLeft="20dp"
             android:text="@string/language"
             android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/language_apply_button"

@@ -3,6 +3,7 @@ package edu.upc.openmrs.activities.patientdashboard.visits
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
@@ -11,7 +12,6 @@ import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ class PatientDashboardVisitsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<List<Visit>>() {
 
-    private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!
+    private val patientId: String = savedStateHandle[PATIENT_ID_BUNDLE]!!
 
     fun getPatient(): Patient = patientDAO.findPatientByID(patientId)
 

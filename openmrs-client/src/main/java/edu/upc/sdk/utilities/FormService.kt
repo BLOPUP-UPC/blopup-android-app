@@ -36,7 +36,8 @@ object FormService {
             var formResourceEntity : FormResourceEntity?
             try {
                 formResourceEntity = AppDatabase.getDatabase(
-                    OpenmrsAndroid.getInstance()?.getApplicationContext())
+                    OpenmrsAndroid.getInstance()?.applicationContext
+                )
                         .formResourceDAO()
                         .getFormByUuid(uuid)
                         .blockingGet()
@@ -62,7 +63,8 @@ object FormService {
     @JvmStatic
     fun getFormResourceByName(name: String?): FormResourceEntity {
         return AppDatabase.getDatabase(
-            OpenmrsAndroid.getInstance()?.getApplicationContext())
+            OpenmrsAndroid.getInstance()?.applicationContext
+        )
                 .formResourceDAO()
                 .getFormResourceByName(name)
     }

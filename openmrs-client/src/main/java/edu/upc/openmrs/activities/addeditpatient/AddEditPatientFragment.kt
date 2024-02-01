@@ -433,7 +433,7 @@ class AddEditPatientFragment : BaseFragment() {
                 CustomFragmentDialog.OnClickAction.REGISTER_PATIENT
             leftButtonText = getString(R.string.dialog_button_cancel)
             leftButtonAction =
-                edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.DISMISS
+                CustomFragmentDialog.OnClickAction.DISMISS
             patientsList = patients
             newPatient = patient
         }.let {

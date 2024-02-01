@@ -14,7 +14,7 @@
 package edu.upc.sdk.utilities
 
 import edu.upc.sdk.library.models.Patient
-import java.util.*
+import java.util.LinkedList
 
 class PatientComparator {
     fun findSimilarPatient(patientList: List<Patient>, patient: Patient): List<Patient> {
@@ -100,6 +100,6 @@ class PatientComparator {
 
     companion object {
         private const val MIN_SCORE = 6
-        private val PATIENT_FIELDS = Arrays.asList("name", "gender", "birthdate", "addres")
+        private val PATIENT_FIELDS = listOf("name", "gender", "birthdate", "addres")
     }
 }

@@ -22,7 +22,7 @@ class DayAxisValueFormatterTest{
     }
 
     @Test
-    fun WrongFormatOfInputString_returnsIncorrectValue(){
+    fun wrongFormatOfInputString_returnsIncorrectValue(){
         val result1 = DayAxisValueFormatter(arrayListOf("01-04-2020", "01-04-2021")).getFormattedValue(value1, ax)
         val result2 = DayAxisValueFormatter(arrayListOf("01-04-2020", "01-04-2021")).getFormattedValue(value2, ax)
         print(result1)

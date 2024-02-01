@@ -78,7 +78,7 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
      * @param id id of the EncounterCreate to be fetched
      * @return EncounterCreate object found
      */
-    fun getEncounterCreateFromDB(id: Long): Observable<Encountercreate?> {
+    private fun getEncounterCreateFromDB(id: Long): Observable<Encountercreate?> {
         return AppDatabaseHelper.createObservableIO(Callable {
             return@Callable db.encounterCreateRoomDAO().getCreatedEncountersByID(id)
         })
@@ -90,7 +90,7 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
      * @param encounterCreate the EncounterCreate to be saved
      * @return the id of the entry saved to the database
      */
-    fun saveEncounterCreateToDB(encounterCreate: Encountercreate): Observable<Long> {
+    private fun saveEncounterCreateToDB(encounterCreate: Encountercreate): Observable<Long> {
         return AppDatabaseHelper.createObservableIO(Callable {
             return@Callable db.encounterCreateRoomDAO().addEncounterCreated(encounterCreate)
         })
@@ -102,7 +102,7 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
      * @param encounterCreate the EncounterCreate to be updated
      * @return the number of updated rows in the database
      */
-    fun updateEncounterCreate(encounterCreate: Encountercreate): Observable<Unit> {
+    private fun updateEncounterCreate(encounterCreate: Encountercreate): Observable<Unit> {
         return AppDatabaseHelper.createObservableIO(Callable {
             return@Callable db.encounterCreateRoomDAO()
                 .updateExistingEncounter(encounterCreate)

@@ -113,7 +113,7 @@ object ApplicationConstants {
         const val SHOW_REGISTER_PATIENT = 3
     }
 
-    object vitalsConceptType {
+    object VitalsConceptType {
         const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         const val HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

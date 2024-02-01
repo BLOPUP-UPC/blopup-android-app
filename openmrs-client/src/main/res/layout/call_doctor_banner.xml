@@ -34,7 +34,7 @@
             android:textColor="@color/color_accent"
             android:lineSpacingExtra="2dp"
             android:textStyle="bold"
-            android:layout_toLeftOf="@id/call_button"/>
+            android:layout_toStartOf="@id/call_button"/>
 
         <TextView
             android:id="@+id/call_button"

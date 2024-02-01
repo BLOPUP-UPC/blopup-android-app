@@ -21,5 +21,4 @@ package edu.upc.sdk.library.models
  * <p> More about Provider Subresources https://rest.openmrs.org/#providers </p>
  * @constructor Create empty Provider attribute type
  */
-class ProviderAttributeType: Resource() {
-}
+class ProviderAttributeType: Resource()

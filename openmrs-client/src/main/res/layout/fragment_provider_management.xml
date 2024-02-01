@@ -21,9 +21,10 @@
         android:id="@+id/providerManagementFragAddFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin_long"
-        app:srcCompat="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add"
+        android:importantForAccessibility="no" />
 
     <ProgressBar
         android:id="@+id/providerManagementInitialProgressBar"

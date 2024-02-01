@@ -73,7 +73,8 @@
                     app:srcCompat="@drawable/login_draw"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAccessibility="no" />
 
                 <View
                     android:id="@+id/view"
@@ -98,7 +99,8 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/view"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:autofillHints="url" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -177,7 +179,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="4dp"
-                    android:paddingLeft="4dp"
                     android:text="@string/unable_to_login"
                     android:textColor="@color/color_accent"
                     app:layout_constraintBottom_toBottomOf="parent"

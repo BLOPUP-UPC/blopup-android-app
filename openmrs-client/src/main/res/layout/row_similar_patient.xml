@@ -40,7 +40,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
                     android:gravity="start"
                     android:textSize="@dimen/text_lg" />
 
@@ -67,9 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
                     android:layout_marginEnd="30dp"
-                    android:layout_marginRight="30dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 
@@ -90,8 +87,7 @@
                             android:id="@+id/patientGender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp" />
+                            android:layout_marginStart="10dp" />
 
                     </LinearLayout>
 
@@ -111,8 +107,7 @@
                             android:id="@+id/patientBirthDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp" />
+                            android:layout_marginStart="10dp" />
 
                     </LinearLayout>
 
@@ -123,9 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_toEndOf="@+id/leftColumn"
-                    android:layout_toRightOf="@+id/leftColumn"
                     android:text="@string/address_hint"
                     android:textStyle="italic" />
 
@@ -133,7 +126,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/address"
-                    android:layout_toRightOf="@+id/address"
                     android:orientation="vertical">
 
                     <TextView

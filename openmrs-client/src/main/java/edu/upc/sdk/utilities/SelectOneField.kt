@@ -28,18 +28,6 @@ class SelectOneField : Serializable, Parcelable {
         this.concept = concept
     }
 
-    fun setAnswer(answerPosition: Int) {
-        if (answerPosition < answerList.size) {
-            chosenAnswer = answerList[answerPosition]
-        }
-        if (answerPosition == -1) {
-            chosenAnswer = null
-        }
-    }
-
-    val chosenAnswerPosition: Int
-        get() = answerList.indexOf(chosenAnswer)
-
     override fun describeContents(): Int {
         return 0
     }
@@ -60,7 +48,7 @@ class SelectOneField : Serializable, Parcelable {
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<SelectOneField?> = object : Parcelable.Creator<SelectOneField?> {
-            override fun createFromParcel(source: Parcel): SelectOneField? {
+            override fun createFromParcel(source: Parcel): SelectOneField {
                 return SelectOneField(source)
             }
 

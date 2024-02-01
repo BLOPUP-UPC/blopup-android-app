@@ -1,12 +1,12 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import dagger.hilt.android.lifecycle.HiltViewModel
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,7 +19,7 @@ class PatientDashboardChartsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<JSONObject>() {
 
-    private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!
+    private val patientId: String = savedStateHandle[PATIENT_ID_BUNDLE]!!
 
     fun fetchChartsData() {
         setLoading()

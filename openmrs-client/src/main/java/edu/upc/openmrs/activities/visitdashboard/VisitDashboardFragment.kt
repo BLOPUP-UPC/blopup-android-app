@@ -274,7 +274,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     private fun notifyDoctorIfNeeded(patientId: String?) {
-            viewModel.bloodPressureType.observe(viewLifecycleOwner, ) { bloodPressureResult ->
+            viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
                 if (!requireArguments().getBoolean(IS_NEW_VITALS) || viewModel.doctorHasBeenContacted.value == true) return@observe
 
                 if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {

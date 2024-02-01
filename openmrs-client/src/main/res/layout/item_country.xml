@@ -10,7 +10,8 @@
         android:layout_height="24dp"
         android:paddingHorizontal="5dp"
         android:layout_marginVertical="5dp"
-        android:src="@drawable/flag_blank" />
+        android:src="@drawable/flag_blank"
+        android:contentDescription="@string/country_flag_accessibility_label" />
 
     <TextView
         android:id="@+id/country_name"

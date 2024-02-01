@@ -271,7 +271,7 @@ public class PatientRepository extends BaseRepository {
 
             if (!response.isSuccessful()) return fetchSimilarPatientsAndCalculateLocally(patient);
 
-            if (ModuleUtils.isRegistrationCore1_7orAbove(response.body().getResults())) {
+            if (ModuleUtils.isRegistrationCore1to7orAbove(response.body().getResults())) {
                 //return fetchSimilarPatientsFromServer(patient); //Uncomment this line when server API is fixed
                 return fetchSimilarPatientsAndCalculateLocally(patient); //Remove this line when server API is fixed
             } else {

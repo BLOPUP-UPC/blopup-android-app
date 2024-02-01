@@ -59,9 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="15dp"
-                android:paddingLeft="15dp"
                 android:paddingEnd="10dp"
-                android:paddingRight="10dp"
                 android:textSize="@dimen/text_lg" />
 
         </LinearLayout>

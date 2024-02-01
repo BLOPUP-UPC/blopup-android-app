@@ -1,12 +1,12 @@
 package edu.upc.openmrs.activities.patientdashboard.diagnosis
 
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.dao.EncounterDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.EncounterType.Companion.VISIT_NOTE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class PatientDashboardDiagnosisViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<List<String>>() {
 
-    private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!
+    private val patientId: String = savedStateHandle[PATIENT_ID_BUNDLE]!!
 
     fun fetchDiagnoses() {
         setLoading()

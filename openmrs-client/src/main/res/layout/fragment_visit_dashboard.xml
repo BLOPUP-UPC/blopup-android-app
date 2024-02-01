@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:hint="60"
+                            android:hint="@string/hint_systolic_value"
                             android:textAlignment="center"
                             android:textColor="?android:attr/textColorPrimary"
                             android:textSize="32sp"
@@ -132,7 +132,7 @@
                                 android:id="@+id/diastolic_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:hint="188"
+                                android:hint="@string/hint_diastolic_value"
                                 android:textAlignment="center"
                                 android:textColor="?android:attr/textColorPrimary"
                                 android:textSize="32sp"
@@ -173,7 +173,7 @@
                                 android:id="@+id/pulse_value"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="60"
+                                android:hint="@string/hint_pulse_value"
                                 android:textAlignment="center"
                                 android:textColor="?android:attr/textColorPrimary"
                                 android:textSize="32sp"
@@ -338,7 +338,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="4dp"
-                                    android:hint="183"
+                                    android:hint="@string/hint_height_value"
                                     android:textSize="16sp" />
 
                                 <TextView
@@ -378,7 +378,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="4dp"
-                                    android:hint="82"
+                                    android:hint="@string/hint_weight_value"
                                     android:textSize="16sp" />
 
                                 <TextView

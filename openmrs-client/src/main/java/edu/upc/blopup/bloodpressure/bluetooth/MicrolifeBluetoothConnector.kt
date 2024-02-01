@@ -129,7 +129,7 @@ class MicrolifeBluetoothConnector @Inject constructor(
         dRecord: CurrentAndMData?,
         historyMeasuremeNumber: Int,
         userNumber: Int,
-        MAMState: Int,
+        mAMState: Int,
         isNoData: Boolean
     ) {
     }

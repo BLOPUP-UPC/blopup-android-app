@@ -18,7 +18,7 @@ import edu.upc.sdk.library.models.Module
 
 object ModuleUtils {
     @JvmStatic
-    fun isRegistrationCore1_7orAbove(modules: List<Module>): Boolean {
+    fun isRegistrationCore1to7orAbove(modules: List<Module>): Boolean {
         for (module in modules) {
             if ("org.openmrs.module.registrationcore" == module.packageName) {
                 val versionCode = module.version!!.split(".", "\\").toTypedArray()

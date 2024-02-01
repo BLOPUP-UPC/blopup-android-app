@@ -18,7 +18,7 @@ class FormRepository @Inject constructor() : BaseRepository(null) {
      */
     fun fetchFormResourceList(): Observable<List<FormResourceEntity>> {
         return AppDatabaseHelper.createObservableIO(Callable {
-            return@Callable db.formResourceDAO().getFormResourceList()
+            return@Callable db.formResourceDAO().formResourceList
         })
     }
 

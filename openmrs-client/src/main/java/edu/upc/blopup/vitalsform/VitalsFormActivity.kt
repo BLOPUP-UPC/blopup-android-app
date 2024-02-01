@@ -36,11 +36,11 @@ import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
-import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.DIASTOLIC_FIELD_CONCEPT
-import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEART_RATE_FIELD_CONCEPT
-import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEIGHT_FIELD_CONCEPT
-import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.SYSTOLIC_FIELD_CONCEPT
-import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.WEIGHT_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException

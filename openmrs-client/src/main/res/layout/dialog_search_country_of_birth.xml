@@ -38,7 +38,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_clear_black_24dp" />
+                app:srcCompat="@drawable/ic_clear_black_24dp"
+                android:contentDescription="@string/dismiss_dialog_accessibility" />
         </RelativeLayout>
 
         <RelativeLayout

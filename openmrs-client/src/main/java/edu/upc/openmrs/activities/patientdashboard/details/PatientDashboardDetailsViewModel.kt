@@ -22,7 +22,7 @@ class PatientDashboardDetailsViewModel @Inject constructor(
     val activeTreatments: MutableLiveData<Result<List<Treatment>>> =
         MutableLiveData<Result<List<Treatment>>>()
 
-    private val patientId: String = savedStateHandle.get(PATIENT_ID_BUNDLE)!!
+    private val patientId: String = savedStateHandle[PATIENT_ID_BUNDLE]!!
 
     fun fetchPatientData() {
         setLoading(PatientFetching)
