@@ -45,12 +45,19 @@ class VisitDashboardViewModel @Inject constructor(
     private val _treatmentOperationsLiveData = MutableLiveData<ResultType>()
     val treatmentOperationsLiveData: LiveData<ResultType> get() = _treatmentOperationsLiveData
 
+    private val _doctorHasBeenContacted: MutableLiveData<Boolean> = MutableLiveData(false)
+    val doctorHasBeenContacted: LiveData<Boolean> get() = _doctorHasBeenContacted
+
     private val visitId: Long = savedStateHandle[VISIT_UUID]!!
     val visit: Visit?
         get() {
             val visitResult = result.value
             return if (visitResult is Result.Success<Visit>) visitResult.data else null
         }
+
+    fun doctorHasBeenContacted(value: Boolean) {
+        _doctorHasBeenContacted.value = value
+    }
 
     fun fetchCurrentVisit() {
         setLoading()
