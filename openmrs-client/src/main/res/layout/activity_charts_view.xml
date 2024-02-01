@@ -15,10 +15,26 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/linechart"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/charts_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp" />
+        android:layout_height="match_parent">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/charts_layout"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/charts_layout"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </LinearLayout>

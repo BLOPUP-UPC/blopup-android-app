@@ -3,6 +3,7 @@ package edu.upc.openmrs.activities.patientdashboard.charts
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -13,20 +14,23 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.utils.MPPointF
+import com.github.mikephil.charting.listener.ChartTouchListener
+import com.github.mikephil.charting.listener.OnChartGestureListener
 import edu.upc.R
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.utilities.ApplicationConstants
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.SortedMap
+
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ChartsViewActivity : ACBaseActivity() {
+class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
 
     private lateinit var mBinding: ActivityChartsViewBinding
     private lateinit var mChart: LineChart
+    private lateinit var mChart2: LineChart
 
     companion object {
         const val SYSTOLIC = "systolic"
@@ -42,10 +46,13 @@ class ChartsViewActivity : ACBaseActivity() {
         setToolbar()
 
         mChart = mBinding.linechart
+        mChart2 = mBinding.linechart2
 
         setChartData()
+        setChartData2()
         setChartMaxAndMinimumLimitLines()
-        setChartFormat()
+        setChartFormat(mChart, 200f)
+        setChartFormatTreatments(mChart2)
     }
 
     private fun setToolbar() {
@@ -81,53 +88,78 @@ class ChartsViewActivity : ACBaseActivity() {
 
         val dataSetSystolic = LineDataSet(setColorIconsToEntries(systolicEntries, SYSTOLIC), "")
         val dataSetDiastolic = LineDataSet(setColorIconsToEntries(diastolicEntries, DIASTOLIC), "")
-        val dataSetTreatments = LineDataSet(listOf(
-            Entry(7f, 210f),
-            Entry(11f, 210f),
-        ), "")
-        dataSetTreatments.valueFormatter = TreatmentFormater("IECA")
-        val dataSetTreatments2 = LineDataSet(listOf(
-            Entry(8.4f, 150f, ContextCompat.getDrawable(applicationContext, R.mipmap.icon_pill)),
-            Entry(10.4f, 102f, ContextCompat.getDrawable(applicationContext, R.mipmap.icon_pill)),
-        ), "")
-        dataSetTreatments2.valueFormatter = TreatmentFormater("ARA II")
 
         //makes the line between data points transparent
         dataSetDiastolic.color = Color.TRANSPARENT
         dataSetSystolic.color = Color.TRANSPARENT
-        dataSetTreatments.color = Color.MAGENTA
-        dataSetTreatments2.color = Color.TRANSPARENT
 
         dataSetDiastolic.valueTextSize = 12f
         dataSetSystolic.valueTextSize = 12f
-        dataSetTreatments.valueTextSize = 12f
-        dataSetTreatments2.valueTextSize = 12f
 
         dataSetSystolic.circleRadius = 8F
         dataSetDiastolic.circleRadius = 8F
-        dataSetTreatments2.iconsOffset = MPPointF(30f, 4f)
 
         dataSetDiastolic.setCircleColor(Color.TRANSPARENT)
         dataSetSystolic.setCircleColor(Color.TRANSPARENT)
-        dataSetTreatments.setCircleColor(Color.MAGENTA)
-        dataSetTreatments2.setCircleColor(Color.TRANSPARENT)
 
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(dataSetSystolic)
         dataSets.add(dataSetDiastolic)
-        dataSets.add(dataSetTreatments)
-        dataSets.add(dataSetTreatments2)
 
         val lineData = LineData(dataSets)
 
 
         mChart.data = lineData
         mChart.xAxis.valueFormatter = MyValueFormatter(datesData)
+        mChart2.onChartGestureListener = this
+    }
+
+    private fun setChartData2() {
+        val mBundle = this.intent.getBundleExtra(ApplicationConstants.BUNDLE)
+
+        val bloodPressureData =
+            mBundle!!.getSerializable(BLOOD_PRESSURE) as HashMap<String, Pair<Float, Float>>
+
+        val bloodPressureDataSorted = sortDataPerDate(bloodPressureData)
+        val datesData = ArrayList<String>()
+
+        for (key in bloodPressureDataSorted.keys) {
+            datesData.add(key)
+        }
+
+        val grayPill = ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)
+        grayPill!!.setTint(Color.GRAY)
+        val greenPill = ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)
+        greenPill!!.setTint(Color.GREEN)
+        val yellowPill = ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)
+        yellowPill!!.setTint(Color.YELLOW)
+        val redPill = ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)
+        redPill!!.setTint(Color.RED)
+
+        val dataSetTreatments2 = LineDataSet(listOf(
+            Entry(0f, 230f, grayPill),
+            Entry(1f, 230f, greenPill),
+            Entry(2f, 230f, yellowPill),
+            Entry(3f, 230f, redPill),
+            Entry(4f, 230f),
+        ), "")
+        dataSetTreatments2.valueTextSize = 0f
+
+        dataSetTreatments2.color = Color.TRANSPARENT
+        dataSetTreatments2.setCircleColor(Color.TRANSPARENT)
+
+        val dataSets = ArrayList<ILineDataSet>()
+        dataSets.add(dataSetTreatments2)
+
+        val lineData = LineData(dataSets)
+
+        mChart2.data = lineData
+        mChart2.xAxis.valueFormatter = MyValueFormatter(datesData)
     }
 
     private fun sortDataPerDate(bloodPressureData: HashMap<String, Pair<Float, Float>>): SortedMap<String, Pair<Float, Float>> {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        return bloodPressureData.toSortedMap(compareBy { LocalDateTime.parse(it, formatter) })
+        return bloodPressureData.toSortedMap(compareBy { LocalDate.parse(it, formatter) })
     }
 
     private fun setEntries(valueDataArray: ArrayList<Float>): ArrayList<Entry> {
@@ -177,11 +209,11 @@ class ChartsViewActivity : ACBaseActivity() {
         limitLine.enableDashedLine(10f, 10f, 0f)
     }
 
-    private fun setChartFormat() {
+    private fun setChartFormat(mChart: LineChart, maximun: Float = 240f) {
         mChart.description.isEnabled = false
-        mChart.setTouchEnabled(true)
+        mChart.setTouchEnabled(false)
         // to make it scrollable
-        mChart.setVisibleXRangeMaximum(8f)
+        mChart.setVisibleXRangeMaximum(3f)
         // to remove values in right side of screen
         mChart.axisRight.isEnabled = false
         //to display one data per date
@@ -193,7 +225,7 @@ class ChartsViewActivity : ACBaseActivity() {
         mChart.axisLeft.axisLineWidth = 2f
         mChart.axisLeft.axisLineColor = Color.BLACK
         //max and min values in the axis with the values
-        mChart.axisLeft.axisMaximum = 240f
+        mChart.axisLeft.axisMaximum = maximun
         mChart.axisLeft.axisMinimum = 40f
         mChart.axisLeft.setDrawLimitLinesBehindData(true)
         //to add some space before the first and last values on the chart
@@ -202,6 +234,38 @@ class ChartsViewActivity : ACBaseActivity() {
         //to open the chart focused on the most recent value
         mChart.moveViewToX(mChart.xAxis.axisMaximum)
         mChart.legend.isEnabled = false
+    }
+
+    private fun setChartFormatTreatments(mChart: LineChart) {
+        mChart.description.isEnabled = false
+        mChart.setTouchEnabled(true)
+        // to make it scrollable
+        mChart.setVisibleXRangeMaximum(3f)
+        // to remove values in right side of screen
+        mChart.axisRight.isEnabled = false
+        //to display one data per date
+        mChart.xAxis.disableGridDashedLine()
+        mChart.xAxis.disableAxisLineDashedLine()
+        //to display the dates only in the bottom and not in the top as well
+        mChart.axisLeft.axisMaximum = 240f
+        mChart.axisLeft.axisMinimum = 40f
+        // Remove x grid lines
+        mChart.axisLeft.gridColor = Color.TRANSPARENT
+        // Remove axis line
+        mChart.axisLeft.axisLineColor = Color.TRANSPARENT
+        // Remove axis labels
+        mChart.axisLeft.textColor = Color.TRANSPARENT
+        mChart.xAxis.axisLineColor = Color.TRANSPARENT
+        mChart.xAxis.textColor = Color.TRANSPARENT
+        mChart.xAxis.gridColor = Color.TRANSPARENT
+        //to add some space before the first and last values on the chart
+        mChart.xAxis.axisMinimum = -0.1F
+        mChart.xAxis.axisMaximum = mChart.xAxis.axisMaximum + 0.1F
+        //to open the chart focused on the most recent value
+        mChart.moveViewToX(mChart.xAxis.axisMaximum)
+        mChart.legend.isEnabled = false
+        //to display one data per date
+        mChart.xAxis.granularity = 1F
     }
 
     private fun setColorIconsToEntries(entries: List<Entry>, type: String): List<Entry> {
@@ -218,4 +282,47 @@ class ChartsViewActivity : ACBaseActivity() {
     }
     private fun isSystolicHigh(it: Entry) = it.y >= 130F
     private fun isDiastolicHigh(it: Entry) = it.y >= 80F
+
+    override fun onChartGestureStart(
+        me: MotionEvent?,
+        lastPerformedGesture: ChartTouchListener.ChartGesture?
+    ) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onChartGestureEnd(
+        me: MotionEvent?,
+        lastPerformedGesture: ChartTouchListener.ChartGesture?
+    ) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onChartLongPressed(me: MotionEvent?) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onChartDoubleTapped(me: MotionEvent?) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onChartSingleTapped(me: MotionEvent?) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onChartFling(
+        me1: MotionEvent?,
+        me2: MotionEvent?,
+        velocityX: Float,
+        velocityY: Float
+    ) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
+        mChart.moveViewToX(mChart2.lowestVisibleX)
+    }
 }
