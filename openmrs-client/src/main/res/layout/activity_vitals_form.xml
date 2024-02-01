@@ -252,7 +252,7 @@
                         <TextView
                             app:drawableStartCompat="@drawable/error_outline"
                             android:drawablePadding="4dp"
-                            android:drawableTint="@color/allergy_orange"
+                            app:drawableTint="@color/allergy_orange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/error_loading_treatments"
