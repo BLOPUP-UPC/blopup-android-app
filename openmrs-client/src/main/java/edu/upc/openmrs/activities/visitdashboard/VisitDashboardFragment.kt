@@ -275,10 +275,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     private fun notifyDoctorIfNeeded(patientId: String?) {
-        if (!requireArguments().getBoolean(IS_NEW_VITALS) || viewModel.doctorHasBeenContacted.value == true) {
-            return
-        } else {
-            viewModel.bloodPressureType.observeOnce(viewLifecycleOwner) { bloodPressureResult ->
+            viewModel.bloodPressureType.observe(viewLifecycleOwner, ) { bloodPressureResult ->
+                if (!requireArguments().getBoolean(IS_NEW_VITALS) || viewModel.doctorHasBeenContacted.value == true) return@observe
+
                 if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
                     showLongToast(
                         requireContext(),
@@ -321,7 +320,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                     }
                 }
             }
-        }
     }
 
     private fun handleContactDoctorResult(result: kotlin.Result<Boolean>) {
