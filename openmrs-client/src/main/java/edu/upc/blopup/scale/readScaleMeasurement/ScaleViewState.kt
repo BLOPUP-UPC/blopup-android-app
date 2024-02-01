@@ -3,7 +3,7 @@ package edu.upc.blopup.scale.readScaleMeasurement
 import android.os.Parcelable
 import com.ebelter.sdks.bean.scale.ScaleMeasureResult
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 sealed class ScaleViewState {
     data class Error(val exception: BluetoothConnectionException) : ScaleViewState()

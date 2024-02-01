@@ -18,19 +18,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import edu.upc.sdk.library.models.EmailRequest
-import edu.upc.sdk.utilities.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActvityContactUsBinding
 import edu.upc.openmrs.utilities.ViewUtils
 import edu.upc.openmrs.utilities.observeOnce
-import edu.upc.sdk.library.models.OperationType
-import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.Result.Success
+import edu.upc.sdk.library.models.EmailRequest
 import edu.upc.sdk.library.models.ResultType
-import edu.upc.sdk.utilities.StringUtils
-import kotlinx.android.synthetic.main.actvity_contact_us.*
+import edu.upc.sdk.utilities.ToastUtil
 
 @AndroidEntryPoint
 class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {

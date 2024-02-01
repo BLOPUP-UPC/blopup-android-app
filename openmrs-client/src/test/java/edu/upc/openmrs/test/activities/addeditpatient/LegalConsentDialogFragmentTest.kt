@@ -16,8 +16,6 @@ import edu.upc.openmrs.activities.addeditpatient.LegalConsentDialogFragment
 import edu.upc.openmrs.utilities.FileUtils
 import io.mockk.*
 import junit.framework.TestCase.assertFalse
-import kotlinx.android.synthetic.main.fragment_patient_info.*
-import kotlinx.android.synthetic.main.legal_consent.*
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -47,10 +45,12 @@ class LegalConsentDialogFragmentTest {
     @Test
     internal fun `should hide recording and show pause and stop buttons when recording is clicked`() {
         legalConsentScenario.onFragment {
-            it.record.performClick()
-            assert(it.play_pause.isVisible)
-            assert(it.stop.isVisible)
-            assertFalse(it.record.isVisible)
+            with(it.legalConsentBinding) {
+                record.performClick()
+                assert(playPause.isVisible)
+                assert(stop.isVisible)
+                assertFalse(record.isVisible)
+            }
         }
     }
 
@@ -58,9 +58,9 @@ class LegalConsentDialogFragmentTest {
     @Test
     internal fun `should only display recording button on launch`() {
         legalConsentScenario.onFragment {
-            assertFalse(it.play_pause.isVisible)
-            assertFalse(it.stop.isVisible)
-            assert(it.record.isVisible)
+            assertFalse(it.legalConsentBinding.playPause.isVisible)
+            assertFalse(it.legalConsentBinding.stop.isVisible)
+            assert(it.legalConsentBinding.record.isVisible)
         }
     }
 
@@ -68,9 +68,9 @@ class LegalConsentDialogFragmentTest {
     @Test
     internal fun `playpause button should be enabled and stop button should be disabled when record is clicked`() {
         legalConsentScenario.onFragment {
-            it.record.performClick()
-            assert(it.play_pause.isEnabled)
-            assertFalse(it.stop.isEnabled)
+            it.legalConsentBinding.record.performClick()
+            assert(it.legalConsentBinding.playPause.isEnabled)
+            assertFalse(it.legalConsentBinding.stop.isEnabled)
         }
     }
 
@@ -78,7 +78,7 @@ class LegalConsentDialogFragmentTest {
     @Test
     internal fun `should start playing and recording when recording button is clicked`() {
         legalConsentScenario.onFragment {
-            it.record.performClick()
+            it.legalConsentBinding.record.performClick()
             verify { anyConstructed<AudioRecorder>().startPlaying() }
             verify { anyConstructed<AudioRecorder>().startRecording() }
         }
@@ -88,9 +88,9 @@ class LegalConsentDialogFragmentTest {
     @Test
     internal fun `should show recording in progress when recording button is clicked`() {
         legalConsentScenario.onFragment {
-            assertFalse(it.recordingInProgress.isVisible)
-            it.record.performClick()
-            assert(it.recordingInProgress.isVisible)
+            assertFalse(it.legalConsentBinding.recordingInProgress.isVisible)
+            it.legalConsentBinding.record.performClick()
+            assert(it.legalConsentBinding.recordingInProgress.isVisible)
         }
     }
 
@@ -99,7 +99,7 @@ class LegalConsentDialogFragmentTest {
     internal fun `should disable back button while recording`() {
         legalConsentScenario.onFragment {
             assert(it.isCancelable)
-            it.record.performClick()
+            it.legalConsentBinding.record.performClick()
             assertFalse(it.isCancelable)
         }
     }
@@ -110,10 +110,10 @@ class LegalConsentDialogFragmentTest {
         every { mediaPlayer.isPlaying } returns false
 
         legalConsentScenario.onFragment {
-            it.record.performClick() //isPlaying == true
-            assert(it.play_pause.text == context.getString(R.string.pause))
-            it.play_pause.performClick() //isPlaying == false
-            assert(it.play_pause.text == context.getString(R.string.resume))
+            it.legalConsentBinding.record.performClick() //isPlaying == true
+            assert(it.legalConsentBinding.playPause.text == context.getString(R.string.pause))
+            it.legalConsentBinding.playPause.performClick() //isPlaying == false
+            assert(it.legalConsentBinding.playPause.text == context.getString(R.string.resume))
         }
     }
 
@@ -123,8 +123,8 @@ class LegalConsentDialogFragmentTest {
         every { mediaPlayer.isPlaying } returns true
 
         legalConsentScenario.onFragment {
-            it.record.performClick()
-            it.play_pause.performClick()
+            it.legalConsentBinding.record.performClick()
+            it.legalConsentBinding.playPause.performClick()
 
             verify { anyConstructed<AudioRecorder>().playPauseAudio() }
             verify(exactly = 0) { anyConstructed<AudioRecorder>().releaseRecording() }
@@ -136,8 +136,8 @@ class LegalConsentDialogFragmentTest {
     internal fun `should stop recording when stop button is clicked`() {
         legalConsentScenario = launchFragmentInContainer()
         legalConsentScenario.onFragment {
-            it.record.performClick()
-            it.stop.performClick()
+            it.legalConsentBinding.record.performClick()
+            it.legalConsentBinding.stop.performClick()
 
             verify { anyConstructed<AudioRecorder>().releaseRecording() }
         }
@@ -147,9 +147,9 @@ class LegalConsentDialogFragmentTest {
     @Test
     internal fun `should close dialog when recording stops`() {
         legalConsentScenario.onFragment {
-            it.record.performClick()
+            it.legalConsentBinding.record.performClick()
             assert(it.dialog!!.isShowing)
-            it.stop.performClick()
+            it.legalConsentBinding.stop.performClick()
             assertFalse(it.dialog?.isShowing!!)
         }
     }
@@ -158,7 +158,7 @@ class LegalConsentDialogFragmentTest {
     @Ignore("Is entering the if statement within the onCompletionListener but the assertion is still failing")
     internal fun `should enable and change color for stop button when audioRecorder has finished playing`() {
         legalConsentScenario.onFragment {
-            it.record.performClick()
+            it.legalConsentBinding.record.performClick()
 
             every { anyConstructed<AudioRecorder>().hasFinishedPlaying() } returns MutableLiveData(
                 true
@@ -166,25 +166,8 @@ class LegalConsentDialogFragmentTest {
 
             it.onCreateView(it.layoutInflater, null, Bundle.EMPTY)
 
-            assert(it.stop.isEnabled)
-            assert(it.stop.background.equals(R.color.color_accent))
-        }
-    }
-
-    @Test
-    @Ignore("not sure how to assign a parent to a fragment in a test")
-    internal fun `should show record consent imageButton in parent when recording is completed`() {
-        legalConsentScenario = launchFragmentInContainer()
-        mockkStatic(FileUtils::class)
-        every { FileUtils.fileIsCreatedSuccessfully(any()) } returns true
-
-        legalConsentScenario.onFragment {
-
-            it.record.performClick()
-            it.stop.performClick()
-
-            assert(it.parentFragment?.record_consent_saved!!.isVisible)
-            assertFalse(it.language_spinner.isEnabled)
+            assert(it.legalConsentBinding.stop.isEnabled)
+            assert(it.legalConsentBinding.stop.background.equals(R.color.color_accent))
         }
     }
 }

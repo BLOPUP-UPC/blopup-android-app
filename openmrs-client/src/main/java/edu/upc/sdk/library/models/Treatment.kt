@@ -1,7 +1,7 @@
 package edu.upc.sdk.library.models
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import org.joda.time.Instant
 
 @Parcelize

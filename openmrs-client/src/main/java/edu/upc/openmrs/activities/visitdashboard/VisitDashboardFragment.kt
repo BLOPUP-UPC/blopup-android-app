@@ -52,7 +52,6 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
-import kotlinx.android.synthetic.main.bp_chart.view.bp_speedview
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 import kotlin.Result as KotlinResult
@@ -119,7 +118,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         bloodPressureType?.let {
             binding.bloodPressureLayout.makeVisible()
             BloodPressureChart().createChart(
-                binding.visitDetailsLayout.bp_speedview,
+                binding.visitDetailsLayout.findViewById(R.id.bp_speedview),
                 bloodPressureType
             )
             setBloodPressureTypeAndRecommendation(bloodPressureType)

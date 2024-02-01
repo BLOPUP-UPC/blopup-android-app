@@ -9,7 +9,6 @@ import edu.upc.R
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.openmrs.activities.login.LoginActivity
 import edu.upc.openmrs.services.FormListService
-import kotlinx.android.synthetic.main.fragment_login.*
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test

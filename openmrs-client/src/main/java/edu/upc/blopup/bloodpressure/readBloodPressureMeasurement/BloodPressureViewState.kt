@@ -1,10 +1,9 @@
 package edu.upc.blopup.bloodpressure.readBloodPressureMeasurement
 
-import android.os.Parcel
 import android.os.Parcelable
 import com.ideabus.model.data.CurrentAndMData
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 sealed class BloodPressureViewState {
     data class Error(val exception: BluetoothConnectionException) : BloodPressureViewState()

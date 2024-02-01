@@ -42,7 +42,6 @@ import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.HEIGHT_FIELD
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.SYSTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.vitalsConceptType.WEIGHT_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ToastUtil
-import kotlinx.android.synthetic.main.activity_vitals_form.buttonToSentVitals
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
@@ -159,13 +158,13 @@ class VitalsFormActivity : ACBaseActivity() {
     }
 
     fun sendVitals(view: View) {
-        buttonToSentVitals.isEnabled = false
+        findViewById<View>(R.id.buttonToSentVitals).isEnabled = false
         heightCm = mBinding.height.text.toString()
         if (HeightValidator.isValid(heightCm, weight, systolic, diastolic, heartRate)) {
             submitForm()
         } else {
             mBinding.textInputHeight.error = (getString(R.string.height_range))
-            buttonToSentVitals.isEnabled = true
+            findViewById<View>(R.id.buttonToSentVitals).isEnabled = true
         }
     }
 

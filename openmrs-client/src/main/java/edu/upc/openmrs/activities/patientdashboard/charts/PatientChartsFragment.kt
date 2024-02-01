@@ -33,7 +33,6 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showShortToast
-import kotlinx.android.synthetic.main.fragment_patient_charts.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -98,11 +97,6 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
             vitalList.makeVisible()
             (vitalList.adapter as PatientChartsRecyclerViewAdapter).updateList(observationList)
         }
-    }
-
-    private fun showEmptyList(visibility: Boolean) {
-        vitalEmpty.makeVisible()
-        vitalList.makeGone()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

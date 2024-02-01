@@ -30,7 +30,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class LegalConsentDialogFragment : DialogFragment() {
 
-    private lateinit var legalConsentBinding: LegalConsentBinding
+    lateinit var legalConsentBinding: LegalConsentBinding
     private lateinit var audioRecorder: AudioRecorder
     private lateinit var recordButton: Button
     private lateinit var playPauseButton: TextView

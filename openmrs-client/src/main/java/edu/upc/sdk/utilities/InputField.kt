@@ -15,22 +15,27 @@ package edu.upc.sdk.utilities
 
 import android.os.Parcel
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
+import kotlin.math.abs
 
 @Parcelize
 class InputField(@JvmField var concept: String?) : Serializable, Parcelable {
+    @IgnoredOnParcel
     @JvmField
     var id: Int
 
+    @IgnoredOnParcel
     @JvmField
     var value = -1.0
 
+    @IgnoredOnParcel
     @JvmField
     var isRed = false
 
     init {
-        id = Math.abs(concept.hashCode())
+        id = abs(concept.hashCode())
     }
 
     constructor(parcel: Parcel) : this(parcel.readString()) {
