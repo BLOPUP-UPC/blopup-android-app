@@ -22,33 +22,21 @@
     <color name="primary">#00463f</color>
     <color name="primary_dark">#01302b</color>
     <color name="color_accent">#F8793B</color>
-    <color name="dark_purple">#363463</color>
     <color name="dark_grey">#231F20</color>
-    <color name="green">#88af28</color>
-    <color name="light_red">#ff6666</color>
     <color name="red">#ff3d3d</color>
-    <color name="patient_selected_highlight">#3a00ff2a</color>
     <color name="grey">#D5D5D5</color>
-    <color name="selected_card">#249627</color>
 
     <!-- Colors for New UI -->
     <color name="dark_grey_for_stroke">#909090</color>
     <color name="light_grey_for_solid">#EFEFEF</color>
-    <color name="dark_grey_4x">#D6D6D6</color>
     <color name="dark_grey_6x">#B1B1B1</color>
     <color name="dark_grey_8x">#616161</color>
     <color name="dark_grey_10x">#454545</color>
-    <color name="cancel_button">#CF3B3B</color>
     <color name="save_button">#97BC47</color>
     <color name="allergy_orange">#E47321</color>
-    <color name="allergy_orange_50_transparent">#4DFB793D</color>
-    <color name="blue">#3884CA</color>
     <color name="bluetooth_blue">#0082FC</color>
 
-    <color name="dark_red">#ED3030</color>
     <color name="error_red">#B54C5B</color>
-    <color name="translucent_50_percent">#99000000</color>
-    <color name="black_dark_mode">#121212</color>
     <color name="translucent_70_percent">#B3000000</color>
 
     <!-- neutral colors that look pleasing on both white and black background -->
