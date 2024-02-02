@@ -14,15 +14,6 @@
 
 package edu.upc.sdk.library.dao;
 
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.databases.AppDatabase;
-import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.databases.entities.EncounterEntity;
-import edu.upc.sdk.library.databases.entities.ObservationEntity;
-import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.EncounterType;
-import edu.upc.sdk.library.models.Observation;
-
 import java.util.ArrayList;
 import java.util.List;
 

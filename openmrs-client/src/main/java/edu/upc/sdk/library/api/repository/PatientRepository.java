@@ -282,19 +282,6 @@ public class PatientRepository extends BaseRepository {
     }
 
     /**
-     * Fetches similar patients directly from server.
-     *
-     * @param patient the patient to fetch similar patient to
-     * @return list of similar patients
-     */
-    private List<Patient> fetchSimilarPatientsFromServer(final Patient patient) throws Exception {
-        Call<Results<Patient>> call = restApi.getSimilarPatients(patient.toMap());
-        Response<Results<Patient>> response = call.execute();
-        if (response.isSuccessful()) return response.body().getResults();
-        else throw new Exception("fetchSimilarPatientsFromServer error: " + response.message());
-    }
-
-    /**
      * Fetches patients with similar names from server, then calculates other similarities locally.
      *
      * @param patient the patient to fetch similar patient to

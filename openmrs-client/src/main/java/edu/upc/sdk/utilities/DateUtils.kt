@@ -202,12 +202,11 @@ object DateUtils {
             val day = bundledDate[0].toInt()
             val month = bundledDate[1].toInt()
             val year = bundledDate[2].toInt()
-            val maxDays: Int
             // Leap year on February -> 29 days
             // Non leap year on February -> 28 days
             // April, June, September, November -> 30 days
             // January, March, May, July, August, October, December -> 31 days
-            maxDays = if (month == 2) {
+            val maxDays: Int = if (month == 2) {
                 if (year % 4 == 0) {
                     29
                 } else {

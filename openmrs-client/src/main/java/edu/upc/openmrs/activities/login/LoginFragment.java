@@ -56,7 +56,7 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
     private static String mLastCorrectURL = "";
     private static List<LocationEntity> mLocationsList;
     final private String initialUrl = OpenmrsAndroid.getServerUrl();
-    protected OpenMRS mOpenMRS = OpenMRS.getInstance();
+    protected final OpenMRS mOpenMRS = OpenMRS.getInstance();
     private FragmentLoginBinding binding;
     private View mRootView;
     private LoginValidatorWatcher loginValidatorWatcher;

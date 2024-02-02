@@ -13,6 +13,7 @@
  */
 package edu.upc.openmrs.utilities
 
+import java.util.Locale
 import java.util.regex.Pattern
 
 object URLValidator {
@@ -49,7 +50,7 @@ object URLValidator {
 
     @JvmStatic
     fun toLowerCase(url: String): String {
-        return url.toLowerCase()
+        return url.lowercase(Locale.getDefault())
     }
 
     @JvmStatic

@@ -35,7 +35,7 @@ class PatientDashboardDiagnosisViewModelTest : ACUnitTestBaseRx() {
 
     private lateinit var viewModel: PatientDashboardDiagnosisViewModel
 
-    lateinit var diagnosisList: List<String>
+    private lateinit var diagnosisList: List<String>
 
     private lateinit var observations: MutableList<Observation>
 

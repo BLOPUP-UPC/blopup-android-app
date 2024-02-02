@@ -18,8 +18,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-
 import java.util.List;
 
 import edu.upc.sdk.library.databases.entities.LocationEntity;

@@ -138,7 +138,7 @@
     <string name="visit_fetching_error" tools:ignore="MissingTranslation">Error with fetching the visit</string>
     <string name="visit_ending_error" tools:ignore="MissingTranslation">Error ending this visit</string>
 
-    <string name="visit_note" translatable="false">Notes</string>
+    <string name="visit_note" tools:ignore="MissingTranslation">Notes</string>
     <string name="bmi_label" tools:ignore="MissingTranslation">Body Mass Index (BMI)</string>
 
     <!-- Capture Vitals activity -->
@@ -188,11 +188,6 @@
     <string name="location_successfully_updated" tools:ignore="MissingTranslation">Location Updated Successfully</string>
     <string name="rate_us_string" tools:ignore="MissingTranslation">Rate us</string>
     <string name="frag_settings_build" tools:ignore="MissingTranslation">Build:</string>
-
-    <!-- Provider Management -->
-    <string name="delete_provider_success_msg" tools:ignore="MissingTranslation">Successfully deleted the provider!</string>
-    <string name="add_provider_success_msg" tools:ignore="MissingTranslation">Successfully added provider.</string>
-    <string name="edit_provider_success_msg" tools:ignore="MissingTranslation">Successfully edited provider.</string>
 
     <!--fragment_provider_relationship-->
     <string name="language" tools:ignore="MissingTranslation">Language</string>
@@ -252,7 +247,7 @@
 
     <!--Admission Form -->
     <string name="error_occurred" tools:ignore="MissingTranslation">An error Occurred, Try Again Later !!!</string>
-    <string name="vitals_successfully" translatable="false">Vitals completed</string>
+    <string name="vitals_successfully" tools:ignore="MissingTranslation">Vitals completed</string>
 
     <!-- About Activity -->
     <string name="action_about_activity" tools:ignore="MissingTranslation">About Us</string>
@@ -278,7 +273,7 @@
     <string name="bluetooth_scale_instructions" tools:ignore="MissingTranslation">1.-Turn on the mobile bluetooth\n2.-Get on the scale\n3.-Wait until the result appears on the mobile screen</string>
     <string name="app_tutorial" tools:ignore="MissingTranslation">Tutorial</string>
 
-    <string name="vitals_form_title" translatable="false">Vitals Form</string>
+    <string name="vitals_form_title" tools:ignore="MissingTranslation">Vitals Form</string>
     <string name="blood_pressure_button_label" tools:ignore="MissingTranslation">Receive blood pressure data</string>
     <string name="systolic_label" tools:ignore="MissingTranslation">Systolic</string>
     <string name="diastolic_label" tools:ignore="MissingTranslation">Diastolic</string>
@@ -304,7 +299,7 @@
     <string name="recording_in_progress" tools:ignore="MissingTranslation">Recording in Progress</string>
     <string name="start" tools:ignore="MissingTranslation">Start:</string>
     <string name="end" tools:ignore="MissingTranslation">End:</string>
-    <string name="edit" translatable="false"><u>Edit</u></string>
+    <string name="edit" tools:ignore="MissingTranslation"><u>Edit</u></string>
     <string name="remove_vitals" tools:ignore="MissingTranslation">Remove Vitals</string>
     <string name="end_vitals_dialog_message" tools:ignore="MissingTranslation">Yes, cancel</string>
     <string name="keep_vitals_dialog_message" tools:ignore="MissingTranslation">No, continue</string>
@@ -411,7 +406,7 @@
     <string name="hint_active_visit" translatable="false">Active visit</string>
     <string name="hint_medication_name" translatable="false">Parecetamol</string>
     <string name="hint_medication_type" translatable="false">Beta blocker - ARA II</string>
-    <string name="treatment_label" translatable="false">Treatment</string><![CDATA[/>
+    <string name="treatment_label" tools:ignore="MissingTranslation">Treatment</string><![CDATA[/>
 
 ]]>
 </resources>

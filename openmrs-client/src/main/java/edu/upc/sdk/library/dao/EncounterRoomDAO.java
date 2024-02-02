@@ -19,8 +19,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import edu.upc.sdk.library.databases.entities.EncounterEntity;
-
 import java.util.List;
 
 import edu.upc.sdk.library.databases.entities.EncounterEntity;

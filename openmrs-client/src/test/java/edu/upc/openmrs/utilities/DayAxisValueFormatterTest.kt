@@ -7,9 +7,9 @@ import org.junit.Test
 
 class DayAxisValueFormatterTest{
 
-    val value1 : Float = 0.5F
-    val value2 : Float = 1.2F
-    val ax = object : AxisBase(){}
+    private val value1 : Float = 0.5F
+    private val value2 : Float = 1.2F
+    private val ax = object : AxisBase(){}
 
     @Test
     fun correctFormatInputString_returnsFormattedValue(){

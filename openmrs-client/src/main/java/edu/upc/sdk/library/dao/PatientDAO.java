@@ -94,7 +94,7 @@ public class PatientDAO {
     public Observable<List<Patient>> getAllPatients() {
         return AppDatabaseHelper.createObservableIO(() -> {
             List<Patient> patients = new ArrayList<>();
-            List<PatientEntity> patientEntities = new ArrayList<>();
+            List<PatientEntity> patientEntities;
             try {
                 patientEntities = patientRoomDAO.getAllPatients().blockingGet();
                 for (PatientEntity entity : patientEntities) {

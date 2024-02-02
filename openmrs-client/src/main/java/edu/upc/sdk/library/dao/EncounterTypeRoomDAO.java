@@ -14,8 +14,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import edu.upc.sdk.library.models.EncounterType;
-
 import java.util.List;
 
 import edu.upc.sdk.library.models.EncounterType;

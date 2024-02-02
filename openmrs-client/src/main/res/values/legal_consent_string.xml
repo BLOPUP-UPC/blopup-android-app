@@ -2,18 +2,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="legal_consent_intro" tools:ignore="MissingTranslation"><![CDATA[We need to record the patient\'s consent to register personal information. We will read out loud the following text. <br> <br> Once the recording starts you can <b> pause </b> and resume as many times as you want. <br> Once finished, press <b> Stop and send recording </b> to record the consent and be able to continue the patient registration process. <br>]]></string>
     <string name="legal_consent">The main points of the information we have explained to you verbally and in a written format are:\n</string>
-    <string name="record_again_legal_consent" translatable="false"><u>Repeat recording</u></string>
-    <string name="recording_success" translatable="false">Consent successfully recorded</string>
-    <string name="english" translatable="false">English</string>
-    <string name="catalan" translatable="false">Catalan</string>
-    <string name="spanish" translatable="false">Spanish</string>
-    <string name="german" translatable="false">German</string>
-    <string name="french" translatable="false">French</string>
-    <string name="italian" translatable="false">Italian</string>
-    <string name="moroccan" translatable="false">Moroccan</string>
-    <string name="portuguese" translatable="false">Portuguese</string>
-    <string name="russian" translatable="false">Russian</string>
-    <string name="ukrainian" translatable="false">Ukrainian</string>
+    <string name="record_again_legal_consent" tools:ignore="MissingTranslation"><u>Repeat recording</u></string>
+    <string name="recording_success" tools:ignore="MissingTranslation">Consent successfully recorded</string>
+    <string name="english" tools:ignore="MissingTranslation">English</string>
+    <string name="catalan" tools:ignore="MissingTranslation">Catalan</string>
+    <string name="spanish" tools:ignore="MissingTranslation">Spanish</string>
+    <string name="german" tools:ignore="MissingTranslation">German</string>
+    <string name="french" tools:ignore="MissingTranslation">French</string>
+    <string name="italian" tools:ignore="MissingTranslation">Italian</string>
+    <string name="moroccan" tools:ignore="MissingTranslation">Moroccan</string>
+    <string name="portuguese" tools:ignore="MissingTranslation">Portuguese</string>
+    <string name="russian" tools:ignore="MissingTranslation">Russian</string>
+    <string name="ukrainian" tools:ignore="MissingTranslation">Ukrainian</string>
     <string name="first_bullet_point">You will participate in a study by Salut Sense Sostre that involves the measurement of blood pressure.</string>
     <string name="second_bullet_point">We will give you action guidelines if it is too high and we will follow you up. This measurement does not carry any risks.</string>
     <string name="third_bullet_point">Your personal and medical data will only be known by us and by you. You will be able to see it and ask us to destroy it. We will never communicate your individual data, only in an aggregated and statistical fashion.</string>

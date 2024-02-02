@@ -4,8 +4,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import edu.upc.sdk.library.databases.entities.DiagnosisEntity;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

@@ -71,7 +71,7 @@
     <string name="empty_diagnoses_list">El paciente todavía no tiene ningún diagnóstico.</string>
     <string name="list_visit_selector_show">Mostrar detalles</string>
     <string name="vitals">Vitales</string>
-    <string name="visit_note" translatable="false">Notas</string>
+    <string name="visit_note">Notas</string>
     <string name="action_register_patient">Registrar Paciente</string>
     <string name="birthdate_hint">fecha de nacimiento:</string>
     <string name="address_hint">dirección:</string>
@@ -140,9 +140,6 @@
     <string name="toast_with_black_background">Toast con fondo negro.</string>
     <string name="intro_welcome_desc">La comunidad global de OpenMRS trabaja en conjunto para construir el sistema de registro médico electrónico líder de código abierto en el mundo.</string>
     <string name="action_submit">Registrar</string>
-    <string name="add_provider_success_msg">Proveedor añadido con éxito.</string>
-    <string name="delete_provider_success_msg">Proveedor eliminado con éxito.</string>
-    <string name="edit_provider_success_msg">Proveedor editado con éxito.</string>
     <string name="dialog_button_stay">Permanecer</string>
     <string name="intro_contact_desc">Envíenos sus problemas o sugerencias.</string>
     <string name="receive_vitals_from_bluetooth_button_error_message">No se encontró ninguna app para tomar los datos bluetooth</string>

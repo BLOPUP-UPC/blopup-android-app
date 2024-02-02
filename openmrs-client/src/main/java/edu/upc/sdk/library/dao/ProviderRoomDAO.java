@@ -22,10 +22,6 @@ import androidx.room.Query;
 import androidx.room.TypeConverters;
 import androidx.room.Update;
 
-import edu.upc.sdk.library.models.Person;
-import edu.upc.sdk.library.models.Provider;
-import edu.upc.sdk.library.models.typeConverters.PersonConverter;
-
 import java.util.List;
 
 import edu.upc.sdk.library.models.Person;

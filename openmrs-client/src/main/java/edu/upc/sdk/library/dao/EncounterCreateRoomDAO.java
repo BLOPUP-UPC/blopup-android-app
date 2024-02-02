@@ -15,8 +15,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import edu.upc.sdk.library.models.Encountercreate;
-
 import java.util.List;
 
 import edu.upc.sdk.library.models.Encountercreate;

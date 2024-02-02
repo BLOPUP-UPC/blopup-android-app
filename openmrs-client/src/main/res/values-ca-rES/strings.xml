@@ -108,9 +108,6 @@
     <string name="location_successfully_updated">Ubicació actualitzada correctament</string>
     <string name="rate_us_string">Puntua\'ns</string>
     <string name="frag_settings_build">"Crear: "</string>
-    <string name="delete_provider_success_msg">Proveïdor esborrat amb èxit</string>
-    <string name="add_provider_success_msg">Proveïdor afegit correctament</string>
-    <string name="edit_provider_success_msg">Proveïdor modificat correctament.</string>
     <string name="language">Idioma</string>
     <string name="apply">Aplicar</string>
     <string name="intro_welcome">Benvingut/da</string>
