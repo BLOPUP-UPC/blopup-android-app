@@ -23,7 +23,6 @@ import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.utilities.ApplicationConstants
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.SortedMap
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -47,9 +46,11 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         bloodPressureChart = mBinding.bloodPressureChart
         treatmentsChart = mBinding.treatmentsChart
 
-        setBloodPressureData()
-        setChartData2()
-        setChartMaxAndMinimumLimitLines()
+        val bloodPressureData = getBloodPressureValues()
+
+        setBloodPressureData(bloodPressureChart, bloodPressureData)
+        setTreatmentsData(treatmentsChart, getTreatmentValues(bloodPressureData))
+        setChartMaxAndMinimumLimitLines(bloodPressureChart)
         setChartFormat(bloodPressureChart)
         setChartFormatTreatments(treatmentsChart)
     }
@@ -64,9 +65,10 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         }
     }
 
-    private fun setBloodPressureData() {
-        val bloodPressureData = getBloodPressureValues()
-
+    private fun setBloodPressureData(
+        chart: LineChart,
+        bloodPressureData: List<BloodPressureChartValue>
+    ) {
         val allDatesValues = bloodPressureData.map { it.date.toString() }
 
         // Create entries where x is 0 to n-1 and y is the value
@@ -97,11 +99,9 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         val dataSets = arrayListOf(dataSetSystolic, dataSetDiastolic)
         val lineData = LineData(dataSets as List<ILineDataSet>?)
 
-        bloodPressureChart.data = lineData
+        chart.data = lineData
         // Format the values in the x axis to show the date instead of 0 to n-1
-        bloodPressureChart.xAxis.valueFormatter = MyValueFormatter(allDatesValues)
-        // Listener to sync the two charts scroll
-        treatmentsChart.onChartGestureListener = this
+        chart.xAxis.valueFormatter = MyValueFormatter(allDatesValues)
     }
 
     private fun getBloodPressureValues(): List<BloodPressureChartValue> {
@@ -115,91 +115,56 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
         return chartValues.sortedBy { it.date }.distinctBy { it.date }
     }
 
+    private fun getTreatmentValues(bloodPressureValues: List<BloodPressureChartValue>): List<TreatmentChartValue> {
+        return bloodPressureValues.map { TreatmentChartValue(it.date, getAdherenceForDate(it.date)) }
+    }
+
+    private fun getAdherenceForDate(date: LocalDate): FollowTreatments {
+        // TODO: Implement logic to get the adherence for a given date
+        return FollowTreatments.values().toList().shuffled().first()
+    }
+
     data class BloodPressureChartValue(val date: LocalDate, val systolic: Float, val diastolic: Float)
+    data class TreatmentChartValue(val date: LocalDate, val followTreatments: FollowTreatments)
 
-    private fun setChartData2() {
-        val mBundle = this.intent.getBundleExtra(ApplicationConstants.BUNDLE)
-
-        val bloodPressureData =
-            mBundle!!.getSerializable(BLOOD_PRESSURE) as HashMap<String, Pair<Float, Float>>
-
-        val bloodPressureDataSorted = sortDataPerDate(bloodPressureData)
-        val datesData = ArrayList<String>()
-
-        for (key in bloodPressureDataSorted.keys) {
-            datesData.add(key)
-        }
-
-        val grayPill = ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)
-        grayPill!!.setTint(Color.GRAY)
-        val greenPill = ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)
-        greenPill!!.setTint(Color.GREEN)
-        val yellowPill = ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)
-        yellowPill!!.setTint(Color.YELLOW)
-        val redPill = ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)
-        redPill!!.setTint(Color.RED)
-
-        val dataSetTreatments2 = LineDataSet(listOf(
-            Entry(0f, 230f, grayPill),
-            Entry(1f, 230f, greenPill),
-            Entry(2f, 230f, yellowPill),
-            Entry(3f, 230f, redPill),
-            Entry(4f, 230f),
-        ), "")
-        dataSetTreatments2.valueTextSize = 0f
-
-        dataSetTreatments2.color = Color.TRANSPARENT
-        dataSetTreatments2.setCircleColor(Color.TRANSPARENT)
-
-        val dataSets = ArrayList<ILineDataSet>()
-        dataSets.add(dataSetTreatments2)
-
-        val lineData = LineData(dataSets)
-
-        treatmentsChart.data = lineData
-        treatmentsChart.xAxis.valueFormatter = MyValueFormatter(datesData)
+    // TODO: Put the exact color values
+    private fun getPillIconForAdherence(adherence: FollowTreatments) = when (adherence) {
+        FollowTreatments.NO_TREATMENTS -> ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)!!.apply { setTint(Color.GRAY) }
+        FollowTreatments.FOLLOW_ALL -> ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)!!.apply { setTint(Color.GREEN) }
+        FollowTreatments.FOLLOW_SOME -> ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)!!.apply { setTint(Color.YELLOW) }
+        FollowTreatments.FOLLOW_NONE -> ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)!!.apply { setTint(Color.RED) }
     }
 
-    private fun sortDataPerDate(bloodPressureData: HashMap<String, Pair<Float, Float>>): SortedMap<String, Pair<Float, Float>> {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        return bloodPressureData.toSortedMap(compareBy { LocalDate.parse(it, formatter) })
+    private fun setTreatmentsData(chart: LineChart, treatmentsData : List<TreatmentChartValue>) {
+        val allDatesValues = treatmentsData.map { it.date.toString() }
+        val treatmentsEntries = treatmentsData.mapIndexed { index, value -> Entry(index.toFloat(), 230f, getPillIconForAdherence(value.followTreatments)) }
+        val dataSetTreatments = LineDataSet(treatmentsEntries, "")
+
+        // Hide the native circle and value text, we only show the pill icon
+        dataSetTreatments.valueTextSize = 0f
+        dataSetTreatments.color = Color.TRANSPARENT
+        dataSetTreatments.setCircleColor(Color.TRANSPARENT)
+
+        chart.data = LineData(listOf(dataSetTreatments))
+        chart.xAxis.valueFormatter = MyValueFormatter(allDatesValues)
+        // Listener to sync the two charts scroll
+        chart.onChartGestureListener = this
     }
 
-    private fun setChartMaxAndMinimumLimitLines() {
-        val minLimitSystolic = LimitLine(80f)
-        applyGreenLine(minLimitSystolic)
-        applyLimitLineStyle(minLimitSystolic)
+    private fun setChartMaxAndMinimumLimitLines(chart: LineChart) {
+        val minLimitSystolic = generateDashedLineAt(80f, Color.GREEN)
+        val maxLimitSystolic = generateDashedLineAt(90f, Color.RED)
 
-        val maxLimitSystolic = LimitLine(90f)
-        applyRedLine(maxLimitSystolic)
-        applyLimitLineStyle(maxLimitSystolic)
+        val minLimitDiastolic = generateDashedLineAt(130f, Color.GREEN)
+        val maxLimitDiastolic = generateDashedLineAt(140f, Color.RED)
 
-        val minLimitDiastolic = LimitLine(130f)
-        applyGreenLine(minLimitDiastolic)
-        applyLimitLineStyle(minLimitDiastolic)
-
-        val maxLimitDiastolic = LimitLine(140f)
-        applyRedLine(maxLimitDiastolic)
-        applyLimitLineStyle(maxLimitDiastolic)
-
-        bloodPressureChart.axisLeft.addLimitLine(minLimitSystolic)
-        bloodPressureChart.axisLeft.addLimitLine(maxLimitSystolic)
-        bloodPressureChart.axisLeft.addLimitLine(minLimitDiastolic)
-        bloodPressureChart.axisLeft.addLimitLine(maxLimitDiastolic)
+        chart.axisLeft.addLimitLine(minLimitSystolic)
+        chart.axisLeft.addLimitLine(maxLimitSystolic)
+        chart.axisLeft.addLimitLine(minLimitDiastolic)
+        chart.axisLeft.addLimitLine(maxLimitDiastolic)
     }
 
-    private fun applyRedLine(upperLimitDiastolic: LimitLine) {
-        upperLimitDiastolic.lineColor = Color.RED
-    }
-
-    private fun applyGreenLine(lowerLimitDiastolic: LimitLine) {
-        lowerLimitDiastolic.lineColor = Color.GREEN
-    }
-
-    private fun applyLimitLineStyle(limitLine: LimitLine) {
-        limitLine.lineWidth = 2f
-        limitLine.enableDashedLine(10f, 10f, 0f)
-    }
+    private fun generateDashedLineAt(value: Float, color: Int) = LimitLine(value).apply { lineColor = color; lineWidth = 2f; enableDashedLine(10f, 10f, 0f) }
 
     private fun setChartFormat(mChart: LineChart) {
         mChart.description.isEnabled = false
@@ -314,4 +279,8 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener {
     override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
         // Explicit blank, not needed
     }
+}
+
+enum class FollowTreatments {
+    NO_TREATMENTS, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
 }
