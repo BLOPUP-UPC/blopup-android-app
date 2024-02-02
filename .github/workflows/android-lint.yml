@@ -21,7 +21,7 @@ jobs:
 
       - name: Run Lint
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          git diff --name-only HEAD~1 HEAD > changed_files.txt
           ./gradlew lintDebug --include $(cat changed_files.txt | tr '\n' ',')
           lintResult=$?
           if [ $lintResult -ne 0 ]; then
