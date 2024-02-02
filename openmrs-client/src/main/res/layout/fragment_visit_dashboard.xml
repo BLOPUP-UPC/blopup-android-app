@@ -24,7 +24,6 @@
         android:name="edu.upc.openmrs.activities.visitdashboard.CallDoctorBanner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:backgroundTint="@color/white"
         android:elevation="5dp"
         android:visibility="gone" />

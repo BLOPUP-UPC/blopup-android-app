@@ -15,13 +15,6 @@
   -->
 
 <resources>
-    <style name="ActionBar.Solid.Openmrs" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@drawable/ab_solid_openmrs</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_openmrs</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_openmrs</item>
-        <item name="progressBarStyle">@style/ProgressBar.Openmrs</item>
-    </style>
-	
     <style name="DropDownListView.Openmrs" parent="Widget.AppCompat.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_openmrs</item>
     </style>
@@ -39,10 +32,6 @@
     
     <style name="ProgressBar.Openmrs" parent="Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_openmrs</item>
-    </style>
-    
-    <style name="ActionButton.CloseMode.Openmrs" parent="Widget.AppCompat.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_openmrs</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">

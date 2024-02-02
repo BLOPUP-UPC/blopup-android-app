@@ -93,7 +93,7 @@
                 android:id="@+id/visitStatusLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Active visit"
+                android:hint="@string/hint_active_visit"
                 android:textStyle="bold" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

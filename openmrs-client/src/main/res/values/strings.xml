@@ -639,5 +639,8 @@
     <string name="hint_weight_value" translatable="false">82</string>
     <string name="hint_patient_visit_start_date" translatable="false">03/11/2023 12:08</string>
     <string name="hint_visit_location" translatable="false">in Pharmacy</string>
+    <string name="hint_active_visit" translatable="false">Active visit</string>
+    <string name="hint_medication_name" translatable="false">Parecetamol</string>
+    <string name="hint_medication_type" translatable="false">Beta blocker - ARA II</string>
     />
 </resources>

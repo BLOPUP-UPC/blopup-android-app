@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
-                    android:gravity="top|left"
+                    android:gravity="top|start"
                     android:hint="@string/contact_us_message_hint"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences|textMultiLine"
