@@ -1,0 +1,30 @@
+name: Android Lint
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  release-debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Run Lint
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          ./gradlew lintDebug --include $(cat changed_files.txt | tr '\n' ',')
+          lintResult=$?
+          if [ $lintResult -ne 0 ]; then
+          echo "Lint check failed. Aborting build."
+          exit 1
+          fi
