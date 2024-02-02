@@ -251,6 +251,10 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
         //min values in the axis with the values
         mChart.axisLeft.axisMinimum = minBloodPressureValueShown
+        mChart.isDoubleTapToZoomEnabled = false
+        mChart.isScaleYEnabled = false
+        // TODO: Enable if we are able to sync pinch zoom
+        mChart.isScaleXEnabled = false
     }
 
     private fun applyBloodPressureChartStyles(mChart: LineChart) {
@@ -340,7 +344,8 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     }
 
     override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
-        // Explicit blank, not needed
+        // TODO: Option to sync pinch zoom
+        Log.i("Gesture", "SCALE X: $scaleX Y: $scaleY")
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
