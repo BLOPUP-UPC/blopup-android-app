@@ -20,8 +20,12 @@ import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import edu.upc.R
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.treatmentChartToggle
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.utilities.ApplicationConstants
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -33,6 +37,9 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     private lateinit var bloodPressureChart: LineChart
     private lateinit var treatmentsChart: LineChart
     private val maxValuesInView = 3f
+
+    private val maxBloodPressureValueShown = 200f
+    private val minBloodPressureValueShown = 40f
 
     companion object {
         const val BLOOD_PRESSURE = "bloodPressure"
@@ -49,6 +56,13 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         treatmentsChart = mBinding.treatmentsChart
 
         val bloodPressureData = getBloodPressureValues()
+
+        treatmentChartToggle.check({
+            bloodPressureChart = mBinding.bloodPressureChartWithMargin
+            bloodPressureChart.makeVisible()
+            mBinding.bloodPressureChart.makeGone()
+            treatmentsChart.makeVisible()
+        })
 
         setBloodPressureData(bloodPressureChart, bloodPressureData)
         setTreatmentsData(treatmentsChart, getTreatmentValues(bloodPressureData))
@@ -181,13 +195,17 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
         // To show only
         mChart.xAxis.granularity = 1f
+
+        //min values in the axis with the values
+        mChart.axisLeft.axisMinimum = minBloodPressureValueShown
     }
 
-    private val maxBloodPressureValueShown = 200f
-    private val minBloodPressureValueShown = 40f
-
     private fun applyBloodPressureChartStyles(mChart: LineChart) {
-        mChart.setTouchEnabled(false)
+        treatmentChartToggle.check({
+            mChart.setTouchEnabled(false)
+        }, {
+            mChart.setTouchEnabled(true)
+        })
         //to display the dates only in the bottom and not in the top as well
         mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         mChart.xAxis.axisLineWidth = 2f
@@ -196,7 +214,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         mChart.axisLeft.axisLineColor = Color.BLACK
         //max and min values in the axis with the values
         mChart.axisLeft.axisMaximum = maxBloodPressureValueShown
-        mChart.axisLeft.axisMinimum = minBloodPressureValueShown
 
         // Remove horizontal grid lines
         mChart.axisLeft.gridColor = Color.TRANSPARENT
@@ -204,8 +221,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
     private fun applyTreatmentsChartStyles(mChart: LineChart) {
         mChart.setTouchEnabled(true)
-        mChart.xAxis.disableGridDashedLine()
-        mChart.xAxis.disableAxisLineDashedLine()
         mChart.xAxis.axisLineColor = Color.TRANSPARENT
         mChart.xAxis.textColor = Color.TRANSPARENT
         // Hide vertical grid lines
@@ -213,7 +228,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
         // We want to show the pill above any possible value
         mChart.axisLeft.axisMaximum = maxBloodPressureValueShown + 40f
-        mChart.axisLeft.axisMinimum = minBloodPressureValueShown
         // Remove horizontal grid lines
         mChart.axisLeft.gridColor = Color.TRANSPARENT
         // Hide left axis
