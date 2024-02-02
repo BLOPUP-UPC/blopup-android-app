@@ -637,5 +637,6 @@
     <string name="hint_pulse_value" translatable="false">60</string>
     <string name="hint_height_value" translatable="false">183</string>
     <string name="hint_weight_value" translatable="false">82</string>
+    <string name="hint_patient_visit_start_date" translatable="false">03/11/2023 12:08</string>
     />
 </resources>
