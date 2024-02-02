@@ -1,6 +1,7 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
+        maven { url 'https://jitpack.io'}
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
@@ -70,7 +71,7 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
     }
 
@@ -162,7 +163,7 @@ android {
 repositories {
     maven { url 'https://yanzm.github.io/MaterialTabHost/repository' }
     mavenCentral()
-    jcenter()
+    jcenter ()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     google()
 }
@@ -217,7 +218,6 @@ dependencies {
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:${versions.chuckerLibrary}"
 
     // Third Party UI Libraries
-    implementation "org.adw.library:discrete-seekbar:${versions.seekbar}"
     implementation "com.github.PhilJay:MPAndroidChart:${versions.MPAndroidChart}"
     implementation "com.github.amlcurran.showcaseview:library:${versions.showcaseview}"
     implementation "org.mindrot:jbcrypt:${versions.jbcrypt}"
@@ -254,14 +254,14 @@ dependencies {
 
     // add the Firebase SDK for Google Analytics
     // The app need this to init in Firebase console
-    implementation 'com.google.firebase:firebase-analytics:21.3.0'
+    implementation 'com.google.firebase:firebase-analytics:21.4.0'
 
     // Add the Firebase SDK for Crashlytics.
     implementation 'com.google.firebase:firebase-crashlytics:18.6.1'
 
     // Android coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
     // Kotlin arrow
@@ -297,7 +297,7 @@ dependencies {
     // Leak Canary
 //     debugImplementation "com.squareup.leakcanary:leakcanary-android:2.12"
     // Debug database
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    debugImplementation 'com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v1.0.6'
     debugImplementation 'androidx.fragment:fragment-testing:1.5.7'
     debugImplementation "androidx.test:monitor:1.6.1"
 }
