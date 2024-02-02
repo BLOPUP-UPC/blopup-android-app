@@ -91,8 +91,20 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
         // Create entries where x is 0 to n-1 and y is the value
         // Then we show the date in the x axis based on the order
-        val systolicEntries = bloodPressureData.mapIndexed { index, value -> Entry(index.toFloat(), value.systolic, getSystolicPointIcon(value.systolic)) }
-        val diastolicEntries = bloodPressureData.mapIndexed { index, value -> Entry(index.toFloat(), value.diastolic, getDiastolicPointIcon(value.diastolic)) }
+        val systolicEntries = bloodPressureData.mapIndexed { index, value ->
+            Entry(
+                index.toFloat(),
+                value.systolic,
+                getSystolicPointIcon(value.systolic)
+            )
+        }
+        val diastolicEntries = bloodPressureData.mapIndexed { index, value ->
+            Entry(
+                index.toFloat(),
+                value.diastolic,
+                getDiastolicPointIcon(value.diastolic)
+            )
+        }
 
         val systolicLine = LineDataSet(systolicEntries, "")
         val diastolicLine = LineDataSet(diastolicEntries, "")
@@ -126,13 +138,24 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
         val bloodPressureData =
             mBundle!!.getSerializable(BLOOD_PRESSURE) as HashMap<String, Pair<Float, Float>>
-        val chartValues = bloodPressureData.map { BloodPressureChartValue(LocalDate.parse(it.key, formatter), it.value.first, it.value.second) }
+        val chartValues = bloodPressureData.map {
+            BloodPressureChartValue(
+                LocalDate.parse(it.key, formatter),
+                it.value.first,
+                it.value.second
+            )
+        }
         // We sort the values by date and remove duplicates keeping the last visit of the day
         return chartValues.sortedBy { it.date }.distinctBy { it.date }
     }
 
     private fun getTreatmentValues(bloodPressureValues: List<BloodPressureChartValue>): List<TreatmentChartValue> {
-        return bloodPressureValues.map { TreatmentChartValue(it.date, getAdherenceForDate(it.date)) }
+        return bloodPressureValues.map {
+            TreatmentChartValue(
+                it.date,
+                getAdherenceForDate(it.date)
+            )
+        }
     }
 
     private fun getAdherenceForDate(date: LocalDate): FollowTreatments {
@@ -142,15 +165,51 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
     // TODO: Put the exact color values
     private fun getPillIconForAdherence(adherence: FollowTreatments) = when (adherence) {
-        FollowTreatments.NO_TREATMENTS -> ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)!!.apply { setTint(Color.GRAY) }
-        FollowTreatments.FOLLOW_ALL -> ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)!!.apply { setTint(Color.GREEN) }
-        FollowTreatments.FOLLOW_SOME -> ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)!!.apply { setTint(Color.YELLOW) }
-        FollowTreatments.FOLLOW_NONE -> ContextCompat.getDrawable(applicationContext, R.drawable.ic_treatment_pill)!!.apply { setTint(Color.RED) }
+        FollowTreatments.NO_TREATMENTS -> ContextCompat.getDrawable(
+            applicationContext,
+            R.drawable.ic_treatment_pill
+        )!!.apply { setTint(Color.GRAY) }
+
+        FollowTreatments.FOLLOW_ALL -> ContextCompat.getDrawable(
+            applicationContext,
+            R.drawable.ic_treatment_pill
+        )!!.apply { setTint(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.bp_normal
+            )) }
+
+        FollowTreatments.FOLLOW_SOME -> ContextCompat.getDrawable(
+            applicationContext,
+            R.drawable.ic_treatment_pill
+        )!!.apply { setTint(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.bp_ht_stage_I
+            )) }
+
+        FollowTreatments.FOLLOW_NONE -> ContextCompat.getDrawable(
+            applicationContext,
+            R.drawable.ic_treatment_pill
+        )!!.apply {
+            setTint(
+                ContextCompat.getColor(
+                    applicationContext,
+                    R.color.bp_ht_stage_II_C
+                )
+            )
+        }
     }
 
-    private fun setTreatmentsData(chart: LineChart, treatmentsData : List<TreatmentChartValue>) {
+    private fun setTreatmentsData(chart: LineChart, treatmentsData: List<TreatmentChartValue>) {
         val allDatesValues = treatmentsData.map { it.date.toString() }
-        val treatmentsEntries = treatmentsData.mapIndexed { index, value -> Entry(index.toFloat(), 230f, getPillIconForAdherence(value.followTreatments)) }
+        val treatmentsEntries = treatmentsData.mapIndexed { index, value ->
+            Entry(
+                index.toFloat(),
+                230f,
+                getPillIconForAdherence(value.followTreatments)
+            )
+        }
         val dataSetTreatments = LineDataSet(treatmentsEntries, "")
 
         // Hide the native circle and value text, we only show the pill icon
@@ -178,7 +237,8 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         chart.axisLeft.addLimitLine(maxLimitDiastolic)
     }
 
-    private fun generateDashedLineAt(value: Float, color: Int) = LimitLine(value).apply { lineColor = color; lineWidth = 2f; enableDashedLine(10f, 10f, 0f) }
+    private fun generateDashedLineAt(value: Float, color: Int) =
+        LimitLine(value).apply { lineColor = color; lineWidth = 2f; enableDashedLine(10f, 10f, 0f) }
 
     private fun applyCommonChartStyles(mChart: LineChart) {
         mChart.description.isEnabled = false
