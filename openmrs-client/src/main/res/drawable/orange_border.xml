@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@android:color/transparent" /> <!-- Set to transparent to avoid background color -->
-    <stroke
-        android:width="2dp"
-        android:color="@color/color_accent"
-    />
-</shape>

@@ -18,11 +18,6 @@
     <string name="action_settings" tools:ignore="MissingTranslation">Settings</string>
     <string name="action_logout" tools:ignore="MissingTranslation">Logout</string>
     <string name="action_location" tools:ignore="MissingTranslation">Location</string>
-    <string name="snackbar_nonvisitting_patients" tools:ignore="MissingTranslation">Vital signs can only be captured in patients with an active visit.</string>
-    <string name="no_death_concepts_in_server" tools:ignore="MissingTranslation">Please, add the possible causes of death on the server</string>
-    <string name="admission_provider_role" tools:ignore="MissingTranslation">Provider role:</string>
-
-    <string name="alphanumeric_postal_code" tools:ignore="MissingTranslation">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 </string>
 
     <!-- Login view -->
     <string name="login_button" tools:ignore="MissingTranslation">Login</string>
@@ -32,8 +27,6 @@
     <string name="req_star" tools:ignore="MissingTranslation"><![CDATA[<font color=\'#616161\'> * </font>]]></string>
     <string name="warning_dialog_title" tools:ignore="MissingTranslation">Warning</string>
     <string name="warning_lost_data_dialog" tools:ignore="MissingTranslation">Changing the URL, username or password will erase all the data. Are you sure?</string>
-    <string name="forgot_button_ok" tools:ignore="MissingTranslation">Dismiss</string>
-    <string name="login_online" translatable="false">Online</string>
 
     <!-- AddEditPatient -->
     <string name="emptyerror" tools:ignore="MissingTranslation">Required</string>
@@ -41,24 +34,13 @@
     <string name="choose_options_error" tools:ignore="MissingTranslation">Please, choose at least one option</string>
     <string name="fname_invalid_error" tools:ignore="MissingTranslation">Given name cannot contain symbols or numbers</string>
     <string name="empty_value" tools:ignore="MissingTranslation">\u0020</string>
-    <string name="midname_invalid_error" tools:ignore="MissingTranslation">Middle name cannot contain symbols or numbers</string>
-    <string name="lname_invalid_error" tools:ignore="MissingTranslation">Family name cannot contain symbols or numbers</string>
-    <string name="dob_error" tools:ignore="MissingTranslation">Date should be between %1$s and %2$s</string>
     <string name="reg_firstname_hint" tools:ignore="MissingTranslation">Name*</string>
-    <string name="reg_contact_firstname_hint" tools:ignore="MissingTranslation">First Name</string>
-    <string name="reg_midname_hint" tools:ignore="MissingTranslation">Middle Name</string>
     <string name="reg_surname_hint" tools:ignore="MissingTranslation">Family name*</string>
-    <string name="reg_document_id_hint" tools:ignore="MissingTranslation">Document ID</string>
-    <string name="reg_phone_number_hint" tools:ignore="MissingTranslation">Phone number</string>
     <string name="reg_ques_name" tools:ignore="MissingTranslation">Patient\’s name</string>
     <string name="reg_ques_gender" tools:ignore="MissingTranslation">Patient\'s gender*</string>
     <string name="reg_ques_dob" tools:ignore="MissingTranslation">Patient\'s birth date*</string>
     <string name="label_or" tools:ignore="MissingTranslation">Or</string>
     <string name="country_of_birth_label" tools:ignore="MissingTranslation">Country of birth*</string>
-    <string name="addr1_hint" tools:ignore="MissingTranslation">Address Line 1</string>
-    <string name="addr2_hint" tools:ignore="MissingTranslation">Address Line 2</string>
-    <string name="addr_invalid_error" tools:ignore="MissingTranslation">Address cannot contain invalid characters.</string>
-    <string name="atleastone" tools:ignore="MissingTranslation">Fill at least one address field</string>
     <string name="male" tools:ignore="MissingTranslation">Male</string>
     <string name="female" tools:ignore="MissingTranslation">Female</string>
     <string name="non_binary" tools:ignore="MissingTranslation">Non binary</string>
@@ -68,9 +50,6 @@
     <string name="register_patient_error" tools:ignore="MissingTranslation">Something went wrong and the patient has not been created. Please, try again.</string>
     <string name="update_patient_success" tools:ignore="MissingTranslation">Patient %s updated</string>
     <string name="update_patient_error" tools:ignore="MissingTranslation">Patient %s cannot be updated due to server error</string>
-
-    <!-- Authentication Failed dialog -->
-    <string name="auth_failed_dialog_message" tools:ignore="MissingTranslation">Incorrect username or password entered. Please try again.</string>
 
     <!-- SimilarPatients dialog -->
     <string name="similar_patients_dialog_title" tools:ignore="MissingTranslation">Similar patients found</string>
@@ -91,8 +70,7 @@
     <!-- Start visit dialog unsuccessful-->
     <string name="start_visit_unsuccessful_dialog_title" tools:ignore="MissingTranslation">Start New Visit</string>
     <string name="start_visit_unsuccessful_dialog_message" tools:ignore="MissingTranslation">There is an active visit for %1$s. You can cancel and return to the active visit, or close it and start a new one.</string>
-    <!-- Delete patient dialog message -->
-    <string name="delete_patient_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to delete this patient?</string>
+
     <!-- Location dialog  -->
     <string name="location_dialog_title" tools:ignore="MissingTranslation">Select Location</string>
     <string name="location_dialog_current_location" tools:ignore="MissingTranslation">Current location: </string>
@@ -105,52 +83,29 @@
     <string name="dialog_button_ok" translatable="false">OK</string>
     <string name="dialog_button_confirm" tools:ignore="MissingTranslation">Confirm</string>
     <string name="dialog_button_register_new" tools:ignore="MissingTranslation">Register new</string>
-    <string name="dialog_button_merge" tools:ignore="MissingTranslation">Merge</string>
-    <string name="action_next" tools:ignore="MissingTranslation">Next</string>
     <string name="dialog_button_select_location" tools:ignore="MissingTranslation">Select Location</string>
-
-    <!-- Settings activity -->
-    <string name="settings_logs" tools:ignore="MissingTranslation">Logs</string>
-    <string name="settings_concepts_in_db" tools:ignore="MissingTranslation">Concepts in DB:</string>
-    <string name="settings_no_concepts_toast" tools:ignore="MissingTranslation">There are no concepts in DB!</string>
 
     <!-- FindPatients activity -->
     <string name="action_find_patients" tools:ignore="MissingTranslation">Find Patients</string>
     <string name="action_synced_patients" tools:ignore="MissingTranslation">Synced Patients</string>
-    <string name="action_download_patients" tools:ignore="MissingTranslation">Download Patients</string>
-    <string name="action_add_patients" tools:ignore="MissingTranslation">Add Patients</string>
     <string name="search_patient_hint" tools:ignore="MissingTranslation">Patient name</string>
     <string name="search_patient_no_result_for_query" tools:ignore="MissingTranslation">No results found for query"</string>
-    <string name="select_all_downloadable_data" tools:ignore="MissingTranslation">Select all</string>
-    <string name="download_selected_patient_data" tools:ignore="MissingTranslation">Download Patient Data</string>
-    <string name="download_multiple" tools:ignore="MissingTranslation">Download Multiple</string>
 
     <!-- Dashboard Activity -->
     <string name="dashboard_search_icon_label" tools:ignore="MissingTranslation">Find Patients</string>
     <string name="dashboard_registry_icon_label" tools:ignore="MissingTranslation">Register new patient</string>
-    <string name="dashboard_visits_icon_label" tools:ignore="MissingTranslation">Active Visits</string>
-    <string name="dashboard_forms_icon_label" tools:ignore="MissingTranslation">Form Entry</string>
     <string name="dashboard_exit_toast_message" tools:ignore="MissingTranslation">Please press BACK again to exit</string>
-
-    <!-- row_find_synced_patients layout-->
-    <string name="find_patients_row_checkbox_download_label" tools:ignore="MissingTranslation">Download</string>
 
     <!-- Patient Dashboard Activity -->
     <string name="action_synchronize_patients" tools:ignore="MissingTranslation">Synchronizing patient</string>
-    <string name="action_connecting_to_the_hardware" tools:ignore="MissingTranslation">Connecting to the hardware…</string>
     <string name="action_update_patient_data" tools:ignore="MissingTranslation">Update Patient</string>
     <string name="synchronize_patient_successful" tools:ignore="MissingTranslation">Successfully synchronized patient data.</string>
     <string name="synchronize_patient_error" tools:ignore="MissingTranslation">Synchronizing patient data was unsuccessful</string>
-    <string name="delete_patient_successful" tools:ignore="MissingTranslation">Patient deleted successfully</string>
-    <string name="delete_patient_error" tools:ignore="MissingTranslation">Error with deleting patient</string>
     <string name="get_patient_from_database_error" tools:ignore="MissingTranslation">Failed to fetch patient from database</string>
     <string name="action_start_visit" tools:ignore="MissingTranslation">Start visit</string>
     <string name="patient_scroll_tab_details_label" tools:ignore="MissingTranslation">Details</string>
-    <string name="patient_scroll_tab_diagnosis_label" tools:ignore="MissingTranslation">Diagnosis</string>
     <string name="patient_scroll_tab_visits_label" tools:ignore="MissingTranslation">Visits</string>
-    <string name="patient_scroll_tab_vitals_label" tools:ignore="MissingTranslation">Vitals</string>
     <string name="patient_scroll_tab_charts_label" tools:ignore="MissingTranslation">Charts</string>
-    <string name="download_started" tools:ignore="MissingTranslation">"Downloading…"</string>
     <string name="action_starting_visit" tools:ignore="MissingTranslation">"Starting Visit"</string>
     <string name="visit_start_error" tools:ignore="MissingTranslation">Failed to start a visit</string>
 
@@ -162,44 +117,15 @@
     <!-- fragment_patient_details layout -->
     <string name="patient_identifier" translatable="false"># %1$s</string>
     <string name="patient_details_birth_date_label" tools:ignore="MissingTranslation">Birth date</string>
-    <string name="patient_contact_info_label" tools:ignore="MissingTranslation">Contact Information</string>
-    <string name="patient_contact_label" tools:ignore="MissingTranslation">Contact</string>
-    <string name="patient_address_label" tools:ignore="MissingTranslation">Address</string>
-    <string name="patient_city_label" tools:ignore="MissingTranslation">City</string>
-    <string name="patient_postal_label" tools:ignore="MissingTranslation">Postal Code</string>
-    <string name="patient_state_label" tools:ignore="MissingTranslation">State</string>
-    <string name="patient_country_label" tools:ignore="MissingTranslation">Country</string>
     <string name="date_picker_title" tools:ignore="MissingTranslation">Select date of birth</string>
-
-    <!-- Find Active visit activity -->
-    <string name="action_active_visits" tools:ignore="MissingTranslation">Active Visits</string>
-    <string name="action_form_entry" tools:ignore="MissingTranslation">Form Entry</string>
-    <string name="action_find_visits" tools:ignore="MissingTranslation">Find Active Visits</string>
-    <string name="search_visits_no_results" tools:ignore="MissingTranslation">No active visits in database</string>
-
-    <!-- ACBase activity -->
-    <string name="error_email_subject_app_crashed" tools:ignore="MissingTranslation">OpenMRS android client crashed</string>
-    <string name="choose_a_email_client" tools:ignore="MissingTranslation">Choose an Email client :</string>
-
-    <!-- Patients Vitals Fragment -->
-    <string name="form_error" tools:ignore="MissingTranslation">This form is not supported</string>
 
     <!-- fragment_patient_visits layout -->
     <string name="active_visit_label" tools:ignore="MissingTranslation">Active visit</string>
     <string name="past_visit_label" tools:ignore="MissingTranslation">Past visit</string>
     <string name="visit_in" tools:ignore="MissingTranslation">in %1$s</string>
 
-    <!-- fragment_patient_vitals layout -->
-    <string name="last_vitals_label" tools:ignore="MissingTranslation">Last Vitals: </string>
-    <string name="last_vitals_none_label" tools:ignore="MissingTranslation">None</string>
-
     <!-- fragment_patient_diagnosis layout -->
     <string name="empty_diagnoses_list" tools:ignore="MissingTranslation">Patient has no diagnoses yet.</string>
-    <string name="diagnosis_note_label" tools:ignore="MissingTranslation">Text of encounter note</string>
-
-    <!--fragment_vitals_charts_layout-->
-    <string name="list_vital_selector_show" tools:ignore="MissingTranslation">show chart</string>
-    <string name="list_vital_selector_hide" tools:ignore="MissingTranslation">hide chart</string>
 
     <!--fragment_patient_charts layout-->
     <string name="no_vitals_recorded" tools:ignore="MissingTranslation">No vitals recorded</string>
@@ -208,50 +134,30 @@
     <string name="action_end_visit" tools:ignore="MissingTranslation">End visit</string>
     <string name="visit_dashboard_label" tools:ignore="MissingTranslation">Encounters</string>
     <string name="list_visit_selector_show" tools:ignore="MissingTranslation">Show details</string>
-    <string name="list_visit_selector_hide" tools:ignore="MissingTranslation">Hide details</string>
     <string name="vitals" tools:ignore="MissingTranslation">Vitals</string>
-    <string name="visit_exp_list_empty" tools:ignore="MissingTranslation">Visit has no encounters yet.</string>
     <string name="visit_fetching_error" tools:ignore="MissingTranslation">Error with fetching the visit</string>
     <string name="visit_ending_error" tools:ignore="MissingTranslation">Error ending this visit</string>
-    <string name="patient_not_yet_registered" tools:ignore="MissingTranslation">Patient not yet registered, cannot create encounter.</string>
 
-    <string name="treatment_label" translatable="false">Treatment</string>
-    <string name="diagnosis_label" translatable="false">Diagnosis</string>
     <string name="visit_note" translatable="false">Notes</string>
     <string name="bmi_label" tools:ignore="MissingTranslation">Body Mass Index (BMI)</string>
 
     <!-- Capture Vitals activity -->
-    <string name="action_delete_patient" tools:ignore="MissingTranslation">Delete Patient</string>
     <string name="action_register_patient" tools:ignore="MissingTranslation">Register Patient</string>
-    <string name="failed_to_open_vitals_form" tools:ignore="MissingTranslation">An error occurred. Invalid or corrupted form file.</string>
-    <string name="active_visit_label_capture_vitals" tools:ignore="MissingTranslation">On Visit</string>
 
     <!-- Form Entry Activity -->
     <string name="empty_visits_list" tools:ignore="MissingTranslation">Patient has no visits yet.</string>
-    <string name="title_activity_form_create" translatable="false">FormCreateActivity</string>
 
     <!-- Recording Legal Consent -->
     <string name="record_patient_consent" tools:ignore="MissingTranslation">Record patient consent*</string>
-    <string name="recording_info" tools:ignore="MissingTranslation">Please wait until this recording is completed</string>
-    <string name="recording_inprogress" tools:ignore="MissingTranslation">Recording In Progress …</string>
 
     <!--Similar patient card strings-->
     <string name="gender_hint" tools:ignore="MissingTranslation">gender:</string>
     <string name="birthdate_hint" tools:ignore="MissingTranslation">birthdate:</string>
     <string name="address_hint" tools:ignore="MissingTranslation">address:</string>
-    <string name="demographics" tools:ignore="MissingTranslation">DEMOGRAPHICS</string>
     <string name="unable_to_login" tools:ignore="MissingTranslation">Unable to login?</string>
-    <string name="no_patient_selected" tools:ignore="MissingTranslation">No patient selected</string>
 
     <!--Matching Patient Activity-->
-    <string name="matching_patients_toolbar_title" tools:ignore="MissingTranslation">Merge Patients</string>
-    <string name="patient_registered_locally" tools:ignore="MissingTranslation">Patient registered locally</string>
-    <string name="similar_patients_on_server" tools:ignore="MissingTranslation">Similar patients exist on server</string>
     <string name="registration_core_info" tools:ignore="MissingTranslation">To use faster and more accurate similar patient resolution, upgrade the Registration Core Module to 1.7 or higher</string>
-    <string name="patient_register_success" tools:ignore="MissingTranslation">Patient registered successfully</string>
-    <string name="patient_register_fail" tools:ignore="MissingTranslation">Failed to register the patient</string>
-    <string name="patient_merge_success" tools:ignore="MissingTranslation">Patient merged successfully</string>
-    <string name="patient_merge_fail" tools:ignore="MissingTranslation">Failed to merge the patient</string>
 
     <!--ChartsView Activity-->
     <string name="charts_view_toolbar_title" tools:ignore="MissingTranslation">Charts View</string>
@@ -259,37 +165,14 @@
     <!-- Image content description strings -->
     <string name="openmrs_logo" tools:ignore="MissingTranslation">OpenMRS logo</string>
     <string name="toast_with_black_background" tools:ignore="MissingTranslation">Toast with black background</string>
-    <string name="edit_form" tools:ignore="MissingTranslation">Edit form</string>
 
     <!--Snackbar strings-->
-    <string name="snackbar_action_open" tools:ignore="MissingTranslation">Open</string>
-    <string name="snackbar_info_patient_downloaded" tools:ignore="MissingTranslation">Patient downloaded</string>
     <string name="invalid_login_or_password_message" tools:ignore="MissingTranslation">Invalid login or password, please try again.</string>
 
-    <!-- Permissions -->
-    <string name="permission_storage_neverask" tools:ignore="MissingTranslation">Storage write permission was denied with Never ask again, this permission is needed.</string>
-    <string name="button_allow" tools:ignore="MissingTranslation">Allow</string>
-    <string name="button_deny" tools:ignore="MissingTranslation">Deny</string>
-
     <!-- Layout strings -->
-    <string name="sync" tools:ignore="MissingTranslation">Sync</string>
     <string name="snackbar_edit" tools:ignore="MissingTranslation">EDIT</string>
 
-    <!--Activity Logs-->
-    <string name="title_activity_logs" tools:ignore="MissingTranslation">Logs</string>
-
-    <!--App Crash Dialog-->
-    <string name="crash_dialog_title" tools:ignore="MissingTranslation">Error occurred</string>
-    <string name="crash_dialog_message" tools:ignore="MissingTranslation">Sorry ! An Unknown error has occurred. Please report the details to developers so that it can be resolved as soon as possible.</string>
-    <string name="crash_dialog_positive_button" tools:ignore="MissingTranslation">Restart</string>
-    <string name="crash_dialog_negative_button" tools:ignore="MissingTranslation">Close</string>
-    <string name="crash_dialog_neutral_button" tools:ignore="MissingTranslation">Send report and restart</string>
-
     <!-- Syncbutton toasts -->
-    <string name="disconn_server" tools:ignore="MissingTranslation">Disconnecting from server</string>
-    <string name="reconn_server" tools:ignore="MissingTranslation">Reconnecting to server</string>
-    <string name="connected_to_server_message" tools:ignore="MissingTranslation">You are now connected!</string>
-    <string name="dialog_title_are_you_sure" tools:ignore="MissingTranslation">Are you sure?</string>
     <string name="dialog_title_reset_patient" tools:ignore="MissingTranslation">Reset patient data?</string>
     <string name="dialog_message_data_lost" tools:ignore="MissingTranslation">All patient information entered will be lost.</string>
     <string name="dialog_button_stay" tools:ignore="MissingTranslation">Stay</string>
@@ -302,65 +185,27 @@
     <string name="action_submit" tools:ignore="MissingTranslation">Register</string>
     <string name="action_reset" tools:ignore="MissingTranslation">Reset</string>
 
-    <string name="delete_multiple_patients" tools:ignore="MissingTranslation">Delete Patients?</string>
-    <string name="delete_multiple_patients_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to delete these patients?</string>
-    <string name="multiple_patients_deleted" tools:ignore="MissingTranslation">Patients Deleted Successfully</string>
     <string name="location_successfully_updated" tools:ignore="MissingTranslation">Location Updated Successfully</string>
-    <string name="delete" tools:ignore="MissingTranslation">delete</string>
     <string name="rate_us_string" tools:ignore="MissingTranslation">Rate us</string>
-    <string name="settings_frag_size" tools:ignore="MissingTranslation">Size:</string>
     <string name="frag_settings_build" tools:ignore="MissingTranslation">Build:</string>
-    <string name="action_provider_management" tools:ignore="MissingTranslation">Manage Providers</string>
-    <string name="unable_to_fetch_providers" tools:ignore="MissingTranslation">Unable to fetch Providers!</string>
 
     <!-- Provider Management -->
-    <string name="provider_manager" tools:ignore="MissingTranslation">Provider Manager</string>
-    <string name="action_find_providers" tools:ignore="MissingTranslation">Find Providers</string>
     <string name="delete_provider_success_msg" tools:ignore="MissingTranslation">Successfully deleted the provider!</string>
-    <string name="delete_provider_failure_msg" tools:ignore="MissingTranslation">Failed to delete provider.</string>
-    <string name="first_name_hint" tools:ignore="MissingTranslation">First Name</string>
-    <string name="last_name_hint" tools:ignore="MissingTranslation">Last Name</string>
-    <string name="identifier_hint" tools:ignore="MissingTranslation">Identifier</string>
-    <string name="identifier_description" tools:ignore="MissingTranslation">* Identifier can be anything. Eg. Doctor, Nurse, Clerk, etc</string>
     <string name="add_provider_success_msg" tools:ignore="MissingTranslation">Successfully added provider.</string>
-    <string name="add_provider_failure_msg" tools:ignore="MissingTranslation">Failed to add provider.</string>
     <string name="edit_provider_success_msg" tools:ignore="MissingTranslation">Successfully edited provider.</string>
-    <string name="edit_provider_failure_msg" tools:ignore="MissingTranslation">Failed to edit provider.</string>
-    <string name="title_provider_info" tools:ignore="MissingTranslation">Provider Info</string>
-    <string name="dialog_provider_retired" tools:ignore="MissingTranslation">Provider will be retired.</string>
-    <string name="title_dialog_matching_provider" tools:ignore="MissingTranslation">Found Similar Providers</string>
-    <string name="dialog_matching_provider_positive_btn" tools:ignore="MissingTranslation">Create Anyway</string>
-    <string name="label_dark_mode" tools:ignore="MissingTranslation">Dark Mode</string>
-    <string name="provider_tab_title" tools:ignore="MissingTranslation">Providers</string>
-    <string name="patients_tab_title" tools:ignore="MissingTranslation">Patients</string>
-    <string name="failed_provider_details" tools:ignore="MissingTranslation">Failed to get Provider details!</string>
-    <string name="retry_action" tools:ignore="MissingTranslation">Retry</string>
-
-    <!--activity_provider_dashboard  -->
-    <string name="surgeon" tools:ignore="MissingTranslation">Surgeon</string>
-
-    <!--fragment_patient_relationship-->
-    <string name="provider_patient" tools:ignore="MissingTranslation">Provider - Patient Relationship</string>
-
-    <!--row_provider_details-->
-    <string name="jake_smith" tools:ignore="MissingTranslation">Jake Smith</string>
-    <string name="doctor" tools:ignore="MissingTranslation">Doctor</string>
 
     <!--fragment_provider_relationship-->
-    <string name="provider_provider" tools:ignore="MissingTranslation">Provider - Provider Relationship</string>
     <string name="language" tools:ignore="MissingTranslation">Language</string>
 
     <string name="apply" tools:ignore="MissingTranslation">Apply</string>
 
     <!-- introduction Activity -->
-    <string name="intro_info" tools:ignore="MissingTranslation">Info</string>
     <string name="intro_welcome" tools:ignore="MissingTranslation">Welcome</string>
     <string name="intro_register" tools:ignore="MissingTranslation">Register Patients</string>
     <string name="intro_find" tools:ignore="MissingTranslation">Find Patients</string>
     <string name="intro_monitor" tools:ignore="MissingTranslation">Monitor Visits</string>
     <string name="intro_contact_us" tools:ignore="MissingTranslation">Contact Us</string>
     <string name="intro_location" tools:ignore="MissingTranslation">Location</string>
-    <string name="intro_settings" tools:ignore="MissingTranslation">Settings</string>
 
     <string name="intro_info_desc" tools:ignore="MissingTranslation">Blopup is considered a research app and any user should not rely on the application for medical purposes.</string>
     <string name="intro_welcome_desc" tools:ignore="MissingTranslation">The global OpenMRS community works together to build the world\'s leading open source electronic medical record system.</string>
@@ -375,99 +220,38 @@
     <string name="authenticate_check_service_error_response_message" tools:ignore="MissingTranslation">Error in Authenticate Check Service Response</string>
     <string name="authenticate_service_error_message" tools:ignore="MissingTranslation">Error in Authenticate Check Service</string>
 
-    <!--ChartsView Activity-->
-    <string name="dataset_entry_label" tools:ignore="MissingTranslation">Label</string>
-
-    <!--ConceptsDownload service-->
-    <string name="downloading_concepts_notification_message" tools:ignore="MissingTranslation">Downloading Concepts</string>
-
     <!--CustomFragment Dialog-->
     <string name="application_exit_logger_message" tools:ignore="MissingTranslation">Exit application</string>
 
     <!--FormDisplay Fragment-->
     <string name="form_data_submit_error" tools:ignore="MissingTranslation">Form submission error</string>
 
-    <!--FormDisplayPage Fragment-->
-    <string name="all_fields_empty_error_message" tools:ignore="MissingTranslation">All fields cannot be empty</string>
-    <string name="no_such_form_name_error_message" tools:ignore="MissingTranslation">There is no encounter type called %1$s</string>
-
-    <!--LastViewPatients Fragment-->
-    <string name="fetch_patients_remote_error" tools:ignore="MissingTranslation">Error with loading patients</string>
-    <string name="search_patient_remote_error" tools:ignore="MissingTranslation">Error with searching for the patient</string>
-    <string name="search_patient_remote_no_results" tools:ignore="MissingTranslation">No patients found.</string>
-
-    <!--LastViewedPatientRecyclerViewAdapter-->
-    <string name="failed_fetching_patient_data_error_message" tools:ignore="MissingTranslation">Failed to fetch patient data</string>
-
     <!--Login Fragment-->
     <string name="invalid_URL_message" tools:ignore="MissingTranslation">Invalid URL</string>
 
-    <!--Logs Fragment-->
-    <string name="logs_copied_to_clipboard_message" tools:ignore="MissingTranslation">Logs copied to clipboard</string>
-
-    <!--MergePatientsRecyclerView Adapter-->
-    <string name="only_one_patient_can_be_selected_notification_message" tools:ignore="MissingTranslation">You can select only one similar patient</string>
-
     <!--PatientRepository-->
-    <string name="patient_cannot_be_synced_due_to_server_error_message" tools:ignore="MissingTranslation">"Patient[ %1$i ] cannot be synced due to server error %2$s </string>
-    <string name="patient_cannot_be_synced_due_to_request_error_message" tools:ignore="MissingTranslation">"Patient[ %1$i ] cannot be synced due to request error %2$s </string>
-    <string name="patient_update_unsuccessful_server_error" tools:ignore="MissingTranslation">Patient %1$s cannot be updated due to server error will retry sync %2$s</string>
-    <string name="patent_and_form_data_sync_resumed" tools:ignore="MissingTranslation">Syncing switched on, attempting to sync patients and form data</string>
-    <string name="patent_data_synced_successfully" tools:ignore="MissingTranslation">Patient [ %1$i ] synced to server successfully</string>
 
     <!--VisitExpandableListAdapter-->
-    <string name="hiv_yes" tools:ignore="MissingTranslation">Yes</string>
-    <string name="hiv_no" tools:ignore="MissingTranslation">No</string>
-    <string name="hiv_unknown" tools:ignore="MissingTranslation">Unknown</string>
 
     <!-- Contact Activity -->
-    <string name="helpdesk_mail" translatable="false">helpdesk@openmrs.com</string>
-    <string name="go_to_forum" tools:ignore="MissingTranslation">Forum</string>
-    <string name="go_to_irc" tools:ignore="MissingTranslation">IRC</string>
-    <string name="open" tools:ignore="MissingTranslation">Go to</string>
-    <string name="email_us" tools:ignore="MissingTranslation">Email us</string>
-    <string name="contact_forum_url" translatable="false">https://talk.openmrs.org/</string>
-    <string name="contact_irc_url" translatable="false">https://wiki.openmrs.org/display/IRC/Home</string>
     <string name="contact_us" tools:ignore="MissingTranslation">Contact Us</string>
     <string name="contact_us_text" tools:ignore="MissingTranslation">Contact us</string>
-    <string name="no_mailing_client_found" tools:ignore="MissingTranslation">There are no email clients installed.</string>
-    <string name="contact_us_or" tools:ignore="MissingTranslation">OR</string>
     <string name="blopup_helpdesk" translatable="false">Blopup helpdesk</string>
     <string name="contact_us_message_hint" tools:ignore="MissingTranslation">Write your message here</string>
 
     <!-- ShowCaseView -->
     <string name="showcase_find_patients" tools:ignore="MissingTranslation">Click here to search through all the patients</string>
-    <string name="showcase_active_visits" tools:ignore="MissingTranslation">Click here to get the list of all the currently active visits</string>
     <string name="showcase_register_patient" tools:ignore="MissingTranslation">Click here to register a new patient</string>
-    <string name="showcase_form_entry" tools:ignore="MissingTranslation">Click here to capture vitals for a patient on a visit</string>
-    <string name="showcase_manage_providers" tools:ignore="MissingTranslation">Click here to manage providers for a patient on a visit.</string>
 
     <!-- Chart Activity -->
-    <string name="data_not_available_for_this_field" tools:ignore="MissingTranslation">No data available to display chart</string>
     <string name="data_type_not_available_for_this_field" tools:ignore="MissingTranslation">Chart not available for this field</string>
 
-    <string name="unidentified_patient" tools:ignore="MissingTranslation">Unidentified Patient</string>
-    <string name="dob_error_for_unidentified" tools:ignore="MissingTranslation">Please give a rough estimate of patient age</string>
-
-    <string name="unidentified_patient_name" tools:ignore="MissingTranslation">UNKNOWN</string>
     <string name="snackbar_server_error" tools:ignore="MissingTranslation">The entered server is currently down, please select a different one.</string>
-    <string name="snackbar_no_forms_found" tools:ignore="MissingTranslation">No Forms Found, try restarting the app.</string>
     <string name="snackbar_choose" tools:ignore="MissingTranslation">Choose</string>
-    <string name="snackbar_select" tools:ignore="MissingTranslation">Select</string>
     <string name="url_server_list" translatable="false">https://wiki.openmrs.org/display/ISM/OpenMRS+environments</string>
-    <string name="copied_text" translatable="false">Copied Text</string>
 
     <!--Admission Form -->
-    <string name="admission" tools:ignore="MissingTranslation">Admission</string>
     <string name="error_occurred" tools:ignore="MissingTranslation">An error Occurred, Try Again Later !!!</string>
-    <string name="admission_fields_required" tools:ignore="MissingTranslation">Please Select Required Field</string>
-    <string name="admission_date" tools:ignore="MissingTranslation">Admission Date :</string>
-    <string name="admission_admitted_by" tools:ignore="MissingTranslation">Admitted By :</string>
-    <string name="admission_encounter_role" tools:ignore="MissingTranslation">Encounter Role :</string>
-    <string name="admission_admitted_to" tools:ignore="MissingTranslation">Admitted To :</string>
-    <string name="admission_location_in_list" translatable="false">Admitted To %1$s</string>
-    <string name="discharge_location_in_list" translatable="false">Discharged From %1$s</string>
-    <string name="form_submitted_successfully" translatable="false">Form Submitted Successfully</string>
     <string name="vitals_successfully" translatable="false">Vitals completed</string>
 
     <!-- About Activity -->
@@ -476,20 +260,13 @@
     <string name="about_openmrs_1" tools:ignore="MissingTranslation">OpenMRS is a global community of truly dedicated, talented, and generous contributors who build and maintain the OpenMRS platform and other, foundational OpenMRS technical products.</string>
     <string name="about_openmrs_2" tools:ignore="MissingTranslation">OpenMRS is a platform that countries and implementers use to create a customized EMR system in response to actual needs on the ground.</string>
     <string name="more_about_openmrs" tools:ignore="MissingTranslation">MORE</string>
-    <string name="receive_vitals_from_bluetooth_button_text" tools:ignore="MissingTranslation">Receive vitals from blood pressure device</string>
     <string name="receive_vitals_from_bluetooth_button_error_message" tools:ignore="MissingTranslation">No app was found for receiving bluetooh data</string>
 
     <!-- BLOPUP -->
     <string name="toolbar_read_measurement_title" tools:ignore="MissingTranslation">Enable Connection</string>
-    <string name="toolbar_read_weight_title" tools:ignore="MissingTranslation">Reading weight</string>
-    <string name="toolbar_show_measurement_title" tools:ignore="MissingTranslation">Last Measurement</string>
     <string name="toolbar_bluetooth_icon_content_description" translatable="false">Bluetooth connection status icon</string>
-    <string name="systolic" tools:ignore="MissingTranslation">Systolic:</string>
-    <string name="diastolic" tools:ignore="MissingTranslation">Diastolic:</string>
-    <string name="heartRate" tools:ignore="MissingTranslation">Heart rate:</string>
     <string name="bluetooth_instructions" tools:ignore="MissingTranslation">To manually activate the Bluetooth, press START/STOP (14) for 5–6 seconds until the Bluetooth symbol starts flashing (29)</string>
     <string name="blood_pressure_diagram_content_description" tools:ignore="MissingTranslation">Blood Pressure device diagram</string>
-    <string name="save_measurements_button_text" tools:ignore="MissingTranslation">Save measurements</string>
     <string name="bt_exception_scan_message" tools:ignore="MissingTranslation">Scanning of devices failed</string>
     <string name="bt_exception_disconnect_message" tools:ignore="MissingTranslation">Failed to disconnect device</string>
     <string name="bt_exception_connection_message" tools:ignore="MissingTranslation">Connection to the device failed</string>
@@ -497,13 +274,8 @@
     <string name="bt_exception_pairing_message" tools:ignore="MissingTranslation">Pairing with the device failed</string>
     <string name="bt_exception_header" tools:ignore="MissingTranslation">Bluetooth error: %s</string>
     <string name="bt_exception_try_again" tools:ignore="MissingTranslation">Try again</string>
-    <string name="bpm_button_text" translatable="false">Calculate BPM</string>
-    <string name="weight_button_text" translatable="false">Calculate weight</string>
-    <string name="weight_kg" tools:ignore="MissingTranslation">Kg</string>
     <string name="scale_diagram_content_description" tools:ignore="MissingTranslation">Scale image content</string>
     <string name="bluetooth_scale_instructions" tools:ignore="MissingTranslation">1.-Turn on the mobile bluetooth\n2.-Get on the scale\n3.-Wait until the result appears on the mobile screen</string>
-    <string name="weight_name_text" tools:ignore="MissingTranslation">Weight: </string>
-    <string name="receive_vitals_from_scale_button_text" tools:ignore="MissingTranslation">Receive weight from Scale</string>
     <string name="app_tutorial" tools:ignore="MissingTranslation">Tutorial</string>
 
     <string name="vitals_form_title" translatable="false">Vitals Form</string>
@@ -529,7 +301,6 @@
     <string name="patient_with_no_values_to_show" tools:ignore="MissingTranslation">The patient has no values yet</string>
     <string name="blood_pressure_evolution" tools:ignore="MissingTranslation">Blood Pressure Evolution</string>
     <string name="country_of_birth" tools:ignore="MissingTranslation">Country of birth</string>
-    <string name="lengthy_text" tools:ignore="MissingTranslation">The UPC informs users of this website that it can automatically process the personal data provided to it when they use this website, in strict compliance with the provisions of the legislation on personal data protection. \n\n Users must guarantee the veracity and authenticity of the information and data they communicate when they use this website. Therefore, they must keep the information and data updated to ensure that the data correspond to reality at all times. \n\n Any false or inaccurate statement that arises from the information and data provided and any damages that this may cause are the responsibility of users.  In accordance with the provisions of EU Regulation 2016/679 by the Parliament and the Council, of 27 April 2016, on the protection of natural persons with regard to the processing of personal data and on the free movement of such data (hereinafter, the GDPR), we inform you that personal data are collected and processed for the purposes described in the UPC’s Processing Activity Register (https://rat.upc.edu). \n\n Specifically, with regard to multichannel processing by the service providing information and assistance to individuals who contact this university, the basic information on data protection is available on the following web page: https://rat.upc.edu/ca/registre-de-tractaments-de-dades-personals/F03.13.  Users may at any time exercise their right to access, correct, delete, challenge, limit the processing of and transfer their collected and filed data. Requests to exercise these rights must be addressed to the UPC Data Protection Officer in writing. \n\n Exercising these rights does not in any way affect access to the website or any subscriptions users may have.  The data recorded may be used to produce statistics, send scientific and academic information, manage incidents or conduct market studies, in addition to the purposes for which they have been expressly collected. \n\n  If necessary, the personal data provided by users may be communicated to a third party for the fulfilment of the aforementioned purposes only, in accordance with the provisions of Article 6 of the GDPR, for which the consent of the interested parties must be obtained whenever necessary. \n\n When users provide personal data to the UPC, they accept, fully and without reservations, that the UPC will process the personal data that are appropriate, pertinent and limited to the purposes of assisting them effectively and exercising its functions in accordance with the processing principles outlined in Chapter 2, Article 5 of the GDPR.  The UPC undertakes to comply with the obligation to maintain the secrecy of the personal data that are processed, and expresses its intention to implement measures to guarantee adequate security, including protection against unauthorised or illicit processing and loss, destruction or accidental damage, by applying the appropriate technical and organisational measures (“integrity and confidentiality”).</string>
     <string name="recording_in_progress" tools:ignore="MissingTranslation">Recording in Progress</string>
     <string name="start" tools:ignore="MissingTranslation">Start:</string>
     <string name="end" tools:ignore="MissingTranslation">End:</string>
@@ -574,7 +345,6 @@
     <string name="call_button_text" tools:ignore="MissingTranslation">CALL</string>
     <string name="cancel_capitalized" tools:ignore="MissingTranslation">CANCEL</string>
     <string name="hypertension_types" tools:ignore="MissingTranslation">Blood pressure types</string>
-    <string name="close_icon" translatable="false">Close icon</string>
     <string name="sys_130" translatable="false"><![CDATA[SYS < 130]]></string>
     <string name="diastolic_80" tools:ignore="MissingTranslation"><![CDATA[and DIA < 80]]></string>
     <string name="sys_130_plus" translatable="false">SYS 130+</string>
@@ -625,7 +395,6 @@
     <string name="treatment_created_successfully" tools:ignore="MissingTranslation">Treatment created successfully</string>
     <string name="treatment_updated_successfully" tools:ignore="MissingTranslation">Treatment updated successfully</string>
     <string name="treatment_adherence_label" tools:ignore="MissingTranslation">Is the patient following the treatments below?</string>
-    <string name="no_changes_detected" tools:ignore="MissingTranslation">No changes detected</string>
     <string name="error_loading_treatments" tools:ignore="MissingTranslation">Treatments could not be loaded.</string>
     <string name="error_loading_treatments_try_again" tools:ignore="MissingTranslation"><u>Try again</u></string>
     <string name="doctors_name" tools:ignore="MissingTranslation">Doctor\'s name</string>
@@ -642,5 +411,7 @@
     <string name="hint_active_visit" translatable="false">Active visit</string>
     <string name="hint_medication_name" translatable="false">Parecetamol</string>
     <string name="hint_medication_type" translatable="false">Beta blocker - ARA II</string>
-    />
+    <string name="treatment_label" translatable="false">Treatment</string><![CDATA[/>
+
+]]>
 </resources>
