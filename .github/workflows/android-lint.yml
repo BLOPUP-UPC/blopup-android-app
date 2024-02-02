@@ -20,4 +20,11 @@ jobs:
           cache: gradle
 
       - name: Run Lint
-        run: ./gradlew lintDebug
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          ./gradlew lintDebug --include $(cat changed_files.txt | tr '\n' ',')
+          lintResult=$?
+          if [ $lintResult -ne 0 ]; then
+          echo "Lint check failed. Aborting build."
+          exit 1
+          fi
