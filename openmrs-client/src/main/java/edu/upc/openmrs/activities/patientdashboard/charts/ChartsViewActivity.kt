@@ -163,7 +163,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         return FollowTreatments.values().toList().shuffled().first()
     }
 
-    // TODO: Put the exact color values
     private fun getPillIconForAdherence(adherence: FollowTreatments) = when (adherence) {
         FollowTreatments.NO_TREATMENTS -> ContextCompat.getDrawable(
             applicationContext,
@@ -173,33 +172,27 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         FollowTreatments.FOLLOW_ALL -> ContextCompat.getDrawable(
             applicationContext,
             R.drawable.ic_treatment_pill
-        )!!.apply { setTint(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.bp_normal
-            )) }
+        )!!.apply {
+            setTint(getColorFromResource(R.color.bp_normal))
+        }
 
         FollowTreatments.FOLLOW_SOME -> ContextCompat.getDrawable(
             applicationContext,
             R.drawable.ic_treatment_pill
-        )!!.apply { setTint(
-            ContextCompat.getColor(
-                applicationContext,
-                R.color.bp_ht_stage_I
-            )) }
+        )!!.apply {
+            setTint(getColorFromResource(R.color.bp_ht_stage_I))
+        }
 
         FollowTreatments.FOLLOW_NONE -> ContextCompat.getDrawable(
             applicationContext,
             R.drawable.ic_treatment_pill
         )!!.apply {
-            setTint(
-                ContextCompat.getColor(
-                    applicationContext,
-                    R.color.bp_ht_stage_II_C
-                )
-            )
+            setTint(getColorFromResource(R.color.bp_ht_stage_II_C))
         }
     }
+
+    private fun getColorFromResource(resource: Int) =
+        ContextCompat.getColor(applicationContext, resource)
 
     private fun setTreatmentsData(chart: LineChart, treatmentsData: List<TreatmentChartValue>) {
         val allDatesValues = treatmentsData.map { it.date.toString() }
