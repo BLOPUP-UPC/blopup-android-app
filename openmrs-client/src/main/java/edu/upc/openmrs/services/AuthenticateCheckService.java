@@ -43,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AuthenticateCheckService extends Service {
-    private IBinder mBinder = new SocketServerBinder();
+    private final IBinder mBinder = new SocketServerBinder();
     private boolean mRunning = false;
 
     @Override

@@ -59,8 +59,8 @@ import rx.Observable;
  */
 @Singleton
 public class PatientRepository extends BaseRepository {
-    private PatientDAO patientDAO;
-    private LocationRepository locationRepository;
+    private final PatientDAO patientDAO;
+    private final LocationRepository locationRepository;
 
     /**
      * Instantiates a new Patient repository.

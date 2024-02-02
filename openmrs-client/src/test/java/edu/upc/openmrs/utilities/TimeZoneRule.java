@@ -21,9 +21,9 @@ import java.util.TimeZone;
 
 public class TimeZoneRule extends TestWatcher {
 
-    private TimeZone origDefault = TimeZone.getDefault();
+    private final TimeZone origDefault = TimeZone.getDefault();
 
-    private TimeZone timeZone;
+    private final TimeZone timeZone;
 
     public TimeZoneRule(TimeZone timeZone) {
         this.timeZone = timeZone;

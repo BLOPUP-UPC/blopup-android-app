@@ -2,14 +2,14 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import edu.upc.openmrs.activities.patientdashboard.diagnosis.PatientDashboardDiagnosisViewModel
+import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.dao.EncounterDAO
 import edu.upc.sdk.library.models.Diagnosis
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.openmrs.activities.patientdashboard.diagnosis.PatientDashboardDiagnosisViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,13 +31,13 @@ class PatientDashboardDiagnosisViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var encounterDAO: EncounterDAO
 
-    lateinit var savedStateHandle: SavedStateHandle
+    private lateinit var savedStateHandle: SavedStateHandle
 
-    lateinit var viewModel: PatientDashboardDiagnosisViewModel
+    private lateinit var viewModel: PatientDashboardDiagnosisViewModel
 
     lateinit var diagnosisList: List<String>
 
-    lateinit var observations: MutableList<Observation>
+    private lateinit var observations: MutableList<Observation>
 
     @Before
     override fun setUp() {

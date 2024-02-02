@@ -25,10 +25,10 @@ import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 class RecordingRepositoryTest {
-    lateinit var testFilePath: String
+    private lateinit var testFilePath: String
     private lateinit var legalConsent: LegalConsent
-    lateinit var recordingRepository: RecordingRepository
-    lateinit var mockServer: MockWebServer
+    private lateinit var recordingRepository: RecordingRepository
+    private lateinit var mockServer: MockWebServer
 
 
     @Before

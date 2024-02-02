@@ -24,23 +24,20 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Lists;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import edu.upc.R;
-import kotlin.jvm.internal.ArrayIteratorKt;
 
 public class PatientChartsRecyclerViewAdapter extends RecyclerView.Adapter<PatientChartsRecyclerViewAdapter.ViewHolder> {
-    private Context mContext;
+    private final Context mContext;
     private List<String> mVitalNameList;
-    private OnClickListener listener;
+    private final OnClickListener listener;
 
     public PatientChartsRecyclerViewAdapter(Context mContext, JSONObject mObservationList, OnClickListener listener) {
         this.mContext = mContext;
@@ -79,8 +76,8 @@ public class PatientChartsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView vitalName;
-        ConstraintLayout vitalSelector;
+        final TextView vitalName;
+        final ConstraintLayout vitalSelector;
 
         public ViewHolder(@NonNull View itemView, OnClickListener listener) {
             super(itemView);

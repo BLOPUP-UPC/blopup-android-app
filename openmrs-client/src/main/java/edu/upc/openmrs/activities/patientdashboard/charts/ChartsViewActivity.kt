@@ -214,7 +214,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         chart.xAxis.valueFormatter = MyValueFormatter(allDatesValues)
         // Listener to sync the two charts scroll
         chart.onChartGestureListener = this
-        chart.setOnChartValueSelectedListener(this);
+        chart.setOnChartValueSelectedListener(this)
     }
 
     private fun setChartMaxAndMinimumLimitLines(chart: LineChart) {

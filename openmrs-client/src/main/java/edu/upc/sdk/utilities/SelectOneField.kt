@@ -21,7 +21,7 @@ import java.io.Serializable
 class SelectOneField : Serializable, Parcelable {
     var concept: String? = null
     var chosenAnswer: Answer? = null
-    var answerList: List<Answer?>
+    private var answerList: List<Answer?>
 
     constructor(answerList: List<Answer?>, concept: String?) {
         this.answerList = answerList

@@ -60,7 +60,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     @Mock
     private lateinit var booleanValidationObserver: Observer<Boolean>
 
-    lateinit var viewModel: AddEditPatientViewModel
+    private lateinit var viewModel: AddEditPatientViewModel
 
     @Before
     override fun setUp() {
@@ -109,7 +109,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             savedStateHandle
         )
 
-        viewModel.patient = createPatient(1, "1000PGXA")
+        viewModel.patient = createPatient(1, "1000A")
 
         `when`(patientRepository.registerPatient(any())).thenReturn(
             Observable.just(
@@ -192,11 +192,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         `when`(patientRepository.registerPatient(any())).thenReturn(Observable.just(patient))
         `when`(recordingRepository.saveRecording(any())).thenReturn(Observable.just(RecordingSuccess))
 
-        with(viewModel) {
-            confirmPatient()
+        viewModel.confirmPatient()
 
-            verify(recordingHelper, times(0)).saveLegalConsent(any())
-        }
+        verify(recordingHelper, times(0)).saveLegalConsent(any())
     }
 
     @Test

@@ -2,11 +2,11 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import edu.upc.openmrs.activities.patientdashboard.charts.PatientDashboardChartsViewModel
+import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.openmrs.activities.patientdashboard.charts.PatientDashboardChartsViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -26,9 +26,9 @@ class PatientDashboardChartsViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var visitDAO: VisitDAO
 
-    lateinit var savedStateHandle: SavedStateHandle
+    private lateinit var savedStateHandle: SavedStateHandle
 
-    lateinit var viewModel: PatientDashboardChartsViewModel
+    private lateinit var viewModel: PatientDashboardChartsViewModel
 
     @Before
     override fun setUp() {

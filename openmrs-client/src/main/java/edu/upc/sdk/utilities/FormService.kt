@@ -60,12 +60,4 @@ object FormService {
         return null
     }
 
-    @JvmStatic
-    fun getFormResourceByName(name: String?): FormResourceEntity {
-        return AppDatabase.getDatabase(
-            OpenmrsAndroid.getInstance()?.applicationContext
-        )
-                .formResourceDAO()
-                .getFormResourceByName(name)
-    }
 }

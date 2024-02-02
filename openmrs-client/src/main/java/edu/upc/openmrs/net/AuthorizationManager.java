@@ -21,7 +21,7 @@ import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.sdk.library.OpenmrsAndroid;
 
 public class AuthorizationManager {
-    protected OpenMRS mOpenMRS = OpenMRS.getInstance();
+    protected final OpenMRS mOpenMRS = OpenMRS.getInstance();
 
     public boolean isUserNameOrServerEmpty() {
         return OpenmrsAndroid.getUsername().isEmpty() || OpenmrsAndroid.getServerUrl().isEmpty();

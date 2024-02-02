@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class TreatmentRepository @Inject constructor(
     val visitRepository: VisitRepository,
-    val encounterRepository: EncounterRepository,
+    private val encounterRepository: EncounterRepository,
 ) :
     BaseRepository(null) {
 

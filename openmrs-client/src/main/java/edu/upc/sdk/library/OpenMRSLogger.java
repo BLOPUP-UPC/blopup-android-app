@@ -20,10 +20,10 @@ import android.util.Log;
  * The type Open mrs logger.
  */
 public class OpenMRSLogger {
-    private static String mTAG = "OpenMRS";
+    private static final String mTAG = "OpenMRS";
     private static final boolean IS_DEBUGGING_ON = false;
     private static OpenMRSLogger logger = null;
-    private Thread.UncaughtExceptionHandler androidDefaultUEH;
+    private final Thread.UncaughtExceptionHandler androidDefaultUEH;
 
     /**
      * Instantiates a new Open mrs logger.

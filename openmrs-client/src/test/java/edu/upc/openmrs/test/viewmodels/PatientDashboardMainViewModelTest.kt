@@ -45,13 +45,13 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var patientRepository: PatientRepository
 
-    lateinit var savedStateHandle: SavedStateHandle
+    private lateinit var savedStateHandle: SavedStateHandle
 
-    lateinit var viewModel: PatientDashboardMainViewModel
+    private lateinit var viewModel: PatientDashboardMainViewModel
 
     lateinit var patient: Patient
 
-    lateinit var visitList: List<Visit>
+    private lateinit var visitList: List<Visit>
 
     @Before
     override fun setUp() {

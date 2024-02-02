@@ -14,13 +14,8 @@ import android.util.Base64;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.models.Observation;
-import edu.upc.sdk.library.models.Resource;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.ObservationDeserializer;
-import edu.upc.sdk.utilities.ResourceSerializer;
 
+import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.models.Observation;
 import edu.upc.sdk.library.models.Resource;
 import edu.upc.sdk.utilities.ApplicationConstants;
@@ -36,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RestServiceBuilder {
     private static String API_BASE_URL = OpenmrsAndroid.getServerUrl() + ApplicationConstants.API.REST_ENDPOINT;
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    private static final OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     private static Retrofit.Builder builder;
 
     static {

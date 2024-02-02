@@ -52,9 +52,9 @@ import rx.Observable;
 @Singleton
 public class VisitRepository extends BaseRepository {
 
-    private LocationDAO locationDAO;
-    private VisitDAO visitDAO;
-    private EncounterDAO encounterDAO;
+    private final LocationDAO locationDAO;
+    private final VisitDAO visitDAO;
+    private final EncounterDAO encounterDAO;
 
     /**
      * Instantiates a new Visit repository.

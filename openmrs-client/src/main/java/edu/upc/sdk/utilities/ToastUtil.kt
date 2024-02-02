@@ -74,11 +74,6 @@ object ToastUtil {
     }
 
     @JvmStatic
-    fun showLongToast(context: Context, type: ToastType, text: String) {
-        showToast(context, type, text, Toast.LENGTH_LONG)
-    }
-
-    @JvmStatic
     private fun showToast(context: Context, type: ToastType,
                           text: String, duration: Int) {
         if (!isAppVisible) {
@@ -140,7 +135,7 @@ object ToastUtil {
                 }
                 toastQueue.removeAt(0)
                 if (toastQueue.size > 0) {
-                    toastQueue[0].run()
+                    toastQueue[0].start()
                 }
             } catch (e: Exception) {
                 logger.e(e.toString())

@@ -32,7 +32,7 @@ import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.utilities.DateUtils;
 
 public class PatientVisitsRecyclerViewAdapter extends RecyclerView.Adapter<PatientVisitsRecyclerViewAdapter.VisitViewHolder> {
-    private PatientVisitsFragment mContext;
+    private final PatientVisitsFragment mContext;
     private List<Visit> mVisits;
 
     public PatientVisitsRecyclerViewAdapter(PatientVisitsFragment context, List<Visit> items) {
@@ -90,11 +90,11 @@ public class PatientVisitsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
     }
 
     class VisitViewHolder extends RecyclerView.ViewHolder {
-        private TextView mVisitPlace;
-        private TextView mVisitStart;
-        private TextView mVisitEnd;
-        private TextView mVisitStatus;
-        private CardView mCardView;
+        private final TextView mVisitPlace;
+        private final TextView mVisitStart;
+        private final TextView mVisitEnd;
+        private final TextView mVisitStatus;
+        private final CardView mCardView;
 
         public VisitViewHolder(View itemView) {
             super(itemView);

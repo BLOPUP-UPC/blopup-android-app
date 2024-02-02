@@ -38,7 +38,7 @@ class SyncedPatientsViewModelTest : ACUnitTestBaseRx() {
 
     private lateinit var patientList: List<Patient>
 
-    lateinit var viewModel: SyncedPatientsViewModel
+    private lateinit var viewModel: SyncedPatientsViewModel
 
     @SuppressLint("CheckResult")
     @Before

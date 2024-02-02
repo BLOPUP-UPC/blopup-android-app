@@ -6,7 +6,6 @@ import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.EmailRepository
 import edu.upc.sdk.library.models.EmailRequest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,11 +26,6 @@ class ContactUsViewModelTest : ACUnitTestBaseRx() {
     lateinit var emailRepository : EmailRepository
 
     private val emailRequest = createEmailRequest()
-
-    @Before
-    override fun setUp () {
-        super.setUp()
-    }
 
     @Test
     fun whenSendARequest_thenCallToTheAPI() {

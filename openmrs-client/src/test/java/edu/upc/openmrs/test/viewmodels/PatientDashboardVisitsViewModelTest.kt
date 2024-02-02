@@ -2,6 +2,8 @@ package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import edu.upc.openmrs.activities.patientdashboard.visits.PatientDashboardVisitsViewModel
+import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
@@ -9,8 +11,6 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.openmrs.activities.patientdashboard.visits.PatientDashboardVisitsViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -39,13 +39,13 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
     @Mock
     lateinit var visitRepository: VisitRepository
 
-    lateinit var savedStateHandle: SavedStateHandle
+    private lateinit var savedStateHandle: SavedStateHandle
 
-    lateinit var viewModel: PatientDashboardVisitsViewModel
+    private lateinit var viewModel: PatientDashboardVisitsViewModel
 
     lateinit var patient: Patient
 
-    lateinit var visitList: List<Visit>
+    private lateinit var visitList: List<Visit>
 
     @Before
     override fun setUp() {

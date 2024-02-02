@@ -45,9 +45,9 @@ import retrofit2.Response;
 public class UpdatePatientWorker extends Worker {
     private static final int ON_SUCCESS = 1;
     private static final int ON_FAILURE = 2;
-    private RestApi restApi;
-    private OpenMRSLogger logger;
-    private Handler mHandler;
+    private final RestApi restApi;
+    private final OpenMRSLogger logger;
+    private final Handler mHandler;
 
     /**
      * Instantiates a new Update patient worker.

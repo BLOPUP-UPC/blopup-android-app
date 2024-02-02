@@ -12,7 +12,7 @@ import retrofit2.Response;
 
 public class MockFailure<T> implements Call<T> {
 
-    private Throwable throwable;
+    private final Throwable throwable;
 
     public MockFailure(Throwable throwable) {
         this.throwable = throwable;

@@ -17,11 +17,10 @@ package edu.upc.openmrs.test;
 
 import androidx.annotation.NonNull;
 
-import edu.upc.sdk.library.models.Results;
-
 import java.io.IOException;
 import java.util.List;
 
+import edu.upc.sdk.library.models.Results;
 import okhttp3.Headers;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -30,7 +29,7 @@ import retrofit2.Response;
 
 public class MockSuccessResponse<T> implements Call<T>{
 
-    private Response response;
+    private final Response response;
 
     public MockSuccessResponse(List resultList) {
         Results results = new Results<>();

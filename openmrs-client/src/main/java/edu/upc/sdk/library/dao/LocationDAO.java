@@ -14,15 +14,10 @@
 
 package edu.upc.sdk.library.dao;
 
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.databases.AppDatabase;
-import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.utilities.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
@@ -37,7 +32,7 @@ public class LocationDAO {
     /**
      * The Location room dao.
      */
-    LocationRoomDAO locationRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).locationRoomDAO();
+    final LocationRoomDAO locationRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).locationRoomDAO();
 
     /**
      * Save location observable.

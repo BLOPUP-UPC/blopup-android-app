@@ -48,17 +48,7 @@
         <item name="sv_detailTextAppearance">@style/CustomText</item>
     </style>
 
-    <style name="CustomShowcaseThemeExit" parent="ShowcaseView">
-        <item name="sv_backgroundColor">#d200463f</item>
-        <item name="sv_showcaseColor">#0D9556</item>
-        <item name="sv_buttonText">Close</item>
-        <item name="sv_tintButtonColor">true</item>
-        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
-        <item name="sv_detailTextAppearance">@style/CustomText</item>
-    </style>
 
-    <style name="DialogTheme" parent="android:Theme.Dialog">
-    </style>
     <style name="LoadingDialogTheme.DialogTheme" parent="android:Theme.Dialog">
         <item name="android:background">@android:color/transparent</item>
     </style>

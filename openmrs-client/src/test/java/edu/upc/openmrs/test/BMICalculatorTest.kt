@@ -5,7 +5,7 @@ import edu.upc.sdk.library.models.Observation
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class BMICalculatorTest(){
+class BMICalculatorTest {
 
     private val calculator = BMICalculator()
 

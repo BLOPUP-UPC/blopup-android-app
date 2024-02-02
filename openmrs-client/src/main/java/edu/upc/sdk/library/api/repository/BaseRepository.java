@@ -35,7 +35,7 @@ public abstract class BaseRepository {
      *
      * @see Context
      */
-    protected Context context;
+    protected final Context context;
     /**
      * The Rest api
      *
@@ -59,7 +59,7 @@ public abstract class BaseRepository {
      *
      * @see OpenMRSLogger
      */
-    protected OpenMRSLogger logger;
+    protected final OpenMRSLogger logger;
 
     protected CrashlyticsLogger crashlytics;
 

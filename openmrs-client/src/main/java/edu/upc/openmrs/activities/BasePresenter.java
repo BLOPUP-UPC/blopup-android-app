@@ -18,7 +18,7 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 public abstract class BasePresenter implements BasePresenterContract {
-    private CompositeSubscription mSubscription;
+    private final CompositeSubscription mSubscription;
 
     public BasePresenter() {
         mSubscription = new CompositeSubscription();

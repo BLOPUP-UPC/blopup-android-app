@@ -14,15 +14,10 @@
 
 package edu.upc.sdk.library.dao;
 
-import edu.upc.sdk.library.OpenmrsAndroid;
-import edu.upc.sdk.library.databases.AppDatabase;
-import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.databases.entities.ObservationEntity;
-import edu.upc.sdk.library.models.Observation;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.databases.entities.ObservationEntity;
@@ -35,7 +30,7 @@ public class ObservationDAO {
     /**
      * The Observation room dao.
      */
-    ObservationRoomDAO observationRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).observationRoomDAO();
+    final ObservationRoomDAO observationRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).observationRoomDAO();
 
     /**
      * Find observation by encounter id list.

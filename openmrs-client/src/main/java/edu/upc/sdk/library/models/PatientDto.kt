@@ -29,18 +29,6 @@ open class PatientDto {
     @Expose
     private var identifiers: List<PatientIdentifier> = ArrayList()
 
-//    //Contact Number
-//    @SerializedName("contactPhoneNumber")
-//    @Expose
-//    private var contactPhoneNumber: String? = null
-//
-
-//    //Contact Names
-//    @TypeConverters(PersonNameConverter::class)
-//    @SerializedName("contactNames")
-//    @Expose
-//    private val contactNames: List<PersonName> = ArrayList()
-
     @SerializedName("person")
     @Expose
     var person: Person? = null

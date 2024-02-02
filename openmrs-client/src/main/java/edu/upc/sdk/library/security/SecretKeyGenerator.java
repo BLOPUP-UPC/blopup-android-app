@@ -15,13 +15,13 @@
 package edu.upc.sdk.library.security;
 
 
-import edu.upc.sdk.library.OpenmrsAndroid;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+
+import edu.upc.sdk.library.OpenmrsAndroid;
 
 public final class SecretKeyGenerator {
     private SecretKeyGenerator() {
@@ -37,7 +37,7 @@ public final class SecretKeyGenerator {
             // Do *not* seed secureRandom! Automatically seeded from system entropy.
             keyGenerator = KeyGenerator.getInstance("AES");
         } catch (NoSuchAlgorithmException e) {
-            OpenmrsAndroid.getOpenMRSLogger().d("Failed to generate DB secret key" + e.toString());
+            OpenmrsAndroid.getOpenMRSLogger().d("Failed to generate DB secret key" + e);
         }
         keyGenerator.init(outputKeyLength, secureRandom);
         SecretKey key = keyGenerator.generateKey();

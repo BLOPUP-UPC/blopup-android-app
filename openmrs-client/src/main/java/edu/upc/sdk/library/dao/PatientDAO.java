@@ -40,7 +40,7 @@ public class PatientDAO {
     /**
      * The Patient room dao.
      */
-    PatientRoomDAO patientRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).patientRoomDAO();
+    final PatientRoomDAO patientRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).patientRoomDAO();
 
     /**
      * Save patient observable.

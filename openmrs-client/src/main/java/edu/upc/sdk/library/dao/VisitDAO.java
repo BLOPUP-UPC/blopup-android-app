@@ -45,15 +45,15 @@ public class VisitDAO {
     /**
      * The Context.
      */
-    Context context;
+    final Context context;
     /**
      * The Observation room dao.
      */
-    ObservationRoomDAO observationRoomDAO;
+    final ObservationRoomDAO observationRoomDAO;
     /**
      * The Visit room dao.
      */
-    VisitRoomDAO visitRoomDAO;
+    final VisitRoomDAO visitRoomDAO;
     /**
      * The Encounter room dao.
      */
@@ -61,7 +61,7 @@ public class VisitDAO {
     /**
      * The Diagnosis room dao.
      */
-    DiagnosisRoomDAO diagnosisRoomDAO;
+    final DiagnosisRoomDAO diagnosisRoomDAO;
 
     @Inject
     public VisitDAO() {

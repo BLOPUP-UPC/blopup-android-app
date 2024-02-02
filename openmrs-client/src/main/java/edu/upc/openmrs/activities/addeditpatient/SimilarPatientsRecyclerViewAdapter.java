@@ -42,9 +42,9 @@ import edu.upc.sdk.utilities.StringUtils;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<SimilarPatientsRecyclerViewAdapter.PatientViewHolder> {
-    private List<Patient> patientList;
-    private Patient newPatient;
-    private Activity mContext;
+    private final List<Patient> patientList;
+    private final Patient newPatient;
+    private final Activity mContext;
 
     public SimilarPatientsRecyclerViewAdapter(Activity mContext, List<Patient> patientList, Patient patient) {
         this.newPatient = patient;
@@ -89,11 +89,11 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
     }
 
     public class PatientViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout mRowLayout;
-        private TextView mGivenName;
-        private TextView mFamilyName;
-        private TextView mGender;
-        private TextView mBirthDate;
+        private final LinearLayout mRowLayout;
+        private final TextView mGivenName;
+        private final TextView mFamilyName;
+        private final TextView mGender;
+        private final TextView mBirthDate;
         private TextView mAddres;
         private TextView mPostalCode;
         private TextView mCity;

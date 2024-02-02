@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 public class MockErrorResponse<T> implements Call<T>{
 
-    private Response response;
+    private final Response response;
 
     public MockErrorResponse(int code) {
         response = Response.error(code, new MockResponseBody());
