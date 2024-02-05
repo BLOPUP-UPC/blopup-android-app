@@ -15,7 +15,6 @@ package edu.upc.sdk.library.api.repository
 
 import android.util.Log
 import edu.upc.openmrs.utilities.FileUtils
-import edu.upc.sdk.library.dao.LegalConsentDAO
 import edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO
 import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.models.LegalConsentRequest
@@ -25,7 +24,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RecordingRepository @Inject constructor(val legalConsentDAO: LegalConsentDAO) :
+class RecordingRepository @Inject constructor() :
     BaseRepository(null) {
 
     fun saveRecording(legalConsent: LegalConsent): Observable<ResultType> {

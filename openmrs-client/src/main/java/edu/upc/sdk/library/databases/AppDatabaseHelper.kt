@@ -303,12 +303,4 @@ object AppDatabaseHelper {
 
         return diagnosisEntity
     }
-
-    @JvmStatic
-    fun convert(legalConsent: LegalConsent): LegalConsentEntity {
-        val legalConsentEntity = LegalConsentEntity()
-        legalConsentEntity.patientId = legalConsent.patientIdentifier!!
-        legalConsentEntity.filePath = legalConsent.filePath!!
-        return legalConsentEntity
-    }
 }

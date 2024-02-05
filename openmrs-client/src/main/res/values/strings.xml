@@ -224,10 +224,6 @@
     <!--Login Fragment-->
     <string name="invalid_URL_message" tools:ignore="MissingTranslation">Invalid URL</string>
 
-    <!--PatientRepository-->
-
-    <!--VisitExpandableListAdapter-->
-
     <!-- Contact Activity -->
     <string name="contact_us" tools:ignore="MissingTranslation">Contact Us</string>
     <string name="contact_us_text" tools:ignore="MissingTranslation">Contact us</string>
@@ -406,7 +402,7 @@
     <string name="hint_active_visit" translatable="false">Active visit</string>
     <string name="hint_medication_name" translatable="false">Parecetamol</string>
     <string name="hint_medication_type" translatable="false">Beta blocker - ARA II</string>
-    <string name="treatment_label" tools:ignore="MissingTranslation">Treatment</string><![CDATA[/>
-
-]]>
+    <string name="treatment_label" tools:ignore="MissingTranslation">Treatment</string><![CDATA[/>]]>
+    <string name="ok" tools:ignore="MissingTranslation">OK</string>
+    />
 </resources>

@@ -17,9 +17,6 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    dependencies {
-        classpath "com.klaxit.hiddensecrets:HiddenSecretsPlugin:0.2.1"
-    }
 }
 
 plugins {
@@ -28,22 +25,20 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android'
-
-    // TODO AC-861
-    //id 'jacoco-android'
-    id 'com.hiya.jacoco-android'
+    id 'com.klaxit.hiddensecrets' version '0.2.1'
 }
+
 apply from: './versions.gradle'
 apply from: './config.gradle'
 apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.klaxit.hiddensecrets'
 
 def GOOGLE_PLACE_API_KEY = System.getenv('GOOGLE_PLACE_API_KEY') ?: "YOUR_API_KEY"
 
 android {
-    compileSdkVersion versions.compileSdk
+
+    namespace 'edu.upc'
 
     defaultConfig {
         applicationId "edu.upc"
@@ -53,6 +48,7 @@ android {
 
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
+        compileSdkVersion versions.compileSdk
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
@@ -151,6 +147,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     externalNativeBuild {
@@ -204,7 +201,7 @@ dependencies {
 
 
     //no inspection
-    kapt 'androidx.room:room-compiler:2.5.2'
+    kapt "androidx.room:room-compiler:${versions.roomCompiler}"
 
     // Noinspection GradleDependency
     annotationProcessor "androidx.room:room-compiler:${versions.roomCompiler}"

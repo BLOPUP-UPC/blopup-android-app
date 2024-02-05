@@ -20,13 +20,11 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import edu.upc.sdk.library.dao.ConceptRoomDAO;
 import edu.upc.sdk.library.dao.DiagnosisRoomDAO;
 import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
 import edu.upc.sdk.library.dao.EncounterRoomDAO;
 import edu.upc.sdk.library.dao.EncounterTypeRoomDAO;
 import edu.upc.sdk.library.dao.FormResourceDAO;
-import edu.upc.sdk.library.dao.LegalConsentRoomDAO;
 import edu.upc.sdk.library.dao.LocationRoomDAO;
 import edu.upc.sdk.library.dao.ObservationRoomDAO;
 import edu.upc.sdk.library.dao.PatientRoomDAO;
@@ -36,7 +34,6 @@ import edu.upc.sdk.library.databases.entities.ConceptEntity;
 import edu.upc.sdk.library.databases.entities.DiagnosisEntity;
 import edu.upc.sdk.library.databases.entities.EncounterEntity;
 import edu.upc.sdk.library.databases.entities.FormResourceEntity;
-import edu.upc.sdk.library.databases.entities.LegalConsentEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.library.databases.entities.ObservationEntity;
 import edu.upc.sdk.library.databases.entities.PatientEntity;
@@ -59,9 +56,8 @@ import edu.upc.sdk.utilities.ApplicationConstants;
         Provider.class,
         FormResourceEntity.class,
         EncounterType.class,
-        Encountercreate.class,
-        LegalConsentEntity.class},
-        version = 6)
+        Encountercreate.class},
+        version = 7)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -125,13 +121,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract EncounterRoomDAO encounterRoomDAO();
 
     /**
-     * Concept room dao concept room dao.
-     *
-     * @return the concept room dao
-     */
-    public abstract ConceptRoomDAO conceptRoomDAO();
-
-    /**
      * Provider room dao provider room dao.
      *
      * @return the provider room dao
@@ -165,6 +154,4 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return the diagnosis room dao
      */
     public abstract DiagnosisRoomDAO diagnosisRoomDAO();
-
-    public abstract LegalConsentRoomDAO legalConsentRoomDAO();
 }

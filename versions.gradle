@@ -1,9 +1,0 @@
-ext.versions = [:]
-
-versions.compileSdk = 33
-versions.minSdk = 24
-versions.targetSdk = 33
-
-// Libraries
-
-versions.chuckerLibrary = '3.4.0'
