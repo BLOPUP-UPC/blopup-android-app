@@ -21,7 +21,6 @@
     import static org.junit.Assert.assertNull;
     import static org.mockito.Mockito.when;
 
-    import android.content.res.Resources;
 
     import edu.upc.sdk.utilities.DateUtils;
 
@@ -36,7 +35,6 @@
     import org.mockito.Answers;
     import org.mockito.Mock;
     import org.mockito.Mockito;
-    import org.powermock.core.classloader.annotations.PrepareForTest;
 
     import java.text.SimpleDateFormat;
     import java.util.Date;
@@ -45,7 +43,6 @@
 
     import edu.upc.openmrs.application.OpenMRS;
 
-    @PrepareForTest({OpenMRS.class, Resources.class})
     public class DateUtilsTest {
         private static final String TEST_TIMEZONE;
         private static final String INITIAL_DATA_CUSTOM_TIMEZONE;

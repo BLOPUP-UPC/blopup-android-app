@@ -1,13 +1,14 @@
 package edu.upc.sdk.library.api.repository;
 
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
-import static org.powermock.api.mockito.PowerMockito.mock;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.work.testing.WorkManagerTestInitHelper;
 
 import com.google.common.collect.ImmutableList;
@@ -17,7 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(AndroidJUnit4.class)
 public class VisitRepositoryTest {
 
     @Mock

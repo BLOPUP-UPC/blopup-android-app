@@ -30,8 +30,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import java.util.Collections;
 
@@ -57,9 +55,6 @@ import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.StringUtils;
 import okhttp3.Headers;
 
-@PrepareForTest({OpenMRS.class, NetworkUtils.class, LocationDAO.class, RestServiceBuilder.class,
-    StringUtils.class,OpenmrsAndroid.class})
-@PowerMockIgnore("javax.net.ssl.*")
 public class LoginPresenterTest extends ACUnitTestBaseRx {
     @Mock
     private OpenMRS openMRS;

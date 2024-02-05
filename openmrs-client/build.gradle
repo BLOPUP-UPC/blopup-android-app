@@ -278,8 +278,6 @@ dependencies {
             "org.mockito.kotlin:mockito-kotlin:4.1.0",
             'junit:junit:4.+',
             "org.junit.jupiter:junit-jupiter:5.10.1",
-            'org.powermock:powermock-api-mockito2:2.0.9',
-            'org.powermock:powermock-module-junit4:2.0.9',
             "com.google.dagger:hilt-android-testing:${versions.hilt}",
             "androidx.arch.core:core-testing:${versions.arch_version}",
             'io.mockk:mockk:1.10.2',

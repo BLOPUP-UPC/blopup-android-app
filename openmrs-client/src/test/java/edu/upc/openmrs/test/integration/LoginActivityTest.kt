@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import android.view.autofill.AutofillValue
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.testing.WorkManagerTestInitHelper
 import edu.upc.R
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
@@ -19,7 +20,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class LoginActivityTest {
 
     private lateinit var loginActivity: LoginActivity

@@ -14,14 +14,7 @@
 
 package edu.upc.openmrs.test;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.ContentObserver;
-import android.net.Uri;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,10 +23,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +37,6 @@ import edu.upc.sdk.library.models.PersonAddress;
 import edu.upc.sdk.library.models.PersonAttribute;
 import edu.upc.sdk.library.models.PersonAttributeType;
 import edu.upc.sdk.library.models.PersonName;
-import edu.upc.sdk.library.models.Provider;
 import edu.upc.sdk.library.models.Resource;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
@@ -56,10 +44,7 @@ import edu.upc.sdk.library.models.VisitType;
 import okhttp3.Headers;
 import retrofit2.Call;
 
-@PrepareForTest({Context.class,
-        ContentResolver.class, ContentValues.class})
-@RunWith(PowerMockRunner.class)
-@SuppressStaticInitializationFor("com.activeandroid.content.ContentProvider")
+@RunWith(AndroidJUnit4.class)
 public abstract class ACUnitTestBase {
 
     @Rule
@@ -68,21 +53,6 @@ public abstract class ACUnitTestBase {
     @Before
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
-    }
-
-    protected void mockActiveAndroidContext() {
-        Context context = Mockito.mock(Context.class);
-        ContentResolver resolver = Mockito.mock(ContentResolver.class);
-        ContentValues vals = Mockito.mock(ContentValues.class);
-
-        try {
-            PowerMockito.whenNew(ContentValues.class).withNoArguments().thenReturn(vals);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Mockito.lenient().when(context.getContentResolver()).thenReturn(resolver);
-        doNothing().when(resolver).notifyChange(any(Uri.class), any(ContentObserver.class));
     }
 
     protected Patient createPatient(Long id) {
@@ -153,18 +123,6 @@ public abstract class ACUnitTestBase {
         PersonAttribute personAttribute = new PersonAttribute();
         personAttribute.setValue("value");
         return personAttribute;
-    }
-
-    protected Provider createProvider(Long id, String identifier) {
-        Provider provider = new Provider();
-        provider.setPerson(createPerson(id));
-        provider.setId(id);
-        provider.setUuid(id.toString());
-        provider.setRetired(false);
-        provider.setIdentifier(identifier);
-        provider.setDisplay(identifier);
-
-        return provider;
     }
 
     protected List<Visit> createVisitList() {
