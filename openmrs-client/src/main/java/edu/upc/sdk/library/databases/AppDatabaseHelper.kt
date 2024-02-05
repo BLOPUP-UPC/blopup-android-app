@@ -21,7 +21,6 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.databases.entities.DiagnosisEntity
 import edu.upc.sdk.library.databases.entities.EncounterEntity
-import edu.upc.sdk.library.databases.entities.LegalConsentEntity
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.databases.entities.ObservationEntity
 import edu.upc.sdk.library.databases.entities.PatientEntity
@@ -29,7 +28,6 @@ import edu.upc.sdk.library.databases.entities.VisitEntity
 import edu.upc.sdk.library.models.Diagnosis
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
-import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientIdentifier
