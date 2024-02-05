@@ -290,7 +290,4 @@ public class Person extends Resource implements Serializable {
         return voided;
     }
 
-    public void setVoided(boolean voided) {
-        this.voided = voided;
-    }
 }

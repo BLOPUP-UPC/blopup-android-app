@@ -57,16 +57,6 @@ public class EncounterDAO {
     }
 
     /**
-     * Gets encounter type by form name.
-     *
-     * @param formName the form name
-     * @return the encounter type by form name
-     */
-    public EncounterType getEncounterTypeByFormName(String formName) {
-        return encounterTypeRoomDAO.getEncounterTypeByFormName(formName);
-    }
-
-    /**
      * Save last vitals encounter.
      *
      * @param encounter   the encounter
@@ -94,23 +84,6 @@ public class EncounterDAO {
                 observationRoomDAO.addObservation(observationEntity);
             }
         }
-    }
-
-    /**
-     * Gets last vitals encounter.
-     *
-     * @param patientUUID the patient uuid
-     * @return the last vitals encounter
-     */
-    public Observable<Encounter> getLastVitalsEncounter(String patientUUID) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            try {
-                EncounterEntity encounterEntity = encounterRoomDAO.getLastVitalsEncounter(patientUUID, EncounterType.VITALS).blockingGet();
-                return AppDatabaseHelper.convert(encounterEntity);
-            } catch (Exception e) {
-                return new Encounter();
-            }
-        });
     }
 
     /**

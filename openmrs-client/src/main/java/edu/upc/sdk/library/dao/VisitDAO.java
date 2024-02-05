@@ -72,13 +72,6 @@ public class VisitDAO {
         encounterDAO = new EncounterDAO();
     }
 
-    public VisitDAO(Context context, ObservationRoomDAO observationRoomDAO, VisitRoomDAO visitRoomDAO, DiagnosisRoomDAO diagnosisRoomDAO) {
-        this.context = context;
-        this.observationRoomDAO = observationRoomDAO;
-        this.visitRoomDAO = visitRoomDAO;
-        this.diagnosisRoomDAO = diagnosisRoomDAO;
-    }
-
     /**
      * Save or update observable.
      *
@@ -153,27 +146,6 @@ public class VisitDAO {
     }
 
     /**
-     * Gets active visits.
-     *
-     * @return the active visits
-     */
-    public Observable<List<Visit>> getActiveVisits() {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            List<Visit> visits = new ArrayList<>();
-            List<VisitEntity> visitEntities;
-            try {
-                visitEntities = visitRoomDAO.getActiveVisits().blockingGet();
-                for (VisitEntity entity : visitEntities) {
-                    visits.add(AppDatabaseHelper.convert(entity));
-                }
-                return visits;
-            } catch (Exception e) {
-                return new ArrayList<>();
-            }
-        });
-    }
-
-    /**
      * Gets visits by patient id.
      *
      * @param patientID the patient id
@@ -237,23 +209,6 @@ public class VisitDAO {
      */
     public Observable<Long> getVisitsIDByUUID(final String visitUUID) {
         return AppDatabaseHelper.createObservableIO(() -> visitRoomDAO.getVisitsIDByUUID(visitUUID));
-    }
-
-    /**
-     * Gets visit by uuid.
-     *
-     * @param uuid the uuid
-     * @return the visit by uuid
-     */
-    public Observable<Visit> getVisitByUuid(String uuid) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            try {
-                VisitEntity visitEntity = visitRoomDAO.getVisitByUuid(uuid).blockingGet();
-                return AppDatabaseHelper.convert(visitEntity);
-            } catch (Exception e) {
-                return null;
-            }
-        });
     }
 
     /**

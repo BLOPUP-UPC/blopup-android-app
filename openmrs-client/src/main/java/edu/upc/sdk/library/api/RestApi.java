@@ -15,17 +15,12 @@ import androidx.annotation.Keep;
 import java.util.Map;
 
 import edu.upc.sdk.library.api.repository.DoctorRepository.ContactDoctorRequest;
-import edu.upc.sdk.library.databases.entities.ConceptEntity;
 import edu.upc.sdk.library.databases.entities.FormResourceEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.ConceptAnswers;
-import edu.upc.sdk.library.models.ConceptMembers;
 import edu.upc.sdk.library.models.EmailRequest;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.EncounterType;
 import edu.upc.sdk.library.models.Encountercreate;
-import edu.upc.sdk.library.models.FormCreate;
-import edu.upc.sdk.library.models.FormData;
 import edu.upc.sdk.library.models.IdGenPatientIdentifiers;
 import edu.upc.sdk.library.models.IdentifierType;
 import edu.upc.sdk.library.models.LegalConsentRequest;
@@ -36,11 +31,8 @@ import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientDtoUpdate;
 import edu.upc.sdk.library.models.Provider;
-import edu.upc.sdk.library.models.Resource;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Session;
-import edu.upc.sdk.library.models.SystemProperty;
-import edu.upc.sdk.library.models.SystemSetting;
 import edu.upc.sdk.library.models.User;
 import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.library.models.VisitType;
@@ -52,7 +44,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /**
@@ -89,17 +80,6 @@ public interface RestApi {
     Call<Results<LocationEntity>> getLocations(@Url String url,
                                                @Query("tag") String tag,
                                                @Query("v") String representation);
-
-    /**
-     * Gets system property.
-     *
-     * @param property       the property
-     * @param representation the representation
-     * @return the system property
-     */
-    @GET("systemsetting")
-    Call<Results<SystemProperty>> getSystemProperty(@Query("q") String property,
-                                                    @Query("v") String representation);
 
     /**
      * Gets identifier types.
@@ -167,15 +147,6 @@ public interface RestApi {
     Call<String> uploadLegalConsent(@Body LegalConsentRequest legalConsentRequest);
 
     /**
-     * Gets similar patients.
-     *
-     * @param patientData the patient data
-     * @return the similar patients
-     */
-    @GET("patient?matchSimilar=true&v=full")
-    Call<Results<Patient>> getSimilarPatients(@QueryMap Map<String, String> patientData);
-
-    /**
      * Create obs call.
      *
      * @param obscreate the obscreate
@@ -220,14 +191,6 @@ public interface RestApi {
      */
     @GET("encountertype")
     Call<Results<EncounterType>> getEncounterTypes();
-
-    /**
-     * Gets encounter roles.
-     *
-     * @return the encounter roles
-     */
-    @GET("encounterrole")
-    Call<Results<Resource>> getEncounterRoles();
 
     /**
      * Gets session.
@@ -362,80 +325,12 @@ public interface RestApi {
     Call<User> getFullUserInfo(@Path("uuid") String uuid);
 
     /**
-     * Gets concepts.
-     *
-     * @param limit      the limit
-     * @param startIndex the start index
-     * @return the concepts
-     */
-    @GET("concept")
-    Call<Results<ConceptEntity>> getConcepts(@Query("limit") int limit, @Query("startIndex") int startIndex);
-
-    /**
-     * Gets concept from uuid.
-     *
-     * @param uuid the uuid
-     * @return the concept from uuid
-     */
-    @GET("concept/{uuid}")
-    Call<ConceptAnswers> getConceptFromUUID(@Path("uuid") String uuid);
-
-    /**
-     * Gets concept members from uuid.
-     *
-     * @param uuid the uuid
-     * @return the concept members from uuid
-     */
-    @GET("concept/{uuid}")
-    Call<ConceptMembers> getConceptMembersFromUUID(@Path("uuid") String uuid);
-
-    /**
-     * Gets system settings by query.
-     *
-     * @param query          the query
-     * @param representation the representation
-     * @return the system settings by query
-     */
-    @GET("systemsetting")
-    Call<Results<SystemSetting>> getSystemSettingsByQuery(@Query("q") String query,
-                                                          @Query("v") String representation);
-
-    /**
-     * Form create call.
-     *
-     * @param uuid the uuid
-     * @param obj  the obj
-     * @return the call
-     */
-    @POST("form/{uuid}/resource")
-    Call<FormCreate> formCreate(@Path("uuid") String uuid,
-                                @Body FormData obj);
-
-    /**
      * Gets provider list.
      *
      * @return the provider list
      */
     @GET("provider?v=default")
     Call<Results<Provider>> getProviderList();
-
-    /**
-     * Delete provider call.
-     *
-     * @param uuid the uuid
-     * @return the call
-     */
-    @DELETE("provider/{uuid}?!purge")
-    Call<ResponseBody> deleteProvider(@Path("uuid") String uuid);
-
-    /**
-     * Add provider call.
-     *
-     * @param provider the provider
-     * @return the call
-     */
-    @POST("provider")
-    Call<Provider> addProvider(@Body Provider provider);
 
     /**
      * Add email call.
@@ -445,17 +340,6 @@ public interface RestApi {
      */
     @POST("email")
     Call<ResponseBody> sendEmail(@Body EmailRequest emailRequest);
-
-    /**
-     * Update provider call.
-     *
-     * @param uuid     the uuid
-     * @param provider the provider
-     * @return the call
-     */
-    @POST("provider/{uuid}")
-    Call<Provider> UpdateProvider(@Path("uuid") String uuid,
-                                  @Body Provider provider);
 
 
     /**

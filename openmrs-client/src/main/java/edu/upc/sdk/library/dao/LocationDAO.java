@@ -86,21 +86,4 @@ public class LocationDAO {
         }
     }
 
-    /**
-     * Find location by uuid location entity.
-     *
-     * @param uuid the uuid
-     * @return the location entity
-     */
-    public LocationEntity findLocationByUUID(String uuid) {
-        if (!StringUtils.notNull(uuid)) {
-            return null;
-        }
-        try {
-            return locationRoomDAO.findLocationByUUID(uuid).blockingGet();
-        } catch (Exception e) {
-            return new LocationEntity("");
-        }
-    }
-
 }

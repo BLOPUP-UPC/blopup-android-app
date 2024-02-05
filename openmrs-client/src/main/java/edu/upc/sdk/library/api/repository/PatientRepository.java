@@ -28,7 +28,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import edu.upc.R;
-import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -70,21 +69,6 @@ public class PatientRepository extends BaseRepository {
         super(null);
         this.patientDAO = new PatientDAO();
         this.locationRepository = new LocationRepository();
-    }
-
-    /**
-     * Instantiates a new Patient repository.
-     *
-     * @param logger             the logger
-     * @param patientDAO         the patient dao
-     * @param restApi            the rest api
-     * @param locationRepository the location repository
-     */
-    //used in the unit tests
-    public PatientRepository(OpenMRSLogger logger, PatientDAO patientDAO, RestApi restApi, LocationRepository locationRepository) {
-        super(restApi, logger);
-        this.patientDAO = patientDAO;
-        this.locationRepository = locationRepository;
     }
 
     /**

@@ -2,7 +2,7 @@ package edu.upc.sdk.library.models
 
 import java.io.Serializable
 
-class Diagnosis constructor() : Resource(), Serializable {
+class Diagnosis() : Resource(), Serializable {
     constructor(display: String) : this() {
         this.display = display
     }

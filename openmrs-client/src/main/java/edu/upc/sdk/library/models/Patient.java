@@ -29,7 +29,7 @@ import edu.upc.sdk.utilities.StringUtils;
 /**
  * The type Patient.
  *
- * <p>More on Type Patient https://rest.openmrs.org/#patients </p>
+ * <p>More on Type Patient <a href="https://rest.openmrs.org/#patients">...</a> </p>
  */
 public class Patient extends Person implements Serializable {
     private Long id;

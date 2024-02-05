@@ -118,8 +118,6 @@ class LegalConsentDialogFragment : DialogFragment() {
         audioRecorder.stopRecording()
     }
 
-    fun fileName(): String = mFileName
-
     private fun setDialogWidthAndHeight() {
         val width = ViewGroup.LayoutParams.MATCH_PARENT
         val height = ViewGroup.LayoutParams.MATCH_PARENT

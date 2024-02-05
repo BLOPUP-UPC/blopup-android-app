@@ -32,7 +32,7 @@ import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
 /**
  * The type Person update.
  *
- * <p> More on Subresources of Person https://rest.openmrs.org/#person </p>
+ * <p> More on Subresources of Person <a href="https://rest.openmrs.org/#person">...</a> </p>
  */
 public class PersonUpdate extends Resource implements Serializable {
 
@@ -67,12 +67,6 @@ public class PersonUpdate extends Resource implements Serializable {
     @SerializedName("causeOfDeath")
     @Expose
     private String causeOfDeath = null;
-
-    /**
-     * Instantiates a new Person update.
-     */
-    public PersonUpdate() {
-    }
 
     /**
      * Instantiates a new Person update.

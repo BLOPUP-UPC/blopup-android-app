@@ -21,10 +21,6 @@ import com.google.gson.annotations.SerializedName
  */
 class ConceptMembers:Resource() {
 
-    @SerializedName("conceptClass")
-    @Expose
-    var conceptClass: ConceptClass? = null
-
     @SerializedName("setMembers")
     @Expose
     var members: List<Resource> = ArrayList()

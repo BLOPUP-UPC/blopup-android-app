@@ -46,7 +46,6 @@ object ApplicationConstants {
     object API {
         const val REST_ENDPOINT = "/ws/rest/v1/"
         const val FULL = "full"
-        const val TAG_ADMISSION_LOCATION = "Admission Location"
     }
 
     object UserKeys {
