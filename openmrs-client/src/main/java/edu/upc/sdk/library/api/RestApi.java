@@ -10,6 +10,8 @@
 
 package edu.upc.sdk.library.api;
 
+import androidx.annotation.Keep;
+
 import java.util.Map;
 
 import edu.upc.sdk.library.api.repository.DoctorRepository.ContactDoctorRequest;
@@ -56,6 +58,7 @@ import retrofit2.http.Url;
 /**
  * The interface Rest api.
  */
+@Keep
 public interface RestApi {
     /**
      * Gets forms.

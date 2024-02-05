@@ -29,8 +29,4 @@ allprojects {
         google()
         maven { url "https://jitpack.io" }
     }
-
-    tasks.withType(Test).configureEach {
-        jvmArgs = jvmArgs + ['--add-opens=java.base/java.lang=ALL-UNNAMED', '--add-opens=java.base/java.util=ALL-UNNAMED']
-    }
 }
