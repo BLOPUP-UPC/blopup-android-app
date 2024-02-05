@@ -36,6 +36,7 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
+import edu.upc.openmrs.application.OpenMRS
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
@@ -50,6 +51,7 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
+import edu.upc.sdk.utilities.ApplicationConstants.LOCATION
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
 import kotlinx.coroutines.launch
@@ -277,6 +279,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
             viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
                 if (!requireArguments().getBoolean(IS_NEW_VITALS) || viewModel.doctorHasBeenContacted.value == true) return@observe
 
+                val location = viewModel.visit?.location?.name ?: "el servei assistencial."
+
                 if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
                     showLongToast(
                         requireContext(),
@@ -293,7 +297,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                             getString(
                                 R.string.telegram_message,
                                 patientId,
-                                bloodPressureType
+                                bloodPressureType,
+                                location
                             )
                         )
                         handleContactDoctorResult(result)
@@ -312,7 +317,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                             getString(
                                 R.string.telegram_message,
                                 patientId,
-                                bloodPressureType
+                                bloodPressureType,
+                                location
                             )
                         )
                         handleContactDoctorResult(result)
