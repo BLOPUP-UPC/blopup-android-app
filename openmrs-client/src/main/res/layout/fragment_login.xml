@@ -97,6 +97,7 @@
                     android:scrollHorizontally="true"
                     android:textColorHint="@color/dark_grey_10x"
                     android:textStyle="bold"
+                    android:hint="@string/url_server_list"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/view"
                     app:layout_constraintTop_toTopOf="parent"
