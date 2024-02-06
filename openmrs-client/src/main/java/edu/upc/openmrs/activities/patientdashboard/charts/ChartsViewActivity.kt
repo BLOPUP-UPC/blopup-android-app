@@ -1,5 +1,6 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -388,7 +389,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     }
 
     private fun getData(): HashMap<LocalDate, List<Treatment>> {
-        val yesterday = listOf(Treatment("Aspirin", setOf(MedicationType.ARA_II), true), Treatment("Ibuprofen", setOf(MedicationType.ARA_II), false))
+        val yesterday = listOf(Treatment("Aspirin", setOf(MedicationType.ARA_II, MedicationType.BETA_BLOCKER), true), Treatment("Ibuprofen", setOf(MedicationType.ARA_II), false))
         val today = listOf(Treatment("Paracetamol", setOf(MedicationType.ARA_II), true), Treatment("Ibuprofen", setOf(MedicationType.BETA_BLOCKER), true))
         val tomorrow = listOf(Treatment("Paracetomorrow", setOf(MedicationType.ACE_INHIBITOR), false), Treatment("Ibupromorrow", setOf(MedicationType.ARA_II), false))
 
@@ -408,8 +409,8 @@ data class Treatment(
     val adherence: Boolean
 )
 
-fun Treatment.medicationTypeToString(): String {
-    return medicationType.joinToString { it.name }
+fun Treatment.medicationTypeToString(context: Context): String {
+    return medicationType.joinToString(separator = " • ") { context.getString(it.label) }
 }
 
 fun Treatment.adherenceIcon(): Int {
