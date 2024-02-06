@@ -36,7 +36,6 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
-import edu.upc.openmrs.application.OpenMRS
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
@@ -51,7 +50,6 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
-import edu.upc.sdk.utilities.ApplicationConstants.LOCATION
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
 import kotlinx.coroutines.launch
@@ -287,17 +285,17 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                         ToastUtil.ToastType.NOTICE,
                         R.string.message_to_doctor
                     )
-                    val bloodPressureType = getString(
+                    val bloodPressureValues = getString(
                         R.string.stage_II_b_msg,
-                        bloodPressureResult.systolicValue.toString(),
-                        bloodPressureResult.diastolicValue.toString()
+                        bloodPressureResult.systolicValue.toInt().toString(),
+                        bloodPressureResult.diastolicValue.toInt().toString()
                     )
                     lifecycleScope.launch {
                         val result = viewModel.sendMessageToDoctor(
                             getString(
                                 R.string.telegram_message,
                                 patientId,
-                                bloodPressureType,
+                                bloodPressureValues,
                                 location
                             )
                         )
@@ -307,17 +305,17 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
                 if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
                     binding.callToDoctorBanner.visibility = View.VISIBLE
-                    val bloodPressureType = getString(
+                    val bloodPressureValues = getString(
                         R.string.stage_II_c_msg,
-                        bloodPressureResult.systolicValue.toString(),
-                        bloodPressureResult.diastolicValue.toString()
+                        bloodPressureResult.systolicValue.toInt().toString(),
+                        bloodPressureResult.diastolicValue.toInt().toString()
                     )
                     lifecycleScope.launch {
                         val result = viewModel.sendMessageToDoctor(
                             getString(
                                 R.string.telegram_message,
                                 patientId,
-                                bloodPressureType,
+                                bloodPressureValues,
                                 location
                             )
                         )
