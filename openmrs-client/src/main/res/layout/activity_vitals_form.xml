@@ -248,7 +248,7 @@
                         android:layout_marginVertical="8dp"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:background="@color/quantum_amber50">
+                        android:background="@color/cream">
                         <TextView
                             app:drawableStartCompat="@drawable/error_outline"
                             android:drawablePadding="4dp"
@@ -257,7 +257,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/error_loading_treatments"
                             android:layout_marginEnd="4dp"
-                            android:textColor="@color/places_text_black_alpha_87"/>
+                            android:textColor="@color/black"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

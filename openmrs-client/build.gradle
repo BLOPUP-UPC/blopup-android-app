@@ -34,8 +34,6 @@ apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
 
-def GOOGLE_PLACE_API_KEY = System.getenv('GOOGLE_PLACE_API_KEY') ?: "YOUR_API_KEY"
-
 android {
 
     namespace 'edu.upc'
@@ -59,9 +57,6 @@ android {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
-        manifestPlaceholders = [
-                GOOGLE_PLACE_API_KEY: GOOGLE_PLACE_API_KEY
-        ]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -199,7 +194,6 @@ dependencies {
     implementation "androidx.room:room-rxjava2:${versions.roomRuntime}"
     testImplementation 'junit:junit:4.13.2'
 
-
     //no inspection
     kapt "androidx.room:room-compiler:${versions.roomCompiler}"
 
@@ -228,9 +222,6 @@ dependencies {
     implementation "org.jdeferred:jdeferred-android-aar:${versions.jdeferred}"
     implementation "com.google.guava:guava:${versions.guava}"
     implementation "com.github.anastr:speedviewlib:1.6.0"
-
-    // Google place api
-    implementation "com.google.android.libraries.places:places:${versions.placesAPI}"
 
     // Hilt Dependency Injection
     implementation "com.google.dagger:hilt-android:${versions.hilt}"
