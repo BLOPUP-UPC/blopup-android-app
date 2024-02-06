@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.widget.ExpandableListView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -38,6 +40,11 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     private lateinit var treatmentsChart: LineChart
     private val maxValuesInView = 3f
 
+    private lateinit var expandableListView: ExpandableListView
+    private lateinit var expandableListAdapter: TreatmentsListExpandableListAdapter
+    private lateinit var expandableListTitle: List<LocalDate>
+    private lateinit var expandableListDetail: HashMap<LocalDate, List<Treatment>>
+
     private val maxBloodPressureValueShown = 200f
     private val minBloodPressureValueShown = 40f
 
@@ -62,6 +69,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
             bloodPressureChart.makeVisible()
             mBinding.bloodPressureChart.makeGone()
             treatmentsChart.makeVisible()
+            mBinding.expandableListView.makeVisible()
         })
 
         setBloodPressureData(bloodPressureChart, bloodPressureData)
@@ -71,6 +79,40 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         applyCommonChartStyles(treatmentsChart)
         applyBloodPressureChartStyles(bloodPressureChart)
         applyTreatmentsChartStyles(treatmentsChart)
+
+        expandableListView = mBinding.expandableListView
+        expandableListDetail = getData()
+        expandableListTitle = expandableListDetail.map { it.key }
+        expandableListAdapter =
+            TreatmentsListExpandableListAdapter(this.layoutInflater, expandableListTitle, expandableListDetail)
+        expandableListView.setAdapter(expandableListAdapter)
+        expandableListView.setOnGroupExpandListener { groupPosition ->
+            Toast.makeText(
+                applicationContext,
+                expandableListTitle.get(groupPosition).toString() + " List Expanded.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        expandableListView.setOnGroupCollapseListener { groupPosition ->
+            Toast.makeText(
+                applicationContext,
+                expandableListTitle.get(groupPosition).toString() + " List Collapsed.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
+            Toast.makeText(
+                applicationContext,
+                expandableListTitle[groupPosition].toString()
+                        + " -> "
+                        + (expandableListDetail[expandableListTitle[groupPosition]]?.get(
+                    childPosition
+                ) ?: "No existe"), Toast.LENGTH_SHORT
+            ).show()
+            false
+        }
     }
 
     private fun setToolbar() {
@@ -355,6 +397,14 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
     override fun onNothingSelected() {
     }
+
+    private fun getData(): HashMap<LocalDate, List<Treatment>> {
+        val yesterday = listOf(Treatment("Aspirin", "Pill"), Treatment("Ibuprofen", "Pill"))
+        val today = listOf(Treatment("Paracetamol", "Pill"), Treatment("Ibuprofen", "Pill"))
+        val tomorrow = listOf(Treatment("Paracetomorrow", "Another"), Treatment("Ibupromorrow", "Sur"))
+
+        return hashMapOf(LocalDate.parse("2018-10-23") to yesterday, LocalDate.parse("2024-10-23") to today, LocalDate.parse("2028-10-23") to tomorrow)
+    }
 }
 
 data class BloodPressureChartValue(val date: LocalDate, val systolic: Float, val diastolic: Float)
@@ -363,3 +413,7 @@ data class TreatmentChartValue(val date: LocalDate, val followTreatments: Follow
 enum class FollowTreatments {
     NO_TREATMENTS, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
 }
+data class Treatment(
+    val name: String,
+    val type: String
+)
