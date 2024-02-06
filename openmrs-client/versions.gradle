@@ -6,7 +6,6 @@ versions.targetSdk = 34
 
 // Libraries
 versions.material = '1.6.1'
-versions.guava = '31.1-jre'
 versions.supportVersion = '1.0.0'
 versions.recyclerView = '1.3.2'
 versions.constraintlayout = '2.1.4'
@@ -24,8 +23,6 @@ versions.rxbinding = '1.0.0'
 versions.roomRuntime = '2.6.1'
 versions.roomPersistence = '1.1.1'
 versions.roomCompiler = '2.6.1'
-
-versions.chuckerLibrary = '3.4.0'
 
 versions.workManager = '2.9.0'
 

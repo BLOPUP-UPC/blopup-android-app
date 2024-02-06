@@ -203,11 +203,6 @@ dependencies {
     // Work Manager
     implementation "androidx.work:work-runtime:${versions.workManager}"
 
-    // http request Chucker Library
-    testImplementation "com.github.chuckerteam.chucker:library:${versions.chuckerLibrary}"
-    debugImplementation "com.github.chuckerteam.chucker:library:${versions.chuckerLibrary}"
-    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:${versions.chuckerLibrary}"
-
     // Third Party UI Libraries
     implementation "com.github.PhilJay:MPAndroidChart:${versions.MPAndroidChart}"
     implementation "com.github.amlcurran.showcaseview:library:${versions.showcaseview}"
@@ -218,7 +213,6 @@ dependencies {
     implementation "joda-time:joda-time:${versions.jodaTime}"
     implementation "commons-codec:commons-codec:${versions.codec}"
     implementation "org.jdeferred:jdeferred-android-aar:${versions.jdeferred}"
-    implementation "com.google.guava:guava:${versions.guava}"
     implementation "com.github.anastr:speedviewlib:1.6.0"
 
     // Hilt Dependency Injection
