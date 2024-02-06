@@ -284,10 +284,10 @@
     <string name="send_email_success_toast_message" tools:ignore="MissingTranslation">Message sent</string>
     <string name="send_email_fails_toast_message" tools:ignore="MissingTranslation">Error sending message</string>
     <string name="subject_send_email" translatable="false">Blopup User Feedback</string>
-    <string name="blood_pressure_instructions_title" tools:ignore="MissingTranslation">Choosing the correct blood pressure cuff size</string>
+    <string name="blood_pressure_instructions_title" tools:ignore="MissingTranslation">To measure blood pressure</string>
     <string name="blood_pressure_instructions" tools:ignore="MissingTranslation">Measure the circumference of your upper arm with a cloth measuring tape midway between the elbow and shoulder. Choose a cuff size that includes this measurement</string>
     <string name="blood_pressure_instructions_title_two" tools:ignore="MissingTranslation">Position for taking your blood pressure at home</string>
-    <string name="blood_pressure_instructions_two" tools:ignore="MissingTranslation">1.- Rest for 5 minutes before measuring your blood pressure. \n\n 2.- Sit in a chair with both feet flat on the ground and back straight.\n\n 3.- Place your arm at the level of your heart or chest.\n\n 4.- Stay still and do not talk as your blood pressure machine operates.</string>
+    <string name="blood_pressure_instructions_two" tools:ignore="MissingTranslation">1.- The patient should be relaxed, sitting with both feet on the ground, back straight. \n\n 2.- Put on the cuff. Make sure the arm is resting on something comfortable at the level of the heart or the chest.\n\n 3.- Remind the patient to stand still and not speak during the measurements.</string>
     <string name="swipe_left_to_start" tools:ignore="MissingTranslation">Swipe left to start</string>
     <string name="patient_with_no_values_to_show" tools:ignore="MissingTranslation">The patient has no values yet</string>
     <string name="blood_pressure_evolution" tools:ignore="MissingTranslation">Blood Pressure Evolution</string>
@@ -380,8 +380,10 @@
     <string name="finalise_treatment" tools:ignore="MissingTranslation">Finalise</string>
     <string name="edit_treatment" tools:ignore="MissingTranslation">Edit</string>
     <string name="remove_treatment" tools:ignore="MissingTranslation">Remove</string>
-    <string name="treatment_finalised_successfully" tools:ignore="MissingTranslation">Treatment finalised successfully</string> />
-    <string name="treatment_removed_successfully" tools:ignore="MissingTranslation">Treatment removed successfully</string> />
+    <string name="treatment_finalised_successfully" tools:ignore="MissingTranslation">Treatment finalised successfully</string>
+    />
+    <string name="treatment_removed_successfully" tools:ignore="MissingTranslation">Treatment removed successfully</string>
+    />
     <string name="treatment_operation_error" tools:ignore="MissingTranslation">The operation could\'t be performed. Try again later.</string>
     <string name="treatment_created_successfully" tools:ignore="MissingTranslation">Treatment created successfully</string>
     <string name="treatment_updated_successfully" tools:ignore="MissingTranslation">Treatment updated successfully</string>
@@ -402,7 +404,10 @@
     <string name="hint_active_visit" translatable="false">Active visit</string>
     <string name="hint_medication_name" translatable="false">Parecetamol</string>
     <string name="hint_medication_type" translatable="false">Beta blocker - ARA II</string>
-    <string name="treatment_label" tools:ignore="MissingTranslation">Treatment</string><![CDATA[/>]]>
+    <string name="treatment_label" tools:ignore="MissingTranslation">Treatment</string>
     <string name="ok" tools:ignore="MissingTranslation">OK</string>
+    <string name="title_activity_vitals" tools:ignore="MissingTranslation">VitalsActivity</string>
+    <string name="bp_image_description" tools:ignore="MissingTranslation">Illustration of a black man wearing a beige polo shirt, blue trousers and brown shoes. He is sitting on a chair and has a blue cuff around his arm.</string>
+    <string name="how_to_activate_the_device_label" tools:ignore="MissingTranslation">How to activate the device</string>
     />
 </resources>

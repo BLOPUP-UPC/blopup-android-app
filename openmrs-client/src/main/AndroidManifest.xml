@@ -4,9 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!-- BLOPUP -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- BLOPUP -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
@@ -18,7 +16,9 @@
     <uses-permission android:name="android.permission.STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
 
     <uses-feature
         android:name="android.hardware.telephony"
@@ -34,7 +34,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeOrig">
         <activity
-            android:name="edu.upc.openmrs.activities.community.contact.AboutActivity"
+            android:name=".blopup.vitalsform.VitalsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_vitals"
+            android:theme="@style/AppThemeOrig" />
+        <activity
+            android:name=".openmrs.activities.community.contact.AboutActivity"
             android:label="@string/action_about_activity"
             android:theme="@style/AppThemeOrig" />
         <activity
@@ -117,7 +122,7 @@
             android:name="edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity"
             android:label="@string/visit_dashboard_label"
             android:launchMode="singleTop"
-            android:theme="@style/AppThemeOrig"></activity>
+            android:theme="@style/AppThemeOrig" />
         <activity
             android:name="edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
