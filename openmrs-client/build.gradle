@@ -213,11 +213,9 @@ dependencies {
     implementation "com.github.amlcurran.showcaseview:library:${versions.showcaseview}"
     implementation "org.mindrot:jbcrypt:${versions.jbcrypt}"
     implementation "com.github.AppIntro:AppIntro:${versions.AppIntro}"
-    implementation 'com.github.yalantis:ucrop:2.2.5'
     implementation "com.github.permissions-dispatcher:permissionsdispatcher-ktx:${versions.permissionsdispatcher}"
     implementation "androidx.multidex:multidex:${versions.multidex}"
     implementation "joda-time:joda-time:${versions.jodaTime}"
-    implementation "net.sf.kxml:kxml2:${versions.kxml2}"
     implementation "commons-codec:commons-codec:${versions.codec}"
     implementation "org.jdeferred:jdeferred-android-aar:${versions.jdeferred}"
     implementation "com.google.guava:guava:${versions.guava}"

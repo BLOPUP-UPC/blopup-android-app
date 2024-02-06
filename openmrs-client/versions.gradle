@@ -40,7 +40,6 @@ versions.jdeferred = '1.2.6'
 versions.legacySupport = '1.0.0'
 versions.multidex = '2.0.1'
 versions.jodaTime = '2.10.6'
-versions.kxml2 = '2.3.0'
 versions.permissionsdispatcher = '4.8.0'
 
 versions.placesAPI = '3.3.0'

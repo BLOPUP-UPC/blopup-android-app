@@ -149,9 +149,6 @@
             android:name="edu.upc.openmrs.activities.community.contact.ContactUsActivity"
             android:label="@string/contact_us"
             android:theme="@style/AppThemeOrig" />
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/AppTheme" />
 
         <activity
             android:name="edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureActivity"
