@@ -5,8 +5,5 @@
     <TextView
         android:id="@+id/treatmentItem"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp" />
+        android:layout_height="wrap_content" />
 </LinearLayout>
