@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_short">
     <TextView
         android:id="@+id/treatmentItem"
         android:layout_width="wrap_content"
+        tools:text="Metaprolol"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_sm"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_height="wrap_content" />
-</LinearLayout>
+    <TextView
+        android:id="@+id/treatmentItemTypes"
+        android:layout_width="wrap_content"
+        tools:text="IECA - Beta Blocker"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_sm"
+        app:layout_constraintTop_toBottomOf="@id/treatmentItem"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/adherence_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_tick" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import edu.upc.R
 import java.time.LocalDate
@@ -17,8 +18,7 @@ class TreatmentsListExpandableListAdapter(
 ) : BaseExpandableListAdapter() {
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Treatment {
-        return this.expandableListDetail[this.expandableListTitle[listPosition]]
-            ?.get(expandedListPosition) ?: Treatment("Not found", "An error");
+        return this.expandableListDetail[this.expandableListTitle[listPosition]]!![expandedListPosition]
     }
 
     override fun getChildId(listPosition: Int, expandedListPosition: Int): Long {
@@ -30,8 +30,16 @@ class TreatmentsListExpandableListAdapter(
         isLastChild: Boolean, convertView: View?, parent: ViewGroup?
     ): View {
         val view = convertView ?: layoutInflater.inflate(R.layout.chart_layout_treatment_item, null)
-        val expandedListTextView = view.findViewById<View>(R.id.treatmentItem) as TextView
-        expandedListTextView.text = getChild(listPosition, expandedListPosition).name
+        val expandedListNameView = view.findViewById<TextView>(R.id.treatmentItem)
+        val expandedListTypesView = view.findViewById<TextView>(R.id.treatmentItemTypes)
+        val adherenceIcon = view.findViewById<ImageView>(R.id.adherence_icon)
+
+        val treatment = getChild(listPosition, expandedListPosition)
+        expandedListNameView.text = treatment.name
+        expandedListTypesView.text = treatment.medicationTypeToString()
+
+        adherenceIcon.setImageResource(treatment.adherenceIcon())
+
         return view
     }
 
@@ -55,10 +63,19 @@ class TreatmentsListExpandableListAdapter(
         listPosition: Int, isExpanded: Boolean,
         convertView: View?, parent: ViewGroup?
     ): View? {
-        val view = convertView ?: layoutInflater.inflate(R.layout.chart_layout_treatments_group, null)
+        val view =
+            convertView ?: layoutInflater.inflate(R.layout.chart_layout_treatments_group, null)
         val listTitleTextView = view.findViewById<View>(R.id.treatmentListTitle) as TextView
         listTitleTextView.setTypeface(null, Typeface.BOLD)
         listTitleTextView.text = getGroup(listPosition)
+
+        val iconView = view.findViewById<ImageView>(R.id.group_indicator)
+
+        if (isExpanded)
+            iconView.setImageResource(R.drawable.icon_arrow_up)
+        else
+            iconView.setImageResource(R.drawable.icon_arrow_down)
+
         return view
     }
 
@@ -67,6 +84,6 @@ class TreatmentsListExpandableListAdapter(
     }
 
     override fun isChildSelectable(p0: Int, p1: Int): Boolean {
-        return true
+        return false
     }
 }

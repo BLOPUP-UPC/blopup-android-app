@@ -28,6 +28,7 @@ import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.utilities.ApplicationConstants
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -89,7 +90,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         expandableListView.setOnGroupExpandListener { groupPosition ->
             Toast.makeText(
                 applicationContext,
-                expandableListTitle.get(groupPosition).toString() + " List Expanded.",
+                expandableListTitle[groupPosition].toString() + " List Expanded.",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -97,21 +98,9 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         expandableListView.setOnGroupCollapseListener { groupPosition ->
             Toast.makeText(
                 applicationContext,
-                expandableListTitle.get(groupPosition).toString() + " List Collapsed.",
+                expandableListTitle[groupPosition].toString() + " List Collapsed.",
                 Toast.LENGTH_SHORT
             ).show()
-        }
-
-        expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-            Toast.makeText(
-                applicationContext,
-                expandableListTitle[groupPosition].toString()
-                        + " -> "
-                        + (expandableListDetail[expandableListTitle[groupPosition]]?.get(
-                    childPosition
-                ) ?: "No existe"), Toast.LENGTH_SHORT
-            ).show()
-            false
         }
     }
 
@@ -339,10 +328,10 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     private fun getSystolicPointIcon(value: Float) = getPointIcon(isSystolicHigh(value))
     private fun getDiastolicPointIcon(value: Float) = getPointIcon(isDiastolicHigh(value))
     private fun getPointIcon(isAboveMax: Boolean): Drawable {
-        if (isAboveMax) {
-            return ContextCompat.getDrawable(applicationContext, R.drawable.red)!!
+        return if (isAboveMax) {
+            ContextCompat.getDrawable(applicationContext, R.drawable.red)!!
         } else {
-            return ContextCompat.getDrawable(applicationContext, R.drawable.green)!!
+            ContextCompat.getDrawable(applicationContext, R.drawable.green)!!
         }
     }
 
@@ -399,9 +388,9 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     }
 
     private fun getData(): HashMap<LocalDate, List<Treatment>> {
-        val yesterday = listOf(Treatment("Aspirin", "Pill"), Treatment("Ibuprofen", "Pill"))
-        val today = listOf(Treatment("Paracetamol", "Pill"), Treatment("Ibuprofen", "Pill"))
-        val tomorrow = listOf(Treatment("Paracetomorrow", "Another"), Treatment("Ibupromorrow", "Sur"))
+        val yesterday = listOf(Treatment("Aspirin", setOf(MedicationType.ARA_II), true), Treatment("Ibuprofen", setOf(MedicationType.ARA_II), false))
+        val today = listOf(Treatment("Paracetamol", setOf(MedicationType.ARA_II), true), Treatment("Ibuprofen", setOf(MedicationType.BETA_BLOCKER), true))
+        val tomorrow = listOf(Treatment("Paracetomorrow", setOf(MedicationType.ACE_INHIBITOR), false), Treatment("Ibupromorrow", setOf(MedicationType.ARA_II), false))
 
         return hashMapOf(LocalDate.parse("2018-10-23") to yesterday, LocalDate.parse("2024-10-23") to today, LocalDate.parse("2028-10-23") to tomorrow)
     }
@@ -415,5 +404,14 @@ enum class FollowTreatments {
 }
 data class Treatment(
     val name: String,
-    val type: String
+    var medicationType: Set<MedicationType>,
+    val adherence: Boolean
 )
+
+fun Treatment.medicationTypeToString(): String {
+    return medicationType.joinToString { it.name }
+}
+
+fun Treatment.adherenceIcon(): Int {
+    return if (adherence) R.drawable.ic_tick else R.drawable.ic_cross
+}
