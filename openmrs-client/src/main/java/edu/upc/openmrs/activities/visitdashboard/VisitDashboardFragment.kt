@@ -34,6 +34,8 @@ import edu.upc.blopup.bloodpressure.BloodPressureType
 import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
+import edu.upc.blopup.toggles.newVitalsFlowToggle
+import edu.upc.blopup.vitalsform.VitalsActivity
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
 import edu.upc.openmrs.utilities.makeGone
@@ -365,10 +367,24 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     private fun startVitalsMeasurement() {
-        Intent(requireActivity(), VitalsFormActivity::class.java).apply {
-            putExtra(PATIENT_ID_BUNDLE, viewModel.visit?.patient?.id)
-            startActivity(this)
-        }
+        newVitalsFlowToggle.check(
+            {
+                Intent(requireActivity(), VitalsActivity::class.java).apply {
+                    putExtra(PATIENT_ID_BUNDLE, viewModel.visit?.patient?.id)
+                    startActivity(this)
+                }
+            },
+            {
+                Intent(requireActivity(), VitalsFormActivity::class.java).apply {
+                    putExtra(PATIENT_ID_BUNDLE, viewModel.visit?.patient?.id)
+                    startActivity(this)
+                }
+            }
+        )
+
+
+
+
     }
 
     private fun recreateOptionsMenu() = requireActivity().invalidateOptionsMenu()

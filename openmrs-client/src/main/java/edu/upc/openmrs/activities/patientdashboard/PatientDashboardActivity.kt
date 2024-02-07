@@ -25,6 +25,9 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.newVitalsFlowToggle
+import edu.upc.blopup.vitalsform.VitalsActivity
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
@@ -61,7 +64,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         setupObserver()
         setupActionFABs()
         if (NetworkUtils.isOnline()) {
-                viewModel.syncPatientData()
+            viewModel.syncPatientData()
         } else {
             initViewPager()
         }
@@ -85,6 +88,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                             ToastUtil.success(getString(R.string.synchronize_patient_successful))
                             initViewPager()
                         }
+
                         else -> {
                         }
                     }
@@ -97,6 +101,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                             ToastUtil.error(getString(R.string.synchronize_patient_error))
                             initViewPager()
                         }
+
                         else -> {
                         }
                     }
@@ -130,6 +135,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                         binding.actionsFab.startVisitFab.isVisible = false
                     }
                 }
+
                 override fun onPageScrollStateChanged(state: Int) {}
             })
         }
@@ -149,7 +155,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
-    fun endActiveVisit(){
+    fun endActiveVisit() {
         viewModel.endActiveVisit().observe(this) { visitEnded ->
             if (visitEnded) {
                 startVitalsMeasurement()
@@ -157,10 +163,26 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
-    private fun startVitalsMeasurement(){
-        vitalsFormLauncher.launch(
-            Intent(this, VitalsFormActivity::class.java)
-                .putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, viewModel.patientId.toLong())
+    private fun startVitalsMeasurement() {
+        newVitalsFlowToggle.check(
+            {
+                vitalsFormLauncher.launch(
+                    Intent(this, VitalsActivity::class.java)
+                        .putExtra(
+                            ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                            viewModel.patientId.toLong()
+                        )
+                )
+            },
+            {
+                vitalsFormLauncher.launch(
+                    Intent(this, VitalsFormActivity::class.java)
+                        .putExtra(
+                            ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                            viewModel.patientId.toLong()
+                        )
+                )
+            }
         )
     }
 
@@ -170,9 +192,11 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         if (result.resultCode == RESULT_OK) {
             val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId.toLong()).execute()
 
-            startActivity(Intent(this, VisitDashboardActivity::class.java)
-                .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, activeVisit.id)
-                .putExtra(ApplicationConstants.BundleKeys.IS_NEW_VITALS, true))
+            startActivity(
+                Intent(this, VisitDashboardActivity::class.java)
+                    .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, activeVisit.id)
+                    .putExtra(ApplicationConstants.BundleKeys.IS_NEW_VITALS, true)
+            )
 
         }
     }
