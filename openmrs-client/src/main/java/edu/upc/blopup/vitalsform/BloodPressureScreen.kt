@@ -36,7 +36,7 @@ import edu.upc.R
 @Composable
 fun BloodPressureScreenWithAppBar() {
     Scaffold(
-        topBar = { AppToolBarWithMenu("Blood Pressure Data") },
+        topBar = { AppToolBarWithMenu(stringResource(R.string.blood_pressure_data)) },
     ) { innerPadding ->
         BloodPressureScreen(innerPadding)
     }

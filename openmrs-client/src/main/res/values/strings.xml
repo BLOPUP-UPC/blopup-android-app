@@ -409,5 +409,6 @@
     <string name="title_activity_vitals" tools:ignore="MissingTranslation">VitalsActivity</string>
     <string name="bp_image_description" tools:ignore="MissingTranslation">Illustration of a black man wearing a beige polo shirt, blue trousers and brown shoes. He is sitting on a chair and has a blue cuff around his arm.</string>
     <string name="how_to_activate_the_device_label" tools:ignore="MissingTranslation">How to activate the device</string>
+    <string name="blood_pressure_data" tools:ignore="MissingTranslation">Blood Pressure Data</string>
     />
 </resources>

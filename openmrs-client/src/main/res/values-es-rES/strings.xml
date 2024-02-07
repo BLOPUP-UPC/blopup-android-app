@@ -266,5 +266,6 @@
     <string name="message_doctor_error">Ha habido un error mandando el mensaje. Por favor contacte directamente al personal médico.</string>
     <string name="treatment_label">Tratamiento</string>/>
     <string name="bp_image_description">Ilustración de un hombre negro vistiendo una polo beige, pantalones azules y zapatos marrones. Está sentado en una silla con brazalete azul alrededor de su brazo.</string>
-    <string name="how_to_activate_the_device_label">Cómo activar el dispositivo</string>/>
+    <string name="how_to_activate_the_device_label">Cómo activar el dispositivo</string>
+    <string name="blood_pressure_data">Información de la Presión Arterial</string>/>
 </resources>
