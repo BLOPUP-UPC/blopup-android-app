@@ -82,6 +82,7 @@ object VisitExample {
                                 displayValue = if (value) "1.0" else "0.0"
                                 display = "Adherence: $displayValue"
                                 dateCreated = date.toString()
+                                obsDatetime = date.toString()
                             }
                         }
                     )

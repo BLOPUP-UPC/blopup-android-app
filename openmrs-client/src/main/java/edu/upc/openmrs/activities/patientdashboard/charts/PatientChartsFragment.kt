@@ -30,13 +30,13 @@ import edu.upc.databinding.FragmentPatientChartsBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showShortToast
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.*
 
 @AndroidEntryPoint
 class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), PatientChartsRecyclerViewAdapter.OnClickListener {
@@ -46,6 +46,10 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     private val viewModel: PatientDashboardChartsViewModel by viewModels()
 
     private var observationList: JSONObject? = null
+
+    private val patientId: Int by lazy {
+        requireArguments().getString(PATIENT_ID_BUNDLE)!!.toInt()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPatientChartsBinding.inflate(inflater, container, false)
@@ -117,9 +121,10 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
                     ChartsViewActivity::class.java
                 ).apply {
                     val bundle = Bundle().apply {
-                        putSerializable("bloodPressure", map)
+                        putSerializable(ChartsViewActivity.BLOOD_PRESSURE, map)
+                        putInt(ChartsViewActivity.PATIENT_ID, patientId)
                     }
-                    putExtra("bundle", bundle)
+                    putExtra(ApplicationConstants.BUNDLE, bundle)
                     startActivity(this)
                 }
             } catch (e: NumberFormatException) {

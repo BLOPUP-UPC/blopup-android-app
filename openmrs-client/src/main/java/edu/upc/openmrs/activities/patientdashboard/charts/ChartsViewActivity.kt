@@ -9,9 +9,11 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.ExpandableListView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
@@ -31,12 +33,15 @@ import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.utilities.ApplicationConstants
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValueSelectedListener {
+
+    private val viewModel: ChartsViewViewModel by viewModels()
 
     private lateinit var bloodPressureChart: LineChart
     private lateinit var treatmentsChart: LineChart
@@ -50,8 +55,13 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     private val maxBloodPressureValueShown = 200f
     private val minBloodPressureValueShown = 40f
 
+    private val patientLocalDbId by lazy {
+        this.intent.getBundleExtra(ApplicationConstants.BUNDLE)!!.getInt(PATIENT_ID)
+    }
+
     companion object {
         const val BLOOD_PRESSURE = "bloodPressure"
+        const val PATIENT_ID = "patientId"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,6 +113,12 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+        viewModel.treatments.observe(this) { treatments ->
+            Log.i("Treatments", treatments.toString())
+        }
+
+        lifecycleScope.launch { viewModel.fetchTreatments(patientLocalDbId) }
     }
 
     private fun setToolbar() {
