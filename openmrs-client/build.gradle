@@ -95,13 +95,11 @@ android {
             }
         }
         debug {
-            testCoverageEnabled false
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
         }
         staging {
-            testCoverageEnabled false
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
