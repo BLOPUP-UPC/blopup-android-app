@@ -113,7 +113,7 @@ class TreatmentRepository @Inject constructor(
         return result
     }
 
-    private suspend fun fetchAllTreatments(patient: Patient): Result<List<Treatment>> =
+    suspend fun fetchAllTreatments(patient: Patient): Result<List<Treatment>> =
         try {
             withContext(Dispatchers.IO) {
                 val visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
@@ -150,6 +150,7 @@ class TreatmentRepository @Inject constructor(
         var isActive = false
         var observationStatusUuid: String? = null
         var inactiveDate: Instant? = null
+        val adherenceMap = mutableMapOf<Instant, Boolean>()
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {
                 ObservationConcept.RECOMMENDED_BY.uuid -> recommendedBy =
@@ -171,6 +172,12 @@ class TreatmentRepository @Inject constructor(
                         inactiveDate = parseFromOpenmrsDate(observation.obsDatetime!!)
                     }
                 }
+
+                ObservationConcept.TREATMENT_ADHERENCE.uuid -> {
+                    val adherence = observation.displayValue?.trim() == "1.0"
+                    val date = parseFromOpenmrsDate(observation.dateCreated!!)
+                    adherenceMap[date] = adherence
+                }
             }
         }
         return Treatment(
@@ -184,7 +191,8 @@ class TreatmentRepository @Inject constructor(
             treatmentUuid = treatmentUuid,
             observationStatusUuid = observationStatusUuid,
             inactiveDate = inactiveDate,
-            creationDate = creationDate
+            creationDate = creationDate,
+            adherence = adherenceMap
         )
     }
 

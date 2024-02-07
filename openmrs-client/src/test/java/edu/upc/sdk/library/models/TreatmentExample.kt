@@ -15,7 +15,8 @@ object TreatmentExample {
             visitUuid = UUID.randomUUID().toString(),
             treatmentUuid = UUID.randomUUID().toString(),
             observationStatusUuid = UUID.randomUUID().toString(),
-            creationDate = creationDate
+            creationDate = creationDate,
+            adherence = mapOf(Instant.now() to true)
         )
     }
 

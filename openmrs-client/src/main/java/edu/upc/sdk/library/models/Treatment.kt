@@ -16,7 +16,8 @@ data class Treatment(
     var treatmentUuid: String? = null,
     var observationStatusUuid: String? = null,
     var creationDate: Instant = Instant.now(),
-    var inactiveDate: Instant? = null
+    var inactiveDate: Instant? = null,
+    var adherence: Map<Instant, Boolean> = emptyMap()
 ) : Parcelable {
 
     companion object {

@@ -63,13 +63,26 @@ object VisitExample {
                             uuid = UUID.randomUUID().toString()
                         },
                         Observation().apply {
-                            concept = ConceptEntity().apply { uuid = ObservationConcept.ACTIVE.uuid }
+                            concept =
+                                ConceptEntity().apply { uuid = ObservationConcept.ACTIVE.uuid }
                             displayValue = activeText
                             display = "Active:$activeText"
                             uuid = UUID.randomUUID().toString()
                             treatment.observationStatusUuid = uuid
                             dateCreated = treatment.creationDate.toString()
                             obsDatetime = treatment.inactiveDate.toString()
+                        },
+                    ).plus(
+                        treatment.adherence.map { (date, value) ->
+                            Observation().apply {
+                                concept =
+                                    ConceptEntity().apply {
+                                        uuid = ObservationConcept.TREATMENT_ADHERENCE.uuid
+                                    }
+                                displayValue = if (value) "1.0" else "0.0"
+                                display = "Adherence: $displayValue"
+                                dateCreated = date.toString()
+                            }
                         }
                     )
                 }
