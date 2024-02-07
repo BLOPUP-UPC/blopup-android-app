@@ -10,8 +10,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class BloodPressureScreenKtTest {
+class AppToolBarWithMenuKtTest{
 
+    //check if we can generify this as the AppToolBarWithMenu should be able to be used in multiple places
     @get:Rule
     val composeRuleWithActivity = createAndroidComposeRule<VitalsActivity>()
 

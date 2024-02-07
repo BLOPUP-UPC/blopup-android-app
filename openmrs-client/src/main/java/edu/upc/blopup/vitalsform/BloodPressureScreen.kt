@@ -13,19 +13,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,39 +36,13 @@ import edu.upc.R
 @Composable
 fun BloodPressureScreenWithAppBar() {
     Scaffold(
-        topBar = { TopBar() },
+        topBar = { AppToolBarWithMenu("Blood Pressure Data") },
     ) { innerPadding ->
         BloodPressureScreen(innerPadding)
     }
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun TopBar() {
 
-    val activity = (LocalContext.current as? VitalsActivity)
-
-    TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colorResource(R.color.dark_teal),
-            titleContentColor = colorResource(R.color.white),
-        ),
-        title = {
-            Text("Blood Pressure Data")
-        },
-        navigationIcon = {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_back),
-                contentDescription = "Back",
-                tint = colorResource(R.color.white),
-                modifier = Modifier
-                    .clickable { activity?.onBackPressedDispatcher?.onBackPressed() }
-                    .padding(horizontal = 16.dp)
-                    .testTag("back_button")
-            )
-        }
-    )
-}
 
 @Composable
 fun BloodPressureScreen(paddingValues: PaddingValues) {
