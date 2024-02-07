@@ -12,13 +12,13 @@ class VitalsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            BloodPressureScreen()
+            BloodPressureScreenWithAppBar()
         }
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun BloodPressurePreview() {
-    BloodPressureScreen()
+fun VitalsActivityPreview() {
+    BloodPressureScreenWithAppBar()
 }
