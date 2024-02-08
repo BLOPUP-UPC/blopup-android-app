@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform
+package edu.upc.blopup.vitalsform.screens
 
 import android.content.Intent
 import androidx.activity.ComponentActivity

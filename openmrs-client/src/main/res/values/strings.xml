@@ -256,7 +256,7 @@
     <!-- BLOPUP -->
     <string name="toolbar_read_measurement_title" tools:ignore="MissingTranslation">Enable Connection</string>
     <string name="toolbar_bluetooth_icon_content_description" translatable="false">Bluetooth connection status icon</string>
-    <string name="bluetooth_instructions" tools:ignore="MissingTranslation">To manually activate the Bluetooth, press START/STOP (14) for 5–6 seconds until the Bluetooth symbol starts flashing (29)</string>
+    <string name="bluetooth_instructions" tools:ignore="MissingTranslation">To manually activate the Bluetooth, press START/STOP for 5–6 seconds until the Bluetooth symbol starts flashing. \n\nThe device will take 3 measurements in a row before giving you a result in the app. </string>
     <string name="blood_pressure_diagram_content_description" tools:ignore="MissingTranslation">Blood Pressure device diagram</string>
     <string name="bt_exception_scan_message" tools:ignore="MissingTranslation">Scanning of devices failed</string>
     <string name="bt_exception_disconnect_message" tools:ignore="MissingTranslation">Failed to disconnect device</string>
@@ -408,6 +408,7 @@
     <string name="ok" tools:ignore="MissingTranslation">OK</string>
     <string name="title_activity_vitals" tools:ignore="MissingTranslation">VitalsActivity</string>
     <string name="bp_image_description" tools:ignore="MissingTranslation">Illustration of a black man wearing a beige polo shirt, blue trousers and brown shoes. He is sitting on a chair and has a blue cuff around his arm.</string>
+    <string name="bp_device_image_description" tools:ignore="MissingTranslation">Illustration of the blood pressure device.</string>
     <string name="how_to_activate_the_device_label" tools:ignore="MissingTranslation">How to activate the device</string>
     <string name="blood_pressure_data" tools:ignore="MissingTranslation">Blood Pressure Data</string>
     />

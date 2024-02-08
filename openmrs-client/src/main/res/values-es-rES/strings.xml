@@ -146,7 +146,7 @@
 
     <!-- BLOPUP -->
     <string name="toolbar_read_measurement_title">Establece Conexión</string>
-    <string name="bluetooth_instructions">Para activar manualmente el Bluetooth, presione START/STOP (14) durante 5–6 segundos hasta que el símbolo de Bluetooth comience a parpadear (29)</string>
+    <string name="bluetooth_instructions">Para activar manualmente el Bluetooth, presione START/STOP durante 5–6 segundos hasta que el símbolo de Bluetooth comience a parpadear. \n\nEl dispositivo tomará 3 medidas de manera seguida antes de dar un resultado en la aplicación. </string>
     <string name="blood_pressure_diagram_content_description">Diagrama del tensiómetro</string>
     <string name="bt_exception_scan_message">Dispositivo no encontrado</string>
     <string name="bt_exception_disconnect_message">No se puede desconectar</string>
@@ -266,6 +266,7 @@
     <string name="message_doctor_error">Ha habido un error mandando el mensaje. Por favor contacte directamente al personal médico.</string>
     <string name="treatment_label">Tratamiento</string>/>
     <string name="bp_image_description">Ilustración de un hombre negro vistiendo una polo beige, pantalones azules y zapatos marrones. Está sentado en una silla con brazalete azul alrededor de su brazo.</string>
+    <string name="bp_device_image_description">Ilustración de un tensiómetro.</string>
     <string name="how_to_activate_the_device_label">Cómo activar el dispositivo</string>
     <string name="blood_pressure_data">Información de la Presión Arterial</string>/>
 </resources>

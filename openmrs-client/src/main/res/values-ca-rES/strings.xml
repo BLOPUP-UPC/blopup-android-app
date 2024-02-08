@@ -145,7 +145,7 @@
 
     <!-- BLOPUP -->
     <string name="toolbar_read_measurement_title">Estableix Connexió</string>
-    <string name="bluetooth_instructions">Per activar manualment el Bluetooth, premeu START/STOP (14) durant 5–6 segons fins que el símbol de Bluetooth comenci a centellejar (29)</string>
+    <string name="bluetooth_instructions">Per activar manualment el Bluetooth, premeu START/STOP durant 5–6 segons fins que el símbol de Bluetooth comenci a centellejar. \n\nEl dispositiu prendrà 3 mesures de manera seguida abans de donar un resultat a l\'aplicació.</string>
     <string name="blood_pressure_diagram_content_description">Diagrama del tensiòmetre</string>
     <string name="bt_exception_scan_message">No s\'ha trobat el dispositiu</string>
     <string name="bt_exception_disconnect_message">No s\'ha pogut desconnectar</string>
@@ -266,6 +266,7 @@
     <string name="message_doctor_error">Hi ha hagut un error enviant el missatge. Siusplau contacti al metge directament.</string>
     <string name="treatment_label">Tractament</string>/>
     <string name="bp_image_description">Il·lustració d\'un home negre vestint un polo beix, pantalons blaus i sabates marrons. Està assegut en una cadira amb braçalet blau al voltant del seu braç.</string>
+    <string name="bp_device_image_description">Il·lustració d\'un tensiòmetre.</string>
     <string name="how_to_activate_the_device_label">Com activar el dispositiu</string>
     <string name="blood_pressure_data">Informació de la Pressió Arteriala</string>/>
 </resources>

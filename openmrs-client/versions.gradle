@@ -41,8 +41,9 @@ versions.permissionsdispatcher = '4.8.0'
 
 versions.placesAPI = '3.3.0'
 
-versions.navfragment = '2.7.6'
-versions.navui = '2.7.6'
+versions.navfragment = '2.7.7'
+versions.navui = '2.7.7'
+versions.navcompose = '2.7.7'
 
 versions.coreTesting = '1.1.1'
 

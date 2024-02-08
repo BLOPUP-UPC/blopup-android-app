@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform
+package edu.upc.blopup.vitalsform.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -15,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,25 +26,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import edu.upc.R
+import edu.upc.blopup.vitalsform.model.Routes
 
 @Composable
-fun BloodPressureScreenWithAppBar() {
-    Scaffold(
-        topBar = { AppToolBarWithMenu(stringResource(R.string.blood_pressure_data)) },
-    ) { innerPadding ->
-        BloodPressureScreen(innerPadding)
-    }
-}
-
-
-
-@Composable
-fun BloodPressureScreen(paddingValues: PaddingValues) {
+fun BloodPressureScreen(paddingValues: PaddingValues, navController: NavHostController){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,8 +47,8 @@ fun BloodPressureScreen(paddingValues: PaddingValues) {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         BloodPressureInstructions()
-        HowToActivateTheDeviceButton()
-        ReceiveBloodPressureDataButton()
+        HowToActivateTheDeviceButton(navController)
+        ReceiveBloodPressureDataButton(navController)
     }
 }
 
@@ -94,10 +83,10 @@ fun BloodPressureInstructions() {
 
 
 @Composable
-fun HowToActivateTheDeviceButton() {
+fun HowToActivateTheDeviceButton(navController: NavHostController) {
     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
         .fillMaxWidth()
-        .clickable { /*TODO*/ }) {
+        .clickable { navController.navigate(Routes.HowToActivateBluetoothScreen.id)}) {
         Row {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.icon_bp_info),
@@ -119,10 +108,10 @@ fun HowToActivateTheDeviceButton() {
 }
 
 @Composable
-fun ReceiveBloodPressureDataButton() {
+fun ReceiveBloodPressureDataButton(navController: NavHostController) {
     Button(
         shape = MaterialTheme.shapes.extraSmall,
-        onClick = { /*TODO*/ },
+        onClick = { navController.navigate(Routes.BloodPressureDataScreen.id) },
         contentPadding = PaddingValues(15.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(
@@ -149,10 +138,4 @@ fun ReceiveBloodPressureDataButton() {
         }
 
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BloodPressurePreview() {
-    BloodPressureScreenWithAppBar()
 }
