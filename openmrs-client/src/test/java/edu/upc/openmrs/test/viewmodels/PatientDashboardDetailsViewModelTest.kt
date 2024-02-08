@@ -14,6 +14,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -76,8 +77,7 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
         runBlocking {
             viewModel.fetchActiveTreatments(patient)
             coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
-            //there is a bug in Kotlin that returns the value wrapped in an additional Result.Success
-            assert(viewModel.activeTreatments.value == kotlin.Result.success(kotlin.Result.success(treatmentList)))
+            assertEquals(viewModel.activeTreatments.value, kotlin.Result.success(treatmentList))
         }
     }
 
@@ -94,8 +94,7 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
             viewModel.refreshActiveTreatments()
 
             coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
-            //there is a bug in Kotlin that returns the value wrapped in an additional Result.Success
-            assert(viewModel.activeTreatments.value == kotlin.Result.success(kotlin.Result.success(treatmentList)))
+            assertEquals(viewModel.activeTreatments.value, kotlin.Result.success(treatmentList))
         }
     }
 

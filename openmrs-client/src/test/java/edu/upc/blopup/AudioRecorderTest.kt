@@ -16,7 +16,6 @@ private const val TEST_FILE_PATH = "../testResources/recording.mp3"
 @RunWith(AndroidJUnit4::class)
 class AudioRecorderTest {
 
-    private lateinit var mediaRecorder: MediaRecorder
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var context: Context
     private lateinit var audioRecorder: AudioRecorder
@@ -24,11 +23,12 @@ class AudioRecorderTest {
     @Before
     fun setUp() {
         mediaPlayer = mockk(relaxUnitFun = true)
-        mediaRecorder = mockk(relaxUnitFun = true)
         context = ApplicationProvider.getApplicationContext()
 
         mockkStatic(MediaPlayer::class)
         mockkConstructor(MediaRecorder::class)
+        every { anyConstructed<MediaRecorder>().start() } just Runs
+        every { anyConstructed<MediaRecorder>().setOutputFile(TEST_FILE_PATH) } just Runs
 
         every { MediaPlayer.create(any(), any<Int>()) } returns mediaPlayer
 

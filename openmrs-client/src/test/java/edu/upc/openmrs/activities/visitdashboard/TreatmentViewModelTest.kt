@@ -126,6 +126,6 @@ class TreatmentViewModelTest {
         runBlocking {
                 treatmentViewModel.getAllDoctors()
         }
-        assertEquals(kotlin.Result.success(doctors), treatmentViewModel.doctors.value)
+        assertEquals(doctors, treatmentViewModel.doctors.value)
     }
 }
