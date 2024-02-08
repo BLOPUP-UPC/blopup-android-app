@@ -78,7 +78,7 @@ fun BloodPressureInstructions() {
                 text = stringResource(R.string.blood_pressure_instructions_title),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = TextUnit(16f, TextUnitType.Sp)
+                    fontSize = TextUnit(20f, TextUnitType.Sp)
                 ),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -123,6 +123,7 @@ fun ReceiveBloodPressureDataButton() {
     Button(
         shape = MaterialTheme.shapes.extraSmall,
         onClick = { /*TODO*/ },
+        contentPadding = PaddingValues(15.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(
                 R.color.bluetooth_blue

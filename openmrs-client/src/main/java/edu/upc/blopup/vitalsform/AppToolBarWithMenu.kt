@@ -78,14 +78,71 @@ fun OptionsMenu() {
             tint = colorResource(R.color.white)
         )
     }
-    DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }, modifier = Modifier.background(colorResource(R.color.white)).padding(end = 35.dp)) {
-//        DropdownMenuItem(onClick = { }, text = { Text(text = stringResource(R.string.action_location)) })
-        DropdownMenuItem(onClick = { context.startActivity(Intent(context, SettingsActivity::class.java ))}, text = { Text(text = stringResource(R.string.action_settings), style = TextStyle(fontWeight = FontWeight.Normal))})
-        DropdownMenuItem(onClick = { context.startActivity(Intent(context, ContactUsActivity::class.java ))}, text = { Text(text = stringResource(R.string.contact_us_text), style = TextStyle(fontWeight = FontWeight.Normal))})
-        DropdownMenuItem(onClick = { context.startActivity(Intent(context, IntroActivity::class.java))
-            OpenmrsAndroid.setUserFirstTime(true) }, text = { Text(text = stringResource(R.string.app_tutorial), style = TextStyle(fontWeight = FontWeight.Normal))})
-        DropdownMenuItem(onClick = { context.startActivity(Intent(context, AboutActivity::class.java ))}, text = { Text(text = stringResource(R.string.action_about), style = TextStyle(fontWeight = FontWeight.Normal))})
-//        DropdownMenuItem(onClick = {  }, text = { Text(text = stringResource(R.string.action_logout)) })
+    DropdownMenu(
+        expanded = showMenu,
+        onDismissRequest = { showMenu = false },
+        modifier = Modifier
+            .background(colorResource(R.color.white))
+            .padding(end = 35.dp)
+    ) {
+        DropdownMenuItem(
+            onClick = {
+                context.startActivity(
+                    Intent(
+                        context,
+                        SettingsActivity::class.java
+                    )
+                ); showMenu = false
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.action_settings),
+                    style = TextStyle(fontWeight = FontWeight.Normal)
+                )
+            })
+        DropdownMenuItem(
+            onClick = {
+                context.startActivity(
+                    Intent(
+                        context,
+                        ContactUsActivity::class.java
+                    )
+                ); showMenu = false
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.contact_us_text),
+                    style = TextStyle(fontWeight = FontWeight.Normal)
+                )
+            })
+        DropdownMenuItem(
+            onClick = {
+                context.startActivity(Intent(context, IntroActivity::class.java))
+                OpenmrsAndroid.setUserFirstTime(true)
+                showMenu = false
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.app_tutorial),
+                    style = TextStyle(fontWeight = FontWeight.Normal)
+                )
+            })
+        DropdownMenuItem(
+            onClick = {
+                context.startActivity(
+                    Intent(
+                        context,
+                        AboutActivity::class.java
+                    )
+                )
+                showMenu = false
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.action_about),
+                    style = TextStyle(fontWeight = FontWeight.Normal)
+                )
+            })
     }
 }
 

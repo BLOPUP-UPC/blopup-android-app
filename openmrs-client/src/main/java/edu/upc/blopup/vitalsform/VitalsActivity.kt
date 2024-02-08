@@ -17,7 +17,7 @@ class VitalsActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun VitalsActivityPreview() {
     BloodPressureScreenWithAppBar()
