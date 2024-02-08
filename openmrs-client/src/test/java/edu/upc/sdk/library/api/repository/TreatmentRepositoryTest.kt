@@ -369,7 +369,7 @@ class TreatmentRepositoryTest {
         mockkConstructor(Retrofit.Builder::class)
         mockkStatic(RestServiceBuilder::class)
         mockkConstructor(RestServiceBuilder::class)
-        every { RestServiceBuilder.createService(RestApi::class.java) } returns restApi
+        every { RestServiceBuilder.createService() } returns restApi
         mockkStatic(AppDatabase::class)
         every { AppDatabase.getDatabase(any()) } returns mockk(relaxed = true)
         mockkStatic(WorkManager::class)

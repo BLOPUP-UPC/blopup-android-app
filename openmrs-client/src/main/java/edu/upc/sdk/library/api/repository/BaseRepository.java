@@ -70,7 +70,7 @@ public abstract class BaseRepository {
         {
             {
                 this.context = OpenmrsAndroid.getInstance();
-                this.restApi = RestServiceBuilder.createService(RestApi.class);
+                this.restApi = RestServiceBuilder.createService();
                 this.db = AppDatabase.getDatabase(context);
                 this.workManager = WorkManager.getInstance(context);
                 this.logger = new OpenMRSLogger();

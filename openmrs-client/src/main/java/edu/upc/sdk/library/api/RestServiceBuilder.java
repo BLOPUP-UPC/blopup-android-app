@@ -87,6 +87,12 @@ public class RestServiceBuilder {
         return createService(serviceClass, username, password);
     }
 
+    public static RestApi createService() {
+        String username = OpenmrsAndroid.getUsername();
+        String password = OpenmrsAndroid.getPassword();
+        return createService(RestApi.class, username, password);
+    }
+
     private static GsonConverterFactory buildGsonConverter() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson myGson = gsonBuilder
