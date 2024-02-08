@@ -14,10 +14,10 @@ import java.time.LocalDate
 class TreatmentsListExpandableListAdapter(
     val layoutInflater: LayoutInflater,
     private val expandableListTitle: List<LocalDate>,
-    private val expandableListDetail: HashMap<LocalDate, List<Treatment>>
+    private val expandableListDetail: HashMap<LocalDate, List<TreatmentAdherence>>
 ) : BaseExpandableListAdapter() {
 
-    override fun getChild(listPosition: Int, expandedListPosition: Int): Treatment {
+    override fun getChild(listPosition: Int, expandedListPosition: Int): TreatmentAdherence {
         return this.expandableListDetail[this.expandableListTitle[listPosition]]!![expandedListPosition]
     }
 
@@ -38,7 +38,7 @@ class TreatmentsListExpandableListAdapter(
         expandedListNameView.text = treatment.name
         expandedListTypesView.text = treatment.medicationTypeToString(layoutInflater.context)
 
-        adherenceIcon.setImageResource(treatment.adherenceIcon())
+        adherenceIcon.setImageResource(treatment.icon())
 
         return view
     }

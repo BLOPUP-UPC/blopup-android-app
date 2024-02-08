@@ -7,6 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Treatment
+import org.joda.time.format.DateTimeFormat
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,16 +17,27 @@ class ChartsViewViewModel @Inject constructor(
     private val treatmentRepository: TreatmentRepository
 ) :
     ViewModel() {
-    private val _treatments = MutableLiveData<Result<List<edu.upc.sdk.library.models.Treatment>>>()
-    val treatments: LiveData<Result<List<edu.upc.sdk.library.models.Treatment>>> get() = _treatments
+    private val _treatments = MutableLiveData<Result<Map<String, List<TreatmentAdherence>>>>()
+    val treatments: LiveData<Result<Map<String, List<TreatmentAdherence>>>> get() = _treatments
 
     suspend fun fetchTreatments(patientId: Int) {
-        try {
-            val patient: Patient = patientDAO.findPatientByID(patientId.toString())
-            val result = treatmentRepository.fetchAllTreatments(patient)
-            _treatments.value = result
-        } catch (e: Exception) {
-            _treatments.value = Result.failure(e)
+        val patient: Patient = patientDAO.findPatientByID(patientId.toString())
+        treatmentRepository.fetchAllTreatments(patient).onSuccess {
+            _treatments.value = Result.success(treatmentsByAdherenceDate(it))
+        }.onFailure {
+            _treatments.value = Result.failure(it)
+        }
+    }
+
+    private fun treatmentsByAdherenceDate(treatments: List<Treatment>): Map<String, List<TreatmentAdherence>> {
+        val formatter = DateTimeFormat.forPattern("dd/MM/yyyy")
+        return treatments.fold(mutableMapOf()) { acc, treatment ->
+            treatment.adherence.map {
+                val previous = acc[it.key.toString(formatter)] ?: emptyList()
+                acc[it.key.toString(formatter)] = previous.plus(TreatmentAdherence(treatment.medicationName, treatment.medicationType, it.value))
+            }
+
+            return acc
         }
     }
 }

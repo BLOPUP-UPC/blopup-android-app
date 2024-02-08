@@ -50,7 +50,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     private lateinit var expandableListView: ExpandableListView
     private lateinit var expandableListAdapter: TreatmentsListExpandableListAdapter
     private lateinit var expandableListTitle: List<LocalDate>
-    private lateinit var expandableListDetail: HashMap<LocalDate, List<Treatment>>
+    private lateinit var expandableListDetail: HashMap<LocalDate, List<TreatmentAdherence>>
 
     private val maxBloodPressureValueShown = 200f
     private val minBloodPressureValueShown = 40f
@@ -404,10 +404,10 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     override fun onNothingSelected() {
     }
 
-    private fun getData(): HashMap<LocalDate, List<Treatment>> {
-        val yesterday = listOf(Treatment("Aspirin", setOf(MedicationType.ARA_II, MedicationType.BETA_BLOCKER), true), Treatment("Ibuprofen", setOf(MedicationType.ARA_II), false))
-        val today = listOf(Treatment("Paracetamol", setOf(MedicationType.ARA_II), true), Treatment("Ibuprofen", setOf(MedicationType.BETA_BLOCKER), true))
-        val tomorrow = listOf(Treatment("Paracetomorrow", setOf(MedicationType.ACE_INHIBITOR), false), Treatment("Ibupromorrow", setOf(MedicationType.ARA_II), false))
+    private fun getData(): HashMap<LocalDate, List<TreatmentAdherence>> {
+        val yesterday = listOf(TreatmentAdherence("Aspirin", setOf(MedicationType.ARA_II, MedicationType.BETA_BLOCKER), true), TreatmentAdherence("Ibuprofen", setOf(MedicationType.ARA_II), false))
+        val today = listOf(TreatmentAdherence("Paracetamol", setOf(MedicationType.ARA_II), true), TreatmentAdherence("Ibuprofen", setOf(MedicationType.BETA_BLOCKER), true))
+        val tomorrow = listOf(TreatmentAdherence("Paracetomorrow", setOf(MedicationType.ACE_INHIBITOR), false), TreatmentAdherence("Ibupromorrow", setOf(MedicationType.ARA_II), false))
 
         return hashMapOf(LocalDate.parse("2018-10-23") to yesterday, LocalDate.parse("2024-10-23") to today, LocalDate.parse("2028-10-23") to tomorrow)
     }
@@ -419,16 +419,16 @@ data class TreatmentChartValue(val date: LocalDate, val followTreatments: Follow
 enum class FollowTreatments {
     NO_TREATMENTS, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
 }
-data class Treatment(
+data class TreatmentAdherence(
     val name: String,
     var medicationType: Set<MedicationType>,
     val adherence: Boolean
 )
 
-fun Treatment.medicationTypeToString(context: Context): String {
+fun TreatmentAdherence.medicationTypeToString(context: Context): String {
     return medicationType.joinToString(separator = " • ") { context.getString(it.label) }
 }
 
-fun Treatment.adherenceIcon(): Int {
+fun TreatmentAdherence.icon(): Int {
     return if (adherence) R.drawable.ic_tick else R.drawable.ic_cross
 }
