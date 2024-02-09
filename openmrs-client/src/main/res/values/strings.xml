@@ -411,5 +411,10 @@
     <string name="bp_device_image_description" tools:ignore="MissingTranslation">Illustration of the blood pressure device.</string>
     <string name="how_to_activate_the_device_label" tools:ignore="MissingTranslation">How to activate the device</string>
     <string name="blood_pressure_data" tools:ignore="MissingTranslation">Blood Pressure Data</string>
+    <string name="how_to_activate_bluetooth_one" tools:ignore="MissingTranslation">To activate the Bluetooth, hold \u0020</string>
+    <string name="how_to_activate_bluetooth_two" translatable="false">START/STOP \u0020</string>
+    <string name="how_to_activate_bluetooth_three" tools:ignore="MissingTranslation">for 5–6 seconds until the \u0020</string>
+    <string name="how_to_activate_bluetooth_four" tools:ignore="MissingTranslation">BLUETOOTH SYMBOL \u0020</string>
+    <string name="how_to_activate_bluetooth_five" tools:ignore="MissingTranslation">at the top starts flashing.\n\nThe device will take 3 measurements in a row before giving you a result in the app. </string>
     />
 </resources>

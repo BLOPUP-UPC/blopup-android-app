@@ -268,5 +268,9 @@
     <string name="bp_image_description">Il·lustració d\'un home negre vestint un polo beix, pantalons blaus i sabates marrons. Està assegut en una cadira amb braçalet blau al voltant del seu braç.</string>
     <string name="bp_device_image_description">Il·lustració d\'un tensiòmetre.</string>
     <string name="how_to_activate_the_device_label">Com activar el dispositiu</string>
-    <string name="blood_pressure_data">Informació de la Pressió Arteriala</string>/>
+    <string name="blood_pressure_data">Dades de la Pressió Arterial</string>
+    <string name="how_to_activate_bluetooth_one">Per activar el Bluetooth, premi \u0020</string>/>
+    <string name="how_to_activate_bluetooth_three">per 5–6 segons fins que la  \u0020</string>/>
+    <string name="how_to_activate_bluetooth_four">SENYAL DE BLUETOOTH \u0020</string>/>
+    <string name="how_to_activate_bluetooth_five">a dalt comenceu a parpellejar.\n\nEl dispositiu prendrà 3 mesures abans d\'ensenyar el resultat a l\'aplicació.</string>/>
 </resources>

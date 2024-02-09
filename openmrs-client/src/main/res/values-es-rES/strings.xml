@@ -268,5 +268,9 @@
     <string name="bp_image_description">Ilustración de un hombre negro vistiendo una polo beige, pantalones azules y zapatos marrones. Está sentado en una silla con brazalete azul alrededor de su brazo.</string>
     <string name="bp_device_image_description">Ilustración de un tensiómetro.</string>
     <string name="how_to_activate_the_device_label">Cómo activar el dispositivo</string>
-    <string name="blood_pressure_data">Información de la Presión Arterial</string>/>
+    <string name="blood_pressure_data">Datos de la Presión Arterial</string>
+    <string name="how_to_activate_bluetooth_one">Para activar el Bluetooth, presione \u0020</string>/>
+    <string name="how_to_activate_bluetooth_three">por 5–6 segundos hasta que la  \u0020</string>/>
+    <string name="how_to_activate_bluetooth_four">SEÑAL DE BLUETOOTH \u0020</string>/>
+    <string name="how_to_activate_bluetooth_five">arriba comience a parpadear.\n\nEl dispositivo tomará 3 mediciones antes de enseñar el resultado en la aplicación.</string>/>
 </resources>

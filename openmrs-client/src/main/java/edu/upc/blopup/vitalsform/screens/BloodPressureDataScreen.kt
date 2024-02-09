@@ -2,7 +2,6 @@ package edu.upc.blopup.vitalsform.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -13,12 +12,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun BloodPressureDataScreen (paddingValues: PaddingValues, navController: NavHostController) {
+fun BloodPressureDataScreen (navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top = paddingValues.calculateTopPadding(),
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 16.dp            ),

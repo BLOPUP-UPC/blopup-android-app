@@ -34,12 +34,11 @@ import edu.upc.R
 import edu.upc.blopup.vitalsform.model.Routes
 
 @Composable
-fun BloodPressureScreen(paddingValues: PaddingValues, navController: NavHostController){
+fun BloodPressureScreen(navController: NavHostController){
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top = paddingValues.calculateTopPadding(),
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 16.dp
