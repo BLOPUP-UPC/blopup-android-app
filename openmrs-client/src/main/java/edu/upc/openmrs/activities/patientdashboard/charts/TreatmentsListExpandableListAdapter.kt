@@ -16,7 +16,7 @@ class TreatmentsListExpandableListAdapter(
     private val expandableListDetail: Map<String, List<TreatmentAdherence>>
 ) : BaseExpandableListAdapter() {
     override fun getChild(listPosition: Int, expandedListPosition: Int): TreatmentAdherence {
-        return this.expandableListDetail[this.expandableListTitle[listPosition]]!![expandedListPosition]
+        return this.expandableListDetail[this.expandableListTitle[listPosition]]?.get(expandedListPosition) ?: TreatmentAdherence("", emptySet(), false, "")
     }
 
     override fun getChildId(listPosition: Int, expandedListPosition: Int): Long {
