@@ -44,20 +44,49 @@ class ChartsViewViewModelTest {
     @Test
     fun `should transform treatments to adherences with dates`() {
         val now = Instant.now()
-        val treatment = TreatmentExample.activeTreatment().apply {
-            adherence = mapOf(now to true)
+        val lastWeek = now.toDateTime().plusDays(-7).toInstant()
+
+        val treatmentsWOAdherence = TreatmentExample.activeTreatment().apply {
+            adherence = emptyMap()
         }
+        val treatment = TreatmentExample.activeTreatment().apply {
+            adherence = mapOf(
+                lastWeek to false,
+                now to true
+            )
+        }
+        val treatmentWithFalseAdherence = TreatmentExample.activeTreatment().apply {
+            adherence = mapOf(
+                now to false
+            )
+        }
+
         val expectedTreatmentAdherence =
             mapOf(
+                lastWeek.toString(formatter) to listOf(
+                    TreatmentAdherence(
+                        treatment.medicationName,
+                        treatment.medicationType,
+                        false,
+                        lastWeek.toString(formatter)
+                    )
+                ),
                 now.toString(formatter) to listOf(
                     TreatmentAdherence(
                         treatment.medicationName,
                         treatment.medicationType,
-                        true
+                        true,
+                        now.toString(formatter)
+                    ),
+                    TreatmentAdherence(
+                        treatmentWithFalseAdherence.medicationName,
+                        treatmentWithFalseAdherence.medicationType,
+                        false,
+                        now.toString(formatter)
                     )
                 )
             )
-        val treatmentList = listOf(treatment)
+        val treatmentList = listOf(treatmentsWOAdherence, treatment, treatmentWithFalseAdherence)
         val patientId = 88L
         val testPatient = Patient().apply {
             id = patientId

@@ -1,7 +1,7 @@
 ext.versions = [:]
 
 versions.compileSdk = 34
-versions.minSdk = 24
+versions.minSdk = 26
 versions.targetSdk = 34
 
 // Libraries

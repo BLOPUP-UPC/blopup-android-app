@@ -31,13 +31,15 @@ class ChartsViewViewModel @Inject constructor(
 
     private fun treatmentsByAdherenceDate(treatments: List<Treatment>): Map<String, List<TreatmentAdherence>> {
         val formatter = DateTimeFormat.forPattern("dd/MM/yyyy")
-        return treatments.fold(mutableMapOf()) { acc, treatment ->
+        return treatments.flatMap { treatment ->
             treatment.adherence.map {
-                val previous = acc[it.key.toString(formatter)] ?: emptyList()
-                acc[it.key.toString(formatter)] = previous.plus(TreatmentAdherence(treatment.medicationName, treatment.medicationType, it.value))
+                TreatmentAdherence(
+                    treatment.medicationName,
+                    treatment.medicationType,
+                    it.value,
+                    it.key.toString(formatter)
+                )
             }
-
-            return acc
-        }
+        }.groupBy { it.date }
     }
 }

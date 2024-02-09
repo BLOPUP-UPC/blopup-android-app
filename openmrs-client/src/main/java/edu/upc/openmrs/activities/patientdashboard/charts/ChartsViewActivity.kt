@@ -49,8 +49,8 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
     private lateinit var expandableListView: ExpandableListView
     private lateinit var expandableListAdapter: TreatmentsListExpandableListAdapter
-    private lateinit var expandableListTitle: List<LocalDate>
-    private lateinit var expandableListDetail: HashMap<LocalDate, List<TreatmentAdherence>>
+    private lateinit var expandableListTitle: List<String>
+    private lateinit var expandableListDetail: Map<String, List<TreatmentAdherence>>
 
     private val maxBloodPressureValueShown = 200f
     private val minBloodPressureValueShown = 40f
@@ -93,18 +93,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         applyTreatmentsChartStyles(treatmentsChart)
 
         expandableListView = mBinding.expandableListView
-        expandableListDetail = getData()
-        expandableListTitle = expandableListDetail.map { it.key }
-        expandableListAdapter =
-            TreatmentsListExpandableListAdapter(this.layoutInflater, expandableListTitle, expandableListDetail)
-        expandableListView.setAdapter(expandableListAdapter)
-        expandableListView.setOnGroupExpandListener { groupPosition ->
-            Toast.makeText(
-                applicationContext,
-                expandableListTitle[groupPosition].toString() + " List Expanded.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
 
         expandableListView.setOnGroupCollapseListener { groupPosition ->
             Toast.makeText(
@@ -115,7 +103,20 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         }
 
         viewModel.treatments.observe(this) { treatments ->
-            Log.i("Treatments", treatments.toString())
+            treatments.onSuccess {
+                expandableListDetail = it
+                expandableListTitle = expandableListDetail.map { it.key }
+                expandableListAdapter =
+                    TreatmentsListExpandableListAdapter(this.layoutInflater, expandableListTitle, expandableListDetail)
+                expandableListView.setAdapter(expandableListAdapter)
+                expandableListView.setOnGroupExpandListener { groupPosition ->
+                    Toast.makeText(
+                        applicationContext,
+                        expandableListTitle[groupPosition].toString() + " List Expanded.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
 
         lifecycleScope.launch { viewModel.fetchTreatments(patientLocalDbId) }
@@ -403,14 +404,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
     override fun onNothingSelected() {
     }
-
-    private fun getData(): HashMap<LocalDate, List<TreatmentAdherence>> {
-        val yesterday = listOf(TreatmentAdherence("Aspirin", setOf(MedicationType.ARA_II, MedicationType.BETA_BLOCKER), true), TreatmentAdherence("Ibuprofen", setOf(MedicationType.ARA_II), false))
-        val today = listOf(TreatmentAdherence("Paracetamol", setOf(MedicationType.ARA_II), true), TreatmentAdherence("Ibuprofen", setOf(MedicationType.BETA_BLOCKER), true))
-        val tomorrow = listOf(TreatmentAdherence("Paracetomorrow", setOf(MedicationType.ACE_INHIBITOR), false), TreatmentAdherence("Ibupromorrow", setOf(MedicationType.ARA_II), false))
-
-        return hashMapOf(LocalDate.parse("2018-10-23") to yesterday, LocalDate.parse("2024-10-23") to today, LocalDate.parse("2028-10-23") to tomorrow)
-    }
 }
 
 data class BloodPressureChartValue(val date: LocalDate, val systolic: Float, val diastolic: Float)
@@ -422,7 +415,8 @@ enum class FollowTreatments {
 data class TreatmentAdherence(
     val name: String,
     var medicationType: Set<MedicationType>,
-    val adherence: Boolean
+    val adherence: Boolean,
+    val date: String
 )
 
 fun TreatmentAdherence.medicationTypeToString(context: Context): String {

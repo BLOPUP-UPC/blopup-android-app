@@ -8,15 +8,13 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import edu.upc.R
-import java.time.LocalDate
 
 
 class TreatmentsListExpandableListAdapter(
     val layoutInflater: LayoutInflater,
-    private val expandableListTitle: List<LocalDate>,
-    private val expandableListDetail: HashMap<LocalDate, List<TreatmentAdherence>>
+    private val expandableListTitle: List<String>,
+    private val expandableListDetail: Map<String, List<TreatmentAdherence>>
 ) : BaseExpandableListAdapter() {
-
     override fun getChild(listPosition: Int, expandedListPosition: Int): TreatmentAdherence {
         return this.expandableListDetail[this.expandableListTitle[listPosition]]!![expandedListPosition]
     }
