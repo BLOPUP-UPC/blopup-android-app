@@ -15,6 +15,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import edu.upc.R
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.treatmentChartToggle
+import edu.upc.sdk.library.models.MedicationType
 import java.time.LocalDate
 
 class BloodPressureChart(private val context: Context) {
@@ -243,4 +244,25 @@ class BloodPressureChart(private val context: Context) {
         chart.onChartGestureListener = gestureListener
         chart.setOnChartValueSelectedListener(valueSelectedListener)
     }
+}
+
+data class BloodPressureChartValue(val date: LocalDate, val systolic: Float, val diastolic: Float)
+data class TreatmentChartValue(val date: LocalDate, val followTreatments: FollowTreatments)
+
+enum class FollowTreatments {
+    NO_TREATMENTS, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
+}
+data class TreatmentAdherence(
+    val name: String,
+    var medicationType: Set<MedicationType>,
+    val adherence: Boolean,
+    val date: String
+)
+
+fun TreatmentAdherence.medicationTypeToString(context: Context): String {
+    return medicationType.joinToString(separator = " • ") { context.getString(it.label) }
+}
+
+fun TreatmentAdherence.icon(): Int {
+    return if (adherence) R.drawable.ic_tick else R.drawable.ic_cross
 }

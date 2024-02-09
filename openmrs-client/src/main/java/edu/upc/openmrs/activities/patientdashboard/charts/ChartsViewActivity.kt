@@ -1,6 +1,5 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -22,7 +21,6 @@ import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -190,23 +188,3 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     }
 }
 
-data class BloodPressureChartValue(val date: LocalDate, val systolic: Float, val diastolic: Float)
-data class TreatmentChartValue(val date: LocalDate, val followTreatments: FollowTreatments)
-
-enum class FollowTreatments {
-    NO_TREATMENTS, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
-}
-data class TreatmentAdherence(
-    val name: String,
-    var medicationType: Set<MedicationType>,
-    val adherence: Boolean,
-    val date: String
-)
-
-fun TreatmentAdherence.medicationTypeToString(context: Context): String {
-    return medicationType.joinToString(separator = " • ") { context.getString(it.label) }
-}
-
-fun TreatmentAdherence.icon(): Int {
-    return if (adherence) R.drawable.ic_tick else R.drawable.ic_cross
-}

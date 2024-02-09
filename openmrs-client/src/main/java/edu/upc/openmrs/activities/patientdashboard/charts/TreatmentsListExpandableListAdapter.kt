@@ -1,5 +1,6 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
+import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import edu.upc.R
+import edu.upc.sdk.library.models.MedicationType
+import java.time.LocalDate
 
 
 class TreatmentsListExpandableListAdapter(
