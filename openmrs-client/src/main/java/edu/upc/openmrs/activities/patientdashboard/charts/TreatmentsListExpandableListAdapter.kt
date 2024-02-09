@@ -46,7 +46,7 @@ class TreatmentsListExpandableListAdapter(
     }
 
     override fun getGroup(listPosition: Int): String {
-        return expandableListTitle[listPosition].toString()
+        return expandableListTitle[listPosition]
     }
 
     override fun getGroupCount(): Int {

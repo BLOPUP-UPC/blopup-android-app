@@ -40,6 +40,6 @@ class ChartsViewViewModel @Inject constructor(
                     it.key.toString(formatter)
                 )
             }
-        }.groupBy { it.date }
+        }.sortedBy { it.adherence } .groupBy { it.date }
     }
 }

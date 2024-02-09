@@ -73,17 +73,17 @@ class ChartsViewViewModelTest {
                 ),
                 now.toString(formatter) to listOf(
                     TreatmentAdherence(
+                        treatmentWithFalseAdherence.medicationName,
+                        treatmentWithFalseAdherence.medicationType,
+                        false,
+                        now.toString(formatter)
+                    ),
+                    TreatmentAdherence(
                         treatment.medicationName,
                         treatment.medicationType,
                         true,
                         now.toString(formatter)
                     ),
-                    TreatmentAdherence(
-                        treatmentWithFalseAdherence.medicationName,
-                        treatmentWithFalseAdherence.medicationType,
-                        false,
-                        now.toString(formatter)
-                    )
                 )
             )
         val treatmentList = listOf(treatmentsWOAdherence, treatment, treatmentWithFalseAdherence)

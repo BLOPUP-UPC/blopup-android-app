@@ -103,18 +103,21 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         }
 
         viewModel.treatments.observe(this) { treatments ->
-            treatments.onSuccess {
-                expandableListDetail = it
-                expandableListTitle = expandableListDetail.map { it.key }
-                expandableListAdapter =
-                    TreatmentsListExpandableListAdapter(this.layoutInflater, expandableListTitle, expandableListDetail)
-                expandableListView.setAdapter(expandableListAdapter)
-                expandableListView.setOnGroupExpandListener { groupPosition ->
-                    Toast.makeText(
-                        applicationContext,
-                        expandableListTitle[groupPosition].toString() + " List Expanded.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+            treatments.onSuccess { adherenceMap ->
+                if (adherenceMap.isNotEmpty()) {
+                    mBinding.treatmentsSideBar.makeVisible()
+                    expandableListDetail = adherenceMap
+                    expandableListTitle = expandableListDetail.map { it.key }
+                    expandableListAdapter =
+                        TreatmentsListExpandableListAdapter(this.layoutInflater, expandableListTitle, expandableListDetail)
+                    expandableListView.setAdapter(expandableListAdapter)
+                    expandableListView.setOnGroupExpandListener { groupPosition ->
+                        Toast.makeText(
+                            applicationContext,
+                            expandableListTitle[groupPosition].toString() + " List Expanded.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
