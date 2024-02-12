@@ -73,8 +73,7 @@
                     android:layout_height="match_parent"
                     android:groupIndicator="@null"
                     android:divider="#00000000"
-                    android:childDivider="#00000000"
-                    android:visibility="visible" />
+                    android:childDivider="#00000000" />
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
