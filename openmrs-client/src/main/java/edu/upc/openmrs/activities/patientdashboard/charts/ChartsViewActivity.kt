@@ -33,6 +33,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     private lateinit var treatmentsChartView: LineChart
     private lateinit var bloodPressureChartPainter: BloodPressureChart
 
+    private lateinit var expandableSidebarAdapter: TreatmentsListExpandableListAdapter
     private lateinit var expandableSidebarListView: ExpandableListView
 
     private val patientLocalDbId by lazy {
@@ -78,14 +79,13 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
             treatments.onSuccess { adherenceMap ->
                 if (adherenceMap.isNotEmpty()) {
                     mBinding.treatmentsSideBar.makeVisible()
-
-                    expandableSidebarListView.setAdapter(
-                        TreatmentsListExpandableListAdapter(
-                            this.layoutInflater,
-                            adherenceMap.map { it.key },
-                            adherenceMap
-                        )
+                    expandableSidebarAdapter = TreatmentsListExpandableListAdapter(
+                        this.layoutInflater,
+                        adherenceMap.map { it.key },
+                        adherenceMap
                     )
+
+                    expandableSidebarListView.setAdapter(expandableSidebarAdapter)
                 }
             }
         }
@@ -166,10 +166,13 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     override fun onValueSelected(e: Entry?, h: Highlight?) {
         if (e == null) return
 
-        if (expandableSidebarListView.isGroupExpanded(e.x.toInt())) {
-            expandableSidebarListView.collapseGroup(e.x.toInt())
+        val dateSelected = getBloodPressureValues().map { it.date }[e.x.toInt()]
+        val indexSelected = expandableSidebarAdapter.getTreatmentIdToExpand(dateSelected)
+
+        if (expandableSidebarListView.isGroupExpanded(indexSelected)) {
+            expandableSidebarListView.collapseGroup(indexSelected)
         } else {
-            expandableSidebarListView.expandGroup(e.x.toInt())
+            expandableSidebarListView.expandGroup(indexSelected)
         }
     }
 

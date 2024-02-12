@@ -1,6 +1,5 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
-import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,8 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import edu.upc.R
-import edu.upc.sdk.library.models.MedicationType
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class TreatmentsListExpandableListAdapter(
@@ -86,5 +85,10 @@ class TreatmentsListExpandableListAdapter(
 
     override fun isChildSelectable(p0: Int, p1: Int): Boolean {
         return false
+    }
+
+    fun getTreatmentIdToExpand(date: LocalDate) : Int {
+        val dateString = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+        return expandableListTitle.indexOfFirst { it == dateString }
     }
 }
