@@ -1,7 +1,6 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.ExpandableListView
 import androidx.activity.viewModels
@@ -161,16 +160,21 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     }
 
     override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
-        // TODO: Option to sync pinch zoom
-        Log.i("Gesture", "SCALE X: $scaleX Y: $scaleY")
+        // Explicit blank, not needed
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
-        // TODO: Option to react to clicks
-        Log.i("Entry selected", e.toString())
+        if (e == null) return
+
+        if (expandableSidebarListView.isGroupExpanded(e.x.toInt())) {
+            expandableSidebarListView.collapseGroup(e.x.toInt())
+        } else {
+            expandableSidebarListView.expandGroup(e.x.toInt())
+        }
     }
 
     override fun onNothingSelected() {
+        // Explicit blank, not needed
     }
 
     companion object {
