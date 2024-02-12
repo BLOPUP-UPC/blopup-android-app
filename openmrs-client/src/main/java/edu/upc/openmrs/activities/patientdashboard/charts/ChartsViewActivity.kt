@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.ExpandableListView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
@@ -35,10 +34,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     private lateinit var treatmentsChartView: LineChart
     private lateinit var bloodPressureChartPainter: BloodPressureChart
 
-    private lateinit var expandableListView: ExpandableListView
-    private lateinit var expandableListAdapter: TreatmentsListExpandableListAdapter
-    private lateinit var expandableListTitle: List<String>
-    private lateinit var expandableListDetail: Map<String, List<TreatmentAdherence>>
+    private lateinit var expandableSidebarListView: ExpandableListView
 
     private val patientLocalDbId by lazy {
         this.intent.getBundleExtra(ApplicationConstants.BUNDLE)!!.getInt(PATIENT_ID)
@@ -50,7 +46,13 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         setContentView(mBinding.root)
 
         setToolbar()
+        setUpCharts(mBinding)
+        setUpSidebarObserver(mBinding)
 
+        lifecycleScope.launch { viewModel.fetchTreatments(patientLocalDbId) }
+    }
+
+    private fun setUpCharts(mBinding: ActivityChartsViewBinding) {
         bloodPressureChartView = mBinding.bloodPressureChart
         treatmentsChartView = mBinding.treatmentsChart
         bloodPressureChartPainter = BloodPressureChart(this)
@@ -68,38 +70,26 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         bloodPressureChartPainter.paintBloodPressureChart(bloodPressureChartView, bloodPressureData)
         bloodPressureChartPainter.paintTreatmentsChart(treatmentsChartView, bloodPressureData)
         bloodPressureChartPainter.setListeners(treatmentsChartView, this, this)
+    }
 
-        expandableListView = mBinding.expandableListView
-
-        expandableListView.setOnGroupCollapseListener { groupPosition ->
-            Toast.makeText(
-                applicationContext,
-                expandableListTitle[groupPosition].toString() + " List Collapsed.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    private fun setUpSidebarObserver(mBinding: ActivityChartsViewBinding) {
+        expandableSidebarListView = mBinding.expandableListView
 
         viewModel.treatments.observe(this) { treatments ->
             treatments.onSuccess { adherenceMap ->
                 if (adherenceMap.isNotEmpty()) {
                     mBinding.treatmentsSideBar.makeVisible()
-                    expandableListDetail = adherenceMap
-                    expandableListTitle = expandableListDetail.map { it.key }
-                    expandableListAdapter =
-                        TreatmentsListExpandableListAdapter(this.layoutInflater, expandableListTitle, expandableListDetail)
-                    expandableListView.setAdapter(expandableListAdapter)
-                    expandableListView.setOnGroupExpandListener { groupPosition ->
-                        Toast.makeText(
-                            applicationContext,
-                            expandableListTitle[groupPosition].toString() + " List Expanded.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+
+                    expandableSidebarListView.setAdapter(
+                        TreatmentsListExpandableListAdapter(
+                            this.layoutInflater,
+                            adherenceMap.map { it.key },
+                            adherenceMap
+                        )
+                    )
                 }
             }
         }
-
-        lifecycleScope.launch { viewModel.fetchTreatments(patientLocalDbId) }
     }
 
     private fun setToolbar() {
@@ -131,6 +121,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     }
 
     override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
+        // Sync blood pressure and treatments charts horizontal scroll
         bloodPressureChartView.moveViewToX(treatmentsChartView.lowestVisibleX)
     }
 
