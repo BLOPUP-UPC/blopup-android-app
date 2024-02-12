@@ -286,7 +286,7 @@
     <string name="blood_pressure_instructions_title" tools:ignore="MissingTranslation">To measure blood pressure</string>
     <string name="blood_pressure_instructions" tools:ignore="MissingTranslation">Measure the circumference of your upper arm with a cloth measuring tape midway between the elbow and shoulder. Choose a cuff size that includes this measurement</string>
     <string name="blood_pressure_instructions_title_two" tools:ignore="MissingTranslation">Position for taking your blood pressure at home</string>
-    <string name="blood_pressure_instructions_two" tools:ignore="MissingTranslation">1.- The patient should be relaxed, sitting with both feet on the ground, back straight. \n\n 2.- Put on the cuff. Make sure the arm is resting on something comfortable at the level of the heart or the chest.\n\n 3.- Remind the patient to stand still and not speak during the measurements.</string>
+    <string name="blood_pressure_instructions_two" tools:ignore="MissingTranslation">1. The patient should be relaxed, sitting with both feet on the ground, back straight. \n\n 2. Put on the cuff. Make sure the arm is resting on something comfortable at the level of the heart or the chest.\n\n 3. Remind the patient to stand still and not speak during the measurements.</string>
     <string name="swipe_left_to_start" tools:ignore="MissingTranslation">Swipe left to start</string>
     <string name="patient_with_no_values_to_show" tools:ignore="MissingTranslation">The patient has no values yet</string>
     <string name="blood_pressure_evolution" tools:ignore="MissingTranslation">Blood Pressure Evolution</string>

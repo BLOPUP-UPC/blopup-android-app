@@ -175,7 +175,7 @@
     <string name="blood_pressure_instructions_title">Triant un braçalet de la mida adequada.</string>
     <string name="blood_pressure_instructions">Mesura la circumferència del braç superior amb una cinta mètrica de sastre, a mig camí entre l\'espatlla i el colze. Tria un braçalet d\'una mida que inclogui la mesura.</string>
     <string name="blood_pressure_instructions_title_two">Com prendre la pressió arterial.</string>
-    <string name="blood_pressure_instructions_two">1.- El pacient ha d\'estar relaxat, assegut amb als dos peus a terra i l\'esquena recta. \n\n 2.- Poseu-li el braçalet. Assegureu-vos de que el braç estigui recolzat còmodament a l\'alçada del cor o del pit.\n\n 3.- Recordi al pacient que ha de romandre quiet i no parlar durant les medicions.</string>
+    <string name="blood_pressure_instructions_two">1. El pacient ha d\'estar relaxat, assegut amb als dos peus a terra i l\'esquena recta. \n\n 2. Poseu-li el braçalet. Assegureu-vos de que el braç estigui recolzat còmodament a l\'alçada del cor o del pit.\n\n 3. Recordi al pacient que ha de romandre quiet i no parlar durant les medicions.</string>
     <string name="swipe_left_to_start">Llisca a l\'esquerra per començar</string>
     <string name="patient_with_no_values_to_show">El pacient encara no té dades</string>
     <string name="blood_pressure_evolution">Evolució de la pressió arterial</string>
