@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -22,9 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -71,7 +73,37 @@ private fun DataReceivedSuccessfully() {
 }
 
 @Composable
-private fun NavigationButtons(navController: NavHostController) {
+fun BloodPressureValues() {
+    Row {
+        BloodPressureDataCard(
+            modifier = Modifier.weight(0.5f),
+            icon = Icons.Default.Favorite,
+            contentDescription = "heart filled in black",
+            title = stringResource(id = R.string.systolic_label),
+            value = "161",
+            measure = "mmHg"
+        )
+        BloodPressureDataCard(
+            modifier = Modifier.weight(0.5f),
+            icon = Icons.Default.FavoriteBorder,
+            contentDescription = "heart outline",
+            title = stringResource(id = R.string.diastolic_label),
+            value = "84",
+            measure = "mmHg"
+        )
+        BloodPressureDataCard(
+            modifier = Modifier.weight(0.5f),
+            icon = ImageVector.vectorResource(id = R.drawable.pulse_icon),
+            contentDescription = "pulse symbol",
+            title = stringResource(id = R.string.pulse_label),
+            value = "82",
+            measure = "/min"
+        )
+    }
+}
+
+@Composable
+fun NavigationButtons(navController: NavHostController) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom,
@@ -97,129 +129,53 @@ private fun NavigationButtons(navController: NavHostController) {
     }
 }
 
+
 @Composable
-fun BloodPressureValues() {
-    Row() {
-        Card(
-            border = BorderStroke(1.dp, Color.LightGray),
-            shape = MaterialTheme.shapes.extraSmall,
-            modifier = Modifier
-                .padding(5.dp)
-                .weight(0.5f),
-            colors = CardColors(
-                containerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                contentColor = Color.Black,
-                disabledContentColor = Color.Black
-            )
-        ) {
-            Icon(
-                Icons.Default.Favorite,
-                contentDescription = "Black heart",
-                modifier = Modifier
-                    .padding(10.dp)
-                    .size(15.dp)
-            )
-            Text(
-                "Systolic",
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-            )
-            Text(
-                "161",
-                color = Color.Black,
-                style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-
-            )
-            Text(
-                "mmHg",
-                color = Color.Black,
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
-            )
-        }
-        Card(
-            border = BorderStroke(1.dp, Color.LightGray),
-            shape = MaterialTheme.shapes.extraSmall,
-            modifier = Modifier
-                .padding(5.dp)
-                .weight(0.5f),
-            colors = CardColors(
-                containerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                contentColor = Color.Black,
-                disabledContentColor = Color.Black
-            )
-
-        ) {
-            Icon(
-                Icons.Default.FavoriteBorder,
-                contentDescription = "Heart outline",
-                modifier = Modifier
-                    .padding(10.dp)
-                    .size(15.dp)
-            )
-            Text(
-                "Diastolic",
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-            )
-            Text(
-                "84",
-                color = Color.Black,
-                style = TextStyle(fontSize = 24.sp),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-            )
-            Text(
-                "mmHg",
-                color = Color.Black,
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
-            )
-        }
-        Card(
-            border = BorderStroke(1.dp, Color.LightGray),
-            shape = MaterialTheme.shapes.extraSmall,
-            modifier = Modifier
-                .padding(5.dp)
-                .weight(0.5f),
-            colors = CardColors(
-                containerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                contentColor = Color.Black,
-                disabledContentColor = Color.Black
-            )
-        ) {
-            Icon(
-                painterResource(id = R.drawable.pulse_icon),
-                contentDescription = "Pulse symbol",
-                Modifier
-                    .padding(10.dp)
-                    .size(15.dp)
-            )
-            Text(
-                "Pulse",
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-            )
-            Text(
-                "82",
-                color = Color.Black,
-                style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-            )
-            Text(
-                "bpm",
-                color = Color.Black,
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
-            )
-        }
+fun BloodPressureDataCard(
+    modifier: Modifier,
+    icon: ImageVector,
+    contentDescription: String,
+    title: String,
+    value: String,
+    measure: String
+) {
+    return Card(
+        border = BorderStroke(1.dp, Color.LightGray),
+        shape = MaterialTheme.shapes.extraSmall,
+        modifier = modifier.padding(3.dp),
+        colors = CardColors(
+            containerColor = Color.Transparent,
+            disabledContainerColor = Color.Transparent,
+            contentColor = Color.Black,
+            disabledContentColor = Color.Black
+        )
+    ) {
+        Icon(
+            icon,
+            contentDescription = contentDescription,
+            Modifier
+                .padding(10.dp)
+                .size(15.dp)
+        )
+        Text(
+            title,
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+        )
+        Text(
+            value,
+            color = Color.Black,
+            style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
+            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+        )
+        Text(
+            measure,
+            color = Color.Black,
+            modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+        )
     }
 }
-
 
 @Preview
 @Composable
