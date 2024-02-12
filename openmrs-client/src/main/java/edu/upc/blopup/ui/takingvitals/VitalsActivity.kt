@@ -25,7 +25,6 @@ import edu.upc.blopup.ui.HowToActivateBluetoothScreen
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.takingvitals.screens.AppToolBarWithMenu
 import edu.upc.blopup.ui.takingvitals.screens.ReceiveWeightDataScreen
-import edu.upc.blopup.vitalsform.Vital
 
 @AndroidEntryPoint
 class VitalsActivity : ComponentActivity() {
@@ -59,13 +58,13 @@ class VitalsActivity : ComponentActivity() {
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable(Routes.BloodPressureScreen.id) {
-                        BloodPressureScreen(navigationController)
+                        BloodPressureScreen(navigationController, viewModel)
                     }
                     composable(Routes.HowToActivateBluetoothScreen.id) {
-                        HowToActivateBluetoothScreen(navigationController)
+                        HowToActivateBluetoothScreen(navigationController, viewModel)
                     }
                     composable(Routes.BloodPressureDataScreen.id) {
-                        BloodPressureDataScreen(navigationController)
+                        BloodPressureDataScreen(navigationController, viewModel)
                     }
                     composable(Routes.ReceiveWeightDataScreen.id) {
                         ReceiveWeightDataScreen(navigationController)
@@ -97,9 +96,5 @@ class VitalsActivity : ComponentActivity() {
         ) {
             ActivityCompat.requestPermissions(this, bluetoothPermission, 1)
         }
-    }
-
-    fun updateVitals(vitals: MutableList<Vital>) {
-        viewModel.vitals.value = vitals
     }
 }

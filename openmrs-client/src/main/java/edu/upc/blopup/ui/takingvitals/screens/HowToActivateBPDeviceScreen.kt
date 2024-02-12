@@ -17,16 +17,19 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import edu.upc.R
+import edu.upc.blopup.ui.takingvitals.VitalsViewModel
 
 
 @Composable
-fun HowToActivateBPDeviceScreen(navController: NavHostController) {
+fun HowToActivateBPDeviceScreen(navController: NavHostController, viewModel: VitalsViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,7 +45,8 @@ fun HowToActivateBPDeviceScreen(navController: NavHostController) {
             contentDescription = stringResource(R.string.bp_device_image_description),
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(vertical = 20.dp).weight(1f)
+                .padding(vertical = 20.dp)
+                .weight(1f)
         )
 
         Text(
@@ -51,7 +55,7 @@ fun HowToActivateBPDeviceScreen(navController: NavHostController) {
             lineHeight = 23.sp,
             modifier = Modifier.padding(bottom = 20.dp)
         )
-        ReceiveBloodPressureDataButton(navController)
+        ReceiveBloodPressureDataButton(navController, viewModel!!)
     }
 }
 
@@ -82,8 +86,8 @@ private fun instructionsText() = buildAnnotatedString {
     append(stringResource(R.string.how_to_activate_bluetooth_five))
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun BloodPressurePreview() {
-//    BloodPressureDeviceInstructions()
-//}
+@Preview(showBackground = true)
+@Composable
+fun BloodPressurePreview() {
+    HowToActivateBPDeviceScreen(rememberNavController(), PreviewViewModel)
+}

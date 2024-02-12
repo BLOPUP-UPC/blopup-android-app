@@ -11,27 +11,35 @@ import edu.upc.blopup.vitalsform.Vital
 import javax.inject.Inject
 
 @HiltViewModel
-class VitalsViewModel @Inject constructor(
-    private val readBloodPressureRepository: ReadBloodPressureRepository
+open class VitalsViewModel @Inject constructor(
+    private val readBloodPressureRepository: ReadBloodPressureRepository?
 ) : ViewModel() {
+    constructor() : this(null)
 
     //TODO: understand what the connectionViewState is and when and how it's used
     private val _connectionViewState = MutableLiveData<ConnectionViewState>()
     val connectionViewState: LiveData<ConnectionViewState>
         get() = _connectionViewState
 
-    var vitals = MutableLiveData<MutableList<Vital>>()
+    open val vitals: LiveData<MutableList<Vital>>
+        get() = _vitals
+
+    private var _vitals = MutableLiveData<MutableList<Vital>>()
 
     private val _viewState = MutableLiveData<BloodPressureViewState>()
     val viewState: LiveData<BloodPressureViewState>
         get() = _viewState
 
     fun startListeningBluetoothConnection() {
-        readBloodPressureRepository.start(
+        readBloodPressureRepository?.start(
             { state: ConnectionViewState -> _connectionViewState.postValue(state) },
             { state: BloodPressureViewState -> _viewState.postValue(state) }
         )
     }
 
-    fun disconnect() = readBloodPressureRepository.disconnect()
+    fun disconnect() = readBloodPressureRepository?.disconnect()
+
+    fun setVitals(vitals: MutableList<Vital>) {
+        _vitals.value = vitals
+    }
 }

@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,20 +31,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import edu.upc.R
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.ui.Routes
-import edu.upc.blopup.ui.takingvitals.VitalsActivity
+import edu.upc.blopup.ui.takingvitals.VitalsViewModel
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.utilities.ApplicationConstants
 
 
 @Composable
-fun BloodPressureScreen(navController: NavHostController) {
+fun BloodPressureScreen(navController: NavHostController, viewModel: VitalsViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,31 +68,32 @@ fun BloodPressureScreen(navController: NavHostController) {
         )
         BloodPressureInstructions()
         HowToActivateTheDeviceButton(navController)
-        ReceiveBloodPressureDataButton(navController)
+        ReceiveBloodPressureDataButton(navController, viewModel)
     }
 }
 
 @Composable
 fun BloodPressureInstructions() {
-        Text(
-            text = stringResource(R.string.blood_pressure_instructions_title),
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = TextUnit(20f, TextUnitType.Sp)
-            ),
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Text(
-            text = stringResource(R.string.blood_pressure_instructions_two),
-            fontSize = TextUnit(16f, TextUnitType.Sp),
-        )
+    Text(
+        text = stringResource(R.string.blood_pressure_instructions_title),
+        style = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontSize = TextUnit(20f, TextUnitType.Sp)
+        ),
+        modifier = Modifier.padding(bottom = 8.dp)
+    )
+    Text(
+        text = stringResource(R.string.blood_pressure_instructions_two),
+        fontSize = TextUnit(16f, TextUnitType.Sp),
+    )
 }
 
 
 @Composable
 fun HowToActivateTheDeviceButton(navController: NavHostController) {
     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
-        .fillMaxWidth().padding(vertical = 30.dp)
+        .fillMaxWidth()
+        .padding(vertical = 30.dp)
         .clickable { navController.navigate(Routes.HowToActivateBluetoothScreen.id) }) {
         Row {
             Icon(
@@ -104,7 +108,7 @@ fun HowToActivateTheDeviceButton(navController: NavHostController) {
             )
         }
         Icon(
-            imageVector = Icons.Default.KeyboardArrowRight,
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Info",
             tint = colorResource(R.color.dark_grey_for_stroke)
         )
@@ -112,11 +116,11 @@ fun HowToActivateTheDeviceButton(navController: NavHostController) {
 }
 
 @Composable
-fun ReceiveBloodPressureDataButton(navController: NavHostController) {
-    val vitalsActivity = LocalContext.current as VitalsActivity
+fun ReceiveBloodPressureDataButton(navController: NavHostController, viewModel: VitalsViewModel) {
+    val lifecycleOwner = LocalLifecycleOwner.current
     Button(
         shape = MaterialTheme.shapes.extraSmall,
-        onClick = { startReading(vitalsActivity, navController) },
+        onClick = { startReading(navController, viewModel, lifecycleOwner) },
         contentPadding = PaddingValues(15.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(
@@ -145,40 +149,19 @@ fun ReceiveBloodPressureDataButton(navController: NavHostController) {
     }
 }
 
-private fun startReading(activity: VitalsActivity, navController: NavHostController) {
-    hardcodeBluetoothDataToggle.check(onToggleEnabled = {
-        hardcodeBluetoothData(activity)
-    })
+private fun startReading(
+    navController: NavHostController,
+    viewModel: VitalsViewModel,
+    lifecycleOwner: LifecycleOwner
+) {
+    hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeBluetoothData(viewModel) })
 
-    activity.viewModel.startListeningBluetoothConnection()
-    observeBloodPressureData(activity, navController)
-}
+    viewModel.startListeningBluetoothConnection()
 
-private fun hardcodeBluetoothData(activity: VitalsActivity) {
-    activity.updateVitals(
-        mutableListOf(
-            Vital(
-                ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                (80..250).random().toString()
-            ),
-            Vital(
-                ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                (50..99).random().toString()
-            ),
-            Vital(
-                ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                (55..120).random().toString()
-            )
-        )
-    )
-}
-
-
-private fun observeBloodPressureData(activity: VitalsActivity, navController: NavHostController) {
-    activity.viewModel.viewState.observeOnce(activity) { state ->
+    viewModel.viewState.observeOnce(lifecycleOwner) { state ->
         when (state) {
             is BloodPressureViewState.Content -> {
-                activity.updateVitals(
+                viewModel.setVitals(
                     mutableListOf(
                         Vital(
                             ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
@@ -199,12 +182,31 @@ private fun observeBloodPressureData(activity: VitalsActivity, navController: Na
             else -> {}
         }
     }
+    viewModel.disconnect()
     navController.navigate(Routes.BloodPressureDataScreen.id)
 }
 
+private fun hardcodeBluetoothData(viewModel: VitalsViewModel) {
+    viewModel.setVitals(
+        mutableListOf(
+            Vital(
+                ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                (80..250).random().toString()
+            ),
+            Vital(
+                ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                (50..99).random().toString()
+            ),
+            Vital(
+                ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                (55..120).random().toString()
+            )
+        )
+    )
+}
 
 @Preview
 @Composable
 fun Preview() {
-    BloodPressureScreen(navController = NavHostController(LocalContext.current))
+    BloodPressureScreen(rememberNavController(), PreviewViewModel)
 }

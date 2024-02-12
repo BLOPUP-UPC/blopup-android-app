@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,14 +37,17 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import edu.upc.R
 import edu.upc.blopup.ui.Routes
-import edu.upc.blopup.ui.takingvitals.VitalsActivity
+import edu.upc.blopup.ui.takingvitals.VitalsViewModel
+import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @Composable
-fun BloodPressureDataScreen(navController: NavHostController) {
+fun BloodPressureDataScreen(navController: NavHostController, viewModel: VitalsViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +55,7 @@ fun BloodPressureDataScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         DataReceivedSuccessfully()
-        BloodPressureValues()
+        BloodPressureValues(viewModel)
         NavigationButtons(navController)
     }
 
@@ -79,8 +81,7 @@ private fun DataReceivedSuccessfully() {
 }
 
 @Composable
-fun BloodPressureValues() {
-    val activity = LocalContext.current as VitalsActivity
+fun BloodPressureValues(viewModel: VitalsViewModel) {
 
     Row {
         BloodPressureDataCard(
@@ -88,7 +89,7 @@ fun BloodPressureValues() {
             icon = Icons.Default.Favorite,
             contentDescription = "heart filled in black",
             title = stringResource(id = R.string.systolic_label),
-            value = activity.viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }!!.value,
+            value = viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }!!.value,
             measure = "mmHg"
         )
         BloodPressureDataCard(
@@ -96,7 +97,7 @@ fun BloodPressureValues() {
             icon = Icons.Default.FavoriteBorder,
             contentDescription = "heart outline",
             title = stringResource(id = R.string.diastolic_label),
-            value = activity.viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }!!.value,
+            value = viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }!!.value,
             measure = "mmHg"
         )
         BloodPressureDataCard(
@@ -104,7 +105,7 @@ fun BloodPressureValues() {
             icon = ImageVector.vectorResource(id = R.drawable.pulse_icon),
             contentDescription = "pulse symbol",
             title = stringResource(id = R.string.pulse_label),
-            value = activity.viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }!!.value,
+            value = viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }!!.value,
             measure = "/min"
         )
     }
@@ -119,7 +120,7 @@ fun NavigationButtons(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TextButton(onClick = { show = true}) {
+        TextButton(onClick = { show = true }) {
             Text(
                 text = "Go back",
                 color = Color.Black,
@@ -189,6 +190,22 @@ fun BloodPressureDataCard(
 @Preview
 @Composable
 fun BloodPressureDataScreenPreview() {
-    val context = LocalContext.current
-    BloodPressureDataScreen(navController = NavHostController(context))
+    BloodPressureDataScreen(rememberNavController(), PreviewViewModel)
+}
+
+object PreviewViewModel : VitalsViewModel() {
+    override val vitals = MutableLiveData(
+        mutableListOf(
+            Vital(
+                concept = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                value = "120"
+            ), Vital(
+                concept = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                value = "80"
+            ), Vital(
+                concept = ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                value = "60"
+            )
+        )
+    )
 }
