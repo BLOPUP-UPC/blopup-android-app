@@ -36,7 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import edu.upc.R
+import edu.upc.blopup.vitalsform.VitalsActivity
 import edu.upc.blopup.vitalsform.model.Routes
+import edu.upc.sdk.utilities.ApplicationConstants
 
 @Composable
 fun BloodPressureDataScreen(navController: NavHostController) {
@@ -74,13 +76,15 @@ private fun DataReceivedSuccessfully() {
 
 @Composable
 fun BloodPressureValues() {
+    val activity = LocalContext.current as VitalsActivity
+
     Row {
         BloodPressureDataCard(
             modifier = Modifier.weight(0.5f),
             icon = Icons.Default.Favorite,
             contentDescription = "heart filled in black",
             title = stringResource(id = R.string.systolic_label),
-            value = "161",
+            value = activity.viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }!!.value,
             measure = "mmHg"
         )
         BloodPressureDataCard(
@@ -88,7 +92,7 @@ fun BloodPressureValues() {
             icon = Icons.Default.FavoriteBorder,
             contentDescription = "heart outline",
             title = stringResource(id = R.string.diastolic_label),
-            value = "84",
+            value = activity.viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }!!.value,
             measure = "mmHg"
         )
         BloodPressureDataCard(
@@ -96,7 +100,7 @@ fun BloodPressureValues() {
             icon = ImageVector.vectorResource(id = R.drawable.pulse_icon),
             contentDescription = "pulse symbol",
             title = stringResource(id = R.string.pulse_label),
-            value = "82",
+            value = activity.viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }!!.value,
             measure = "/min"
         )
     }
@@ -128,7 +132,6 @@ fun NavigationButtons(navController: NavHostController) {
         }
     }
 }
-
 
 @Composable
 fun BloodPressureDataCard(

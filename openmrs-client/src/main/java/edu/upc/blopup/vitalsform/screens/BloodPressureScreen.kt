@@ -33,10 +33,18 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import edu.upc.R
+import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
+import edu.upc.blopup.vitalsform.Vital
+import edu.upc.blopup.vitalsform.VitalsActivity
 import edu.upc.blopup.vitalsform.model.Routes
+import edu.upc.openmrs.utilities.observeOnce
+import edu.upc.sdk.utilities.ApplicationConstants
+
 
 @Composable
-fun BloodPressureScreen(navController: NavHostController){
+fun BloodPressureScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -110,9 +118,10 @@ fun HowToActivateTheDeviceButton(navController: NavHostController) {
 
 @Composable
 fun ReceiveBloodPressureDataButton(navController: NavHostController) {
+    val vitalsActivity = LocalContext.current as VitalsActivity
     Button(
         shape = MaterialTheme.shapes.extraSmall,
-        onClick = { navController.navigate(Routes.BloodPressureDataScreen.id) },
+        onClick = { startReading(vitalsActivity, navController) },
         contentPadding = PaddingValues(15.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(
@@ -140,6 +149,64 @@ fun ReceiveBloodPressureDataButton(navController: NavHostController) {
 
     }
 }
+
+private fun startReading(activity: VitalsActivity, navController: NavHostController) {
+    hardcodeBluetoothDataToggle.check(onToggleEnabled = {
+        hardcodeBluetoothData(activity)
+    })
+
+    activity.viewModel.startListeningBluetoothConnection()
+    observeBloodPressureData(activity, navController)
+}
+
+private fun hardcodeBluetoothData(activity: VitalsActivity) {
+    activity.updateVitals(
+        mutableListOf(
+            Vital(
+                ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                (80..250).random().toString()
+            ),
+            Vital(
+                ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                (50..99).random().toString()
+            ),
+            Vital(
+                ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                (55..120).random().toString()
+            )
+        )
+    )
+}
+
+
+private fun observeBloodPressureData(activity: VitalsActivity, navController: NavHostController) {
+    activity.viewModel.viewState.observeOnce(activity) { state ->
+        when (state) {
+            is BloodPressureViewState.Content -> {
+                activity.updateVitals(
+                    mutableListOf(
+                        Vital(
+                            ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                            state.measurement.systolic.toString()
+                        ),
+                        Vital(
+                            ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                            state.measurement.diastolic.toString()
+                        ),
+                        Vital(
+                            ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                            state.measurement.heartRate.toString()
+                        )
+                    )
+                )
+            }
+
+            else -> {}
+        }
+    }
+    navController.navigate(Routes.BloodPressureDataScreen.id)
+}
+
 
 @Preview
 @Composable
