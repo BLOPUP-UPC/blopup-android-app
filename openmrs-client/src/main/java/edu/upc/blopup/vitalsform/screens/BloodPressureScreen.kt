@@ -20,12 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -85,7 +87,7 @@ fun BloodPressureInstructions() {
 fun HowToActivateTheDeviceButton(navController: NavHostController) {
     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
         .fillMaxWidth()
-        .clickable { navController.navigate(Routes.HowToActivateBluetoothScreen.id)}) {
+        .clickable { navController.navigate(Routes.HowToActivateBluetoothScreen.id) }) {
         Row {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.icon_bp_info),
@@ -137,4 +139,10 @@ fun ReceiveBloodPressureDataButton(navController: NavHostController) {
         }
 
     }
+}
+
+@Preview
+@Composable
+fun Preview() {
+    BloodPressureScreen(navController = NavHostController(LocalContext.current))
 }

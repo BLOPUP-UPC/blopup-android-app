@@ -20,3 +20,8 @@ fun HowToActivateBluetoothScreen(navController: NavHostController) {
 fun BloodPressureDataScreen(navController: NavHostController) {
     BloodPressureDataScreen(navController)
 }
+
+@Composable
+fun Routes.ReceiveWeightDataScreen(navController: NavHostController) {
+    ReceiveWeightDataScreen(navController)
+}

@@ -34,7 +34,7 @@ android{
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "true"
             buildConfigField "Boolean", "TREATMENT_CHART", "true"
-            buildConfigField "Boolean", "NEW_VITALS_FLOW", "false"
+            buildConfigField "Boolean", "NEW_VITALS_FLOW", "true"
         }
     }
 }

@@ -17,6 +17,7 @@ import edu.upc.blopup.vitalsform.model.BloodPressureScreen
 import edu.upc.blopup.vitalsform.model.HowToActivateBluetoothScreen
 import edu.upc.blopup.vitalsform.model.Routes
 import edu.upc.blopup.vitalsform.screens.AppToolBarWithMenu
+import edu.upc.blopup.vitalsform.screens.ReceiveWeightDataScreen
 
 
 class VitalsActivity : ComponentActivity() {
@@ -42,6 +43,9 @@ class VitalsActivity : ComponentActivity() {
                     }
                     composable(Routes.BloodPressureDataScreen.id) {
                         BloodPressureDataScreen(navigationController)
+                    }
+                    composable(Routes.ReceiveWeightDataScreen.id) {
+                        ReceiveWeightDataScreen(navigationController)
                     }
                 }
             }
