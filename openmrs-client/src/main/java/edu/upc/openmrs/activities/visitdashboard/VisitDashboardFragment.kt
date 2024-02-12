@@ -177,7 +177,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     private fun showBmiChart(visit: Visit) {
         val bmiData = BMICalculator().execute(visit.encounters.first().observations)
-        if (!bmiData.isNullOrEmpty() && bmiData != "N/A") {
+        if (bmiData.isNotEmpty() && bmiData != "N/A") {
             binding.bmiChartInclude.bmiChart.makeVisible()
             BmiChart().setBMIValueAndChart(bmiData.toFloat(), binding.bmiLayout)
         }

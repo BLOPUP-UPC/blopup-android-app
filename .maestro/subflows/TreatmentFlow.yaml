@@ -2,7 +2,7 @@ appId: edu.upc
 ---
 - runFlow:
     when:
-      visible: "edu.upc:id/call_doctor_text"
+      visible: "edu.upc:id/cancel_button"
     commands:
       - tapOn: "CANCEL"
 - tapOn: "Add Treatment"

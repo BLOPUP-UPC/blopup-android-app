@@ -27,6 +27,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -109,18 +111,18 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
 
         binding.loginUsernameField.setOnFocusChangeListener((view, hasFocus) -> {
             if (hasFocus) {
-                binding.textInputLayoutUsername.setHint(Html.fromHtml(getString(R.string.login_username_hint)));
+                binding.textInputLayoutUsername.setHint(HtmlCompat.fromHtml(getString(R.string.login_username_hint), HtmlCompat.FROM_HTML_MODE_LEGACY));
             } else if (binding.loginUsernameField.getText().toString().equals("")) {
-                binding.textInputLayoutUsername.setHint(Html.fromHtml(getString(R.string.login_username_hint) + getString(R.string.req_star)));
+                binding.textInputLayoutUsername.setHint(HtmlCompat.fromHtml(getString(R.string.login_username_hint) + getString(R.string.req_star),HtmlCompat.FROM_HTML_MODE_LEGACY));
                 binding.textInputLayoutUsername.setHintAnimationEnabled(true);
             }
         });
 
         binding.loginPasswordField.setOnFocusChangeListener((view, hasFocus) -> {
             if (hasFocus) {
-                binding.textInputLayoutPassword.setHint(Html.fromHtml(getString(R.string.login_password_hint)));
+                binding.textInputLayoutPassword.setHint(HtmlCompat.fromHtml(getString(R.string.login_password_hint), HtmlCompat.FROM_HTML_MODE_LEGACY));
             } else if (binding.loginPasswordField.getText().toString().equals("")) {
-                binding.textInputLayoutPassword.setHint(Html.fromHtml(getString(R.string.login_password_hint) + getString(R.string.req_star)));
+                binding.textInputLayoutPassword.setHint(HtmlCompat.fromHtml(getString(R.string.login_password_hint) + getString(R.string.req_star), HtmlCompat.FROM_HTML_MODE_LEGACY));
                 binding.textInputLayoutPassword.setHintAnimationEnabled(true);
             }
         });
@@ -143,9 +145,9 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
     private void initViewFields() {
         binding.textInputLayoutPassword.setHint(Html.fromHtml(getString(R.string.login_password_hint) + getString(R.string.req_star)));
         binding.textInputLayoutUsername.setHint(Html.fromHtml(getString(R.string.login_username_hint) + getString(R.string.req_star)));
-        binding.loginUrlField.setTextColor(ColorStateList.valueOf(getResources().getColor(R.color.dark_grey_8x)));
-        binding.textInputLayoutUsername.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.dark_grey_8x)));
-        binding.textInputLayoutPassword.setDefaultHintTextColor(ColorStateList.valueOf(getResources().getColor(R.color.dark_grey_8x)));
+        binding.loginUrlField.setTextColor(ContextCompat.getColor(requireContext(), R.color.dark_grey_8x));
+        binding.textInputLayoutUsername.setDefaultHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.dark_grey_8x)));
+        binding.textInputLayoutPassword.setDefaultHintTextColor(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.dark_grey_8x)));
     }
 
     @Override
