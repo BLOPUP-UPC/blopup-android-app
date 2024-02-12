@@ -280,7 +280,6 @@
     <string name="height_value_label" tools:ignore="MissingTranslation">Height</string>
     <string name="height_value" tools:ignore="MissingTranslation">Height (cm)</string>
     <string name="send_button_label" tools:ignore="MissingTranslation">Send</string>
-    <string name="action_vitals_form" tools:ignore="MissingTranslation">Take vitals</string>
     <string name="send_email_success_toast_message" tools:ignore="MissingTranslation">Message sent</string>
     <string name="send_email_fails_toast_message" tools:ignore="MissingTranslation">Error sending message</string>
     <string name="subject_send_email" translatable="false">Blopup User Feedback</string>

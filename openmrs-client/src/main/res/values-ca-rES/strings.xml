@@ -168,7 +168,6 @@
     <string name="height_value_label">Alçada</string>
     <string name="height_value">Alçada (cm)</string>
     <string name="send_button_label">Enviar</string>
-    <string name="action_vitals_form">Prendre constants</string>
     <string name="send_email_success_toast_message">Missatge enviat</string>
     <string name="send_email_fails_toast_message">Error a l\'enviar el missatge</string>
     <string name="contact_us_message_hint">Escriu aquí el teu missatge</string>

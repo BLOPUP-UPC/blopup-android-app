@@ -169,7 +169,6 @@
     <string name="receive_weight_value_button">Recibir peso de la báscula</string>
     <string name="blood_pressure_button_label">"Recibir información del tensiómetro "</string>
     <string name="vitals_form_title">Signos vitales</string>
-    <string name="action_vitals_form">Tomar constantes</string>
     <string name="send_email_success_toast_message">Mensaje enviado</string>
     <string name="send_email_fails_toast_message">Error al enviar el mensje</string>
     <string name="contact_us_message_hint">Escribe aquí tu mensaje</string>

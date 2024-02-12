@@ -9,8 +9,4 @@
         android:orderInCategory="100"
         app:showAsAction="never"
         android:title="@string/action_end_visit" />
-    <item
-        android:id="@+id/actionFillVitalsEntry"
-        android:title="@string/action_vitals_form"
-        app:showAsAction="never" />
 </menu>

@@ -34,9 +34,6 @@ import edu.upc.blopup.bloodpressure.BloodPressureType
 import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
-import edu.upc.blopup.toggles.newVitalsFlowToggle
-import edu.upc.blopup.vitalsform.VitalsActivity
-import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.FragmentVisitDashboardBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
@@ -49,7 +46,6 @@ import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import edu.upc.sdk.utilities.ToastUtil
@@ -366,27 +362,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun startVitalsMeasurement() {
-        newVitalsFlowToggle.check(
-            {
-                Intent(requireActivity(), VitalsActivity::class.java).apply {
-                    putExtra(PATIENT_ID_BUNDLE, viewModel.visit?.patient?.id)
-                    startActivity(this)
-                }
-            },
-            {
-                Intent(requireActivity(), VitalsFormActivity::class.java).apply {
-                    putExtra(PATIENT_ID_BUNDLE, viewModel.visit?.patient?.id)
-                    startActivity(this)
-                }
-            }
-        )
-
-
-
-
-    }
-
     private fun recreateOptionsMenu() = requireActivity().invalidateOptionsMenu()
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -399,7 +374,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> requireActivity().finish()
-            R.id.actionFillVitalsEntry -> startVitalsMeasurement()
             R.id.actionEndVisit -> edu.upc.openmrs.bundle.CustomDialogBundle().apply {
                 titleViewMessage = getString(R.string.end_visit_dialog_title)
                 textViewMessage = getString(R.string.end_visit_dialog_message)
