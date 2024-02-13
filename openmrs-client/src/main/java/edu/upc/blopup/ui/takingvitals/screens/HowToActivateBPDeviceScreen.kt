@@ -22,14 +22,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import edu.upc.R
-import edu.upc.blopup.ui.takingvitals.VitalsViewModel
 
 
 @Composable
-fun HowToActivateBPDeviceScreen(navController: NavHostController, viewModel: VitalsViewModel) {
+fun HowToActivateBPDeviceScreen(onClickReceiveData: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +52,7 @@ fun HowToActivateBPDeviceScreen(navController: NavHostController, viewModel: Vit
             lineHeight = 23.sp,
             modifier = Modifier.padding(bottom = 20.dp)
         )
-        ReceiveBloodPressureDataButton({})
+        ReceiveBloodPressureDataButton(onClickReceiveData)
     }
 }
 
@@ -89,7 +86,5 @@ private fun instructionsText() = buildAnnotatedString {
 @Preview(showBackground = true)
 @Composable
 fun BloodPressurePreview() {
-    HowToActivateBPDeviceScreen(rememberNavController(), PreviewViewModel)
+    HowToActivateBPDeviceScreen {}
 }
-
-object PreviewViewModel : VitalsViewModel()

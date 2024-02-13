@@ -19,12 +19,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.blopup.ui.BloodPressureDataScreen
-import edu.upc.blopup.ui.HowToActivateBluetoothScreen
-import edu.upc.blopup.ui.ReceiveWeightDataScreen
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.takingvitals.screens.AppToolBarWithMenu
+import edu.upc.blopup.ui.takingvitals.screens.BloodPressureDataScreen
 import edu.upc.blopup.ui.takingvitals.screens.BloodPressureScreen
+import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
+import edu.upc.blopup.ui.takingvitals.screens.ReceiveWeightDataScreen
 
 @AndroidEntryPoint
 class VitalsActivity : ComponentActivity() {
@@ -60,17 +60,27 @@ class VitalsActivity : ComponentActivity() {
                     composable(Routes.BloodPressureScreen.id) {
                         BloodPressureScreen(
                             { navigationController.navigate(Routes.HowToActivateBluetoothScreen.id) },
-                            { viewModel.startListeningBluetoothConnection(); navigationController.navigate(Routes.BloodPressureDataScreen.id) }
+                            {
+                                viewModel.startListeningBluetoothConnection()
+                                navigationController.navigate(Routes.BloodPressureDataScreen.id)
+                            }
                         )
                     }
                     composable(Routes.HowToActivateBluetoothScreen.id) {
-                        HowToActivateBluetoothScreen(navigationController, viewModel)
+                        HowToActivateBPDeviceScreen {
+                            viewModel.startListeningBluetoothConnection()
+                            navigationController.navigate(Routes.BloodPressureDataScreen.id)
+                        }
                     }
                     composable(Routes.BloodPressureDataScreen.id) {
-                        BloodPressureDataScreen(navigationController, viewModel.vitals.value!!)
+                        BloodPressureDataScreen(
+                            { navigationController.navigate(Routes.ReceiveWeightDataScreen.id) },
+                            navigationController::popBackStack,
+                            viewModel.vitals.value!!
+                        )
                     }
                     composable(Routes.ReceiveWeightDataScreen.id) {
-                        ReceiveWeightDataScreen(navigationController)
+                        ReceiveWeightDataScreen()
                     }
                 }
             }

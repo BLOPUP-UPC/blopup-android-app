@@ -37,17 +37,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import edu.upc.R
-import edu.upc.blopup.ui.Routes
-import edu.upc.blopup.ui.takingvitals.VitalsViewModel
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @Composable
-fun BloodPressureDataScreen(navController: NavHostController, vitals: MutableList<Vital>) {
+fun BloodPressureDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: MutableList<Vital>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +51,7 @@ fun BloodPressureDataScreen(navController: NavHostController, vitals: MutableLis
     ) {
         DataReceivedSuccessfully()
         BloodPressureValues(vitals)
-        NavigationButtons(navController)
+        NavigationButtons(onClickNext, onClickBack)
     }
 
 }
@@ -112,7 +107,7 @@ fun BloodPressureValues(vitals: MutableList<Vital>) {
 }
 
 @Composable
-fun NavigationButtons(navController: NavHostController) {
+fun NavigationButtons(onClickNext: () -> Unit, onClickBack: () -> Unit) {
     var show by remember { mutableStateOf(false) }
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -128,7 +123,7 @@ fun NavigationButtons(navController: NavHostController) {
                 fontSize = TextUnit(16f, TextUnitType.Sp)
             )
         }
-        TextButton(onClick = { navController.navigate(Routes.ReceiveWeightDataScreen.id) }) {
+        TextButton(onClick = onClickNext) {
             Text(
                 text = "Next",
                 color = colorResource(id = R.color.allergy_orange),
@@ -140,7 +135,7 @@ fun NavigationButtons(navController: NavHostController) {
     VitalsDialog(
         show = show,
         onDismiss = { show = false },
-        onConfirm = { navController.popBackStack() })
+        onConfirm = onClickBack)
 }
 
 @Composable
@@ -193,7 +188,7 @@ fun BloodPressureDataCard(
 @Preview
 @Composable
 fun BloodPressureDataScreenPreview() {
-    BloodPressureDataScreen(rememberNavController(), vitals)
+    BloodPressureDataScreen({}, {}, vitals)
 }
 
 val vitals =
