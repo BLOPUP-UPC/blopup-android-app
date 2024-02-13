@@ -55,11 +55,11 @@ public class OpenmrsAndroid {
         if (instance == null) {
             synchronized (OpenmrsAndroid.class) {
                 if (instance == null) {
-                    instance = applicationContext;
                     if (externalDirectoryPath == null) {
                         externalDirectoryPath = applicationContext.getExternalFilesDir(null).toString();
                     }
-                    System.out.println(instance.toString());
+                    System.out.println(applicationContext.toString());
+                    instance = applicationContext;
                 }
             }
         }
