@@ -7,7 +7,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
+import edu.upc.blopup.toggles.check
+import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.vitalsform.Vital
+import edu.upc.sdk.utilities.ApplicationConstants
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,7 +19,6 @@ open class VitalsViewModel @Inject constructor(
 ) : ViewModel() {
     constructor() : this(null)
 
-    //TODO: understand what the connectionViewState is and when and how it's used
     private val _connectionViewState = MutableLiveData<ConnectionViewState>()
     val connectionViewState: LiveData<ConnectionViewState>
         get() = _connectionViewState
@@ -27,19 +29,53 @@ open class VitalsViewModel @Inject constructor(
     private var _vitals = MutableLiveData<MutableList<Vital>>()
 
     private val _viewState = MutableLiveData<BloodPressureViewState>()
-    val viewState: LiveData<BloodPressureViewState>
+    private val viewState: LiveData<BloodPressureViewState>
         get() = _viewState
 
     fun startListeningBluetoothConnection() {
+        hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeBluetoothData() })
+
         readBloodPressureRepository?.start(
             { state: ConnectionViewState -> _connectionViewState.postValue(state) },
-            { state: BloodPressureViewState -> _viewState.postValue(state) }
+            { state: BloodPressureViewState -> _viewState.postValue(state)
+                if (state is BloodPressureViewState.Content) {
+                        _vitals.value = mutableListOf(
+                            Vital(
+                                ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                                state.measurement.systolic.toString()
+                            ),
+                            Vital(
+                                ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                                state.measurement.diastolic.toString()
+                            ),
+                            Vital(
+                                ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                                state.measurement.heartRate.toString()
+                            )
+                        )
+                    }
+                readBloodPressureRepository.disconnect()
+            }
         )
     }
 
-    fun disconnect() = readBloodPressureRepository?.disconnect()
 
-    fun setVitals(vitals: MutableList<Vital>) {
-        _vitals.value = vitals
+    private fun hardcodeBluetoothData() {
+        _vitals.value =
+            mutableListOf(
+                Vital(
+                    ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                    (80..250).random().toString()
+                ),
+                Vital(
+                    ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                    (50..99).random().toString()
+                ),
+                Vital(
+                    ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                    (55..120).random().toString()
+                )
+            )
     }
+
 }

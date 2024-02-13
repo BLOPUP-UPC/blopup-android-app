@@ -47,7 +47,7 @@ import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @Composable
-fun BloodPressureDataScreen(navController: NavHostController, viewModel: VitalsViewModel) {
+fun BloodPressureDataScreen(navController: NavHostController, vitals: MutableList<Vital>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +55,7 @@ fun BloodPressureDataScreen(navController: NavHostController, viewModel: VitalsV
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         DataReceivedSuccessfully()
-        BloodPressureValues(viewModel)
+        BloodPressureValues(vitals)
         NavigationButtons(navController)
     }
 
@@ -81,7 +81,7 @@ private fun DataReceivedSuccessfully() {
 }
 
 @Composable
-fun BloodPressureValues(viewModel: VitalsViewModel) {
+fun BloodPressureValues(vitals: MutableList<Vital>) {
 
     Row {
         BloodPressureDataCard(
@@ -89,7 +89,7 @@ fun BloodPressureValues(viewModel: VitalsViewModel) {
             icon = Icons.Default.Favorite,
             contentDescription = "heart filled in black",
             title = stringResource(id = R.string.systolic_label),
-            value = viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }!!.value,
+            value = vitals.find { it.concept == ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }!!.value,
             measure = "mmHg"
         )
         BloodPressureDataCard(
@@ -97,7 +97,7 @@ fun BloodPressureValues(viewModel: VitalsViewModel) {
             icon = Icons.Default.FavoriteBorder,
             contentDescription = "heart outline",
             title = stringResource(id = R.string.diastolic_label),
-            value = viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }!!.value,
+            value = vitals.find { it.concept == ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }!!.value,
             measure = "mmHg"
         )
         BloodPressureDataCard(
@@ -105,7 +105,7 @@ fun BloodPressureValues(viewModel: VitalsViewModel) {
             icon = ImageVector.vectorResource(id = R.drawable.pulse_icon),
             contentDescription = "pulse symbol",
             title = stringResource(id = R.string.pulse_label),
-            value = viewModel.vitals.value?.find { it.concept == ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }!!.value,
+            value = vitals.find { it.concept == ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }!!.value,
             measure = "/min"
         )
     }
@@ -137,7 +137,10 @@ fun NavigationButtons(navController: NavHostController) {
             )
         }
     }
-    VitalsDialog(show = show, onDismiss = {show = false}, onConfirm = {navController.popBackStack()} )
+    VitalsDialog(
+        show = show,
+        onDismiss = { show = false },
+        onConfirm = { navController.popBackStack() })
 }
 
 @Composable
@@ -190,22 +193,19 @@ fun BloodPressureDataCard(
 @Preview
 @Composable
 fun BloodPressureDataScreenPreview() {
-    BloodPressureDataScreen(rememberNavController(), PreviewViewModel)
+    BloodPressureDataScreen(rememberNavController(), vitals)
 }
 
-object PreviewViewModel : VitalsViewModel() {
-    override val vitals = MutableLiveData(
-        mutableListOf(
-            Vital(
-                concept = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                value = "120"
-            ), Vital(
-                concept = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                value = "80"
-            ), Vital(
-                concept = ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                value = "60"
-            )
+val vitals =
+    mutableListOf(
+        Vital(
+            concept = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+            value = "120"
+        ), Vital(
+            concept = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+            value = "80"
+        ), Vital(
+            concept = ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+            value = "60"
         )
     )
-}

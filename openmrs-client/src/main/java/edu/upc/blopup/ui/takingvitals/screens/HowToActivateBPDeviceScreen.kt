@@ -91,3 +91,5 @@ private fun instructionsText() = buildAnnotatedString {
 fun BloodPressurePreview() {
     HowToActivateBPDeviceScreen(rememberNavController(), PreviewViewModel)
 }
+
+object PreviewViewModel : VitalsViewModel()

@@ -120,7 +120,7 @@ fun ReceiveBloodPressureDataButton(navController: NavHostController, viewModel: 
     val lifecycleOwner = LocalLifecycleOwner.current
     Button(
         shape = MaterialTheme.shapes.extraSmall,
-        onClick = { startReading(navController, viewModel, lifecycleOwner) },
+        onClick = { viewModel.startListeningBluetoothConnection(); navController.navigate(Routes.BloodPressureDataScreen.id) },
         contentPadding = PaddingValues(15.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(
@@ -147,62 +147,6 @@ fun ReceiveBloodPressureDataButton(navController: NavHostController, viewModel: 
         }
 
     }
-}
-
-private fun startReading(
-    navController: NavHostController,
-    viewModel: VitalsViewModel,
-    lifecycleOwner: LifecycleOwner
-) {
-    hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeBluetoothData(viewModel) })
-
-    viewModel.startListeningBluetoothConnection()
-
-    viewModel.viewState.observeOnce(lifecycleOwner) { state ->
-        when (state) {
-            is BloodPressureViewState.Content -> {
-                viewModel.setVitals(
-                    mutableListOf(
-                        Vital(
-                            ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                            state.measurement.systolic.toString()
-                        ),
-                        Vital(
-                            ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                            state.measurement.diastolic.toString()
-                        ),
-                        Vital(
-                            ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                            state.measurement.heartRate.toString()
-                        )
-                    )
-                )
-            }
-
-            else -> {}
-        }
-    }
-    viewModel.disconnect()
-    navController.navigate(Routes.BloodPressureDataScreen.id)
-}
-
-private fun hardcodeBluetoothData(viewModel: VitalsViewModel) {
-    viewModel.setVitals(
-        mutableListOf(
-            Vital(
-                ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                (80..250).random().toString()
-            ),
-            Vital(
-                ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                (50..99).random().toString()
-            ),
-            Vital(
-                ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                (55..120).random().toString()
-            )
-        )
-    )
 }
 
 @Preview
