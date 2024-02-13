@@ -11,22 +11,22 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 open class VitalsViewModel @Inject constructor(
     private val readBloodPressureRepository: ReadBloodPressureRepository?
 ) : ViewModel() {
-    constructor() : this(null)
+
+    private val _uiState = MutableStateFlow((mutableListOf<Vital>()))
+    val uiState: StateFlow<MutableList<Vital>> = _uiState.asStateFlow()
 
     private val _connectionViewState = MutableLiveData<ConnectionViewState>()
     val connectionViewState: LiveData<ConnectionViewState>
         get() = _connectionViewState
-
-    open val vitals: LiveData<MutableList<Vital>>
-        get() = _vitals
-
-    private var _vitals = MutableLiveData<MutableList<Vital>>()
 
     private val _viewState = MutableLiveData<BloodPressureViewState>()
     private val viewState: LiveData<BloodPressureViewState>
@@ -39,7 +39,7 @@ open class VitalsViewModel @Inject constructor(
             { state: ConnectionViewState -> _connectionViewState.postValue(state) },
             { state: BloodPressureViewState -> _viewState.postValue(state)
                 if (state is BloodPressureViewState.Content) {
-                        _vitals.value = mutableListOf(
+                        _uiState.value = mutableListOf(
                             Vital(
                                 ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
                                 state.measurement.systolic.toString()
@@ -61,7 +61,7 @@ open class VitalsViewModel @Inject constructor(
 
 
     private fun hardcodeBluetoothData() {
-        _vitals.value =
+        _uiState.value =
             mutableListOf(
                 Vital(
                     ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,

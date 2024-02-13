@@ -11,6 +11,8 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
@@ -51,7 +53,10 @@ class VitalsActivity : ComponentActivity() {
             Scaffold(
                 topBar = { AppToolBarWithMenu(stringResource(R.string.blood_pressure_data)) },
             ) { innerPadding ->
+
                 val navigationController = rememberNavController()
+                val uiState by viewModel.uiState.collectAsState()
+
                 NavHost(
                     navController = navigationController,
                     startDestination = Routes.BloodPressureScreen.id,
@@ -76,7 +81,7 @@ class VitalsActivity : ComponentActivity() {
                         BloodPressureDataScreen(
                             { navigationController.navigate(Routes.ReceiveWeightDataScreen.id) },
                             navigationController::popBackStack,
-                            viewModel.vitals.value!!
+                            uiState
                         )
                     }
                     composable(Routes.ReceiveWeightDataScreen.id) {
