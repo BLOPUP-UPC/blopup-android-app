@@ -17,7 +17,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -38,26 +37,21 @@ fun HowToActivateBPDeviceScreen(navController: NavHostController) {
             ),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        BloodPressureDeviceInstructions()
-        ReceiveBloodPressureDataButton(navController)
-    }
-}
-
-@Composable
-fun BloodPressureDeviceInstructions() {
-    Column {
         Image(
             painter = painterResource(R.drawable.bp_device_image),
             contentDescription = stringResource(R.string.bp_device_image_description),
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(vertical = 20.dp)
+                .padding(vertical = 20.dp).weight(1f)
         )
+
         Text(
             text = instructionsText(),
             fontSize = TextUnit(16f, TextUnitType.Sp),
-            lineHeight = 23.sp
+            lineHeight = 23.sp,
+            modifier = Modifier.padding(bottom = 20.dp)
         )
+        ReceiveBloodPressureDataButton(navController)
     }
 }
 
@@ -88,8 +82,8 @@ private fun instructionsText() = buildAnnotatedString {
     append(stringResource(R.string.how_to_activate_bluetooth_five))
 }
 
-@Preview(showBackground = true)
-@Composable
-fun BloodPressurePreview() {
-    BloodPressureDeviceInstructions()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun BloodPressurePreview() {
+//    BloodPressureDeviceInstructions()
+//}

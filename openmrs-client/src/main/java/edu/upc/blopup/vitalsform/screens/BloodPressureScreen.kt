@@ -55,6 +55,14 @@ fun BloodPressureScreen(navController: NavHostController) {
             ),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        Image(
+            painter = painterResource(R.drawable.how_to_measure),
+            contentDescription = stringResource(R.string.bp_image_description),
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .weight(1f)
+                .align(Alignment.CenterHorizontally)
+        )
         BloodPressureInstructions()
         HowToActivateTheDeviceButton(navController)
         ReceiveBloodPressureDataButton(navController)
@@ -63,38 +71,25 @@ fun BloodPressureScreen(navController: NavHostController) {
 
 @Composable
 fun BloodPressureInstructions() {
-    Column {
-        Image(
-            painter = painterResource(R.drawable.how_to_measure),
-            contentDescription = stringResource(R.string.bp_image_description),
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(vertical = 50.dp)
+        Text(
+            text = stringResource(R.string.blood_pressure_instructions_title),
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = TextUnit(20f, TextUnitType.Sp)
+            ),
+            modifier = Modifier.padding(bottom = 8.dp)
         )
-        Column {
-            Text(
-                text = stringResource(R.string.blood_pressure_instructions_title),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = TextUnit(20f, TextUnitType.Sp)
-                ),
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Text(
-                text = stringResource(R.string.blood_pressure_instructions_two),
-                fontSize = TextUnit(16f, TextUnitType.Sp)
-            )
-
-        }
-    }
-
+        Text(
+            text = stringResource(R.string.blood_pressure_instructions_two),
+            fontSize = TextUnit(16f, TextUnitType.Sp),
+        )
 }
 
 
 @Composable
 fun HowToActivateTheDeviceButton(navController: NavHostController) {
     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
-        .fillMaxWidth()
+        .fillMaxWidth().padding(vertical = 30.dp)
         .clickable { navController.navigate(Routes.HowToActivateBluetoothScreen.id) }) {
         Row {
             Icon(
