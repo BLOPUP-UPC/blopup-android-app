@@ -344,22 +344,6 @@ public class OpenmrsAndroid {
         editor.apply();
     }
 
-    private void createSecretKey() {
-        secretKey = BCrypt.hashpw(OpenmrsAndroid.getUsername() + ApplicationConstants.DB_PASSWORD_LITERAL_PEPPER + OpenmrsAndroid.getPassword(), ApplicationConstants.DB_PASSWORD_BCRYPT_PEPPER);
-    }
-
-    /**
-     * Gets secret key.
-     *
-     * @return the secret key
-     */
-    public String getSecretKey() {
-        if (secretKey == null) {
-            createSecretKey();
-        }
-        return secretKey;
-    }
-
     /**
      * Gets sync state.
      *

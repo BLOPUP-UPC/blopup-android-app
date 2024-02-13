@@ -26,8 +26,6 @@ object ApplicationConstants {
     const val LAST_SESSION_TOKEN = "last_session_id"
     const val LAST_LOGIN_SERVER_URL = "last_login_server_url"
     const val DB_NAME = "openmrs.db"
-    const val DB_PASSWORD_BCRYPT_PEPPER = "$2a$08\$iUp3M1VapYpjcAXQBNX6uu"
-    const val DB_PASSWORD_LITERAL_PEPPER = "Open Sesame"
     const val DEFAULT_VISIT_TYPE_UUID = "7b0f5697-27e3-40c4-8bae-f4049abfb4ed"
     const val DEFAULT_BCRYPT_ROUND = 8
     const val SPLASH_TIMER = 3500
