@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,23 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import edu.upc.R
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
-import edu.upc.blopup.toggles.check
-import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
-import edu.upc.blopup.ui.Routes
-import edu.upc.blopup.ui.takingvitals.VitalsViewModel
-import edu.upc.blopup.vitalsform.Vital
-import edu.upc.openmrs.utilities.observeOnce
-import edu.upc.sdk.utilities.ApplicationConstants
 
 
 @Composable
-fun BloodPressureScreen(navController: NavHostController, viewModel: VitalsViewModel) {
+fun BloodPressureScreen(onClickHowTo: () -> Unit, onClickReceiveData: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,8 +54,8 @@ fun BloodPressureScreen(navController: NavHostController, viewModel: VitalsViewM
                 .align(Alignment.CenterHorizontally)
         )
         BloodPressureInstructions()
-        HowToActivateTheDeviceButton(navController)
-        ReceiveBloodPressureDataButton(navController, viewModel)
+        HowToActivateTheDeviceButton(onClickHowTo)
+        ReceiveBloodPressureDataButton(onClickReceiveData)
     }
 }
 
@@ -90,11 +77,11 @@ fun BloodPressureInstructions() {
 
 
 @Composable
-fun HowToActivateTheDeviceButton(navController: NavHostController) {
+fun HowToActivateTheDeviceButton(onClickHowTo: () -> Unit) {
     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 30.dp)
-        .clickable { navController.navigate(Routes.HowToActivateBluetoothScreen.id) }) {
+        .clickable { onClickHowTo() }) {
         Row {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.icon_bp_info),
@@ -116,11 +103,10 @@ fun HowToActivateTheDeviceButton(navController: NavHostController) {
 }
 
 @Composable
-fun ReceiveBloodPressureDataButton(navController: NavHostController, viewModel: VitalsViewModel) {
-    val lifecycleOwner = LocalLifecycleOwner.current
+fun ReceiveBloodPressureDataButton(onClickReceiveData: () -> Unit) {
     Button(
         shape = MaterialTheme.shapes.extraSmall,
-        onClick = { viewModel.startListeningBluetoothConnection(); navController.navigate(Routes.BloodPressureDataScreen.id) },
+        onClick = onClickReceiveData,
         contentPadding = PaddingValues(15.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(
@@ -152,5 +138,5 @@ fun ReceiveBloodPressureDataButton(navController: NavHostController, viewModel: 
 @Preview
 @Composable
 fun Preview() {
-    BloodPressureScreen(rememberNavController(), PreviewViewModel)
+    BloodPressureScreen({}, {})
 }

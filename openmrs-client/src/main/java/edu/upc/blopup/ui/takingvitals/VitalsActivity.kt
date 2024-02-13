@@ -20,11 +20,11 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.ui.BloodPressureDataScreen
-import edu.upc.blopup.ui.BloodPressureScreen
 import edu.upc.blopup.ui.HowToActivateBluetoothScreen
+import edu.upc.blopup.ui.ReceiveWeightDataScreen
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.takingvitals.screens.AppToolBarWithMenu
-import edu.upc.blopup.ui.ReceiveWeightDataScreen
+import edu.upc.blopup.ui.takingvitals.screens.BloodPressureScreen
 
 @AndroidEntryPoint
 class VitalsActivity : ComponentActivity() {
@@ -58,7 +58,10 @@ class VitalsActivity : ComponentActivity() {
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable(Routes.BloodPressureScreen.id) {
-                        BloodPressureScreen(navigationController, viewModel)
+                        BloodPressureScreen(
+                            { navigationController.navigate(Routes.HowToActivateBluetoothScreen.id) },
+                            { viewModel.startListeningBluetoothConnection(); navigationController.navigate(Routes.BloodPressureDataScreen.id) }
+                        )
                     }
                     composable(Routes.HowToActivateBluetoothScreen.id) {
                         HowToActivateBluetoothScreen(navigationController, viewModel)

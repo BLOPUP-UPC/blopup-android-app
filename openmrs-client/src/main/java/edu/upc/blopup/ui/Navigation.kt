@@ -9,11 +9,6 @@ import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
 import edu.upc.blopup.vitalsform.Vital
 
 @Composable
-fun BloodPressureScreen(navController: NavHostController, viewModel: VitalsViewModel) {
-    BloodPressureScreen(navController, viewModel)
-}
-
-@Composable
 fun HowToActivateBluetoothScreen(navController: NavHostController, viewModel: VitalsViewModel) {
     HowToActivateBPDeviceScreen(navController, viewModel)
 }

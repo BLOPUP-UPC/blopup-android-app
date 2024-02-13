@@ -55,7 +55,7 @@ fun HowToActivateBPDeviceScreen(navController: NavHostController, viewModel: Vit
             lineHeight = 23.sp,
             modifier = Modifier.padding(bottom = 20.dp)
         )
-        ReceiveBloodPressureDataButton(navController, viewModel!!)
+        ReceiveBloodPressureDataButton({})
     }
 }
 
