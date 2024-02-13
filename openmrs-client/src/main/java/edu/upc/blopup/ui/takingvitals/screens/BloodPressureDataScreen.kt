@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform.screens
+package edu.upc.blopup.ui.takingvitals.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import edu.upc.R
-import edu.upc.blopup.vitalsform.VitalsActivity
-import edu.upc.blopup.vitalsform.model.Routes
+import edu.upc.blopup.ui.Routes
+import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @Composable

@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform.model
+package edu.upc.blopup.ui
 
 open class Routes(val id: String) {
     object BloodPressureScreen : Routes("Blood Pressure Screen with AppBar")

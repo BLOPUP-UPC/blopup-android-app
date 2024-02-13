@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform
+package edu.upc.blopup.ui.takingvitals
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -19,12 +19,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.blopup.vitalsform.model.BloodPressureDataScreen
-import edu.upc.blopup.vitalsform.model.BloodPressureScreen
-import edu.upc.blopup.vitalsform.model.HowToActivateBluetoothScreen
-import edu.upc.blopup.vitalsform.model.Routes
-import edu.upc.blopup.vitalsform.screens.AppToolBarWithMenu
-import edu.upc.blopup.vitalsform.screens.ReceiveWeightDataScreen
+import edu.upc.blopup.ui.BloodPressureDataScreen
+import edu.upc.blopup.ui.BloodPressureScreen
+import edu.upc.blopup.ui.HowToActivateBluetoothScreen
+import edu.upc.blopup.ui.Routes
+import edu.upc.blopup.ui.takingvitals.screens.AppToolBarWithMenu
+import edu.upc.blopup.ui.takingvitals.screens.ReceiveWeightDataScreen
+import edu.upc.blopup.vitalsform.Vital
 
 @AndroidEntryPoint
 class VitalsActivity : ComponentActivity() {

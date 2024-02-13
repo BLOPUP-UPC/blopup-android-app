@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.openmrs.activities.settings.SettingsActivity
 import org.junit.Rule
 import org.junit.Test

@@ -1,10 +1,10 @@
-package edu.upc.blopup.vitalsform.model
+package edu.upc.blopup.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import edu.upc.blopup.vitalsform.screens.BloodPressureDataScreen
-import edu.upc.blopup.vitalsform.screens.BloodPressureScreen
-import edu.upc.blopup.vitalsform.screens.HowToActivateBPDeviceScreen
+import edu.upc.blopup.ui.takingvitals.screens.BloodPressureDataScreen
+import edu.upc.blopup.ui.takingvitals.screens.BloodPressureScreen
+import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
 
 @Composable
 fun BloodPressureScreen(navController: NavHostController) {

@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform.screens
+package edu.upc.blopup.ui.takingvitals.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

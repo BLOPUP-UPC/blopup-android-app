@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform.screens
+package edu.upc.blopup.ui.takingvitals.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -36,9 +36,9 @@ import edu.upc.R
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
+import edu.upc.blopup.ui.Routes
+import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.blopup.vitalsform.Vital
-import edu.upc.blopup.vitalsform.VitalsActivity
-import edu.upc.blopup.vitalsform.model.Routes
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.utilities.ApplicationConstants
 

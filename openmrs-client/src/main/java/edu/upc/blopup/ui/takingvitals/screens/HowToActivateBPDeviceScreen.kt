@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform.screens
+package edu.upc.blopup.ui.takingvitals.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

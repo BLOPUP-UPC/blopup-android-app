@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform
+package edu.upc.blopup.ui.takingvitals
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
+import edu.upc.blopup.vitalsform.Vital
 import javax.inject.Inject
 
 @HiltViewModel

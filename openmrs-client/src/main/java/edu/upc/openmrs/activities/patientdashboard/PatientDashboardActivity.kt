@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.newVitalsFlowToggle
-import edu.upc.blopup.vitalsform.VitalsActivity
+import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
