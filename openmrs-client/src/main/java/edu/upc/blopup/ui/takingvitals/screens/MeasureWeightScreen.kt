@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import edu.upc.R
 
 @Composable
-fun ReceiveWeightDataScreen(onClickReceiveData: () -> Unit) {
+fun MeasureWeightScreen(onClickReceiveData: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,5 +69,5 @@ fun WeightInstructions() {
 @Preview
 @Composable
 fun WeightDataPreview() {
-    ReceiveWeightDataScreen {}
+    MeasureWeightScreen {}
 }

@@ -27,9 +27,10 @@ import edu.upc.R
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.takingvitals.screens.AppToolBarWithMenu
 import edu.upc.blopup.ui.takingvitals.screens.BloodPressureDataScreen
-import edu.upc.blopup.ui.takingvitals.screens.BloodPressureScreen
 import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
-import edu.upc.blopup.ui.takingvitals.screens.ReceiveWeightDataScreen
+import edu.upc.blopup.ui.takingvitals.screens.MeasureBloodPressureScreen
+import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
+import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
 
 @AndroidEntryPoint
 class VitalsActivity : ComponentActivity() {
@@ -61,20 +62,20 @@ class VitalsActivity : ComponentActivity() {
             ) { innerPadding ->
 
                 val navigationController = rememberNavController()
-                val uiState by viewModel.uiState.collectAsState()
+                val uiState by viewModel.vitalsUiState.collectAsState()
 
                 NavHost(
                     navController = navigationController,
-                    startDestination = Routes.BloodPressureScreen.id,
+                    startDestination = Routes.MeasureBloodPressureScreen.id,
                     modifier = Modifier.padding(innerPadding)
                 ) {
-                    composable(Routes.BloodPressureScreen.id) {
+                    composable(Routes.MeasureBloodPressureScreen.id) {
                         topBarTitle = R.string.blood_pressure_data
 
-                        BloodPressureScreen(
+                        MeasureBloodPressureScreen(
                             { navigationController.navigate(Routes.HowToActivateBluetoothScreen.id) },
                             {
-                                viewModel.startListeningBluetoothConnection()
+                                viewModel.receiveBloodPressureData()
                                 navigationController.navigate(Routes.BloodPressureDataScreen.id)
                             }
                         )
@@ -83,7 +84,7 @@ class VitalsActivity : ComponentActivity() {
                         topBarTitle = R.string.blood_pressure_data
 
                         HowToActivateBPDeviceScreen {
-                            viewModel.startListeningBluetoothConnection()
+                            viewModel.receiveBloodPressureData()
                             navigationController.navigate(Routes.BloodPressureDataScreen.id)
                         }
                     }
@@ -91,15 +92,20 @@ class VitalsActivity : ComponentActivity() {
                         topBarTitle = R.string.blood_pressure_data
 
                         BloodPressureDataScreen(
-                            { navigationController.navigate(Routes.ReceiveWeightDataScreen.id) },
+                            { navigationController.navigate(Routes.MeasureWeightScreen.id) },
                             navigationController::popBackStack,
                             uiState
                         )
                     }
-                    composable(Routes.ReceiveWeightDataScreen.id) {
+                    composable(Routes.MeasureWeightScreen.id) {
                         topBarTitle = R.string.weight_data
 
-                        ReceiveWeightDataScreen { viewModel.startListeningBluetoothConnection() }
+                        MeasureWeightScreen { viewModel.receiveWeightData() }
+                    }
+                    composable(Routes.WeightDataScreen.id) {
+                        topBarTitle = R.string.weight_data
+
+                        WeightDataScreen()
                     }
                 }
             }

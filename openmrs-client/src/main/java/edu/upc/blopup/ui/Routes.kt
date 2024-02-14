@@ -1,8 +1,9 @@
 package edu.upc.blopup.ui
 
 open class Routes(val id: String) {
-    object BloodPressureScreen : Routes("Blood Pressure Screen with AppBar")
+    object MeasureBloodPressureScreen : Routes("Measure Blood Pressure Screen")
     object HowToActivateBluetoothScreen : Routes("How to activate Bluetooth Screen")
     object BloodPressureDataScreen : Routes("Blood Pressure Data Screen")
-    object ReceiveWeightDataScreen : Routes("Receive Weight Data Screen")
+    object MeasureWeightScreen : Routes("Measure Weight Data Screen")
+    object WeightDataScreen : Routes("Weight Data Screen")
 }

@@ -30,7 +30,7 @@ import edu.upc.R
 
 
 @Composable
-fun BloodPressureScreen(onClickHowTo: () -> Unit, onClickReceiveData: () -> Unit) {
+fun MeasureBloodPressureScreen(onClickHowTo: () -> Unit, onClickReceiveData: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,5 +101,5 @@ fun HowToActivateTheDeviceButton(onClickHowTo: () -> Unit) {
 @Preview
 @Composable
 fun Preview() {
-    BloodPressureScreen({}, {})
+    MeasureBloodPressureScreen({}, {})
 }
