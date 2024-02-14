@@ -61,7 +61,6 @@ fun WeightInstructions() {
         Text(
             text = stringResource(R.string.weight_instructions_two),
             fontSize = TextUnit(16f, TextUnitType.Sp),
-            modifier = Modifier.padding(bottom = 100.dp)
         )
     }
 }

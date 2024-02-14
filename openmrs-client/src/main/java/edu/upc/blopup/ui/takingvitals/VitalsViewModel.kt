@@ -40,9 +40,12 @@ open class VitalsViewModel @Inject constructor(
         get() = _scaleViewState
 
     fun receiveWeightData() {
+        hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeWeightData() })
+
         readScaleRepository.start { state: ScaleViewState ->
             _scaleViewState.postValue(state)
             if (state is ScaleViewState.Content) {
+                _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
                 _vitalsUiState.value.add(
                     Vital(
                         ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
@@ -63,7 +66,7 @@ open class VitalsViewModel @Inject constructor(
             { state: BloodPressureViewState ->
                 _bpViewState.postValue(state)
                 if (state is BloodPressureViewState.Content) {
-                    _vitalsUiState.value.addAll(
+                    _vitalsUiState.value =
                         mutableListOf(
                             Vital(
                                 ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
@@ -78,7 +81,6 @@ open class VitalsViewModel @Inject constructor(
                                 state.measurement.heartRate.toString()
                             )
                         )
-                    )
                 }
                 readBloodPressureRepository.disconnect()
             }
@@ -103,4 +105,13 @@ open class VitalsViewModel @Inject constructor(
             )
     }
 
+    private fun hardcodeWeightData() {
+        _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
+        _vitalsUiState.value.add(
+            Vital(
+                ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
+                (50..150).random().toString()
+            )
+        )
+    }
 }

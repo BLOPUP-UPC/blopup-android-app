@@ -29,6 +29,7 @@ import edu.upc.blopup.ui.takingvitals.screens.AppToolBarWithMenu
 import edu.upc.blopup.ui.takingvitals.screens.BloodPressureDataScreen
 import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureBloodPressureScreen
+import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
 
@@ -100,12 +101,24 @@ class VitalsActivity : ComponentActivity() {
                     composable(Routes.MeasureWeightScreen.id) {
                         topBarTitle = R.string.weight_data
 
-                        MeasureWeightScreen { viewModel.receiveWeightData() }
+                        MeasureWeightScreen {
+                            viewModel.receiveWeightData()
+                            navigationController.navigate(Routes.WeightDataScreen.id)
+                        }
                     }
                     composable(Routes.WeightDataScreen.id) {
                         topBarTitle = R.string.weight_data
 
-                        WeightDataScreen()
+                        WeightDataScreen(
+                            { navigationController.navigate(Routes.MeasureHeightScreen.id) },
+                            navigationController::popBackStack,
+                            uiState
+                        )
+                    }
+                    composable(Routes.MeasureHeightScreen.id) {
+                        topBarTitle = R.string.weight_data
+
+                        MeasureHeightScreen()
                     }
                 }
             }

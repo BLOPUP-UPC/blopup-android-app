@@ -6,4 +6,5 @@ open class Routes(val id: String) {
     object BloodPressureDataScreen : Routes("Blood Pressure Data Screen")
     object MeasureWeightScreen : Routes("Measure Weight Data Screen")
     object WeightDataScreen : Routes("Weight Data Screen")
+    object MeasureHeightScreen : Routes("Measure Height Data Screen")
 }
