@@ -31,6 +31,7 @@ object DateUtils {
     const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy"
     const val DATE_WITH_TIME_FORMAT = "dd/MM/yyyy HH:mm"
     const val OPEN_MRS_RESPONSE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    const val OPEN_MRS_RESPONSE_FORMAT_WO_TIME = "yyyy-MM-dd'T00:00:00.000+0000'"
     const val OPEN_MRS_REQUEST_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
     const val OPEN_MRS_REQUEST_PATIENT_FORMAT = "yyyy-MM-dd"
     private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger()
@@ -255,7 +256,11 @@ object DateUtils {
         return false
     }
 
-    fun java.time.LocalDate.defaultOpenMrsFormat(): String {
+    fun java.time.LocalDate.formatAsDefaultOpenMrsFormat(): String {
         return java.time.format.DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT).format(this)
+    }
+
+    fun java.time.LocalDate.formatAsOpenMrsResponse(): String {
+        return java.time.format.DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT_WO_TIME).format(this)
     }
 }

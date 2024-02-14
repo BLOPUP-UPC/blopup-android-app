@@ -8,7 +8,7 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import edu.upc.R
-import edu.upc.sdk.utilities.DateUtils.defaultOpenMrsFormat
+import edu.upc.sdk.utilities.DateUtils.formatAsDefaultOpenMrsFormat
 import java.time.LocalDate
 
 
@@ -67,7 +67,7 @@ class TreatmentsListExpandableListAdapter(
             convertView ?: layoutInflater.inflate(R.layout.chart_layout_treatments_group, null)
         val listTitleTextView = view.findViewById<View>(R.id.treatmentListTitle) as TextView
         listTitleTextView.setTypeface(null, Typeface.BOLD)
-        listTitleTextView.text = getGroup(listPosition).defaultOpenMrsFormat()
+        listTitleTextView.text = getGroup(listPosition).formatAsDefaultOpenMrsFormat()
 
         val iconView = view.findViewById<ImageView>(R.id.group_indicator)
 

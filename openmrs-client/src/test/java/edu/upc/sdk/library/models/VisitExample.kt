@@ -2,6 +2,7 @@ package edu.upc.sdk.library.models
 
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.databases.entities.ConceptEntity
+import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsResponse
 import edu.upc.sdk.utilities.DateUtils.formatToOpenmrsDate
 import org.joda.time.Instant
 import java.util.UUID
@@ -81,8 +82,8 @@ object VisitExample {
                                     }
                                 displayValue = if (value) "1.0" else "0.0"
                                 display = "Adherence: $displayValue"
-                                dateCreated = date.toString()
-                                obsDatetime = date.toString()
+                                dateCreated = date.formatAsOpenMrsResponse()
+                                obsDatetime = date.formatAsOpenMrsResponse()
                             }
                         }
                     )
