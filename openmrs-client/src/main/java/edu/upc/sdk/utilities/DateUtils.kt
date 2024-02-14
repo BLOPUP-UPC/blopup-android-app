@@ -27,19 +27,20 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.TimeZone
 
-
 object DateUtils {
     const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy"
     const val DATE_WITH_TIME_FORMAT = "dd/MM/yyyy HH:mm"
-    private const val OPEN_MRS_RESPONSE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    const val OPEN_MRS_RESPONSE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
     const val OPEN_MRS_REQUEST_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
     const val OPEN_MRS_REQUEST_PATIENT_FORMAT = "yyyy-MM-dd"
     private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger()
 
+    @Deprecated("Use java.time instead")
     fun parseFromOpenmrsDate(dateTime: String): Instant {
         return Instant.parse(dateTime, DateTimeFormat.forPattern(OPEN_MRS_RESPONSE_FORMAT).withZoneUTC())
     }
 
+    @Deprecated("Use java.time instead")
     fun Instant.formatToOpenmrsDate(): String {
         return DateTimeFormat.forPattern(OPEN_MRS_REQUEST_FORMAT).withZoneUTC().print(this)
     }
@@ -252,5 +253,9 @@ object DateUtils {
             return date != null
         }
         return false
+    }
+
+    fun java.time.LocalDate.defaultOpenMrsFormat(): String {
+        return java.time.format.DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT).format(this)
     }
 }

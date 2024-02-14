@@ -9,6 +9,7 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import org.joda.time.format.DateTimeFormat
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,8 +18,8 @@ class ChartsViewViewModel @Inject constructor(
     private val treatmentRepository: TreatmentRepository
 ) :
     ViewModel() {
-    private val _treatments = MutableLiveData<Result<Map<String, List<TreatmentAdherence>>>>()
-    val treatments: LiveData<Result<Map<String, List<TreatmentAdherence>>>> get() = _treatments
+    private val _treatments = MutableLiveData<Result<Map<LocalDate, List<TreatmentAdherence>>>>()
+    val treatments: LiveData<Result<Map<LocalDate, List<TreatmentAdherence>>>> get() = _treatments
 
     suspend fun fetchTreatments(patientId: Int) {
         val patient: Patient = patientDAO.findPatientByID(patientId.toString())
@@ -29,7 +30,7 @@ class ChartsViewViewModel @Inject constructor(
         }
     }
 
-    private fun treatmentsByAdherenceDate(treatments: List<Treatment>): Map<String, List<TreatmentAdherence>> {
+    private fun treatmentsByAdherenceDate(treatments: List<Treatment>): Map<LocalDate, List<TreatmentAdherence>> {
         val formatter = DateTimeFormat.forPattern("dd/MM/yyyy")
         return treatments.flatMap { treatment ->
             treatment.adherence.map {
@@ -37,7 +38,7 @@ class ChartsViewViewModel @Inject constructor(
                     treatment.medicationName,
                     treatment.medicationType,
                     it.value,
-                    it.key.toString(formatter)
+                    it.key
                 )
             }
         }.sortedBy { it.adherence } .groupBy { it.date }

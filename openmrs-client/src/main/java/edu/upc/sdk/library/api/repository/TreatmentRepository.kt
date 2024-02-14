@@ -11,10 +11,13 @@ import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.joda.time.Instant
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -150,7 +153,7 @@ class TreatmentRepository @Inject constructor(
         var isActive = false
         var observationStatusUuid: String? = null
         var inactiveDate: Instant? = null
-        val adherenceMap = mutableMapOf<Instant, Boolean>()
+        val adherenceMap = mutableMapOf<LocalDate, Boolean>()
         encounter.observations.map { observation ->
             when (observation.concept?.uuid) {
                 ObservationConcept.RECOMMENDED_BY.uuid -> recommendedBy =
@@ -175,7 +178,7 @@ class TreatmentRepository @Inject constructor(
 
                 ObservationConcept.TREATMENT_ADHERENCE.uuid -> {
                     val adherence = observation.displayValue?.trim() == "1.0"
-                    val date = parseFromOpenmrsDate(observation.dateCreated!!)
+                    val date = LocalDate.parse(observation.dateCreated!!, DateTimeFormatter.ofPattern(DateUtils.OPEN_MRS_RESPONSE_FORMAT))
                     adherenceMap[date] = adherence
                 }
             }

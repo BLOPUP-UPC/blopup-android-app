@@ -8,17 +8,17 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import edu.upc.R
+import edu.upc.sdk.utilities.DateUtils.defaultOpenMrsFormat
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 class TreatmentsListExpandableListAdapter(
     val layoutInflater: LayoutInflater,
-    private val expandableListTitle: List<String>,
-    private val expandableListDetail: Map<String, List<TreatmentAdherence>>
+    private val expandableListTitle: List<LocalDate>,
+    private val expandableListDetail: Map<LocalDate, List<TreatmentAdherence>>
 ) : BaseExpandableListAdapter() {
     override fun getChild(listPosition: Int, expandedListPosition: Int): TreatmentAdherence {
-        return this.expandableListDetail[this.expandableListTitle[listPosition]]?.get(expandedListPosition) ?: TreatmentAdherence("", emptySet(), false, "")
+        return this.expandableListDetail[this.expandableListTitle[listPosition]]?.get(expandedListPosition) ?: TreatmentAdherence("", emptySet(), false, LocalDate.now())
     }
 
     override fun getChildId(listPosition: Int, expandedListPosition: Int): Long {
@@ -47,7 +47,7 @@ class TreatmentsListExpandableListAdapter(
         return expandableListDetail[expandableListTitle[listPosition]]?.size ?: 0
     }
 
-    override fun getGroup(listPosition: Int): String {
+    override fun getGroup(listPosition: Int): LocalDate {
         return expandableListTitle[listPosition]
     }
 
@@ -67,7 +67,7 @@ class TreatmentsListExpandableListAdapter(
             convertView ?: layoutInflater.inflate(R.layout.chart_layout_treatments_group, null)
         val listTitleTextView = view.findViewById<View>(R.id.treatmentListTitle) as TextView
         listTitleTextView.setTypeface(null, Typeface.BOLD)
-        listTitleTextView.text = getGroup(listPosition)
+        listTitleTextView.text = getGroup(listPosition).defaultOpenMrsFormat()
 
         val iconView = view.findViewById<ImageView>(R.id.group_indicator)
 
@@ -88,7 +88,6 @@ class TreatmentsListExpandableListAdapter(
     }
 
     fun getTreatmentIdToExpand(date: LocalDate) : Int {
-        val dateString = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-        return expandableListTitle.indexOfFirst { it == dateString }
+        return expandableListTitle.indexOfFirst { it == date }
     }
 }

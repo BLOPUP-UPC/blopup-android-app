@@ -19,6 +19,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
+import java.time.LocalDate
+import java.time.ZoneOffset
+import java.time.Instant as JavaInstant
 
 @RunWith(MockitoJUnitRunner::class)
 class ChartsViewViewModelTest {
@@ -44,7 +47,10 @@ class ChartsViewViewModelTest {
     @Test
     fun `should transform treatments to adherences with dates`() {
         val now = Instant.now()
-        val lastWeek = now.toDateTime().plusDays(-7).toInstant()
+        val nowJava = JavaInstant.ofEpochMilli(now.millis)
+        val today = LocalDate.ofInstant(nowJava, ZoneOffset.UTC)
+
+        val lastWeek = today.minusDays(7)
 
         val treatmentsWOAdherence = TreatmentExample.activeTreatment().apply {
             adherence = emptyMap()
@@ -52,37 +58,37 @@ class ChartsViewViewModelTest {
         val treatment = TreatmentExample.activeTreatment().apply {
             adherence = mapOf(
                 lastWeek to false,
-                now to true
+                today to true
             )
         }
         val treatmentWithFalseAdherence = TreatmentExample.activeTreatment().apply {
             adherence = mapOf(
-                now to false
+                today to false
             )
         }
 
         val expectedTreatmentAdherence =
             mapOf(
-                lastWeek.toString(formatter) to listOf(
+                lastWeek to listOf(
                     TreatmentAdherence(
                         treatment.medicationName,
                         treatment.medicationType,
                         false,
-                        lastWeek.toString(formatter)
+                        lastWeek
                     )
                 ),
-                now.toString(formatter) to listOf(
+                today to listOf(
                     TreatmentAdherence(
                         treatmentWithFalseAdherence.medicationName,
                         treatmentWithFalseAdherence.medicationType,
                         false,
-                        now.toString(formatter)
+                        today
                     ),
                     TreatmentAdherence(
                         treatment.medicationName,
                         treatment.medicationType,
                         true,
-                        now.toString(formatter)
+                        today
                     ),
                 )
             )

@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.models
 
 import org.joda.time.Instant
+import java.time.LocalDate
 import java.util.UUID
 
 object TreatmentExample {
@@ -16,7 +17,7 @@ object TreatmentExample {
             treatmentUuid = UUID.randomUUID().toString(),
             observationStatusUuid = UUID.randomUUID().toString(),
             creationDate = creationDate,
-            adherence = mapOf(Instant.now() to true)
+            adherence = mapOf(LocalDate.now() to true)
         )
     }
 

@@ -256,7 +256,7 @@ data class TreatmentAdherence(
     val name: String,
     var medicationType: Set<MedicationType>,
     val adherence: Boolean,
-    val date: String
+    val date: LocalDate
 )
 
 fun TreatmentAdherence.medicationTypeToString(context: Context): String {

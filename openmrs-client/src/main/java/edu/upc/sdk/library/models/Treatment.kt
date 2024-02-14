@@ -3,6 +3,7 @@ package edu.upc.sdk.library.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import org.joda.time.Instant
+import java.time.LocalDate
 
 @Parcelize
 data class Treatment(
@@ -17,7 +18,7 @@ data class Treatment(
     var observationStatusUuid: String? = null,
     var creationDate: Instant = Instant.now(),
     var inactiveDate: Instant? = null,
-    var adherence: Map<Instant, Boolean> = emptyMap()
+    var adherence: Map<LocalDate, Boolean> = emptyMap()
 ) : Parcelable {
 
     companion object {
