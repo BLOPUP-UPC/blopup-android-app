@@ -52,7 +52,7 @@ fun HowToActivateBPDeviceScreen(onClickReceiveData: () -> Unit) {
             lineHeight = 23.sp,
             modifier = Modifier.padding(bottom = 20.dp)
         )
-        ReceiveBloodPressureDataButton(onClickReceiveData)
+        ReceiveDataButton(onClickReceiveData, R.string.blood_pressure_button_label)
     }
 }
 

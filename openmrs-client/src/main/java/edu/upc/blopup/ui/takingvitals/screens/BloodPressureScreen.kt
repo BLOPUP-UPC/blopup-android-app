@@ -4,17 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -55,7 +51,7 @@ fun BloodPressureScreen(onClickHowTo: () -> Unit, onClickReceiveData: () -> Unit
         )
         BloodPressureInstructions()
         HowToActivateTheDeviceButton(onClickHowTo)
-        ReceiveBloodPressureDataButton(onClickReceiveData)
+        ReceiveDataButton(onClickReceiveData, R.string.blood_pressure_button_label)
     }
 }
 
@@ -99,39 +95,6 @@ fun HowToActivateTheDeviceButton(onClickHowTo: () -> Unit) {
             contentDescription = "Info",
             tint = colorResource(R.color.dark_grey_for_stroke)
         )
-    }
-}
-
-@Composable
-fun ReceiveBloodPressureDataButton(onClickReceiveData: () -> Unit) {
-    Button(
-        shape = MaterialTheme.shapes.extraSmall,
-        onClick = onClickReceiveData,
-        contentPadding = PaddingValues(15.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(
-                R.color.bluetooth_blue
-            )
-        )
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.blood_pressure_button_label),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = TextUnit(16f, TextUnitType.Sp)
-                )
-            )
-            Icon(
-                painter = painterResource(id = android.R.drawable.stat_sys_data_bluetooth),
-                contentDescription = "Bluetooth icon"
-            )
-        }
-
     }
 }
 

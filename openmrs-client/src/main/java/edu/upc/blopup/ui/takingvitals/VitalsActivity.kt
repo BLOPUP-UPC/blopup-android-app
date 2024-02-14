@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
@@ -33,6 +36,7 @@ class VitalsActivity : ComponentActivity() {
 
     val viewModel: VitalsViewModel by viewModels()
 
+
     private val locationPermission = arrayOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION
@@ -50,8 +54,10 @@ class VitalsActivity : ComponentActivity() {
         askPermissions()
 
         setContent {
+            var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
+
             Scaffold(
-                topBar = { AppToolBarWithMenu(stringResource(R.string.blood_pressure_data)) },
+                topBar = { AppToolBarWithMenu(stringResource(topBarTitle)) },
             ) { innerPadding ->
 
                 val navigationController = rememberNavController()
@@ -63,6 +69,8 @@ class VitalsActivity : ComponentActivity() {
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable(Routes.BloodPressureScreen.id) {
+                        topBarTitle = R.string.blood_pressure_data
+
                         BloodPressureScreen(
                             { navigationController.navigate(Routes.HowToActivateBluetoothScreen.id) },
                             {
@@ -72,12 +80,16 @@ class VitalsActivity : ComponentActivity() {
                         )
                     }
                     composable(Routes.HowToActivateBluetoothScreen.id) {
+                        topBarTitle = R.string.blood_pressure_data
+
                         HowToActivateBPDeviceScreen {
                             viewModel.startListeningBluetoothConnection()
                             navigationController.navigate(Routes.BloodPressureDataScreen.id)
                         }
                     }
                     composable(Routes.BloodPressureDataScreen.id) {
+                        topBarTitle = R.string.blood_pressure_data
+
                         BloodPressureDataScreen(
                             { navigationController.navigate(Routes.ReceiveWeightDataScreen.id) },
                             navigationController::popBackStack,
@@ -85,7 +97,9 @@ class VitalsActivity : ComponentActivity() {
                         )
                     }
                     composable(Routes.ReceiveWeightDataScreen.id) {
-                        ReceiveWeightDataScreen()
+                        topBarTitle = R.string.weight_data
+
+                        ReceiveWeightDataScreen { viewModel.startListeningBluetoothConnection() }
                     }
                 }
             }
