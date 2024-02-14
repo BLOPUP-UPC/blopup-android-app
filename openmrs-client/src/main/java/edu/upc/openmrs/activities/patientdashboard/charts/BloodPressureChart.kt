@@ -13,26 +13,31 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import edu.upc.R
-import edu.upc.blopup.toggles.check
-import edu.upc.blopup.toggles.treatmentChartToggle
 import edu.upc.sdk.library.models.MedicationType
 import java.time.LocalDate
 
 class BloodPressureChart(private val context: Context) {
 
-    private val maxValuesInView = 3f
+    private val maxValuesInView = 2f
     private val maxBloodPressureValueShown = 200f
     private val minBloodPressureValueShown = 40f
 
-    fun paintBloodPressureChart(chartLayout: LineChart, bloodPressureData: List<BloodPressureChartValue>) {
+    fun paintBloodPressureChart(
+        chartLayout: LineChart,
+        bloodPressureData: List<BloodPressureChartValue>
+    ) {
         setBloodPressureData(chartLayout, bloodPressureData)
         setChartMaxAndMinimumLimitLines(chartLayout)
         applyCommonChartStyles(chartLayout)
         applyBloodPressureChartStyles(chartLayout)
     }
 
-    fun paintTreatmentsChart(chartLayout: LineChart, bloodPressureData: List<BloodPressureChartValue>) {
-        setTreatmentsData(chartLayout, getTreatmentValues(bloodPressureData))
+    fun paintTreatmentsChart(
+        chartLayout: LineChart,
+        bloodPressureData: List<BloodPressureChartValue>,
+        adherenceMap: Map<LocalDate, List<TreatmentAdherence>>
+    ) {
+        setTreatmentsData(chartLayout, getTreatmentValues(bloodPressureData, adherenceMap))
         applyCommonChartStyles(chartLayout)
         applyTreatmentsChartStyles(chartLayout)
     }
@@ -99,6 +104,7 @@ class BloodPressureChart(private val context: Context) {
     }
 
     private fun applyCommonChartStyles(mChart: LineChart) {
+        mChart.setTouchEnabled(true)
         mChart.description.isEnabled = false
         // to make it scrollable
         mChart.setVisibleXRangeMaximum(maxValuesInView)
@@ -123,11 +129,6 @@ class BloodPressureChart(private val context: Context) {
     }
 
     private fun applyBloodPressureChartStyles(mChart: LineChart) {
-        treatmentChartToggle.check({
-            mChart.setTouchEnabled(false)
-        }, {
-            mChart.setTouchEnabled(true)
-        })
         //to display the dates only in the bottom and not in the top as well
         mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         mChart.xAxis.axisLineWidth = 2f
@@ -141,18 +142,20 @@ class BloodPressureChart(private val context: Context) {
         mChart.axisLeft.gridColor = Color.TRANSPARENT
     }
 
-    private fun getTreatmentValues(bloodPressureValues: List<BloodPressureChartValue>): List<TreatmentChartValue> {
+    private fun getTreatmentValues(
+        bloodPressureValues: List<BloodPressureChartValue>,
+        adherenceMap: Map<LocalDate, List<TreatmentAdherence>>
+    ): List<TreatmentChartValue> {
         return bloodPressureValues.map {
             TreatmentChartValue(
                 it.date,
-                getAdherenceForDate(it.date)
+                getAdherenceForDate(it.date, adherenceMap)
             )
         }
     }
 
-    private fun getAdherenceForDate(date: LocalDate): FollowTreatments {
-        // TODO: Implement logic to get the adherence for a given date
-        return FollowTreatments.entries.shuffled().first()
+    private fun getAdherenceForDate(date: LocalDate, adherenceMap: Map<LocalDate, List<TreatmentAdherence>>): FollowTreatments {
+        return adherenceMap[date]?.followTreatments() ?: FollowTreatments.NO_INFO
     }
 
     private fun setTreatmentsData(chart: LineChart, treatmentsData: List<TreatmentChartValue>) {
@@ -176,10 +179,10 @@ class BloodPressureChart(private val context: Context) {
     }
 
     private fun getPillIconForAdherence(adherence: FollowTreatments) = when (adherence) {
-        FollowTreatments.NO_TREATMENTS -> ContextCompat.getDrawable(
+        FollowTreatments.NO_INFO -> ContextCompat.getDrawable(
             context,
             R.drawable.ic_treatment_pill
-        )!!.apply { setTint(Color.GRAY) }
+        )!!.apply { setTint(Color.TRANSPARENT) }
 
         FollowTreatments.FOLLOW_ALL -> ContextCompat.getDrawable(
             context,
@@ -204,7 +207,6 @@ class BloodPressureChart(private val context: Context) {
     }
 
     private fun applyTreatmentsChartStyles(mChart: LineChart) {
-        mChart.setTouchEnabled(true)
         mChart.xAxis.axisLineColor = Color.TRANSPARENT
         mChart.xAxis.textColor = Color.TRANSPARENT
         // Hide vertical grid lines
@@ -239,7 +241,11 @@ class BloodPressureChart(private val context: Context) {
         }
     }
 
-    fun setListeners(chart: LineChart, gestureListener: OnChartGestureListener, valueSelectedListener: OnChartValueSelectedListener) {
+    fun setListeners(
+        chart: LineChart,
+        gestureListener: OnChartGestureListener,
+        valueSelectedListener: OnChartValueSelectedListener
+    ) {
         // Listener to sync the two charts scroll
         chart.onChartGestureListener = gestureListener
         chart.setOnChartValueSelectedListener(valueSelectedListener)
@@ -250,8 +256,9 @@ data class BloodPressureChartValue(val date: LocalDate, val systolic: Float, val
 data class TreatmentChartValue(val date: LocalDate, val followTreatments: FollowTreatments)
 
 enum class FollowTreatments {
-    NO_TREATMENTS, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
+    NO_INFO, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
 }
+
 data class TreatmentAdherence(
     val name: String,
     var medicationType: Set<MedicationType>,
@@ -265,4 +272,13 @@ fun TreatmentAdherence.medicationTypeToString(context: Context): String {
 
 fun TreatmentAdherence.icon(): Int {
     return if (adherence) R.drawable.ic_tick else R.drawable.ic_cross
+}
+
+fun List<TreatmentAdherence>.followTreatments(): FollowTreatments {
+    val adherence = map { it.adherence }
+    return when {
+        adherence.all { it } -> FollowTreatments.FOLLOW_ALL
+        adherence.none { it } -> FollowTreatments.FOLLOW_NONE
+        else -> FollowTreatments.FOLLOW_SOME
+    }
 }

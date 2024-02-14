@@ -41,6 +41,6 @@ class ChartsViewViewModel @Inject constructor(
                     it.key
                 )
             }
-        }.sortedBy { it.adherence } .groupBy { it.date }
+        }.sortedBy { it.adherence }.groupBy { it.date }.toSortedMap(reverseOrder())
     }
 }

@@ -63,12 +63,10 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
             bloodPressureChartView = mBinding.bloodPressureChartWithMargin
             bloodPressureChartView.makeVisible()
             mBinding.bloodPressureChart.makeGone()
-            treatmentsChartView.makeVisible()
             mBinding.expandableListView.makeVisible()
         })
 
         bloodPressureChartPainter.paintBloodPressureChart(bloodPressureChartView, bloodPressureData)
-        bloodPressureChartPainter.paintTreatmentsChart(treatmentsChartView, bloodPressureData)
         bloodPressureChartPainter.setListeners(treatmentsChartView, this, this)
     }
 
@@ -84,6 +82,15 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
                         adherenceMap.map { it.key },
                         adherenceMap
                     )
+
+                    treatmentChartToggle.check({
+                        treatmentsChartView.makeVisible()
+                        bloodPressureChartPainter.paintTreatmentsChart(
+                            treatmentsChartView,
+                            getBloodPressureValues(),
+                            adherenceMap
+                        )
+                    })
 
                     expandableSidebarListView.setAdapter(expandableSidebarAdapter)
                 }
@@ -168,6 +175,8 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
         val dateSelected = getBloodPressureValues().map { it.date }[e.x.toInt()]
         val indexSelected = expandableSidebarAdapter.getTreatmentIdToExpand(dateSelected)
+
+        if (indexSelected == -1) return
 
         if (expandableSidebarListView.isGroupExpanded(indexSelected)) {
             expandableSidebarListView.collapseGroup(indexSelected)
