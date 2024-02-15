@@ -18,7 +18,7 @@ import java.time.LocalDate
 
 class BloodPressureChart(private val context: Context) {
 
-    private val maxValuesInView = 2f
+    private val maxValuesInView = 4f
     private val maxBloodPressureValueShown = 200f
     private val minBloodPressureValueShown = 40f
 
