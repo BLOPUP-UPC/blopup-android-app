@@ -116,7 +116,7 @@ class VitalsActivity : ComponentActivity() {
                         )
                     }
                     composable(Routes.MeasureHeightScreen.id) {
-                        topBarTitle = R.string.weight_data
+                        topBarTitle = R.string.height_data
 
                         MeasureHeightScreen()
                     }

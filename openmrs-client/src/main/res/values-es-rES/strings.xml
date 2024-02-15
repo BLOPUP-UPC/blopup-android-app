@@ -176,7 +176,9 @@
     <string name="bmi_label">Índice de Masa Corporal (IMC)</string>
     <string name="blood_pressure_instructions_title">Cómo tomar la presión arterial.</string>
     <string name="weight_instructions_title">Cómo medir el peso</string>
-    <string name="weight_instructions_two">1. Asegúrese de que el bluetooth del móvil y de la báscula estén activados. \n\n2. Suba el paciente a la báscula.\n\n3. Presione el botón abajo para recibir el resultado.</string>
+    <string name="height_instructions_title">Cómo medir la altura</string>
+    <string name="weight_instructions">1. Asegúrese de que el bluetooth del móvil y de la báscula estén activados. \n\n2. Suba el paciente a la báscula.\n\n3. Presione el botón abajo para recibir el resultado.</string>
+    <string name="height_instructions">1. Asegúrese de que el dispositivo de medición esté encendido manteniendo presionado el botón lateral. \n\n2. Coloque el dispositivo en la cabeza del paciente de modo que el rayo láser llegue hasta el suelo.\n\n3. Haga clic en el botón lateral para obtener una lectura e ingrésela a continuación.</string>
     <string name="blood_pressure_instructions">Mide la circunferencia del brazo superior con una cinta métrica de sastre, a mitad de camino entre el hombro y el codo. Elige un brazalete cuyo tamaño incluya dicha medida.</string>
     <string name="blood_pressure_instructions_title_two">Posición para tomar la presión arterial.</string>
     <string name="blood_pressure_instructions_two">1. El paciente debe estar relajado, sentado con ambos pies en el suelo y la espalda recta. \n\n 2. Pongale el brazalete. Asegúrese de que el brazo esté apoyado sobre algo cómodo a la altura del corazón o del pecho.\n\n 3. Recuerde al paciente que debe permanecer quieto y no hablar durante las mediciones.</string>
@@ -269,12 +271,17 @@
     <string name="treatment_label">Tratamiento</string>/>
     <string name="bp_image_description">Ilustración de un hombre negro vistiendo una polo beige, pantalones azules y zapatos marrones. Está sentado en una silla con brazalete azul alrededor de su brazo.</string>
     <string name="weight_image_description">Ilustración de una báscula violeta.</string>
+    <string name="height_image_description">Ilustración de una regla amarilla.</string>
     <string name="bp_device_image_description">Ilustración de un tensiómetro.</string>
     <string name="how_to_activate_the_device_label">Cómo activar el dispositivo</string>
     <string name="blood_pressure_data">Datos de la Presión Arterial</string>
-    <string name="weight_data">Datos del Peso</string>
+    <string name="weight_data">Datos del peso</string>
+    <string name="height_data">Datos de la altura</string>
     <string name="how_to_activate_bluetooth_one">Para activar el Bluetooth, presione \u0020</string>/>
     <string name="how_to_activate_bluetooth_three">por 5–6 segundos hasta que la  \u0020</string>/>
     <string name="how_to_activate_bluetooth_four">SEÑAL DE BLUETOOTH \u0020</string>/>
-    <string name="how_to_activate_bluetooth_five">arriba comience a parpadear.\n\nEl dispositivo tomará 3 mediciones antes de enseñar el resultado en la aplicación.</string>/>
+    <string name="how_to_activate_bluetooth_five">arriba comience a parpadear.\n\nEl dispositivo tomará 3 mediciones antes de enseñar el resultado en la aplicación.</string>
+    <string name="skip_for_now_button">Saltar</string>
+    <string name="go_back">Atrás</string>
+    <string name="next">Continuar</string>/>
 </resources>

@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
@@ -110,7 +111,7 @@ fun NavigationButtons(onClickNext: () -> Unit, onClickBack: () -> Unit) {
     ) {
         TextButton(onClick = { show = true }) {
             Text(
-                text = "Go back",
+                text = stringResource(R.string.go_back),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = TextUnit(16f, TextUnitType.Sp)
@@ -118,7 +119,7 @@ fun NavigationButtons(onClickNext: () -> Unit, onClickBack: () -> Unit) {
         }
         TextButton(onClick = onClickNext) {
             Text(
-                text = "Next",
+                text = stringResource(R.string.next),
                 color = colorResource(id = R.color.allergy_orange),
                 fontWeight = FontWeight.Bold,
                 fontSize = TextUnit(16f, TextUnitType.Sp)
