@@ -31,7 +31,6 @@ class ChartsViewViewModel @Inject constructor(
     }
 
     private fun treatmentsByAdherenceDate(treatments: List<Treatment>): Map<LocalDate, List<TreatmentAdherence>> {
-        val formatter = DateTimeFormat.forPattern("dd/MM/yyyy")
         return treatments.flatMap { treatment ->
             treatment.adherence.map {
                 TreatmentAdherence(
