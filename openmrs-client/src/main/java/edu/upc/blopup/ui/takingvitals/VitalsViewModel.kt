@@ -59,7 +59,7 @@ open class VitalsViewModel @Inject constructor(
     fun disconnect() = readScaleRepository.disconnect()
 
     fun receiveBloodPressureData() {
-        hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeBluetoothData() })
+        hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeBloodPressureBluetoothData() })
 
         readBloodPressureRepository.start(
             { state: ConnectionViewState -> _connectionViewState.postValue(state) },
@@ -87,7 +87,8 @@ open class VitalsViewModel @Inject constructor(
         )
     }
 
-    private fun hardcodeBluetoothData() {
+
+    private fun hardcodeBloodPressureBluetoothData() {
         _vitalsUiState.value =
             mutableListOf(
                 Vital(
@@ -111,6 +112,16 @@ open class VitalsViewModel @Inject constructor(
             Vital(
                 ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
                 (50..150).random().toString()
+            )
+        )
+    }
+
+    fun saveHeight(height: String) {
+        _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT }
+        _vitalsUiState.value.add(
+            Vital(
+                ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT,
+                height
             )
         )
     }
