@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import edu.upc.R
 
 @Composable
-fun MeasureHeightScreen(onClickNext: (String) -> Unit) {
+fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,7 +47,7 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit) {
             ),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        var text by remember { mutableStateOf(TextFieldValue("")) }
+        var text by remember { mutableStateOf(TextFieldValue(startingHeight)) }
 
         HeightInstructions()
         HeightInput(text, onValueChange = { text = it })
@@ -135,5 +135,5 @@ fun NextButton(onClickNext: () -> Unit) {
 @Preview(showSystemUi = true)
 @Composable
 fun HeightDataPreview() {
-    MeasureHeightScreen {}
+    MeasureHeightScreen({}, "156")
 }
