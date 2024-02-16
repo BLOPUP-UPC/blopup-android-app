@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.takingvitals
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
@@ -8,9 +9,12 @@ import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleRepository
 import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
 import edu.upc.blopup.vitalsform.Vital
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.utilities.ApplicationConstants
+import io.mockk.MockKAnnotations
 import io.mockk.every
-import io.mockk.mockk
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -23,18 +27,26 @@ import org.junit.runner.RunWith
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
 class VitalsViewModelTest{
 
+    @InjectMockKs
     private lateinit var viewModel: VitalsViewModel
+    @MockK
     private lateinit var readBloodPressureRepository: ReadBloodPressureRepository
+    @MockK
     private lateinit var readScaleRepository: ReadScaleRepository
+    @MockK
+    private lateinit var visitRepository: VisitRepository
+
+    private val patientId = 1L
+
+    private var savedStateHandle: SavedStateHandle = SavedStateHandle().apply { set(
+        ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientId) }
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-        readBloodPressureRepository = mockk()
-        readScaleRepository = mockk()
-        viewModel = VitalsViewModel(readBloodPressureRepository, readScaleRepository)
+        MockKAnnotations.init(this)
     }
 
     @Test
