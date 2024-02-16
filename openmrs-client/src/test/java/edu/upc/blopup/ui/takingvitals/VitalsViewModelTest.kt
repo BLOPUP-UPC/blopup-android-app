@@ -10,10 +10,18 @@ import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.library.api.repository.VisitRepository
+import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Observation
+import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.library.models.VisitExample
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
+import edu.upc.sdk.utilities.execute
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -26,24 +34,34 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import rx.Observable
 import java.util.Optional
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
-class VitalsViewModelTest{
+class VitalsViewModelTest {
 
     @InjectMockKs
     private lateinit var viewModel: VitalsViewModel
+
     @MockK
     private lateinit var readBloodPressureRepository: ReadBloodPressureRepository
+
     @MockK
     private lateinit var readScaleRepository: ReadScaleRepository
-    @MockK
+
+    @MockK(relaxUnitFun = true)
     private lateinit var visitRepository: VisitRepository
+
+    @MockK
+    private lateinit var patientDAO: PatientDAO
 
     private val patientId = 1L
 
-    private var savedStateHandle: SavedStateHandle = SavedStateHandle().apply { set(
-        ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientId) }
+    private var savedStateHandle: SavedStateHandle = SavedStateHandle().apply {
+        set(
+            ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientId
+        )
+    }
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -80,16 +98,16 @@ class VitalsViewModelTest{
         viewModel.receiveBloodPressureData()
 
         val expectedResult = mutableListOf(
-            Vital(ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT, "120"),
-            Vital(ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT, "80"),
-            Vital(ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT, "70")
+            Vital(SYSTOLIC_FIELD_CONCEPT, "120"),
+            Vital(DIASTOLIC_FIELD_CONCEPT, "80"),
+            Vital(HEART_RATE_FIELD_CONCEPT, "70")
         )
 
         val result = viewModel.vitalsUiState.first()
 
         assertEquals(expectedResult, result)
 
-        verify {readBloodPressureRepository.disconnect() }
+        verify { readBloodPressureRepository.disconnect() }
     }
 
     @Test
@@ -102,7 +120,8 @@ class VitalsViewModelTest{
 
         every {
             readScaleRepository.start(
-                captureLambda())
+                captureLambda()
+            )
         } answers {
             val weightCallback = firstArg<(ScaleViewState) -> Unit>()
             weightCallback(weightMeasurement)
@@ -115,7 +134,7 @@ class VitalsViewModelTest{
         viewModel.receiveWeightData()
 
         val expectedResult = mutableListOf(
-            Vital(ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT, "70.0")
+            Vital(WEIGHT_FIELD_CONCEPT, "70.0")
         )
 
         val result = viewModel.vitalsUiState.first()
@@ -170,5 +189,55 @@ class VitalsViewModelTest{
         val result = viewModel.getLastHeightFromVisits()
 
         assertEquals("", result)
+    }
+
+    @Test
+    fun `should add vitals when visit already exists`() {
+        val testPatient = Patient().apply {
+            id = patientId
+            uuid = "patientUuid"
+        }
+        val visit = Visit().apply {
+            uuid = "visitUuid"
+            patient = testPatient
+        }
+        viewModel.saveHeight("170")
+
+        every { visitRepository.getActiveVisitByPatientId(testPatient.id!!) } returns visit
+
+        viewModel.createVisit()
+
+        verify {
+            visitRepository.addVitalsToActiveVisit(
+                testPatient.uuid!!,
+                viewModel.vitalsUiState.value
+            )
+        }
+    }
+
+    @Test
+    fun `should create new visit if no active visit for patient exists`() {
+        val testPatient = Patient().apply {
+            id = patientId
+            uuid = "patientUuid"
+        }
+        val visit = Visit().apply {
+            uuid = "visitUuid"
+            patient = testPatient
+        }
+        viewModel.saveHeight("170")
+
+        every { visitRepository.getActiveVisitByPatientId(testPatient.id!!) } returns null
+        every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
+        every { visitRepository.startVisit(testPatient) } returns Observable.just(visit)
+
+        viewModel.createVisit()
+
+        verify {
+            visitRepository.addVitalsToActiveVisit(
+                testPatient.uuid!!,
+                viewModel.vitalsUiState.value
+            )
+        }
     }
 }
