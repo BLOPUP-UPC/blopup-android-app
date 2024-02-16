@@ -2,6 +2,7 @@ package edu.upc.blopup.ui.takingvitals
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
@@ -12,17 +13,24 @@ import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.vitalsform.Vital
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
+import kotlin.jvm.optionals.getOrNull
 
 @HiltViewModel
 open class VitalsViewModel @Inject constructor(
     private val readBloodPressureRepository: ReadBloodPressureRepository,
-    private val readScaleRepository: ReadScaleRepository
+    private val readScaleRepository: ReadScaleRepository,
+    private val visitRepository: VisitRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val patientId: Long =
+        savedStateHandle[ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE]!!
 
     private val _vitalsUiState = MutableStateFlow((mutableListOf<Vital>()))
     val vitalsUiState: StateFlow<MutableList<Vital>> = _vitalsUiState.asStateFlow()
@@ -87,6 +95,18 @@ open class VitalsViewModel @Inject constructor(
         )
     }
 
+    fun saveHeight(height: String) {
+        _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT }
+        _vitalsUiState.value.add(
+            Vital(
+                ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT,
+                height
+            )
+        )
+    }
+
+    fun getLastHeightFromVisits() =
+        visitRepository.getLatestVisitWithHeight(patientId).getOrNull()?.getLatestHeight() ?: ""
 
     private fun hardcodeBloodPressureBluetoothData() {
         _vitalsUiState.value =
@@ -112,16 +132,6 @@ open class VitalsViewModel @Inject constructor(
             Vital(
                 ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
                 (50..150).random().toString()
-            )
-        )
-    }
-
-    fun saveHeight(height: String) {
-        _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT }
-        _vitalsUiState.value.add(
-            Vital(
-                ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT,
-                height
             )
         )
     }

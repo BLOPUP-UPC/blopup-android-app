@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.takingvitals.screens
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,7 +52,6 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit) {
         HeightInstructions()
         HeightInput(text, onValueChange = { text = it })
         Column {
-            SkipButton()
             NextButton { onClickNext(text.text) }
         }
     }
@@ -107,35 +105,6 @@ fun HeightInstructions() {
 
 
 @Composable
-fun SkipButton() {
-    Button(
-        shape = MaterialTheme.shapes.extraSmall,
-        onClick = { },
-        contentPadding = PaddingValues(15.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
-        ),
-        border = BorderStroke(2.dp, Color.Black),
-        modifier = Modifier.padding(bottom = 10.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(R.string.skip_for_now_button),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = TextUnit(16f, TextUnitType.Sp),
-                ),
-                color = Color.Black
-            )
-        }
-    }
-}
-
-@Composable
 fun NextButton(onClickNext: () -> Unit) {
     Button(
         shape = MaterialTheme.shapes.extraSmall,
@@ -163,7 +132,7 @@ fun NextButton(onClickNext: () -> Unit) {
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun HeightDataPreview() {
     MeasureHeightScreen {}
