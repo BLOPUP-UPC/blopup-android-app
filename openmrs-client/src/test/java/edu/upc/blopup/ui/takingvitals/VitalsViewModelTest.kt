@@ -10,6 +10,9 @@ import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.library.api.repository.VisitRepository
+import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.Observation
+import edu.upc.sdk.library.models.VisitExample
 import edu.upc.sdk.utilities.ApplicationConstants
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -23,6 +26,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.Optional
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
 class VitalsViewModelTest{
@@ -117,5 +121,54 @@ class VitalsViewModelTest{
         val result = viewModel.vitalsUiState.first()
 
         assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `should get latest height data when present`() = runTest {
+        val height = "170"
+        val visit = VisitExample.random().apply {
+            encounters = listOf(
+                Encounter().apply {
+                    observations = listOf(
+                        Observation().apply {
+                            display = "Height: $height"
+                            displayValue = "$height.0"
+                        }
+                    )
+                }
+            )
+        }
+
+        every {
+            visitRepository.getLatestVisitWithHeight(patientId)
+        } returns Optional.of(visit)
+
+        val result = viewModel.getLastHeightFromVisits()
+
+        assertEquals(height, result)
+    }
+
+    @Test
+    fun `should get empty height data when visit has no height`() = runTest {
+        val visit = VisitExample.random()
+
+        every {
+            visitRepository.getLatestVisitWithHeight(patientId)
+        } returns Optional.of(visit)
+
+        val result = viewModel.getLastHeightFromVisits()
+
+        assertEquals("", result)
+    }
+
+    @Test
+    fun `should get empty height data without visit`() = runTest {
+        every {
+            visitRepository.getLatestVisitWithHeight(patientId)
+        } returns Optional.empty()
+
+        val result = viewModel.getLastHeightFromVisits()
+
+        assertEquals("", result)
     }
 }

@@ -10,7 +10,7 @@ import java.util.UUID
 
 object VisitExample {
 
-    fun random(treatment: Treatment, startDate: Instant = Instant.now()): Visit {
+    fun random(treatment: Treatment = TreatmentExample.activeTreatment(), startDate: Instant = Instant.now()): Visit {
 
         val activeText = if (treatment.isActive) " 1.0" else " 0.0"
 
