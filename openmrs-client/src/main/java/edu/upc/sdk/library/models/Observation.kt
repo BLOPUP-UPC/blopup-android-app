@@ -85,7 +85,7 @@ class Observation : Resource(), Serializable {
     var displayValue: String? = null
         get() {
             if (field == null && display?.contains(":") == true) {
-                displayValue = display!!.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+                displayValue = display!!.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].trim()
             }
             return field
         }
