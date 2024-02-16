@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import edu.upc.R
 
 @Composable
-fun MeasureHeightScreen() {
+fun MeasureHeightScreen(onClickNext: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +52,7 @@ fun MeasureHeightScreen() {
         HeightInput()
         Column {
             SkipButton()
-            NextButton()
+            NextButton(onClickNext)
         }
     }
 }
@@ -135,10 +135,10 @@ fun SkipButton() {
 }
 
 @Composable
-fun NextButton() {
+fun NextButton(onClickNext: () -> Unit) {
     Button(
         shape = MaterialTheme.shapes.extraSmall,
-        onClick = { },
+        onClick = {onClickNext() },
         contentPadding = PaddingValues(15.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(
@@ -165,5 +165,5 @@ fun NextButton() {
 @Preview
 @Composable
 fun HeightDataPreview() {
-    MeasureHeightScreen()
+    MeasureHeightScreen {}
 }

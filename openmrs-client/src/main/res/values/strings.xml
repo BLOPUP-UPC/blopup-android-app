@@ -419,6 +419,7 @@
     <string name="blood_pressure_data" tools:ignore="MissingTranslation">Blood Pressure Data</string>
     <string name="weight_data" tools:ignore="MissingTranslation">Weight Data</string>
     <string name="height_data" tools:ignore="MissingTranslation">Height Data</string>
+    <string name="adherence_data" tools:ignore="MissingTranslation">Adherence Data</string>
     <string name="how_to_activate_bluetooth_one" tools:ignore="MissingTranslation">To activate the Bluetooth, hold \u0020</string>
     <string name="how_to_activate_bluetooth_two" translatable="false">START/STOP \u0020</string>
     <string name="how_to_activate_bluetooth_three" tools:ignore="MissingTranslation">for 5–6 seconds until the \u0020</string>

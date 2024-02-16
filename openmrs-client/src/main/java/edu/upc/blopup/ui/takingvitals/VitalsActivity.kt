@@ -31,6 +31,7 @@ import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureBloodPressureScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
+import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
 
 @AndroidEntryPoint
@@ -118,7 +119,12 @@ class VitalsActivity : ComponentActivity() {
                     composable(Routes.MeasureHeightScreen.id) {
                         topBarTitle = R.string.height_data
 
-                        MeasureHeightScreen()
+                        MeasureHeightScreen { navigationController.navigate(Routes.TreatmentAdherenceScreen.id) }
+                    }
+                    composable(Routes.MeasureHeightScreen.id) {
+                        topBarTitle = R.string.adherence_data
+
+                        TreatmentAdherenceScreen()
                     }
                 }
             }

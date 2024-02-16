@@ -277,6 +277,7 @@
     <string name="blood_pressure_data">Dades de la Pressió Arterial</string>
     <string name="weight_data">Dades del Pes</string>
     <string name="height_data">Dades de l\'alçada</string>
+    <string name="adherence_data">Dades d\'adherència</string>
     <string name="how_to_activate_bluetooth_one">Per activar el Bluetooth, premi \u0020</string>/>
     <string name="how_to_activate_bluetooth_three">per 5–6 segons fins que la  \u0020</string>/>
     <string name="how_to_activate_bluetooth_four">SENYAL DE BLUETOOTH \u0020</string>/>
