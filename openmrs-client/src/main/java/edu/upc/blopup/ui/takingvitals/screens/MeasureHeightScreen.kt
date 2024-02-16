@@ -52,7 +52,7 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) 
         HeightInstructions()
         HeightInput(text, onValueChange = { text = it })
         Column {
-            NextButton { onClickNext(text.text) }
+            NextButton({ onClickNext(text.text) }, text.text.isNotEmpty())
         }
     }
 }
@@ -65,16 +65,25 @@ fun HeightInput(text: TextFieldValue, onValueChange: (TextFieldValue) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         suffix = {
             Text(
-                text = "cm"
+                text = stringResource(id = R.string.height_unit)
             )
         },
+        isError = !isValidHeight(text.text),
+        supportingText = { if (!isValidHeight(text.text)) Text(text = stringResource(R.string.height_range)) },
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Black,
             unfocusedContainerColor = Color.Transparent,
             focusedContainerColor = Color.Transparent,
             focusedLabelColor = Color.Black,
+            errorContainerColor = Color.Transparent
             )
+
     )
+}
+
+fun isValidHeight(text: String): Boolean {
+    val number = text.toIntOrNull() ?: return false
+    return number in 50..280
 }
 
 @Composable
@@ -105,8 +114,9 @@ fun HeightInstructions() {
 
 
 @Composable
-fun NextButton(onClickNext: () -> Unit) {
+fun NextButton(onClickNext: () -> Unit, enabled: Boolean) {
     Button(
+        enabled = enabled,
         shape = MaterialTheme.shapes.extraSmall,
         onClick = {onClickNext() },
         contentPadding = PaddingValues(15.dp),
