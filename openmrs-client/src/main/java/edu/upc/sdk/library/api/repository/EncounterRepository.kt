@@ -26,9 +26,9 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
      */
     fun saveEncounter(encounterCreate: Encountercreate): Observable<Result<Boolean>> {
         return AppDatabaseHelper.createObservableIO(Callable {
-            val patient = PatientDAO().findPatientByID(encounterCreate.patientId.toString())
+            val patient = PatientDAO().findPatientByUUID(encounterCreate.patient)
             val activeVisit =
-                VisitDAO().getActiveVisitByPatientId(encounterCreate.patientId).execute()
+                VisitDAO().getActiveVisitByPatientId(patient.id).execute()
             if (patient == null || activeVisit == null || encounterCreate.synced) {
                 return@Callable Result.Error(Exception("Error saving encounter. No patient or active visit or already synced"))
             }
@@ -44,7 +44,7 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
                     restApi.createEncounter(encounterCreate).execute().run {
                         if (isSuccessful) {
                             val encounter: Encounter = body()!!
-                            encounter.encounterType = EncounterType(encounterCreate.formname)
+                            encounter.encounterType = EncounterType(encounterCreate.encounterType)
                             for (i in encounterCreate.observations.indices) {
                                 encounter.observations[i].displayValue =
                                     encounter.observations[i].display!!.split(":".toRegex())
@@ -54,7 +54,7 @@ class EncounterRepository @Inject constructor() : BaseRepository(null) {
                             // Update the visit linked to this encounter
                             activeVisit.encounters += encounter
                             VisitDAO()
-                                .saveOrUpdate(activeVisit, encounterCreate.patientId!!).execute()
+                                .saveOrUpdate(activeVisit, patient.id!!).execute()
 
                             updateEncounterCreate(encounterCreate.apply { synced = true }).execute()
 

@@ -14,7 +14,9 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.library.api.repository.VisitRepository
+import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.execute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +28,7 @@ open class VitalsViewModel @Inject constructor(
     private val readBloodPressureRepository: ReadBloodPressureRepository,
     private val readScaleRepository: ReadScaleRepository,
     private val visitRepository: VisitRepository,
+    private val patientDAO: PatientDAO,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -107,6 +110,16 @@ open class VitalsViewModel @Inject constructor(
 
     fun getLastHeightFromVisits() =
         visitRepository.getLatestVisitWithHeight(patientId).getOrNull()?.getLatestHeight() ?: ""
+
+    fun createVisit() {
+        var visit = visitRepository.getActiveVisitByPatientId(patientId)
+        if (visit == null) {
+            patientDAO.findPatientByID(patientId.toString()).let { patient ->
+                visit = visitRepository.startVisit(patient).execute()
+            }
+        }
+        visitRepository.addVitalsToActiveVisit(visit.patient.uuid, _vitalsUiState.value)
+    }
 
     private fun hardcodeBloodPressureBluetoothData() {
         _vitalsUiState.value =

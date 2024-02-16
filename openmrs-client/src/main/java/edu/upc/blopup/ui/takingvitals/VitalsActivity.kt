@@ -119,13 +119,17 @@ class VitalsActivity : ComponentActivity() {
                     composable(Routes.MeasureHeightScreen.id) {
                         topBarTitle = R.string.height_data
 
-                        MeasureHeightScreen({ viewModel.saveHeight(it)
-                            navigationController.navigate(Routes.TreatmentAdherenceScreen.id) }, viewModel.getLastHeightFromVisits())
+                        MeasureHeightScreen({
+                            viewModel.saveHeight(it)
+                            navigationController.navigate(Routes.TreatmentAdherenceScreen.id)
+                        }, viewModel.getLastHeightFromVisits())
                     }
                     composable(Routes.TreatmentAdherenceScreen.id) {
                         topBarTitle = R.string.adherence_data
 
-                        TreatmentAdherenceScreen()
+                        TreatmentAdherenceScreen({
+                            viewModel.createVisit(); setResult(RESULT_OK); finish() },
+                            emptyList())
                     }
                 }
             }

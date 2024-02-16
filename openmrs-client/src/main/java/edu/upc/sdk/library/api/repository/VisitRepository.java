@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import org.joda.time.Instant;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import edu.upc.blopup.vitalsform.Vital;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
@@ -35,6 +37,9 @@ import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.models.Encounter;
+import edu.upc.sdk.library.models.EncounterType;
+import edu.upc.sdk.library.models.Encountercreate;
+import edu.upc.sdk.library.models.Obscreate;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
@@ -44,6 +49,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 
 
 /**
@@ -55,6 +61,9 @@ public class VisitRepository extends BaseRepository {
     private final LocationDAO locationDAO;
     private final VisitDAO visitDAO;
     private final EncounterDAO encounterDAO;
+
+    @Inject
+     EncounterRepository encounterRepository;
 
     /**
      * Instantiates a new Visit repository.
@@ -74,12 +83,14 @@ public class VisitRepository extends BaseRepository {
      * @param visitDAO
      * @param locationDAO
      * @param encounterDAO
+     * @param encounterRepository
      */
-    public VisitRepository(OpenMRSLogger logger, RestApi restApi, VisitDAO visitDAO, LocationDAO locationDAO, EncounterDAO encounterDAO) {
+    public VisitRepository(OpenMRSLogger logger, RestApi restApi, VisitDAO visitDAO, LocationDAO locationDAO, EncounterDAO encounterDAO, EncounterRepository encounterRepository) {
         super(restApi, logger);
         this.visitDAO = visitDAO;
         this.encounterDAO = encounterDAO;
         this.locationDAO = locationDAO;
+        this.encounterRepository = encounterRepository;
     }
 
     /**
@@ -232,5 +243,32 @@ public class VisitRepository extends BaseRepository {
             e.printStackTrace();
             throw new IOException("Error fetching visit by uuid: " + visitUuid + " " + e.getMessage());
         }
+    }
+
+    public void addVitalsToActiveVisit(String patientUuid, List<Vital> vitals) {
+        Encountercreate encounterCreate = new Encountercreate();
+
+        encounterCreate.setPatient(patientUuid);
+        encounterCreate.setObservations(createObservationsFromVitals(vitals, patientUuid));
+        encounterCreate.setEncounterType(EncounterType.VITALS);
+
+        encounterRepository.saveEncounter(encounterCreate)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    private List<Obscreate> createObservationsFromVitals(List<Vital> vitals, String patientUuid) {
+        List<Obscreate> observations = new ArrayList<>();
+        for (Vital vital : vitals) {
+            if (vital.validate()) {
+                Obscreate observation = new Obscreate();
+                observation.setConcept(vital.getConcept());
+                observation.setValue(vital.getValue());
+                observation.setObsDatetime(Instant.now().toString());
+                observation.setPerson(patientUuid);
+                observations.add(observation);
+            }
+        }
+        return observations;
     }
 }
