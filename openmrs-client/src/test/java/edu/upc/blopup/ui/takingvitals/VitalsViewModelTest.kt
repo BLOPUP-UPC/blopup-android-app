@@ -2,6 +2,7 @@ package edu.upc.blopup.ui.takingvitals
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
@@ -14,6 +15,7 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.library.models.VisitExample
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -202,9 +204,11 @@ class VitalsViewModelTest {
         }
         viewModel.saveHeight("170")
 
-        every { visitRepository.getActiveVisitByPatientId(testPatient.id!!) } returns null
         every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
         every { visitRepository.startVisit(testPatient) } returns Observable.just(visit)
+        every {
+                visitRepository.createVisitWithVitals(testPatient, viewModel.vitalsUiState.value)
+              } returns Observable.just(Result.Success(true))
 
         viewModel.createVisit()
 
