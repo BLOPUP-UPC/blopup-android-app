@@ -13,9 +13,12 @@ import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.vitalsform.Vital
+import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
+import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,6 +33,7 @@ open class VitalsViewModel @Inject constructor(
     private val readScaleRepository: ReadScaleRepository,
     private val visitRepository: VisitRepository,
     private val patientDAO: PatientDAO,
+    private val treatmentRepository: TreatmentRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -50,6 +54,17 @@ open class VitalsViewModel @Inject constructor(
     private val _scaleViewState = MutableLiveData<ScaleViewState>()
     val scaleViewState: LiveData<ScaleViewState>
         get() = _scaleViewState
+
+
+    suspend fun fetchActiveTreatment() : List<Treatment> {
+        val patient: Patient = patientDAO.findPatientByID(patientId.toString())
+        val result = treatmentRepository.fetchAllActiveTreatments(patient)
+
+        return if(result.isSuccess) {
+            result.getOrNull()!!
+        } else
+            emptyList()
+    }
 
     fun receiveWeightData() {
         hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeWeightData() })
@@ -113,8 +128,8 @@ open class VitalsViewModel @Inject constructor(
         visitRepository.getLatestVisitWithHeight(patientId).getOrNull()?.getLatestHeight() ?: ""
 
     fun createVisit() : Observable<Result<Boolean>> {
-        val patient = patientDAO.findPatientByID(patientId.toString())
-       return visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
+        val patient: Patient = patientDAO.findPatientByID(patientId.toString())
+        return visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
     }
 
     private fun hardcodeBloodPressureBluetoothData() {

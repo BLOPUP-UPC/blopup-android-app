@@ -2,7 +2,6 @@ package edu.upc.blopup.ui.takingvitals
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
@@ -10,12 +9,14 @@ import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleRepository
 import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
 import edu.upc.blopup.vitalsform.Vital
+import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.library.models.VisitExample
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -24,11 +25,13 @@ import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEART_RATE_F
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
@@ -50,6 +53,9 @@ class VitalsViewModelTest {
     @MockK
     private lateinit var readScaleRepository: ReadScaleRepository
 
+    @MockK
+    private lateinit var treatmentRepository: TreatmentRepository
+
     @MockK(relaxUnitFun = true)
     private lateinit var visitRepository: VisitRepository
 
@@ -64,12 +70,20 @@ class VitalsViewModelTest {
         )
     }
 
+    private lateinit var testPatient: Patient
+
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+
+
+        testPatient = Patient().apply {
+            id = patientId
+            uuid = "patientUuid"
+        }
     }
 
     @Test
@@ -194,10 +208,6 @@ class VitalsViewModelTest {
 
     @Test
     fun `should create new visit and add vitals information`() {
-        val testPatient = Patient().apply {
-            id = patientId
-            uuid = "patientUuid"
-        }
         val visit = Visit().apply {
             uuid = "visitUuid"
             patient = testPatient
@@ -219,4 +229,23 @@ class VitalsViewModelTest {
             )
         }
     }
+
+    @Test
+    fun `should get active treatments from repository`() {
+        val treatment = TreatmentExample.activeTreatment().apply { treatmentUuid = "treatmentUuid" }
+        val treatmentList = listOf(treatment)
+
+        every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
+
+        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.success(treatmentList)
+
+
+        runBlocking {
+            val result = viewModel.fetchActiveTreatment()
+
+
+            assertEquals(treatmentList, result)
+        }
+    }
+
 }

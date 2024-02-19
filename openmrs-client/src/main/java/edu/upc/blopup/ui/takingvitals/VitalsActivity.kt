@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -33,6 +34,7 @@ import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
+import kotlinx.coroutines.launch
 import rx.android.schedulers.AndroidSchedulers
 
 @AndroidEntryPoint
@@ -57,80 +59,84 @@ class VitalsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         askPermissions()
 
-        setContent {
-            var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
+        lifecycleScope.launch {
+            val treatments = viewModel.fetchActiveTreatment()
+            setContent {
+                var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
 
-            Scaffold(
-                topBar = { AppToolBarWithMenu(stringResource(topBarTitle)) },
-            ) { innerPadding ->
+                Scaffold(
+                    topBar = { AppToolBarWithMenu(stringResource(topBarTitle)) },
+                ) { innerPadding ->
 
-                val navigationController = rememberNavController()
-                val uiState by viewModel.vitalsUiState.collectAsState()
+                    val navigationController = rememberNavController()
+                    val uiState by viewModel.vitalsUiState.collectAsState()
 
-                NavHost(
-                    navController = navigationController,
-                    startDestination = Routes.MeasureBloodPressureScreen.id,
-                    modifier = Modifier.padding(innerPadding)
-                ) {
-                    composable(Routes.MeasureBloodPressureScreen.id) {
-                        topBarTitle = R.string.blood_pressure_data
+                    NavHost(
+                        navController = navigationController,
+                        startDestination = Routes.MeasureBloodPressureScreen.id,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable(Routes.MeasureBloodPressureScreen.id) {
+                            topBarTitle = R.string.blood_pressure_data
 
-                        MeasureBloodPressureScreen(
-                            { navigationController.navigate(Routes.HowToActivateBluetoothScreen.id) },
-                            {
+                            MeasureBloodPressureScreen(
+                                { navigationController.navigate(Routes.HowToActivateBluetoothScreen.id) },
+                                {
+                                    viewModel.receiveBloodPressureData()
+                                    navigationController.navigate(Routes.BloodPressureDataScreen.id)
+                                }
+                            )
+                        }
+                        composable(Routes.HowToActivateBluetoothScreen.id) {
+                            topBarTitle = R.string.blood_pressure_data
+
+                            HowToActivateBPDeviceScreen {
                                 viewModel.receiveBloodPressureData()
                                 navigationController.navigate(Routes.BloodPressureDataScreen.id)
                             }
-                        )
-                    }
-                    composable(Routes.HowToActivateBluetoothScreen.id) {
-                        topBarTitle = R.string.blood_pressure_data
-
-                        HowToActivateBPDeviceScreen {
-                            viewModel.receiveBloodPressureData()
-                            navigationController.navigate(Routes.BloodPressureDataScreen.id)
                         }
-                    }
-                    composable(Routes.BloodPressureDataScreen.id) {
-                        topBarTitle = R.string.blood_pressure_data
+                        composable(Routes.BloodPressureDataScreen.id) {
+                            topBarTitle = R.string.blood_pressure_data
 
-                        BloodPressureDataScreen(
-                            { navigationController.navigate(Routes.MeasureWeightScreen.id) },
-                            navigationController::popBackStack,
-                            uiState
-                        )
-                    }
-                    composable(Routes.MeasureWeightScreen.id) {
-                        topBarTitle = R.string.weight_data
-
-                        MeasureWeightScreen {
-                            viewModel.receiveWeightData()
-                            navigationController.navigate(Routes.WeightDataScreen.id)
+                            BloodPressureDataScreen(
+                                { navigationController.navigate(Routes.MeasureWeightScreen.id) },
+                                navigationController::popBackStack,
+                                uiState
+                            )
                         }
-                    }
-                    composable(Routes.WeightDataScreen.id) {
-                        topBarTitle = R.string.weight_data
+                        composable(Routes.MeasureWeightScreen.id) {
+                            topBarTitle = R.string.weight_data
 
-                        WeightDataScreen(
-                            { navigationController.navigate(Routes.MeasureHeightScreen.id) },
-                            navigationController::popBackStack,
-                            uiState
-                        )
-                    }
-                    composable(Routes.MeasureHeightScreen.id) {
-                        topBarTitle = R.string.height_data
+                            MeasureWeightScreen {
+                                viewModel.receiveWeightData()
+                                navigationController.navigate(Routes.WeightDataScreen.id)
+                            }
+                        }
+                        composable(Routes.WeightDataScreen.id) {
+                            topBarTitle = R.string.weight_data
 
-                        MeasureHeightScreen({
-                            viewModel.saveHeight(it)
-                            navigationController.navigate(Routes.TreatmentAdherenceScreen.id)
-                        }, viewModel.getLastHeightFromVisits())
-                    }
-                    composable(Routes.TreatmentAdherenceScreen.id) {
-                        topBarTitle = R.string.adherence_data
+                            WeightDataScreen(
+                                { navigationController.navigate(Routes.MeasureHeightScreen.id) },
+                                navigationController::popBackStack,
+                                uiState
+                            )
+                        }
+                        composable(Routes.MeasureHeightScreen.id) {
+                            topBarTitle = R.string.height_data
 
-                        TreatmentAdherenceScreen(
-                            { createVisitAndFinishActivity() }, emptyList()
-                        )
+                            MeasureHeightScreen({
+                                viewModel.saveHeight(it)
+                                navigationController.navigate(Routes.TreatmentAdherenceScreen.id)
+                            }, viewModel.getLastHeightFromVisits())
+                        }
+                        composable(Routes.TreatmentAdherenceScreen.id) {
+                            topBarTitle = R.string.adherence_data
+
+                            TreatmentAdherenceScreen(
+                                { createVisitAndFinishActivity() },
+                                treatments
+                            )
+                        }
                     }
                 }
             }
