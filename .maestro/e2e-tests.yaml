@@ -1,4 +1,6 @@
 appId: edu.upc
+tags:
+  - dev
 ---
 - launchApp
 - runFlow:
