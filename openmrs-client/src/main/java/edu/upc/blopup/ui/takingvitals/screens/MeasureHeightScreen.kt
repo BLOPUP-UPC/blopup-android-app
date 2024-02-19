@@ -47,12 +47,12 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) 
             ),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        var text by remember { mutableStateOf(TextFieldValue(startingHeight)) }
+        var text by remember { mutableStateOf(TextFieldValue(startingHeight.trim())) }
 
         HeightInstructions()
         HeightInput(text, onValueChange = { text = it })
         Column {
-            NextButton({ onClickNext(text.text) }, text.text.isNotEmpty())
+            NextButton({ onClickNext(text.text) }, isValidHeight(text.text))
         }
     }
 }
