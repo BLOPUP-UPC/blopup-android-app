@@ -21,7 +21,6 @@ import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.DIASTOLIC_FI
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
-import edu.upc.sdk.utilities.execute
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -192,31 +191,7 @@ class VitalsViewModelTest {
     }
 
     @Test
-    fun `should add vitals when visit already exists`() {
-        val testPatient = Patient().apply {
-            id = patientId
-            uuid = "patientUuid"
-        }
-        val visit = Visit().apply {
-            uuid = "visitUuid"
-            patient = testPatient
-        }
-        viewModel.saveHeight("170")
-
-        every { visitRepository.getActiveVisitByPatientId(testPatient.id!!) } returns visit
-
-        viewModel.createVisit()
-
-        verify {
-            visitRepository.addVitalsToActiveVisit(
-                testPatient.uuid!!,
-                viewModel.vitalsUiState.value
-            )
-        }
-    }
-
-    @Test
-    fun `should create new visit if no active visit for patient exists`() {
+    fun `should create new visit and add vitals information`() {
         val testPatient = Patient().apply {
             id = patientId
             uuid = "patientUuid"
@@ -234,8 +209,8 @@ class VitalsViewModelTest {
         viewModel.createVisit()
 
         verify {
-            visitRepository.addVitalsToActiveVisit(
-                testPatient.uuid!!,
+            visitRepository.createVisitWithVitals(
+                testPatient,
                 viewModel.vitalsUiState.value
             )
         }

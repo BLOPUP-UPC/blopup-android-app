@@ -112,13 +112,8 @@ open class VitalsViewModel @Inject constructor(
         visitRepository.getLatestVisitWithHeight(patientId).getOrNull()?.getLatestHeight() ?: ""
 
     fun createVisit() {
-        var visit = visitRepository.getActiveVisitByPatientId(patientId)
-        if (visit == null) {
-            patientDAO.findPatientByID(patientId.toString()).let { patient ->
-                visit = visitRepository.startVisit(patient).execute()
-            }
-        }
-        visitRepository.addVitalsToActiveVisit(visit.patient.uuid, _vitalsUiState.value)
+        val patient = patientDAO.findPatientByID(patientId.toString())
+        visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
     }
 
     private fun hardcodeBloodPressureBluetoothData() {

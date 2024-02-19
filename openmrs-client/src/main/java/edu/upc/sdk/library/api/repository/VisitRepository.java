@@ -63,7 +63,7 @@ public class VisitRepository extends BaseRepository {
     private final EncounterDAO encounterDAO;
 
     @Inject
-     EncounterRepository encounterRepository;
+    EncounterRepository encounterRepository;
 
     /**
      * Instantiates a new Visit repository.
@@ -190,9 +190,10 @@ public class VisitRepository extends BaseRepository {
 
             if (response.isSuccessful()) {
                 Visit newVisit = response.body(); // The VisitType in response contains null display string. Needs a fix (AC-1030)
+                assert newVisit != null;
                 newVisit.visitType = visitType; // Temporary workaround
 
-                visitDAO.saveOrUpdate(newVisit, patient.getId()).toBlocking().subscribe(newVisit::setId);
+                visitDAO.saveOrUpdate(newVisit, patient.getId()).toBlocking().forEach(newVisit::setId);
 
                 return newVisit;
             } else {
@@ -245,19 +246,8 @@ public class VisitRepository extends BaseRepository {
         }
     }
 
-    public void addVitalsToActiveVisit(String patientUuid, List<Vital> vitals) {
+    public void createVisitWithVitals(Patient patient, List<Vital> vitals) {
         Encountercreate encounterCreate = new Encountercreate();
-
-        encounterCreate.setPatient(patientUuid);
-        encounterCreate.setObservations(createObservationsFromVitals(vitals, patientUuid));
-        encounterCreate.setEncounterType(EncounterType.VITALS);
-
-        encounterRepository.saveEncounter(encounterCreate)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-    }
-
-    private List<Obscreate> createObservationsFromVitals(List<Vital> vitals, String patientUuid) {
         List<Obscreate> observations = new ArrayList<>();
         for (Vital vital : vitals) {
             if (vital.validate()) {
@@ -265,10 +255,18 @@ public class VisitRepository extends BaseRepository {
                 observation.setConcept(vital.getConcept());
                 observation.setValue(vital.getValue());
                 observation.setObsDatetime(Instant.now().toString());
-                observation.setPerson(patientUuid);
+                observation.setPerson(patient.getUuid());
                 observations.add(observation);
             }
         }
-        return observations;
+        encounterCreate.setObservations(observations);
+        encounterCreate.setEncounterType(EncounterType.VITALS);
+        encounterCreate.setPatient(patient.getUuid());
+
+        startVisit(patient).toBlocking().first();
+
+        encounterRepository.saveEncounter(encounterCreate)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }
