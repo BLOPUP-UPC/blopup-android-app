@@ -176,6 +176,8 @@
     <string name="blood_pressure_instructions_title">Triant un braçalet de la mida adequada.</string>
     <string name="weight_instructions_title">Com mesurar el pes</string>
     <string name="height_instructions_title">Com mesurar l\'alçada</string>
+    <string name="treatment_adherence_title">Adherència al tractament</string>
+    <string name="treatment_adherence_text">El pacient està seguint amb els tractaments següents?</string>
     <string name="weight_instructions">1. Assegureu-vos que el bluetooth del mòbil i de la bàscula estiguin activats. \n\n2. Pugeu el pacient a la bàscula.\n\n3. Premeu el botó avall per rebre el resultat.</string>
     <string name="height_instructions">1. Assegureu-vos que el dispositiu de mesura estigui encès mantenint premut el botó lateral. \n\n2. Col·loqueu el dispositiu al cap del pacient de manera que el raig làser arribi fins al terra.\n\n3. Feu clic al botó lateral per obtenir una lectura i introduïu-la a continuació.</string>
     <string name="blood_pressure_instructions">Mesura la circumferència del braç superior amb una cinta mètrica de sastre, a mig camí entre l\'espatlla i el colze. Tria un braçalet d\'una mida que inclogui la mesura.</string>

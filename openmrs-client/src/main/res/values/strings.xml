@@ -287,11 +287,13 @@
     <string name="blood_pressure_instructions_title" tools:ignore="MissingTranslation">To measure blood pressure</string>
     <string name="weight_instructions_title" tools:ignore="MissingTranslation">To measure weight</string>
     <string name="height_instructions_title" tools:ignore="MissingTranslation">To measure height</string>
+    <string name="treatment_adherence_title" tools:ignore="MissingTranslation">Treatment adherence</string>
     <string name="blood_pressure_instructions" tools:ignore="MissingTranslation">Measure the circumference of your upper arm with a cloth measuring tape midway between the elbow and shoulder. Choose a cuff size that includes this measurement</string>
     <string name="blood_pressure_instructions_title_two" tools:ignore="MissingTranslation">Position for taking your blood pressure at home</string>
     <string name="blood_pressure_instructions_two" tools:ignore="MissingTranslation">1. The patient should be relaxed, sitting with both feet on the ground, back straight. \n\n 2. Put on the cuff. Make sure the arm is resting on something comfortable at the level of the heart or the chest.\n\n 3. Remind the patient to stand still and not speak during the measurements.</string>
     <string name="weight_instructions" tools:ignore="MissingTranslation">1. Make sure mobile and scale bluetooth are on. \n\n2. Get the patient on the scale.\n\n3. Press the button below to receive the result.</string>
     <string name="height_instructions" tools:ignore="MissingTranslation">1. Make sure the measurement device is turned on by holding the side button. \n\n2. Set the device on the patient\'s head so the laser beam reaches all the way to the floor.\n\n3. Click the side button to get a reading and input it below.</string>
+    <string name="treatment_adherence_text" tools:ignore="MissingTranslation">Is the patient following these treatments?</string>
     <string name="swipe_left_to_start" tools:ignore="MissingTranslation">Swipe left to start</string>
     <string name="patient_with_no_values_to_show" tools:ignore="MissingTranslation">The patient has no values yet</string>
     <string name="blood_pressure_evolution" tools:ignore="MissingTranslation">Blood Pressure Evolution</string>
@@ -414,6 +416,7 @@
     <string name="bp_image_description" tools:ignore="MissingTranslation">Illustration of a black man wearing a beige polo shirt, blue trousers and brown shoes. He is sitting on a chair and has a blue cuff around his arm.</string>
     <string name="weight_image_description" tools:ignore="MissingTranslation">Illustration of a purple scale.</string>
     <string name="height_image_description" tools:ignore="MissingTranslation">Illustration of a yellow ruler.</string>
+    <string name="adherence_description" tools:ignore="MissingTranslation">Illustration with lots of medical products</string>
     <string name="bp_device_image_description" tools:ignore="MissingTranslation">Illustration of the blood pressure device.</string>
     <string name="how_to_activate_the_device_label" tools:ignore="MissingTranslation">How to activate the device</string>
     <string name="blood_pressure_data" tools:ignore="MissingTranslation">Blood Pressure Data</string>
