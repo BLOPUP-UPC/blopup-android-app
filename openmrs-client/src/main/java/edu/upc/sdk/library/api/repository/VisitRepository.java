@@ -41,6 +41,7 @@ import edu.upc.sdk.library.models.EncounterType;
 import edu.upc.sdk.library.models.Encountercreate;
 import edu.upc.sdk.library.models.Obscreate;
 import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.library.models.Result;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.library.models.VisitType;
@@ -49,7 +50,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 
 
 /**
@@ -246,7 +246,7 @@ public class VisitRepository extends BaseRepository {
         }
     }
 
-    public void createVisitWithVitals(Patient patient, List<Vital> vitals) {
+    public Observable<Result<Boolean>> createVisitWithVitals(Patient patient, List<Vital> vitals) {
         Encountercreate encounterCreate = new Encountercreate();
         List<Obscreate> observations = new ArrayList<>();
         for (Vital vital : vitals) {
@@ -265,8 +265,6 @@ public class VisitRepository extends BaseRepository {
 
         startVisit(patient).toBlocking().first();
 
-        encounterRepository.saveEncounter(encounterCreate)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+       return encounterRepository.saveEncounter(encounterCreate);
     }
 }

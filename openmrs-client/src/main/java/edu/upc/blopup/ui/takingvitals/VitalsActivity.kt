@@ -33,6 +33,7 @@ import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
+import rx.android.schedulers.AndroidSchedulers
 
 @AndroidEntryPoint
 class VitalsActivity : ComponentActivity() {
@@ -127,9 +128,9 @@ class VitalsActivity : ComponentActivity() {
                     composable(Routes.TreatmentAdherenceScreen.id) {
                         topBarTitle = R.string.adherence_data
 
-                        TreatmentAdherenceScreen({
-                            viewModel.createVisit(); setResult(RESULT_OK); finish() },
-                            emptyList())
+                        TreatmentAdherenceScreen(
+                            { createVisitAndFinishActivity() }, emptyList()
+                        )
                     }
                 }
             }
@@ -158,5 +159,14 @@ class VitalsActivity : ComponentActivity() {
         ) {
             ActivityCompat.requestPermissions(this, bluetoothPermission, 1)
         }
+    }
+
+    private fun createVisitAndFinishActivity() {
+        viewModel.createVisit()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                setResult(RESULT_OK)
+                finish()
+            }
     }
 }
