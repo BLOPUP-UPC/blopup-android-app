@@ -3,14 +3,9 @@ package edu.upc.blopup.ui.takingvitals.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -23,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -52,7 +46,7 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) 
         HeightInstructions()
         HeightInput(text, onValueChange = { text = it })
         Column {
-            NextButton({ onClickNext(text.text) }, isValidHeight(text.text))
+            OrangeButton(R.string.next, { onClickNext(text.text) }, isValidHeight(text.text))
         }
     }
 }
@@ -111,36 +105,6 @@ fun HeightInstructions() {
             fontSize = TextUnit(16f, TextUnitType.Sp),
         )
     }}
-
-
-@Composable
-fun NextButton(onClickNext: () -> Unit, enabled: Boolean) {
-    Button(
-        enabled = enabled,
-        shape = MaterialTheme.shapes.extraSmall,
-        onClick = {onClickNext() },
-        contentPadding = PaddingValues(15.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(
-                R.color.allergy_orange
-            )
-        )
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Next",
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = TextUnit(16f, TextUnitType.Sp),
-                )
-            )
-        }
-    }
-}
 
 @Preview(showSystemUi = true)
 @Composable

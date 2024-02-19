@@ -53,3 +53,32 @@ fun ReceiveDataButton(onClickReceiveData: () -> Unit, title: Int) {
         }
     }
 }
+
+@Composable
+fun OrangeButton(title: Int, onClickNext: () -> Unit, enabled: Boolean) {
+    Button(
+        enabled = enabled,
+        shape = MaterialTheme.shapes.extraSmall,
+        onClick = {onClickNext() },
+        contentPadding = PaddingValues(15.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorResource(
+                R.color.allergy_orange
+            )
+        )
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(id = title),
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = TextUnit(16f, TextUnitType.Sp),
+                )
+            )
+        }
+    }
+}

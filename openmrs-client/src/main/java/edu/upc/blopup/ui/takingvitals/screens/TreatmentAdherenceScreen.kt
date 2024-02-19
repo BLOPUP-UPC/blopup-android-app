@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.takingvitals.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
@@ -26,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -37,15 +41,15 @@ import edu.upc.sdk.library.models.Treatment
 fun TreatmentAdherenceScreen(saveVisitAndFinishActivity: () -> Unit, treatments: List<Treatment>) {
     if (treatments.isNotEmpty()) {
         // render treatment adherence screen
-        TreatmentAdherence(treatments)
+        TreatmentAdherence(treatments, saveVisitAndFinishActivity)
         // save visit (with treatment adherence) and finish activity when user clicks on "Next"
     } else {
-       remember { saveVisitAndFinishActivity() }
+        remember { saveVisitAndFinishActivity() }
     }
 }
 
 @Composable
-fun TreatmentAdherence(treatments: List<Treatment>) {
+fun TreatmentAdherence(treatments: List<Treatment>, saveVisitAndFinishActivity: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,30 +57,35 @@ fun TreatmentAdherence(treatments: List<Treatment>) {
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 16.dp
-            )
-    ) {
-        Image(
-            painter = painterResource(R.drawable.treatment_adherence_img),
-            contentDescription = stringResource(R.string.adherence_description),
-            modifier = Modifier
-                .padding(30.dp)
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
-        )
-        Text(
-            text = stringResource(R.string.treatment_adherence_title),
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = TextUnit(20f, TextUnitType.Sp)
             ),
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Text(
-            text = stringResource(R.string.treatment_adherence_text),
-            fontSize = TextUnit(16f, TextUnitType.Sp),
-        )
-        TreatmentCheckBox(treatments)
+        verticalArrangement = Arrangement.SpaceBetween
+
+    ) {
+        Column {
+            Image(
+                painter = painterResource(R.drawable.treatment_adherence_img),
+                contentDescription = stringResource(R.string.adherence_description),
+                modifier = Modifier
+                    .padding(30.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth(),
+                contentScale = ContentScale.FillWidth
+            )
+            Text(
+                text = stringResource(R.string.treatment_adherence_title),
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = TextUnit(20f, TextUnitType.Sp)
+                ),
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            Text(
+                text = stringResource(R.string.treatment_adherence_text),
+                fontSize = TextUnit(16f, TextUnitType.Sp),
+            )
+            TreatmentCheckBox(treatments)
+        }
+        OrangeButton(R.string.finalise_treatment, { saveVisitAndFinishActivity() }, true)
     }
 }
 
@@ -84,35 +93,42 @@ fun TreatmentAdherence(treatments: List<Treatment>) {
 fun TreatmentCheckBox(treatments: List<Treatment>) {
     val treatmentOptions = getTreatmentOptions(treatments)
 
-
-    treatmentOptions.forEach { checkTreatment ->
-        Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(
-                checked = checkTreatment.selected,
-                onCheckedChange = { checkTreatment.onCheckedChange (!checkTreatment.selected) },
-                colors = CheckboxDefaults.colors(checkedColor = Color.Gray)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(text = checkTreatment.title, fontSize = TextUnit(16f, TextUnitType.Sp), modifier = Modifier.padding(bottom = 4.dp))
-                Row {
-                    checkTreatment.medicationType.forEachIndexed { index, medication ->
-                        Text(
-                            text = medication.getLabel(LocalContext.current),
-                            fontSize = TextUnit(12f, TextUnitType.Sp)
-                        )
-                        if (index < checkTreatment.medicationType.size - 1) {
-                            Text(" • ", fontSize = TextUnit(12f, TextUnitType.Sp))
+    Column(Modifier.verticalScroll(rememberScrollState())
+    ) {
+        treatmentOptions.forEach { checkTreatment ->
+            Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = checkTreatment.selected,
+                    onCheckedChange = { checkTreatment.onCheckedChange(!checkTreatment.selected) },
+                    colors = CheckboxDefaults.colors(checkedColor = Color.Gray)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Column {
+                    Text(
+                        text = checkTreatment.title,
+                        fontSize = TextUnit(16f, TextUnitType.Sp),
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    Row {
+                        checkTreatment.medicationType.forEachIndexed { index, medication ->
+                            Text(
+                                text = medication.getLabel(LocalContext.current),
+                                fontSize = TextUnit(12f, TextUnitType.Sp)
+                            )
+                            if (index < checkTreatment.medicationType.size - 1) {
+                                Text(" • ", fontSize = TextUnit(12f, TextUnitType.Sp))
+                            }
                         }
                     }
                 }
             }
         }
     }
+
 }
 
 @Composable
-fun getTreatmentOptions(treatments: List<Treatment>) : List<CheckTreatment> {
+fun getTreatmentOptions(treatments: List<Treatment>): List<CheckTreatment> {
     return treatments.map { treatment ->
         var status by rememberSaveable { mutableStateOf(false) }
         CheckTreatment(
@@ -122,4 +138,10 @@ fun getTreatmentOptions(treatments: List<Treatment>) : List<CheckTreatment> {
             onCheckedChange = { status = it }
         )
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun TreatmentAdherencePreview() {
+    TreatmentAdherence(emptyList()) {}
 }
