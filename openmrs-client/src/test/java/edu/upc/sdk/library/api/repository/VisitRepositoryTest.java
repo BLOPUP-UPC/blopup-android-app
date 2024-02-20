@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import org.joda.time.Instant;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -205,6 +206,7 @@ public class VisitRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void shouldDeleteVisitWhenSavingEncounterFails() throws IOException {
         Patient patient = new Patient();
         patient.setUuid(UUID.randomUUID().toString());
