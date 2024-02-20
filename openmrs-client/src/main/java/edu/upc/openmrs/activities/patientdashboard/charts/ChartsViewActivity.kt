@@ -13,17 +13,13 @@ import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import edu.upc.R
-import edu.upc.blopup.toggles.check
-import edu.upc.blopup.toggles.treatmentChartToggle
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
-import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
 
 class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValueSelectedListener {
 
@@ -59,13 +55,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
         val bloodPressureData = getBloodPressureValues()
 
-        treatmentChartToggle.check({
-            bloodPressureChartView = mBinding.bloodPressureChartWithMargin
-            bloodPressureChartView.makeVisible()
-            mBinding.bloodPressureChart.makeGone()
-            mBinding.expandableListView.makeVisible()
-        })
-
         bloodPressureChartPainter.paintBloodPressureChart(bloodPressureChartView, bloodPressureData)
         bloodPressureChartPainter.setListeners(treatmentsChartView, this, this)
     }
@@ -83,14 +72,13 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
                         adherenceMap
                     )
 
-                    treatmentChartToggle.check({
-                        treatmentsChartView.makeVisible()
-                        bloodPressureChartPainter.paintTreatmentsChart(
-                            treatmentsChartView,
-                            getBloodPressureValues(),
-                            adherenceMap
-                        )
-                    })
+                    mBinding.marginTop.makeVisible()
+                    treatmentsChartView.makeVisible()
+                    bloodPressureChartPainter.paintTreatmentsChart(
+                        treatmentsChartView,
+                        getBloodPressureValues(),
+                        adherenceMap
+                    )
 
                     expandableSidebarListView.setAdapter(expandableSidebarAdapter)
                 }

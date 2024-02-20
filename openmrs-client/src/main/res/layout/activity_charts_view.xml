@@ -22,27 +22,29 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/charts_layout"
-            android:layout_weight="7"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="7">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/bloodPressureChart"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@+id/charts_layout"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/bloodPressureChartWithMargin"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="40dp"
-                android:layout_toStartOf="@+id/charts_layout"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                <View
+                    android:id="@+id/marginTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:visibility="gone" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/bloodPressureChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--                android:layout_marginTop="40dp"-->
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/treatmentsChart"
@@ -50,8 +52,8 @@
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@+id/charts_layout"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -59,13 +61,15 @@
             android:layout_weight="3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal"
             android:visibility="gone"
-            android:orientation="horizontal">
+            app:layout_constraintEnd_toEndOf="parent">
+
             <TextView
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="#CCCCCC"/>
+                android:background="#CCCCCC" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,9 +80,9 @@
                     android:id="@+id/expandableListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:groupIndicator="@null"
+                    android:childDivider="#00000000"
                     android:divider="#00000000"
-                    android:childDivider="#00000000" />
+                    android:groupIndicator="@null" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

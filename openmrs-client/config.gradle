@@ -9,7 +9,6 @@ android{
 
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "true"
-            buildConfigField "Boolean", "TREATMENT_CHART", "true"
             buildConfigField "Boolean", "NEW_VITALS_FLOW", "false"
         }
         staging {
@@ -21,7 +20,6 @@ android{
 
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "false"
-            buildConfigField "Boolean", "TREATMENT_CHART", "false"
             buildConfigField "Boolean", "NEW_VITALS_FLOW", "false"
         }
         debug {
@@ -33,7 +31,6 @@ android{
 
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "true"
-            buildConfigField "Boolean", "TREATMENT_CHART", "true"
             buildConfigField "Boolean", "NEW_VITALS_FLOW", "false"
         }
     }
