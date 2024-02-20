@@ -68,7 +68,12 @@ fun TreatmentAdherence(
         verticalArrangement = Arrangement.SpaceBetween
 
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .weight(weight = 1f, fill = false)
+                .padding(bottom = 16.dp)
+        ) {
             Image(
                 painter = painterResource(R.drawable.treatment_adherence_img),
                 contentDescription = stringResource(R.string.adherence_description),
@@ -101,9 +106,7 @@ fun TreatmentAdherence(
 
 @Composable
 fun TreatmentCheckBox(treatmentOptions: List<CheckTreatment>) {
-    Column(
-        Modifier.verticalScroll(rememberScrollState())
-    ) {
+    Column {
         treatmentOptions.forEach { checkTreatment ->
             Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
