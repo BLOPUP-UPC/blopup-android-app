@@ -118,7 +118,7 @@ class VitalsViewModelTest {
             Vital(HEART_RATE_FIELD_CONCEPT, "70")
         )
 
-        val result = viewModel.treatmentAdherenceState.first()
+        val result = viewModel.vitalsUiState.first()
 
         assertEquals(expectedResult, result)
 
@@ -152,7 +152,7 @@ class VitalsViewModelTest {
             Vital(WEIGHT_FIELD_CONCEPT, "70.0")
         )
 
-        val result = viewModel.treatmentAdherenceState.first()
+        val result = viewModel.vitalsUiState.first()
 
         assertEquals(expectedResult, result)
     }
@@ -217,7 +217,7 @@ class VitalsViewModelTest {
         every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
         every { visitRepository.startVisit(testPatient) } returns Observable.just(visit)
         every {
-                visitRepository.createVisitWithVitals(testPatient, viewModel.treatmentAdherenceState.value)
+                visitRepository.createVisitWithVitals(testPatient, viewModel.vitalsUiState.value)
               } returns Observable.just(Result.Success(true))
 
         viewModel.createVisit()
@@ -225,7 +225,7 @@ class VitalsViewModelTest {
         verify {
             visitRepository.createVisitWithVitals(
                 testPatient,
-                viewModel.treatmentAdherenceState.value
+                viewModel.vitalsUiState.value
             )
         }
     }
@@ -242,7 +242,6 @@ class VitalsViewModelTest {
 
         runBlocking {
             val result = viewModel.fetchActiveTreatment()
-
 
             assertEquals(treatmentList, result)
         }
