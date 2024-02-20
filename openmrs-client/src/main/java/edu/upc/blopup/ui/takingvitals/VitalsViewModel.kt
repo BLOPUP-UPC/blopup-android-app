@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
@@ -55,7 +56,14 @@ open class VitalsViewModel @Inject constructor(
     val scaleViewState: LiveData<ScaleViewState>
         get() = _scaleViewState
 
+    private val _treatmentAdherenceState = MutableStateFlow((mapOf<String, Boolean>()))
+    val treatmentAdherenceState: StateFlow<Map<String, Boolean>> = _treatmentAdherenceState.asStateFlow()
 
+    fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
+        _treatmentAdherenceState.value =  checkTreatmentList.map {
+            return@map Pair<String, Boolean>(it.treatmentId, it.selected)
+        }.toMap()
+    }
     suspend fun fetchActiveTreatment() : List<Treatment> {
         val patient: Patient = patientDAO.findPatientByID(patientId.toString())
         val result = treatmentRepository.fetchAllActiveTreatments(patient)
@@ -129,6 +137,7 @@ open class VitalsViewModel @Inject constructor(
 
     fun createVisit() : Observable<Result<Boolean>> {
         val patient: Patient = patientDAO.findPatientByID(patientId.toString())
+
         return visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
     }
 

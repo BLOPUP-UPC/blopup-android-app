@@ -38,10 +38,14 @@ import edu.upc.blopup.CheckTreatment
 import edu.upc.sdk.library.models.Treatment
 
 @Composable
-fun TreatmentAdherenceScreen(saveVisitAndFinishActivity: () -> Unit, treatments: List<Treatment>) {
+fun TreatmentAdherenceScreen(
+    saveVisitAndFinishActivity: () -> Unit,
+    treatments: List<Treatment>,
+    treatmentAdherence: ((List<CheckTreatment>) -> Unit)
+) {
     if (treatments.isNotEmpty()) {
         // render treatment adherence screen
-        TreatmentAdherence(treatments, saveVisitAndFinishActivity)
+        TreatmentAdherence(treatments, saveVisitAndFinishActivity, treatmentAdherence)
         // save visit (with treatment adherence) and finish activity when user clicks on "Next"
     } else {
         remember { saveVisitAndFinishActivity() }
@@ -49,7 +53,12 @@ fun TreatmentAdherenceScreen(saveVisitAndFinishActivity: () -> Unit, treatments:
 }
 
 @Composable
-fun TreatmentAdherence(treatments: List<Treatment>, saveVisitAndFinishActivity: () -> Unit) {
+fun TreatmentAdherence(
+    treatments: List<Treatment>,
+    saveVisitAndFinishActivity: () -> Unit,
+    treatmentAdherence: (List<CheckTreatment>) -> Unit
+) {
+    val treatmentOptions = getTreatmentOptions(treatments)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,17 +92,19 @@ fun TreatmentAdherence(treatments: List<Treatment>, saveVisitAndFinishActivity: 
                 text = stringResource(R.string.treatment_adherence_text),
                 fontSize = TextUnit(16f, TextUnitType.Sp),
             )
-            TreatmentCheckBox(treatments)
+            TreatmentCheckBox(treatmentOptions)
         }
-        OrangeButton(R.string.finalise_treatment, { saveVisitAndFinishActivity() }, true)
+        OrangeButton(R.string.finalise_treatment, {
+            treatmentAdherence(treatmentOptions)
+            saveVisitAndFinishActivity()
+        }, true)
     }
 }
 
 @Composable
-fun TreatmentCheckBox(treatments: List<Treatment>) {
-    val treatmentOptions = getTreatmentOptions(treatments)
-
-    Column(Modifier.verticalScroll(rememberScrollState())
+fun TreatmentCheckBox(treatmentOptions: List<CheckTreatment>) {
+    Column(
+        Modifier.verticalScroll(rememberScrollState())
     ) {
         treatmentOptions.forEach { checkTreatment ->
             Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -135,7 +146,8 @@ fun getTreatmentOptions(treatments: List<Treatment>): List<CheckTreatment> {
             title = treatment.medicationName,
             medicationType = treatment.medicationType,
             selected = status,
-            onCheckedChange = { status = it }
+            onCheckedChange = { status = it },
+            treatmentId = treatment.treatmentUuid!!
         )
     }
 }
@@ -143,5 +155,5 @@ fun getTreatmentOptions(treatments: List<Treatment>): List<CheckTreatment> {
 @Preview(showSystemUi = true)
 @Composable
 fun TreatmentAdherencePreview() {
-    TreatmentAdherence(emptyList()) {}
+    TreatmentAdherence(emptyList(), {}, {})
 }
