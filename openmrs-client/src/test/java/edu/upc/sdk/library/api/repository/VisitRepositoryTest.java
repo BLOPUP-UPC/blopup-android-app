@@ -186,4 +186,35 @@ public class VisitRepositoryTest {
         assertEquals(expectedEncounter.getPatient(), actualEncounter.getPatient());
         assert(expectedEncounter.getObservations().get(0).equals(actualEncounter.getObservations().get(0)));
     }
+
+    @Test
+    public void shouldDeleteVisitWhenSavingEncounterFails() throws IOException {
+        Patient patient = new Patient();
+        patient.setUuid(UUID.randomUUID().toString());
+        patient.setId(patientID);
+        List<Vital> vitals = new ArrayList<>();
+        vitals.add(new Vital(HEIGHT_FIELD_CONCEPT, "180"));
+        Visit visit = new Visit();
+        Call<Visit> call = mock(Call.class);
+        Call<ResponseBody> deleteCall = mock(Call.class);
+
+        when(locationDAO.findLocationByName(OpenmrsAndroid.getLocation())).thenReturn(new LocationEntity("Hospital de Santa Anna"));
+        when(visitDAO.saveOrUpdate(visit, patientID)).thenReturn(Observable.just(patientID));
+        when(visitDAO.getActiveVisitByPatientId(patientID)).thenReturn(Observable.just(visit));
+        when(restApi.startVisit(any())).thenReturn(call);
+        when(restApi.deleteVisit(any())).thenReturn(deleteCall);
+        when(call.execute()).thenReturn(Response.success(visit));
+        when(deleteCall.execute()).thenReturn(Response.success(ResponseBody.create("", null)));
+        when(visitDAO.deleteVisitByUuid(visit.getUuid())).thenReturn(Observable.just(true));
+
+
+        when(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(new Result.Error(new Exception(), OperationType.GeneralOperation)));
+
+        visitRepository.createVisitWithVitals(patient, vitals);
+
+        verify(restApi).startVisit(any());
+        verify(encounterRepository).saveEncounter(any());
+        verify(restApi).deleteVisit(any());
+        verify(visitDAO).deleteVisitByUuid(visit.getUuid());
+    }
 }

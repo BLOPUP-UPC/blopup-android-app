@@ -265,6 +265,14 @@ public class VisitRepository extends BaseRepository {
 
         startVisit(patient).toBlocking().first();
 
-       return encounterRepository.saveEncounter(encounterCreate);
+        Result<Boolean> result = encounterRepository.saveEncounter(encounterCreate).toBlocking().first();
+
+        if (result instanceof Result.Error) {
+            try {
+                deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
+            } catch (IOException ignored) {
+            }
+        }
+        return Observable.just(result);
     }
 }
