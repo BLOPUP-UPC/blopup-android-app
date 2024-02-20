@@ -74,15 +74,20 @@ public class VisitRepositoryTest {
 
     private final long patientID = 1234L;
 
+    private MockedStatic<OpenmrsAndroid> openmrsAndroidMockedStatic;
+
+
     @Before
     public void setUp() {
         openMocks(this);
         WorkManagerTestInitHelper.initializeTestWorkManager(ApplicationProvider.getApplicationContext());
+        openmrsAndroidMockedStatic = mockStatic(OpenmrsAndroid.class);
     }
 
     @After
     public void tearDown() {
         WorkManagerTestInitHelper.closeWorkDatabase();
+        openmrsAndroidMockedStatic.close();
     }
 
     @Test
@@ -179,7 +184,8 @@ public class VisitRepositoryTest {
         when(call.execute()).thenReturn(Response.success(visit));
         when(encounterRepository.saveEncounter(expectedEncounter))
                 .thenReturn(Observable.just(new Result.Success<>(true, OperationType.GeneralOperation)));
-        when(locationDAO.findLocationByName(OpenmrsAndroid.getLocation())).thenReturn(new LocationEntity("Hospital de Santa Anna"));
+        openmrsAndroidMockedStatic.when(OpenmrsAndroid::getLocation).thenReturn("Location");
+        when(locationDAO.findLocationByName(any())).thenReturn(new LocationEntity("Hospital de Santa Anna"));
         when(visitDAO.saveOrUpdate(visit, patientID)).thenReturn(Observable.just(patientID));
 
         ArgumentCaptor<Encountercreate> captor = ArgumentCaptor.forClass(Encountercreate.class);
@@ -203,8 +209,8 @@ public class VisitRepositoryTest {
         Visit visit = new Visit();
         Call<Visit> call = mock(Call.class);
         Call<ResponseBody> deleteCall = mock(Call.class);
-
-        when(locationDAO.findLocationByName(OpenmrsAndroid.getLocation())).thenReturn(new LocationEntity("Hospital de Santa Anna"));
+        openmrsAndroidMockedStatic.when(OpenmrsAndroid::getLocation).thenReturn("Location");
+        when(locationDAO.findLocationByName(any())).thenReturn(new LocationEntity("Hospital de Santa Anna"));
         when(visitDAO.saveOrUpdate(visit, patientID)).thenReturn(Observable.just(patientID));
         when(visitDAO.getActiveVisitByPatientId(patientID)).thenReturn(Observable.just(visit));
         when(restApi.startVisit(any())).thenReturn(call);
