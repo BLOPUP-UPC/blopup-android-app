@@ -229,7 +229,6 @@ dependencies {
     implementation "com.github.amlcurran.showcaseview:library:${versions.showcaseview}"
     implementation "org.mindrot:jbcrypt:${versions.jbcrypt}"
     implementation "com.github.AppIntro:AppIntro:${versions.AppIntro}"
-    implementation "com.github.permissions-dispatcher:permissionsdispatcher-ktx:${versions.permissionsdispatcher}"
     implementation "androidx.multidex:multidex:${versions.multidex}"
     implementation "joda-time:joda-time:${versions.jodaTime}"
     implementation "commons-codec:commons-codec:${versions.codec}"
