@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -265,13 +266,18 @@ public class VisitRepository extends BaseRepository {
 
         startVisit(patient).toBlocking().first();
 
-        Result<Boolean> result = encounterRepository.saveEncounter(encounterCreate).toBlocking().first();
+        AtomicReference<Result<Boolean>> result = new AtomicReference<>();
 
-        if (result instanceof Result.Error) {
-            try {
-                deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
-            } catch (IOException ignored) {}
-        }
-        return Observable.just(result);
+        encounterRepository.saveEncounter(encounterCreate).subscribe(
+                response -> {
+                     if (response instanceof Result.Error) {
+                        try {
+                            deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
+                        } catch (Exception ignored) {
+                        }
+                    }
+                    result.set(response);
+                });
+        return Observable.just(result.get());
     }
 }

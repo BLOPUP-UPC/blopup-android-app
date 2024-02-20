@@ -21,6 +21,8 @@ import org.joda.time.Instant;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -55,6 +57,7 @@ import retrofit2.Response;
 import rx.Observable;
 
 @RunWith(AndroidJUnit4.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class VisitRepositoryTest {
 
     @Mock
@@ -74,20 +77,23 @@ public class VisitRepositoryTest {
 
     private final long patientID = 1234L;
 
-    private MockedStatic<OpenmrsAndroid> openmrsAndroidMockedStatic;
+    private static MockedStatic<OpenmrsAndroid> openmrsAndroidMockedStatic;
 
 
+    @BeforeAll
+    public void setUpBeforeAll() {
+        openmrsAndroidMockedStatic = mockStatic(OpenmrsAndroid.class);
+        openmrsAndroidMockedStatic.when(OpenmrsAndroid::getLocation).thenReturn("Location");
+    }
     @Before
     public void setUp() {
         openMocks(this);
         WorkManagerTestInitHelper.initializeTestWorkManager(ApplicationProvider.getApplicationContext());
-        openmrsAndroidMockedStatic = mockStatic(OpenmrsAndroid.class);
     }
 
     @After
     public void tearDown() {
         WorkManagerTestInitHelper.closeWorkDatabase();
-        openmrsAndroidMockedStatic.close();
     }
 
     @Test
@@ -184,7 +190,6 @@ public class VisitRepositoryTest {
         when(call.execute()).thenReturn(Response.success(visit));
         when(encounterRepository.saveEncounter(expectedEncounter))
                 .thenReturn(Observable.just(new Result.Success<>(true, OperationType.GeneralOperation)));
-        openmrsAndroidMockedStatic.when(OpenmrsAndroid::getLocation).thenReturn("Location");
         when(locationDAO.findLocationByName(any())).thenReturn(new LocationEntity("Hospital de Santa Anna"));
         when(visitDAO.saveOrUpdate(visit, patientID)).thenReturn(Observable.just(patientID));
 
@@ -209,7 +214,6 @@ public class VisitRepositoryTest {
         Visit visit = new Visit();
         Call<Visit> call = mock(Call.class);
         Call<ResponseBody> deleteCall = mock(Call.class);
-        openmrsAndroidMockedStatic.when(OpenmrsAndroid::getLocation).thenReturn("Location");
         when(locationDAO.findLocationByName(any())).thenReturn(new LocationEntity("Hospital de Santa Anna"));
         when(visitDAO.saveOrUpdate(visit, patientID)).thenReturn(Observable.just(patientID));
         when(visitDAO.getActiveVisitByPatientId(patientID)).thenReturn(Observable.just(visit));
