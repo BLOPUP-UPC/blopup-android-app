@@ -48,8 +48,6 @@ android {
         targetSdkVersion versions.targetSdk
         compileSdkVersion versions.compileSdk
 
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
