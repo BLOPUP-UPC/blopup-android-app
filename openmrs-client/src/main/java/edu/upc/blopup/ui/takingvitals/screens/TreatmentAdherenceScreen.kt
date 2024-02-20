@@ -44,9 +44,7 @@ fun TreatmentAdherenceScreen(
     treatmentAdherence: ((List<CheckTreatment>) -> Unit)
 ) {
     if (treatments.isNotEmpty()) {
-        // render treatment adherence screen
         TreatmentAdherence(treatments, saveVisitAndFinishActivity, treatmentAdherence)
-        // save visit (with treatment adherence) and finish activity when user clicks on "Next"
     } else {
         remember { saveVisitAndFinishActivity() }
     }

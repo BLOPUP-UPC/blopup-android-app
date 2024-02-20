@@ -135,7 +135,7 @@ class VitalsActivity : ComponentActivity() {
                             TreatmentAdherenceScreen(
                                 { createVisitAndFinishActivity() },
                                 treatments,
-                                { viewModel.addTreatmentAdherence(it) }
+                                { lifecycleScope.launch {viewModel.addTreatmentAdherence(it)} }
                             )
                         }
                     }

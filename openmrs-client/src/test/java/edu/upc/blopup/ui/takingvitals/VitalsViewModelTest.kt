@@ -2,6 +2,7 @@ package edu.upc.blopup.ui.takingvitals
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
@@ -13,6 +14,7 @@ import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -26,9 +28,11 @@ import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIE
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -77,13 +81,16 @@ class VitalsViewModelTest {
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
-
-
         testPatient = Patient().apply {
             id = patientId
             uuid = "patientUuid"
         }
+
+        patientDAO = mockk()
+
+        every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
+
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -235,8 +242,6 @@ class VitalsViewModelTest {
         val treatment = TreatmentExample.activeTreatment().apply { treatmentUuid = "treatmentUuid" }
         val treatmentList = listOf(treatment)
 
-        every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
-
         coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.success(treatmentList)
 
 
@@ -244,6 +249,33 @@ class VitalsViewModelTest {
             val result = viewModel.fetchActiveTreatment()
 
             assertEquals(treatmentList, result)
+        }
+    }
+
+    @Test
+    fun `should save treatment adherence`() {
+
+        val treatmentIdOne = "treatmentUuid"
+        val treatmentIdTwo = "treatmentUuidTwo"
+
+        val treatmentAdherenceInfo = mapOf(
+            treatmentIdOne to true,
+            treatmentIdTwo to false
+        )
+
+        val checkTreatmentList = listOf(
+            CheckTreatment("Paracetamol", setOf(MedicationType.ARA_II), true, {}, treatmentIdOne),
+            CheckTreatment("Ibuprofen", setOf(MedicationType.ARA_II), false, {}, treatmentIdTwo),
+        )
+
+        coEvery { treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, testPatient.uuid!!) } returns kotlin.Result.success(true)
+
+
+        runBlocking {
+            viewModel.addTreatmentAdherence( checkTreatmentList )
+
+            coVerify { treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, testPatient.uuid!!) }
+
         }
     }
 

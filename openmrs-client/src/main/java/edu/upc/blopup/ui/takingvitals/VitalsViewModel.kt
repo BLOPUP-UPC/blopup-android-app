@@ -56,16 +56,16 @@ open class VitalsViewModel @Inject constructor(
     val scaleViewState: LiveData<ScaleViewState>
         get() = _scaleViewState
 
-    private val _treatmentAdherenceState = MutableStateFlow((mapOf<String, Boolean>()))
-    val treatmentAdherenceState: StateFlow<Map<String, Boolean>> = _treatmentAdherenceState.asStateFlow()
+    val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
-    fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
-        _treatmentAdherenceState.value =  checkTreatmentList.map {
+
+    suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
+        val treatmentAdherenceInfo =  checkTreatmentList.map {
             return@map Pair<String, Boolean>(it.treatmentId, it.selected)
         }.toMap()
+        treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, patient.uuid!!)
     }
     suspend fun fetchActiveTreatment() : List<Treatment> {
-        val patient: Patient = patientDAO.findPatientByID(patientId.toString())
         val result = treatmentRepository.fetchAllActiveTreatments(patient)
 
         return if(result.isSuccess) {
@@ -136,8 +136,6 @@ open class VitalsViewModel @Inject constructor(
         visitRepository.getLatestVisitWithHeight(patientId).getOrNull()?.getLatestHeight() ?: ""
 
     fun createVisit() : Observable<Result<Boolean>> {
-        val patient: Patient = patientDAO.findPatientByID(patientId.toString())
-
         return visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
     }
 
