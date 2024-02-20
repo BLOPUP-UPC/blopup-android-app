@@ -34,6 +34,7 @@ import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
+import edu.upc.sdk.library.models.Result
 import kotlinx.coroutines.launch
 import rx.android.schedulers.AndroidSchedulers
 
@@ -135,7 +136,7 @@ class VitalsActivity : ComponentActivity() {
                             TreatmentAdherenceScreen(
                                 { createVisitAndFinishActivity() },
                                 treatments,
-                                { lifecycleScope.launch {viewModel.addTreatmentAdherence(it)} }
+                                { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } }
                             )
                         }
                     }
@@ -171,8 +172,12 @@ class VitalsActivity : ComponentActivity() {
     private fun createVisitAndFinishActivity() {
         viewModel.createVisit()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                setResult(RESULT_OK)
+            .subscribe { result ->
+                when (result) {
+                    is Result.Error -> setResult(RESULT_CANCELED)
+                    is Result.Success -> setResult(RESULT_OK)
+                    is Result.Loading -> {}
+                }
                 finish()
             }
     }
