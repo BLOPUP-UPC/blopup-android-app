@@ -14,6 +14,8 @@
 
 package edu.upc.sdk.library.api.repository;
 
+import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
 
 import org.joda.time.Instant;
@@ -270,11 +272,14 @@ public class VisitRepository extends BaseRepository {
 
         encounterRepository.saveEncounter(encounterCreate).subscribe(
                 response -> {
-                     if (response instanceof Result.Error) {
-                        try {
-                            deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
-                        } catch (Exception ignored) {
-                        }
+                    if (response instanceof Result.Error) {
+                        AsyncTask.execute(() -> {
+                            try {
+                                deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
+                            } catch (IOException exception) {
+                                logger.e("Error deleting visit after failed encounter creation: " + exception.getMessage());
+                            }
+                        });
                     }
                     result.set(response);
                 });
