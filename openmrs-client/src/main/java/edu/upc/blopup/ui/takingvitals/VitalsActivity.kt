@@ -71,6 +71,7 @@ class VitalsActivity : ComponentActivity() {
 
                     val navigationController = rememberNavController()
                     val uiState by viewModel.vitalsUiState.collectAsState()
+                    val showDialogUiState by viewModel.showDialogState.collectAsState()
 
                     NavHost(
                         navController = navigationController,
@@ -102,7 +103,9 @@ class VitalsActivity : ComponentActivity() {
                             BloodPressureDataScreen(
                                 { navigationController.navigate(Routes.MeasureWeightScreen.id) },
                                 navigationController::popBackStack,
-                                uiState
+                                uiState,
+                                showDialogUiState,
+                                viewModel::setShowDialogState
                             )
                         }
                         composable(Routes.MeasureWeightScreen.id) {
@@ -119,7 +122,9 @@ class VitalsActivity : ComponentActivity() {
                             WeightDataScreen(
                                 { navigationController.navigate(Routes.MeasureHeightScreen.id) },
                                 navigationController::popBackStack,
-                                uiState
+                                uiState,
+                                showDialogUiState,
+                                viewModel::setShowDialogState
                             )
                         }
                         composable(Routes.MeasureHeightScreen.id) {

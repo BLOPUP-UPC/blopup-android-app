@@ -10,15 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 
 @Composable
-fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: MutableList<Vital>) {
+fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: MutableList<Vital>, showDialog: Boolean, onShowDialogChange: (Boolean) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -27,7 +25,7 @@ fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: M
     ) {
         DataReceivedSuccessfully()
         WeighDataCard(vitals)
-        NavigationButtons(onClickNext, onClickBack)
+        NavigationButtons(onClickNext, onClickBack, showDialog, onShowDialogChange)
     }
 }
 
@@ -44,8 +42,8 @@ fun WeighDataCard(vitals: MutableList<Vital>) {
     )
 }
 
-@Preview
-@Composable
-fun WeightDataScreenPreview(@PreviewParameter(DataScreenParameters::class,1) vitals: MutableList<Vital>) {
-    WeightDataScreen({}, {}, vitals)
-}
+//@Preview
+//@Composable
+//fun WeightDataScreenPreview(@PreviewParameter(DataScreenParameters::class,1) vitals: MutableList<Vital>) {
+//    WeightDataScreen({}, {}, vitals)
+//}

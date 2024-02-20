@@ -15,10 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -101,15 +97,19 @@ fun VitalsDataCard(
 }
 
 @Composable
-fun NavigationButtons(onClickNext: () -> Unit, onClickBack: () -> Unit) {
-    var show by remember { mutableStateOf(false) }
+fun NavigationButtons(
+    onClickNext: () -> Unit,
+    onClickBack: () -> Unit,
+    showDialog: Boolean,
+    onShowDialogChange: (Boolean) -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom,
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TextButton(onClick = { show = true }) {
+        TextButton(onClick = { onShowDialogChange(true) }) {
             Text(
                 text = stringResource(R.string.go_back),
                 color = Color.Black,
@@ -127,8 +127,8 @@ fun NavigationButtons(onClickNext: () -> Unit, onClickBack: () -> Unit) {
         }
     }
     VitalsDialog(
-        show = show,
-        onDismiss = { show = false },
+        show = showDialog,
+        onDismiss = { onShowDialogChange(false) },
         onConfirm = onClickBack
     )
 }

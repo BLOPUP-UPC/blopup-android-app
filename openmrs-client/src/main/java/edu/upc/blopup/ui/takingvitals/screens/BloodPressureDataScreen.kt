@@ -13,8 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.vitalsform.Vital
@@ -26,8 +24,10 @@ import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIE
 fun BloodPressureDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
-    vitals: MutableList<Vital>
-) {
+    vitals: MutableList<Vital>,
+    showDialogUiState: Boolean,
+    onShowDialogChange: (Boolean) -> Unit
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +36,7 @@ fun BloodPressureDataScreen(
     ) {
         DataReceivedSuccessfully()
         BloodPressureDataCards(vitals)
-        NavigationButtons(onClickNext, onClickBack)
+        NavigationButtons(onClickNext, onClickBack, showDialogUiState, onShowDialogChange)
     }
 
 }
@@ -72,8 +72,12 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
 }
 
 
-@Preview
-@Composable
-fun BloodPressureDataScreenPreview(@PreviewParameter(DataScreenParameters::class,1) vitals: MutableList<Vital>) {
-    BloodPressureDataScreen({}, {}, vitals)
-}
+//@Preview
+//@Composable
+//fun BloodPressureDataScreenPreview(@PreviewParameter(DataScreenParameters::class,1) vitals: MutableList<Vital>) {
+//    BloodPressureDataScreen(
+//        {},
+//        {},
+//        vitals,
+//        { viewModel.showDialogState }) { viewModel.setShowDialogState(false) }
+//}

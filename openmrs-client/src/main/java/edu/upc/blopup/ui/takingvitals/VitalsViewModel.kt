@@ -58,6 +58,12 @@ open class VitalsViewModel @Inject constructor(
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
+    private val _showDialogState = MutableStateFlow(false)
+    var showDialogState: StateFlow<Boolean> = _showDialogState.asStateFlow()
+
+    fun setShowDialogState(showDialog: Boolean) {
+        _showDialogState.value = showDialog
+    }
 
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
         val treatmentAdherenceInfo =  checkTreatmentList.map {

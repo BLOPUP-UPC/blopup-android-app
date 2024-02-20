@@ -57,7 +57,9 @@ fun AppToolBarWithMenu(title: String) {
                 contentDescription = "Back",
                 tint = colorResource(R.color.white),
                 modifier = Modifier
-                    .clickable { activity?.onBackPressedDispatcher?.onBackPressed() }
+                    .clickable {
+                        activity?.onBackPressedDispatcher?.onBackPressed()
+                    }
                     .padding(horizontal = 16.dp)
                     .testTag("back_button")
             )
@@ -65,6 +67,11 @@ fun AppToolBarWithMenu(title: String) {
             OptionsMenu()
         }
     )
+//    VitalsDialog(
+//        show = show,
+//        onDismiss = { show = false },
+//        onConfirm = { activity?.onBackPressedDispatcher?.onBackPressed() }
+//    )
 }
 
 @Composable

@@ -29,7 +29,11 @@ fun VitalsDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
                 Modifier
                     .background(Color.White)
             ) {
-                Column(Modifier.background(colorResource(id = R.color.dark_teal)).fillMaxWidth().padding(15.dp)) {
+                Column(
+                    Modifier
+                        .background(colorResource(id = R.color.dark_teal))
+                        .fillMaxWidth()
+                        .padding(15.dp)) {
                     Text(text = stringResource(R.string.remove_vitals), color = Color.White, fontSize = TextUnit(20f, TextUnitType.Sp))
                 }
                 Column(Modifier.padding(15.dp)) {
