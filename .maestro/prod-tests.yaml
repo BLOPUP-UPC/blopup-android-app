@@ -1,0 +1,16 @@
+appId: edu.upc
+tags:
+  - prod
+---
+- launchApp
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/description"
+    file: "subflows/InitialTour.yaml"
+- runFlow:
+    when:
+      visible:
+        id: "edu.upc:id/loginUsernameField"
+    file: "subflows/Login.yaml"
+- runFlow: "subflows/SearchPatient.yaml"

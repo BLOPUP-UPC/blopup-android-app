@@ -1,0 +1,29 @@
+appId: edu.upc
+---
+- tapOn: "Find Patients"
+- tapOn:
+      id: "edu.upc:id/search_button"
+- inputText: "Paciente Test"
+- tapOn: "# 10072J"
+- assertVisible:
+      id: "edu.upc:id/patientDetailsName"
+- assertVisible: "Recommended treatments:"
+- tapOn: "VISITS"
+- tapOn:
+      id: "edu.upc:id/visitRow"
+      index: 0
+- assertVisible: "Systolic"
+- assertVisible: "Diastolic"
+- assertVisible: "Pulse"
+- assertVisible: "Recommended treatments:"
+- scrollUntilVisible:
+      centerElement: true
+      element: "Height"
+      visibilityPercentage: 100
+- assertVisible: "Height"
+- assertVisible: "Weight"
+- pressKey: "back"
+- tapOn: "CHARTS"
+- tapOn: "Blood Pressure Evolution"
+- assertVisible: "Charts View"
+- pressKey: "back"

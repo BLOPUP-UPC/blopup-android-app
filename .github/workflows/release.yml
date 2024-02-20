@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Decode Keystore
@@ -16,7 +16,7 @@ jobs:
           fileName: 'release_keystore.jks'
           encodedString: ${{ secrets.KEYSTORE }}
       - uses: actions/checkout@v3
-      - name: set up JDK 1.8
+      - name: set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: 17
@@ -45,3 +45,38 @@ jobs:
           packageName: edu.upc
           releaseFiles: openmrs-client/build/outputs/bundle/release/openmrs-client-release.aab
           track: internal
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decode Keystore
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: 'release_keystore.jks'
+          encodedString: ${{ secrets.KEYSTORE }}
+      - uses: actions/checkout@v3
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: build prod
+        run: ./gradlew openmrs-client:assembleRelease
+        env:
+          KEYSTORE_FILE: ${{ steps.decode_keystore.outputs.filePath }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS_NAME: ${{ secrets.KEYSTORE_ALIAS_NAME }}
+          KEYSTORE_ALIAS_PASS: ${{ secrets.KEYSTORE_ALIAS_PASS }}
+
+      - name: Execute maestro
+        uses: mobile-dev-inc/action-maestro-cloud@v1.8.1
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          app-file: openmrs-client/build/outputs/apk/release/openmrs-client-release.apk
+          include-tags: prod
+          env: |
+            MAESTRO_TEST_USERNAME=${{ secrets.MAESTRO_TEST_USERNAME }}
+            MAESTRO_TEST_PASSWORD=${{ secrets.MAESTRO_TEST_PASSWORD }}
