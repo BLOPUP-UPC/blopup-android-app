@@ -270,8 +270,7 @@ public class VisitRepository extends BaseRepository {
         if (result instanceof Result.Error) {
             try {
                 deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
         }
         return Observable.just(result);
     }

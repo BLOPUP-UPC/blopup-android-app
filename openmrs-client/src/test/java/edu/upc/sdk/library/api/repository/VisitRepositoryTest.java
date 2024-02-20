@@ -18,6 +18,7 @@ import androidx.work.testing.WorkManagerTestInitHelper;
 import com.google.common.collect.ImmutableList;
 
 import org.joda.time.Instant;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,6 +78,11 @@ public class VisitRepositoryTest {
     public void setUp() {
         openMocks(this);
         WorkManagerTestInitHelper.initializeTestWorkManager(ApplicationProvider.getApplicationContext());
+    }
+
+    @After
+    public void tearDown() {
+        WorkManagerTestInitHelper.closeWorkDatabase();
     }
 
     @Test
