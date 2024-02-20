@@ -1,11 +1,15 @@
 package edu.upc.sdk.library.api.repository;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
+import static edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -13,11 +17,14 @@ import androidx.work.testing.WorkManagerTestInitHelper;
 
 import com.google.common.collect.ImmutableList;
 
+import org.joda.time.Instant;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,10 +33,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import edu.upc.blopup.vitalsform.Vital;
+import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
+import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.library.models.Encounter;
+import edu.upc.sdk.library.models.EncounterType;
+import edu.upc.sdk.library.models.Encountercreate;
+import edu.upc.sdk.library.models.Obscreate;
 import edu.upc.sdk.library.models.Observation;
+import edu.upc.sdk.library.models.OperationType;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.library.models.Result;
 import edu.upc.sdk.library.models.Visit;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -44,6 +61,12 @@ public class VisitRepositoryTest {
 
     @Mock
     private RestApi restApi;
+
+    @Mock
+    private EncounterRepository encounterRepository;
+
+    @Mock
+    private LocationDAO locationDAO;
 
     @InjectMocks
     private VisitRepository visitRepository;
@@ -121,5 +144,46 @@ public class VisitRepositoryTest {
         visitRepository.deleteVisitByUuid(visitToDelete.getUuid());
 
         verify(visitDAO, times(0)).deleteVisitByUuid(visitToDelete.getUuid());
+    }
+
+    @Test
+    public void shouldCreateNewVisitWithEncounter() throws IOException {
+        Patient patient = new Patient();
+        patient.setUuid(UUID.randomUUID().toString());
+        patient.setId(patientID);
+        List<Vital> vitals = new ArrayList<>();
+        vitals.add(new Vital(HEIGHT_FIELD_CONCEPT, "180"));
+        Visit visit = new Visit();
+        Call<Visit> call = mock(Call.class);
+        Instant testTime = Instant.parse("2020-01-01T00:00:00.00Z");
+        MockedStatic<Instant> mockedInstant = mockStatic(Instant.class);
+        mockedInstant.when(Instant::now).thenReturn(testTime);
+
+        Encountercreate expectedEncounter = new Encountercreate();
+        expectedEncounter.setPatient(patient.getUuid());
+        Obscreate heightObs = new Obscreate();
+        heightObs.setConcept(HEIGHT_FIELD_CONCEPT);
+        heightObs.setValue("180");
+        heightObs.setObsDatetime(testTime.toString());
+        heightObs.setPerson(patient.getUuid());
+        expectedEncounter.setObservations(List.of(heightObs));
+        expectedEncounter.setEncounterType(EncounterType.VITALS);
+
+        when(restApi.startVisit(any())).thenReturn(call);
+        when(call.execute()).thenReturn(Response.success(visit));
+        when(encounterRepository.saveEncounter(expectedEncounter))
+                .thenReturn(Observable.just(new Result.Success<>(true, OperationType.GeneralOperation)));
+        when(locationDAO.findLocationByName(OpenmrsAndroid.getLocation())).thenReturn(new LocationEntity("Hospital de Santa Anna"));
+        when(visitDAO.saveOrUpdate(visit, patientID)).thenReturn(Observable.just(patientID));
+
+        ArgumentCaptor<Encountercreate> captor = ArgumentCaptor.forClass(Encountercreate.class);
+
+        visitRepository.createVisitWithVitals(patient, vitals);
+
+        verify(restApi).startVisit(any());
+        verify(encounterRepository).saveEncounter(captor.capture());
+        Encountercreate actualEncounter = captor.getValue();
+        assertEquals(expectedEncounter.getPatient(), actualEncounter.getPatient());
+        assert(expectedEncounter.getObservations().get(0).equals(actualEncounter.getObservations().get(0)));
     }
 }
