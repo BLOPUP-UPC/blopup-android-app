@@ -130,6 +130,6 @@ fun NavigationButtons(
     VitalsDialog(
         show = showDialog,
         onDismiss = { onShowDialogChange(false) },
-        onConfirm = onClickBack
+        onConfirm = { onShowDialogChange(false); onClickBack() }
     )
 }

@@ -40,7 +40,8 @@ import edu.upc.sdk.library.OpenmrsAndroid
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AppToolBarWithMenu(title: String) {
+fun AppToolBarWithMenu(title: String, isDataScreen: Boolean) {
+    val show = remember { mutableStateOf(false) }
     val activity = (LocalContext.current as? ComponentActivity)
 
     TopAppBar(
@@ -58,7 +59,11 @@ fun AppToolBarWithMenu(title: String) {
                 tint = colorResource(R.color.white),
                 modifier = Modifier
                     .clickable {
-                        activity?.onBackPressedDispatcher?.onBackPressed()
+                        if(isDataScreen) {
+                            show.value = true
+                        } else {
+                            activity?.onBackPressedDispatcher?.onBackPressed()
+                        }
                     }
                     .padding(horizontal = 16.dp)
                     .testTag("back_button")
@@ -67,11 +72,11 @@ fun AppToolBarWithMenu(title: String) {
             OptionsMenu()
         }
     )
-//    VitalsDialog(
-//        show = show,
-//        onDismiss = { show = false },
-//        onConfirm = { activity?.onBackPressedDispatcher?.onBackPressed() }
-//    )
+    VitalsDialog(
+        show = show.value,
+        onDismiss = { show.value = false},
+        onConfirm = { show.value = false; activity?.onBackPressedDispatcher?.onBackPressed() }
+    )
 }
 
 @Composable
@@ -156,5 +161,8 @@ fun OptionsMenu() {
 @Preview
 @Composable
 fun AppToolBarWithMenuPreview() {
-    AppToolBarWithMenu(title = "Blood Pressure")
+    AppToolBarWithMenu(
+        title = "Blood Pressure",
+        isDataScreen = false,
+    )
 }

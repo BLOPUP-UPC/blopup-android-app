@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -64,9 +65,10 @@ class VitalsActivity : ComponentActivity() {
             val treatments = viewModel.fetchActiveTreatment()
             setContent {
                 var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
+                var isDataScreen by remember { mutableStateOf(false) }
 
                 Scaffold(
-                    topBar = { AppToolBarWithMenu(stringResource(topBarTitle)) },
+                    topBar = { AppToolBarWithMenu(stringResource(topBarTitle), isDataScreen) },
                 ) { innerPadding ->
 
                     val navigationController = rememberNavController()
@@ -80,6 +82,7 @@ class VitalsActivity : ComponentActivity() {
                     ) {
                         composable(Routes.MeasureBloodPressureScreen.id) {
                             topBarTitle = R.string.blood_pressure_data
+                            isDataScreen = false
 
                             MeasureBloodPressureScreen(
                                 { navigationController.navigate(Routes.HowToActivateBluetoothScreen.id) },
@@ -91,6 +94,7 @@ class VitalsActivity : ComponentActivity() {
                         }
                         composable(Routes.HowToActivateBluetoothScreen.id) {
                             topBarTitle = R.string.blood_pressure_data
+                            isDataScreen = false
 
                             HowToActivateBPDeviceScreen {
                                 viewModel.receiveBloodPressureData()
@@ -99,6 +103,7 @@ class VitalsActivity : ComponentActivity() {
                         }
                         composable(Routes.BloodPressureDataScreen.id) {
                             topBarTitle = R.string.blood_pressure_data
+                            isDataScreen = true
 
                             BloodPressureDataScreen(
                                 { navigationController.navigate(Routes.MeasureWeightScreen.id) },
@@ -110,6 +115,7 @@ class VitalsActivity : ComponentActivity() {
                         }
                         composable(Routes.MeasureWeightScreen.id) {
                             topBarTitle = R.string.weight_data
+                            isDataScreen = false
 
                             MeasureWeightScreen {
                                 viewModel.receiveWeightData()
@@ -118,6 +124,7 @@ class VitalsActivity : ComponentActivity() {
                         }
                         composable(Routes.WeightDataScreen.id) {
                             topBarTitle = R.string.weight_data
+                            isDataScreen = true
 
                             WeightDataScreen(
                                 { navigationController.navigate(Routes.MeasureHeightScreen.id) },
@@ -129,6 +136,7 @@ class VitalsActivity : ComponentActivity() {
                         }
                         composable(Routes.MeasureHeightScreen.id) {
                             topBarTitle = R.string.height_data
+                            isDataScreen = false
 
                             MeasureHeightScreen({
                                 viewModel.saveHeight(it)
@@ -137,6 +145,7 @@ class VitalsActivity : ComponentActivity() {
                         }
                         composable(Routes.TreatmentAdherenceScreen.id) {
                             topBarTitle = R.string.adherence_data
+                            isDataScreen = false
 
                             TreatmentAdherenceScreen(
                                 { createVisitAndFinishActivity() },
