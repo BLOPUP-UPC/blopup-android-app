@@ -85,6 +85,7 @@ public class VisitRepositoryTest {
         openmrsAndroidMockedStatic = mockStatic(OpenmrsAndroid.class);
         openmrsAndroidMockedStatic.when(OpenmrsAndroid::getLocation).thenReturn("Location");
     }
+
     @Before
     public void setUp() {
         openMocks(this);
@@ -201,7 +202,7 @@ public class VisitRepositoryTest {
         verify(encounterRepository).saveEncounter(captor.capture());
         Encountercreate actualEncounter = captor.getValue();
         assertEquals(expectedEncounter.getPatient(), actualEncounter.getPatient());
-        assert(expectedEncounter.getObservations().get(0).equals(actualEncounter.getObservations().get(0)));
+        assert (expectedEncounter.getObservations().get(0).equals(actualEncounter.getObservations().get(0)));
     }
 
     @Test
@@ -226,11 +227,13 @@ public class VisitRepositoryTest {
 
         when(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(new Result.Error(new Exception(), OperationType.GeneralOperation)));
 
-        visitRepository.createVisitWithVitals(patient, vitals).subscribe();
+        visitRepository.createVisitWithVitals(patient, vitals).doOnNext(result -> {
+            verify(restApi).deleteVisit(any());
+            verify(visitDAO).deleteVisitByUuid(visit.getUuid());
+        }).subscribe();
 
         verify(restApi).startVisit(any());
         verify(encounterRepository).saveEncounter(any());
-        verify(restApi).deleteVisit(any());
-        verify(visitDAO).deleteVisitByUuid(visit.getUuid());
+
     }
 }
