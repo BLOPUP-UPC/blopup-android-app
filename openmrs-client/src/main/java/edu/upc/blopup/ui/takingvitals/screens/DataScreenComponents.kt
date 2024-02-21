@@ -73,24 +73,25 @@ fun VitalsDataCard(
             icon,
             contentDescription = contentDescription,
             Modifier
-                .padding(10.dp)
-                .size(15.dp)
+                .padding(8.dp)
+                .size(16.dp)
         )
         Text(
             title,
             color = Color.Black,
-            fontWeight = FontWeight.Bold,
+            style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Bold),
             modifier = Modifier.padding(start = 10.dp, end = 10.dp)
         )
         Text(
             value,
             color = Color.Black,
-            style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
+            style = TextStyle(fontSize = 32.sp),
             modifier = Modifier.padding(start = 10.dp, end = 10.dp)
         )
         Text(
             measure,
             color = Color.Black,
+            style = TextStyle(fontSize = 12.sp),
             modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
         )
     }
