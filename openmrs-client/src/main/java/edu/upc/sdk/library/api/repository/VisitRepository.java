@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -267,21 +266,17 @@ public class VisitRepository extends BaseRepository {
 
         startVisit(patient).toBlocking().first();
 
-        AtomicReference<Result<Boolean>> result = new AtomicReference<>();
-
-        encounterRepository.saveEncounter(encounterCreate)
+        return encounterRepository.saveEncounter(encounterCreate)
                 .observeOn(Schedulers.io())
-                .subscribe(
-                        response -> {
-                            if (response instanceof Result.Error) {
-                                try {
-                                    deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
-                                } catch (IOException exception) {
-                                    logger.e("Error deleting visit after failed encounter creation: " + exception.getMessage());
-                                }
-                            }
-                            result.set(response);
-                        });
-        return Observable.just(result.get());
+                .map(encounterResult -> {
+                    if (encounterResult instanceof Result.Error) {
+                        try {
+                            deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
+                        } catch (IOException exception) {
+                            logger.e("Error deleting visit after failed encounter creation: " + exception.getMessage());
+                        }
+                    }
+                    return encounterResult;
+                });
     }
 }

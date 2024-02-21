@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.takingvitals
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -35,9 +36,7 @@ import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
-import edu.upc.sdk.library.models.Result
 import kotlinx.coroutines.launch
-import rx.android.schedulers.AndroidSchedulers
 
 @AndroidEntryPoint
 class VitalsActivity : ComponentActivity() {
@@ -66,6 +65,8 @@ class VitalsActivity : ComponentActivity() {
             setContent {
                 var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
                 var isDataScreen by remember { mutableStateOf(false) }
+                val createVisitResultUiState by viewModel.createVisitResultUiState.collectAsState()
+
 
                 Scaffold(
                     topBar = { AppToolBarWithMenu(stringResource(topBarTitle), isDataScreen) },
@@ -148,10 +149,11 @@ class VitalsActivity : ComponentActivity() {
                             isDataScreen = false
 
                             TreatmentAdherenceScreen(
-                                { createVisitAndFinishActivity() },
-                                treatments,
-                                { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } }
-                            )
+                                ::setResultAndFinish,
+                                viewModel::createVisit,
+                                createVisitResultUiState,
+                                treatments
+                            ) { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } }
                         }
                     }
                 }
@@ -183,16 +185,8 @@ class VitalsActivity : ComponentActivity() {
         }
     }
 
-    private fun createVisitAndFinishActivity() {
-        viewModel.createVisit()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { result ->
-                when (result) {
-                    is Result.Error -> setResult(RESULT_CANCELED)
-                    is Result.Success -> setResult(RESULT_OK)
-                    is Result.Loading -> {}
-                }
-                finish()
-            }
+    private fun setResultAndFinish() {
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 }

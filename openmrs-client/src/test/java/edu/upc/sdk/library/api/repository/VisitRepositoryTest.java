@@ -226,7 +226,7 @@ public class VisitRepositoryTest {
 
         when(encounterRepository.saveEncounter(any())).thenReturn(Observable.just(new Result.Error(new Exception(), OperationType.GeneralOperation)));
 
-        visitRepository.createVisitWithVitals(patient, vitals);
+        visitRepository.createVisitWithVitals(patient, vitals).subscribe();
 
         verify(restApi).startVisit(any());
         verify(encounterRepository).saveEncounter(any());

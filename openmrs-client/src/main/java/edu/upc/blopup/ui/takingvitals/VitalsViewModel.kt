@@ -1,5 +1,6 @@
 package edu.upc.blopup.ui.takingvitals
 
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -21,6 +22,7 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -61,20 +63,26 @@ open class VitalsViewModel @Inject constructor(
     private val _showDialogState = MutableStateFlow(false)
     var showDialogState: StateFlow<Boolean> = _showDialogState.asStateFlow()
 
+    private val _createVisitResultUiState: MutableStateFlow<CreateVisitResultUiState> =
+        MutableStateFlow(CreateVisitResultUiState.Loading)
+    var createVisitResultUiState: StateFlow<CreateVisitResultUiState> =
+        _createVisitResultUiState.asStateFlow()
+
     fun setShowDialogState(showDialog: Boolean) {
         _showDialogState.value = showDialog
     }
 
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
-        val treatmentAdherenceInfo =  checkTreatmentList.map {
+        val treatmentAdherenceInfo = checkTreatmentList.map {
             return@map Pair<String, Boolean>(it.treatmentId, it.selected)
         }.toMap()
         treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, patient.uuid!!)
     }
-    suspend fun fetchActiveTreatment() : List<Treatment> {
+
+    suspend fun fetchActiveTreatment(): List<Treatment> {
         val result = treatmentRepository.fetchAllActiveTreatments(patient)
 
-        return if(result.isSuccess) {
+        return if (result.isSuccess) {
             result.getOrNull()!!
         } else
             emptyList()
@@ -141,8 +149,22 @@ open class VitalsViewModel @Inject constructor(
     fun getLastHeightFromVisits() =
         visitRepository.getLatestVisitWithHeight(patientId).getOrNull()?.getLatestHeight() ?: ""
 
-    fun createVisit() : Observable<Result<Boolean>> {
-        return visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
+    fun createVisit() {
+        visitRepository.createVisitWithVitals(patient, _vitalsUiState.value).subscribe { result ->
+            when (result) {
+                is Result.Success -> {
+                    _createVisitResultUiState.value = CreateVisitResultUiState.Success
+                }
+
+                is Result.Loading -> {
+                    _createVisitResultUiState.value = CreateVisitResultUiState.Loading
+                }
+
+                is Result.Error -> {
+                    _createVisitResultUiState.value = CreateVisitResultUiState.Error
+                }
+            }
+        }
     }
 
     private fun hardcodeBloodPressureBluetoothData() {

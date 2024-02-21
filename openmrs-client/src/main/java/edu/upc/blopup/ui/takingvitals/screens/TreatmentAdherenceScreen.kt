@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -35,25 +36,38 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.CheckTreatment
+import edu.upc.blopup.ui.takingvitals.CreateVisitResultUiState
 import edu.upc.sdk.library.models.Treatment
 
 @Composable
 fun TreatmentAdherenceScreen(
-    saveVisitAndFinishActivity: () -> Unit,
+    setResultAndFinish: () -> Unit,
+    createVisit: () -> Unit,
+    createVisitResultUiState: CreateVisitResultUiState,
     treatments: List<Treatment>,
     treatmentAdherence: ((List<CheckTreatment>) -> Unit)
 ) {
+    when(createVisitResultUiState) {
+        CreateVisitResultUiState.Loading -> {}
+        CreateVisitResultUiState.Error -> {}
+        CreateVisitResultUiState.Success -> { setResultAndFinish() }
+    }
+
     if (treatments.isNotEmpty()) {
-        TreatmentAdherence(treatments, saveVisitAndFinishActivity, treatmentAdherence)
+        TreatmentAdherence(setResultAndFinish, createVisit, createVisitResultUiState, treatments, treatmentAdherence)
     } else {
-        LaunchedEffect(true) { saveVisitAndFinishActivity() }
+        LaunchedEffect(true) {
+            createVisit()
+        }
     }
 }
 
 @Composable
 fun TreatmentAdherence(
+    setResultAndFinish: () -> Unit,
+    createVisit: () -> Unit,
+    createVisitResultUiState: CreateVisitResultUiState,
     treatments: List<Treatment>,
-    saveVisitAndFinishActivity: () -> Unit,
     treatmentAdherence: (List<CheckTreatment>) -> Unit
 ) {
     val treatmentOptions = getTreatmentOptions(treatments)
@@ -99,7 +113,7 @@ fun TreatmentAdherence(
         }
         OrangeButton(R.string.finalise_treatment, {
             treatmentAdherence(treatmentOptions)
-            saveVisitAndFinishActivity()
+            createVisit()
         }, true)
     }
 }
@@ -153,8 +167,8 @@ fun getTreatmentOptions(treatments: List<Treatment>): List<CheckTreatment> {
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun TreatmentAdherencePreview() {
-    TreatmentAdherence(emptyList(), {}, {})
-}
+//@Preview(showSystemUi = true)
+//@Composable
+//fun TreatmentAdherencePreview() {
+//    TreatmentAdherence(emptyList(), {}, {})
+//}
