@@ -14,8 +14,6 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import android.os.AsyncTask;
-
 import androidx.annotation.NonNull;
 
 import org.joda.time.Instant;
@@ -53,6 +51,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -270,19 +269,19 @@ public class VisitRepository extends BaseRepository {
 
         AtomicReference<Result<Boolean>> result = new AtomicReference<>();
 
-        encounterRepository.saveEncounter(encounterCreate).subscribe(
-                response -> {
-                    if (response instanceof Result.Error) {
-                        AsyncTask.execute(() -> {
-                            try {
-                                deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
-                            } catch (IOException exception) {
-                                logger.e("Error deleting visit after failed encounter creation: " + exception.getMessage());
+        encounterRepository.saveEncounter(encounterCreate)
+                .observeOn(Schedulers.io())
+                .subscribe(
+                        response -> {
+                            if (response instanceof Result.Error) {
+                                try {
+                                    deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
+                                } catch (IOException exception) {
+                                    logger.e("Error deleting visit after failed encounter creation: " + exception.getMessage());
+                                }
                             }
+                            result.set(response);
                         });
-                    }
-                    result.set(response);
-                });
         return Observable.just(result.get());
     }
 }

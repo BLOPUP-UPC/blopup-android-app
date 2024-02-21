@@ -228,8 +228,6 @@ public class VisitRepositoryTest {
 
         visitRepository.createVisitWithVitals(patient, vitals);
 
-        Thread.sleep(5);
-
         verify(restApi).startVisit(any());
         verify(encounterRepository).saveEncounter(any());
         verify(restApi).deleteVisit(any());
