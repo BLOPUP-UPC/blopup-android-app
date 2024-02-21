@@ -67,18 +67,18 @@ class VitalsActivity : ComponentActivity() {
             val treatments = viewModel.fetchActiveTreatment()
             setContent {
 
+                val navigationController = rememberNavController()
+
                 var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
                 var isDataScreen by remember { mutableStateOf(false) }
                 val createVisitResultUiState by viewModel.createVisitResultUiState.collectAsState()
 
 
                 Scaffold(
-                    topBar = { AppToolBarWithMenu(stringResource(topBarTitle), isDataScreen) },
+                    topBar = { AppToolBarWithMenu(stringResource(topBarTitle), isDataScreen, onBackAction = { navigationController.popBackStack() }) },
                 ) { innerPadding ->
 
-                    val navigationController = rememberNavController()
                     val uiState by viewModel.vitalsUiState.collectAsState()
-                    val showDialogUiState by viewModel.showDialogState.collectAsState()
                     val navBackStackEntry by navigationController.currentBackStackEntryAsState()
                     var showAlertDialog by remember { mutableStateOf(false)}
 
@@ -131,9 +131,7 @@ class VitalsActivity : ComponentActivity() {
                             BloodPressureDataScreen(
                                 { navigationController.navigate(Routes.MeasureWeightScreen.id) },
                                 navigationController::popBackStack,
-                                uiState,
-                                showDialogUiState,
-                                viewModel::setShowDialogState
+                                uiState
                             )
                         }
                         composable(Routes.MeasureWeightScreen.id) {
@@ -152,9 +150,7 @@ class VitalsActivity : ComponentActivity() {
                             WeightDataScreen(
                                 { navigationController.navigate(Routes.MeasureHeightScreen.id) },
                                 navigationController::popBackStack,
-                                uiState,
-                                showDialogUiState,
-                                viewModel::setShowDialogState
+                                uiState
                             )
                         }
                         composable(Routes.MeasureHeightScreen.id) {

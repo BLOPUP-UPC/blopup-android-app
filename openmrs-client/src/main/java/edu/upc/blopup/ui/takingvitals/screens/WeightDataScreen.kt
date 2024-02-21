@@ -16,7 +16,7 @@ import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 
 @Composable
-fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: MutableList<Vital>, showDialog: Boolean, onShowDialogChange: (Boolean) -> Unit) {
+fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: MutableList<Vital>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -25,7 +25,7 @@ fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: M
     ) {
         DataReceivedSuccessfully()
         WeighDataCard(vitals)
-        NavigationButtons(onClickNext, onClickBack, showDialog, onShowDialogChange)
+        NavigationButtons(onClickNext, onClickBack)
     }
 }
 

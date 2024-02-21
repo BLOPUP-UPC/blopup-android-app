@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.takingvitals
 
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -22,11 +21,9 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import rx.Observable
 import javax.inject.Inject
 import kotlin.jvm.optionals.getOrNull
 
@@ -60,17 +57,10 @@ open class VitalsViewModel @Inject constructor(
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
-    private val _showDialogState = MutableStateFlow(false)
-    var showDialogState: StateFlow<Boolean> = _showDialogState.asStateFlow()
-
     private val _createVisitResultUiState: MutableStateFlow<CreateVisitResultUiState> =
         MutableStateFlow(CreateVisitResultUiState.Loading)
     var createVisitResultUiState: StateFlow<CreateVisitResultUiState> =
         _createVisitResultUiState.asStateFlow()
-
-    fun setShowDialogState(showDialog: Boolean) {
-        _showDialogState.value = showDialog
-    }
 
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
         val treatmentAdherenceInfo = checkTreatmentList.map {

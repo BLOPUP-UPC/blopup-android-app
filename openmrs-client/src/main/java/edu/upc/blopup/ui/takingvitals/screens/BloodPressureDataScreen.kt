@@ -24,9 +24,7 @@ import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIE
 fun BloodPressureDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
-    vitals: MutableList<Vital>,
-    showDialogUiState: Boolean,
-    onShowDialogChange: (Boolean) -> Unit
+    vitals: MutableList<Vital>
     ) {
     Column(
         modifier = Modifier
@@ -36,7 +34,7 @@ fun BloodPressureDataScreen(
     ) {
         DataReceivedSuccessfully()
         BloodPressureDataCards(vitals)
-        NavigationButtons(onClickNext, onClickBack, showDialogUiState, onShowDialogChange)
+        NavigationButtons(onClickNext, onClickBack)
     }
 
 }

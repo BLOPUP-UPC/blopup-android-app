@@ -1,7 +1,6 @@
 package edu.upc.blopup.ui.takingvitals.screens
 
 import android.content.Intent
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -29,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.openmrs.activities.community.contact.AboutActivity
@@ -40,10 +38,8 @@ import edu.upc.sdk.library.OpenmrsAndroid
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AppToolBarWithMenu(title: String, isDataScreen: Boolean) {
+fun AppToolBarWithMenu(title: String, isDataScreen: Boolean, onBackAction: () -> Unit) {
     val show = remember { mutableStateOf(false) }
-    val activity = (LocalContext.current as? ComponentActivity)
-
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorResource(R.color.dark_teal),
@@ -62,7 +58,7 @@ fun AppToolBarWithMenu(title: String, isDataScreen: Boolean) {
                         if(isDataScreen) {
                             show.value = true
                         } else {
-                            activity?.onBackPressedDispatcher?.onBackPressed()
+                            onBackAction()
                         }
                     }
                     .padding(horizontal = 16.dp)
@@ -75,7 +71,7 @@ fun AppToolBarWithMenu(title: String, isDataScreen: Boolean) {
     VitalsDialog(
         show = show.value,
         onDismiss = { show.value = false},
-        onConfirm = { show.value = false; activity?.onBackPressedDispatcher?.onBackPressed() }
+        onConfirm = { show.value = false; onBackAction() }
     )
 }
 
@@ -158,11 +154,11 @@ fun OptionsMenu() {
     }
 }
 
-@Preview
-@Composable
-fun AppToolBarWithMenuPreview() {
-    AppToolBarWithMenu(
-        title = "Blood Pressure",
-        isDataScreen = false,
-    )
-}
+//@Preview
+//@Composable
+//fun AppToolBarWithMenuPreview() {
+//    AppToolBarWithMenu(
+//        title = "Blood Pressure",
+//        isDataScreen = false,
+//    )
+//}
