@@ -1,7 +1,6 @@
 package edu.upc.blopup.ui.takingvitals
 
 import android.Manifest
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -167,7 +166,7 @@ class VitalsActivity : ComponentActivity() {
                             isDataScreen = false
 
                             TreatmentAdherenceScreen(
-                                ::setResultAndFinish,
+                                { setResultAndFinish(it) },
                                 viewModel::createVisit,
                                 createVisitResultUiState,
                                 treatments
@@ -204,8 +203,8 @@ class VitalsActivity : ComponentActivity() {
         }
     }
 
-    private fun setResultAndFinish() {
-        setResult(Activity.RESULT_OK)
+    private fun setResultAndFinish(result: Int) {
+        setResult(result)
         finish()
     }
 }

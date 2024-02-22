@@ -32,7 +32,7 @@ open class VitalsViewModel @Inject constructor(
     private val readBloodPressureRepository: ReadBloodPressureRepository,
     private val readScaleRepository: ReadScaleRepository,
     private val visitRepository: VisitRepository,
-    private val patientDAO: PatientDAO,
+    patientDAO: PatientDAO,
     private val treatmentRepository: TreatmentRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -57,9 +57,9 @@ open class VitalsViewModel @Inject constructor(
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
-    private val _createVisitResultUiState: MutableStateFlow<CreateVisitResultUiState> =
-        MutableStateFlow(CreateVisitResultUiState.Loading)
-    var createVisitResultUiState: StateFlow<CreateVisitResultUiState> =
+    private val _createVisitResultUiState: MutableStateFlow<ResultUiState> =
+        MutableStateFlow(ResultUiState.Loading)
+    var createVisitResultUiState: StateFlow<ResultUiState> =
         _createVisitResultUiState.asStateFlow()
 
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
@@ -140,18 +140,19 @@ open class VitalsViewModel @Inject constructor(
         visitRepository.getLatestVisitWithHeight(patientId).getOrNull()?.getLatestHeight() ?: ""
 
     fun createVisit() {
+        _createVisitResultUiState.value = ResultUiState.Loading
         visitRepository.createVisitWithVitals(patient, _vitalsUiState.value).subscribe { result ->
             when (result) {
                 is Result.Success -> {
-                    _createVisitResultUiState.value = CreateVisitResultUiState.Success
+                    _createVisitResultUiState.value = ResultUiState.Success(Unit)
                 }
 
                 is Result.Loading -> {
-                    _createVisitResultUiState.value = CreateVisitResultUiState.Loading
+                    _createVisitResultUiState.value = ResultUiState.Loading
                 }
 
                 is Result.Error -> {
-                    _createVisitResultUiState.value = CreateVisitResultUiState.Error
+                    _createVisitResultUiState.value = ResultUiState.Error
                 }
             }
         }

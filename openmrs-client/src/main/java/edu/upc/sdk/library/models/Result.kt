@@ -18,6 +18,7 @@ sealed class Result<out T> {
 
 }
 
+@Deprecated("Avoid using Operation Type")
 enum class OperationType {
     GeneralOperation,
     PatientRegistering,
@@ -27,6 +28,7 @@ enum class OperationType {
     PatientVisitStarting,
     TreatmentUpdated}
 
+@Deprecated("Use ResultUiState instead")
 enum class ResultType {
     PatientUpdateSuccess,
     PatientUpdateLocalSuccess,

@@ -1,5 +1,6 @@
 package edu.upc.blopup.ui.takingvitals.screens
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,25 +36,29 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.CheckTreatment
-import edu.upc.blopup.ui.takingvitals.CreateVisitResultUiState
+import edu.upc.blopup.ui.takingvitals.ResultUiState
 import edu.upc.sdk.library.models.Treatment
 
 @Composable
 fun TreatmentAdherenceScreen(
-    setResultAndFinish: () -> Unit,
+    setResultAndFinish: (Int) -> Unit,
     createVisit: () -> Unit,
-    createVisitResultUiState: CreateVisitResultUiState,
+    createVisitResultUiState: ResultUiState,
     treatments: List<Treatment>,
     treatmentAdherence: ((List<CheckTreatment>) -> Unit)
 ) {
     when(createVisitResultUiState) {
-        CreateVisitResultUiState.Loading -> {}
-        CreateVisitResultUiState.Error -> {}
-        CreateVisitResultUiState.Success -> { setResultAndFinish() }
+        ResultUiState.Loading -> { LoadingSpinner() }
+        ResultUiState.Error -> {
+            ErrorDialog(show = createVisitResultUiState is ResultUiState.Error,
+                onDismiss = {  setResultAndFinish(Activity.RESULT_CANCELED) },
+                onConfirm = {  createVisit();})
+        }
+        is ResultUiState.Success<*> -> { setResultAndFinish(Activity.RESULT_OK) }
     }
 
     if (treatments.isNotEmpty()) {
-        TreatmentAdherence(setResultAndFinish, createVisit, createVisitResultUiState, treatments, treatmentAdherence)
+        TreatmentAdherence(treatments,createVisit, treatmentAdherence)
     } else {
         LaunchedEffect(true) {
             createVisit()
@@ -64,10 +68,8 @@ fun TreatmentAdherenceScreen(
 
 @Composable
 fun TreatmentAdherence(
-    setResultAndFinish: () -> Unit,
-    createVisit: () -> Unit,
-    createVisitResultUiState: CreateVisitResultUiState,
     treatments: List<Treatment>,
+    createVisit: () -> Unit,
     treatmentAdherence: (List<CheckTreatment>) -> Unit
 ) {
     val treatmentOptions = getTreatmentOptions(treatments)
@@ -167,8 +169,8 @@ fun getTreatmentOptions(treatments: List<Treatment>): List<CheckTreatment> {
     }
 }
 
-//@Preview(showSystemUi = true)
-//@Composable
-//fun TreatmentAdherencePreview() {
-//    TreatmentAdherence(emptyList(), {}, {})
-//}
+@Preview(showSystemUi = true)
+@Composable
+fun TreatmentAdherencePreview() {
+    TreatmentAdherence(emptyList(), {}, {})
+}

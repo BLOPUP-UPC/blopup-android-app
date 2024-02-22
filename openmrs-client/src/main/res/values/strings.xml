@@ -431,5 +431,7 @@
     <string name="skip_for_now_button" tools:ignore="MissingTranslation">Skip for now</string>
     <string name="go_back" tools:ignore="MissingTranslation">Go back</string>
     <string name="next" tools:ignore="MissingTranslation">Next</string>
+    <string name="visit_start_error_dialog_message" tools:ignore="MissingTranslation">An error occurred. \nPlease click on Retry to try again.\nClick on Cancel to abort the operation.</string>
+    <string name="retry" tools:ignore="MissingTranslation">Retry</string>
     />
 </resources>

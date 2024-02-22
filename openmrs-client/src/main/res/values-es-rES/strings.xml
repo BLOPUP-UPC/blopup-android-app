@@ -287,4 +287,6 @@
     <string name="skip_for_now_button">Saltar</string>
     <string name="go_back">Atrás</string>
     <string name="next">Continuar</string>/>
+    <string name="visit_start_error_dialog_message">Ha habido un error. \nHaga click en reintentar para repetir la operación. \n Haga click en cancelar para abortar la operación.</string>
+    <string name="retry">Reintentar</string>
 </resources>
