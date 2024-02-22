@@ -305,7 +305,7 @@
     <string name="remove_vitals" tools:ignore="MissingTranslation">Remove Vitals</string>
     <string name="end_vitals_dialog_message" tools:ignore="MissingTranslation">Yes, cancel</string>
     <string name="keep_vitals_dialog_message" tools:ignore="MissingTranslation">No, continue</string>
-    <string name="cancel_vitals_dialog_message" tools:ignore="MissingTranslation">If you cancel the vitals recording, the medical visit will also be canceled. Do you want to proceed?</string>
+    <string name="cancel_vitals_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to go back? The data will be lost.</string>
     <string name="visit_cancel" tools:ignore="MissingTranslation">The visit has been cancelled</string>
     <string name="record_legal_consent_u" tools:ignore="MissingTranslation"><u>Record legal consent</u></string>
     <string name="record_legal_consent" tools:ignore="MissingTranslation">Record legal consent</string>

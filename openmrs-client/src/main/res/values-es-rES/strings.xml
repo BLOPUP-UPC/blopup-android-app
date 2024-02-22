@@ -194,7 +194,7 @@
     <string name="remove_vitals">Eliminar Vitales</string>
     <string name="end_vitals_dialog_message">Si, cancelar</string>
     <string name="keep_vitals_dialog_message">No, conservar</string>
-    <string name="cancel_vitals_dialog_message">Al cancelar la toma de signos vitales, también se anulara la visita médica. Desea proceder con la cancelación de los vitales?</string>
+    <string name="cancel_vitals_dialog_message">¿Estás seguro que deseas voler? Se perderan los datos.</string>
     <string name="visit_cancel">La visita ha sido cancelada</string>
     <string name="record_legal_consent_u"><u>Grabar consentimiento</u></string>
     <string name="record_legal_consent">Grabar consentimiento</string>
