@@ -284,9 +284,10 @@
     <string name="how_to_activate_bluetooth_three">por 5–6 segundos hasta que la  \u0020</string>/>
     <string name="how_to_activate_bluetooth_four">SEÑAL DE BLUETOOTH \u0020</string>/>
     <string name="how_to_activate_bluetooth_five">arriba comience a parpadear.\n\nEl dispositivo tomará 3 mediciones antes de enseñar el resultado en la aplicación.</string>
-    <string name="skip_for_now_button">Saltar</string>
     <string name="go_back">Atrás</string>
     <string name="next">Continuar</string>/>
-    <string name="visit_start_error_dialog_message">Ha habido un error. \nHaga click en reintentar para repetir la operación. \n Haga click en cancelar para abortar la operación.</string>
+    <string name="visit_start_error_dialog_message">Ha habido un error. \nHaga click en REINTENTAR para repetir la operación. \n Haga click en CANCELAR para abortar la operación.</string>
     <string name="retry">Reintentar</string>
+    <string name="data_received_successfully"> Datos recibidos con éxito.</string>
+
 </resources>

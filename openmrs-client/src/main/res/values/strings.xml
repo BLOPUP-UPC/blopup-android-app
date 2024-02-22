@@ -428,10 +428,10 @@
     <string name="how_to_activate_bluetooth_three" tools:ignore="MissingTranslation">for 5–6 seconds until the \u0020</string>
     <string name="how_to_activate_bluetooth_four" tools:ignore="MissingTranslation">BLUETOOTH SYMBOL \u0020</string>
     <string name="how_to_activate_bluetooth_five" tools:ignore="MissingTranslation">at the top starts flashing.\n\nThe device will take 3 measurements in a row before giving you a result in the app. </string>
-    <string name="skip_for_now_button" tools:ignore="MissingTranslation">Skip for now</string>
     <string name="go_back" tools:ignore="MissingTranslation">Go back</string>
     <string name="next" tools:ignore="MissingTranslation">Next</string>
-    <string name="visit_start_error_dialog_message" tools:ignore="MissingTranslation">An error occurred. \nPlease click on Retry to try again.\nClick on Cancel to abort the operation.</string>
+    <string name="visit_start_error_dialog_message" tools:ignore="MissingTranslation">An error occurred. \nPlease click on RETRY to try again.\nClick on CANCEL to abort the operation.</string>
     <string name="retry" tools:ignore="MissingTranslation">Retry</string>
+    <string name="data_received_successfully" tools:ignore="MissingTranslation">Data received successfully.</string>
     />
 </resources>

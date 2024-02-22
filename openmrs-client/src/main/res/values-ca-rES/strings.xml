@@ -193,7 +193,7 @@
     <string name="remove_vitals">Eliminar Vitals</string>
     <string name="end_vitals_dialog_message">Si, cancel·la</string>
     <string name="keep_vitals_dialog_message">No, mantingues</string>
-    <string name="cancel_vitals_dialog_message">Estàs segur que vols voler? Es perdran les dades.</string>
+    <string name="cancel_vitals_dialog_message">Estàs segur que vols sortir? Es perdran les dades.</string>
     <string name="visit_cancel">La visita ha estat cancel·lada</string>
     <string name="record_legal_consent_u"><u>Gravar consentiment</u></string>
     <string name="record_legal_consent">Gravar consentiment</string>
@@ -284,9 +284,10 @@
     <string name="how_to_activate_bluetooth_three">per 5–6 segons fins que la  \u0020</string>/>
     <string name="how_to_activate_bluetooth_four">SENYAL DE BLUETOOTH \u0020</string>/>
     <string name="how_to_activate_bluetooth_five">a dalt comenceu a parpellejar.\n\nEl dispositiu prendrà 3 mesures abans d\'ensenyar el resultat a l\'aplicació.</string>
-    <string name="skip_for_now_button">Saltar</string>
-    <string name="go_back">Torna</string>
-    <string name="next">Pròxim</string>/>
-    <string name="visit_start_error_dialog_message">Hi ha hagut un error. \nFaci click a reintentar per repetir l\'operació. \n Faci click a cancel·lar per a abortar l\'operació.</string>
+    <string name="go_back">Enrere</string>
+    <string name="next">Següent</string>/>
+    <string name="visit_start_error_dialog_message">Hi ha hagut un error. \nFaci click a REINTENTAR per repetir l\'operació. \n Faci click a CANCEL·LAR per a abortar l\'operació.</string>
     <string name="retry">Reintentar</string>
+    <string name="data_received_successfully">Dades rebudes amb èxit.</string>
+
 </resources>

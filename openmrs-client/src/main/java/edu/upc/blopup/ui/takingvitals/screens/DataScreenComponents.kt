@@ -46,7 +46,7 @@ fun DataReceivedSuccessfully() {
             contentDescription = "Large white tick in a green circle."
         )
         Text(
-            "Data Received Successfully.",
+            stringResource(R.string.data_received_successfully),
             fontSize = TextUnit(20F, TextUnitType.Sp),
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 10.dp)
