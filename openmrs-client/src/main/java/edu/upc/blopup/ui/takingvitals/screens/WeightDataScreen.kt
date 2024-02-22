@@ -23,9 +23,11 @@ fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: M
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         DataReceivedSuccessfully()
         WeighDataCard(vitals)
         NavigationButtons(onClickNext, onClickBack)
+        OnBackPressButtonConfirmDialog(onClickBack)
     }
 }
 
@@ -33,7 +35,9 @@ fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: M
 @Composable
 fun WeighDataCard(vitals: MutableList<Vital>) {
     VitalsDataCard(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp),
         icon = ImageVector.vectorResource(id = R.drawable.scale_icon),
         contentDescription = "Scale icon" ,
         title = stringResource(id = R.string.weight_value_label),

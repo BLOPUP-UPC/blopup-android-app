@@ -1,5 +1,6 @@
 package edu.upc.blopup.ui.takingvitals.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -132,4 +133,17 @@ fun NavigationButtons(onClickNext: () -> Unit, onClickBack: () -> Unit) {
         onDismiss = { show = false },
         onConfirm = onClickBack
     )
+}
+
+@Composable
+fun OnBackPressButtonConfirmDialog(onClickBack: () -> Unit){
+    var showAlertDialog by remember { mutableStateOf(false)}
+    BackHandler{
+        showAlertDialog = true
+    }
+
+    if(showAlertDialog){
+        VitalsDialog(show = true, onDismiss = { showAlertDialog = false },
+            onConfirm = { showAlertDialog = false ; onClickBack() })
+    }
 }

@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -24,7 +23,6 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
@@ -36,7 +34,6 @@ import edu.upc.blopup.ui.takingvitals.screens.MeasureBloodPressureScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
-import edu.upc.blopup.ui.takingvitals.screens.VitalsDialog
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
 import kotlinx.coroutines.launch
 
@@ -74,28 +71,19 @@ class VitalsActivity : ComponentActivity() {
 
 
                 Scaffold(
-                    topBar = { AppToolBarWithMenu(stringResource(topBarTitle), isDataScreen, onBackAction = { navigationController.popBackStack() }) },
+                    topBar = {
+                        AppToolBarWithMenu(
+                            stringResource(topBarTitle),
+                            isDataScreen,
+                            onBackAction = {
+                                if (!navigationController.popBackStack()) {
+                                    finish()
+                                }
+                            })
+                    },
                 ) { innerPadding ->
 
                     val uiState by viewModel.vitalsUiState.collectAsState()
-                    val navBackStackEntry by navigationController.currentBackStackEntryAsState()
-                    var showAlertDialog by remember { mutableStateOf(false)}
-
-                    val isBPorWeightDataScreen = navBackStackEntry?.destination?.route == Routes.BloodPressureDataScreen.id
-                            || navBackStackEntry?.destination?.route == Routes.WeightDataScreen.id
-
-                    if(isBPorWeightDataScreen) {
-                        BackHandler{
-                            showAlertDialog = true
-                        }
-                    }
-
-                    if(showAlertDialog){
-                        VitalsDialog(show = true, onDismiss = { showAlertDialog = false },
-                            onConfirm = {
-                                showAlertDialog = false; navigationController.popBackStack()
-                            })
-                    }
 
                     NavHost(
                         navController = navigationController,

@@ -35,6 +35,7 @@ fun BloodPressureDataScreen(
         DataReceivedSuccessfully()
         BloodPressureDataCards(vitals)
         NavigationButtons(onClickNext, onClickBack)
+        OnBackPressButtonConfirmDialog(onClickBack)
     }
 
 }
