@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.vitalsform.Vital
@@ -39,12 +42,12 @@ fun BloodPressureDataScreen(
             OnBackPressButtonConfirmDialog(onClickBack)
         } else {
                 LoadingSpinner()
-//                Text(
-//                    text = stringResource(R.string.waiting_for_data),
-//                    modifier = Modifier
-//                        .align(Alignment.CenterHorizontally)
-//                        .padding(70.dp)
-//                )
+                Text(
+                    text = stringResource(R.string.waiting_for_data),
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(70.dp)
+                )
         }
     }
 
@@ -81,12 +84,11 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
 }
 
 
-//@Preview
-//@Composable
-//fun BloodPressureDataScreenPreview(@PreviewParameter(DataScreenParameters::class,1) vitals: MutableList<Vital>) {
-//    BloodPressureDataScreen(
-//        {},
-//        {},
-//        vitals,
-//        { viewModel.showDialogState }) { viewModel.setShowDialogState(false) }
-//}
+@Preview
+@Composable
+fun BloodPressureDataScreenPreview(@PreviewParameter(DataScreenParameters::class,1) vitals: MutableList<Vital>) {
+    BloodPressureDataScreen(
+        {},
+        {},
+        vitals)
+}
