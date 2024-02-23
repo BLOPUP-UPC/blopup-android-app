@@ -34,9 +34,13 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -79,8 +83,10 @@ class VitalsViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         testPatient = Patient().apply {
             id = patientId
             uuid = "patientUuid"
@@ -117,19 +123,21 @@ class VitalsViewModelTest {
             readBloodPressureRepository.disconnect()
         } answers {}
 
-        viewModel.receiveBloodPressureData()
-
         val expectedResult = mutableListOf(
             Vital(SYSTOLIC_FIELD_CONCEPT, "120"),
             Vital(DIASTOLIC_FIELD_CONCEPT, "80"),
             Vital(HEART_RATE_FIELD_CONCEPT, "70")
         )
 
-        val result = viewModel.vitalsUiState.first()
+        runBlocking {
+            viewModel.receiveBloodPressureData()
 
-        assertEquals(expectedResult, result)
+            val result = viewModel.vitalsUiState.first()
 
-        verify { readBloodPressureRepository.disconnect() }
+            assertEquals(expectedResult, result)
+            coVerify { readBloodPressureRepository.disconnect() }
+        }
+
     }
 
     @Test
@@ -224,8 +232,8 @@ class VitalsViewModelTest {
         every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
         every { visitRepository.startVisit(testPatient) } returns Observable.just(visit)
         every {
-                visitRepository.createVisitWithVitals(testPatient, viewModel.vitalsUiState.value)
-              } returns Observable.just(Result.Success(true))
+            visitRepository.createVisitWithVitals(testPatient, viewModel.vitalsUiState.value)
+        } returns Observable.just(Result.Success(true))
 
         viewModel.createVisit()
 
@@ -242,7 +250,9 @@ class VitalsViewModelTest {
         val treatment = TreatmentExample.activeTreatment().apply { treatmentUuid = "treatmentUuid" }
         val treatmentList = listOf(treatment)
 
-        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.success(treatmentList)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.success(
+            treatmentList
+        )
 
 
         runBlocking {
@@ -268,13 +278,23 @@ class VitalsViewModelTest {
             CheckTreatment("Ibuprofen", setOf(MedicationType.ARA_II), false, {}, treatmentIdTwo),
         )
 
-        coEvery { treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, testPatient.uuid!!) } returns kotlin.Result.success(true)
+        coEvery {
+            treatmentRepository.saveTreatmentAdherence(
+                treatmentAdherenceInfo,
+                testPatient.uuid!!
+            )
+        } returns kotlin.Result.success(true)
 
 
         runBlocking {
-            viewModel.addTreatmentAdherence( checkTreatmentList )
+            viewModel.addTreatmentAdherence(checkTreatmentList)
 
-            coVerify { treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, testPatient.uuid!!) }
+            coVerify {
+                treatmentRepository.saveTreatmentAdherence(
+                    treatmentAdherenceInfo,
+                    testPatient.uuid!!
+                )
+            }
 
         }
     }

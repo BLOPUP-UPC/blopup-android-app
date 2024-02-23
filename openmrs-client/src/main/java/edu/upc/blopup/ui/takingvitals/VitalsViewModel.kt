@@ -1,9 +1,11 @@
 package edu.upc.blopup.ui.takingvitals
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
@@ -24,6 +26,7 @@ import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.jvm.optionals.getOrNull
 
@@ -100,30 +103,33 @@ open class VitalsViewModel @Inject constructor(
     fun receiveBloodPressureData() {
         hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeBloodPressureBluetoothData() })
 
-        readBloodPressureRepository.start(
-            { state: ConnectionViewState -> _connectionViewState.postValue(state) },
-            { state: BloodPressureViewState ->
-                _bpViewState.postValue(state)
-                if (state is BloodPressureViewState.Content) {
-                    _vitalsUiState.value =
-                        mutableListOf(
-                            Vital(
-                                ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                                state.measurement.systolic.toString()
-                            ),
-                            Vital(
-                                ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                                state.measurement.diastolic.toString()
-                            ),
-                            Vital(
-                                ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                                state.measurement.heartRate.toString()
+        viewModelScope.launch {
+            readBloodPressureRepository.start(
+                { state: ConnectionViewState -> _connectionViewState.postValue(state) },
+                { state: BloodPressureViewState ->
+                    _bpViewState.postValue(state)
+                    if (state is BloodPressureViewState.Content) {
+                        _vitalsUiState.value =
+                            mutableListOf(
+                                Vital(
+                                    ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                                    state.measurement.systolic.toString()
+                                ),
+                                Vital(
+                                    ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                                    state.measurement.diastolic.toString()
+                                ),
+                                Vital(
+                                    ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                                    state.measurement.heartRate.toString()
+                                )
                             )
-                        )
+                    }
+                    Log.i("VitalsViewModel", "Disconnected")
+                    readBloodPressureRepository.disconnect()
                 }
-                readBloodPressureRepository.disconnect()
-            }
-        )
+            )
+        }
     }
 
     fun saveHeight(height: String) {
