@@ -289,5 +289,6 @@
     <string name="visit_start_error_dialog_message">Hi ha hagut un error. \nFaci click a REINTENTAR per repetir l\'operació. \n Faci click a CANCEL·LAR per a abortar l\'operació.</string>
     <string name="retry">Reintentar</string>
     <string name="data_received_successfully">Dades rebudes amb èxit.</string>
+    <string name="waiting_for_data">Esperant rebre dades…</string>
 
 </resources>

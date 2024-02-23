@@ -433,5 +433,6 @@
     <string name="visit_start_error_dialog_message" tools:ignore="MissingTranslation">An error occurred. \nPlease click on RETRY to try again.\nClick on CANCEL to abort the operation.</string>
     <string name="retry" tools:ignore="MissingTranslation">Retry</string>
     <string name="data_received_successfully" tools:ignore="MissingTranslation">Data received successfully.</string>
+    <string name="waiting_for_data" tools:ignore="MissingTranslation">Waiting for data…</string>
     />
 </resources>

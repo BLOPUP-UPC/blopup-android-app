@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,21 +25,27 @@ fun BloodPressureDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
     vitals: MutableList<Vital>
-    ) {
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        DataReceivedSuccessfully()
         if (vitals.find { it.concept == SYSTOLIC_FIELD_CONCEPT } != null) {
+            DataReceivedSuccessfully()
             BloodPressureDataCards(vitals)
+            NavigationButtons(onClickNext, onClickBack)
+            OnBackPressButtonConfirmDialog(onClickBack)
         } else {
-            Text(text = "No tenemos datos aun")
+                LoadingSpinner()
+//                Text(
+//                    text = stringResource(R.string.waiting_for_data),
+//                    modifier = Modifier
+//                        .align(Alignment.CenterHorizontally)
+//                        .padding(70.dp)
+//                )
         }
-        NavigationButtons(onClickNext, onClickBack)
-        OnBackPressButtonConfirmDialog(onClickBack)
     }
 
 }

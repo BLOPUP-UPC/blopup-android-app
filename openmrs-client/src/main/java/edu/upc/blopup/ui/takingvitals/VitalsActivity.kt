@@ -136,7 +136,10 @@ class VitalsActivity : ComponentActivity() {
 
                             WeightDataScreen(
                                 { navigationController.navigate(Routes.MeasureHeightScreen.id) },
-                                navigationController::popBackStack,
+                                {
+                                    navigationController.popBackStack()
+                                    viewModel.removeWeightData()
+                                },
                                 uiState
                             )
                         }

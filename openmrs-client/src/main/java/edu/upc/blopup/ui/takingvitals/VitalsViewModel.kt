@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.takingvitals
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -90,7 +89,6 @@ open class VitalsViewModel @Inject constructor(
                 if (state is ScaleViewState.Content) {
                     val copy = _vitalsUiState.value.toMutableList()
 
-                    copy.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
                     copy.add(
                         Vital(
                             ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
@@ -105,6 +103,10 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun disconnect() = readScaleRepository.disconnect()
+
+    fun removeWeightData() {
+        _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
+    }
 
     fun receiveBloodPressureData() {
         hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeBloodPressureBluetoothData() })
@@ -131,7 +133,6 @@ open class VitalsViewModel @Inject constructor(
                                 )
                             )
                     }
-                    Log.i("VitalsViewModel", "Disconnected")
                     readBloodPressureRepository.disconnect()
                 }
             )

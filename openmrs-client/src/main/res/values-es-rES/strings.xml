@@ -289,5 +289,6 @@
     <string name="visit_start_error_dialog_message">Ha habido un error. \nHaga click en REINTENTAR para repetir la operación. \n Haga click en CANCELAR para abortar la operación.</string>
     <string name="retry">Reintentar</string>
     <string name="data_received_successfully"> Datos recibidos con éxito.</string>
+    <string name="waiting_for_data">Esperando recibir datos…</string>
 
 </resources>
