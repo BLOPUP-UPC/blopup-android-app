@@ -84,16 +84,22 @@ open class VitalsViewModel @Inject constructor(
     fun receiveWeightData() {
         hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeWeightData() })
 
-        readScaleRepository.start { state: ScaleViewState ->
-            _scaleViewState.postValue(state)
-            if (state is ScaleViewState.Content) {
-                _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
-                _vitalsUiState.value.add(
-                    Vital(
-                        ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
-                        state.weightMeasurement.weight.toString()
+        viewModelScope.launch {
+            readScaleRepository.start { state: ScaleViewState ->
+                _scaleViewState.postValue(state)
+                if (state is ScaleViewState.Content) {
+                    val copy = _vitalsUiState.value.toMutableList()
+
+                    copy.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
+                    copy.add(
+                        Vital(
+                            ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
+                            state.weightMeasurement.weight.toString()
+                        )
                     )
-                )
+                    _vitalsUiState.value = copy
+                }
+                readScaleRepository.disconnect()
             }
         }
     }

@@ -1,9 +1,11 @@
 package edu.upc.blopup.ui.takingvitals.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +27,12 @@ fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: M
     ) {
 
         DataReceivedSuccessfully()
-        WeighDataCard(vitals)
+        if(vitals.find { it.concept == WEIGHT_FIELD_CONCEPT } != null) {
+            Log.i("WeightDataScreen", "Weight data: $vitals")
+            WeighDataCard(vitals)
+        }  else {
+            Text(text = "No tenemos datos aun")
+        }
         NavigationButtons(onClickNext, onClickBack)
         OnBackPressButtonConfirmDialog(onClickBack)
     }

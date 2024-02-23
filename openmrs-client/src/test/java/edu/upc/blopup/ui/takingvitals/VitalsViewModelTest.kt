@@ -161,15 +161,20 @@ class VitalsViewModelTest {
             readScaleRepository.disconnect()
         } answers {}
 
-        viewModel.receiveWeightData()
-
         val expectedResult = mutableListOf(
             Vital(WEIGHT_FIELD_CONCEPT, "70.0")
         )
 
-        val result = viewModel.vitalsUiState.first()
 
-        assertEquals(expectedResult, result)
+        runBlocking {
+            viewModel.receiveWeightData()
+
+            val result = viewModel.vitalsUiState.first()
+
+            assertEquals(expectedResult, result)
+            coVerify { readScaleRepository.disconnect() }
+
+        }
     }
 
     @Test
