@@ -53,7 +53,6 @@ class SettingsFragment :  BaseFragment() {
         setupContactUsButton()
         setupLanguageSpinner()
 
-        updateLanguageView()
         return binding.root
     }
 
@@ -65,10 +64,6 @@ class SettingsFragment :  BaseFragment() {
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(requireActivity())
-    }
-
-    private fun updateLanguageView() = with(binding) {
-        languageApplyButton.setOnClickListener { requireActivity().recreate() }
     }
 
     private fun addBuildVersionInfo() {

@@ -16,38 +16,14 @@ package edu.upc.openmrs.utilities
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import edu.upc.R
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
 import java.util.Locale
 
 object LanguageUtils {
-
-    @JvmStatic
-    fun getLanguage(): String? {
-        val defaultSharedPref = OpenmrsAndroid.getOpenMRSSharedPreferences()
-        return defaultSharedPref.getString(
-            ApplicationConstants.OpenMRSlanguage.KEY_LANGUAGE_MODE,
-            "en"
-        )
-    }
-
-    @JvmStatic
-    fun setLanguage(language: String?) {
-        val editor = OpenmrsAndroid.getOpenMRSSharedPreferences().edit()
-        editor.putString(ApplicationConstants.OpenMRSlanguage.KEY_LANGUAGE_MODE, language)
-        editor.apply()
-    }
-
-    @JvmStatic
-    fun setupLanguage(resources: Resources) {
-        val myLocale = getLanguage()?.let { Locale(it) }
-        val dm = resources.displayMetrics
-        val conf = resources.configuration
-        conf.locale = myLocale
-        resources.updateConfiguration(conf, dm)
-    }
-
     @JvmStatic
     fun getLocaleStringResource(
         requestedLocale: Locale?,
@@ -78,22 +54,5 @@ object LanguageUtils {
             context.getString(R.string.ukrainian) to "uk",
         )
         return languageMap[language ?: "English"]?.lowercase(currentLocale)
-    }
-
-    @JvmStatic
-    fun setAppToDeviceLanguage(context: Context) {
-        val sharedPreferences = context.getSharedPreferences(ApplicationConstants.OpenMRSSharedPreferenceNames.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-        val isFirstTimeLaunch = sharedPreferences.getBoolean(ApplicationConstants.PREF_FIRST_TIME_LAUNCH, true)
-
-        if (isFirstTimeLaunch) {
-            val deviceLanguage = Locale.getDefault().language
-            val supportedLanguages = setOf("ca", "es", "en")
-
-            if (supportedLanguages.contains(deviceLanguage)) {
-                setLanguage(deviceLanguage)
-                setupLanguage(context.resources)
-            }
-            sharedPreferences.edit().putBoolean(ApplicationConstants.PREF_FIRST_TIME_LAUNCH, false).apply()
-        }
     }
 }

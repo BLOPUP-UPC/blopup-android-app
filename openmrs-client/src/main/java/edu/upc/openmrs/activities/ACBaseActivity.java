@@ -81,7 +81,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LanguageUtils.setupLanguage(getResources());
         mFragmentManager = getSupportFragmentManager();
         mAuthorizationManager = new AuthorizationManager();
         Thread.setDefaultUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler());

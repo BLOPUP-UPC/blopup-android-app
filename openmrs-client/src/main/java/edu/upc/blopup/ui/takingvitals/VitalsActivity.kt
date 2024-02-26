@@ -8,6 +8,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -38,7 +40,7 @@ import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class VitalsActivity : ComponentActivity() {
+class VitalsActivity : AppCompatActivity() {
 
     val viewModel: VitalsViewModel by viewModels()
 

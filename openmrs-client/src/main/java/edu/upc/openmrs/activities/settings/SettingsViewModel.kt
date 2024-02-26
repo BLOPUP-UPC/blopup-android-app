@@ -3,13 +3,17 @@ package edu.upc.openmrs.activities.settings
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.R
 import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_CODE
 import edu.upc.sdk.utilities.ApplicationConstants.PACKAGE_NAME
+import java.util.Locale
 import javax.inject.Inject
+import kotlin.math.max
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -20,18 +24,12 @@ class SettingsViewModel @Inject constructor(
     val appLinkUri: Uri = Uri.parse("http://play.google.com/store/apps/details?id=$PACKAGE_NAME")
     var languageListPosition: Int = 0
         get() {
-            val language = LanguageUtils.getLanguage()
-            var i = 0
-            while (i < LANGUAGE_CODE.size) {
-                if (language == LANGUAGE_CODE[i]) {
-                    return i
-                }
-                i++
-            }
-            return 0
+            val language = AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
+            return max(LANGUAGE_CODE.indexOf(language.country.lowercase()), 0)
         }
         set(position) {
-            LanguageUtils.setLanguage(LANGUAGE_CODE[position])
+            AppCompatDelegate.setApplicationLocales(
+                LocaleListCompat.forLanguageTags(LANGUAGE_CODE[position]))
             field = position
         }
 

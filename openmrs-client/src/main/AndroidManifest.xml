@@ -32,12 +32,13 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
+        android:localeConfig="@xml/locales_config"
         android:theme="@style/AppThemeOrig">
         <activity
             android:name=".blopup.ui.takingvitals.VitalsActivity"
             android:exported="false"
             android:label="@string/title_activity_vitals"
-            android:theme="@style/AppThemeOrig" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".openmrs.activities.community.contact.AboutActivity"
             android:label="@string/action_about_activity"
@@ -143,6 +144,14 @@
         <service
             android:name=".openmrs.services.AuthenticateCheckService"
             android:enabled="true" />
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
 
         <activity
             android:name=".openmrs.activities.patientdashboard.charts.ChartsViewActivity"

@@ -35,7 +35,6 @@ object ApplicationConstants {
     const val BUNDLE = "bundle"
     const val PRIMARY_KEY_ID = "_id"
     const val ABOUT_OPENMRS_URL = "https://openmrs.org/about/"
-    const val PREF_FIRST_TIME_LAUNCH = "first_time_launch"
 
     object OpenMRSSharedPreferenceNames {
         const val SHARED_PREFERENCES_NAME = "shared_preferences"

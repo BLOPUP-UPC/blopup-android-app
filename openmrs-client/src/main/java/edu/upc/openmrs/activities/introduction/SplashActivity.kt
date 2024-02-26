@@ -38,8 +38,6 @@ class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        LanguageUtils.setAppToDeviceLanguage(this)
-
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         val move = AnimationUtils.loadAnimation(applicationContext, R.anim.splash_screen_logo_anim)
         val set = AnimationSet(true)
