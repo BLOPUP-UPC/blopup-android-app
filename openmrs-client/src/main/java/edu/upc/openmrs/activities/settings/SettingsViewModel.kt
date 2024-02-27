@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.R
-import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_CODE
 import edu.upc.sdk.utilities.ApplicationConstants.PACKAGE_NAME
@@ -25,7 +24,7 @@ class SettingsViewModel @Inject constructor(
     var languageListPosition: Int = 0
         get() {
             val language = AppCompatDelegate.getApplicationLocales()[0] ?: Locale.getDefault()
-            return max(LANGUAGE_CODE.indexOf(language.country.lowercase()), 0)
+            return max(LANGUAGE_CODE.indexOf(language.language), 0)
         }
         set(position) {
             AppCompatDelegate.setApplicationLocales(
