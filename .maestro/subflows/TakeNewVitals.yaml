@@ -12,7 +12,8 @@ appId: edu.upc
 - tapOn: "Receive weight data"
 - assertVisible: "Data Received Successfully."
 - tapOn: "Next"
-- tapOn: "Height"
+- longPressOn: "Height"
+- eraseText
 - inputText: "167"
 - hideKeyboard
 - tapOn: "Next"
