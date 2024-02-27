@@ -38,8 +38,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -50,6 +54,8 @@ import java.util.Optional
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
 class VitalsViewModelTest {
+
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @InjectMockKs
     private lateinit var viewModel: VitalsViewModel
@@ -85,7 +91,7 @@ class VitalsViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
-        Dispatchers.setMain(Dispatchers.Unconfined)
+        Dispatchers.setMain(testDispatcher)
         testPatient = Patient().apply {
             id = patientId
             uuid = "patientUuid"
@@ -98,8 +104,16 @@ class VitalsViewModelTest {
         MockKAnnotations.init(this)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `should receive Blood Pressure data`() = runTest {
+    fun `should receive Blood Pressure data`() = testDispatcher.runBlockingTest {
         val measurements = BloodPressureViewState.Content(
             Measurement(
                 120,
@@ -139,8 +153,9 @@ class VitalsViewModelTest {
 
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `should receive Weight data`() = runTest {
+    fun `should receive Weight data`() = testDispatcher.runBlockingTest {
         val weightMeasurement = ScaleViewState.Content(
             WeightMeasurement(
                 70f
