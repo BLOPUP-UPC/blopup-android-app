@@ -1,7 +1,9 @@
 package edu.upc.openmrs.activities.addeditpatient
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,21 +25,20 @@ import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.FileUtils.fileIsCreatedSuccessfully
 import edu.upc.openmrs.utilities.FileUtils.getFileByLanguage
 import edu.upc.openmrs.utilities.FileUtils.getRecordingFilePath
-import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.openmrs.utilities.makeVisible
 import java.util.Locale
 
 @AndroidEntryPoint
 class LegalConsentDialogFragment : DialogFragment() {
 
-    lateinit var legalConsentBinding: LegalConsentBinding
+    private lateinit var legalConsentBinding: LegalConsentBinding
     private lateinit var audioRecorder: AudioRecorder
     private lateinit var recordButton: Button
     private lateinit var playPauseButton: TextView
     private lateinit var stopButton: BottomAppBar
     private lateinit var mFileName: String
 
-    val viewModel: AddEditPatientViewModel by viewModels({requireParentFragment()})
+    val viewModel: AddEditPatientViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,10 +48,14 @@ class LegalConsentDialogFragment : DialogFragment() {
         legalConsentBinding = LegalConsentBinding.inflate(inflater, container, false)
 
         val language = arguments?.getString(ARG_LANGUAGE)
-        val languageCode = context?.let { LanguageUtils.getLanguageCode(language, it) }
+        val languageCode = getLanguageCode(language, requireContext())
 
         getRecordingFilePath().also { mFileName = it }
-        val inputFileId = if (BuildConfig.DEBUG) getFileByLanguage(requireActivity(), TAG, "test") else getFileByLanguage(requireActivity(), TAG, languageCode)
+        val inputFileId = if (BuildConfig.DEBUG) getFileByLanguage(
+            requireActivity(),
+            TAG,
+            "test"
+        ) else getFileByLanguage(requireActivity(), TAG, languageCode)
         audioRecorder = AudioRecorder(
             mFileName,
             requireContext(),
@@ -58,11 +63,28 @@ class LegalConsentDialogFragment : DialogFragment() {
         )
 
         setLegalConsentWordingLanguage(languageCode!!)
-        styleLegalConsentIntro(language!!)
+        styleLegalConsentIntro()
         setupButtons()
         listenForPlayCompletion()
         isCancelableWhenNotRecording()
         return legalConsentBinding.root
+    }
+
+    private fun getLanguageCode(language: String?, context: Context): String? {
+        val currentLocale = Locale.getDefault()
+        val languageMap = mapOf(
+            context.getString(R.string.english) to "en",
+            context.getString(R.string.spanish) to "es",
+            context.getString(R.string.catalan) to "ca",
+            context.getString(R.string.italian) to "it",
+            context.getString(R.string.portuguese) to "pt",
+            context.getString(R.string.german) to "de",
+            context.getString(R.string.french) to "fr",
+            context.getString(R.string.moroccan) to "ar",
+            context.getString(R.string.russian) to "ru",
+            context.getString(R.string.ukrainian) to "uk",
+        )
+        return languageMap[language ?: "English"]?.lowercase(currentLocale)
     }
 
     private fun setLegalConsentWordingLanguage(language: String) {
@@ -78,7 +100,7 @@ class LegalConsentDialogFragment : DialogFragment() {
 
             for ((view, resourceId) in viewsAndResourceIds) {
                 val wording =
-                    LanguageUtils.getLocaleStringResource(Locale(language), resourceId, it)
+                    getTextInLocale(Locale(language), resourceId, it)
                 view.text = wording
                 if (language == "ar") {
                     legalConsentBinding.bulletPoint1Layout.layoutDirection =
@@ -94,18 +116,23 @@ class LegalConsentDialogFragment : DialogFragment() {
         }
     }
 
-    private fun styleLegalConsentIntro(language: String) {
-        context?.let {
-            val styledLegalConsentText = HtmlCompat.fromHtml(
-                LanguageUtils.getLocaleStringResource(
-                    resources.configuration.locales[0],
-                    R.string.legal_consent_intro,
-                    it
-                ), HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-            legalConsentBinding.legalConsentIntro.text = styledLegalConsentText
-        }
+    private fun getTextInLocale(
+        requestedLocale: Locale,
+        resourceId: Int,
+        context: Context
+    ): String {
+        val config =
+            Configuration(context.resources.configuration).apply { setLocale(requestedLocale) }
 
+        return context.createConfigurationContext(config).getText(resourceId).toString()
+    }
+
+    private fun styleLegalConsentIntro() {
+        val styledLegalConsentText = HtmlCompat.fromHtml(
+            getString(R.string.legal_consent_intro),
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
+        legalConsentBinding.legalConsentIntro.text = styledLegalConsentText
     }
 
     override fun onStart() {

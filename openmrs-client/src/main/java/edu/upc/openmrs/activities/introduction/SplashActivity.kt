@@ -24,7 +24,6 @@ import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import edu.upc.R
 import edu.upc.databinding.ActivitySplashBinding
-import edu.upc.openmrs.utilities.LanguageUtils
 import edu.upc.sdk.utilities.ApplicationConstants
 
 class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
