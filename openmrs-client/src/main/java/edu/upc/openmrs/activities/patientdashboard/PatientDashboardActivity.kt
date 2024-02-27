@@ -19,7 +19,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -31,9 +30,10 @@ import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.blopup.vitalsform.VitalsFormActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
+import edu.upc.openmrs.utilities.makeGone
+import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.dao.VisitDAO
-import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
@@ -63,10 +63,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         setupActionFABs()
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onResume() {
         super.onResume()
 
@@ -74,38 +70,26 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     }
 
     private fun setupObserver() {
-        viewModel.result.observe(this, Observer { result ->
+        viewModel.result.observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
+                    binding.loadingPatient.makeVisible()
                 }
 
                 is Result.Success -> {
-                    when (result.operationType) {
-                        PatientSynchronizing -> {
-                            ToastUtil.success(getString(R.string.synchronize_patient_successful))
-                            initViewPager()
-                        }
-
-                        else -> {
-                        }
-                    }
+                    binding.loadingPatient.makeGone()
+                    initViewPager()
                 }
 
                 is Result.Error -> {
-                    when (result.operationType) {
-                        PatientSynchronizing -> {
-                            ToastUtil.error(getString(R.string.synchronize_patient_error))
-                            initViewPager()
-                        }
-
-                        else -> {
-                        }
-                    }
+                    binding.loadingPatient.makeGone()
+                    ToastUtil.error(getString(R.string.synchronize_patient_error))
+                    initViewPager()
                 }
 
                 else -> throw IllegalStateException()
             }
-        })
+        }
     }
 
     private fun initViewPager() {

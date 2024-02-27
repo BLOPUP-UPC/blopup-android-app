@@ -52,6 +52,14 @@
                 android:layout_height="1dp"
                 android:background="@drawable/rectangle_shape_with_primary_text_color" />
 
+            <ProgressBar
+                android:id="@+id/loadingPatient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="@dimen/margin_long"
+                android:visibility="gone" />
+
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
