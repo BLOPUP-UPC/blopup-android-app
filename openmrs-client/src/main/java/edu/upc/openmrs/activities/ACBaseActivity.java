@@ -26,8 +26,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -48,7 +46,6 @@ import edu.upc.openmrs.activities.settings.SettingsActivity;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;
 import edu.upc.openmrs.net.AuthorizationManager;
-import edu.upc.openmrs.utilities.LanguageUtils;
 import edu.upc.sdk.DefaultUncaughtExceptionHandler;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
@@ -70,7 +67,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     protected CustomFragmentDialog mCustomFragmentDialog;
     private List<String> locationList;
     private IntentFilter mIntentFilter;
-    private AlertDialog alertDialog;
+
     private final BroadcastReceiver mPasswordChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -129,14 +126,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == ApplicationConstants.RequestCodes.START_SETTINGS_REQ_CODE) {
-            recreate();
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -144,7 +133,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.actionSettings:
-                startActivityForResult(new Intent(this, SettingsActivity.class), ApplicationConstants.RequestCodes.START_SETTINGS_REQ_CODE);
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.actionContact:
                 startActivity(new Intent(this, ContactUsActivity.class));
@@ -286,13 +275,5 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
         transaction.commit();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.cancel();
-        }
-        super.onDestroy();
     }
 }

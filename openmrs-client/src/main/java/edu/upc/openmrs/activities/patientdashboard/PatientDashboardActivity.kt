@@ -36,14 +36,12 @@ import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
-import edu.upc.sdk.utilities.NetworkUtils
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.execute
 
 @AndroidEntryPoint
 class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
-    private var _binding: ActivityPatientDashboardBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivityPatientDashboardBinding
 
     private val viewModel: PatientDashboardMainViewModel by viewModels()
 
@@ -51,7 +49,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityPatientDashboardBinding.inflate(layoutInflater)
+        binding = ActivityPatientDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         with(supportActionBar!!) {
@@ -63,26 +61,25 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         setupObserver()
         setupActionFABs()
-        if (NetworkUtils.isOnline()) {
-            viewModel.syncPatientData()
-        } else {
-            initViewPager()
-        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.syncPatientData()
     }
 
     private fun setupObserver() {
         viewModel.result.observe(this, Observer { result ->
             when (result) {
                 is Result.Loading -> {
-                    when (result.operationType) {
-                        PatientSynchronizing -> showProgressDialog(R.string.action_synchronize_patients)
-                        else -> {
-                        }
-                    }
                 }
 
                 is Result.Success -> {
-                    dismissCustomFragmentDialog()
                     when (result.operationType) {
                         PatientSynchronizing -> {
                             ToastUtil.success(getString(R.string.synchronize_patient_successful))
@@ -95,7 +92,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                 }
 
                 is Result.Error -> {
-                    dismissCustomFragmentDialog()
                     when (result.operationType) {
                         PatientSynchronizing -> {
                             ToastUtil.error(getString(R.string.synchronize_patient_error))
@@ -119,7 +115,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             pager.adapter = adapter
             tabhost.tabMode = TabLayout.MODE_FIXED
             tabhost.setupWithViewPager(pager)
-            setUpStartVisitFAB()
+
             pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(
                     position: Int,
@@ -129,11 +125,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    if (position == 0 || position == 1) {
-                        setUpStartVisitFAB()
-                    } else {
-                        binding.actionsFab.startVisitFab.isVisible = false
-                    }
+                    binding.actionsFab.startVisitFab.isVisible = position == 0 || position == 1
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {}
@@ -199,14 +191,5 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             )
 
         }
-    }
-
-    private fun setUpStartVisitFAB() {
-        binding.actionsFab.startVisitFab.isVisible = true
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

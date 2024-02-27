@@ -93,10 +93,6 @@ object ApplicationConstants {
         )
     }
 
-    object RequestCodes {
-        const val START_SETTINGS_REQ_CODE = 102
-    }
-
     object OpenMRSlanguage {
         const val KEY_LANGUAGE_MODE = "key_language_mode"
         val LANGUAGE_LIST = arrayOf("English", "Español", "Català")
