@@ -81,25 +81,29 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun receiveWeightData() {
-        hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeWeightData() })
+        hardcodeBluetoothDataToggle.check(
 
-        viewModelScope.launch {
-            readScaleRepository.start { state: ScaleViewState ->
-                _scaleViewState.postValue(state)
-                if (state is ScaleViewState.Content) {
-                    val copy = _vitalsUiState.value.toMutableList()
+            { hardcodeWeightData() },
+            {
+                viewModelScope.launch {
+                    readScaleRepository.start { state: ScaleViewState ->
+                        _scaleViewState.postValue(state)
+                        if (state is ScaleViewState.Content) {
+                            val copy = _vitalsUiState.value.toMutableList()
 
-                    copy.add(
-                        Vital(
-                            ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
-                            state.weightMeasurement.weight.toString()
-                        )
-                    )
-                    _vitalsUiState.value = copy
+                            copy.add(
+                                Vital(
+                                    ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
+                                    state.weightMeasurement.weight.toString()
+                                )
+                            )
+                            _vitalsUiState.value = copy
+                        }
+                        readScaleRepository.disconnect()
+                    }
                 }
-                readScaleRepository.disconnect()
             }
-        }
+        )
     }
 
     fun disconnect() = readScaleRepository.disconnect()
@@ -109,34 +113,38 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun receiveBloodPressureData() {
-        hardcodeBluetoothDataToggle.check(onToggleEnabled = { hardcodeBloodPressureBluetoothData() })
+        hardcodeBluetoothDataToggle.check(
+            { hardcodeBloodPressureBluetoothData() },
 
-        viewModelScope.launch {
-            readBloodPressureRepository.start(
-                { state: ConnectionViewState -> _connectionViewState.postValue(state) },
-                { state: BloodPressureViewState ->
-                    _bpViewState.postValue(state)
-                    if (state is BloodPressureViewState.Content) {
-                        _vitalsUiState.value =
-                            mutableListOf(
-                                Vital(
-                                    ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                                    state.measurement.systolic.toString()
-                                ),
-                                Vital(
-                                    ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                                    state.measurement.diastolic.toString()
-                                ),
-                                Vital(
-                                    ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                                    state.measurement.heartRate.toString()
-                                )
-                            )
-                    }
-                    readBloodPressureRepository.disconnect()
+            {
+                viewModelScope.launch {
+                    readBloodPressureRepository.start(
+                        { state: ConnectionViewState -> _connectionViewState.postValue(state) },
+                        { state: BloodPressureViewState ->
+                            _bpViewState.postValue(state)
+                            if (state is BloodPressureViewState.Content) {
+                                _vitalsUiState.value =
+                                    mutableListOf(
+                                        Vital(
+                                            ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                                            state.measurement.systolic.toString()
+                                        ),
+                                        Vital(
+                                            ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                                            state.measurement.diastolic.toString()
+                                        ),
+                                        Vital(
+                                            ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                                            state.measurement.heartRate.toString()
+                                        )
+                                    )
+                            }
+                            readBloodPressureRepository.disconnect()
+                        }
+                    )
                 }
-            )
-        }
+            }
+        )
     }
 
     fun saveHeight(height: String) {

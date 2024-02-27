@@ -9,6 +9,7 @@ import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressu
 import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleRepository
 import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
+import edu.upc.blopup.toggles.BuildConfigWrapper
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
@@ -33,17 +34,15 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -54,8 +53,6 @@ import java.util.Optional
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
 class VitalsViewModelTest {
-
-    private val testDispatcher = TestCoroutineDispatcher()
 
     @InjectMockKs
     private lateinit var viewModel: VitalsViewModel
@@ -91,7 +88,7 @@ class VitalsViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         testPatient = Patient().apply {
             id = patientId
             uuid = "patientUuid"
@@ -104,16 +101,8 @@ class VitalsViewModelTest {
         MockKAnnotations.init(this)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `should receive Blood Pressure data`() = testDispatcher.runBlockingTest {
+    fun `should receive Blood Pressure data`() = runTest {
         val measurements = BloodPressureViewState.Content(
             Measurement(
                 120,
@@ -121,6 +110,9 @@ class VitalsViewModelTest {
                 70
             )
         )
+
+        mockkObject(BuildConfigWrapper)
+        every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns false
 
         every {
             readBloodPressureRepository.start(
@@ -153,14 +145,16 @@ class VitalsViewModelTest {
 
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `should receive Weight data`() = testDispatcher.runBlockingTest {
+    fun `should receive Weight data`() = runTest {
         val weightMeasurement = ScaleViewState.Content(
             WeightMeasurement(
                 70f
             )
         )
+
+        mockkObject(BuildConfigWrapper)
+        every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns false
 
         every {
             readScaleRepository.start(
@@ -317,5 +311,4 @@ class VitalsViewModelTest {
 
         }
     }
-
 }
