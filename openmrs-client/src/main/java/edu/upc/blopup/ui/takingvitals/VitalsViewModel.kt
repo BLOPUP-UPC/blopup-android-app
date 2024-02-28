@@ -1,5 +1,6 @@
 package edu.upc.blopup.ui.takingvitals
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -58,10 +59,8 @@ open class VitalsViewModel @Inject constructor(
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
-    private val _createVisitResultUiState: MutableStateFlow<ResultUiState> =
-        MutableStateFlow(ResultUiState.Loading)
-    var createVisitResultUiState: StateFlow<ResultUiState> =
-        _createVisitResultUiState.asStateFlow()
+    private val _createVisitResultUiState: MutableStateFlow<ResultUiState?> = MutableStateFlow(null)
+    val createVisitResultUiState: StateFlow<ResultUiState?> = _createVisitResultUiState.asStateFlow()
 
     private val _treatmentsResultUiState: MutableStateFlow<ResultUiState> = MutableStateFlow(ResultUiState.Loading)
     var treatmentsResultUiState: StateFlow<ResultUiState> = _treatmentsResultUiState.asStateFlow()
@@ -169,6 +168,7 @@ open class VitalsViewModel @Inject constructor(
             when (result) {
                 is Result.Success -> {
                     _createVisitResultUiState.value = ResultUiState.Success(Unit)
+                    Log.i("VitalsViewModel", "createVisitResultUiState is successs")
                 }
 
                 is Result.Loading -> {
