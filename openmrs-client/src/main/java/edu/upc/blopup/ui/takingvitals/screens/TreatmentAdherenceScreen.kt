@@ -19,7 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -58,7 +60,7 @@ fun TreatmentAdherenceScreen(
         ResultUiState.Error -> {
             ErrorDialog(show = createVisitResultUiState is ResultUiState.Error,
                 onDismiss = { setResultAndFinish(Activity.RESULT_CANCELED) },
-                onConfirm = { createVisit(); })
+                onConfirm = { createVisit() })
         }
 
         is ResultUiState.Success<*> -> {
@@ -82,6 +84,8 @@ fun TreatmentAdherence(
     createVisit: () -> Unit,
     treatmentAdherence: (List<CheckTreatment>) -> Unit
 ) {
+    val treatmentOptions = remember { mutableStateListOf<CheckTreatment>() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -127,12 +131,8 @@ fun TreatmentAdherence(
                         text = stringResource(R.string.treatment_adherence_text),
                         fontSize = TextUnit(16f, TextUnitType.Sp),
                     )
-                    val treatmentOptions = getTreatmentOptions(treatments.data as List<Treatment>)
+                    treatmentOptions.addAll(getTreatmentOptions(treatments.data as List<Treatment>))
                     TreatmentCheckBox(treatmentOptions)
-                    OrangeButton(R.string.finalise_treatment, {
-                        treatmentAdherence(treatmentOptions)
-                        createVisit()
-                    }, true)
                 }
 
                 ResultUiState.Error -> {
@@ -146,12 +146,15 @@ fun TreatmentAdherence(
                         textDecoration = TextDecoration.Underline,
                         modifier = Modifier.clickable { TODO() }
                     )
-                    OrangeButton(R.string.finalise_treatment, {
-                        createVisit()
-                    }, true)
                 }
             }
         }
+        OrangeButton(R.string.finalise_treatment,  {
+            if(treatments is ResultUiState.Success<*>){
+                treatmentAdherence(treatmentOptions)
+            }
+            createVisit()
+        }, true)
     }
 }
 
