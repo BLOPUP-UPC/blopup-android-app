@@ -4,12 +4,10 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -62,7 +60,7 @@ class VitalsActivity : AppCompatActivity() {
         askPermissions()
 
         lifecycleScope.launch {
-            val treatments = viewModel.fetchActiveTreatment()
+            viewModel.fetchActiveTreatment()
             setContent {
 
                 val navigationController = rememberNavController()
@@ -70,7 +68,7 @@ class VitalsActivity : AppCompatActivity() {
                 var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
                 var isDataScreen by remember { mutableStateOf(false) }
                 val createVisitResultUiState by viewModel.createVisitResultUiState.collectAsState()
-
+                val treatmentsResultUiState by viewModel.treatmentsResultUiState.collectAsState()
 
                 Scaffold(
                     topBar = {
@@ -162,7 +160,7 @@ class VitalsActivity : AppCompatActivity() {
                                 { setResultAndFinish(it) },
                                 viewModel::createVisit,
                                 createVisitResultUiState,
-                                treatments
+                                treatmentsResultUiState,
                             ) { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } }
                         }
                     }

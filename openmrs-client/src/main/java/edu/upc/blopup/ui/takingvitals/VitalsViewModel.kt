@@ -20,7 +20,6 @@ import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -64,6 +63,9 @@ open class VitalsViewModel @Inject constructor(
     var createVisitResultUiState: StateFlow<ResultUiState> =
         _createVisitResultUiState.asStateFlow()
 
+    private val _treatmentsResultUiState: MutableStateFlow<ResultUiState> = MutableStateFlow(ResultUiState.Loading)
+    var treatmentsResultUiState: StateFlow<ResultUiState> = _treatmentsResultUiState.asStateFlow()
+
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
         val treatmentAdherenceInfo = checkTreatmentList.map {
             return@map Pair<String, Boolean>(it.treatmentId, it.selected)
@@ -71,13 +73,14 @@ open class VitalsViewModel @Inject constructor(
         treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, patient.uuid!!)
     }
 
-    suspend fun fetchActiveTreatment(): List<Treatment> {
-        val result = treatmentRepository.fetchAllActiveTreatments(patient)
+    suspend fun fetchActiveTreatment() {
+        val response = treatmentRepository.fetchAllActiveTreatments(patient)
 
-        return if (result.isSuccess) {
-            result.getOrNull()!!
-        } else
-            emptyList()
+        _treatmentsResultUiState.value =
+            when {
+                response.isSuccess -> ResultUiState.Success(response.getOrNull())
+                else -> ResultUiState.Error
+            }
     }
 
     fun receiveWeightData() {

@@ -269,9 +269,23 @@ class VitalsViewModelTest {
 
 
         runBlocking {
-            val result = viewModel.fetchActiveTreatment()
+            viewModel.fetchActiveTreatment()
 
-            assertEquals(treatmentList, result)
+            assertEquals(ResultUiState.Success(treatmentList), viewModel.treatmentsResultUiState.value)
+        }
+    }
+
+    @Test
+    fun `should return error if fetching all treatments fails`() {
+
+        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.failure(
+            Throwable("Error fetching treatments")
+        )
+
+        runBlocking {
+            viewModel.fetchActiveTreatment()
+
+            assertEquals(ResultUiState.Error, viewModel.treatmentsResultUiState.value)
         }
     }
 

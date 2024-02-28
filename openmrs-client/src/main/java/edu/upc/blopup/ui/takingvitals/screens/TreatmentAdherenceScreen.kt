@@ -2,6 +2,7 @@ package edu.upc.blopup.ui.takingvitals.screens
 
 import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,10 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -44,35 +47,41 @@ fun TreatmentAdherenceScreen(
     setResultAndFinish: (Int) -> Unit,
     createVisit: () -> Unit,
     createVisitResultUiState: ResultUiState,
-    treatments: List<Treatment>,
+    treatmentsResultUiState: ResultUiState,
     treatmentAdherence: ((List<CheckTreatment>) -> Unit)
 ) {
-    when(createVisitResultUiState) {
-        ResultUiState.Loading -> { LoadingSpinner() }
+    when (createVisitResultUiState) {
+        ResultUiState.Loading -> {
+            LoadingSpinner()
+        }
+
         ResultUiState.Error -> {
             ErrorDialog(show = createVisitResultUiState is ResultUiState.Error,
-                onDismiss = {  setResultAndFinish(Activity.RESULT_CANCELED) },
-                onConfirm = {  createVisit();})
+                onDismiss = { setResultAndFinish(Activity.RESULT_CANCELED) },
+                onConfirm = { createVisit(); })
         }
-        is ResultUiState.Success<*> -> { setResultAndFinish(Activity.RESULT_OK) }
+
+        is ResultUiState.Success<*> -> {
+            setResultAndFinish(Activity.RESULT_OK)
+        }
     }
 
-    if (treatments.isNotEmpty()) {
-        TreatmentAdherence(treatments,createVisit, treatmentAdherence)
-    } else {
+
+    if (treatmentsResultUiState is ResultUiState.Success<*> && (treatmentsResultUiState.data as List<Treatment>).isEmpty()) {
         LaunchedEffect(true) {
             createVisit()
         }
+    } else {
+        TreatmentAdherence(treatmentsResultUiState, createVisit, treatmentAdherence)
     }
 }
 
 @Composable
 fun TreatmentAdherence(
-    treatments: List<Treatment>,
+    treatments: ResultUiState,
     createVisit: () -> Unit,
     treatmentAdherence: (List<CheckTreatment>) -> Unit
 ) {
-    val treatmentOptions = getTreatmentOptions(treatments)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -107,16 +116,42 @@ fun TreatmentAdherence(
                 ),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            Text(
-                text = stringResource(R.string.treatment_adherence_text),
-                fontSize = TextUnit(16f, TextUnitType.Sp),
-            )
-            TreatmentCheckBox(treatmentOptions)
+
+            when (treatments) {
+                ResultUiState.Loading -> {
+                    LoadingSpinner()
+                }
+
+                is ResultUiState.Success<*> -> {
+                    Text(
+                        text = stringResource(R.string.treatment_adherence_text),
+                        fontSize = TextUnit(16f, TextUnitType.Sp),
+                    )
+                    val treatmentOptions = getTreatmentOptions(treatments.data as List<Treatment>)
+                    TreatmentCheckBox(treatmentOptions)
+                    OrangeButton(R.string.finalise_treatment, {
+                        treatmentAdherence(treatmentOptions)
+                        createVisit()
+                    }, true)
+                }
+
+                ResultUiState.Error -> {
+                    Text(
+                        text = stringResource(R.string.error_loading_treatments),
+                        color = colorResource(R.color.allergy_orange)
+                    )
+                    Text(
+                        text = stringResource(R.string.error_loading_treatments_try_again),
+                        color = colorResource(R.color.allergy_orange),
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier.clickable { TODO() }
+                    )
+                    OrangeButton(R.string.finalise_treatment, {
+                        createVisit()
+                    }, true)
+                }
+            }
         }
-        OrangeButton(R.string.finalise_treatment, {
-            treatmentAdherence(treatmentOptions)
-            createVisit()
-        }, true)
     }
 }
 
@@ -171,6 +206,18 @@ fun getTreatmentOptions(treatments: List<Treatment>): List<CheckTreatment> {
 
 @Preview(showSystemUi = true)
 @Composable
-fun TreatmentAdherencePreview() {
-    TreatmentAdherence(emptyList(), {}, {})
+fun TreatmentAdherencePreviewError() {
+    TreatmentAdherence(ResultUiState.Error, {}) {}
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun TreatmentAdherencePreviewLoading() {
+    TreatmentAdherence(ResultUiState.Loading, {}) {}
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun TreatmentAdherencePreviewSuccess() {
+    TreatmentAdherence(ResultUiState.Success<List<Treatment>>(emptyList()), {}) {}
 }
