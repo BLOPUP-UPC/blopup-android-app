@@ -77,8 +77,8 @@ open class VitalsViewModel @Inject constructor(
         val response = treatmentRepository.fetchAllActiveTreatments(patient)
 
         _treatmentsResultUiState.value =
-            when {
-                response.isSuccess -> ResultUiState.Success(response.getOrNull())
+            when (response) {
+                is Result.Success -> ResultUiState.Success(response.data)
                 else -> ResultUiState.Error
             }
     }

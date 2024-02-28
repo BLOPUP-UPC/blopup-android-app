@@ -291,17 +291,23 @@ class VitalsFormActivity : ACBaseActivity() {
 
     private fun setupActiveTreatmentsObserver(treatmentAdherenceAdapter: TreatmentAdherenceRecyclerViewAdapter) {
         viewModel.activeTreatments.observe(this) { result ->
-            result.onSuccess {
-                mBinding.loadingTreatmentsProgressBar.makeGone()
-                if (it.isNotEmpty()) {
-                    mBinding.treatmentAdherence.makeVisible()
-                    mBinding.treatmentAdherenceRecyclerView.makeVisible()
-                } else {
-                    mBinding.treatmentAdherence.makeGone()
+            when(result) {
+                is Result.Loading -> {
+                    mBinding.loadingTreatmentsProgressBar.makeVisible()
                 }
-                treatmentAdherenceAdapter.updateData(it)
-            }
-                .onFailure {
+
+                is Result.Success -> {
+                    mBinding.loadingTreatmentsProgressBar.makeGone()
+                    if (result.data.isNotEmpty()) {
+                        mBinding.treatmentAdherence.makeVisible()
+                        mBinding.treatmentAdherenceRecyclerView.makeVisible()
+                    } else {
+                        mBinding.treatmentAdherence.makeGone()
+                    }
+                    treatmentAdherenceAdapter.updateData(result.data)
+                }
+
+                is Result.Error -> {
                     mBinding.treatmentAdherence.makeVisible()
                     mBinding.errorLoadingTreatments.makeVisible()
                     mBinding.loadingTreatmentsProgressBar.makeGone()
@@ -313,6 +319,7 @@ class VitalsFormActivity : ACBaseActivity() {
                         lifecycleScope.launch { viewModel.fetchActiveTreatments() }
                     }
                 }
+            }
         }
     }
 }

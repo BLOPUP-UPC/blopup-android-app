@@ -175,7 +175,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val treatmentList = listOf(treatmentUpdated)
 
         coEvery { treatmentRepository.finalise(treatment) } returns kotlin.Result.success(true)
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns kotlin.Result.success(treatmentList)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
 
         runBlocking {
             viewModel.finaliseTreatment(treatment)
@@ -193,7 +193,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val treatmentList = listOf(treatmentTwo)
 
         coEvery { encounterRepository.removeEncounter(treatmentOne.treatmentUuid) } returns kotlin.Result.success(true)
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns kotlin.Result.success(treatmentList)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
 
         runBlocking {
             viewModel.removeTreatment(treatmentOne)
@@ -217,7 +217,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         }
 
         every { visitDAO.getVisitByID(any()) } returns Observable.just(visit)
-        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit) } returns kotlin.Result.success(
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit) } returns Result.Success(
             listOf()
         )
 

@@ -79,7 +79,7 @@ class TreatmentRepositoryTest {
 
         runBlocking {
             val result = treatmentRepository.fetchAllActiveTreatments(patient)
-            assertEquals(Result.success(listOf(activeTreatment)), result)
+            assertEquals(edu.upc.sdk.library.models.Result.Success(listOf(activeTreatment)), result)
         }
     }
 
@@ -118,7 +118,7 @@ class TreatmentRepositoryTest {
             val result =
                 treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visitWithTreatment)
             assertEquals(
-                Result.success(
+                edu.upc.sdk.library.models.Result.Success(
                     listOf(
                         previousTreatment,
                         actualVisitTreatment,
@@ -286,7 +286,7 @@ class TreatmentRepositoryTest {
             val result =
                 treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
 
-            assertEquals(Result.success(true), result)
+            assertEquals(kotlin.Result.success(true), result)
         }
 
         coVerify(exactly = 2) { restApi.createObs(any()) }
@@ -308,7 +308,7 @@ class TreatmentRepositoryTest {
             val result =
                 treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
 
-            assertEquals(Result.failure<Exception>(exception), result)
+            assertEquals(kotlin.Result.failure<Exception>(exception), result)
         }
     }
 
@@ -327,7 +327,7 @@ class TreatmentRepositoryTest {
             visitUuid = treatmentToEdit.visitUuid
         )
 
-        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns Result.success(
+        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns kotlin.Result.success(
             true
         )
 
@@ -344,7 +344,7 @@ class TreatmentRepositoryTest {
 
         runBlocking {
             val result = treatmentRepository.updateTreatment(treatmentToEdit, treatmentUpdated)
-            assertEquals(Result.success(true), result)
+            assertEquals(kotlin.Result.success(true), result)
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -100,14 +101,14 @@ class ChartsViewViewModelTest {
         }
 
         every { patientDAO.findPatientByID(any()) } returns testPatient
-        coEvery { treatmentRepository.fetchAllTreatments(any()) } returns Result.success(treatmentList)
+        coEvery { treatmentRepository.fetchAllTreatments(any()) } returns Result.Success(treatmentList)
 
         runBlocking {
             viewModel.fetchTreatments(patientId.toInt())
 
             coVerify { treatmentRepository.fetchAllTreatments(testPatient) }
 
-            Assert.assertEquals(Result.success(expectedTreatmentAdherence), viewModel.treatments.value)
+            Assert.assertEquals(Result.Success(expectedTreatmentAdherence), viewModel.treatments.value)
         }
     }
 }

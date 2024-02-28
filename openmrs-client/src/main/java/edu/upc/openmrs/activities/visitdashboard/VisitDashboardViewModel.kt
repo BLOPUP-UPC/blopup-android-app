@@ -39,8 +39,8 @@ class VisitDashboardViewModel @Inject constructor(
     private val _bloodPressureType: MutableLiveData<BloodPressureResult?> = MutableLiveData()
     val bloodPressureType: LiveData<BloodPressureResult?> get() = _bloodPressureType
 
-    private val _treatments = MutableLiveData<kotlin.Result<List<Treatment>>>()
-    val treatments: LiveData<kotlin.Result<List<Treatment>>> get() = _treatments
+    private val _treatments = MutableLiveData<Result<List<Treatment>>>()
+    val treatments: LiveData<Result<List<Treatment>>> get() = _treatments
 
     private val _treatmentOperationsLiveData = MutableLiveData<ResultType>()
     val treatmentOperationsLiveData: LiveData<ResultType> get() = _treatmentOperationsLiveData
@@ -121,10 +121,10 @@ class VisitDashboardViewModel @Inject constructor(
     suspend fun removeTreatment(treatment: Treatment) {
         val response = encounterRepository.removeEncounter(treatment.treatmentUuid)
 
-        if (response.isSuccess) {
-            _treatments.value = _treatments.value?.getOrNull()?.toMutableList()?.apply {
+        if (response.isSuccess && _treatments.value is Result.Success) {
+            _treatments.value = (_treatments.value as Result.Success<List<Treatment>>).data.toMutableList().apply {
                 remove(treatment)
-            }?.let { kotlin.Result.success(it) }
+            }.let { Result.Success(it) }
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentSuccess
         } else {
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentError

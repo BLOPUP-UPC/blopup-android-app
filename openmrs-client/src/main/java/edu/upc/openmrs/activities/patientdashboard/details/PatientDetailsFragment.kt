@@ -71,8 +71,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     private fun setupObservers() {
         viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Result.Loading -> {
-                }
+                is Result.Loading -> {}
 
                 is Result.Success -> {
                     when (result.operationType) {
@@ -81,8 +80,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                             lifecycleScope.launch { viewModel.fetchActiveTreatments(result.data) }
                         }
 
-                        else -> {
-                        }
+                        else -> {}
                     }
                 }
 
@@ -93,15 +91,27 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         }
                     }
                 }
-
-                else -> throw IllegalStateException()
             }
-
         }
 
         viewModel.activeTreatments.observe(viewLifecycleOwner) { result ->
-            result
-                .onFailure {
+            when(result) {
+                is Result.Loading -> {
+                    binding.loadingTreatmentsProgressBar.makeVisible()
+                }
+
+                is Result.Success -> {
+                    binding.loadingTreatmentsProgressBar.makeGone()
+                    if (result.data.isEmpty()) {
+                        binding.recommendedTreatmentsLayout.makeGone()
+                    } else {
+                        binding.errorLoadingTreatments.makeGone()
+                        binding.recommendedTreatmentsLayout.makeVisible()
+                    }
+                    treatmentAdapter.updateData(result.data)
+                }
+
+                is Result.Error -> {
                     binding.loadingTreatmentsProgressBar.makeGone()
                     binding.recommendedTreatmentsLayout.makeVisible()
                     binding.errorLoadingTreatments.makeVisible()
@@ -111,16 +121,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         lifecycleScope.launch { viewModel.refreshActiveTreatments() }
                     }
                 }
-                .onSuccess {
-                    binding.loadingTreatmentsProgressBar.makeGone()
-                    if (result.getOrDefault(emptyList()).isEmpty()) {
-                        binding.recommendedTreatmentsLayout.makeGone()
-                    } else {
-                        binding.errorLoadingTreatments.makeGone()
-                        binding.recommendedTreatmentsLayout.makeVisible()
-                    }
-                }
-            treatmentAdapter.updateData(result.getOrDefault(emptyList()))
+            }
         }
     }
 

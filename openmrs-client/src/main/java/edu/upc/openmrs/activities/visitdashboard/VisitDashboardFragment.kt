@@ -52,7 +52,6 @@ import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
-import kotlin.Result as KotlinResult
 
 
 @AndroidEntryPoint
@@ -235,10 +234,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun showTreatment(treatments: KotlinResult<List<Treatment>>) {
-        if (treatments.isSuccess) {
+    private fun showTreatment(treatments: Result<List<Treatment>>) {
+        if (treatments is Result.Success) {
             binding.loadingTreatmentsProgressBar.makeGone()
-            showTreatmentList(treatments.getOrDefault(emptyList()))
+            showTreatmentList(treatments.data)
         } else {
             binding.loadingTreatmentsProgressBar.makeGone()
             binding.recommendedTreatmentsLayout.makeVisible()

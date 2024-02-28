@@ -263,7 +263,7 @@ class VitalsViewModelTest {
         val treatment = TreatmentExample.activeTreatment().apply { treatmentUuid = "treatmentUuid" }
         val treatmentList = listOf(treatment)
 
-        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.success(
+        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns Result.Success(
             treatmentList
         )
 
@@ -278,9 +278,7 @@ class VitalsViewModelTest {
     @Test
     fun `should return error if fetching all treatments fails`() {
 
-        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns kotlin.Result.failure(
-            Throwable("Error fetching treatments")
-        )
+        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns Result.Error(Throwable("Error fetching treatments"))
 
         runBlocking {
             viewModel.fetchActiveTreatment()

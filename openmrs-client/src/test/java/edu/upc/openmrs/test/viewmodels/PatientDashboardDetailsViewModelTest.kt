@@ -72,12 +72,12 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
         val patient = Patient()
         val treatmentList = listOf<Treatment>()
 
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns kotlin.Result.success(treatmentList)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
 
         runBlocking {
             viewModel.fetchActiveTreatments(patient)
             coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
-            assertEquals(viewModel.activeTreatments.value, kotlin.Result.success(treatmentList))
+            assertEquals(viewModel.activeTreatments.value, Result.Success(treatmentList))
         }
     }
 
@@ -87,14 +87,14 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
         val treatmentList = listOf<Treatment>()
 
         Mockito.`when`(patientDAO.findPatientByID(ID)).thenReturn(patient)
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns kotlin.Result.success(treatmentList)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
 
         runBlocking {
             viewModel.fetchPatientData()
             viewModel.refreshActiveTreatments()
 
             coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
-            assertEquals(viewModel.activeTreatments.value, kotlin.Result.success(treatmentList))
+            assertEquals(viewModel.activeTreatments.value, Result.Success(treatmentList))
         }
     }
 

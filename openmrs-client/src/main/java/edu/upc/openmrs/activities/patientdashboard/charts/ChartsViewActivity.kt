@@ -16,6 +16,7 @@ import edu.upc.R
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.utilities.makeVisible
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -63,7 +64,9 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         expandableSidebarListView = mBinding.expandableListView
 
         viewModel.treatments.observe(this) { treatments ->
-            treatments.onSuccess { adherenceMap ->
+
+            if(treatments is Result.Success) {
+                val adherenceMap = treatments.data
                 if (adherenceMap.isNotEmpty()) {
                     mBinding.treatmentsSideBar.makeVisible()
                     expandableSidebarAdapter = TreatmentsListExpandableListAdapter(

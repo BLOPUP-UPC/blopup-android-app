@@ -87,12 +87,12 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchAllActiveTreatments(patient: Patient): Result<List<Treatment>> {
+    suspend fun fetchAllActiveTreatments(patient: Patient): edu.upc.sdk.library.models.Result<List<Treatment>> {
 
         val result = fetchAllTreatments(patient)
 
-        if (result.isSuccess) {
-            return Result.success(result.getOrNull()!!.filter { treatment -> treatment.isActive })
+        if (result is  edu.upc.sdk.library.models.Result.Success) {
+            return edu.upc.sdk.library.models.Result.Success(result.data.filter { treatment -> treatment.isActive })
         }
 
         return result
@@ -101,13 +101,13 @@ class TreatmentRepository @Inject constructor(
     suspend fun fetchActiveTreatmentsAtAGivenTime(
         patient: Patient,
         visit: Visit
-    ): Result<List<Treatment>> {
+    ): edu.upc.sdk.library.models.Result<List<Treatment>> {
         val visitDate = parseFromOpenmrsDate(visit.startDatetime)
 
         val result = fetchAllTreatments(patient)
 
-        if (result.isSuccess) {
-            return Result.success(result.getOrNull()!!.filter { treatment ->
+        if (result is edu.upc.sdk.library.models.Result.Success) {
+            return edu.upc.sdk.library.models.Result.Success(result.data.filter { treatment ->
                 (treatment.creationDate.isBefore(visitDate) || treatment.visitUuid == visit.uuid)
                         && treatment.isActive
                         || (!treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate))
@@ -116,7 +116,7 @@ class TreatmentRepository @Inject constructor(
         return result
     }
 
-    suspend fun fetchAllTreatments(patient: Patient): Result<List<Treatment>> =
+    suspend fun fetchAllTreatments(patient: Patient): edu.upc.sdk.library.models.Result<List<Treatment>> =
         try {
             withContext(Dispatchers.IO) {
                 val visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
@@ -134,10 +134,10 @@ class TreatmentRepository @Inject constructor(
                             getTreatmentFromEncounter(encounter)
                         }
                 }
-                Result.success(treatments)
+                edu.upc.sdk.library.models.Result.Success(treatments)
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            edu.upc.sdk.library.models.Result.Error(e)
         }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {

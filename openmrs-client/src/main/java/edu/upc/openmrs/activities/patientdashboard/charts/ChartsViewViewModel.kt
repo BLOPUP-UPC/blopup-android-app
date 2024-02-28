@@ -7,8 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
-import org.joda.time.format.DateTimeFormat
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -23,10 +23,15 @@ class ChartsViewViewModel @Inject constructor(
 
     suspend fun fetchTreatments(patientId: Int) {
         val patient: Patient = patientDAO.findPatientByID(patientId.toString())
-        treatmentRepository.fetchAllTreatments(patient).onSuccess {
-            _treatments.value = Result.success(treatmentsByAdherenceDate(it))
-        }.onFailure {
-            _treatments.value = Result.failure(it)
+
+        when (val result = treatmentRepository.fetchAllTreatments(patient)) {
+            is Result.Success -> {
+                _treatments.value = Result.Success(treatmentsByAdherenceDate(result.data))
+            }
+            is Result.Error -> {
+                _treatments.value = Result.Error(result.throwable)
+            }
+            else -> {}
         }
     }
 
