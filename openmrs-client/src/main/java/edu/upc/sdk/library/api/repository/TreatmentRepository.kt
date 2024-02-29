@@ -20,6 +20,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
+import edu.upc.sdk.library.models.Result as OpenMRSResult
 
 @Singleton
 class TreatmentRepository @Inject constructor(
@@ -87,12 +88,13 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchAllActiveTreatments(patient: Patient): edu.upc.sdk.library.models.Result<List<Treatment>> {
+    suspend fun fetchAllActiveTreatments(patient: Patient): OpenMRSResult<List<Treatment>> {
 
         val result = fetchAllTreatments(patient)
 
-        if (result is  edu.upc.sdk.library.models.Result.Success) {
-            return edu.upc.sdk.library.models.Result.Success(result.data.filter { treatment -> treatment.isActive })
+
+        if (result is  OpenMRSResult.Success) {
+            return OpenMRSResult.Success(result.data.filter { treatment -> treatment.isActive })
         }
 
         return result
@@ -101,13 +103,13 @@ class TreatmentRepository @Inject constructor(
     suspend fun fetchActiveTreatmentsAtAGivenTime(
         patient: Patient,
         visit: Visit
-    ): edu.upc.sdk.library.models.Result<List<Treatment>> {
+    ): OpenMRSResult<List<Treatment>> {
         val visitDate = parseFromOpenmrsDate(visit.startDatetime)
 
         val result = fetchAllTreatments(patient)
 
-        if (result is edu.upc.sdk.library.models.Result.Success) {
-            return edu.upc.sdk.library.models.Result.Success(result.data.filter { treatment ->
+        if (result is OpenMRSResult.Success) {
+            return OpenMRSResult.Success(result.data.filter { treatment ->
                 (treatment.creationDate.isBefore(visitDate) || treatment.visitUuid == visit.uuid)
                         && treatment.isActive
                         || (!treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate))
@@ -116,7 +118,7 @@ class TreatmentRepository @Inject constructor(
         return result
     }
 
-    suspend fun fetchAllTreatments(patient: Patient): edu.upc.sdk.library.models.Result<List<Treatment>> =
+    suspend fun fetchAllTreatments(patient: Patient): OpenMRSResult<List<Treatment>> =
         try {
             withContext(Dispatchers.IO) {
                 val visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
@@ -134,10 +136,10 @@ class TreatmentRepository @Inject constructor(
                             getTreatmentFromEncounter(encounter)
                         }
                 }
-                edu.upc.sdk.library.models.Result.Success(treatments)
+                OpenMRSResult.Success(treatments)
             }
         } catch (e: Exception) {
-            edu.upc.sdk.library.models.Result.Error(e)
+            OpenMRSResult.Error(e)
         }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
@@ -327,14 +329,10 @@ class TreatmentRepository @Inject constructor(
         treatmentToEdit: Treatment,
         treatmentUpdated: Treatment
     ): Boolean {
-        if (treatmentToEdit.recommendedBy != treatmentUpdated.recommendedBy ||
-            treatmentToEdit.medicationName != treatmentUpdated.medicationName ||
-            treatmentToEdit.medicationType != treatmentUpdated.medicationType ||
-            treatmentToEdit.notes != treatmentUpdated.notes
-        ) {
-            return true
-        }
-        return false
+        return treatmentToEdit.recommendedBy != treatmentUpdated.recommendedBy ||
+                treatmentToEdit.medicationName != treatmentUpdated.medicationName ||
+                treatmentToEdit.medicationType != treatmentUpdated.medicationType ||
+                treatmentToEdit.notes != treatmentUpdated.notes
     }
 
     companion object {

@@ -68,7 +68,6 @@ class VitalsActivity : AppCompatActivity() {
                 var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
                 var isDataScreen by remember { mutableStateOf(false) }
                 val createVisitResultUiState by viewModel.createVisitResultUiState.collectAsState()
-                val treatmentsResultUiState by viewModel.treatmentsResultUiState.collectAsState()
 
                 Scaffold(
                     topBar = {
@@ -155,19 +154,21 @@ class VitalsActivity : AppCompatActivity() {
                         composable(Routes.TreatmentAdherenceScreen.id) {
                             topBarTitle = R.string.adherence_data
                             isDataScreen = false
+                            val treatmentsResultUiState by viewModel.treatmentsResultUiState.collectAsState()
 
                             TreatmentAdherenceScreen(
                                 { setResultAndFinish(it) },
                                 viewModel::createVisit,
                                 createVisitResultUiState,
-                                treatmentsResultUiState,
-                            ) { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } }
+                                treatmentsResultUiState ,
+                                { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } },
+                                { lifecycleScope.launch { viewModel.refreshActiveTreatments() }}
+                            )
                         }
                     }
                 }
             }
         }
-
     }
 
     private fun askPermissions() {

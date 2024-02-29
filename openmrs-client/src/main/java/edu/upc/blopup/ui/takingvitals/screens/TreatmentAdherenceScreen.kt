@@ -48,7 +48,8 @@ fun TreatmentAdherenceScreen(
     createVisit: () -> Unit,
     createVisitResultUiState: ResultUiState?,
     treatmentsResultUiState: ResultUiState,
-    treatmentAdherence: ((List<CheckTreatment>) -> Unit)
+    treatmentAdherence: (List<CheckTreatment>) -> Unit,
+    getActiveTreatments: () -> Unit
 ) {
     when (createVisitResultUiState) {
         ResultUiState.Loading -> {
@@ -74,7 +75,7 @@ fun TreatmentAdherenceScreen(
             createVisit()
         }
     } else {
-        TreatmentAdherence(treatmentsResultUiState, createVisit, treatmentAdherence)
+        TreatmentAdherence(treatmentsResultUiState, createVisit, treatmentAdherence, getActiveTreatments)
     }
 }
 
@@ -82,7 +83,8 @@ fun TreatmentAdherenceScreen(
 fun TreatmentAdherence(
     treatments: ResultUiState,
     createVisit: () -> Unit,
-    treatmentAdherence: (List<CheckTreatment>) -> Unit
+    treatmentAdherence: (List<CheckTreatment>) -> Unit,
+    getActiveTreatments: () -> Unit
 ) {
     var treatmentOptions = emptyList<CheckTreatment>()
     Column(
@@ -143,7 +145,7 @@ fun TreatmentAdherence(
                         text = stringResource(R.string.error_loading_treatments_try_again),
                         color = colorResource(R.color.allergy_orange),
                         textDecoration = TextDecoration.Underline,
-                        modifier = Modifier.clickable { TODO() }
+                        modifier = Modifier.clickable { getActiveTreatments() }
                     )
                 }
             }
@@ -209,17 +211,22 @@ fun getTreatmentOptions(treatments: List<*>): List<CheckTreatment> {
 @Preview(showSystemUi = true)
 @Composable
 fun TreatmentAdherencePreviewError() {
-    TreatmentAdherence(ResultUiState.Error, {}) {}
+    TreatmentAdherence(ResultUiState.Error, {}, {}, {})
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun TreatmentAdherencePreviewLoading() {
-    TreatmentAdherence(ResultUiState.Loading, {}) {}
+    TreatmentAdherence(ResultUiState.Loading, {}, {}, {} )
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun TreatmentAdherencePreviewSuccess() {
-    TreatmentAdherence(ResultUiState.Success<List<Treatment>>(emptyList()), {}) {}
+    TreatmentAdherence(
+        ResultUiState.Success<List<Treatment>>(emptyList()),
+        {},
+        {},
+        {}
+    )
 }
