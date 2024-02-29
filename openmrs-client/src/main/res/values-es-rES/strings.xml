@@ -233,7 +233,7 @@
     <string name="diastolic_110_plus"><![CDATA[o DIA ≥ 110]]></string>
     <string name="blood_pressure_label">Tensión arterial</string>
     <string name="vitals_successfully">Vitales completadas</string>
-    <string name="message_to_doctor">Mensja de Telegram enviado al Doctor Xavier de las Cuevas informando de la situación</string>
+    <string name="message_to_doctor">Mensaje de Telegram enviado al Doctor Xavier de las Cuevas informando de la situación</string>
     <string name="patient_has_been_removed">No se puede mostrar el paciente. Este ha sido eliminado de la base de datos.</string>
     <string name="no_internet_connection">Error de conexión. Revise su conexión a internet e inténtelo de nuevo.</string>
     <string name="bottom_navigation_option_home">Inicio</string>
