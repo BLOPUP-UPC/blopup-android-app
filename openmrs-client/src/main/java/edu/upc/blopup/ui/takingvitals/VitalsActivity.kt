@@ -159,7 +159,7 @@ class VitalsActivity : AppCompatActivity() {
                             TreatmentAdherenceScreen(
                                 { setResultAndFinish(it) },
                                 viewModel::createVisit,
-                                createVisitResultUiState!!,
+                                createVisitResultUiState,
                                 treatmentsResultUiState,
                             ) { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } }
                         }

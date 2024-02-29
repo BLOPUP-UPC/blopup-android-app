@@ -19,9 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -48,7 +46,7 @@ import edu.upc.sdk.library.models.Treatment
 fun TreatmentAdherenceScreen(
     setResultAndFinish: (Int) -> Unit,
     createVisit: () -> Unit,
-    createVisitResultUiState: ResultUiState,
+    createVisitResultUiState: ResultUiState?,
     treatmentsResultUiState: ResultUiState,
     treatmentAdherence: ((List<CheckTreatment>) -> Unit)
 ) {
@@ -66,10 +64,12 @@ fun TreatmentAdherenceScreen(
         is ResultUiState.Success<*> -> {
             setResultAndFinish(Activity.RESULT_OK)
         }
+
+        else -> {}
     }
 
 
-    if (treatmentsResultUiState is ResultUiState.Success<*> && (treatmentsResultUiState.data as List<Treatment>).isEmpty()) {
+    if (treatmentsResultUiState is ResultUiState.Success<*> && (treatmentsResultUiState.data as List<*>).isEmpty()) {
         LaunchedEffect(true) {
             createVisit()
         }
@@ -84,8 +84,7 @@ fun TreatmentAdherence(
     createVisit: () -> Unit,
     treatmentAdherence: (List<CheckTreatment>) -> Unit
 ) {
-    val treatmentOptions = remember { mutableStateListOf<CheckTreatment>() }
-
+    var treatmentOptions = emptyList<CheckTreatment>()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -131,7 +130,7 @@ fun TreatmentAdherence(
                         text = stringResource(R.string.treatment_adherence_text),
                         fontSize = TextUnit(16f, TextUnitType.Sp),
                     )
-                    treatmentOptions.addAll(getTreatmentOptions(treatments.data as List<Treatment>))
+                    treatmentOptions = getTreatmentOptions(treatments.data as List<*>)
                     TreatmentCheckBox(treatmentOptions)
                 }
 
@@ -194,8 +193,9 @@ fun TreatmentCheckBox(treatmentOptions: List<CheckTreatment>) {
 }
 
 @Composable
-fun getTreatmentOptions(treatments: List<Treatment>): List<CheckTreatment> {
-    return treatments.map { treatment ->
+fun getTreatmentOptions(treatments: List<*>): List<CheckTreatment> {
+    return treatments.map { item ->
+        val treatment = item as Treatment
         var status by rememberSaveable { mutableStateOf(false) }
         CheckTreatment(
             title = treatment.medicationName,
