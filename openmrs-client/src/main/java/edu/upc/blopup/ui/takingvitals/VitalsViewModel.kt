@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.takingvitals
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -168,7 +167,6 @@ open class VitalsViewModel @Inject constructor(
             when (result) {
                 is Result.Success -> {
                     _createVisitResultUiState.value = ResultUiState.Success(Unit)
-                    Log.i("VitalsViewModel", "createVisitResultUiState is successs")
                 }
 
                 is Result.Loading -> {

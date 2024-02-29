@@ -148,8 +148,8 @@ fun TreatmentAdherence(
                 }
             }
         }
-        OrangeButton(R.string.finalise_treatment,  {
-            if(treatments is ResultUiState.Success<*>){
+        OrangeButton(R.string.finalise_treatment, {
+            if (treatments is ResultUiState.Success<*>) {
                 treatmentAdherence(treatmentOptions)
             }
             createVisit()
@@ -170,20 +170,19 @@ fun TreatmentCheckBox(treatmentOptions: List<CheckTreatment>) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(
-                        text = checkTreatment.title,
+                        text = checkTreatment.medicationName,
+                        modifier = Modifier.padding(bottom = 4.dp),
                         fontSize = TextUnit(16f, TextUnitType.Sp),
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        fontWeight = FontWeight.Bold
                     )
                     Row {
-                        checkTreatment.medicationType.forEachIndexed { index, medication ->
-                            Text(
-                                text = medication.getLabel(LocalContext.current),
-                                fontSize = TextUnit(12f, TextUnitType.Sp)
-                            )
-                            if (index < checkTreatment.medicationType.size - 1) {
-                                Text(" • ", fontSize = TextUnit(12f, TextUnitType.Sp))
-                            }
-                        }
+                        val medicationTypesString = checkTreatment.medicationType
+                            .map { it.getLabel(LocalContext.current) }
+                            .joinToString(" • ")
+                        Text(
+                            text = medicationTypesString,
+                            fontSize = TextUnit(14f, TextUnitType.Sp),
+                        )
                     }
                 }
             }
@@ -198,7 +197,7 @@ fun getTreatmentOptions(treatments: List<*>): List<CheckTreatment> {
         val treatment = item as Treatment
         var status by rememberSaveable { mutableStateOf(false) }
         CheckTreatment(
-            title = treatment.medicationName,
+            medicationName = treatment.medicationName,
             medicationType = treatment.medicationType,
             selected = status,
             onCheckedChange = { status = it },
