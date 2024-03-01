@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,7 +36,9 @@ fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: M
             NavigationButtons(onClickNext, onClickBack)
             OnBackPressButtonConfirmDialog(onClickBack)
         } else {
-                LoadingSpinner()
+                LoadingSpinner(Modifier
+                    .width(70.dp)
+                    .padding(top = 200.dp))
                 Text(
                     text = stringResource(R.string.waiting_for_data),
                     modifier = Modifier
@@ -70,7 +73,9 @@ fun WeightDataScreenPreview(
     ) vitals: MutableList<Vital>
 ) {
     Column {
-        LoadingSpinner()
+        LoadingSpinner(Modifier
+            .width(70.dp)
+            .padding(top = 200.dp))
         Text(
             text = stringResource(R.string.waiting_for_data),
             modifier = Modifier

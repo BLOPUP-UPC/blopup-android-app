@@ -53,7 +53,11 @@ fun TreatmentAdherenceScreen(
 ) {
     when (createVisitResultUiState) {
         ResultUiState.Loading -> {
-            LoadingSpinner()
+            LoadingSpinner(
+                Modifier
+                    .width(70.dp)
+                    .padding(top = 200.dp)
+            )
         }
 
         ResultUiState.Error -> {
@@ -75,7 +79,12 @@ fun TreatmentAdherenceScreen(
             createVisit()
         }
     } else {
-        TreatmentAdherence(treatmentsResultUiState, createVisit, treatmentAdherence, getActiveTreatments)
+        TreatmentAdherence(
+            treatmentsResultUiState,
+            createVisit,
+            treatmentAdherence,
+            getActiveTreatments
+        )
     }
 }
 
@@ -124,7 +133,11 @@ fun TreatmentAdherence(
 
             when (treatments) {
                 ResultUiState.Loading -> {
-                    LoadingSpinner()
+                    LoadingSpinner(
+                        Modifier
+                            .width(50.dp)
+                            .padding(top = 50.dp)
+                    )
                 }
 
                 is ResultUiState.Success<*> -> {
@@ -217,7 +230,7 @@ fun TreatmentAdherencePreviewError() {
 @Preview(showSystemUi = true)
 @Composable
 fun TreatmentAdherencePreviewLoading() {
-    TreatmentAdherence(ResultUiState.Loading, {}, {}, {} )
+    TreatmentAdherence(ResultUiState.Loading, {}, {}, {})
 }
 
 @Preview(showSystemUi = true)

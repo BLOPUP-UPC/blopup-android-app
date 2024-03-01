@@ -148,12 +148,10 @@ fun ErrorDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
 }
 
 @Composable
-fun LoadingSpinner() {
+fun LoadingSpinner(modifier: Modifier) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         CircularProgressIndicator(
-            modifier = Modifier
-                .width(70.dp)
-                .padding(top = 200.dp),
+            modifier = modifier,
             color = colorResource(R.color.dark_teal),
             trackColor = colorResource(R.color.grey),
         )
@@ -163,5 +161,7 @@ fun LoadingSpinner() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun VitalsDialogPreview() {
-    LoadingSpinner()
+    LoadingSpinner(Modifier
+        .width(70.dp)
+        .padding(top = 200.dp))
 }

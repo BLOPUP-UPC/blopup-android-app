@@ -79,7 +79,6 @@ open class VitalsViewModel @Inject constructor(
                 is Result.Success -> ResultUiState.Success(response.data)
                 else -> ResultUiState.Error
             }
-//        _treatmentsResultUiState.value = ResultUiState.Error
     }
 
     suspend fun refreshActiveTreatments() {
