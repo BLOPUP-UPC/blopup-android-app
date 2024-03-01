@@ -42,7 +42,6 @@ class VitalsActivity : AppCompatActivity() {
 
     val viewModel: VitalsViewModel by viewModels()
 
-
     private val locationPermission = arrayOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION
@@ -166,9 +165,9 @@ class VitalsActivity : AppCompatActivity() {
                                 { setResultAndFinish(it) },
                                 viewModel::createVisit,
                                 createVisitResultUiState,
-                                treatmentsResultUiState ,
+                                treatmentsResultUiState,
                                 { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } },
-                                { lifecycleScope.launch { viewModel.refreshActiveTreatments() }}
+                                { lifecycleScope.launch { viewModel.refreshActiveTreatments() } }
                             )
                         }
                     }
@@ -178,13 +177,15 @@ class VitalsActivity : AppCompatActivity() {
     }
 
     private fun askPermissions() {
+        val permissionsToRequest = mutableListOf<String>()
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
             ||
             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, locationPermission, 1)
+            permissionsToRequest.addAll(locationPermission)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && (
                     ActivityCompat.checkSelfPermission(
@@ -197,7 +198,11 @@ class VitalsActivity : AppCompatActivity() {
                             ) != PackageManager.PERMISSION_GRANTED
                     )
         ) {
-            ActivityCompat.requestPermissions(this, bluetoothPermission, 1)
+            permissionsToRequest.addAll(bluetoothPermission)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), 1)
         }
     }
 
