@@ -135,6 +135,7 @@ class VitalsActivity : AppCompatActivity() {
                         composable(Routes.WeightDataScreen.id) {
                             topBarTitle = R.string.weight_data
                             isDataScreen = true
+                            val scaleBluetoothConnectionResultUiState by viewModel.scaleBluetoothConnectionResultUiState.collectAsState()
 
                             WeightDataScreen(
                                 { navigationController.navigate(Routes.MeasureHeightScreen.id) },
@@ -142,7 +143,9 @@ class VitalsActivity : AppCompatActivity() {
                                     navigationController.popBackStack()
                                     viewModel.removeWeightData()
                                 },
-                                uiState
+                                uiState,
+                                scaleBluetoothConnectionResultUiState,
+                                viewModel::receiveWeightData
                             )
                         }
                         composable(Routes.MeasureHeightScreen.id) {

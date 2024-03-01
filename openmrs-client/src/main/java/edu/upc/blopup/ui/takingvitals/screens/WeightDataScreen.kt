@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.takingvitals.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,34 +16,54 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
+import edu.upc.blopup.ui.takingvitals.ResultUiState
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 
 @Composable
-fun WeightDataScreen(onClickNext: () -> Unit, onClickBack: () -> Unit, vitals: MutableList<Vital>) {
+fun WeightDataScreen(
+    onClickNext: () -> Unit,
+    onClickBack: () -> Unit,
+    vitals: MutableList<Vital>,
+    scaleBluetoothConnectionResultUiState: ResultUiState,
+    receiveWeightData: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        if (vitals.find { it.concept == WEIGHT_FIELD_CONCEPT } != null) {
-            Log.i("WeightDataScreen", "Weight data: $vitals")
-            DataReceivedSuccessfully()
-            WeighDataCard(vitals)
-            NavigationButtons(onClickNext, onClickBack)
-            OnBackPressButtonConfirmDialog(onClickBack)
-        } else {
-                LoadingSpinner(Modifier
-                    .width(70.dp)
-                    .padding(top = 200.dp))
+        when (scaleBluetoothConnectionResultUiState) {
+            is ResultUiState.Loading -> {
+                LoadingSpinner(
+                    Modifier
+                        .width(70.dp)
+                        .padding(top = 200.dp)
+                )
                 Text(
                     text = stringResource(R.string.waiting_for_data),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(70.dp)
                 )
+            }
+
+            is ResultUiState.Success<*> -> {
+                DataReceivedSuccessfully()
+                WeighDataCard(vitals)
+                NavigationButtons(onClickNext, onClickBack)
+                OnBackPressButtonConfirmDialog(onClickBack)
+            }
+
+            is ResultUiState.Error -> {
+                ErrorDialog(
+                    show = scaleBluetoothConnectionResultUiState is ResultUiState.Error,
+                    onDismiss = { onClickBack() },
+                    onConfirm = { receiveWeightData() },
+                    title = R.string.bluetooth_error_connection
+                )
+            }
         }
     }
 }
@@ -73,9 +92,11 @@ fun WeightDataScreenPreview(
     ) vitals: MutableList<Vital>
 ) {
     Column {
-        LoadingSpinner(Modifier
-            .width(70.dp)
-            .padding(top = 200.dp))
+        LoadingSpinner(
+            Modifier
+                .width(70.dp)
+                .padding(top = 200.dp)
+        )
         Text(
             text = stringResource(R.string.waiting_for_data),
             modifier = Modifier
