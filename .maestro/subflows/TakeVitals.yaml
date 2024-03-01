@@ -2,20 +2,20 @@ appId: edu.upc
 ---
 - tapOn:
     id: "edu.upc:id/start_visit_fab"
+- tapOn: "How to activate the device"
 - tapOn: "Receive blood pressure data"
-- assertVisible:
-    id: "edu.upc:id/bp_guide"
-- pressKey: back
-- assertVisible:
-    id: "edu.upc:id/receive_weight_data_btn"
-- tapOn: "Receive weight from scale"
-- assertVisible:
-    id: "edu.upc:id/scale_diagram"
-- pressKey: back
-- tapOn: "Height"
+- tapOn: "Go back"
+- tapOn: "YES, CANCEL"
+- tapOn: "Receive blood pressure data"
+- assertVisible: "Data Received Successfully."
+- tapOn: "Next"
+- tapOn: "Receive weight data"
+- assertVisible: "Data Received Successfully."
+- tapOn: "Next"
+- longPressOn: "Height"
+- eraseText
 - inputText: "167"
 - hideKeyboard
-- tapOn:
-    id: "edu.upc:id/buttonToSentVitals"
+- tapOn: "Next"
 - assertVisible:
       id: "edu.upc:id/blood_pressure_recommendation"
