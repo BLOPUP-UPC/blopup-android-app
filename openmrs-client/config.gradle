@@ -9,7 +9,7 @@ android{
 
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "true"
-            buildConfigField "Boolean", "NEW_VITALS_FLOW", "false"
+            buildConfigField "Boolean", "NEW_VITALS_FLOW", "true"
         }
         staging {
             buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"1b7f89cb-197a-4922-bb0c-2b780b85a1ac\""
@@ -31,7 +31,7 @@ android{
 
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "true"
-            buildConfigField "Boolean", "NEW_VITALS_FLOW", "false"
+            buildConfigField "Boolean", "NEW_VITALS_FLOW", "true"
         }
     }
 }
