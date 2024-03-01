@@ -61,7 +61,8 @@ fun WeightDataScreen(
                     show = scaleBluetoothConnectionResultUiState is ResultUiState.Error,
                     onDismiss = { onClickBack() },
                     onConfirm = { receiveWeightData() },
-                    title = R.string.bluetooth_error_connection
+                    title = R.string.bluetooth_error_connection,
+                    instructions = R.string.bluetooth_error_instructions_scale
                 )
             }
         }

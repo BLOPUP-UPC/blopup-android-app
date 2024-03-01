@@ -288,7 +288,8 @@
     <string name="go_back">Atrás</string>
     <string name="next">Continuar</string>/>
     <string name="visit_start_error_dialog_message">Haga click en CANCELAR para abortar la operación. \n\nHaga click en REINTENTAR para repetir la operación.</string>
-    <string name="bluetooth_error_instructions">Mantenga apretado "Start" en el tensiómetro hasta que aparezca el símbolo de bluetooth para recuperar los datos más recientes.</string>
+    <string name="bluetooth_error_instructions_bp">\nMantenga apretado "Start" en el tensiómetro hasta que aparezca el símbolo de bluetooth para recuperar los datos más recientes.</string>
+    <string name="bluetooth_error_instructions_scale">\nVuelva a pesar al paciente.</string>
     <string name="retry">Reintentar</string>
     <string name="data_received_successfully"> Datos recibidos con éxito.</string>
     <string name="waiting_for_data">Esperando recibir datos…</string>

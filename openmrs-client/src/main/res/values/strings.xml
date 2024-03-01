@@ -432,7 +432,8 @@
     <string name="go_back" tools:ignore="MissingTranslation">Go back</string>
     <string name="next" tools:ignore="MissingTranslation">Next</string>
     <string name="visit_start_error_dialog_message" tools:ignore="MissingTranslation">Click on CANCEL to abort the operation. \n\nPlease click on RETRY to try again.</string>
-    <string name="bluetooth_error_instructions" tools:ignore="MissingTranslation">\nPress and hold the start button on the blood pressure device until the bluetooth sign appears to send the latest data.</string>
+    <string name="bluetooth_error_instructions_bp" tools:ignore="MissingTranslation">\nPress and hold the start button on the blood pressure device until the bluetooth sign appears to send the latest data.</string>
+    <string name="bluetooth_error_instructions_scale" tools:ignore="MissingTranslation">\nWeigh the patient again.</string>
     <string name="retry" tools:ignore="MissingTranslation">Retry</string>
     <string name="data_received_successfully" tools:ignore="MissingTranslation">Data received successfully.</string>
     <string name="waiting_for_data" tools:ignore="MissingTranslation">Waiting for data…</string>

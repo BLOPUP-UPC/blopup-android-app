@@ -288,7 +288,8 @@
     <string name="go_back">Enrere</string>
     <string name="next">Següent</string>/>
     <string name="visit_start_error_dialog_message">Faci click a CANCEL·LAR per a abortar l\'operació. \n\nFaci click a REINTENTAR per repetir l\'operació.</string>
-    <string name="bluetooth_error_instructions">Mantengui apretat \'Start\' al tensiòmetre fins aparegui el simbol de bluetooth per tornar a enviar les dades més recents.</string>
+    <string name="bluetooth_error_instructions_bp">\nMantingui apretat \'Start\' al tensiòmetre fins que aparegui el simbol de bluetooth per tornar a enviar les dades més recents.</string>
+    <string name="bluetooth_error_instructions_scale">\nTorni a pesar al pacient.</string>
     <string name="retry">Reintentar</string>
     <string name="data_received_successfully">Dades rebudes amb èxit.</string>
     <string name="waiting_for_data">Esperant rebre dades…</string>
