@@ -236,5 +236,6 @@ open class VitalsViewModel @Inject constructor(
                 (50..150).random().toString()
             )
         )
+        _scaleBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
     }
 }
