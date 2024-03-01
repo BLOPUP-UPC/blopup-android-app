@@ -49,7 +49,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.any
 import rx.Observable
 import java.util.Optional
 
@@ -134,14 +133,17 @@ class VitalsViewModelTest {
             Vital(HEART_RATE_FIELD_CONCEPT, "70")
         )
 
-            viewModel.receiveBloodPressureData()
+        viewModel.receiveBloodPressureData()
 
-            val result = viewModel.vitalsUiState.first()
+        val result = viewModel.vitalsUiState.first()
 
-            assertEquals(expectedResult, result)
-            verify { readBloodPressureRepository.disconnect() }
+        assertEquals(expectedResult, result)
+        verify { readBloodPressureRepository.disconnect() }
 
-        assertEquals(ResultUiState.Success(Unit), viewModel.bpBluetoothConnectionResultUiState.value)
+        assertEquals(
+            ResultUiState.Success(Unit),
+            viewModel.bpBluetoothConnectionResultUiState.value
+        )
     }
 
     @Test
@@ -172,16 +174,17 @@ class VitalsViewModelTest {
             Vital(WEIGHT_FIELD_CONCEPT, "70.0")
         )
 
+        viewModel.receiveWeightData()
 
-        runBlocking {
-            viewModel.receiveWeightData()
+        val result = viewModel.vitalsUiState.first()
 
-            val result = viewModel.vitalsUiState.first()
+        assertEquals(expectedResult, result)
+        verify { readScaleRepository.disconnect() }
 
-            assertEquals(expectedResult, result)
-            coVerify { readScaleRepository.disconnect() }
-
-        }
+        assertEquals(
+            ResultUiState.Success(Unit),
+            viewModel.scaleBluetoothConnectionResultUiState.value
+        )
     }
 
     @Test
@@ -270,14 +273,19 @@ class VitalsViewModelTest {
         runBlocking {
             viewModel.fetchActiveTreatment()
 
-            assertEquals(ResultUiState.Success(treatmentList), viewModel.treatmentsResultUiState.value)
+            assertEquals(
+                ResultUiState.Success(treatmentList),
+                viewModel.treatmentsResultUiState.value
+            )
         }
     }
 
     @Test
     fun `should return error if fetching all treatments fails`() {
 
-        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns Result.Error(Throwable("Error fetching treatments"))
+        coEvery { treatmentRepository.fetchAllActiveTreatments(any()) } returns Result.Error(
+            Throwable("Error fetching treatments")
+        )
 
         runBlocking {
             viewModel.fetchActiveTreatment()
@@ -330,12 +338,30 @@ class VitalsViewModelTest {
 
         every { readBloodPressureRepository.start(any(), any()) } answers {
             val connectionCallback = secondArg<(BloodPressureViewState) -> Unit>()
-            connectionCallback(BloodPressureViewState.Error(BluetoothConnectionException.OnResponseReadHistory)) }
+            connectionCallback(BloodPressureViewState.Error(BluetoothConnectionException.OnResponseReadHistory))
+        }
 
         every { readBloodPressureRepository.disconnect() } answers {}
 
         viewModel.receiveBloodPressureData()
 
         assertEquals(ResultUiState.Error, viewModel.bpBluetoothConnectionResultUiState.value)
+    }
+
+    @Test
+    fun `should set scaleBluetoothConnectionResultUiState to Error when bluetooth connection fails`() {
+        mockkObject(BuildConfigWrapper)
+        every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns false
+
+        every { readScaleRepository.start(any()) } answers {
+            val connectionCallback = firstArg<(ScaleViewState) -> Unit>()
+            connectionCallback(ScaleViewState.Error(BluetoothConnectionException.OnResponseReadHistory))
+        }
+
+        every { readScaleRepository.disconnect() } answers {}
+
+        viewModel.receiveWeightData()
+
+        assertEquals(ResultUiState.Error, viewModel.scaleBluetoothConnectionResultUiState.value)
     }
 }

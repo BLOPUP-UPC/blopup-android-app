@@ -91,22 +91,32 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun receiveWeightData() {
+        _scaleBluetoothConnectionResultUiState.value = ResultUiState.Loading
+
         hardcodeBluetoothDataToggle.check(
 
             { hardcodeWeightData() },
             {
                 viewModelScope.launch {
                     readScaleRepository.start { state: ScaleViewState ->
-                        if (state is ScaleViewState.Content) {
-                            val copy = _vitalsUiState.value.toMutableList()
+                        when (state) {
+                            is ScaleViewState.Content -> {
+                                val copy = _vitalsUiState.value.toMutableList()
 
-                            copy.add(
-                                Vital(
-                                    ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
-                                    state.weightMeasurement.weight.toString()
+                                copy.add(
+                                    Vital(
+                                        ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
+                                        state.weightMeasurement.weight.toString()
+                                    )
                                 )
-                            )
-                            _vitalsUiState.value = copy
+                                _vitalsUiState.value = copy
+                                _scaleBluetoothConnectionResultUiState.value =
+                                    ResultUiState.Success(Unit)
+                            }
+
+                            is ScaleViewState.Error -> {
+                                _scaleBluetoothConnectionResultUiState.value = ResultUiState.Error
+                            }
                         }
                         readScaleRepository.disconnect()
                     }
@@ -149,8 +159,10 @@ open class VitalsViewModel @Inject constructor(
                                                 state.measurement.heartRate.toString()
                                             )
                                         )
-                                    _bpBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
+                                    _bpBluetoothConnectionResultUiState.value =
+                                        ResultUiState.Success(Unit)
                                 }
+
                                 is BloodPressureViewState.Error -> {
                                     _bpBluetoothConnectionResultUiState.value = ResultUiState.Error
                                 }
