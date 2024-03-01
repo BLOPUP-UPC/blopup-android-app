@@ -6,6 +6,7 @@ import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
+import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleRepository
 import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
@@ -48,6 +49,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
 import rx.Observable
 import java.util.Optional
 
@@ -124,9 +126,7 @@ class VitalsViewModelTest {
             bloodPressureCallback(measurements)
         }
 
-        every {
-            readBloodPressureRepository.disconnect()
-        } answers {}
+        every { readBloodPressureRepository.disconnect() } answers {}
 
         val expectedResult = mutableListOf(
             Vital(SYSTOLIC_FIELD_CONCEPT, "120"),
@@ -134,15 +134,14 @@ class VitalsViewModelTest {
             Vital(HEART_RATE_FIELD_CONCEPT, "70")
         )
 
-        runBlocking {
             viewModel.receiveBloodPressureData()
 
             val result = viewModel.vitalsUiState.first()
 
             assertEquals(expectedResult, result)
-            coVerify { readBloodPressureRepository.disconnect() }
-        }
+            verify { readBloodPressureRepository.disconnect() }
 
+        assertEquals(ResultUiState.Success(Unit), viewModel.bpBluetoothConnectionResultUiState.value)
     }
 
     @Test
@@ -322,5 +321,21 @@ class VitalsViewModelTest {
             }
 
         }
+    }
+
+    @Test
+    fun `should set bpBluetoothConnectionResultUiState to Error when bluetooth connection fails`() {
+        mockkObject(BuildConfigWrapper)
+        every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns false
+
+        every { readBloodPressureRepository.start(any(), any()) } answers {
+            val connectionCallback = secondArg<(BloodPressureViewState) -> Unit>()
+            connectionCallback(BloodPressureViewState.Error(BluetoothConnectionException.OnResponseReadHistory)) }
+
+        every { readBloodPressureRepository.disconnect() } answers {}
+
+        viewModel.receiveBloodPressureData()
+
+        assertEquals(ResultUiState.Error, viewModel.bpBluetoothConnectionResultUiState.value)
     }
 }

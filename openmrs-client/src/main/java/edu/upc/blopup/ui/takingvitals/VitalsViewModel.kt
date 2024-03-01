@@ -44,10 +44,6 @@ open class VitalsViewModel @Inject constructor(
     private val _vitalsUiState = MutableStateFlow((mutableListOf<Vital>()))
     val vitalsUiState: StateFlow<MutableList<Vital>> = _vitalsUiState.asStateFlow()
 
-    private val _connectionViewState = MutableLiveData<ConnectionViewState>()
-    val connectionViewState: LiveData<ConnectionViewState>
-        get() = _connectionViewState
-
     private val _bpViewState = MutableLiveData<BloodPressureViewState>()
     private val bpViewState: LiveData<BloodPressureViewState>
         get() = _bpViewState
@@ -59,10 +55,22 @@ open class VitalsViewModel @Inject constructor(
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
     private val _createVisitResultUiState: MutableStateFlow<ResultUiState?> = MutableStateFlow(null)
-    val createVisitResultUiState: StateFlow<ResultUiState?> = _createVisitResultUiState.asStateFlow()
+    val createVisitResultUiState: StateFlow<ResultUiState?> =
+        _createVisitResultUiState.asStateFlow()
 
-    private val _treatmentsResultUiState: MutableStateFlow<ResultUiState> = MutableStateFlow(ResultUiState.Loading)
+    private val _treatmentsResultUiState: MutableStateFlow<ResultUiState> =
+        MutableStateFlow(ResultUiState.Loading)
     var treatmentsResultUiState: StateFlow<ResultUiState> = _treatmentsResultUiState.asStateFlow()
+
+    private val _bpBluetoothConnectionResultUiState: MutableStateFlow<ResultUiState> =
+        MutableStateFlow(ResultUiState.Loading)
+    var bpBluetoothConnectionResultUiState: StateFlow<ResultUiState> =
+        _bpBluetoothConnectionResultUiState.asStateFlow()
+
+    private val _scaleBluetoothConnectionResultUiState: MutableStateFlow<ResultUiState> =
+        MutableStateFlow(ResultUiState.Loading)
+    var scaleBluetoothConnectionResultUiState: StateFlow<ResultUiState> =
+        _scaleBluetoothConnectionResultUiState.asStateFlow()
 
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
         val treatmentAdherenceInfo = checkTreatmentList.map {
@@ -132,25 +140,31 @@ open class VitalsViewModel @Inject constructor(
             {
                 viewModelScope.launch {
                     readBloodPressureRepository.start(
-                        { state: ConnectionViewState -> _connectionViewState.postValue(state) },
+                        { },
                         { state: BloodPressureViewState ->
                             _bpViewState.postValue(state)
-                            if (state is BloodPressureViewState.Content) {
-                                _vitalsUiState.value =
-                                    mutableListOf(
-                                        Vital(
-                                            ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                                            state.measurement.systolic.toString()
-                                        ),
-                                        Vital(
-                                            ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                                            state.measurement.diastolic.toString()
-                                        ),
-                                        Vital(
-                                            ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                                            state.measurement.heartRate.toString()
+                            when (state) {
+                                is BloodPressureViewState.Content -> {
+                                    _vitalsUiState.value =
+                                        mutableListOf(
+                                            Vital(
+                                                ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                                                state.measurement.systolic.toString()
+                                            ),
+                                            Vital(
+                                                ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                                                state.measurement.diastolic.toString()
+                                            ),
+                                            Vital(
+                                                ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                                                state.measurement.heartRate.toString()
+                                            )
                                         )
-                                    )
+                                    _bpBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
+                                }
+                                is BloodPressureViewState.Error -> {
+                                    _bpBluetoothConnectionResultUiState.value = ResultUiState.Error
+                                }
                             }
                             readBloodPressureRepository.disconnect()
                         }
@@ -171,25 +185,27 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun getLastHeightFromVisits() =
-        visitRepository.getLatestVisitWithHeight(patientId).getOrNull()?.getLatestHeight() ?: ""
+        visitRepository.getLatestVisitWithHeight(patientId).getOrNull()
+            ?.getLatestHeight() ?: ""
 
     fun createVisit() {
         _createVisitResultUiState.value = ResultUiState.Loading
-        visitRepository.createVisitWithVitals(patient, _vitalsUiState.value).subscribe { result ->
-            when (result) {
-                is Result.Success -> {
-                    _createVisitResultUiState.value = ResultUiState.Success(Unit)
-                }
+        visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
+            .subscribe { result ->
+                when (result) {
+                    is Result.Success -> {
+                        _createVisitResultUiState.value = ResultUiState.Success(Unit)
+                    }
 
-                is Result.Loading -> {
-                    _createVisitResultUiState.value = ResultUiState.Loading
-                }
+                    is Result.Loading -> {
+                        _createVisitResultUiState.value = ResultUiState.Loading
+                    }
 
-                is Result.Error -> {
-                    _createVisitResultUiState.value = ResultUiState.Error
+                    is Result.Error -> {
+                        _createVisitResultUiState.value = ResultUiState.Error
+                    }
                 }
             }
-        }
     }
 
     private fun hardcodeBloodPressureBluetoothData() {
