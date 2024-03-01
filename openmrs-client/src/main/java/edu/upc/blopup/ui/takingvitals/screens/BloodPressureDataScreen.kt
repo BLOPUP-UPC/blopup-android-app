@@ -10,6 +10,10 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -19,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
+import edu.upc.blopup.ui.takingvitals.ResultUiState
 import edu.upc.blopup.vitalsform.Vital
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
@@ -28,7 +33,9 @@ import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIE
 fun BloodPressureDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
-    vitals: MutableList<Vital>
+    vitals: MutableList<Vital>,
+    bpBluetoothConnectionResultUiState: ResultUiState,
+    receiveBpData: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -36,24 +43,39 @@ fun BloodPressureDataScreen(
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (vitals.find { it.concept == SYSTOLIC_FIELD_CONCEPT } != null) {
-            DataReceivedSuccessfully()
-            BloodPressureDataCards(vitals)
-            NavigationButtons(onClickNext, onClickBack)
-            OnBackPressButtonConfirmDialog(onClickBack)
-        } else {
-                LoadingSpinner(Modifier
-                    .width(70.dp)
-                    .padding(top = 200.dp))
+        when (bpBluetoothConnectionResultUiState) {
+            is ResultUiState.Loading -> {
+                LoadingSpinner(
+                    Modifier
+                        .width(70.dp)
+                        .padding(top = 200.dp)
+                )
                 Text(
                     text = stringResource(R.string.waiting_for_data),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(70.dp)
                 )
+            }
+
+            is ResultUiState.Success<*> -> {
+                DataReceivedSuccessfully()
+                BloodPressureDataCards(vitals)
+                NavigationButtons(onClickNext, onClickBack)
+                OnBackPressButtonConfirmDialog(onClickBack)
+            }
+
+            is ResultUiState.Error -> {
+                ErrorDialog(
+                    show = bpBluetoothConnectionResultUiState is ResultUiState.Error,
+                    onDismiss = { onClickBack() },
+                    onConfirm = { receiveBpData() },
+                    title = R.string.bluetooth_error_connection,
+                    instructions = R.string.bluetooth_error_instructions
+                )
+            }
         }
     }
-
 }
 
 @Composable
@@ -89,9 +111,52 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
 
 @Preview
 @Composable
-fun BloodPressureDataScreenPreview(@PreviewParameter(DataScreenParameters::class,1) vitals: MutableList<Vital>) {
+fun BloodPressureDataScreenPreviewSuccess(
+    @PreviewParameter(
+        DataScreenParameters::class,
+        1
+    ) vitals: MutableList<Vital>
+) {
     BloodPressureDataScreen(
         {},
         {},
-        vitals)
+        vitals,
+        ResultUiState.Success(Unit),
+        {}
+    )
 }
+
+@Preview
+@Composable
+fun BloodPressureDataScreenPreviewError(
+    @PreviewParameter(
+        DataScreenParameters::class,
+        1
+    ) vitals: MutableList<Vital>
+) {
+    BloodPressureDataScreen(
+        {},
+        {},
+        vitals,
+        ResultUiState.Error,
+        {}
+    )
+}
+
+@Preview
+@Composable
+fun BloodPressureDataScreenPreviewLoading(
+    @PreviewParameter(
+        DataScreenParameters::class,
+        1
+    ) vitals: MutableList<Vital>
+) {
+    BloodPressureDataScreen(
+        {},
+        {},
+        vitals,
+        ResultUiState.Loading,
+        {}
+    )
+}
+

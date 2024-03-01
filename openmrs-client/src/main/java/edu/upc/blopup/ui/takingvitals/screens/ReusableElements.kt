@@ -87,7 +87,7 @@ fun VitalsDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
 }
 
 @Composable
-fun ErrorDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
+fun ErrorDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit, title:Int, instructions: Int? = null) {
     if (show) {
         Dialog(onDismissRequest = { onDismiss() }) {
             Column(
@@ -101,14 +101,15 @@ fun ErrorDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
                         .padding(15.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.visit_start_error),
+                        text = stringResource(title),
                         color = Color.White,
                         fontSize = TextUnit(20f, TextUnitType.Sp)
                     )
                 }
                 Column(Modifier.padding(15.dp)) {
+                    val instructionsText = instructions?.let { "\n${stringResource(it)}" } ?: ""
                     Text(
-                        text = stringResource(R.string.visit_start_error_dialog_message),
+                        text = stringResource(R.string.visit_start_error_dialog_message) + instructionsText,
                         color = Color.Gray
                     )
                 }

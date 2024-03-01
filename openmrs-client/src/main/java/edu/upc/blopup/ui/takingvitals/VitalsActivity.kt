@@ -113,11 +113,14 @@ class VitalsActivity : AppCompatActivity() {
                         composable(Routes.BloodPressureDataScreen.id) {
                             topBarTitle = R.string.blood_pressure_data
                             isDataScreen = true
+                            val bpBluetoothConnectionResultUiState by viewModel.bpBluetoothConnectionResultUiState.collectAsState()
 
                             BloodPressureDataScreen(
                                 { navigationController.navigate(Routes.MeasureWeightScreen.id) },
                                 navigationController::popBackStack,
-                                uiState
+                                uiState,
+                                bpBluetoothConnectionResultUiState,
+                                viewModel::receiveBloodPressureData
                             )
                         }
                         composable(Routes.MeasureWeightScreen.id) {

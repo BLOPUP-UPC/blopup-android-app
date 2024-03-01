@@ -1,14 +1,11 @@
 package edu.upc.blopup.ui.takingvitals
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
 import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
 import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleRepository
 import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
@@ -43,14 +40,6 @@ open class VitalsViewModel @Inject constructor(
 
     private val _vitalsUiState = MutableStateFlow((mutableListOf<Vital>()))
     val vitalsUiState: StateFlow<MutableList<Vital>> = _vitalsUiState.asStateFlow()
-
-    private val _bpViewState = MutableLiveData<BloodPressureViewState>()
-    private val bpViewState: LiveData<BloodPressureViewState>
-        get() = _bpViewState
-
-    private val _scaleViewState = MutableLiveData<ScaleViewState>()
-    val scaleViewState: LiveData<ScaleViewState>
-        get() = _scaleViewState
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
@@ -108,7 +97,6 @@ open class VitalsViewModel @Inject constructor(
             {
                 viewModelScope.launch {
                     readScaleRepository.start { state: ScaleViewState ->
-                        _scaleViewState.postValue(state)
                         if (state is ScaleViewState.Content) {
                             val copy = _vitalsUiState.value.toMutableList()
 
@@ -134,6 +122,8 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun receiveBloodPressureData() {
+        _bpBluetoothConnectionResultUiState.value = ResultUiState.Loading
+
         hardcodeBluetoothDataToggle.check(
             { hardcodeBloodPressureBluetoothData() },
 
@@ -142,7 +132,6 @@ open class VitalsViewModel @Inject constructor(
                     readBloodPressureRepository.start(
                         { },
                         { state: BloodPressureViewState ->
-                            _bpViewState.postValue(state)
                             when (state) {
                                 is BloodPressureViewState.Content -> {
                                     _vitalsUiState.value =
@@ -224,6 +213,7 @@ open class VitalsViewModel @Inject constructor(
                     (55..120).random().toString()
                 )
             )
+        _bpBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
     }
 
     private fun hardcodeWeightData() {

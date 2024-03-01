@@ -257,6 +257,7 @@
     <string name="toolbar_read_measurement_title" tools:ignore="MissingTranslation">Enable Connection</string>
     <string name="toolbar_bluetooth_icon_content_description" translatable="false">Bluetooth connection status icon</string>
     <string name="bluetooth_instructions" tools:ignore="MissingTranslation">To manually activate the Bluetooth, press START/STOP for 5–6 seconds until the Bluetooth symbol starts flashing. \n\nThe device will take 3 measurements in a row before giving you a result in the app. </string>
+    <string name="bluetooth_error_connection" tools:ignore="MissingTranslation">Error receiving data</string>
     <string name="blood_pressure_diagram_content_description" tools:ignore="MissingTranslation">Blood Pressure device diagram</string>
     <string name="bt_exception_scan_message" tools:ignore="MissingTranslation">Scanning of devices failed</string>
     <string name="bt_exception_disconnect_message" tools:ignore="MissingTranslation">Failed to disconnect device</string>
@@ -430,7 +431,8 @@
     <string name="how_to_activate_bluetooth_five" tools:ignore="MissingTranslation">at the top starts flashing.\n\nThe device will take 3 measurements in a row before giving you a result in the app. </string>
     <string name="go_back" tools:ignore="MissingTranslation">Go back</string>
     <string name="next" tools:ignore="MissingTranslation">Next</string>
-    <string name="visit_start_error_dialog_message" tools:ignore="MissingTranslation">An error occurred. \nPlease click on RETRY to try again.\nClick on CANCEL to abort the operation.</string>
+    <string name="visit_start_error_dialog_message" tools:ignore="MissingTranslation">Click on CANCEL to abort the operation. \n\nPlease click on RETRY to try again.</string>
+    <string name="bluetooth_error_instructions" tools:ignore="MissingTranslation">\nPress and hold the start button on the blood pressure device until the bluetooth sign appears to send the latest data.</string>
     <string name="retry" tools:ignore="MissingTranslation">Retry</string>
     <string name="data_received_successfully" tools:ignore="MissingTranslation">Data received successfully.</string>
     <string name="waiting_for_data" tools:ignore="MissingTranslation">Waiting for data…</string>

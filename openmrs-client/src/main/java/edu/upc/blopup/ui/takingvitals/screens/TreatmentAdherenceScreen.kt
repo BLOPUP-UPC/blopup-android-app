@@ -61,9 +61,12 @@ fun TreatmentAdherenceScreen(
         }
 
         ResultUiState.Error -> {
-            ErrorDialog(show = createVisitResultUiState is ResultUiState.Error,
+            ErrorDialog(
+                show = createVisitResultUiState is ResultUiState.Error,
                 onDismiss = { setResultAndFinish(Activity.RESULT_CANCELED) },
-                onConfirm = { createVisit() })
+                onConfirm = { createVisit() },
+                title = R.string.visit_start_error
+            )
         }
 
         is ResultUiState.Success<*> -> {
