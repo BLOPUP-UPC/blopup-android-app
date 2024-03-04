@@ -117,7 +117,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             )
         )
 
-        confirmPatient()
+        viewModel.confirmPatient()
 
         assert(viewModel.result.value is Result.Success)
     }
@@ -210,7 +210,7 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
             )
         )
 
-        confirmPatient()
+        viewModel.confirmPatient()
 
         verify(recordingHelper, times(0)).saveLegalConsent(any())
     }
