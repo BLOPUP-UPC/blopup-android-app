@@ -437,5 +437,7 @@
     <string name="retry" tools:ignore="MissingTranslation">Retry</string>
     <string name="data_received_successfully" tools:ignore="MissingTranslation">Data received successfully.</string>
     <string name="waiting_for_data" tools:ignore="MissingTranslation">Waiting for data…</string>
+    <string name="checked_icon_green" translatable="false">checked icon green</string>
+    <string name="grey_arrow_to_do_dropdown" translatable="false">grey arrow to do dropdown</string>
     />
 </resources>

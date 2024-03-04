@@ -19,6 +19,7 @@
         android:id="@+id/group_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_arrow_down" />
+        android:src="@drawable/icon_arrow_down"
+        android:contentDescription="@string/grey_arrow_to_do_dropdown" />
 
 </LinearLayout>

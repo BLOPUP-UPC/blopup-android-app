@@ -286,7 +286,7 @@ class TreatmentRepositoryTest {
             val result =
                 treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
 
-            assertEquals(kotlin.Result.success(true), result)
+            assertEquals(Result.success(true), result)
         }
 
         coVerify(exactly = 2) { restApi.createObs(any()) }
@@ -308,7 +308,7 @@ class TreatmentRepositoryTest {
             val result =
                 treatmentRepository.saveTreatmentAdherence(treatmentAdherenceData, "patientUuid")
 
-            assertEquals(kotlin.Result.failure<Exception>(exception), result)
+            assertEquals(Result.failure<Exception>(exception), result)
         }
     }
 
@@ -327,7 +327,7 @@ class TreatmentRepositoryTest {
             visitUuid = treatmentToEdit.visitUuid
         )
 
-        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns kotlin.Result.success(
+        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns Result.success(
             true
         )
 
@@ -344,7 +344,7 @@ class TreatmentRepositoryTest {
 
         runBlocking {
             val result = treatmentRepository.updateTreatment(treatmentToEdit, treatmentUpdated)
-            assertEquals(kotlin.Result.success(true), result)
+            assertEquals(Result.success(true), result)
         }
     }
 

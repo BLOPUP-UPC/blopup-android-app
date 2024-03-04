@@ -112,10 +112,10 @@ object ToastUtil {
     @JvmStatic
     private fun getImageResId(type: ToastType): Int {
         var toastTypeImageId = 0
-        when (type) {
-            ToastType.ERROR, ToastType.WARNING -> toastTypeImageId = R.drawable.toast_warning
-            ToastType.NOTICE -> toastTypeImageId = R.drawable.toast_notice
-            ToastType.SUCCESS -> toastTypeImageId = R.drawable.toast_success
+        toastTypeImageId = when (type) {
+            ToastType.ERROR, ToastType.WARNING -> R.drawable.toast_warning
+            ToastType.NOTICE -> R.drawable.toast_notice
+            ToastType.SUCCESS -> R.drawable.toast_success
         }
         return toastTypeImageId
     }

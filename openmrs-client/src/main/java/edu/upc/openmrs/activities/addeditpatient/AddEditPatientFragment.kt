@@ -344,14 +344,12 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     private fun validateFieldsForUpdatePatient() {
-        with(binding) {
-            viewModel.validateFirstName(getInput(firstName))
-            viewModel.validateSurname(getInput(surname))
-            viewModel.validateCountryOfBirth(countryOfBirth.text.toString())
-            viewModel.validateBirthDate(getInput(dobEditText))
+            viewModel.validateFirstName(getInput(binding.firstName))
+            viewModel.validateSurname(getInput(binding.surname))
+            viewModel.validateCountryOfBirth(binding.countryOfBirth.text.toString())
+            viewModel.validateBirthDate(getInput(binding.dobEditText))
             viewModel.validateGender(true)
             viewModel.validateLegalConsent(true)
-        }
     }
 
     private fun isCountryOfBirthValid() = with(binding) {

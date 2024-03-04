@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/margin_short">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -37,6 +37,7 @@
             android:id="@+id/adherence_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_tick" />
+            android:src="@drawable/ic_tick"
+            android:contentDescription="@string/checked_icon_green" />
     </LinearLayout>
 </LinearLayout>

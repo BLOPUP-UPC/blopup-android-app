@@ -20,11 +20,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.databinding.FragmentPatientDiagnosisBinding
+import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 
 @AndroidEntryPoint
 class PatientDiagnosisFragment : edu.upc.openmrs.activities.BaseFragment() {
@@ -48,9 +47,9 @@ class PatientDiagnosisFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun setupObserver() {
-        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.result.observe(viewLifecycleOwner) { result ->
             if (result is Result.Success) showDiagnosesList(result.data)
-        })
+        }
     }
 
     private fun fetchDiagnoses() {

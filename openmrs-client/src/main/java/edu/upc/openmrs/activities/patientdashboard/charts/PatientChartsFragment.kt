@@ -22,7 +22,6 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
@@ -75,20 +74,23 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     }
 
     private fun setupObserver() {
-        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                 }
+
                 is Result.Success -> {
                     observationList = result.data
                     showChartsList(result.data)
                 }
+
                 is Result.Error -> {
                 }
+
                 else -> {
                 }
             }
-        })
+        }
     }
 
     private fun fetchChartsData() {

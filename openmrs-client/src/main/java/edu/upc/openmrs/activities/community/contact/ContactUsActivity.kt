@@ -17,7 +17,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActvityContactUsBinding
@@ -84,19 +83,21 @@ class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         val emailRequest = EmailRequest(getString(R.string.subject_send_email), message)
 
-        viewModel.sendEmail(emailRequest).observeOnce(this, Observer { result ->
+        viewModel.sendEmail(emailRequest).observeOnce(this) { result ->
             when (result) {
                 ResultType.EmailSentSuccess -> {
                     ToastUtil.success(getString(R.string.send_email_success_toast_message))
                     binding.message.text.clear()
                 }
+
                 ResultType.EmailSentError -> {
                     ToastUtil.error(getString(R.string.send_email_fails_toast_message))
                 }
+
                 else -> {
                     ToastUtil.error(getString(R.string.send_email_fails_toast_message))
                 }
             }
-        })
+        }
     }
 }

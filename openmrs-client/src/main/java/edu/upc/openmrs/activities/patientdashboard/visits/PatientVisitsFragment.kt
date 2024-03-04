@@ -141,12 +141,10 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun showErrorFetchingVisits() {
-        with(binding) {
-            patientVisitRecyclerView.makeGone()
-            emptyVisitsList.makeVisible()
-            emptyVisitsList.text = getString(R.string.get_patient_from_database_error)
-            error(getString(R.string.get_patient_from_database_error))
-        }
+        binding.patientVisitRecyclerView.makeGone()
+        binding.emptyVisitsList.makeVisible()
+        binding.emptyVisitsList.text = getString(R.string.get_patient_from_database_error)
+        error(getString(R.string.get_patient_from_database_error))
     }
 
     private fun showStartVisitProgressDialog() {
