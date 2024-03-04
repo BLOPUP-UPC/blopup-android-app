@@ -69,16 +69,6 @@ open class VitalsViewModel @Inject constructor(
     }
 
     suspend fun fetchActiveTreatment() {
-        val response = treatmentRepository.fetchAllActiveTreatments(patient)
-
-        _treatmentsResultUiState.value =
-            when (response) {
-                is Result.Success -> ResultUiState.Success(response.data)
-                else -> ResultUiState.Error
-            }
-    }
-
-    suspend fun refreshActiveTreatments() {
         _treatmentsResultUiState.value = ResultUiState.Loading
 
         val response = treatmentRepository.fetchAllActiveTreatments(patient)

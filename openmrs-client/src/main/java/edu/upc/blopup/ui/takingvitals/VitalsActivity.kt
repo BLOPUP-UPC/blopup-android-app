@@ -167,7 +167,7 @@ class VitalsActivity : AppCompatActivity() {
                                 createVisitResultUiState,
                                 treatmentsResultUiState,
                                 { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } },
-                                { lifecycleScope.launch { viewModel.refreshActiveTreatments() } }
+                                { lifecycleScope.launch { viewModel.fetchActiveTreatment() } }
                             )
                         }
                     }
