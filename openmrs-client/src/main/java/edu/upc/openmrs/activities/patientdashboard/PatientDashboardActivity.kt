@@ -61,12 +61,9 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         setupObserver()
         setupActionFABs()
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         viewModel.syncPatientData()
+
     }
 
     private fun setupObserver() {
@@ -167,7 +164,6 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
             val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId.toLong()).execute()
-            finish()
             startActivity(
                 Intent(this, VisitDashboardActivity::class.java)
                     .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, activeVisit.id)
