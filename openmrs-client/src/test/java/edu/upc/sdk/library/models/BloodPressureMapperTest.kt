@@ -1,4 +1,4 @@
-package edu.upc.blopup.bloodpressure.readmeasurement
+package edu.upc.sdk.library.models
 
 import com.ideabus.model.data.CurrentAndMData
 import edu.upc.sdk.library.api.repository.Measurement

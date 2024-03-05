@@ -1,13 +1,9 @@
-package edu.upc.blopup.scale.bluetooth
+package edu.upc.sdk.library.api.repository
 
 import android.bluetooth.BluetoothDevice
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.sdk.library.api.repository.BluetoothScaleConnector
-import edu.upc.sdk.library.api.repository.EBodyProtocolFactory
-import edu.upc.sdk.library.api.repository.ScaleViewState
-import edu.upc.sdk.library.api.repository.WeightMeasurement
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -17,7 +13,7 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class EBodyMicrolifeBluetoothConnectorTest {
+class BluetoothScaleConnectorTest {
 
     private lateinit var subjectUnderTest: BluetoothScaleConnector
 

@@ -1,13 +1,9 @@
-package edu.upc.blopup.bloodpressure.bluetooth
+package edu.upc.sdk.library.api.repository
 
 import com.ideabus.model.data.CurrentAndMData
 import com.ideabus.model.data.DRecord
 import com.ideabus.model.protocol.BPMProtocol
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.sdk.library.api.repository.BloodPressureViewState
-import edu.upc.sdk.library.api.repository.BluetoothBloodPressureConnector
-import edu.upc.sdk.library.api.repository.BpmProtocolFactory
-import edu.upc.sdk.library.api.repository.Measurement
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -17,7 +13,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
-class MicrolifeBluetoothConnectorTest(private val case: TestCase) {
+class BluetoothBloodPressureConnectorTest(private val case: TestCase) {
 
     private lateinit var subjectUnderTest: BluetoothBloodPressureConnector
 
