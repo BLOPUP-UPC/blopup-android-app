@@ -79,7 +79,7 @@ fun WeighDataCard(vitals: MutableList<Vital>) {
         icon = ImageVector.vectorResource(id = R.drawable.scale_icon),
         contentDescription = "Scale icon",
         title = stringResource(id = R.string.weight_value_label),
-        value = vitals.find { it.concept == WEIGHT_FIELD_CONCEPT }!!.value,
+        value = vitals.find { it.concept == WEIGHT_FIELD_CONCEPT }?.value ?: "--",
         measure = "Kg"
     )
 }

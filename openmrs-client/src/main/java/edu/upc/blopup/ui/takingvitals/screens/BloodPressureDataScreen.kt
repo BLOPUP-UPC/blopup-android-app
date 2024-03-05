@@ -82,7 +82,7 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
             icon = Icons.Default.Favorite,
             contentDescription = "heart filled in black",
             title = stringResource(id = R.string.systolic_label),
-            value = vitals.find { it.concept == SYSTOLIC_FIELD_CONCEPT }!!.value,
+            value = vitals.find { it.concept == SYSTOLIC_FIELD_CONCEPT }?.value ?: "--",
             measure = "mmHg"
         )
         VitalsDataCard(
@@ -90,7 +90,7 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
             icon = Icons.Default.FavoriteBorder,
             contentDescription = "heart outline",
             title = stringResource(id = R.string.diastolic_label),
-            value = vitals.find { it.concept == DIASTOLIC_FIELD_CONCEPT }!!.value,
+            value = vitals.find { it.concept == DIASTOLIC_FIELD_CONCEPT }?.value ?: "--",
             measure = "mmHg"
         )
         VitalsDataCard(
@@ -98,7 +98,7 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
             icon = ImageVector.vectorResource(id = R.drawable.pulse_icon),
             contentDescription = "pulse symbol",
             title = stringResource(id = R.string.pulse_label),
-            value = vitals.find { it.concept == HEART_RATE_FIELD_CONCEPT }!!.value,
+            value = vitals.find { it.concept == HEART_RATE_FIELD_CONCEPT }?.value ?: "--",
             measure = "/min"
         )
     }
