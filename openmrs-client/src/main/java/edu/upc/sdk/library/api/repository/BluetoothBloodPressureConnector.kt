@@ -1,19 +1,21 @@
-package edu.upc.blopup.bloodpressure.bluetooth
+package edu.upc.sdk.library.api.repository
 
+import com.ideabus.model.bluetooth.MyBluetoothLE
 import com.ideabus.model.data.CurrentAndMData
 import com.ideabus.model.data.DRecord
 import com.ideabus.model.data.DeviceInfo
 import com.ideabus.model.data.User
 import com.ideabus.model.data.VersionData
 import com.ideabus.model.protocol.BPMProtocol
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ConnectionViewState
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
 import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.hilt.CurrentActivityProvider
 import javax.inject.Inject
 
-class MicrolifeBluetoothConnector @Inject constructor(
+class BluetoothBloodPressureConnector @Inject constructor(
     bpmProtocolFactory: BpmProtocolFactory
 ) : BluetoothConnectorInterface,
     BpmProtocolListener {
@@ -177,3 +179,26 @@ class BpmProtocolFactory @Inject constructor(private val activityProvider: Curre
         return bpmProtocol
     }
 }
+interface BluetoothConnectorInterface {
+    fun connect(
+        updateConnectionState: (ConnectionViewState) -> Unit,
+        updateMeasurementState: (BloodPressureViewState) -> Unit
+    )
+
+    fun disconnect()
+}
+
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+object BluetoothConnectorModule {
+
+    @Provides
+    fun providesBluetoothConnector(connector: BluetoothBloodPressureConnector): BluetoothConnectorInterface {
+        return connector
+    }
+}
+
+interface BpmProtocolListener : BPMProtocol.OnConnectStateListener,
+    BPMProtocol.OnDataResponseListener,
+    BPMProtocol.OnNotifyStateListener,
+    MyBluetoothLE.OnWriteStateListener

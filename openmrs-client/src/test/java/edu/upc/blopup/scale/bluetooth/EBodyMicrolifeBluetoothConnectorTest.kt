@@ -4,8 +4,10 @@ import android.bluetooth.BluetoothDevice
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
 import edu.upc.blopup.exceptions.BluetoothConnectionException
-import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
-import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
+import edu.upc.sdk.library.api.repository.BluetoothScaleConnector
+import edu.upc.sdk.library.api.repository.EBodyProtocolFactory
+import edu.upc.sdk.library.api.repository.ScaleViewState
+import edu.upc.sdk.library.api.repository.WeightMeasurement
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -17,7 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class EBodyMicrolifeBluetoothConnectorTest {
 
-    private lateinit var subjectUnderTest: EBodyMicrolifeBluetoothConnector
+    private lateinit var subjectUnderTest: BluetoothScaleConnector
 
     private lateinit var eBodyProtocolFactory: EBodyProtocolFactory
     private lateinit var eBodyProtocol: EBodyProtocol
@@ -34,7 +36,7 @@ class EBodyMicrolifeBluetoothConnectorTest {
             eBodyProtocolFactory.getEBodyProtocol()
         } returns eBodyProtocol
 
-        subjectUnderTest = EBodyMicrolifeBluetoothConnector(
+        subjectUnderTest = BluetoothScaleConnector(
             eBodyProtocolFactory
         )
         subjectUnderTest.connect(updateMeasurementState)

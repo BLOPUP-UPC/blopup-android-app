@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import edu.upc.blopup.vitalsform.Vital;
+import edu.upc.blopup.ui.takingvitals.Vital;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.dao.LocationDAO;

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import edu.upc.blopup.vitalsform.Vital;
+import edu.upc.blopup.ui.takingvitals.Vital;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;

@@ -1,18 +1,21 @@
-package edu.upc.blopup.scale.bluetooth
+package edu.upc.sdk.library.api.repository
 
 import android.bluetooth.BluetoothDevice
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
 import com.ideabus.model.protocol.EBodyProtocol.ConnectState
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
 import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.hilt.CurrentActivityProvider
-import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
-import edu.upc.blopup.scale.readScaleMeasurement.WeightMeasurement
 import javax.inject.Inject
 
-class EBodyMicrolifeBluetoothConnector @Inject constructor(
+
+class BluetoothScaleConnector @Inject constructor(
     eBodyProtocolFactory: EBodyProtocolFactory
-) : BluetoothConnectorInterface,
+) : BluetoothScaleConnectorInterface,
     EBodyProtocolListener {
 
     private val eBodyProtocol: EBodyProtocol
@@ -85,3 +88,24 @@ class EBodyProtocolFactory @Inject constructor(private val activityProvider: Cur
         return eBodyProtocol
     }
 }
+
+interface BluetoothScaleConnectorInterface {
+    fun connect(
+        updateMeasurementState: (ScaleViewState) -> Unit
+    )
+
+    fun disconnect()
+}
+
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+object BluetoothScaleConnectorModule {
+
+    @Provides
+    fun providesBluetoothConnector(connector: BluetoothScaleConnector): BluetoothScaleConnectorInterface {
+        return connector
+    }
+}
+
+interface EBodyProtocolListener : EBodyProtocol.OnConnectStateListener,
+    EBodyProtocol.OnDataResponseListener

@@ -30,8 +30,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.blopup.bloodpressure.BloodPressureType
-import edu.upc.blopup.bloodpressure.bloodPressureTypeFromEncounter
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.contactDoctorToggle
 import edu.upc.databinding.FragmentVisitDashboardBinding
@@ -39,11 +37,13 @@ import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.models.BloodPressureType
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.library.models.bloodPressureTypeFromEncounter
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT

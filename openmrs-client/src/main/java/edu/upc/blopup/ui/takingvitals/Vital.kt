@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform
+package edu.upc.blopup.ui.takingvitals
 
 class Vital(val concept: String, val value: String) {
 

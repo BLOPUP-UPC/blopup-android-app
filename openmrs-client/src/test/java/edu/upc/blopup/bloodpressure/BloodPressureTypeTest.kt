@@ -1,7 +1,9 @@
 package edu.upc.blopup.bloodpressure
 
+import edu.upc.sdk.library.models.BloodPressureType
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Observation
+import edu.upc.sdk.library.models.bloodPressureTypeFromEncounter
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 

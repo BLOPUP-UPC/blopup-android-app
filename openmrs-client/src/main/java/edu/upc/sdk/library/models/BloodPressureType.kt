@@ -11,10 +11,9 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package edu.upc.blopup.bloodpressure
+package edu.upc.sdk.library.models
 
 import edu.upc.R
-import edu.upc.sdk.library.models.Encounter
 
 enum class BloodPressureType {
     NORMAL {

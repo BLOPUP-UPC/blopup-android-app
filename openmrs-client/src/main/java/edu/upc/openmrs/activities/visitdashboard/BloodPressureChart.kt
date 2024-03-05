@@ -4,8 +4,8 @@ import android.graphics.Color
 import com.github.anastr.speedviewlib.SpeedView
 import com.github.anastr.speedviewlib.components.Section
 import com.github.anastr.speedviewlib.components.indicators.Indicator.Indicators
-import edu.upc.blopup.bloodpressure.BloodPressureType
 import edu.upc.openmrs.utilities.ChartColor
+import edu.upc.sdk.library.models.BloodPressureType
 
 class BloodPressureChart {
     fun createChart(speedometer: SpeedView, bpType: BloodPressureType) {

@@ -1,5 +1,6 @@
 package edu.upc.blopup.vitalsform
 
+import edu.upc.blopup.HeightValidator
 import junit.framework.TestCase.assertFalse
 import org.junit.Test
 

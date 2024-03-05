@@ -1,4 +1,4 @@
-package edu.upc.blopup.vitalsform
+package edu.upc.blopup
 
 class HeightValidator {
     companion object {

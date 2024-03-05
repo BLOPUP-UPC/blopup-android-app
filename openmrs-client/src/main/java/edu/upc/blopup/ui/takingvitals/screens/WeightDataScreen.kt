@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.takingvitals.ResultUiState
-import edu.upc.blopup.vitalsform.Vital
+import edu.upc.blopup.ui.takingvitals.Vital
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 
 @Composable

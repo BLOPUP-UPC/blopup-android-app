@@ -1,7 +1,7 @@
 package edu.upc.blopup.bloodpressure.readmeasurement
 
 import com.ideabus.model.data.CurrentAndMData
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.Measurement
+import edu.upc.sdk.library.api.repository.Measurement
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -5,13 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.CheckTreatment
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.BloodPressureViewState
-import edu.upc.blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureRepository
-import edu.upc.blopup.scale.readScaleMeasurement.ReadScaleRepository
-import edu.upc.blopup.scale.readScaleMeasurement.ScaleViewState
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
-import edu.upc.blopup.vitalsform.Vital
+import edu.upc.sdk.library.api.repository.BloodPressureViewState
+import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
+import edu.upc.sdk.library.api.repository.ReadScaleRepository
+import edu.upc.sdk.library.api.repository.ScaleViewState
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO

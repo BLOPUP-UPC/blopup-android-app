@@ -1,4 +1,4 @@
-package edu.upc.blopup.bloodpressure
+package edu.upc.sdk.library.models
 
 data class BloodPressureResult(
     val bloodPressureType: BloodPressureType,
