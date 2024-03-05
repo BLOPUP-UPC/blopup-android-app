@@ -4,7 +4,6 @@ import edu.upc.BuildConfig
 
 val hardcodeBluetoothDataToggle = ReleaseToggle(BuildConfigWrapper.hardcodeBluetoothDataToggle)
 val contactDoctorToggle = ReleaseToggle(BuildConfigWrapper.contactDoctorToggle)
-val newVitalsFlowToggle = ReleaseToggle(BuildConfigWrapper.newVitalsFlowToggle)
 
 typealias OnToggleEnabled = () -> Unit
 typealias OnToggleDisabled = () -> Unit
@@ -23,7 +22,4 @@ object BuildConfigWrapper {
 
     val contactDoctorToggle: Boolean
         get() = BuildConfig.CONTACT_DOCTOR_TOGGLE
-
-    val newVitalsFlowToggle: Boolean
-        get() = BuildConfig.NEW_VITALS_FLOW
 }

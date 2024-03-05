@@ -57,7 +57,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.upc.R;
-import edu.upc.blopup.vitalsform.VitalsFormActivity;
 import edu.upc.openmrs.activities.ACBaseActivity;
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity;
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment;
@@ -435,7 +434,7 @@ public class CustomFragmentDialog extends DialogFragment {
                     break;
                 case END_VITALS:
                     ToastUtil.showShortToast(getContext(), ToastUtil.ToastType.SUCCESS, R.string.visit_cancel);
-                    ((VitalsFormActivity) requireActivity()).finish();
+                    requireActivity().finish();
                     dismiss();
                     break;
                 case END_VISIT_START_NEW_VISIT:

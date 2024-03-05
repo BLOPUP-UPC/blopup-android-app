@@ -66,7 +66,6 @@
     <string name="end_visit_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to end this visit?</string>
     <!-- Start visit dialog -->
     <string name="start_visit_dialog_title" tools:ignore="MissingTranslation">Start Visit</string>
-    <string name="start_visit_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to start visit for %1$s now?</string>
     <!-- Start visit dialog unsuccessful-->
     <string name="start_visit_unsuccessful_dialog_title" tools:ignore="MissingTranslation">Start New Visit</string>
     <string name="start_visit_unsuccessful_dialog_message" tools:ignore="MissingTranslation">There is an active visit for %1$s. You can cancel and return to the active visit, or close it and start a new one.</string>
@@ -81,7 +80,6 @@
     <!-- Buttons -->
     <string name="dialog_button_cancel" tools:ignore="MissingTranslation">Cancel</string>
     <string name="dialog_button_ok" translatable="false">OK</string>
-    <string name="dialog_button_confirm" tools:ignore="MissingTranslation">Confirm</string>
     <string name="dialog_button_register_new" tools:ignore="MissingTranslation">Register new</string>
     <string name="dialog_button_select_location" tools:ignore="MissingTranslation">Select Location</string>
 
@@ -97,9 +95,7 @@
     <string name="dashboard_exit_toast_message" tools:ignore="MissingTranslation">Please press BACK again to exit</string>
 
     <!-- Patient Dashboard Activity -->
-    <string name="action_synchronize_patients" tools:ignore="MissingTranslation">Synchronizing patient</string>
     <string name="action_update_patient_data" tools:ignore="MissingTranslation">Update Patient</string>
-    <string name="synchronize_patient_successful" tools:ignore="MissingTranslation">Successfully synchronized patient data.</string>
     <string name="synchronize_patient_error" tools:ignore="MissingTranslation">Synchronizing patient data was unsuccessful</string>
     <string name="get_patient_from_database_error" tools:ignore="MissingTranslation">Failed to fetch patient from database</string>
     <string name="action_start_visit" tools:ignore="MissingTranslation">Start visit</string>
@@ -192,8 +188,6 @@
     <!--fragment_provider_relationship-->
     <string name="language" tools:ignore="MissingTranslation">Language</string>
 
-    <string name="apply" tools:ignore="MissingTranslation">Apply</string>
-
     <!-- introduction Activity -->
     <string name="intro_welcome" tools:ignore="MissingTranslation">Welcome</string>
     <string name="intro_register" tools:ignore="MissingTranslation">Register Patients</string>
@@ -218,9 +212,6 @@
     <!--CustomFragment Dialog-->
     <string name="application_exit_logger_message" tools:ignore="MissingTranslation">Exit application</string>
 
-    <!--FormDisplay Fragment-->
-    <string name="form_data_submit_error" tools:ignore="MissingTranslation">Form submission error</string>
-
     <!--Login Fragment-->
     <string name="invalid_URL_message" tools:ignore="MissingTranslation">Invalid URL</string>
 
@@ -243,7 +234,6 @@
 
     <!--Admission Form -->
     <string name="error_occurred" tools:ignore="MissingTranslation">An error Occurred, Try Again Later !!!</string>
-    <string name="vitals_successfully" tools:ignore="MissingTranslation">Vitals completed</string>
 
     <!-- About Activity -->
     <string name="action_about_activity" tools:ignore="MissingTranslation">About Us</string>
@@ -251,32 +241,21 @@
     <string name="about_openmrs_1" tools:ignore="MissingTranslation">OpenMRS is a global community of truly dedicated, talented, and generous contributors who build and maintain the OpenMRS platform and other, foundational OpenMRS technical products.</string>
     <string name="about_openmrs_2" tools:ignore="MissingTranslation">OpenMRS is a platform that countries and implementers use to create a customized EMR system in response to actual needs on the ground.</string>
     <string name="more_about_openmrs" tools:ignore="MissingTranslation">MORE</string>
-    <string name="receive_vitals_from_bluetooth_button_error_message" tools:ignore="MissingTranslation">No app was found for receiving bluetooh data</string>
 
     <!-- BLOPUP -->
-    <string name="toolbar_read_measurement_title" tools:ignore="MissingTranslation">Enable Connection</string>
-    <string name="toolbar_bluetooth_icon_content_description" translatable="false">Bluetooth connection status icon</string>
-    <string name="bluetooth_instructions" tools:ignore="MissingTranslation">To manually activate the Bluetooth, press START/STOP for 5–6 seconds until the Bluetooth symbol starts flashing. \n\nThe device will take 3 measurements in a row before giving you a result in the app. </string>
     <string name="bluetooth_error_connection" tools:ignore="MissingTranslation">Error receiving data</string>
-    <string name="blood_pressure_diagram_content_description" tools:ignore="MissingTranslation">Blood Pressure device diagram</string>
     <string name="bt_exception_scan_message" tools:ignore="MissingTranslation">Scanning of devices failed</string>
     <string name="bt_exception_disconnect_message" tools:ignore="MissingTranslation">Failed to disconnect device</string>
     <string name="bt_exception_connection_message" tools:ignore="MissingTranslation">Connection to the device failed</string>
     <string name="bt_exception_read_data_message" tools:ignore="MissingTranslation">Failed to read data from device</string>
     <string name="bt_exception_pairing_message" tools:ignore="MissingTranslation">Pairing with the device failed</string>
-    <string name="bt_exception_header" tools:ignore="MissingTranslation">Bluetooth error: %s</string>
-    <string name="bt_exception_try_again" tools:ignore="MissingTranslation">Try again</string>
-    <string name="scale_diagram_content_description" tools:ignore="MissingTranslation">Scale image content</string>
-    <string name="bluetooth_scale_instructions" tools:ignore="MissingTranslation">1.-Turn on the mobile bluetooth\n2.-Get on the scale\n3.-Wait until the result appears on the mobile screen</string>
     <string name="app_tutorial" tools:ignore="MissingTranslation">Tutorial</string>
 
-    <string name="vitals_form_title" tools:ignore="MissingTranslation">Vitals Form</string>
     <string name="blood_pressure_button_label" tools:ignore="MissingTranslation">Receive blood pressure data</string>
     <string name="weight_button_label" tools:ignore="MissingTranslation">Receive weight data</string>
     <string name="systolic_label" tools:ignore="MissingTranslation">Systolic</string>
     <string name="diastolic_label" tools:ignore="MissingTranslation">Diastolic</string>
     <string name="pulse_label" tools:ignore="MissingTranslation">Pulse</string>
-    <string name="receive_weight_value_button" tools:ignore="MissingTranslation">Receive weight from scale</string>
     <string name="weight_value_label" tools:ignore="MissingTranslation">Weight</string>
     <string name="weight_value" tools:ignore="MissingTranslation">Weight (kg)</string>
     <string name="height_value_label" tools:ignore="MissingTranslation">Height</string>
@@ -289,13 +268,10 @@
     <string name="weight_instructions_title" tools:ignore="MissingTranslation">To measure weight</string>
     <string name="height_instructions_title" tools:ignore="MissingTranslation">To measure height</string>
     <string name="treatment_adherence_title" tools:ignore="MissingTranslation">Treatment adherence</string>
-    <string name="blood_pressure_instructions" tools:ignore="MissingTranslation">Measure the circumference of your upper arm with a cloth measuring tape midway between the elbow and shoulder. Choose a cuff size that includes this measurement</string>
-    <string name="blood_pressure_instructions_title_two" tools:ignore="MissingTranslation">Position for taking your blood pressure at home</string>
     <string name="blood_pressure_instructions_two" tools:ignore="MissingTranslation">1. The patient should be relaxed, sitting with both feet on the ground, back straight. \n\n 2. Put on the cuff. Make sure the arm is resting on something comfortable at the level of the heart or the chest.\n\n 3. Remind the patient to stand still and not speak during the measurements.</string>
     <string name="weight_instructions" tools:ignore="MissingTranslation">1. Make sure mobile and scale bluetooth are on. \n\n2. Get the patient on the scale.\n\n3. Press the button below to receive the result.</string>
     <string name="height_instructions" tools:ignore="MissingTranslation">1. Make sure the measurement device is turned on by holding the side button. \n\n2. Set the device on the patient\'s head so the laser beam reaches all the way to the floor.\n\n3. Click the side button to get a reading and input it below.</string>
     <string name="treatment_adherence_text" tools:ignore="MissingTranslation">Is the patient following these treatments?</string>
-    <string name="swipe_left_to_start" tools:ignore="MissingTranslation">Swipe left to start</string>
     <string name="patient_with_no_values_to_show" tools:ignore="MissingTranslation">The patient has no values yet</string>
     <string name="blood_pressure_evolution" tools:ignore="MissingTranslation">Blood Pressure Evolution</string>
     <string name="country_of_birth" tools:ignore="MissingTranslation">Country of birth</string>
@@ -394,7 +370,6 @@
     <string name="treatment_operation_error" tools:ignore="MissingTranslation">The operation could\'t be performed. Try again later.</string>
     <string name="treatment_created_successfully" tools:ignore="MissingTranslation">Treatment created successfully</string>
     <string name="treatment_updated_successfully" tools:ignore="MissingTranslation">Treatment updated successfully</string>
-    <string name="treatment_adherence_label" tools:ignore="MissingTranslation">Is the patient following the treatments below?</string>
     <string name="error_loading_treatments" tools:ignore="MissingTranslation">Treatments could not be loaded.</string>
     <string name="error_loading_treatments_try_again" tools:ignore="MissingTranslation"><u>Try again</u></string>
     <string name="doctors_name" tools:ignore="MissingTranslation">Doctor\'s name</string>
@@ -409,9 +384,6 @@
     <string name="hint_patient_visit_start_date" translatable="false">03/11/2023 12:08</string>
     <string name="hint_visit_location" translatable="false">in Pharmacy</string>
     <string name="hint_active_visit" translatable="false">Active visit</string>
-    <string name="hint_medication_name" translatable="false">Parecetamol</string>
-    <string name="hint_medication_type" translatable="false">Beta blocker - ARA II</string>
-    <string name="treatment_label" tools:ignore="MissingTranslation">Treatment</string>
     <string name="ok" tools:ignore="MissingTranslation">OK</string>
     <string name="title_activity_vitals" tools:ignore="MissingTranslation">VitalsActivity</string>
     <string name="bp_image_description" tools:ignore="MissingTranslation">Illustration of a black man wearing a beige polo shirt, blue trousers and brown shoes. He is sitting on a chair and has a blue cuff around his arm.</string>

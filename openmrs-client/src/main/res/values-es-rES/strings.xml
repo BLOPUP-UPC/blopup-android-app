@@ -35,7 +35,6 @@
     <string name="credentials_changed_dialog_title">Credenciales cambiadas</string>
     <string name="credentials_changed_dialog_message">Las credenciales han sido cambiadas en la aplicación web. La sesión se ha cerrado automaticamente.</string>
     <string name="end_visit_dialog_title">Finalizar consulta</string>
-    <string name="start_visit_dialog_message">¿Está seguro que desea iniciar una consulta para %1$s ahora?</string>
     <string name="end_visit_dialog_message">¿Está seguro que desea concluir esta consulta?</string>
     <string name="start_visit_dialog_title">Iniciar visita</string>
     <string name="start_visit_unsuccessful_dialog_title">Iniciar Nueva Visita</string>
@@ -44,7 +43,6 @@
     <string name="location_dialog_current_location">Ubicación actual:</string>
     <string name="reset_dialog_message">Toda la información ingresada del paciente será eliminada</string>
     <string name="dialog_button_cancel">Cancelar</string>
-    <string name="dialog_button_confirm">Confirmar</string>
     <string name="dialog_button_register_new">Registro nuevo</string>
     <string name="dialog_button_select_location">Seleccionar Ubicación</string>
     <string name="action_find_patients">Buscar Pacientes</string>
@@ -53,9 +51,7 @@
     <string name="search_patient_no_result_for_query">No se encuentran resultados para la búsqueda"</string>
     <string name="dashboard_search_icon_label">Buscar Pacientes</string>
     <string name="dashboard_registry_icon_label">Registrar nuevo paciente</string>
-    <string name="action_synchronize_patients">Sincronizar paciente</string>
     <string name="action_update_patient_data">Actualizar Paciente</string>
-    <string name="synchronize_patient_successful">Paciente sincronizado con éxito.</string>
     <string name="synchronize_patient_error">Paciente NO sincronizado.</string>
     <string name="get_patient_from_database_error">Error al buscar paciente en la base de datos.</string>
     <string name="action_start_visit">Iniciar visita</string>
@@ -75,10 +71,8 @@
     <string name="action_register_patient">Registrar Paciente</string>
     <string name="birthdate_hint">fecha de nacimiento:</string>
     <string name="address_hint">dirección:</string>
-    <string name="form_data_submit_error">Error al enviar el formulario</string>
     <string name="dialog_message_data_lost">Toda la información ingresada del paciente se perderá</string>
     <string name="error_occurred">Ocurrió un error. Intentar nuevamente más tarde</string>
-    <string name="apply">Aplicar</string>
     <string name="snackbar_edit">EDITAR</string>
     <string name="action_end_visit">Finalizar consulta</string>
     <string name="application_exit_logger_message">Salir de la aplicación</string>
@@ -142,22 +136,14 @@
     <string name="action_submit">Registrar</string>
     <string name="dialog_button_stay">Permanecer</string>
     <string name="intro_contact_desc">Envíenos sus problemas o sugerencias.</string>
-    <string name="receive_vitals_from_bluetooth_button_error_message">No se encontró ninguna app para tomar los datos bluetooth</string>
 
     <!-- BLOPUP -->
-    <string name="toolbar_read_measurement_title">Establece Conexión</string>
-    <string name="bluetooth_instructions">Para activar manualmente el Bluetooth, presione START/STOP durante 5–6 segundos hasta que el símbolo de Bluetooth comience a parpadear. \n\nEl dispositivo tomará 3 medidas de manera seguida antes de dar un resultado en la aplicación. </string>
-    <string name="blood_pressure_diagram_content_description">Diagrama del tensiómetro</string>
     <string name="bluetooth_error_connection">Error recibiendo los datos</string>
     <string name="bt_exception_scan_message">Dispositivo no encontrado</string>
     <string name="bt_exception_disconnect_message">No se puede desconectar</string>
     <string name="bt_exception_connection_message">La conexión con el dispositivo ha fallado</string>
     <string name="bt_exception_read_data_message">Error de lectura</string>
     <string name="bt_exception_pairing_message">Emparejamiento fallido</string>
-    <string name="bt_exception_header">Error Bluetooth: %s</string>
-    <string name="bt_exception_try_again">Reintentar</string>
-    <string name="scale_diagram_content_description">Icono de la báscula</string>
-    <string name="bluetooth_scale_instructions">1.-Activar el bluetooth del teléfono\n2.-Subirse a la báscula\n3.-Esperar hasta que el resultado aparezca en la pantalla del teléfono</string>
     <string name="app_tutorial">App Tutorial</string>
     <string name="diastolic_label">Diastólica:</string>
     <string name="systolic_label">Sistólica:</string>
@@ -167,10 +153,8 @@
     <string name="weight_value">Peso (kg)</string>
     <string name="pulse_label">Pulso</string>
     <string name="send_button_label">Enviar</string>
-    <string name="receive_weight_value_button">Recibir peso de la báscula</string>
     <string name="blood_pressure_button_label">"Recibir datos del tensiómetro</string>
     <string name="weight_button_label">Recibir datos de la báscula</string>
-    <string name="vitals_form_title">Signos vitales</string>
     <string name="send_email_success_toast_message">Mensaje enviado</string>
     <string name="send_email_fails_toast_message">Error al enviar el mensje</string>
     <string name="contact_us_message_hint">Escribe aquí tu mensaje</string>
@@ -182,10 +166,7 @@
     <string name="treatment_adherence_text">¿El paciente está siguiendo con los siguientes tratamientos?</string>
     <string name="weight_instructions">1. Asegúrese de que el bluetooth del móvil y de la báscula estén activados. \n\n2. Suba el paciente a la báscula.\n\n3. Presione el botón abajo para recibir el resultado.</string>
     <string name="height_instructions">1. Asegúrese de que el dispositivo de medición esté encendido manteniendo presionado el botón lateral. \n\n2. Coloque el dispositivo en la cabeza del paciente de modo que el rayo láser llegue hasta el suelo.\n\n3. Haga clic en el botón lateral para obtener una lectura e ingrésela a continuación.</string>
-    <string name="blood_pressure_instructions">Mide la circunferencia del brazo superior con una cinta métrica de sastre, a mitad de camino entre el hombro y el codo. Elige un brazalete cuyo tamaño incluya dicha medida.</string>
-    <string name="blood_pressure_instructions_title_two">Posición para tomar la presión arterial.</string>
     <string name="blood_pressure_instructions_two">1. El paciente debe estar relajado, sentado con ambos pies en el suelo y la espalda recta. \n\n 2. Pongale el brazalete. Asegúrese de que el brazo esté apoyado sobre algo cómodo a la altura del corazón o del pecho.\n\n 3. Recuerde al paciente que debe permanecer quieto y no hablar durante las mediciones.</string>
-    <string name="swipe_left_to_start">Desliza a la izquierda para comenzar</string>
     <string name="patient_with_no_values_to_show">El paciente no tiene datos aún</string>
     <string name="blood_pressure_evolution">Evolución de la presión arterial</string>
     <string name="country_of_birth">País de nacimiento</string>
@@ -233,7 +214,6 @@
     <string name="diastolic_100_plus">o DIA 100+</string>
     <string name="diastolic_110_plus"><![CDATA[o DIA ≥ 110]]></string>
     <string name="blood_pressure_label">Tensión arterial</string>
-    <string name="vitals_successfully">Vitales completadas</string>
     <string name="message_to_doctor">Mensaje de Telegram enviado al Doctor Xavier de las Cuevas informando de la situación</string>
     <string name="patient_has_been_removed">No se puede mostrar el paciente. Este ha sido eliminado de la base de datos.</string>
     <string name="no_internet_connection">Error de conexión. Revise su conexión a internet e inténtelo de nuevo.</string>
@@ -266,12 +246,10 @@
     <string name="treatment_operation_error">No se pudo realizar la operación. Intente más tarde.</string>
     <string name="treatment_created_successfully">Tratamiento creado con éxito</string>
     <string name="treatment_updated_successfully">Tratamiento modificado con éxito</string>
-    <string name="treatment_adherence_label">El paciente sigue estos tratamientos?</string>
     <string name="error_loading_treatments">No se han podido cargar los tratamientos.</string>
     <string name="error_loading_treatments_try_again"><u>Por favor, inténtelo de nuevo</u></string>
     <string name="doctors_name">Nombre del doctor</string>
     <string name="message_doctor_error">Ha habido un error mandando el mensaje. Por favor contacte directamente al personal médico.</string>
-    <string name="treatment_label">Tratamiento</string>/>
     <string name="bp_image_description">Ilustración de un hombre negro vistiendo una polo beige, pantalones azules y zapatos marrones. Está sentado en una silla con brazalete azul alrededor de su brazo.</string>
     <string name="weight_image_description">Ilustración de una báscula violeta.</string>
     <string name="height_image_description">Ilustración de una regla amarilla.</string>
