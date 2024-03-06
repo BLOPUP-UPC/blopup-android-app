@@ -3,7 +3,6 @@ package edu.upc.sdk.library.api.repository
 import com.ideabus.model.data.CurrentAndMData
 import com.ideabus.model.data.DRecord
 import com.ideabus.model.protocol.BPMProtocol
-import edu.upc.blopup.exceptions.BluetoothConnectionException
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

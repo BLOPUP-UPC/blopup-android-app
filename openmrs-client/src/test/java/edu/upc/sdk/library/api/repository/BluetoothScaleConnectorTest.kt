@@ -3,7 +3,6 @@ package edu.upc.sdk.library.api.repository
 import android.bluetooth.BluetoothDevice
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
-import edu.upc.blopup.exceptions.BluetoothConnectionException
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

@@ -8,7 +8,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
-import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.hilt.CurrentActivityProvider
 import javax.inject.Inject
 

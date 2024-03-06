@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.takingvitals.screens
+package edu.upc.blopup.ui.takingvitals.components
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke

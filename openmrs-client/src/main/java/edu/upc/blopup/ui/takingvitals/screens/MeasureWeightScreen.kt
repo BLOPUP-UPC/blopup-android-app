@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import edu.upc.R
+import edu.upc.blopup.ui.takingvitals.components.ReceiveDataButton
 
 @Composable
 fun MeasureWeightScreen(onClickReceiveData: () -> Unit) {

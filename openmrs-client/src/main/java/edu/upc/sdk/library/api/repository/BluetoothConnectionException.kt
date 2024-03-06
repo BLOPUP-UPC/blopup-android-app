@@ -1,4 +1,4 @@
-package edu.upc.blopup.exceptions
+package edu.upc.sdk.library.api.repository
 
 import edu.upc.R
 

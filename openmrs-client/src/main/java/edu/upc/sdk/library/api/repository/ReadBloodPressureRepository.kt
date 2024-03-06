@@ -2,7 +2,6 @@ package edu.upc.sdk.library.api.repository
 
 import android.os.Parcelable
 import com.ideabus.model.data.CurrentAndMData
-import edu.upc.blopup.exceptions.BluetoothConnectionException
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 

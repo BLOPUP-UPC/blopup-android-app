@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.takingvitals.screens
+package edu.upc.blopup.ui.takingvitals.components
 
 import android.content.Intent
 import androidx.compose.foundation.background

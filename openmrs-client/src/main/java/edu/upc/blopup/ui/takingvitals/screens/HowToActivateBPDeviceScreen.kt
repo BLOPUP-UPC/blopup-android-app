@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.upc.R
+import edu.upc.blopup.ui.takingvitals.components.ReceiveDataButton
 
 
 @Composable

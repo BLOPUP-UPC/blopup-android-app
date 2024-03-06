@@ -21,6 +21,13 @@ import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.takingvitals.ResultUiState
 import edu.upc.blopup.ui.takingvitals.Vital
+import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
+import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
+import edu.upc.blopup.ui.takingvitals.components.ErrorDialog
+import edu.upc.blopup.ui.takingvitals.components.LoadingSpinner
+import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
+import edu.upc.blopup.ui.takingvitals.components.OnBackPressButtonConfirmDialog
+import edu.upc.blopup.ui.takingvitals.components.VitalsDataCard
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT

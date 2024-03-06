@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.takingvitals.screens
+package edu.upc.blopup.ui.takingvitals.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues

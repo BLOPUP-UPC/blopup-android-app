@@ -3,9 +3,9 @@ package edu.upc.blopup.ui.takingvitals
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.CheckTreatment
-import edu.upc.blopup.exceptions.BluetoothConnectionException
 import edu.upc.blopup.toggles.BuildConfigWrapper
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
+import edu.upc.sdk.library.api.repository.BluetoothConnectionException
 import edu.upc.sdk.library.api.repository.Measurement
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
