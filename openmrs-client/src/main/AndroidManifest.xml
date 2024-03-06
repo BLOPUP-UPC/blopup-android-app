@@ -163,23 +163,6 @@
             android:name=".openmrs.activities.community.contact.ContactUsActivity"
             android:label="@string/contact_us"
             android:theme="@style/AppThemeOrig" />
-        <activity
-            android:name=".blopup.bloodpressure.readBloodPressureMeasurement.ReadBloodPressureActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".blopup.scale.readScaleMeasurement.ReadScaleActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".blopup.vitalsform.VitalsFormActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity" />
-        </activity>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
