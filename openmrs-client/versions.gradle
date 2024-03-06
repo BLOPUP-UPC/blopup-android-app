@@ -12,7 +12,7 @@ versions.constraintlayout = '2.1.4'
 versions.fragment = "1.6.2"
 versions.activity = "1.8.2"
 
-versions.retrofit = '2.9.0'
+versions.retrofit = '2.3.0'
 versions.retrofitConverter = '2.1.0'
 versions.gson = '2.10'
 

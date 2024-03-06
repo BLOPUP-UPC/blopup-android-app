@@ -76,7 +76,7 @@
     <string name="action_end_visit">Finalitzar visita</string>
     <string name="visit_dashboard_label">Trobades</string>
     <string name="list_visit_selector_show">Mostrar detalls</string>
-    <string name="visit_note" translatable="false">Notes</string>
+    <string name="visit_note">Notes</string>
     <string name="vitals">Vitals</string>
     <string name="visit_fetching_error">Error combinant la visita</string>
     <string name="visit_ending_error">Error al finalitzar la visita</string>

@@ -28,10 +28,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditPatientViewModel @Inject constructor(
-    private val patientDAO: PatientDAO,
+    patientDAO: PatientDAO,
     private val patientRepository: PatientRepository,
     private val recordingHelper: RecordingHelper,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Patient>() {
 
     private val _similarPatientsLiveData = MutableLiveData<List<Patient>>()

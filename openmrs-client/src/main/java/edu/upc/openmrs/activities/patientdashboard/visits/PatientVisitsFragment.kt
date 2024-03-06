@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
@@ -87,7 +86,7 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun setupObserver() {
-        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
                     when (result.operationType) {
@@ -96,6 +95,7 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         }
                     }
                 }
+
                 is Result.Success -> {
                     dismissCurrentDialog()
                     when (result.operationType) {
@@ -105,6 +105,7 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         }
                     }
                 }
+
                 is Result.Error -> {
                     dismissCurrentDialog()
                     when (result.operationType) {
@@ -114,9 +115,10 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
                         }
                     }
                 }
+
                 else -> throw IllegalStateException()
             }
-        })
+        }
     }
 
     private fun fetchPatientVisits() {

@@ -13,7 +13,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.joda.time.Instant
-import org.joda.time.format.DateTimeFormat
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -37,7 +36,6 @@ class ChartsViewViewModelTest {
 
     private lateinit var viewModel: ChartsViewViewModel
 
-    private val formatter = DateTimeFormat.forPattern("dd/MM/yyyy")
 
     @Before
     fun setUp() {
