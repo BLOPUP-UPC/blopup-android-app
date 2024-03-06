@@ -37,7 +37,7 @@ class TreatmentRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val (_, doctor, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
 
-        if(doctor?.isNotEmpty() == true) {
+        if (doctor?.isNotEmpty() == true) {
             holder.whoRecommended.visibility = View.VISIBLE
             holder.whoRecommended.text = doctor
         }
@@ -49,20 +49,27 @@ class TreatmentRecyclerViewAdapter(
                 .replace(",", "  • ")
         holder.notesTextView.text = notes
 
-        if(isCurrentVisitActive) {
+        if (isCurrentVisitActive) {
             when (visitUuid) {
                 currentVisitUuid -> {
-                    holder.ellipsisTextView.setOnClickListener { showPopupMenu(it, R.menu.treatments_menu_current_visit, position) }
+                    holder.treatmentCardLayout.setOnClickListener {
+                        showPopupMenu(
+                            it.findViewById(R.id.ellipsis),
+                            R.menu.treatments_menu_current_visit,
+                            position
+                        )
+                    }
                 }
+
                 else -> {
                     if (!isActive) {
                         //if treatment is marked as finalise then show the background with opacity
                         holder.treatmentCardLayout.alpha = 0.5f
                         holder.ellipsisTextView.visibility = View.GONE
                     } else {
-                        holder.ellipsisTextView.setOnClickListener {
+                        holder.treatmentCardLayout.setOnClickListener {
                             showPopupMenu(
-                                it,
+                                it.findViewById(R.id.ellipsis),
                                 R.menu.treatments_menu_previous_visit,
                                 position
                             )
@@ -89,14 +96,17 @@ class TreatmentRecyclerViewAdapter(
                     listener?.onFinaliseClicked(treatmentList[position])
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.action_edit -> {
                     listener?.onEditClicked(treatmentList[position])
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.action_remove -> {
                     listener?.onRemoveClicked(treatmentList[position])
                     return@setOnMenuItemClickListener true
                 }
+
                 else -> false
             }
         }
@@ -116,7 +126,7 @@ class TreatmentRecyclerViewAdapter(
         var medicationTypeTextView: TextView
         var notesTextView: TextView
         var ellipsisTextView: TextView
-        var treatmentCardLayout : ConstraintLayout
+        var treatmentCardLayout: ConstraintLayout
 
         init {
             cardView = itemView as CardView
