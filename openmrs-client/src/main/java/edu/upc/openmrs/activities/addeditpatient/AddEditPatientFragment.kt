@@ -618,13 +618,7 @@ class AddEditPatientFragment : BaseFragment() {
 
     private fun submitAction() = with(viewModel) {
         var selectedGender =
-            view?.findViewById<RadioButton>(binding.gender.checkedRadioButtonId)?.text.toString()
-
-        when (selectedGender) {
-            "Male" -> { selectedGender = "M" }
-            "Female" -> { selectedGender = "F" }
-            "Non-binary" -> { selectedGender = "N" }
-        }
+            view?.findViewById<RadioButton>(binding.gender.checkedRadioButtonId)?.tag.toString()
 
         with(binding) {
                 viewModel.setPatientData(
