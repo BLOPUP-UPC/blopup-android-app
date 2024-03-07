@@ -1,7 +1,6 @@
 package edu.upc.sdk.library.api.repository
 
 import arrow.core.Either
-import com.amitshekhar.utils.ConverterUtils
 import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
