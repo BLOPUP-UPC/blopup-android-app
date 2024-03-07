@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.takingvitals.components
+package edu.upc.blopup.ui.shared.components
 
 import android.content.Intent
 import androidx.compose.foundation.background
@@ -30,6 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import edu.upc.R
+import edu.upc.blopup.ui.takingvitals.components.VitalsDialog
 import edu.upc.openmrs.activities.community.contact.AboutActivity
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.openmrs.activities.introduction.IntroActivity
@@ -154,12 +155,12 @@ fun OptionsMenu() {
     }
 }
 
-//@Preview
-//@Composable
-//fun AppToolBarWithMenuPreview() {
-//    AppToolBarWithMenu(
-//        title = "Blood Pressure",
-//        isDataScreen = false,
-//        onBackAction = {}
-//    )
-//}
+@Preview
+@Composable
+fun AppToolBarWithMenuPreview() {
+    AppToolBarWithMenu(
+        title = "Blood Pressure",
+        isDataScreen = false,
+        onBackAction = {}
+    )
+}

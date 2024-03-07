@@ -27,7 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.ui.Routes
-import edu.upc.blopup.ui.takingvitals.components.AppToolBarWithMenu
+import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.blopup.ui.takingvitals.screens.BloodPressureDataScreen
 import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureBloodPressureScreen
