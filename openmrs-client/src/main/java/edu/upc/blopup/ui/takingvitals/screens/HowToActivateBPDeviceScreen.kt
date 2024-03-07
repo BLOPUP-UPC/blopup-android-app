@@ -23,8 +23,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.upc.R
-import edu.upc.blopup.ui.takingvitals.components.ReceiveDataButton
-
+import edu.upc.blopup.ui.takingvitals.components.BluetoothButton
 
 @Composable
 fun HowToActivateBPDeviceScreen(onClickReceiveData: () -> Unit) {
@@ -53,7 +52,7 @@ fun HowToActivateBPDeviceScreen(onClickReceiveData: () -> Unit) {
             lineHeight = 23.sp,
             modifier = Modifier.padding(bottom = 20.dp)
         )
-        ReceiveDataButton(onClickReceiveData, R.string.blood_pressure_button_label)
+        BluetoothButton(onClickReceiveData, R.string.blood_pressure_button_label)
     }
 }
 

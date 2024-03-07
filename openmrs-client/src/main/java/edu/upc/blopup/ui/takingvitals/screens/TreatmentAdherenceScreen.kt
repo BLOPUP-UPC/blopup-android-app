@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.ui.ResultUiState
+import edu.upc.blopup.ui.shared.components.SubmitButton
 import edu.upc.blopup.ui.takingvitals.components.ErrorDialog
 import edu.upc.blopup.ui.takingvitals.components.LoadingSpinner
-import edu.upc.blopup.ui.takingvitals.components.OrangeButton
 import edu.upc.sdk.library.models.Treatment
 
 @Composable
@@ -169,7 +169,7 @@ fun TreatmentAdherence(
                 }
             }
         }
-        OrangeButton(R.string.finalise_treatment, {
+        SubmitButton(R.string.finalise_treatment, {
             if (treatments is ResultUiState.Success<*>) {
                 treatmentAdherence(treatmentOptions)
             }

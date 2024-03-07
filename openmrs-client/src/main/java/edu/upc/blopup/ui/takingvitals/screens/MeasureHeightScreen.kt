@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import edu.upc.R
-import edu.upc.blopup.ui.takingvitals.components.OrangeButton
+import edu.upc.blopup.ui.shared.components.SubmitButton
 
 @Composable
 fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) {
@@ -47,7 +47,7 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) 
         HeightInstructions()
         HeightInput(text, onValueChange = { text = it })
         Column {
-            OrangeButton(R.string.next, { onClickNext(text.text) }, isValidHeight(text.text))
+            SubmitButton(R.string.next, { onClickNext(text.text) }, isValidHeight(text.text))
         }
     }
 }

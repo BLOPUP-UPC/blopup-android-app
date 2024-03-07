@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import edu.upc.R
-import edu.upc.blopup.ui.takingvitals.components.ReceiveDataButton
+import edu.upc.blopup.ui.takingvitals.components.BluetoothButton
 
 
 @Composable
@@ -52,7 +52,7 @@ fun MeasureBloodPressureScreen(onClickHowTo: () -> Unit, onClickReceiveData: () 
         )
         BloodPressureInstructions()
         HowToActivateTheDeviceButton(onClickHowTo)
-        ReceiveDataButton(onClickReceiveData, R.string.blood_pressure_button_label)
+        BluetoothButton(onClickReceiveData, R.string.blood_pressure_button_label)
     }
 }
 

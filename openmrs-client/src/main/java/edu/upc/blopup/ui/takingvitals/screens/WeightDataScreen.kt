@@ -17,14 +17,14 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
-import edu.upc.sdk.library.models.Vital
 import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
 import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
 import edu.upc.blopup.ui.takingvitals.components.ErrorDialog
 import edu.upc.blopup.ui.takingvitals.components.LoadingSpinner
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.OnBackPressButtonConfirmDialog
-import edu.upc.blopup.ui.takingvitals.components.VitalsDataCard
+import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
+import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 
 @Composable
@@ -79,7 +79,7 @@ fun WeightDataScreen(
 
 @Composable
 fun WeighDataCard(vitals: MutableList<Vital>) {
-    VitalsDataCard(
+    VitalDataCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp),

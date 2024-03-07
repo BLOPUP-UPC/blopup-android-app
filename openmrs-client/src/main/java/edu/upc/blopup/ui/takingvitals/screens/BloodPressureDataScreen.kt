@@ -20,14 +20,14 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
-import edu.upc.sdk.library.models.Vital
 import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
 import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
 import edu.upc.blopup.ui.takingvitals.components.ErrorDialog
 import edu.upc.blopup.ui.takingvitals.components.LoadingSpinner
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.OnBackPressButtonConfirmDialog
-import edu.upc.blopup.ui.takingvitals.components.VitalsDataCard
+import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
+import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
@@ -84,7 +84,7 @@ fun BloodPressureDataScreen(
 @Composable
 fun BloodPressureDataCards(vitals: MutableList<Vital>) {
     Row {
-        VitalsDataCard(
+        VitalDataCard(
             modifier = Modifier.weight(0.5f),
             icon = Icons.Default.Favorite,
             contentDescription = "heart filled in black",
@@ -92,7 +92,7 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
             value = vitals.find { it.concept == SYSTOLIC_FIELD_CONCEPT }?.value ?: "--",
             measure = "mmHg"
         )
-        VitalsDataCard(
+        VitalDataCard(
             modifier = Modifier.weight(0.5f),
             icon = Icons.Default.FavoriteBorder,
             contentDescription = "heart outline",
@@ -100,7 +100,7 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
             value = vitals.find { it.concept == DIASTOLIC_FIELD_CONCEPT }?.value ?: "--",
             measure = "mmHg"
         )
-        VitalsDataCard(
+        VitalDataCard(
             modifier = Modifier.weight(0.5f),
             icon = ImageVector.vectorResource(id = R.drawable.pulse_icon),
             contentDescription = "pulse symbol",
