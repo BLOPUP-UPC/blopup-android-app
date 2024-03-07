@@ -19,7 +19,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.databinding.ActvityContactUsBinding
+import edu.upc.databinding.ActivityContactUsBinding
 import edu.upc.openmrs.utilities.ViewUtils
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.EmailRequest
@@ -29,12 +29,12 @@ import edu.upc.sdk.utilities.ToastUtil
 @AndroidEntryPoint
 class ContactUsActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
-    private lateinit var binding: ActvityContactUsBinding
+    private lateinit var binding: ActivityContactUsBinding
     private val viewModel: ContactUsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActvityContactUsBinding.inflate(layoutInflater)
+        binding = ActivityContactUsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val actionBar = supportActionBar
