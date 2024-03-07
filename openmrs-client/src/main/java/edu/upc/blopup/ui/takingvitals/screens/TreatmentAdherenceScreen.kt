@@ -43,14 +43,15 @@ import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.SubmitButton
 import edu.upc.blopup.ui.takingvitals.components.ErrorDialog
 import edu.upc.blopup.ui.takingvitals.components.LoadingSpinner
+import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Treatment
 
 @Composable
 fun TreatmentAdherenceScreen(
     setResultAndFinish: (Int) -> Unit,
     createVisit: () -> Unit,
-    createVisitResultUiState: ResultUiState?,
-    treatmentsResultUiState: ResultUiState,
+    createVisitResultUiState: ResultUiState<Unit>?,
+    treatmentsResultUiState: ResultUiState<List<Treatment>>,
     treatmentAdherence: (List<CheckTreatment>) -> Unit,
     getActiveTreatments: () -> Unit
 ) {
@@ -72,7 +73,7 @@ fun TreatmentAdherenceScreen(
             )
         }
 
-        is ResultUiState.Success<*> -> {
+        is ResultUiState.Success -> {
             setResultAndFinish(Activity.RESULT_OK)
         }
 
@@ -80,7 +81,7 @@ fun TreatmentAdherenceScreen(
     }
 
 
-    if (treatmentsResultUiState is ResultUiState.Success<*> && (treatmentsResultUiState.data as List<*>).isEmpty()) {
+    if (treatmentsResultUiState is ResultUiState.Success && treatmentsResultUiState.data.isEmpty()) {
         LaunchedEffect(true) {
             createVisit()
         }
@@ -96,7 +97,7 @@ fun TreatmentAdherenceScreen(
 
 @Composable
 fun TreatmentAdherence(
-    treatments: ResultUiState,
+    treatments: ResultUiState<List<Treatment>>,
     createVisit: () -> Unit,
     treatmentAdherence: (List<CheckTreatment>) -> Unit,
     getActiveTreatments: () -> Unit
@@ -146,12 +147,12 @@ fun TreatmentAdherence(
                     )
                 }
 
-                is ResultUiState.Success<*> -> {
+                is ResultUiState.Success -> {
                     Text(
                         text = stringResource(R.string.treatment_adherence_text),
                         fontSize = TextUnit(16f, TextUnitType.Sp),
                     )
-                    treatmentOptions = getTreatmentOptions(treatments.data as List<*>)
+                    treatmentOptions = getTreatmentOptions(treatments.data)
                     TreatmentCheckBox(treatmentOptions)
                 }
 
@@ -170,7 +171,7 @@ fun TreatmentAdherence(
             }
         }
         SubmitButton(R.string.finalise_treatment, {
-            if (treatments is ResultUiState.Success<*>) {
+            if (treatments is ResultUiState.Success) {
                 treatmentAdherence(treatmentOptions)
             }
             createVisit()
@@ -213,9 +214,8 @@ fun TreatmentCheckBox(treatmentOptions: List<CheckTreatment>) {
 }
 
 @Composable
-fun getTreatmentOptions(treatments: List<*>): List<CheckTreatment> {
-    return treatments.map { item ->
-        val treatment = item as Treatment
+fun getTreatmentOptions(treatments: List<Treatment>): List<CheckTreatment> {
+    return treatments.map { treatment ->
         var status by rememberSaveable { mutableStateOf(false) }
         CheckTreatment(
             medicationName = treatment.medicationName,
@@ -243,7 +243,17 @@ fun TreatmentAdherencePreviewLoading() {
 @Composable
 fun TreatmentAdherencePreviewSuccess() {
     TreatmentAdherence(
-        ResultUiState.Success<List<Treatment>>(emptyList()),
+        ResultUiState.Success(
+            listOf(
+                Treatment(
+                    "uuid",
+                    "uuid",
+                    "Medication Name",
+                    setOf(MedicationType.DIURETIC),
+                    treatmentUuid = "uuidTreatment"
+                )
+            )
+        ),
         {},
         {},
         {}

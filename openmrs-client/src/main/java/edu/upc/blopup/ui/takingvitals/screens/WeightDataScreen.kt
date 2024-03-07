@@ -32,7 +32,7 @@ fun WeightDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
     vitals: MutableList<Vital>,
-    scaleBluetoothConnectionResultUiState: ResultUiState,
+    scaleBluetoothConnectionResultUiState: ResultUiState<Unit>,
     receiveWeightData: () -> Unit
 ) {
     Column(
@@ -56,7 +56,7 @@ fun WeightDataScreen(
                 )
             }
 
-            is ResultUiState.Success<*> -> {
+            is ResultUiState.Success -> {
                 DataReceivedSuccessfully()
                 WeighDataCard(vitals)
                 NavigationButtons(onClickNext, onClickBack)
@@ -65,7 +65,7 @@ fun WeightDataScreen(
 
             is ResultUiState.Error -> {
                 ErrorDialog(
-                    show = scaleBluetoothConnectionResultUiState is ResultUiState.Error,
+                    show = true,
                     onDismiss = { onClickBack() },
                     onConfirm = { receiveWeightData() },
                     title = R.string.bluetooth_error_connection,

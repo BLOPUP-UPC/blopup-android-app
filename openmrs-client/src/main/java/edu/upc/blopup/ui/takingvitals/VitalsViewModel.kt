@@ -17,6 +17,7 @@ import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,22 +45,22 @@ open class VitalsViewModel @Inject constructor(
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
-    private val _createVisitResultUiState: MutableStateFlow<ResultUiState?> = MutableStateFlow(null)
-    val createVisitResultUiState: StateFlow<ResultUiState?> =
+    private val _createVisitResultUiState: MutableStateFlow<ResultUiState<Unit>?> = MutableStateFlow(null)
+    val createVisitResultUiState: StateFlow<ResultUiState<Unit>?> =
         _createVisitResultUiState.asStateFlow()
 
-    private val _treatmentsResultUiState: MutableStateFlow<ResultUiState> =
+    private val _treatmentsResultUiState: MutableStateFlow<ResultUiState<List<Treatment>>> =
         MutableStateFlow(ResultUiState.Loading)
-    var treatmentsResultUiState: StateFlow<ResultUiState> = _treatmentsResultUiState.asStateFlow()
+    var treatmentsResultUiState: StateFlow<ResultUiState<List<Treatment>>> = _treatmentsResultUiState.asStateFlow()
 
-    private val _bpBluetoothConnectionResultUiState: MutableStateFlow<ResultUiState> =
+    private val _bpBluetoothConnectionResultUiState: MutableStateFlow<ResultUiState<Unit>> =
         MutableStateFlow(ResultUiState.Loading)
-    var bpBluetoothConnectionResultUiState: StateFlow<ResultUiState> =
+    var bpBluetoothConnectionResultUiState: StateFlow<ResultUiState<Unit>> =
         _bpBluetoothConnectionResultUiState.asStateFlow()
 
-    private val _scaleBluetoothConnectionResultUiState: MutableStateFlow<ResultUiState> =
+    private val _scaleBluetoothConnectionResultUiState: MutableStateFlow<ResultUiState<Unit>> =
         MutableStateFlow(ResultUiState.Loading)
-    var scaleBluetoothConnectionResultUiState: StateFlow<ResultUiState> =
+    var scaleBluetoothConnectionResultUiState: StateFlow<ResultUiState<Unit>> =
         _scaleBluetoothConnectionResultUiState.asStateFlow()
 
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {

@@ -37,7 +37,7 @@ fun BloodPressureDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
     vitals: MutableList<Vital>,
-    bpBluetoothConnectionResultUiState: ResultUiState,
+    bpBluetoothConnectionResultUiState: ResultUiState<Unit>,
     receiveBpData: () -> Unit
 ) {
     Column(
@@ -61,7 +61,7 @@ fun BloodPressureDataScreen(
                 )
             }
 
-            is ResultUiState.Success<*> -> {
+            is ResultUiState.Success -> {
                 DataReceivedSuccessfully()
                 BloodPressureDataCards(vitals)
                 NavigationButtons(onClickNext, onClickBack)
