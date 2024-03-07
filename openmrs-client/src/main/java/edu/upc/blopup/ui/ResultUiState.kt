@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.takingvitals
+package edu.upc.blopup.ui
 
 sealed interface ResultUiState {
 

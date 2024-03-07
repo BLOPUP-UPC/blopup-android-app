@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import edu.upc.blopup.ui.takingvitals.Vital;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.dao.LocationDAO;
@@ -51,6 +50,7 @@ import edu.upc.sdk.library.models.OperationType;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.Result;
 import edu.upc.sdk.library.models.Visit;
+import edu.upc.sdk.library.models.Vital;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;

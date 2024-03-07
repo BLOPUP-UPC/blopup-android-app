@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherence
 import edu.upc.sdk.library.models.TreatmentExample
 import org.junit.Rule

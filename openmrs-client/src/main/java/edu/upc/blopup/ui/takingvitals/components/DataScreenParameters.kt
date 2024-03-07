@@ -1,7 +1,7 @@
 package edu.upc.blopup.ui.takingvitals.components
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import edu.upc.blopup.ui.takingvitals.Vital
+import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
 
 class DataScreenParameters : PreviewParameterProvider<MutableList<Vital>> {

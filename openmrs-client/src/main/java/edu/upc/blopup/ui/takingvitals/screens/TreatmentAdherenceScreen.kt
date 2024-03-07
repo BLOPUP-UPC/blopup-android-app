@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.CheckTreatment
-import edu.upc.blopup.ui.takingvitals.ResultUiState
+import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.takingvitals.components.ErrorDialog
 import edu.upc.blopup.ui.takingvitals.components.LoadingSpinner
 import edu.upc.blopup.ui.takingvitals.components.OrangeButton

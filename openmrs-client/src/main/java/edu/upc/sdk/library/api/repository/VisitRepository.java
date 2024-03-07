@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import edu.upc.blopup.ui.takingvitals.Vital;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
@@ -45,6 +44,7 @@ import edu.upc.sdk.library.models.Result;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
 import edu.upc.sdk.library.models.VisitType;
+import edu.upc.sdk.library.models.Vital;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
