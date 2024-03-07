@@ -167,6 +167,7 @@ public class Patient extends Person implements Serializable {
         PatientDto patientDto = new PatientDto();
         patientDto.setPerson(getPerson());
         patientDto.setIdentifiers(getIdentifiers());
+        patientDto.setUuid(getUuid());
         return patientDto;
     }
 

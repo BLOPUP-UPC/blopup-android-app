@@ -59,8 +59,6 @@ open class PatientDto {
                 person.causeOfDeath,
                 person.isDeceased,
                 voided
-//                contactPhoneNumber,
-//                contactNames
             )
             patient.uuid = uuid.toString()
             patient.identifiers = identifiers

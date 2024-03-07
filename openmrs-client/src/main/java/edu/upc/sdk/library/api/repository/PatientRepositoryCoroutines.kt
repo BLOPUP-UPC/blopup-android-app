@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.api.repository
 
 import arrow.core.Either
+import com.amitshekhar.utils.ConverterUtils
 import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
@@ -29,10 +30,11 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
     suspend fun findPatients(query: String?): Either<Error, List<Patient>> =
         withContext(Dispatchers.IO) {
             try {
-                val call = restApi.getPatients(query, ApplicationConstants.API.FULL)
+                val call = restApi.getPatientsDto(query, ApplicationConstants.API.FULL)
                 val response = call.execute()
                 if (response.isSuccessful) {
-                    Either.Right(response.body()?.results.orEmpty())
+                    val patientDtos = response.body()?.results.orEmpty()
+                    Either.Right(patientDtos.map { it.patient })
                 } else {
                     crashlytics.reportUnsuccessfulResponse(response, "Failed to find patients")
                     Either.Left(Error("Failed to find patients: ${response.code()} - ${response.message()}"))

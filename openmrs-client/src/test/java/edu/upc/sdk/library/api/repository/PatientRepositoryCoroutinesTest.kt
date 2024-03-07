@@ -7,6 +7,8 @@ import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder
 import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PatientDto
+import edu.upc.sdk.library.models.Person
 import edu.upc.sdk.library.models.Results
 import io.mockk.coEvery
 import io.mockk.every
@@ -36,29 +38,35 @@ class PatientRepositoryCoroutinesTest {
 
     @Test
     fun `should return list of patients when call response is successful`() {
-        val patient1 = Patient().apply { uuid = "uuid1" }
-        val patient2: Patient = Patient().apply { uuid = "uuid2" }
-        val patients = listOf(patient1, patient2)
-        val response = Response.success(Results<Patient>().apply { results = patients })
-        val call = mockk<Call<Results<Patient>>>(relaxed = true)
+        val patient1 = Patient().apply {
+            uuid = "uuid1"; isDeceased = false; birthdate = "1990-01-01"; gender = "M"
+        }
 
-        coEvery { restApi.getPatients(any(), any()) } returns call
+        val patient2: Patient = Patient().apply {
+            uuid = "uuid2"; isDeceased = false; birthdate = "1990-01-01"; gender = "M"
+        }
+        val patients = listOf(patient1.patientDto, patient2.patientDto)
+        val response = Response.success(Results<PatientDto>().apply { results = patients })
+        val call = mockk<Call<Results<PatientDto>>>(relaxed = true)
+
+        coEvery { restApi.getPatientsDto(any(), any()) } returns call
         coEvery { call.execute() } returns response
 
         runBlocking {
             val result = patientRepositoryCoroutines.findPatients("query")
 
             assert(result.isRight())
-            assertEquals(patients, result.fold({ }, { it }))
+            assert(patient1.uuid == result.fold({ }, { it[0].uuid }))
+            assert(patient2.uuid == result.fold({ }, { it[1].uuid }))
         }
     }
 
     @Test
     fun `should return empty list when call response is successful but no matches found`() {
-        val response = Response.success(Results<Patient>())
-        val call = mockk<Call<Results<Patient>>>(relaxed = true)
+        val response = Response.success(Results<PatientDto>())
+        val call = mockk<Call<Results<PatientDto>>>(relaxed = true)
 
-        coEvery { restApi.getPatients(any(), any()) } returns call
+        coEvery { restApi.getPatientsDto(any(), any()) } returns call
         coEvery { call.execute() } returns response
 
         runBlocking {
@@ -72,15 +80,15 @@ class PatientRepositoryCoroutinesTest {
 
     @Test
     fun `should return Error when call response is not successful`() {
-        val errorResponse = mockk<Response<Results<Patient>>>()
+        val errorResponse = mockk<Response<Results<PatientDto>>>()
         every { errorResponse.isSuccessful } returns false
         every { errorResponse.code() } returns 400
         every { errorResponse.message() } returns "Client Error"
-        val call = mockk<Call<Results<Patient>>>(relaxed = true)
+        val call = mockk<Call<Results<PatientDto>>>(relaxed = true)
 
         val expected = Error("Failed to find patients: 400 - Client Error")
 
-        coEvery { restApi.getPatients(any(), any()) } returns call
+        coEvery { restApi.getPatientsDto(any(), any()) } returns call
         coEvery { call.execute() } returns errorResponse
 
         runBlocking {
@@ -93,11 +101,11 @@ class PatientRepositoryCoroutinesTest {
 
     @Test
     fun `should return Error when call fails`() {
-        val call = mockk<Call<Results<Patient>>>(relaxed = true)
+        val call = mockk<Call<Results<PatientDto>>>(relaxed = true)
 
         val expected = Error("Failed to find patients: RuntimeException")
 
-        coEvery { restApi.getPatients(any(), any()) } returns call
+        coEvery { restApi.getPatientsDto(any(), any()) } returns call
         coEvery { call.execute() } throws RuntimeException("RuntimeException")
 
         runBlocking {
