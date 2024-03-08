@@ -51,38 +51,30 @@ fun ErrorDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit, tit
                 }
                 Column(Modifier.padding(start = 25.dp)) {
                     Row {
-                        Button(
-                            modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
-                            onClick = { onDismiss() },
-                            shape = MaterialTheme.shapes.extraSmall,
-                            contentPadding = PaddingValues(10.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(
-                                    R.color.dark_grey_for_stroke
-                                )
-                            )
-                        ) {
-                            Text(text = stringResource(R.string.dialog_button_cancel).uppercase())
-                        }
-                        Button(
-                            modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
-                            onClick = { onConfirm() },
-                            shape = MaterialTheme.shapes.extraSmall,
-                            contentPadding = PaddingValues(10.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(
-                                    R.color.allergy_orange
-                                )
-                            )
-                        ) {
-                            Text(text = stringResource(R.string.retry).uppercase())
-                        }
+                        ActionButton(onDismiss, R.color.dark_grey_for_stroke, R.string.dialog_button_cancel)
+                        ActionButton(onConfirm, R.color.allergy_orange, R.string.retry)
                     }
                 }
             }
         }
     }
 }
+
+@Composable
+fun ActionButton(onClickEvent: () -> Unit, color: Int, action: Int) {
+    Button(
+        modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
+        onClick = { onClickEvent() },
+        shape = MaterialTheme.shapes.extraSmall,
+        contentPadding = PaddingValues(10.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorResource(
+                color
+            )
+        )
+    ) {
+        Text(text = stringResource(action).uppercase())
+    }}
 
 @Preview
 @Composable

@@ -117,8 +117,6 @@ open class VitalsViewModel @Inject constructor(
         )
     }
 
-    fun disconnect() = readScaleRepository.disconnect()
-
     fun removeWeightData() {
         _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
     }

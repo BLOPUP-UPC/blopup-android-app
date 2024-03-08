@@ -52,7 +52,7 @@ fun SubmitButton(title: Int, onClickNext: () -> Unit, enabled: Boolean) {
 
 @Preview
 @Composable
-fun OrangeButtonPreview() {
+fun SubmitButtonPreview() {
     SubmitButton(
         R.string.finalise_treatment,
         {},
