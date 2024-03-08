@@ -53,13 +53,13 @@ fun VitalDataCard(
             title,
             color = Color.Black,
             style = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+            modifier = Modifier.padding(horizontal = 10.dp)
         )
         Text(
             value,
             color = Color.Black,
             style = TextStyle(fontSize = 32.sp),
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+            modifier = Modifier.padding(horizontal = 10.dp)
         )
         Text(
             measure,

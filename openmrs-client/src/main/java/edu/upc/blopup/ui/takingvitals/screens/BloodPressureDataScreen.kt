@@ -20,10 +20,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
+import edu.upc.blopup.ui.shared.components.ErrorDialog
+import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
 import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
-import edu.upc.blopup.ui.takingvitals.components.ErrorDialog
-import edu.upc.blopup.ui.takingvitals.components.LoadingSpinner
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.OnBackPressButtonConfirmDialog
 import edu.upc.blopup.ui.takingvitals.components.VitalDataCard

@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
-import edu.upc.blopup.ui.takingvitals.components.VitalsDialog
+import edu.upc.blopup.ui.takingvitals.components.RemoveVitalsDialog
 import edu.upc.openmrs.activities.community.contact.AboutActivity
 import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.openmrs.activities.introduction.IntroActivity
@@ -70,7 +70,7 @@ fun AppToolBarWithMenu(title: String, isDataScreen: Boolean, onBackAction: () ->
             OptionsMenu()
         }
     )
-    VitalsDialog(
+    RemoveVitalsDialog(
         show = show.value,
         onDismiss = { show.value = false},
         onConfirm = { show.value = false; onBackAction() }
