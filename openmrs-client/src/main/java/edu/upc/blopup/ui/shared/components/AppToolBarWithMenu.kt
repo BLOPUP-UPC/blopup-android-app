@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.takingvitals.components.RemoveVitalsDialog
 import edu.upc.openmrs.activities.community.contact.AboutActivity
-import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.activities.settings.SettingsActivity
 import edu.upc.sdk.library.OpenmrsAndroid
@@ -107,21 +106,6 @@ fun OptionsMenu() {
             text = {
                 Text(
                     text = stringResource(R.string.action_settings),
-                    style = TextStyle(fontWeight = FontWeight.Normal)
-                )
-            })
-        DropdownMenuItem(
-            onClick = {
-                context.startActivity(
-                    Intent(
-                        context,
-                        ContactUsActivity::class.java
-                    )
-                ); showMenu = false
-            },
-            text = {
-                Text(
-                    text = stringResource(R.string.contact_us_text),
                     style = TextStyle(fontWeight = FontWeight.Normal)
                 )
             })

@@ -39,7 +39,6 @@ import edu.upc.BuildConfig;
 import edu.upc.R;
 import edu.upc.databinding.FragmentLoginBinding;
 import edu.upc.openmrs.activities.ACBaseFragment;
-import edu.upc.openmrs.activities.community.contact.ContactUsActivity;
 import edu.upc.openmrs.activities.dashboard.DashboardActivity;
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog;
 import edu.upc.openmrs.application.OpenMRS;
@@ -136,8 +135,6 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
                 binding.loginPasswordField.getText().toString(),
                 binding.loginUrlField.getText().toString(),
                 initialUrl));
-
-        binding.forgotPass.setOnClickListener(view -> startActivity(new Intent(getContext(), ContactUsActivity.class)));
 
         binding.aboutUsTextView.setOnClickListener(view -> openAboutPage());
     }

@@ -19,10 +19,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import edu.upc.sdk.utilities.ApplicationConstants
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.ActivityAboutBinding
+import edu.upc.sdk.utilities.ApplicationConstants
 
 @AndroidEntryPoint
 class AboutActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -50,8 +50,6 @@ class AboutActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         //Disable About Option in Menu
         val aboutItem = menu.findItem(R.id.actionAbout)
         aboutItem.isVisible = false
-        val contactItem = menu.findItem(R.id.actionContact)
-        contactItem.isVisible = false
         val logOutItem = menu.findItem(R.id.actionLogout)
         logOutItem.isVisible = false
         val locationItem = menu.findItem(R.id.actionLocation)

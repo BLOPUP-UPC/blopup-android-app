@@ -33,8 +33,6 @@ enum class ResultType {
     PatientUpdateSuccess,
     PatientUpdateLocalSuccess,
     PatientUpdateError,
-    EmailSentSuccess,
-    EmailSentError,
     RecordingSuccess,
     RecordingError,
     FinalisedTreatmentSuccess,

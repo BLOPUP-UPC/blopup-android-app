@@ -7,7 +7,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.testing.WorkManagerTestInitHelper
 import edu.upc.R
-import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.openmrs.activities.login.LoginActivity
 import edu.upc.openmrs.services.FormListService
 import org.junit.Assert
@@ -31,14 +30,6 @@ class LoginActivityTest {
         loginActivity =
             Robolectric.buildActivity(LoginActivity::class.java).create().start().resume().get()
 
-    }
-
-    @Test
-    fun clickingForgotPass_shouldStartContactUsActivity() {
-        loginActivity.findViewById<View>(R.id.forgotPass).performClick()
-        val expectedIntent = Intent(loginActivity, ContactUsActivity::class.java)
-        val actual = shadowOf(RuntimeEnvironment.getApplication()).nextStartedActivity
-        Assert.assertEquals(expectedIntent.component, actual.component)
     }
 
     @Test

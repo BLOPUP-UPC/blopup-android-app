@@ -17,7 +17,6 @@ import java.util.Map;
 import edu.upc.sdk.library.api.repository.DoctorRepository.ContactDoctorRequest;
 import edu.upc.sdk.library.databases.entities.FormResourceEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.EmailRequest;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.EncounterType;
 import edu.upc.sdk.library.models.Encountercreate;
@@ -331,16 +330,6 @@ public interface RestApi {
      */
     @GET("provider?v=default")
     Call<Results<Provider>> getProviderList();
-
-    /**
-     * Add email call.
-     *
-     * @param emailRequest to Blopup
-     * @return the call
-     */
-    @POST("email")
-    Call<ResponseBody> sendEmail(@Body EmailRequest emailRequest);
-
 
     /**
      * Add contact doctor call.

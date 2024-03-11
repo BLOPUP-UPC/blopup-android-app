@@ -159,10 +159,6 @@
             android:parentActivityName=".openmrs.activities.patientdashboard.PatientDashboardActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".openmrs.activities.community.contact.ContactUsActivity"
-            android:label="@string/contact_us"
-            android:theme="@style/AppThemeOrig" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

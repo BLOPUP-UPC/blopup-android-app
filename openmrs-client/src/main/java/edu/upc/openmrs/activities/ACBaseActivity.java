@@ -37,7 +37,6 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.upc.R;
 import edu.upc.openmrs.activities.community.contact.AboutActivity;
-import edu.upc.openmrs.activities.community.contact.ContactUsActivity;
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog;
 import edu.upc.openmrs.activities.introduction.IntroActivity;
 import edu.upc.openmrs.activities.introduction.SplashActivity;
@@ -91,7 +90,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         super.onResume();
         invalidateOptionsMenu();
         if (!(this instanceof LoginActivity) && !mAuthorizationManager.isUserLoggedIn()
-                && !(this instanceof ContactUsActivity) && !(this instanceof SplashActivity)) {
+                && !(this instanceof SplashActivity)) {
             mAuthorizationManager.moveToLoginActivity();
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -134,9 +133,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         switch (id) {
             case R.id.actionSettings:
                 startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-            case R.id.actionContact:
-                startActivity(new Intent(this, ContactUsActivity.class));
                 return true;
             case R.id.actionTutorial:
                 startActivity(new Intent(this, IntroActivity.class));

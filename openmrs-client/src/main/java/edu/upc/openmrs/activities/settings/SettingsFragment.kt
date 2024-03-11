@@ -30,7 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentSettingsBinding
 import edu.upc.openmrs.activities.BaseFragment
-import edu.upc.openmrs.activities.community.contact.ContactUsActivity
 import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
 
 @AndroidEntryPoint
@@ -50,7 +49,6 @@ class SettingsFragment :  BaseFragment() {
         addBuildVersionInfo()
         addPrivacyPolicyInfo()
         rateUs()
-        setupContactUsButton()
         setupLanguageSpinner()
 
         return binding.root
@@ -97,17 +95,6 @@ class SettingsFragment :  BaseFragment() {
             } catch (e: ActivityNotFoundException) {
                 startActivity(Intent(Intent.ACTION_VIEW, viewModel.appLinkUri))
             }
-        }
-    }
-
-    private fun setupContactUsButton() {
-        binding.contactUsLayout.setOnClickListener {
-            startActivity(
-                Intent(
-                    context,
-                    ContactUsActivity::class.java
-                )
-            )
         }
     }
 
