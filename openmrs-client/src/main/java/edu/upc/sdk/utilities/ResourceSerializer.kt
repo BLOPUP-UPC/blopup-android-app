@@ -13,7 +13,6 @@
  */
 package edu.upc.sdk.utilities
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
@@ -23,10 +22,13 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.annotations.Expose
+import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.models.Resource
 import java.lang.reflect.Type
 
 class ResourceSerializer : JsonSerializer<Resource> {
+
+    private val logger = OpenMRSLogger()
 
     override fun serialize(src: Resource, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
         val myGson = gson
@@ -41,7 +43,7 @@ class ResourceSerializer : JsonSerializer<Resource> {
                             srcJson.add(field.name, serializeField(field[src] as Resource, context))
                         }
                     } catch (e: IllegalAccessException) {
-                        Log.e(RESOURCE_SERIALIZER, EXCEPTION, e)
+                        logger.e("$RESOURCE_SERIALIZER: $EXCEPTION", e)
                     }
                 } else if (MutableCollection::class.java.isAssignableFrom(field.type)) {
                     try {
@@ -62,13 +64,13 @@ class ResourceSerializer : JsonSerializer<Resource> {
                             }
                         }
                     } catch (e: IllegalAccessException) {
-                        Log.e(RESOURCE_SERIALIZER, EXCEPTION, e)
+                        logger.e("$RESOURCE_SERIALIZER: $EXCEPTION", e)
                     }
                 } else {
                     try {
                         srcJson.add(field.name, myGson.toJsonTree(field[src]))
                     } catch (e: IllegalAccessException) {
-                        Log.e(RESOURCE_SERIALIZER, EXCEPTION, e)
+                        logger.e("$RESOURCE_SERIALIZER: $EXCEPTION}", e)
                     }
                 }
             }

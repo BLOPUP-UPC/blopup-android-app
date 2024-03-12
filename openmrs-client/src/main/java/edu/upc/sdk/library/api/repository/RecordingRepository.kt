@@ -13,8 +13,8 @@
  */
 package edu.upc.sdk.library.api.repository
 
-import android.util.Log
 import edu.upc.openmrs.utilities.FileUtils
+import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO
 import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.models.LegalConsentRequest
@@ -45,7 +45,7 @@ class RecordingRepository @Inject constructor() :
                     return@createObservableIO ResultType.RecordingError
                 }
             } catch (exception: Exception) {
-                Log.e(javaClass.name, exception.message, exception)
+                OpenMRSLogger().e("${javaClass.name}:  ${exception.message}", exception)
                 throw exception
             }
         }

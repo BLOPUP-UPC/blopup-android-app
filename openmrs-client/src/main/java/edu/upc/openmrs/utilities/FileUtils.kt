@@ -17,15 +17,20 @@ import android.app.Activity
 import android.os.Environment
 import android.text.TextUtils
 import android.util.Base64
-import android.util.Log
 import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.openmrs.application.OpenMRS
-import java.io.*
+import edu.upc.sdk.library.OpenMRSLogger
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 object FileUtils {
+    
+    private val logger = OpenMRSLogger()
 
     fun getRecordingFilePath(): String {
         return getRootDirectory() + "/" + createUniqueAudioFileName()
@@ -64,10 +69,10 @@ object FileUtils {
             try {
                 file.delete()
             } catch (e: SecurityException) {
-                Log.e("file", "Error deleting file: ${file.absolutePath}", e)
+                logger.e("Error deleting file: ${file.absolutePath}", e)
             }
         } else {
-            Log.d("file", "File does not exist: ${file.absolutePath}")
+            logger.d("File does not exist: ${file.absolutePath}")
         }
     }
 
@@ -84,7 +89,7 @@ object FileUtils {
             }
             return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
         } catch (e: Exception) {
-            Log.d("mylog", e.toString())
+            logger.d("logger:  $e")
         }
         return null
     }

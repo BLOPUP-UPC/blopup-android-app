@@ -20,7 +20,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -31,6 +30,7 @@ import java.util.TimerTask;
 
 import edu.upc.R;
 import edu.upc.openmrs.application.OpenMRS;
+import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -44,6 +44,8 @@ import retrofit2.Response;
 
 public class AuthenticateCheckService extends Service {
     private final IBinder mBinder = new SocketServerBinder();
+
+    private final OpenMRSLogger logger = new OpenMRSLogger();
     private boolean mRunning = false;
 
     @Override
@@ -92,9 +94,9 @@ public class AuthenticateCheckService extends Service {
                 if (response.isSuccessful()) {
                     Session session = response.body();
                     if (session.isAuthenticated()) {
-                        Log.i("Service Task ", "user authenticated");
+                        logger.i("Service Task: user authenticated");
                     } else {
-                        Log.e("Service Task ", "User Credentials Changed");
+                        logger.e("Service Task: User Credentials Changed");
                         if (isForeground(OpenMRS.getInstance().getPackageName())) {
                             Intent broadcastIntent = new Intent();
                             broadcastIntent.setAction(ApplicationConstants.BroadcastActions.AUTHENTICATION_CHECK_BROADCAST_ACTION);
@@ -114,7 +116,7 @@ public class AuthenticateCheckService extends Service {
             public void onFailure(@NonNull Call<Session> call, @NonNull Throwable t) {
                 if (t instanceof UnknownHostException) {
                     ToastUtil.error(getString(R.string.no_internet_connection));
-                    Log.e("Service Task ", "No Network");
+                    logger.e("Service Task: No Network");
                 } else {
                     ToastUtil.error(getString(R.string.authenticate_service_error_message));
                 }

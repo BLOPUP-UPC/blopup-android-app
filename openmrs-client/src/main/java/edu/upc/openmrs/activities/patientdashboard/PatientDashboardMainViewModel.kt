@@ -1,10 +1,10 @@
 package edu.upc.openmrs.activities.patientdashboard
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
@@ -121,7 +121,7 @@ class PatientDashboardMainViewModel @Inject constructor(
     }
 
     override fun setError(t: Throwable, operationType: OperationType) {
-        Log.d("GeneralLogKey", " setError: ${t.message}")
+        OpenMRSLogger().d("GeneralLogKey: setError: ${t.message}")
         if (operationType == PatientSynchronizing) clearSubscriptions()
         super.setError(t, operationType)
     }
