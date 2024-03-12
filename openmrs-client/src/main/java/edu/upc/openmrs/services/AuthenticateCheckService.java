@@ -58,7 +58,6 @@ public class AuthenticateCheckService extends Service {
                     String password = OpenmrsAndroid.getPassword();
                     if ((!username.isEmpty()) &&
                             (!password.isEmpty())) {
-                        Log.e("Service Task ", "Running");
                         authenticateCheck(username, password);
                     }
                 }
@@ -93,7 +92,7 @@ public class AuthenticateCheckService extends Service {
                 if (response.isSuccessful()) {
                     Session session = response.body();
                     if (session.isAuthenticated()) {
-                        Log.e("Service Task ", "user authenticated");
+                        Log.i("Service Task ", "user authenticated");
                     } else {
                         Log.e("Service Task ", "User Credentials Changed");
                         if (isForeground(OpenMRS.getInstance().getPackageName())) {
