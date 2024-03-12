@@ -41,6 +41,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629595074883:android:eb2eec5d1763622173fff6",
+        "android_client_info": {
+          "package_name": "edu.upc.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629595074883-80p4kmk8mnl6mueh7q5ji3nv87piaos5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYi7KyOaCB-QBxU5ihN6sAWxOeVFjsn30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629595074883-80p4kmk8mnl6mueh7q5ji3nv87piaos5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
