@@ -4,7 +4,6 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.crashlytics.setCustomKeys
 import com.google.firebase.ktx.Firebase
 import edu.upc.BuildConfig
-import edu.upc.blopup.ui.takingvitals.screens.getTreatmentOptions
 
 import retrofit2.Response
 
