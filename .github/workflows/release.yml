@@ -80,3 +80,4 @@ jobs:
           env: |
             MAESTRO_TEST_USERNAME=${{ secrets.MAESTRO_TEST_USERNAME }}
             MAESTRO_TEST_PASSWORD=${{ secrets.MAESTRO_TEST_PASSWORD }}
+            APP_ID=edu.upc

@@ -1,4 +1,4 @@
-appId: edu.upc
+appId: ${APP_ID}
 ---
 - tapOn: "Username * "
 - inputText: ${MAESTRO_TEST_USERNAME}

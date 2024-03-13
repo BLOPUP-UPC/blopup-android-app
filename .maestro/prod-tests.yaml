@@ -1,4 +1,4 @@
-appId: edu.upc
+appId: ${APP_ID}
 tags:
   - prod
 ---
@@ -6,11 +6,11 @@ tags:
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/description"
+        id: "${APP_ID}:id/description"
     file: "subflows/InitialTour.yaml"
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/loginUsernameField"
+        id: "${APP_ID}:id/loginUsernameField"
     file: "subflows/Login.yaml"
 - runFlow: "subflows/SearchPatient.yaml"

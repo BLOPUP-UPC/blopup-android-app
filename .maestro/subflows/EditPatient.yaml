@@ -1,7 +1,7 @@
-appId: edu.upc
+appId: ${APP_ID}
 ---
 - tapOn:
-    id: "edu.upc:id/edit"
+    id: "${APP_ID}:id/edit"
 - tapOn: "Name*"
 - "inputRandomPersonName"
 - tapOn: "Family name*"
@@ -10,21 +10,21 @@ appId: edu.upc
 - scrollUntilVisible:
     centerElement: true
     element:
-      id: "edu.upc:id/dobEditText"
+      id: "${APP_ID}:id/dobEditText"
     visibilityPercentage: 100
 - tapOn: "Date of birth (dd/mm/yyyy)"
 - inputText: "20/12/1982"
 - hideKeyboard
 - scrollUntilVisible:
     element:
-     id: "edu.upc:id/country_of_birth"
+     id: "${APP_ID}:id/country_of_birth"
 - tapOn:
-    id: "edu.upc:id/country_of_birth"
+    id: "${APP_ID}:id/country_of_birth"
 - tapOn: "Angola"
 - scrollUntilVisible:
     centerElement: true
     element:
-      id: "edu.upc:id/submitButton"
+      id: "${APP_ID}:id/submitButton"
 - tapOn: "REGISTER"
 - assertVisible: "Male"
 - assertVisible: "START VISIT"

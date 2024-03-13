@@ -1,4 +1,4 @@
-appId: edu.upc.debug
+appId: ${APP_ID}
 tags:
   - dev
 ---
@@ -6,28 +6,28 @@ tags:
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/description"
+        id: "${APP_ID}:id/description"
     file: "subflows/InitialTour.yaml"
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/loginUsernameField"
+        id: "${APP_ID}:id/loginUsernameField"
     file: "subflows/Login.yaml"
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/registryPatientView"
+        id: "${APP_ID}:id/registryPatientView"
     file: "subflows/CreatePatient.yaml"
 - assertVisible: "START VISIT"
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/start_visit_fab"
+        id: "${APP_ID}:id:id/start_visit_fab"
     file: "subflows/EditPatient.yaml"
 - runFlow:
     when:
       visible:
-        id: "edu.upc:id/start_visit_fab"
+        id: "${APP_ID}:id/start_visit_fab"
     file: "subflows/TakeVitals.yaml"
 - runFlow:
     when:

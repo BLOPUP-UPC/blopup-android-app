@@ -1,5 +1,5 @@
-appId: edu.upc
+appId: ${APP_ID}
 ---
 - tapOn:
-    id: "edu.upc:id/skip"
+    id: "SKIP"
     retryTapIfNoChange: true

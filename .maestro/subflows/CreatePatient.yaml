@@ -1,4 +1,4 @@
-appId: edu.upc
+appId: ${APP_ID}
 ---
 - tapOn: Register Patient
 - runFlow:
@@ -13,15 +13,14 @@ appId: edu.upc
 - tapOn: "Female"
 - scrollUntilVisible:
     centerElement: true
-    element:
-      id: "edu.upc:id/dobEditText"
+    element: "Or"
     visibilityPercentage: 100
 - tapOn: "Date of birth (dd/mm/yyyy)"
 - inputText: "20/01/1980"
 - scrollUntilVisible:
     centerElement: true
     element:
-      id: "edu.upc:id/country_of_birth"
+      id: "${APP_ID}:id/country_of_birth"
 - hideKeyboard
 - tapOn: "Select country of birth"
 - tapOn: "Aruba"
@@ -47,6 +46,6 @@ appId: edu.upc
 - scrollUntilVisible:
     centerElement: true
     element:
-      id: "edu.upc:id/submitButton"
+      id: "${APP_ID}:id/submitButton"
 - tapOn:
-    id: "edu.upc:id/submitButton"
+    id: "${APP_ID}:id/submitButton"

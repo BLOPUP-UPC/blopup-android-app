@@ -1,16 +1,16 @@
-appId: edu.upc
+appId: ${APP_ID}
 ---
 - tapOn: "Find Patients"
 - tapOn:
-      id: "edu.upc:id/search_button"
+      id: "${APP_ID}:id/search_button"
 - inputText: "Paciente Test"
 - tapOn: "# 10072J"
 - assertVisible:
-      id: "edu.upc:id/patientDetailsName"
+      id: "${APP_ID}:id/patientDetailsName"
 - assertVisible: "Recommended treatments:"
 - tapOn: "VISITS"
 - tapOn:
-      id: "edu.upc:id/visitRow"
+      id: "${APP_ID}:id/visitRow"
       index: 0
 - assertVisible: "Systolic"
 - assertVisible: "Diastolic"

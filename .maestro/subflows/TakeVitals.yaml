@@ -1,7 +1,7 @@
-appId: edu.upc
+appId: ${APP_ID}
 ---
 - tapOn:
-    id: "edu.upc:id/start_visit_fab"
+    id: "${APP_ID}:id/start_visit_fab"
 - tapOn: "How to activate the device"
 - tapOn: "Receive blood pressure data"
 - tapOn: "Go back"
@@ -18,4 +18,4 @@ appId: edu.upc
 - hideKeyboard
 - tapOn: "Next"
 - assertVisible:
-      id: "edu.upc:id/blood_pressure_recommendation"
+      id: "${APP_ID}:id/blood_pressure_recommendation"

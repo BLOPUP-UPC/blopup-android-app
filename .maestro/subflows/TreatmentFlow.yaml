@@ -1,10 +1,6 @@
-appId: edu.upc
+appId: ${APP_ID}
 ---
 - runFlow:
-    when:
-      visible: "edu.upc:id/cancel_button"
-    commands:
-      - tapOn: "CANCEL"
 - tapOn: "Add Treatment"
 - tapOn: "Previously\ \n recommended"
 - tapOn: "Medication name"
@@ -19,6 +15,9 @@ appId: edu.upc
 - assertVisible: "Paracetamol"
 - assertVisible: ".*Diuretic.*"
 - assertVisible: ".*Beta blocker.*"
+- scrollUntilVisible:
+    centerElement: true
+    element: "Some note"
 - assertVisible: "Some note"
 - tapOn: "Add Treatment"
 - tapOn: "Previously\ \n recommended"
@@ -33,13 +32,13 @@ appId: edu.upc
 - tapOn: "Finish"
 - assertVisible: "Ibuprofen"
 - tapOn:
-      id: "edu.upc:id/ellipsis"
+      id: "${APP_ID}:id/ellipsis"
       index: 1
 - tapOn: "Remove"
 - assertNotVisible: "Paracetamol"
 - assertVisible: "Ibuprofen"
 - tapOn:
-        id: "edu.upc:id/ellipsis"
+        id: "${APP_ID}:id/ellipsis"
         index: 0
 - tapOn: "Edit"
 - tapOn: "Medication name"
