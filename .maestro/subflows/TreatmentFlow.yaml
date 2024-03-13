@@ -30,13 +30,13 @@ appId: ${APP_ID}
 - tapOn: "Finish"
 - assertVisible: "Ibuprofen"
 - tapOn:
-      id: "${APP_ID}:id/ellipsis"
+      text: "⋮"
       index: 1
 - tapOn: "Remove"
 - assertNotVisible: "Paracetamol"
 - assertVisible: "Ibuprofen"
 - tapOn:
-        id: "${APP_ID}:id/ellipsis"
+        text: "⋮"
         index: 0
 - tapOn: "Edit"
 - tapOn: "Medication name"
