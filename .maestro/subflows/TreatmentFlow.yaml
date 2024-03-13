@@ -1,6 +1,5 @@
 appId: ${APP_ID}
 ---
-- runFlow:
 - tapOn: "Add Treatment"
 - tapOn: "Previously\ \n recommended"
 - tapOn: "Medication name"
@@ -18,7 +17,6 @@ appId: ${APP_ID}
 - scrollUntilVisible:
     centerElement: true
     element: "Some note"
-- assertVisible: "Some note"
 - tapOn: "Add Treatment"
 - tapOn: "Previously\ \n recommended"
 - tapOn: "Medication name"
