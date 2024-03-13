@@ -98,11 +98,6 @@ android {
                 mappingFileUploadEnabled false
             }
         }
-        staging {
-            firebaseCrashlytics {
-                mappingFileUploadEnabled false
-            }
-        }
     }
 
     lintOptions {

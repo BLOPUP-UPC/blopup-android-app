@@ -10,16 +10,6 @@ android{
             // Feature toggles
             buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "true"
         }
-        staging {
-            buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"1b7f89cb-197a-4922-bb0c-2b780b85a1ac\""
-            buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"51a806b3-f716-4583-b4f4-b29b522648a9\""
-            buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-staging.upc.edu/openmrs\""
-            buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
-            buildConfigField "Boolean", "HARDCODE_BLUETOOTH_DATA_TOGGLE", "true"
-
-            // Feature toggles
-            buildConfigField "Boolean", "CONTACT_DOCTOR_TOGGLE", "false"
-        }
         debug {
             buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"6aba6deb-b260-4117-9a50-37c8e1a76a45\""
             buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"b8cb9abe-f0cd-4b09-b6db-69cd54ba22d7\""
