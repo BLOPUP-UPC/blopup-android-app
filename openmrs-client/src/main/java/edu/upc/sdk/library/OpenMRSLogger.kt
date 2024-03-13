@@ -14,28 +14,28 @@
 package edu.upc.sdk.library
 
 import android.util.Log
+import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.app
+import java.lang.IllegalStateException
+import kotlin.coroutines.coroutineContext
 
 /**
  * The type Open mrs logger.
  */
 class OpenMRSLogger {
-    private val androidDefaultUEH: Thread.UncaughtExceptionHandler
+    private val androidDefaultUEH: Thread.UncaughtExceptionHandler?
 
     /**
      * Instantiates a new Open mrs logger.
      */
     init {
         logger = this
-        androidDefaultUEH = Thread.getDefaultUncaughtExceptionHandler()!!
-        val handler = Thread.UncaughtExceptionHandler { thread: Thread?, ex: Throwable? ->
+        androidDefaultUEH = Thread.getDefaultUncaughtExceptionHandler()
+        val handler = Thread.UncaughtExceptionHandler { thread: Thread, ex: Throwable ->
             logger!!.e("Uncaught exception is: ", ex)
-            if (thread != null) {
-                if (ex != null) {
-                    androidDefaultUEH.uncaughtException(thread, ex)
-                }
-            }
+            androidDefaultUEH.uncaughtException(thread, ex)
         }
         Thread.setDefaultUncaughtExceptionHandler(handler)
     }
@@ -47,7 +47,7 @@ class OpenMRSLogger {
      */
     fun v(msg: String) {
         Log.v(mTAG, getMessage(msg))
-        Firebase.crashlytics
+        logToFirebase(msg)
     }
 
     /**
@@ -58,6 +58,7 @@ class OpenMRSLogger {
      */
     fun v(msg: String, tr: Throwable?) {
         Log.v(mTAG, getMessage(msg), tr)
+        logToFirebase(msg, tr)
     }
 
     /**
@@ -68,6 +69,7 @@ class OpenMRSLogger {
     fun d(msg: String) {
         if (IS_DEBUGGING_ON) {
             Log.d(mTAG, getMessage(msg))
+            logToFirebase(msg)
         }
     }
 
@@ -80,6 +82,7 @@ class OpenMRSLogger {
     fun d(msg: String, tr: Throwable?) {
         if (IS_DEBUGGING_ON) {
             Log.d(mTAG, getMessage(msg), tr)
+            logToFirebase(msg, tr)
         }
     }
 
@@ -90,7 +93,7 @@ class OpenMRSLogger {
      */
     fun i(msg: String) {
         Log.i(mTAG, getMessage(msg))
-        Firebase.crashlytics.log(msg)
+        logToFirebase(msg)
     }
 
     /**
@@ -101,7 +104,7 @@ class OpenMRSLogger {
      */
     fun i(msg: String, tr: Throwable?) {
         Log.i(mTAG, getMessage(msg), tr)
-        Firebase.crashlytics.log("$msg: ${tr?.message}")
+        logToFirebase(msg, tr)
     }
 
     /**
@@ -111,7 +114,7 @@ class OpenMRSLogger {
      */
     fun w(msg: String) {
         Log.w(mTAG, getMessage(msg))
-        Firebase.crashlytics.log(msg)
+        logToFirebase(msg)
     }
 
     /**
@@ -121,7 +124,7 @@ class OpenMRSLogger {
      */
     fun e(msg: String) {
         Log.e(mTAG, getMessage(msg))
-        Firebase.crashlytics.log(msg)
+        logToFirebase(msg)
     }
 
     /**
@@ -132,7 +135,18 @@ class OpenMRSLogger {
      */
     fun e(msg: String, tr: Throwable?) {
         Log.e(mTAG, getMessage(msg), tr)
-        Firebase.crashlytics.log("$msg: ${tr?.message}")
+        logToFirebase(msg, tr)
+    }
+
+    private fun logToFirebase(msg: String, throwable: Throwable? = null) {
+        try {
+            FirebaseApp.getInstance()
+            throwable?.let {
+                Firebase.crashlytics.log("$msg: ${it.message}")
+            } ?: Firebase.crashlytics.log(msg)
+        } catch (e: IllegalStateException) {
+            return
+        }
     }
 
     companion object {
