@@ -130,11 +130,6 @@
     <string name="snackbar_server_error">El servidor ha caigut. Si-us-plau, seleccioni\'n un diferent.</string>
     <string name="snackbar_choose">Triar</string>
     <string name="error_occurred">S\'ha produtït un error, torni-ho a provar mes tard</string>
-    <string name="action_about_activity">Sobre Nosaltres</string>
-    <string name="action_about">Sobre nosaltres</string>
-    <string name="about_openmrs_1">OpenMRS és una comunitat global dedicada, virtuosa i generosa de contribuïdors que construeixen i mantenen la plataforma OpenMRS i altres productes tècnis fonamentals.</string>
-    <string name="about_openmrs_2">OpenMRS és una plataforma que el països i els implementadors usen per crear un EMR customitzat en resposta a les necesitats actuals.</string>
-    <string name="more_about_openmrs">MÉS></string>
 
     <!-- BLOPUP -->
     <string name="bluetooth_error_connection">Error rebent les dades</string>

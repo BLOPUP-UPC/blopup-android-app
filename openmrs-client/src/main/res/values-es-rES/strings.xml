@@ -86,7 +86,6 @@
     <string name="intro_find_desc">Puedes buscar y monitorear a los pacientes.</string>
     <string name="intro_monitor_desc">Te ayudamos a monitorear las visitas de los pacientes también.</string>
     <string name="req_star"><![CDATA[<font color=\'#616161\'> * </font>]]></string>
-    <string name="more_about_openmrs">MÁS</string>
     <string name="data_type_not_available_for_this_field">Gráfico no disponible para este campo.</string>
     <string name="charts_view_toolbar_title">Vistas de los gráficos</string>
     <string name="snackbar_choose">Escoger</string>
@@ -95,11 +94,6 @@
     <string name="contact_us">Contáctenos</string>
     <string name="contact_us_text">Contáctenos</string>
     <string name="visit_dashboard_label">Encuentros</string>
-    <string name="action_about_activity">Acerca de Nosotros</string>
-    <string name="action_about">Acerca de nosotros</string>
-    <string name="about_openmrs_1">OpenMRS es una comunidad global de colaboradores verdaderamente dedicados, talentosos y generosos que construyen y mantienen la plataforma OpenMRS y otros productos técnicos fundamentales de OpenMRS.</string>
-    <string name="about_openmrs_2">OpenMRS es una plataforma que los países y los implementadores utilizan para crear un sistema EMR customizado en respuesta a las necesidades reales.</string>
-    <string name="snackbar_server_error">El servidor ingresado está caído, por favor seleccionar uno diferente.</string>
     <string name="login_button">Iniciar sesión</string>
     <string name="login_location_select">Ubicación de la sesión</string>
     <string name="fname_invalid_error">El nombre no puede contener ni símbolos ni números.</string>

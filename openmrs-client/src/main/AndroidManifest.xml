@@ -40,10 +40,6 @@
             android:label="@string/title_activity_vitals"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".openmrs.activities.community.contact.AboutActivity"
-            android:label="@string/action_about_activity"
-            android:theme="@style/AppThemeOrig" />
-        <activity
             android:name=".openmrs.activities.introduction.SplashActivity"
             android:exported="true"
             android:noHistory="true"

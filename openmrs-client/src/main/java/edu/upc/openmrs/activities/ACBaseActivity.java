@@ -36,7 +36,6 @@ import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.upc.R;
-import edu.upc.openmrs.activities.community.contact.AboutActivity;
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog;
 import edu.upc.openmrs.activities.introduction.IntroActivity;
 import edu.upc.openmrs.activities.introduction.SplashActivity;
@@ -149,9 +148,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
                 }
                 Observable<List<LocationEntity>> observableList = new LocationDAO().getLocations();
                 observableList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getLocationList());
-                return true;
-            case R.id.actionAbout:
-                startActivity(new Intent(this, AboutActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
