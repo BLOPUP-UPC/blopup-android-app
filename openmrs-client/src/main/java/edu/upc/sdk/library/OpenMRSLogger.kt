@@ -139,6 +139,7 @@ class OpenMRSLogger {
     }
 
     private fun logToFirebase(msg: String, throwable: Throwable? = null) {
+        //adding try catch block to avoid crash in case of firebase not initialized (needed for tests in classes using OpenMRSLogger)
         try {
             FirebaseApp.getInstance()
             throwable?.let {
