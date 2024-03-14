@@ -7,17 +7,12 @@ import com.ideabus.model.data.DeviceInfo
 import com.ideabus.model.data.User
 import com.ideabus.model.data.VersionData
 import com.ideabus.model.protocol.BPMProtocol
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityRetainedComponent
 import edu.upc.blopup.hilt.CurrentActivityProvider
 import javax.inject.Inject
 
 class BluetoothBloodPressureConnector @Inject constructor(
     bpmProtocolFactory: BpmProtocolFactory
-) : BluetoothConnectorInterface,
-    BpmProtocolListener {
+) : BpmProtocolListener {
 
     private val bpmProtocol: BPMProtocol
 
@@ -34,7 +29,7 @@ class BluetoothBloodPressureConnector @Inject constructor(
         bpmProtocol.setOnWriteStateListener(this)
     }
 
-    override fun connect(
+    fun connect(
         updateConnectionState: (ConnectionViewState) -> Unit,
         updateMeasurementState: (BloodPressureViewState) -> Unit
     ) {
@@ -43,7 +38,7 @@ class BluetoothBloodPressureConnector @Inject constructor(
         this.startScan()
     }
 
-    override fun disconnect() {
+    fun disconnect() {
         try {
             if (bpmProtocol.isConnected) {
                 bpmProtocol.disconnect()
@@ -176,24 +171,6 @@ class BpmProtocolFactory @Inject constructor(private val activityProvider: Curre
             }
         }
         return bpmProtocol
-    }
-}
-interface BluetoothConnectorInterface {
-    fun connect(
-        updateConnectionState: (ConnectionViewState) -> Unit,
-        updateMeasurementState: (BloodPressureViewState) -> Unit
-    )
-
-    fun disconnect()
-}
-
-@Module
-@InstallIn(ActivityRetainedComponent::class)
-object BluetoothConnectorModule {
-
-    @Provides
-    fun providesBluetoothConnector(connector: BluetoothBloodPressureConnector): BluetoothConnectorInterface {
-        return connector
     }
 }
 

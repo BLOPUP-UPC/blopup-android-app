@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 class ReadBloodPressureRepository @Inject constructor(
-    private val connector: BluetoothConnectorInterface
+    private val connector: BluetoothBloodPressureConnector
 ) {
 
     fun start(

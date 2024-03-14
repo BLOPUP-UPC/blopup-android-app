@@ -5,13 +5,11 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -28,19 +26,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
-import edu.upc.blopup.ui.takingvitals.screens.BloodPressureDataScreen
-import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
-import edu.upc.blopup.ui.takingvitals.screens.MeasureBloodPressureScreen
-import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
-import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
-import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
-import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
+import edu.upc.blopup.ui.takingvitals.screens.BloodPressureRoute
+import edu.upc.blopup.ui.takingvitals.screens.MeasureBloodPressureRoute
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class VitalsActivity : AppCompatActivity() {
 
-    val viewModel: VitalsViewModel by viewModels()
+//    private val patientId = intent.getBundleExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE)
+
+//    val viewModel: VitalsViewModel by viewModels()
 
     private val locationPermission = arrayOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -59,14 +54,14 @@ class VitalsActivity : AppCompatActivity() {
         askPermissions()
 
         lifecycleScope.launch {
-            viewModel.fetchActiveTreatment()
+//            viewModel.fetchActiveTreatment()
             setContent {
 
                 val navigationController = rememberNavController()
 
                 var topBarTitle by remember { mutableIntStateOf(R.string.blood_pressure_data) }
                 var isDataScreen by remember { mutableStateOf(false) }
-                val createVisitResultUiState by viewModel.createVisitResultUiState.collectAsState()
+//                val createVisitResultUiState by viewModel.createVisitResultUiState.collectAsState()
 
                 Scaffold(
                     topBar = {
@@ -81,95 +76,87 @@ class VitalsActivity : AppCompatActivity() {
                     },
                 ) { innerPadding ->
 
-                    val uiState by viewModel.vitalsUiState.collectAsState()
+//                    val uiState by viewModel.vitalsUiState.collectAsState()
 
                     NavHost(
                         navController = navigationController,
-                        startDestination = Routes.MeasureBloodPressureScreen.id,
+                        startDestination = Routes.MeasureBloodPressureRoute.id,
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        composable(Routes.MeasureBloodPressureScreen.id) {
+                        composable(Routes.MeasureBloodPressureRoute.id) {
                             topBarTitle = R.string.blood_pressure_data
                             isDataScreen = false
 
-                            MeasureBloodPressureScreen(
+                            MeasureBloodPressureRoute(
                                 { navigationController.navigate(Routes.HowToActivateBluetoothScreen.id) },
-                                {
-                                    viewModel.receiveBloodPressureData()
-                                    navigationController.navigate(Routes.BloodPressureDataScreen.id)
-                                }
+                                { navigationController.navigate(Routes.BloodPressureRoute.id) }
                             )
                         }
-                        composable(Routes.HowToActivateBluetoothScreen.id) {
-                            topBarTitle = R.string.blood_pressure_data
-                            isDataScreen = false
-
-                            HowToActivateBPDeviceScreen {
-                                viewModel.receiveBloodPressureData()
-                                navigationController.navigate(Routes.BloodPressureDataScreen.id)
-                            }
-                        }
-                        composable(Routes.BloodPressureDataScreen.id) {
+//                        composable(Routes.HowToActivateBluetoothScreen.id) {
+//                            topBarTitle = R.string.blood_pressure_data
+//                            isDataScreen = false
+//
+//                            HowToActivateBPDeviceScreen {
+//                                viewModel.receiveBloodPressureData()
+//                                navigationController.navigate(Routes.BloodPressureDataScreen.id)
+//                            }
+//                        }
+                        composable(Routes.BloodPressureRoute.id) {
                             topBarTitle = R.string.blood_pressure_data
                             isDataScreen = true
-                            val bpBluetoothConnectionResultUiState by viewModel.bpBluetoothConnectionResultUiState.collectAsState()
 
-                            BloodPressureDataScreen(
+                            BloodPressureRoute(
                                 { navigationController.navigate(Routes.MeasureWeightScreen.id) },
-                                navigationController::popBackStack,
-                                uiState,
-                                bpBluetoothConnectionResultUiState,
-                                viewModel::receiveBloodPressureData
-                            )
+                                navigationController::popBackStack)
                         }
-                        composable(Routes.MeasureWeightScreen.id) {
-                            topBarTitle = R.string.weight_data
-                            isDataScreen = false
-
-                            MeasureWeightScreen {
-                                viewModel.receiveWeightData()
-                                navigationController.navigate(Routes.WeightDataScreen.id)
-                            }
-                        }
-                        composable(Routes.WeightDataScreen.id) {
-                            topBarTitle = R.string.weight_data
-                            isDataScreen = true
-                            val scaleBluetoothConnectionResultUiState by viewModel.scaleBluetoothConnectionResultUiState.collectAsState()
-
-                            WeightDataScreen(
-                                { navigationController.navigate(Routes.MeasureHeightScreen.id) },
-                                {
-                                    navigationController.popBackStack()
-                                    viewModel.removeWeightData()
-                                },
-                                uiState,
-                                scaleBluetoothConnectionResultUiState,
-                                viewModel::receiveWeightData
-                            )
-                        }
-                        composable(Routes.MeasureHeightScreen.id) {
-                            topBarTitle = R.string.height_data
-                            isDataScreen = false
-
-                            MeasureHeightScreen({
-                                viewModel.saveHeight(it)
-                                navigationController.navigate(Routes.TreatmentAdherenceScreen.id)
-                            }, viewModel.getLastHeightFromVisits())
-                        }
-                        composable(Routes.TreatmentAdherenceScreen.id) {
-                            topBarTitle = R.string.adherence_data
-                            isDataScreen = false
-                            val treatmentsResultUiState by viewModel.treatmentsResultUiState.collectAsState()
-
-                            TreatmentAdherenceScreen(
-                                { setResultAndFinish(it) },
-                                viewModel::createVisit,
-                                createVisitResultUiState,
-                                treatmentsResultUiState,
-                                { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } },
-                                { lifecycleScope.launch { viewModel.fetchActiveTreatment() } }
-                            )
-                        }
+//                        composable(Routes.MeasureWeightScreen.id) {
+//                            topBarTitle = R.string.weight_data
+//                            isDataScreen = false
+//
+//                            MeasureWeightScreen {
+//                                viewModel.receiveWeightData()
+//                                navigationController.navigate(Routes.WeightDataScreen.id)
+//                            }
+//                        }
+//                        composable(Routes.WeightDataScreen.id) {
+//                            topBarTitle = R.string.weight_data
+//                            isDataScreen = true
+//                            val scaleBluetoothConnectionResultUiState by viewModel.scaleBluetoothConnectionResultUiState.collectAsState()
+//
+//                            WeightDataScreen(
+//                                { navigationController.navigate(Routes.MeasureHeightScreen.id) },
+//                                {
+//                                    navigationController.popBackStack()
+//                                    viewModel.removeWeightData()
+//                                },
+//                                uiState,
+//                                scaleBluetoothConnectionResultUiState,
+//                                viewModel::receiveWeightData
+//                            )
+//                        }
+//                        composable(Routes.MeasureHeightScreen.id) {
+//                            topBarTitle = R.string.height_data
+//                            isDataScreen = false
+//
+//                            MeasureHeightScreen({
+//                                viewModel.saveHeight(it)
+//                                navigationController.navigate(Routes.TreatmentAdherenceScreen.id)
+//                            }, viewModel.getLastHeightFromVisits())
+//                        }
+//                        composable(Routes.TreatmentAdherenceScreen.id) {
+//                            topBarTitle = R.string.adherence_data
+//                            isDataScreen = false
+//                            val treatmentsResultUiState by viewModel.treatmentsResultUiState.collectAsState()
+//
+//                            TreatmentAdherenceScreen(
+//                                { setResultAndFinish(it) },
+//                                viewModel::createVisit,
+//                                createVisitResultUiState,
+//                                treatmentsResultUiState,
+//                                { lifecycleScope.launch { viewModel.addTreatmentAdherence(it) } },
+//                                { lifecycleScope.launch { viewModel.fetchActiveTreatment() } }
+//                            )
+//                        }
                     }
                 }
             }

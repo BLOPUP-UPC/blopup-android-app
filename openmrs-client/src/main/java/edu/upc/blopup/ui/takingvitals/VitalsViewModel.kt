@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.ui.ResultUiState
@@ -15,8 +14,6 @@ import edu.upc.sdk.library.api.repository.ScaleViewState
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -25,7 +22,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.jvm.optionals.getOrNull
 
 @HiltViewModel
 open class VitalsViewModel @Inject constructor(
@@ -37,13 +33,13 @@ open class VitalsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val patientId: Long =
-        savedStateHandle[ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE]!!
+//    private val patientId: Long =
+//        savedStateHandle[ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE]!!
 
     private val _vitalsUiState = MutableStateFlow((mutableListOf<Vital>()))
     val vitalsUiState: StateFlow<MutableList<Vital>> = _vitalsUiState.asStateFlow()
 
-    val patient: Patient = patientDAO.findPatientByID(patientId.toString())
+//    val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
     private val _createVisitResultUiState: MutableStateFlow<ResultUiState<Unit>?> = MutableStateFlow(null)
     val createVisitResultUiState: StateFlow<ResultUiState<Unit>?> =
@@ -63,24 +59,24 @@ open class VitalsViewModel @Inject constructor(
     var scaleBluetoothConnectionResultUiState: StateFlow<ResultUiState<Unit>> =
         _scaleBluetoothConnectionResultUiState.asStateFlow()
 
-    suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
-        val treatmentAdherenceInfo = checkTreatmentList.map {
-            return@map Pair<String, Boolean>(it.treatmentId, it.selected)
-        }.toMap()
-        treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, patient.uuid!!)
-    }
-
-    suspend fun fetchActiveTreatment() {
-        _treatmentsResultUiState.value = ResultUiState.Loading
-
-        val response = treatmentRepository.fetchAllActiveTreatments(patient)
-
-        _treatmentsResultUiState.value =
-            when (response) {
-                is Result.Success -> ResultUiState.Success(response.data)
-                else -> ResultUiState.Error
-            }
-    }
+//    suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
+//        val treatmentAdherenceInfo = checkTreatmentList.map {
+//            return@map Pair<String, Boolean>(it.treatmentId, it.selected)
+//        }.toMap()
+//        treatmentRepository.saveTreatmentAdherence(treatmentAdherenceInfo, patient.uuid!!)
+//    }
+//
+//    suspend fun fetchActiveTreatment() {
+//        _treatmentsResultUiState.value = ResultUiState.Loading
+//
+//        val response = treatmentRepository.fetchAllActiveTreatments(patient)
+//
+//        _treatmentsResultUiState.value =
+//            when (response) {
+//                is Result.Success -> ResultUiState.Success(response.data)
+//                else -> ResultUiState.Error
+//            }
+//    }
 
     fun receiveWeightData() {
         _scaleBluetoothConnectionResultUiState.value = ResultUiState.Loading
@@ -175,29 +171,29 @@ open class VitalsViewModel @Inject constructor(
         )
     }
 
-    fun getLastHeightFromVisits() =
-        visitRepository.getLatestVisitWithHeight(patientId).getOrNull()
-            ?.getLatestHeight() ?: ""
+//    fun getLastHeightFromVisits() =
+//        visitRepository.getLatestVisitWithHeight(patientId).getOrNull()
+//            ?.getLatestHeight() ?: ""
 
-    fun createVisit() {
-        _createVisitResultUiState.value = ResultUiState.Loading
-        visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
-            .subscribe { result ->
-                when (result) {
-                    is Result.Success -> {
-                        _createVisitResultUiState.value = ResultUiState.Success(Unit)
-                    }
-
-                    is Result.Loading -> {
-                        _createVisitResultUiState.value = ResultUiState.Loading
-                    }
-
-                    is Result.Error -> {
-                        _createVisitResultUiState.value = ResultUiState.Error
-                    }
-                }
-            }
-    }
+//    fun createVisit() {
+//        _createVisitResultUiState.value = ResultUiState.Loading
+//        visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
+//            .subscribe { result ->
+//                when (result) {
+//                    is Result.Success -> {
+//                        _createVisitResultUiState.value = ResultUiState.Success(Unit)
+//                    }
+//
+//                    is Result.Loading -> {
+//                        _createVisitResultUiState.value = ResultUiState.Loading
+//                    }
+//
+//                    is Result.Error -> {
+//                        _createVisitResultUiState.value = ResultUiState.Error
+//                    }
+//                }
+//            }
+//    }
 
     private fun hardcodeBloodPressureBluetoothData() {
         _vitalsUiState.value =

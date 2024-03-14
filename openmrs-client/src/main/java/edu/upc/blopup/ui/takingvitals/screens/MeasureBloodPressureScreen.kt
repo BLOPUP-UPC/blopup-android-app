@@ -26,9 +26,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
+import edu.upc.blopup.ui.takingvitals.VitalsViewModel
 import edu.upc.blopup.ui.takingvitals.components.BluetoothButton
 
+
+@Composable
+fun MeasureBloodPressureRoute(navigateToHowToScreen: () -> Unit, navigateToNextScreen: () -> Unit, viewModel: VitalsViewModel = hiltViewModel()){
+    MeasureBloodPressureScreen(navigateToHowToScreen) { viewModel.receiveBloodPressureData(); navigateToNextScreen() }
+}
 
 @Composable
 fun MeasureBloodPressureScreen(onClickHowTo: () -> Unit, onClickReceiveData: () -> Unit) {
