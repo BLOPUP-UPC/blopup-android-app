@@ -1,13 +1,13 @@
 # BlopUp Android app
 
-## Connect to local OpenMRS
-
-Use http://10.0.2.2:8080/openmrs as the server url
-
 ## Description
 This is the Android app that is used to access the BlopUp platform.
 
 ## Development
+
+## Connect to local OpenMRS
+
+Use http://10.0.2.2/openmrs as the server url
 
 ### E2E tests
 We use maestro for the e2e tests. They can be executed locally and are executed in the CI automatically.
@@ -26,3 +26,4 @@ The tests are executed in the maestro cloud servers. You can go to the dashboard
 # Release
 
 With every tag the CI will build a release and upload it to the Play Console
+
