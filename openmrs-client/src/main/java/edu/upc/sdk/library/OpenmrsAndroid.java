@@ -25,7 +25,6 @@ import androidx.annotation.Nullable;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 import edu.upc.BuildConfig;
@@ -156,17 +155,6 @@ public class OpenmrsAndroid {
     }
 
     /**
-     * Sets password.
-     *
-     * @param password the password
-     */
-    public static void setPassword(String password) {
-        SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
-        editor.putString(ApplicationConstants.UserKeys.PASSWORD, password);
-        editor.apply();
-    }
-
-    /**
      * Gets hashed password.
      *
      * @return the hashed password
@@ -174,17 +162,6 @@ public class OpenmrsAndroid {
     public static String getHashedPassword() {
         SharedPreferences prefs = getOpenMRSSharedPreferences();
         return prefs.getString(ApplicationConstants.UserKeys.HASHED_PASSWORD, "");
-    }
-
-    /**
-     * Sets hashed password.
-     *
-     * @param hashedPassword the hashed password
-     */
-    public static void setHashedPassword(String hashedPassword) {
-        SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
-        editor.putString(ApplicationConstants.UserKeys.HASHED_PASSWORD, hashedPassword);
-        editor.apply();
     }
 
     /**
@@ -206,16 +183,6 @@ public class OpenmrsAndroid {
         SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
         editor.putString(ApplicationConstants.UserKeys.USER_NAME, username);
         editor.apply();
-    }
-
-    /**
-     * Is user logged online boolean.
-     *
-     * @return the boolean
-     */
-    public static boolean isUserLoggedOnline() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getBoolean(ApplicationConstants.UserKeys.LOGIN, false);
     }
 
     /**
@@ -251,16 +218,6 @@ public class OpenmrsAndroid {
     }
 
     /**
-     * Gets last login server url.
-     *
-     * @return the last login server url
-     */
-    public static String getLastLoginServerUrl() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.LAST_LOGIN_SERVER_URL, OpenmrsAndroid.getServerUrl());
-    }
-
-    /**
      * Sets last login server url.
      *
      * @param url the url
@@ -290,16 +247,6 @@ public class OpenmrsAndroid {
         SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
         editor.putString(ApplicationConstants.SESSION_TOKEN, serverUrl);
         editor.apply();
-    }
-
-    /**
-     * Gets last session token.
-     *
-     * @return the last session token
-     */
-    public static String getLastSessionToken() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.LAST_SESSION_TOKEN, "");
     }
 
     /**
@@ -356,18 +303,6 @@ public class OpenmrsAndroid {
 
 
     /**
-     * Sets sync state.
-     *
-     * @param enabled the enabled
-     */
-    public static void setSyncState(boolean enabled) {
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(instance);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("sync", enabled);
-        editor.apply();
-    }
-
-    /**
      * Sets current user information.
      *
      * @param userInformation the user information
@@ -378,19 +313,6 @@ public class OpenmrsAndroid {
             editor.putString(entry.getKey(), entry.getValue());
         }
         editor.apply();
-    }
-
-    /**
-     * Gets current logged in user info.
-     *
-     * @return the current logged in user info
-     */
-    public Map<String, String> getCurrentLoggedInUserInfo() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
-        Map<String, String> infoMap = new HashMap<>();
-        infoMap.put(ApplicationConstants.UserKeys.USER_PERSON_NAME, prefs.getString(ApplicationConstants.UserKeys.USER_PERSON_NAME, ""));
-        infoMap.put(ApplicationConstants.UserKeys.USER_UUID, prefs.getString(ApplicationConstants.UserKeys.USER_UUID, ""));
-        return infoMap;
     }
 
     /**
@@ -419,50 +341,4 @@ public class OpenmrsAndroid {
         OpenmrsAndroid.deleteSecretKey();
         editor.apply();
     }
-
-    /**
-     * Sets default form load id.
-     *
-     * @param xFormName the x form name
-     * @param xFormID   the x form id
-     */
-    public void setDefaultFormLoadID(String xFormName, String xFormID) {
-        SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
-        editor.putString(xFormName, xFormID);
-        editor.apply();
-    }
-
-    /**
-     * Gets default form load id.
-     *
-     * @param xFormName the x form name
-     * @return the default form load id
-     */
-    public String getDefaultFormLoadID(String xFormName) {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(xFormName, "");
-    }
-
-    /**
-     * Gets authorization token.
-     *
-     * @return the authorization token
-     */
-    public String getAuthorizationToken() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.AUTHORIZATION_TOKEN, "");
-    }
-
-    /**
-     * Sets authorization token.
-     *
-     * @param authorization the authorization
-     */
-    public void setAuthorizationToken(String authorization) {
-        SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
-        editor.putString(ApplicationConstants.AUTHORIZATION_TOKEN, authorization);
-        editor.apply();
-    }
-
-
 }
