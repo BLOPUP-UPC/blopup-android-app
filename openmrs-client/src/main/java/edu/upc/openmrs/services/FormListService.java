@@ -15,6 +15,8 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
+
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -24,11 +26,7 @@ import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.databases.entities.FormResourceEntity;
 import edu.upc.sdk.library.models.EncounterType;
 import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.ToastUtil;
-
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +43,6 @@ public class FormListService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         FormResourceDAO formResourceDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).formResourceDAO();
         EncounterTypeRoomDAO encounterTypeRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).encounterTypeRoomDAO();
-        if (NetworkUtils.isOnline()) {
 
             Call<Results<FormResourceEntity>> call = apiService.getForms();
             call.enqueue(new Callback<Results<FormResourceEntity>>() {
@@ -85,5 +82,4 @@ public class FormListService extends IntentService {
                 }
             });
         }
-    }
 }

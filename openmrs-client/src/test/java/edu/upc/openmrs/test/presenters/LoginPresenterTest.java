@@ -51,7 +51,6 @@ import edu.upc.sdk.library.models.Session;
 import edu.upc.sdk.library.models.User;
 import edu.upc.sdk.library.models.VisitType;
 import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.StringUtils;
 import okhttp3.Headers;
 
@@ -81,7 +80,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
         Mockito.mockStatic(OpenMRS.class);
         Mockito.mockStatic(LocationDAO.class);
         Mockito.mockStatic(StringUtils.class);
-        Mockito.mockStatic(NetworkUtils.class);
         openmrsAndroid = Mockito.mockStatic(OpenmrsAndroid.class);
     }
 

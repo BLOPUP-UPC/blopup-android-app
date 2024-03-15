@@ -15,10 +15,6 @@
 package edu.upc.sdk.library.api.repository;
 
 import androidx.annotation.NonNull;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,28 +23,21 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import edu.upc.R;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
-import edu.upc.sdk.library.api.workers.UpdatePatientWorker;
 import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
 import edu.upc.sdk.library.dao.PatientDAO;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.models.Encountercreate;
 import edu.upc.sdk.library.models.IdGenPatientIdentifiers;
 import edu.upc.sdk.library.models.IdentifierType;
-import edu.upc.sdk.library.models.Module;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientIdentifier;
 import edu.upc.sdk.library.models.ResultType;
 import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.ModuleUtils;
-import edu.upc.sdk.utilities.NetworkUtils;
 import edu.upc.sdk.utilities.PatientComparator;
-import edu.upc.sdk.utilities.ToastUtil;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
@@ -129,7 +118,6 @@ public class PatientRepository extends BaseRepository {
      */
     public Observable<ResultType> updatePatient(final Patient patient) {
         return AppDatabaseHelper.createObservableIO(() -> {
-            if (NetworkUtils.isOnline()) {
                 Call<PatientDto> call = restApi.updatePatient(
                         patient.getUpdatedPatientDto(), patient.getUuid(), "full");
                 Response<PatientDto> response = call.execute();
@@ -145,15 +133,6 @@ public class PatientRepository extends BaseRepository {
                 } else {
                     throw new Exception("updatePatient error: " + response.message());
                 }
-            } else {
-                patientDAO.updatePatient(patient.getId(), patient);
-
-                Data data = new Data.Builder().putString(ApplicationConstants.PRIMARY_KEY_ID, patient.getId().toString()).build();
-                Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
-                workManager.enqueue(new OneTimeWorkRequest.Builder(UpdatePatientWorker.class).setConstraints(constraints).setInputData(data).build());
-
-                return ResultType.PatientUpdateLocalSuccess;
-            }
         });
     }
 
@@ -237,49 +216,14 @@ public class PatientRepository extends BaseRepository {
     /**
      * Fetches similar patients by different strategies:
      * <br> 1. Fetch similar patients from server directly using an API.
-     * <br> 2. Fetch patients with similar names, then compare their other similarities locally.
-     * <br> 3. Fetch locally saved patients, then compare their similarities.
      *
      * @param patient to find similar patients to
      * @return Observable list of similar patients
      */
     public Observable<List<Patient>> fetchSimilarPatients(final Patient patient) {
         return AppDatabaseHelper.createObservableIO(() -> {
-            if (!NetworkUtils.isOnline()) {
                 List<Patient> localPatients = patientDAO.getAllPatients().toBlocking().first();
                 return new PatientComparator().findSimilarPatient(localPatients, patient);
-            }
-
-            Call<Results<Module>> moduleCall = restApi.getModules(ApplicationConstants.API.FULL);
-            Response<Results<Module>> response = moduleCall.execute();
-
-            if (!response.isSuccessful()) return fetchSimilarPatientsAndCalculateLocally(patient);
-
-            if (ModuleUtils.isRegistrationCore1to7orAbove(response.body().getResults())) {
-                //return fetchSimilarPatientsFromServer(patient); //Uncomment this line when server API is fixed
-                return fetchSimilarPatientsAndCalculateLocally(patient); //Remove this line when server API is fixed
-            } else {
-                ToastUtil.notifyLong(context.getString(R.string.registration_core_info));
-                return fetchSimilarPatientsAndCalculateLocally(patient);
-            }
         });
-    }
-
-    /**
-     * Fetches patients with similar names from server, then calculates other similarities locally.
-     *
-     * @param patient the patient to fetch similar patient to
-     * @return list of similar patients
-     */
-    private List<Patient> fetchSimilarPatientsAndCalculateLocally(final Patient patient) throws Exception {
-        Call<Results<PatientDto>> call = restApi.getPatientsDto(patient.getName().getGivenName(), ApplicationConstants.API.FULL);
-        Response<Results<PatientDto>> response = call.execute();
-        if (response.isSuccessful()) {
-            List<Patient> patientList = new ArrayList<>();
-            for (PatientDto p : response.body().getResults()) patientList.add(p.getPatient());
-            return new PatientComparator().findSimilarPatient(patientList, patient);
-        } else {
-            throw new Exception("fetchSimilarPatientAndCalculateLocally error: " + response.message());
-        }
     }
 }

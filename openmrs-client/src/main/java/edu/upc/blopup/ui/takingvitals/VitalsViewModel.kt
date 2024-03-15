@@ -204,11 +204,11 @@ open class VitalsViewModel @Inject constructor(
             mutableListOf(
                 Vital(
                     ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                    (80..250).random().toString()
+                    (80..139).random().toString()
                 ),
                 Vital(
                     ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                    (50..99).random().toString()
+                    (50..89).random().toString()
                 ),
                 Vital(
                     ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
