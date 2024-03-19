@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerImpl()) {
-    suspend fun sendMessageToDoctor(message: String): Result<Boolean>  =
+    suspend fun sendMessageToDoctor(message: String): Result<Boolean> =
         withContext(Dispatchers.IO) {
             val contactRequest = ContactDoctorRequest(DOCTOR_PROVIDER_UUID, message)
 
@@ -20,14 +20,25 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
                 val response = restApi.contactDoctor(contactRequest).execute()
                 if (!response.isSuccessful) {
                     crashlytics.reportUnsuccessfulResponse(response, FAILED_MESSAGE_DOCTOR)
-                    return@withContext Result.failure(Exception("$FAILED_MESSAGE_DOCTOR: ${response.errorBody()?.string()}"))
+                    return@withContext Result.failure(
+                        Exception(
+                            "$FAILED_MESSAGE_DOCTOR: ${
+                                response.errorBody()?.string()
+                            }"
+                        )
+                    )
                 }
-                    return@withContext Result.success(true)
+                return@withContext Result.success(true)
             } catch (e: Exception) {
                 crashlytics.reportException(e, FAILED_MESSAGE_DOCTOR)
-                return@withContext Result.failure(Exception("$FAILED_MESSAGE_DOCTOR: ${e.message}", e))
+                return@withContext Result.failure(
+                    Exception(
+                        "$FAILED_MESSAGE_DOCTOR: ${e.message}",
+                        e
+                    )
+                )
             }
-    }
+        }
 
     suspend fun getAllDoctors(): Result<List<Doctor>> {
         return withContext(Dispatchers.IO) {
@@ -39,8 +50,14 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
                             ?.filter {
                                 it.person?.isVoided == false
                             }?.map { provider ->
-                                val registrationNumber = provider.attributes.find { it.attributeType?.uuid == REGISTRATION_NUMBER_UUID }?.value ?: ""
-                                Doctor(provider.uuid!!, provider.person?.display ?: "", registrationNumber)
+                                val registrationNumber =
+                                    provider.attributes.find { it.attributeType?.uuid == REGISTRATION_NUMBER_UUID }?.value
+                                        ?: ""
+                                Doctor(
+                                    provider.uuid!!,
+                                    provider.person?.display ?: "",
+                                    registrationNumber
+                                )
                             } ?: emptyList()
                     Result.success(result)
                 } else {
@@ -49,6 +66,20 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
             } catch (e: Exception) {
                 Result.failure(Exception("Failed to get providers: ${e.message}", e))
             }
+        }
+    }
+
+    fun getDoctorRegistrationNumber(providerUuid: String?): String {
+        val response = restApi.getProviderAttributes(providerUuid).execute().body()
+
+        return if (response != null && response.results.isNotEmpty()) {
+           response.results.find {
+                it.display!!.contains(
+                    "Registration Number"
+                )
+            }?.display?.substringAfter(":")!!.trim()
+        } else {
+            ""
         }
     }
 

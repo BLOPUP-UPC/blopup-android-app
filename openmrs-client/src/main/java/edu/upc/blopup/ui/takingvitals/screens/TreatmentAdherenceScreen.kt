@@ -248,6 +248,7 @@ fun TreatmentAdherencePreviewSuccess() {
                 Treatment(
                     "uuid",
                     "uuid",
+                    "098762123",
                     "Medication Name",
                     setOf(MedicationType.DIURETIC),
                     treatmentUuid = "uuidTreatment"

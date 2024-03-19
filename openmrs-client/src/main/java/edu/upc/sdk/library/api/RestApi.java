@@ -332,6 +332,14 @@ public interface RestApi {
     Call<Results<Provider>> getProviderList();
 
     /**
+     * Gets provider attributes
+     *
+     * @return the provider list
+     */
+    @GET("provider/{uuid}/attribute")
+    Call<Results<Provider>> getProviderAttributes(@Path("uuid") String uuid);
+
+    /**
      * Add contact doctor call.
      *
      * @param contactDoctorRequest to Blopup

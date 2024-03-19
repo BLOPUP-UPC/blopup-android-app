@@ -26,6 +26,7 @@ import edu.upc.sdk.library.models.Result as OpenMRSResult
 class TreatmentRepository @Inject constructor(
     val visitRepository: VisitRepository,
     private val encounterRepository: EncounterRepository,
+    private val doctorRepository: DoctorRepository,
 ) :
     BaseRepository(null) {
 
@@ -148,6 +149,8 @@ class TreatmentRepository @Inject constructor(
         val creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
         val doctor = encounter.encounterProviders.firstOrNull()?.provider?.display?.substringAfter("-")?.trim()
 
+        val doctorRegisteredNumber = doctor?.let { doctorRepository.getDoctorRegistrationNumber(encounter.encounterProviders.firstOrNull()?.provider?.uuid) } ?: ""
+
         var recommendedBy = ""
         var medicationName = ""
         var notes: String? = null
@@ -188,6 +191,7 @@ class TreatmentRepository @Inject constructor(
         return Treatment(
             recommendedBy = recommendedBy,
             doctorUuid = doctor,
+            doctorRegistrationNumber = doctorRegisteredNumber,
             medicationName = medicationName,
             medicationType = medicationType,
             notes = notes,

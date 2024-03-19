@@ -35,11 +35,12 @@ class TreatmentRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (_, doctor, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
+        val (_, doctor, doctorRegistrationNumber, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
 
         if (doctor?.isNotEmpty() == true) {
+            val doctorInfo = context.getString(R.string.doctor_info, doctor, doctorRegistrationNumber)
             holder.whoRecommended.visibility = View.VISIBLE
-            holder.whoRecommended.text = doctor
+            holder.whoRecommended.text = doctorInfo
         }
         holder.medicationNameTextView.text = medicationName
         holder.medicationTypeTextView.text =

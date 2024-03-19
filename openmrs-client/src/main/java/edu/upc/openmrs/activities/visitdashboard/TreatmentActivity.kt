@@ -89,8 +89,12 @@ class TreatmentActivity : ACBaseActivity() {
             adapter.clear()
             adapter.addAll(doctors)
 
-            val doctor = doctors.firstOrNull()
-            val doctorInfo = getString(R.string.doctor_info, doctor?.name, doctor?.registrationNumber)
+            val doctorInfo = if(treatmentToEdit.doctorUuid?.isNotEmpty() == true) {
+                getString(R.string.doctor_info, treatmentToEdit.doctorUuid, treatmentToEdit.doctorRegistrationNumber)
+            } else {
+                val doctor = doctors.firstOrNull()
+                getString(R.string.doctor_info, doctor?.name, doctor?.registrationNumber)
+            }
             dropDownWithDoctorsNames.setText(doctorInfo, false)
             dropDownWithDoctorsNames.tag = doctors.firstOrNull()?.uuid
         }
@@ -121,10 +125,6 @@ class TreatmentActivity : ACBaseActivity() {
             )
         }
         setRecommendationBackgrounds(treatmentToEdit.recommendedBy.trim())
-
-        if(treatmentToEdit.doctorUuid?.isNotEmpty() == true) {
-            mBinding.doctorsNameDropdown.setText(treatmentToEdit.doctorUuid, false)
-        }
 
         viewModel.updateFieldValidation(MEDICATION_NAME, true)
         viewModel.updateFieldValidation(MEDICATION_TYPE, true)

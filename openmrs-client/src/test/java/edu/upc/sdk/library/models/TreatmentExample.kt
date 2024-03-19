@@ -17,7 +17,8 @@ object TreatmentExample {
             treatmentUuid = UUID.randomUUID().toString(),
             observationStatusUuid = UUID.randomUUID().toString(),
             creationDate = creationDate,
-            adherence = mapOf(LocalDate.now() to true)
+            adherence = mapOf(LocalDate.now() to true),
+            doctorRegistrationNumber = ""
         )
     }
 
@@ -31,7 +32,8 @@ object TreatmentExample {
             visitUuid = UUID.randomUUID().toString(),
             treatmentUuid = UUID.randomUUID().toString(),
             creationDate = creationDate,
-            inactiveDate = Instant("2023-12-22T10:10:10Z")
+            inactiveDate = Instant("2023-12-22T10:10:10Z"),
+            doctorRegistrationNumber = ""
         )
     }
 }

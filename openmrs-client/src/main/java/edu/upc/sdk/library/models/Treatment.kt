@@ -9,6 +9,7 @@ import java.time.LocalDate
 data class Treatment(
     var recommendedBy: String,
     var doctorUuid: String? = null,
+    var doctorRegistrationNumber: String? = null,
     var medicationName: String,
     var medicationType: Set<MedicationType>,
     var notes: String? = null,

@@ -49,14 +49,17 @@ class TreatmentRepositoryTest {
 
     private lateinit var encounterRepository: EncounterRepository
 
+    private lateinit var doctorRepository: DoctorRepository
+
     @Before
     fun setUp() {
         restApi = mockk(relaxed = true)
         visitRepository = mockk(relaxed = true)
         encounterRepository = mockk(relaxed = true)
+        doctorRepository = mockk(relaxed = true)
 
         mockStaticMethodsNeededToInstantiateBaseRepository()
-        treatmentRepository = TreatmentRepository(visitRepository, encounterRepository)
+        treatmentRepository = TreatmentRepository(visitRepository, encounterRepository, doctorRepository)
     }
 
     @Test
@@ -114,6 +117,8 @@ class TreatmentRepositoryTest {
             visitList
         )
 
+        every { doctorRepository.getDoctorRegistrationNumber(org.mockito.kotlin.any()) } returns "123456"
+
         runBlocking {
             val result =
                 treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visitWithTreatment)
@@ -137,6 +142,7 @@ class TreatmentRepositoryTest {
         val treatment = Treatment(
             "Other",
             null,
+            "9829303",
             "hidroclorotiazida",
             setOf(MedicationType.DIURETIC),
             "25mg/dia",
@@ -321,6 +327,7 @@ class TreatmentRepositoryTest {
         val treatmentUpdated = Treatment(
             "Other",
             null,
+            "9829303",
             "Paracetamol",
             treatmentToEdit.medicationType,
             "hello",
