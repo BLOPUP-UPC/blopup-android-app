@@ -73,10 +73,8 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
         val response = restApi.getProviderAttributes(providerUuid).execute().body()
 
         return if (response != null && response.results.isNotEmpty()) {
-           response.results.find {
-                it.display!!.contains(
-                    "Registration Number"
-                )
+            response.results.find {
+                it.display!!.contains(REGISTRATION_NUMBER_DISPLAY)
             }?.display?.substringAfter(":")!!.trim()
         } else {
             ""
@@ -87,6 +85,7 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
         const val DOCTOR_PROVIDER_UUID = "2775ad68-1a28-450f-a270-6ac5d0120636"
         private const val FAILED_MESSAGE_DOCTOR = "Failed to message doctor"
         private const val REGISTRATION_NUMBER_UUID = "f4778183-b518-4842-946a-794fbff0e2e1"
+        private const val REGISTRATION_NUMBER_DISPLAY = "Registration Number"
     }
 
     data class ContactDoctorRequest(

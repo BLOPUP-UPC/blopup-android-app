@@ -10,6 +10,7 @@ import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.Person
 import edu.upc.sdk.library.models.Provider
+import edu.upc.sdk.library.models.ProviderAttribute
 import edu.upc.sdk.library.models.Results
 import io.mockk.coEvery
 import io.mockk.every
@@ -145,6 +146,49 @@ class DoctorRepositoryTest {
             assertTrue(result.isFailure)
             assertTrue(result.exceptionOrNull()?.cause is UnknownHostException)
         }
+    }
+
+    @Test
+    fun `should return doctors registration number`() {
+
+        val providerList = listOf(
+            Provider().apply {
+                uuid = "providerUuid1"
+                person = Person().apply {
+                    display = "Xavier de las Cuevas"
+                }
+                identifier = TreatmentRepository.DOCTOR
+                attributes = listOf(
+                    ProviderAttribute().apply {
+                        display = "Registration Number: 123456"
+                    }
+                )
+            },
+            Provider().apply {
+                uuid = "providerUuid2"
+                person = Person().apply {
+                    display = "Alejandro de las Cuevas"
+                }
+                identifier = "nurse"
+            },
+            Provider().apply {
+                uuid = "providerUuid2"
+                person = Person().apply {
+                    display = "Rosa de las Cuevas"
+                }
+                identifier = "nurse"
+            }
+        )
+
+        val response = Response.success(Results<Provider>().apply { results = providerList })
+        val call = mockk<Call<Results<Provider>>>(relaxed = true)
+
+        coEvery { restApi.getProviderAttributes("providerUuid1") } returns call
+        coEvery { call.execute() } returns response
+
+
+        val result = doctorRepository.getDoctorRegistrationNumber("providerUuid1")
+        assert("123456" == result)
     }
 
     private fun mockStaticMethodsNeededToInstantiateBaseRepository() {
