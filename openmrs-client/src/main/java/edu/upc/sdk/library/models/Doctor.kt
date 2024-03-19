@@ -1,7 +1,7 @@
 package edu.upc.sdk.library.models
 
-data class Doctor(val uuid: String, val name: String) {
+data class Doctor(val uuid: String, val name: String, var registrationNumber: String = "") {
     override fun toString(): String {
-        return name
+        return "$name - No Coleg. $registrationNumber"
     }
 }

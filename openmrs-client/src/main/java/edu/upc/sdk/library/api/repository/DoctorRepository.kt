@@ -38,8 +38,9 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
                         response.body()?.results?.filter<Provider> { it.identifier == TreatmentRepository.DOCTOR }
                             ?.filter {
                                 it.person?.isVoided == false
-                            }?.map {
-                                Doctor(it.uuid!!, it.person?.display ?: "")
+                            }?.map { provider ->
+                                val registrationNumber = provider.attributes.find { it.attributeType?.uuid == REGISTRATION_NUMBER_UUID }?.value ?: ""
+                                Doctor(provider.uuid!!, provider.person?.display ?: "", registrationNumber)
                             } ?: emptyList()
                     Result.success(result)
                 } else {
@@ -54,6 +55,7 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
     companion object {
         const val DOCTOR_PROVIDER_UUID = "2775ad68-1a28-450f-a270-6ac5d0120636"
         private const val FAILED_MESSAGE_DOCTOR = "Failed to message doctor"
+        private const val REGISTRATION_NUMBER_UUID = "f4778183-b518-4842-946a-794fbff0e2e1"
     }
 
     data class ContactDoctorRequest(

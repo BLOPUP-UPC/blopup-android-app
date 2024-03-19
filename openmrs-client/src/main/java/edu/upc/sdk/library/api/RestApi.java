@@ -328,7 +328,7 @@ public interface RestApi {
      *
      * @return the provider list
      */
-    @GET("provider?v=default")
+    @GET("provider?v=full")
     Call<Results<Provider>> getProviderList();
 
     /**

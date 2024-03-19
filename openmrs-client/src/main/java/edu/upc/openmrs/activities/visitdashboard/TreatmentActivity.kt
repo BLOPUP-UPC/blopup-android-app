@@ -89,7 +89,9 @@ class TreatmentActivity : ACBaseActivity() {
             adapter.clear()
             adapter.addAll(doctors)
 
-            dropDownWithDoctorsNames.setText(doctors.firstOrNull()?.name, false)
+            val doctor = doctors.firstOrNull()
+            val doctorInfo = getString(R.string.doctor_info, doctor?.name, doctor?.registrationNumber)
+            dropDownWithDoctorsNames.setText(doctorInfo, false)
             dropDownWithDoctorsNames.tag = doctors.firstOrNull()?.uuid
         }
 
