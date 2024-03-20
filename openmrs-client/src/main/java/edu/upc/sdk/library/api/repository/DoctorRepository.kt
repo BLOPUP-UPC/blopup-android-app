@@ -55,7 +55,7 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
                                         ?: ""
                                 Doctor(
                                     provider.uuid!!,
-                                    provider.person?.display ?: "",
+                                    provider.person?.display?.substringAfter("-")?.trim() ?: "",
                                     registrationNumber
                                 )
                             } ?: emptyList()
