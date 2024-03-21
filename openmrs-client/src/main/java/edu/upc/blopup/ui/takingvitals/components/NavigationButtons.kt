@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import edu.upc.R
+import edu.upc.blopup.ui.shared.components.AppDialog
 
 @Composable
 fun NavigationButtons(onClickNext: () -> Unit, onClickBack: () -> Unit) {
@@ -31,9 +32,13 @@ fun NavigationButtons(onClickNext: () -> Unit, onClickBack: () -> Unit) {
         NavigationTextButton({ show = true }, R.string.go_back )
         NavigationTextButton({ onClickNext() }, R.string.next )
     }
-    RemoveVitalsDialog(
+    AppDialog(
         show = show,
+        title = R.string.remove_vitals,
+        messageDialog = R.string.cancel_vitals_dialog_message,
+        onDismissText = R.string.keep_vitals_dialog_message,
         onDismiss = { show = false },
+        onConfirmText = R.string.end_vitals_dialog_message,
         onConfirm = onClickBack
     )
 }

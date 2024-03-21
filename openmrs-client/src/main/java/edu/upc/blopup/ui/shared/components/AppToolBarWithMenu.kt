@@ -31,14 +31,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
-import edu.upc.blopup.ui.takingvitals.components.RemoveVitalsDialog
+import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.activities.settings.SettingsActivity
 import edu.upc.sdk.library.OpenmrsAndroid
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AppToolBarWithMenu(title: String, isDataScreen: Boolean, onBackAction: () -> Unit) {
+fun AppToolBarWithMenu(
+    title: String,
+    isDataScreen: Boolean,
+    onBackAction: () -> Unit,
+    aCBaseActivity: ACBaseActivity? = null
+) {
     val show = remember { mutableStateOf(false) }
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -55,7 +60,7 @@ fun AppToolBarWithMenu(title: String, isDataScreen: Boolean, onBackAction: () ->
                 tint = colorResource(R.color.white),
                 modifier = Modifier
                     .clickable {
-                        if(isDataScreen) {
+                        if (isDataScreen) {
                             show.value = true
                         } else {
                             onBackAction()
@@ -65,20 +70,25 @@ fun AppToolBarWithMenu(title: String, isDataScreen: Boolean, onBackAction: () ->
                     .testTag("back_button")
             )
         }, actions = {
-            OptionsMenu()
+            OptionsMenu(aCBaseActivity!!)
         }
     )
-    RemoveVitalsDialog(
+    AppDialog(
         show = show.value,
-        onDismiss = { show.value = false},
-        onConfirm = { show.value = false; onBackAction() }
+        onDismiss = { show.value = false },
+        onConfirm = { show.value = false; onBackAction() },
+        title = R.string.remove_vitals,
+        messageDialog = R.string.cancel_vitals_dialog_message,
+        onDismissText = R.string.keep_vitals_dialog_message,
+        onConfirmText = R.string.end_vitals_dialog_message
     )
 }
 
 @Composable
-fun OptionsMenu() {
+fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
     val context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
+    val showDialog = remember { mutableStateOf(false) }
     IconButton(onClick = { showMenu = true }) {
         Icon(
             imageVector = Icons.Outlined.MoreVert,
@@ -120,7 +130,30 @@ fun OptionsMenu() {
                     style = TextStyle(fontWeight = FontWeight.Normal)
                 )
             })
+        DropdownMenuItem(
+            onClick = {
+                showDialog.value = true
+                showMenu = false
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.action_logout),
+                    style = TextStyle(fontWeight = FontWeight.Normal)
+                )
+            })
     }
+    AppDialog(
+        show = showDialog.value,
+        title = R.string.logout_dialog_title,
+        messageDialog = R.string.logout_dialog_message,
+        onDismissText = R.string.dialog_button_cancel,
+        onConfirmText = R.string.logout_dialog_button,
+        onDismiss = { showDialog.value = false },
+        onConfirm = {
+            aCBaseActivity.logout()
+            showDialog.value = false
+        },
+    )
 }
 
 @Preview
@@ -129,6 +162,6 @@ fun AppToolBarWithMenuPreview() {
     AppToolBarWithMenu(
         title = "Blood Pressure",
         isDataScreen = false,
-        onBackAction = {}
+        onBackAction = {},
     )
 }

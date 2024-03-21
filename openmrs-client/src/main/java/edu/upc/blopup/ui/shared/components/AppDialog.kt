@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.takingvitals.components
+package edu.upc.blopup.ui.shared.components
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -28,7 +28,15 @@ import androidx.compose.ui.window.Dialog
 import edu.upc.R
 
 @Composable
-fun RemoveVitalsDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
+fun AppDialog(
+    show: Boolean,
+    title: Int,
+    messageDialog: Int,
+    onDismissText: Int,
+    onDismiss: () -> Unit,
+    onConfirmText: Int,
+    onConfirm: () -> Unit
+) {
     if (show) {
         Dialog(onDismissRequest = { onDismiss() }) {
             Column(
@@ -42,14 +50,14 @@ fun RemoveVitalsDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Un
                         .padding(15.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.remove_vitals),
+                        text = stringResource(title),
                         color = Color.White,
                         fontSize = TextUnit(20f, TextUnitType.Sp)
                     )
                 }
                 Column(Modifier.padding(15.dp)) {
                     Text(
-                        text = stringResource(R.string.cancel_vitals_dialog_message),
+                        text = stringResource(messageDialog),
                         color = Color.Gray
                     )
                 }
@@ -66,7 +74,7 @@ fun RemoveVitalsDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Un
                                 )
                             )
                         ) {
-                            Text(text = stringResource(R.string.keep_vitals_dialog_message).uppercase())
+                            Text(text = stringResource(onDismissText).uppercase())
                         }
                         Button(
                             modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
@@ -79,7 +87,7 @@ fun RemoveVitalsDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Un
                                 )
                             )
                         ) {
-                            Text(text = stringResource(R.string.end_vitals_dialog_message).uppercase())
+                            Text(text = stringResource(onConfirmText).uppercase())
                         }
                     }
                 }
@@ -89,20 +97,35 @@ fun RemoveVitalsDialog(show: Boolean, onDismiss: () -> Unit, onConfirm: () -> Un
 }
 
 @Composable
-fun OnBackPressButtonConfirmDialog(onClickBack: () -> Unit){
+fun OnBackPressButtonConfirmDialog(onClickBack: () -> Unit) {
     var showAlertDialog by remember { mutableStateOf(false) }
-    BackHandler{
+    BackHandler {
         showAlertDialog = true
     }
 
-    if(showAlertDialog){
-        RemoveVitalsDialog(show = true, onDismiss = { showAlertDialog = false },
-            onConfirm = { showAlertDialog = false ; onClickBack() })
+    if (showAlertDialog) {
+        AppDialog(
+            show = true,
+            onDismiss = { showAlertDialog = false },
+            onConfirm = { showAlertDialog = false; onClickBack() },
+            title = R.string.remove_vitals,
+            messageDialog = R.string.cancel_vitals_dialog_message,
+            onDismissText = R.string.keep_vitals_dialog_message,
+            onConfirmText = R.string.end_vitals_dialog_message
+        )
     }
 }
 
 @Preview
 @Composable
 fun RemoveVitalsDialogPreview() {
-    RemoveVitalsDialog(true, {}, {})
+    AppDialog(
+        show = true,
+        onDismiss = {},
+        onConfirm = {},
+        title = R.string.remove_vitals,
+        messageDialog = R.string.cancel_vitals_dialog_message,
+        onDismissText = R.string.keep_vitals_dialog_message,
+        onConfirmText = R.string.end_vitals_dialog_message
+    )
 }

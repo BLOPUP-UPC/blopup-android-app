@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -35,10 +34,11 @@ import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
+import edu.upc.openmrs.activities.ACBaseActivity
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class VitalsActivity : AppCompatActivity() {
+class VitalsActivity : ACBaseActivity() {
 
     val viewModel: VitalsViewModel by viewModels()
 
@@ -77,7 +77,8 @@ class VitalsActivity : AppCompatActivity() {
                                 if (!navigationController.popBackStack()) {
                                     finish()
                                 }
-                            })
+                            },
+                            this@VitalsActivity as ACBaseActivity)
                     },
                 ) { innerPadding ->
 

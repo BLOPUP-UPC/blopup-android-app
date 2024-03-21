@@ -22,10 +22,10 @@ import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.ErrorDialog
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
+import edu.upc.blopup.ui.shared.components.OnBackPressButtonConfirmDialog
 import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
 import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
-import edu.upc.blopup.ui.takingvitals.components.OnBackPressButtonConfirmDialog
 import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
 import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
