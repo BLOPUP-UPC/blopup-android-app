@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -42,6 +43,7 @@ fun AppDialog(
             Column(
                 Modifier
                     .background(Color.White)
+                    .padding(bottom = 8.dp)
             ) {
                 Column(
                     Modifier
@@ -61,7 +63,7 @@ fun AppDialog(
                         color = Color.Gray
                     )
                 }
-                Column(Modifier.padding(start = 25.dp)) {
+                Column(Modifier.align(Alignment.End)) {
                     Row {
                         Button(
                             modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
