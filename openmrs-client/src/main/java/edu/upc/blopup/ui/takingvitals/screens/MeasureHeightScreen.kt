@@ -44,7 +44,7 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) 
     ) {
         var text by remember { mutableStateOf(TextFieldValue(startingHeight.trim())) }
 
-        HeightInstructions()
+        HeightInstructions(Modifier.weight(1f))
         HeightInput(text, onValueChange = { text = it })
         Column {
             SubmitButton(R.string.next, { onClickNext(text.text) }, isValidHeight(text.text))
@@ -57,7 +57,7 @@ fun HeightInput(text: TextFieldValue, onValueChange: (TextFieldValue) -> Unit) {
     OutlinedTextField(value = text,
         onValueChange = onValueChange,
         label = { Text(stringResource(R.string.height_value_label))},
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
         suffix = {
             Text(
                 text = stringResource(id = R.string.height_unit)
@@ -82,15 +82,16 @@ fun isValidHeight(text: String): Boolean {
 }
 
 @Composable
-fun HeightInstructions() {
-    Column {
+fun HeightInstructions(modifier: Modifier) {
+    Column(modifier = modifier) {
         Image(
             painter = painterResource(R.drawable.height_image),
             contentDescription = stringResource(R.string.height_image_description),
             modifier = Modifier
-                .padding(30.dp)
+                .padding(25.dp)
                 .align(Alignment.CenterHorizontally)
-                .fillMaxWidth(),
+                .weight(1f, fill = false)
+                .fillMaxSize(),
             contentScale = ContentScale.FillWidth
         )
         Text(
