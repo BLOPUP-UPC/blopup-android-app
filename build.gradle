@@ -2,6 +2,7 @@
 buildscript {
     ext.kotlin_version = '1.9.22'
     ext.safeargs_version = '2.7.6'
+    ext.jacocoVersion = '0.8.7'
     System.properties['com.android.build.gradle.overrideVersionCheck'] = 'true'
     repositories {
         google()
@@ -12,7 +13,8 @@ buildscript {
         classpath 'com.android.tools.build:gradle:8.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$safeargs_version"
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.4.0")
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.0"
+        classpath "org.jacoco:org.jacoco.core:$jacocoVersion"
 
         // Hilt Plugin
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.50'
