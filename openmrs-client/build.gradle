@@ -27,6 +27,7 @@ plugins {
     id 'com.google.dagger.hilt.android'
     id 'com.klaxit.hiddensecrets' version '0.2.1'
     id 'jacoco'
+    id "org.sonarqube" version "4.4.1.3373"
 }
 
 apply from: './versions.gradle'
@@ -34,6 +35,14 @@ apply from: './config.gradle'
 apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services'
+
+sonar {
+    properties {
+        property "sonar.projectKey", "BLOPUP-UPC_blopup-android-app"
+        property "sonar.organization", "blopup-upc"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
 
 tasks.register('jacocoTestReport', JacocoReport) {
     dependsOn 'testDebugUnitTest'
