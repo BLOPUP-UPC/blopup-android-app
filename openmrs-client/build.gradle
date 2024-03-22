@@ -41,7 +41,8 @@ sonar {
         property "sonar.projectKey", "BLOPUP-UPC_blopup-android-app"
         property "sonar.organization", "blopup-upc"
         property "sonar.host.url", "https://sonarcloud.io"
-        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml'
+        property "sonar.gradle.skipCompile", "true"
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
     }
 }
 
