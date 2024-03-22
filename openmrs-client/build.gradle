@@ -41,6 +41,7 @@ sonar {
         property "sonar.projectKey", "BLOPUP-UPC_blopup-android-app"
         property "sonar.organization", "blopup-upc"
         property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml'
     }
 }
 
@@ -50,8 +51,11 @@ tasks.register('jacocoTestReport', JacocoReport) {
 
     description = "Generate Jacoco test coverage reports for the debug build"
 
-    sourceDirectories.setFrom(files("${project.projectDir}/src/main/java"))
+    reports {
+        xml.required = true
+    }
 
+    sourceDirectories.setFrom(files("${project.projectDir}/src/main/java"))
 
     classDirectories.setFrom(fileTree(dir: "$buildDir/tmp/kotlin-classes/debug", excludes:
             [// Android
