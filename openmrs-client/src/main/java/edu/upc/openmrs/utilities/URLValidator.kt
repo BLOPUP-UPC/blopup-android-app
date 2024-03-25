@@ -17,7 +17,7 @@ import java.util.Locale
 import java.util.regex.Pattern
 
 object URLValidator {
-    private const val URL_PATTERN = "^((https|http)?://)([\\da-z.-]*)\\.([a-z.]*)([\\w .-]*)*(:([0-9]{2,5}))?((/(\\w*(-\\w+)?))*?)/*$"
+    private const val URL_PATTERN = "^((https|http)?://)([\\da-z.-]*)\\.([a-z.]*)*(:([0-9]{2,5}))?((/(\\w*(-\\w+)?))*?)/*$"
     private const val SLASH = "/"
     private const val SPACE = " "
     private  val pattern = Regex("\\w+:.*")
