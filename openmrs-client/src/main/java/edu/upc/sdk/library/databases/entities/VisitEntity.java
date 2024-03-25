@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
+import com.ebelter.sdks.utils.TimeUtils;
+
+import java.time.Instant;
+
 import edu.upc.sdk.library.models.Resource;
 
 /**
@@ -11,7 +15,6 @@ import edu.upc.sdk.library.models.Resource;
  */
 @Entity(tableName = "visits")
 public class VisitEntity extends Resource {
-    @NonNull
     @ColumnInfo(name = "patient_id")
     private long patientKeyID;
     @ColumnInfo(name = "visit_type")
@@ -28,6 +31,7 @@ public class VisitEntity extends Resource {
      * Instantiates a new Visit entity.
      */
     public VisitEntity() {
+        startDate = TimeUtils.formatTime1(Instant.now().toEpochMilli());
     }
 
     /**
