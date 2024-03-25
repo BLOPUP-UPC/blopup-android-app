@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.databases.entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
@@ -17,14 +18,19 @@ public class ObservationEntity extends Resource {
     @ColumnInfo(name = "displayValue")
     private String displayValue;
     @ColumnInfo(name = "diagnosisOrder")
+    @Nullable
     private String diagnosisOrder;
     @ColumnInfo(name = "diagnosisList")
+    @Nullable
     private String diagnosisList;
     @ColumnInfo(name = "diagnosisCertainty")
+    @Nullable
     private String diagnosisCertainty;
     @ColumnInfo(name = "diagnosisNote")
+    @Nullable
     private String diagnosisNote;
     @ColumnInfo(name = "conceptUuid")
+    @Nullable
     private String conceptuuid;
 
     /**

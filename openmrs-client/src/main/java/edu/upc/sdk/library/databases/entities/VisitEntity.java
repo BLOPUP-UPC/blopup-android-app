@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.databases.entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
@@ -14,12 +15,14 @@ public class VisitEntity extends Resource {
     @ColumnInfo(name = "patient_id")
     private long patientKeyID;
     @ColumnInfo(name = "visit_type")
+    @Nullable
     private String visitType;
     @ColumnInfo(name = "visit_place")
     private String visitPlace;
     @ColumnInfo(name = "start_date")
     private String startDate;
     @ColumnInfo(name = "stop_date")
+    @Nullable
     private String stopDate;
 
     /**

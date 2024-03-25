@@ -146,4 +146,5 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return the encounter create room dao
      */
     public abstract EncounterCreateRoomDAO encounterCreateRoomDAO();
+
 }

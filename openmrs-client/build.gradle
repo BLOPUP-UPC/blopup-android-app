@@ -255,7 +255,7 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
     //no inspection
-    kapt "androidx.room:room-compiler:${versions.roomCompiler}"
+    ksp "androidx.room:room-compiler:${versions.roomCompiler}"
 
     // Noinspection GradleDependency
     annotationProcessor "androidx.room:room-compiler:${versions.roomCompiler}"

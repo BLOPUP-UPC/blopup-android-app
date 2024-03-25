@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.databases.entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.TypeConverters;
@@ -37,24 +38,34 @@ public class PatientEntity extends Resource {
     @ColumnInfo(name = "birthDate")
     private String birthDate;
     @ColumnInfo(name = "deathDate")
+    @Nullable
     private String deathDate;
     @ColumnInfo(name = "causeOfDeath")
+    @Nullable
     private String causeOfDeath;
     @ColumnInfo(name = "age")
+    @Nullable
     private String age;
     @ColumnInfo(name = "address1")
+    @Nullable
     private String address_1;
     @ColumnInfo(name = "address2")
+    @Nullable
     private String address_2;
     @ColumnInfo(name = "city")
+    @Nullable
     private String city;
     @ColumnInfo(name = "state")
+    @Nullable
     private String state;
     @ColumnInfo(name = "country")
+    @Nullable
     private String country;
     @ColumnInfo(name = "postalCode")
+    @Nullable
     private String postalCode;
     @ColumnInfo(name = "dead")
+    @Nullable
     private String deceased;
     @ColumnInfo(name = "encounters")
     private String encounters;
@@ -66,10 +77,13 @@ public class PatientEntity extends Resource {
     //TODO: Separate entity for Contact
     //#region -- Contact Details --
     @ColumnInfo(name = "contactFirstName")
+    @Nullable
     private String contactFirstName;
     @ColumnInfo(name = "contactLastName")
+    @Nullable
     private String contactLastName;
     @ColumnInfo(name = "contactPhoneNumber")
+    @Nullable
     private String contactPhoneNumber;
     //#endregion -- Contact Details --
 

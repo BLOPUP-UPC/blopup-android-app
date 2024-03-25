@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.databases.entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
@@ -13,18 +14,23 @@ import edu.upc.sdk.library.models.Resource;
 @Entity(tableName = "encounters")
 public class EncounterEntity extends Resource {
     @ColumnInfo(name = "visit_id")
+    @Nullable
     private String visitKeyId;
     @ColumnInfo(name = "encounterDatetime")
     private String encounterDateTime;
     @ColumnInfo(name = "type")
     private String encounterType;
     @ColumnInfo(name = "patient_uuid")
+    @Nullable
     private String patientUuid;
     @ColumnInfo(name = "form_uuid")
+    @Nullable
     private String formUuid;
     @ColumnInfo(name = "location_uuid")
+    @Nullable
     private String locationUuid;
     @ColumnInfo(name = "encounter_provider_uuid")
+    @Nullable
     private String encounterProviderUuid;
 
     /**
