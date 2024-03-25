@@ -73,6 +73,7 @@
     <!-- Location dialog  -->
     <string name="location_dialog_title" tools:ignore="MissingTranslation">Select Location</string>
     <string name="location_dialog_current_location" tools:ignore="MissingTranslation">Current location: </string>
+    <string name="error_fetching_locations" tools:ignore="MissingTranslation">"Error fetching locations"</string>
 
     <!-- Reset patient info dialog -->
     <string name="reset_dialog_message" tools:ignore="MissingTranslation">All patient information entered will be erased</string>

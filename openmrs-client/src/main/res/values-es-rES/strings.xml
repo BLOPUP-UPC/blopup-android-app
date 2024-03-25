@@ -40,7 +40,7 @@
     <string name="start_visit_unsuccessful_dialog_title">Iniciar Nueva Visita</string>
     <string name="start_visit_unsuccessful_dialog_message">Hay una visita activa para %1$s. Puedes cancelar y volver a la visita activa, o cerrarla e iniciar una nueva.</string>
     <string name="location_dialog_title">Selecciona Ubicación</string>
-    <string name="location_dialog_current_location">Ubicación actual:</string>
+    <string name="error_fetching_locations">Error cargando las ubicaciones</string>
     <string name="reset_dialog_message">Toda la información ingresada del paciente será eliminada</string>
     <string name="dialog_button_cancel">Cancelar</string>
     <string name="dialog_button_register_new">Registro nuevo</string>

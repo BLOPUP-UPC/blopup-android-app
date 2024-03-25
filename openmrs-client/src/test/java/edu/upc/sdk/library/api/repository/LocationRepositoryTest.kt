@@ -18,6 +18,7 @@ import org.junit.Test
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
+import edu.upc.sdk.library.models.Result as OpenMRSResult
 
 class LocationRepositoryTest{
 
@@ -50,7 +51,7 @@ class LocationRepositoryTest{
 
         runBlocking {
             val result = locationRepository.getAllLocations()
-           if(result is edu.upc.sdk.library.models.Result.Success){
+           if(result is OpenMRSResult.Success){
                assert(result.data == locationsList)
            }
         }
@@ -58,15 +59,19 @@ class LocationRepositoryTest{
 
     @Test
     fun `should return failure when get all locations fails`() {
+        val errorMessage = "Error fetching locations"
         val call = mockk<Call<Results<LocationEntity>>>(relaxed = true)
 
         coEvery { restApi.getLocations(null) } returns call
-        coEvery { call.execute() } throws Exception("Error fetching locations")
+        coEvery { call.execute() } throws Exception(errorMessage)
 
         runBlocking {
-            val result = locationRepository.getAllLocations()
+            runCatching {
+                val result = locationRepository.getAllLocations()
 
-            assert(result is edu.upc.sdk.library.models.Result.Error)
+                assert(result is OpenMRSResult.Error)
+                assert((result as OpenMRSResult.Error).throwable.message == errorMessage)
+            }
         }
     }
 

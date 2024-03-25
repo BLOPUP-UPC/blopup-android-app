@@ -16,6 +16,9 @@ package edu.upc.sdk.library.api.repository
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.models.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -44,17 +47,19 @@ class LocationRepository @Inject constructor() : BaseRepository(null) {
 
     fun getCurrentLocation() : String  = OpenmrsAndroid.getLocation().trim()
 
-    fun getAllLocations() : Result<List<LocationEntity>> {
-        return try {
-            val response = restApi.getLocations(null).execute()
+    suspend fun getAllLocations(): Result<List<LocationEntity>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = restApi.getLocations(null).execute()
 
-            if (response.isSuccessful) {
-                Result.Success(response.body()!!.results)
-            } else {
-                Result.Error(Exception("Error fetching locations"))
+                if (response.isSuccessful) {
+                    Result.Success(response.body()?.results ?: emptyList())
+                } else {
+                    Result.Error(Exception("Error fetching locations"))
+                }
+            } catch (e: IOException) {
+                Result.Error(e)
             }
-        } catch (e: Exception) {
-            Result.Error(e)
         }
     }
 }
