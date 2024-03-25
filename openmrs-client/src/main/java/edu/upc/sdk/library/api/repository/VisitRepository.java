@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -242,7 +243,7 @@ public class VisitRepository extends BaseRepository {
                 throw new IOException("Error fetching visit by uuid: " + visitUuid);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.e(Objects.requireNonNull(e.getMessage()));
             throw new IOException("Error fetching visit by uuid: " + visitUuid + " " + e.getMessage());
         }
     }
