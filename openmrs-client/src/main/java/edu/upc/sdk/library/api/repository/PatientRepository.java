@@ -84,7 +84,7 @@ public class PatientRepository extends BaseRepository {
 
                 patient.setUuid(returnedPatientDto.getUuid());
 
-                if (!patient.getEncounters().equals("")) {
+                if (!patient.getEncounters().isEmpty()) {
                     addEncounters(patient);
                 }
 
@@ -191,6 +191,7 @@ public class PatientRepository extends BaseRepository {
             idList = response.body();
         }
 
+        assert idList != null;
         return idList.getIdentifiers().get(0);
     }
 
