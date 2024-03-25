@@ -197,13 +197,13 @@ class TreatmentActivity : ACBaseActivity() {
             mBinding.textInputLayoutMedicationName.error = getString(R.string.empty_value)
             mBinding.textInputLayoutMedicationName.isErrorEnabled = (isValid[MEDICATION_NAME] ?: false).not()
 
-            if (isValid[RECOMMENDED_BY]!!) {
+            if (isValid[RECOMMENDED_BY] == true) {
                 mBinding.recommendedByError.visibility = View.GONE
             } else {
                 mBinding.recommendedByError.visibility = View.VISIBLE
             }
 
-            if (isValid[MEDICATION_TYPE]!!) {
+            if (isValid[MEDICATION_TYPE] == true) {
                 mBinding.medicationTypeError.visibility = View.GONE
             } else {
                 mBinding.medicationTypeError.visibility = View.VISIBLE
