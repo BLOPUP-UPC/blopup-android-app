@@ -32,6 +32,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:localeConfig="@xml/locales_config"
+        android:usesCleartextTraffic="false"
         android:theme="@style/AppThemeOrig">
         <activity
             android:name=".blopup.ui.takingvitals.VitalsActivity"
