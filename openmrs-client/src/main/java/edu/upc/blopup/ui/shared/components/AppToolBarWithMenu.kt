@@ -169,8 +169,7 @@ fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
     )
     LocationDialogScreen(
         show = showLocationDialog.value,
-        onDismiss = { showLocationDialog.value = false },
-        onConfirm = { showLocationDialog.value = false },
+        onDialogClose = { showLocationDialog.value = false }
     )
 }
 

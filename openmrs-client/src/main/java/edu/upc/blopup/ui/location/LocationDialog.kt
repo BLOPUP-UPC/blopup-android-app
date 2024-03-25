@@ -39,8 +39,7 @@ import edu.upc.sdk.library.databases.entities.LocationEntity
 @Composable
 fun LocationDialogScreen(
     show: Boolean,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
+    onDialogClose: () -> Unit,
     viewModel: LocationViewModel = hiltViewModel()
 ) {
 
@@ -53,36 +52,16 @@ fun LocationDialogScreen(
     }
 
     if (show) {
-        Dialog(onDismissRequest = { onDismiss() }) {
+        Dialog(onDismissRequest = { onDialogClose() }) {
             Column(
                 Modifier
                     .background(Color.White)
                     .padding(bottom = 8.dp)
             ) {
-                Column(
-                    Modifier
-                        .background(colorResource(id = R.color.dark_teal))
-                        .fillMaxWidth()
-                        .padding(15.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.location_dialog_title),
-                        color = Color.White,
-                        fontSize = TextUnit(20f, TextUnitType.Sp)
-                    )
-                }
-                Row(Modifier.padding(15.dp)) {
-                    Text(
-                        text = stringResource(R.string.location_dialog_current_location),
-                        color = Color.Gray
-                    )
-                    Text(
-                        text = viewModel.getLocation(),
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-                }
+                LocationDialogTitle()
+
+                CurrentLocation(viewModel.getLocation())
+
                 Column {
                     when (locationsList) {
                         is ResultUiState.Success -> {
@@ -129,36 +108,58 @@ fun LocationDialogScreen(
                         .padding(top = 10.dp)
                 ) {
                     Row {
-                        Button(
-                            modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
-                            onClick = { onDismiss() },
-                            shape = MaterialTheme.shapes.extraSmall,
-                            contentPadding = PaddingValues(10.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(
-                                    R.color.dark_grey_for_stroke
-                                )
-                            )
-                        ) {
-                            Text(text = stringResource(R.string.dialog_button_cancel).uppercase())
-                        }
-                        Button(
-                            modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
-                            onClick = { onConfirm(); viewModel.setLocation(selectedLocation) },
-                            shape = MaterialTheme.shapes.extraSmall,
-                            contentPadding = PaddingValues(10.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(
-                                    R.color.allergy_orange
-                                )
-                            )
-                        ) {
-                            Text(text = stringResource(R.string.dialog_button_select_location).uppercase())
-                        }
+                        ActionDialogButton({ onDialogClose() }, R.color.dark_grey_for_stroke, R.string.dialog_button_cancel)
+                        ActionDialogButton({ onDialogClose(); viewModel.setLocation(selectedLocation) }, R.color.allergy_orange, R.string.dialog_button_select_location)
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ActionDialogButton(onClick: () -> Unit, buttonColor: Int, buttonText: Int) {
+    Button(
+        modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
+        onClick = { onClick() },
+        shape = MaterialTheme.shapes.extraSmall,
+        contentPadding = PaddingValues(10.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = colorResource(buttonColor))
+    ) {
+        Text(text = stringResource(buttonText).uppercase())
+    }
+
+}
+
+@Composable
+fun LocationDialogTitle() {
+    Column(
+        Modifier
+            .background(colorResource(id = R.color.dark_teal))
+            .fillMaxWidth()
+            .padding(15.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.location_dialog_title),
+            color = Color.White,
+            fontSize = TextUnit(20f, TextUnitType.Sp)
+        )
+    }
+}
+
+@Composable
+fun CurrentLocation(location: String) {
+    Row(Modifier.padding(15.dp)) {
+        Text(
+            text = stringResource(R.string.location_dialog_current_location),
+            color = Color.Gray
+        )
+        Text(
+            text = location,
+            color = Color.Gray,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 8.dp)
+        )
     }
 }
 
@@ -168,7 +169,6 @@ fun LocationDialogScreen(
 fun LocationDialogPreview() {
     LocationDialogScreen(
         show = true,
-        onDismiss = {},
-        onConfirm = {},
+        onDialogClose = {},
     )
 }
