@@ -4,10 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
-import com.ebelter.sdks.utils.TimeUtils;
-
-import java.time.Instant;
-
 import edu.upc.sdk.library.models.Resource;
 
 /**
@@ -21,7 +17,6 @@ public class VisitEntity extends Resource {
     private String visitType;
     @ColumnInfo(name = "visit_place")
     private String visitPlace;
-    @NonNull
     @ColumnInfo(name = "start_date")
     private String startDate;
     @ColumnInfo(name = "stop_date")
@@ -31,7 +26,6 @@ public class VisitEntity extends Resource {
      * Instantiates a new Visit entity.
      */
     public VisitEntity() {
-        startDate = TimeUtils.formatTime1(Instant.now().toEpochMilli());
     }
 
     /**

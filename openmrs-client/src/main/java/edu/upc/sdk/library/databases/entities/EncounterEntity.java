@@ -4,10 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
-import com.ebelter.sdks.utils.TimeUtils;
-
-import java.time.Instant;
-
 import edu.upc.sdk.library.models.Resource;
 
 
@@ -18,7 +14,6 @@ import edu.upc.sdk.library.models.Resource;
 public class EncounterEntity extends Resource {
     @ColumnInfo(name = "visit_id")
     private String visitKeyId;
-    @NonNull
     @ColumnInfo(name = "encounterDatetime")
     private String encounterDateTime;
     @ColumnInfo(name = "type")
@@ -36,7 +31,7 @@ public class EncounterEntity extends Resource {
      * Instantiates a new Encounter entity.
      */
     public EncounterEntity() {
-        encounterDateTime = TimeUtils.formatTime1(Instant.now().toEpochMilli());
+
     }
 
     /**
