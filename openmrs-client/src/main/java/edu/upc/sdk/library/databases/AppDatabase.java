@@ -20,7 +20,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import edu.upc.sdk.library.dao.DiagnosisRoomDAO;
 import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
 import edu.upc.sdk.library.dao.EncounterRoomDAO;
 import edu.upc.sdk.library.dao.EncounterTypeRoomDAO;
@@ -147,11 +146,4 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return the encounter create room dao
      */
     public abstract EncounterCreateRoomDAO encounterCreateRoomDAO();
-
-    /**
-     * Diagnosis room dao.
-     *
-     * @return the diagnosis room dao
-     */
-    public abstract DiagnosisRoomDAO diagnosisRoomDAO();
 }

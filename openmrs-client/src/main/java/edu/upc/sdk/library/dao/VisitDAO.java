@@ -25,11 +25,9 @@ import javax.inject.Singleton;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.databases.entities.DiagnosisEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.library.databases.entities.ObservationEntity;
 import edu.upc.sdk.library.databases.entities.VisitEntity;
-import edu.upc.sdk.library.models.Diagnosis;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Observation;
 import edu.upc.sdk.library.models.Patient;
@@ -58,17 +56,12 @@ public class VisitDAO {
      * The Encounter room dao.
      */
     EncounterDAO encounterDAO;
-    /**
-     * The Diagnosis room dao.
-     */
-    final DiagnosisRoomDAO diagnosisRoomDAO;
 
     @Inject
     public VisitDAO() {
         context = OpenmrsAndroid.getInstance().getApplicationContext();
         observationRoomDAO = AppDatabase.getDatabase(context).observationRoomDAO();
         visitRoomDAO = AppDatabase.getDatabase(context).visitRoomDAO();
-        diagnosisRoomDAO = AppDatabase.getDatabase(context).diagnosisRoomDAO();
         encounterDAO = new EncounterDAO();
     }
 
@@ -106,10 +99,6 @@ public class VisitDAO {
                 for (Observation obs : encounter.getObservations()) {
                     ObservationEntity observationEntity = AppDatabaseHelper.convert(obs, encounterID);
                     observationRoomDAO.addObservation(observationEntity);
-                }
-                for (Diagnosis diagnosis : encounter.getDiagnoses()) {
-                    DiagnosisEntity diagnosisEntity = AppDatabaseHelper.convert(diagnosis, encounterID);
-                    diagnosisRoomDAO.addDiagnosis(diagnosisEntity);
                 }
             }
         }

@@ -23,6 +23,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android'
     id 'com.klaxit.hiddensecrets' version '0.2.1'

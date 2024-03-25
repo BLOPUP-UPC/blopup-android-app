@@ -14,7 +14,6 @@
 package edu.upc.sdk.library.databases
 
 import edu.upc.sdk.library.OpenmrsAndroid
-import edu.upc.sdk.library.dao.DiagnosisDAO
 import edu.upc.sdk.library.dao.EncounterDAO
 import edu.upc.sdk.library.dao.ObservationDAO
 import edu.upc.sdk.library.dao.PatientDAO
@@ -129,7 +128,6 @@ object AppDatabaseHelper {
         val dateTime = entity.encounterDateTime.toLong()
         encounter.setEncounterDatetime(convertTime(dateTime, DateUtils.OPEN_MRS_REQUEST_FORMAT))
         encounter.observations = ObservationDAO().findObservationByEncounterID(entity.id)
-        encounter.diagnoses = DiagnosisDAO().findDiagnosesByEncounterID(entity.id!!)
         val location: LocationEntity? = try {
             AppDatabase
                 .getDatabase(OpenmrsAndroid.getInstance()?.applicationContext)
