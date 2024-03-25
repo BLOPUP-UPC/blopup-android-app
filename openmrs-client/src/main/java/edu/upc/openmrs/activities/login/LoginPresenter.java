@@ -22,6 +22,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import edu.upc.R;
 import edu.upc.openmrs.activities.BasePresenter;
@@ -116,6 +117,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
             @Override
             public void onResponse(@NonNull Call<Session> call, @NonNull Response<Session> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     mLogger.d(response.body().toString());
                     Session session = response.body();
                     if (session.isAuthenticated()) {
@@ -164,7 +166,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
 
     private static String getSessionIdFromHeaders(@NonNull Response<Session> response) {
         // Just blame OpenMRS
-        return Arrays.stream(response.headers().get("Set-Cookie").split(";")).filter(cookie -> cookie.contains("JSESSIONID")).findFirst().get().split("=")[1];
+        return Arrays.stream(Objects.requireNonNull(response.headers().get("Set-Cookie")).split(";")).filter(cookie -> cookie.contains("JSESSIONID")).findFirst().orElse("").split("=")[1];
     }
 
     @Override
