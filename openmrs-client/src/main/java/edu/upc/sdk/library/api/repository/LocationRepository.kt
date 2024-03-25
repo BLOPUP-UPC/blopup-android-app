@@ -47,6 +47,8 @@ class LocationRepository @Inject constructor() : BaseRepository(null) {
 
     fun getCurrentLocation() : String  = OpenmrsAndroid.getLocation().trim()
 
+    fun setLocation(location: String) : Unit = OpenmrsAndroid.setLocation(location)
+
     suspend fun getAllLocations(): Result<List<LocationEntity>> {
         return withContext(Dispatchers.IO) {
             try {

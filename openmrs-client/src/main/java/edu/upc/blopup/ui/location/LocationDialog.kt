@@ -45,28 +45,13 @@ fun LocationDialogScreen(
 ) {
 
     val locationsList by viewModel.locationsListResultUiState.collectAsState()
+    val (selectedLocation, onLocationSelected) = remember { mutableStateOf(viewModel.getLocation()) }
+
 
     LaunchedEffect(Unit) {
         viewModel.getAllLocations()
     }
 
-    LocationDialog(
-        show = show,
-        onDismiss = onDismiss,
-        onConfirm = onConfirm,
-        currentLocation = viewModel.getLocation(),
-        locationsList =  locationsList
-    )
-}
-
-@Composable
-fun LocationDialog(
-    show: Boolean,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-    currentLocation: String,
-    locationsList: ResultUiState<List<LocationEntity>>
-) {
     if (show) {
         Dialog(onDismissRequest = { onDismiss() }) {
             Column(
@@ -92,13 +77,52 @@ fun LocationDialog(
                         color = Color.Gray
                     )
                     Text(
-                        text = currentLocation,
+                        text = viewModel.getLocation(),
                         color = Color.Gray,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(start = 8.dp)
                     )
                 }
-                LocationOptions(locationsList, currentLocation)
+                Column {
+                    when (locationsList) {
+                        is ResultUiState.Success -> {
+                            (locationsList as ResultUiState.Success<List<LocationEntity>>).data.forEach { location ->
+                                Row(
+                                    Modifier
+                                        .selectable(
+                                            selected = (location.display == selectedLocation),
+                                            onClick = {
+                                                onLocationSelected(location.display!!)
+                                            }
+                                        )
+                                        .padding(horizontal = 15.dp)
+                                        .fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = location.display!!
+                                    )
+                                    RadioButton(
+                                        selected = (location.display == selectedLocation),
+                                        onClick = { onLocationSelected(location.display!!) },
+                                        colors = RadioButtonDefaults.colors(
+                                            selectedColor = colorResource(id = R.color.allergy_orange)
+                                        )
+                                    )
+                                }
+                            }
+                        }
+
+                        else -> {
+                            Text(
+                                text = stringResource(R.string.error_fetching_locations),
+                                color = Color.Red
+                            )
+                        }
+
+                    }
+                }
                 Column(
                     Modifier
                         .align(Alignment.End)
@@ -120,7 +144,7 @@ fun LocationDialog(
                         }
                         Button(
                             modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
-                            onClick = { onConfirm() },
+                            onClick = { onConfirm(); viewModel.setLocation(selectedLocation) },
                             shape = MaterialTheme.shapes.extraSmall,
                             contentPadding = PaddingValues(10.dp),
                             colors = ButtonDefaults.buttonColors(
@@ -138,59 +162,13 @@ fun LocationDialog(
     }
 }
 
-@Composable
-fun LocationOptions(locationsList: ResultUiState<List<LocationEntity>>, currentLocation: String) {
-    val (selectedLocation, onLocationSelected) = remember { mutableStateOf(currentLocation) }
-    Column {
-        when (locationsList) {
-            is ResultUiState.Success -> {
-                locationsList.data.forEach { location ->
-                    Row(
-                        Modifier
-                            .selectable(
-                                selected = (location.display == selectedLocation),
-                                onClick = {
-                                    onLocationSelected(location.display!!)
-                                }
-                            )
-                            .padding(horizontal = 15.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = location.display!!
-                        )
-                        RadioButton(
-                            selected = (location.display == selectedLocation),
-                            onClick = { onLocationSelected(location.display!!) },
-                            colors = RadioButtonDefaults.colors(
-                                selectedColor = colorResource(id = R.color.allergy_orange)
-                            )
-                        )
-                    }
-                }
-            }
-
-            else -> {
-                Text(
-                    text = stringResource(R.string.error_fetching_locations),
-                    color = Color.Red
-                )
-            }
-
-        }
-    }
-}
 
 @Preview
 @Composable
 fun LocationDialogPreview() {
-    LocationDialog(
+    LocationDialogScreen(
         show = true,
         onDismiss = {},
         onConfirm = {},
-        currentLocation = "Hospital Clinic",
-        ResultUiState.Success(emptyList())
     )
 }

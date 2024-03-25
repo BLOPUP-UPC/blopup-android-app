@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.api.repository.LocationRepository
 import edu.upc.sdk.library.databases.entities.LocationEntity
+import edu.upc.sdk.library.models.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,14 +22,15 @@ open class LocationViewModel @Inject constructor(
 
     fun getLocation() = locationRepository.getCurrentLocation()
 
+    fun setLocation(location: String) = locationRepository.setLocation(location)
+
     suspend fun getAllLocations() {
         val response = locationRepository.getAllLocations()
 
         _locationsListResultUiState.value =
             when(response) {
-                is edu.upc.sdk.library.models.Result.Success -> ResultUiState.Success(response.data)
+                is Result.Success -> ResultUiState.Success(response.data)
                 else -> ResultUiState.Error
             }
     }
-
 }
