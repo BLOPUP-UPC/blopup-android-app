@@ -15,11 +15,14 @@ package edu.upc.sdk.library.api.repository
 
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.databases.entities.LocationEntity
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * The type Location repository.
  */
-class LocationRepository : BaseRepository(null) {
+@Singleton
+class LocationRepository @Inject constructor() : BaseRepository(null) {
     /**
      * Gets location (only has uuid).
      *
@@ -37,4 +40,6 @@ class LocationRepository : BaseRepository(null) {
             }
             return null
         }
+
+    fun getCurrentLocation() : String  = OpenmrsAndroid.getLocation().trim()
 }

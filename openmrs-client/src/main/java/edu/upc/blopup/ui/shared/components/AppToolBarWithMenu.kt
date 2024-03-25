@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
+import edu.upc.blopup.ui.location.LocationDialogScreen
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.activities.settings.SettingsActivity
@@ -89,6 +90,7 @@ fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
     val context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
     val showDialog = remember { mutableStateOf(false) }
+    val showLocationDialog = remember { mutableStateOf(false) }
     IconButton(onClick = { showMenu = true }) {
         Icon(
             imageVector = Icons.Outlined.MoreVert,
@@ -141,6 +143,17 @@ fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
                     style = TextStyle(fontWeight = FontWeight.Normal)
                 )
             })
+        DropdownMenuItem(
+            onClick = {
+                showLocationDialog.value = true
+                showMenu = false
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.action_location),
+                    style = TextStyle(fontWeight = FontWeight.Normal)
+                )
+            })
     }
     AppDialog(
         show = showDialog.value,
@@ -153,6 +166,11 @@ fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
             aCBaseActivity.logout()
             showDialog.value = false
         },
+    )
+    LocationDialogScreen(
+        show = showLocationDialog.value,
+        onDismiss = { showLocationDialog.value = false },
+        onConfirm = { showLocationDialog.value = false },
     )
 }
 
