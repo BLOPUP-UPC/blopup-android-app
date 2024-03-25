@@ -16,6 +16,7 @@ package edu.upc.sdk.library;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -34,6 +35,7 @@ import edu.upc.sdk.utilities.ApplicationConstants;
  * The type Openmrs android.
  */
 public class OpenmrsAndroid {
+    @SuppressLint("StaticFieldLeak")
     private volatile static Context instance;
     private static final String OPENMRS_DIR_NAME = "OpenMRS";
     private static final String OPENMRS_DIR_PATH = File.separator + OPENMRS_DIR_NAME;
