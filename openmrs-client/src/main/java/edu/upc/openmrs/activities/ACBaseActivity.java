@@ -93,7 +93,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
             mAuthorizationManager.moveToLoginActivity();
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(mPasswordChangedReceiver, mIntentFilter, RECEIVER_EXPORTED);
+            registerReceiver(mPasswordChangedReceiver, mIntentFilter, RECEIVER_NOT_EXPORTED);
         } else {
             registerReceiver(mPasswordChangedReceiver,mIntentFilter);
         }

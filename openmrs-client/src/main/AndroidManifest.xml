@@ -19,6 +19,8 @@
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
+    <permission android:name="permission.AUTHENTICATE_CHECK_PERMISSION" />
+    <uses-permission android:name="permission.AUTHENTICATE_CHECK_PERMISSION" />
 
     <uses-feature
         android:name="android.hardware.telephony"

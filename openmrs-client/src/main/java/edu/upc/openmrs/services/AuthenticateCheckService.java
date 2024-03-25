@@ -100,7 +100,7 @@ public class AuthenticateCheckService extends Service {
                         if (isForeground(OpenMRS.getInstance().getPackageName())) {
                             Intent broadcastIntent = new Intent();
                             broadcastIntent.setAction(ApplicationConstants.BroadcastActions.AUTHENTICATION_CHECK_BROADCAST_ACTION);
-                            sendBroadcast(broadcastIntent);
+                            sendBroadcast(broadcastIntent, "AUTHENTICATE_CHECK_PERMISSION");
                         } else {
                             AppDatabase.getDatabase(getApplicationContext()).close();
                             OpenmrsAndroid.clearUserPreferencesData();
