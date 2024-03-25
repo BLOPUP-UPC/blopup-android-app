@@ -27,7 +27,6 @@
     <application
         android:name=".openmrs.application.OpenMRS"
         android:allowBackup="true"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/logo_blopup"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"

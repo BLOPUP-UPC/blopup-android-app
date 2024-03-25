@@ -6,7 +6,8 @@
 
     <application
         android:name="edu.upc.openmrs.application.OpenMRS"
-        android:networkSecurityConfig="@xml/network_security_config">
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:icon="@drawable/logo_blopup">
     </application>
 
 </manifest>
