@@ -67,7 +67,10 @@ object FileUtils {
         val file = File(fullFilePath)
         if (file.exists()) {
             try {
-                file.delete()
+                val result = file.delete()
+                if (!result) {
+                    logger.e("Error deleting file: ${file.absolutePath}")
+                }
             } catch (e: SecurityException) {
                 logger.e("Error deleting file: ${file.absolutePath}", e)
             }
