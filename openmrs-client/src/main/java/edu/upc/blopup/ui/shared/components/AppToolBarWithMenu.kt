@@ -134,23 +134,23 @@ fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
             })
         DropdownMenuItem(
             onClick = {
-                showDialog.value = true
-                showMenu = false
-            },
-            text = {
-                Text(
-                    text = stringResource(R.string.action_logout),
-                    style = TextStyle(fontWeight = FontWeight.Normal)
-                )
-            })
-        DropdownMenuItem(
-            onClick = {
                 showLocationDialog.value = true
                 showMenu = false
             },
             text = {
                 Text(
                     text = stringResource(R.string.action_location),
+                    style = TextStyle(fontWeight = FontWeight.Normal)
+                )
+            })
+        DropdownMenuItem(
+            onClick = {
+                showDialog.value = true
+                showMenu = false
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.action_logout),
                     style = TextStyle(fontWeight = FontWeight.Normal)
                 )
             })

@@ -43,10 +43,24 @@ fun LocationDialogScreen(
     viewModel: LocationViewModel = hiltViewModel()
 ) {
 
+    val currentLocation = viewModel.getLocation()
+    val locationsList by viewModel.locationsListResultUiState.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.getAllLocations()
     }
 
+    LocationDialog(show, onDialogClose, currentLocation, locationsList, viewModel::setLocation)
+}
+
+@Composable
+fun LocationDialog(
+    show: Boolean,
+    onDialogClose: () -> Unit,
+    currentLocation: String,
+    locationsList: ResultUiState<List<LocationEntity>>,
+    onSetLocation: (String) -> Unit
+) {
     if (show) {
         Dialog(onDismissRequest = { onDialogClose() }) {
             Column(
@@ -56,26 +70,29 @@ fun LocationDialogScreen(
             ) {
                 LocationDialogTitle()
 
-                CurrentLocation(viewModel.getLocation())
+                CurrentLocation(currentLocation)
 
-                LocationsMenuAndBottomButtons(viewModel, onDialogClose, Modifier.padding(top = 10.dp).align(Alignment.End))
+                LocationsMenuAndBottomButtons(onDialogClose, Modifier.padding(top = 10.dp).align(Alignment.End), currentLocation, locationsList, onSetLocation)
 
             }
         }
-    }
-}
+    }}
 
 @Composable
-fun LocationsMenuAndBottomButtons(viewModel: LocationViewModel, onDialogClose: () -> Unit, buttonsModifier: Modifier, ) {
+fun LocationsMenuAndBottomButtons(
+    onDialogClose: () -> Unit,
+    modifier: Modifier,
+    currentLocation: String,
+    locationsList: ResultUiState<List<LocationEntity>>,
+    onSetLocation: (String) -> Unit
+) {
 
-    val currentLocation = viewModel.getLocation()
-    val locationsList by viewModel.locationsListResultUiState.collectAsState()
     val (selectedLocation, onLocationSelected) = remember { mutableStateOf(currentLocation) }
 
     Column {
         when (locationsList) {
             is ResultUiState.Success -> {
-                (locationsList as ResultUiState.Success<List<LocationEntity>>).data.forEach { location ->
+                locationsList.data.forEach { location ->
                     Row(
                         Modifier
                             .selectable(
@@ -110,10 +127,10 @@ fun LocationsMenuAndBottomButtons(viewModel: LocationViewModel, onDialogClose: (
             }
         }
     }
-    Column(buttonsModifier) {
+    Column(modifier) {
         Row {
             ActionDialogButton({ onDialogClose(); onLocationSelected(currentLocation) }, R.color.dark_grey_for_stroke, R.string.dialog_button_cancel)
-            ActionDialogButton({ onDialogClose(); viewModel.setLocation(selectedLocation) }, R.color.allergy_orange, R.string.dialog_button_select_location)
+            ActionDialogButton({ onDialogClose(); onSetLocation(selectedLocation) }, R.color.allergy_orange, R.string.dialog_button_select_location)
         }
     }}
 
@@ -167,8 +184,16 @@ fun CurrentLocation(location: String) {
 @Preview
 @Composable
 fun LocationDialogPreview() {
-    LocationDialogScreen(
+    LocationDialog(
         show = true,
         onDialogClose = {},
+        currentLocation = "Nursery",
+        locationsList = ResultUiState.Success(
+            listOf(
+                LocationEntity(display = "Nursery"),
+                LocationEntity(display = "Hospital")
+            )
+        ),
+        onSetLocation = {}
     )
 }
