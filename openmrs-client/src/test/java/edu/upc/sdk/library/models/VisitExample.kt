@@ -4,7 +4,6 @@ import edu.upc.blopup.model.Treatment
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.databases.entities.LocationEntity
-import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDateWithoutTime
 import edu.upc.sdk.utilities.DateUtils.formatToOpenmrsDate
@@ -110,33 +109,23 @@ object VisitExample {
                     encounterType = EncounterType(EncounterType.VITALS)
                     observations = listOf(
                         Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
-                            }
+                            display = "Systolic blood pressure: $systolic"
                             displayValue = systolic.toString()
                         },
                         Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
-                            }
+                            display = "Diastolic blood pressure: $diastolic"
                             displayValue = diastolic.toString()
                         },
                         Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
-                            }
+                            display = "Pulse: $pulse"
                             displayValue = pulse.toString()
                         },
                         Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
-                            }
+                            display = "Weight (kg): $weight"
                             displayValue = weight?.toString()
                         },
                         Observation().apply {
-                            concept = ConceptEntity().apply {
-                                uuid = ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT
-                            }
+                            display = "Height (cm): $height"
                             displayValue = height?.toString()
                         }
                     )
