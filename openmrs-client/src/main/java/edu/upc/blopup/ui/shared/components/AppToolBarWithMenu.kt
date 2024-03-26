@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.location.LocationDialogScreen
-import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.activities.settings.SettingsActivity
 import edu.upc.sdk.library.OpenmrsAndroid
@@ -43,7 +42,8 @@ fun AppToolBarWithMenu(
     title: String,
     isDataScreen: Boolean,
     onBackAction: () -> Unit,
-    aCBaseActivity: ACBaseActivity? = null
+    onLogout: () -> Unit,
+    username: String,
 ) {
     val show = remember { mutableStateOf(false) }
     TopAppBar(
@@ -71,7 +71,7 @@ fun AppToolBarWithMenu(
                     .testTag("back_button")
             )
         }, actions = {
-            OptionsMenu(aCBaseActivity!!)
+            OptionsMenu(onLogout, username)
         }
     )
     AppDialog(
@@ -86,7 +86,7 @@ fun AppToolBarWithMenu(
 }
 
 @Composable
-fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
+fun OptionsMenu(onLogout: () -> Unit, username: String) {
     val context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
     val showDialog = remember { mutableStateOf(false) }
@@ -150,7 +150,7 @@ fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
             },
             text = {
                 Text(
-                    text = stringResource(R.string.action_logout),
+                    text = stringResource(R.string.action_logout) + " " + username,
                     style = TextStyle(fontWeight = FontWeight.Normal)
                 )
             })
@@ -163,7 +163,7 @@ fun OptionsMenu(aCBaseActivity: ACBaseActivity) {
         onConfirmText = R.string.logout_dialog_button,
         onDismiss = { showDialog.value = false },
         onConfirm = {
-            aCBaseActivity.logout()
+            onLogout()
             showDialog.value = false
         },
     )
@@ -180,5 +180,7 @@ fun AppToolBarWithMenuPreview() {
         title = "Blood Pressure",
         isDataScreen = false,
         onBackAction = {},
+        onLogout = {},
+        username = "Jane Doe"
     )
 }

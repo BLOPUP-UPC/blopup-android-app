@@ -35,6 +35,7 @@ import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
 import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.sdk.library.OpenmrsAndroid
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -78,7 +79,8 @@ class VitalsActivity : ACBaseActivity() {
                                     finish()
                                 }
                             },
-                            this@VitalsActivity as ACBaseActivity)
+                            this@VitalsActivity::logout,
+                            OpenmrsAndroid.getUsername())
                     },
                 ) { innerPadding ->
 
