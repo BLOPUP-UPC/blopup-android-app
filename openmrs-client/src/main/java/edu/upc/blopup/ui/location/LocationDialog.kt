@@ -43,10 +43,6 @@ fun LocationDialogScreen(
     viewModel: LocationViewModel = hiltViewModel()
 ) {
 
-    val locationsList by viewModel.locationsListResultUiState.collectAsState()
-    val (selectedLocation, onLocationSelected) = remember { mutableStateOf(viewModel.getLocation()) }
-
-
     LaunchedEffect(Unit) {
         viewModel.getAllLocations()
     }
@@ -62,60 +58,64 @@ fun LocationDialogScreen(
 
                 CurrentLocation(viewModel.getLocation())
 
-                Column {
-                    when (locationsList) {
-                        is ResultUiState.Success -> {
-                            (locationsList as ResultUiState.Success<List<LocationEntity>>).data.forEach { location ->
-                                Row(
-                                    Modifier
-                                        .selectable(
-                                            selected = (location.display == selectedLocation),
-                                            onClick = {
-                                                onLocationSelected(location.display!!)
-                                            }
-                                        )
-                                        .padding(horizontal = 15.dp)
-                                        .fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = location.display!!
-                                    )
-                                    RadioButton(
-                                        selected = (location.display == selectedLocation),
-                                        onClick = { onLocationSelected(location.display!!) },
-                                        colors = RadioButtonDefaults.colors(
-                                            selectedColor = colorResource(id = R.color.allergy_orange)
-                                        )
-                                    )
-                                }
-                            }
-                        }
+                LocationsMenuAndBottomButtons(viewModel, onDialogClose, Modifier.padding(top = 10.dp).align(Alignment.End))
 
-                        else -> {
-                            Text(
-                                text = stringResource(R.string.error_fetching_locations),
-                                color = Color.Red
-                            )
-                        }
-
-                    }
-                }
-                Column(
-                    Modifier
-                        .align(Alignment.End)
-                        .padding(top = 10.dp)
-                ) {
-                    Row {
-                        ActionDialogButton({ onDialogClose() }, R.color.dark_grey_for_stroke, R.string.dialog_button_cancel)
-                        ActionDialogButton({ onDialogClose(); viewModel.setLocation(selectedLocation) }, R.color.allergy_orange, R.string.dialog_button_select_location)
-                    }
-                }
             }
         }
     }
 }
+
+@Composable
+fun LocationsMenuAndBottomButtons(viewModel: LocationViewModel, onDialogClose: () -> Unit, buttonsModifier: Modifier, ) {
+
+    val currentLocation = viewModel.getLocation()
+    val locationsList by viewModel.locationsListResultUiState.collectAsState()
+    val (selectedLocation, onLocationSelected) = remember { mutableStateOf(currentLocation) }
+
+    Column {
+        when (locationsList) {
+            is ResultUiState.Success -> {
+                (locationsList as ResultUiState.Success<List<LocationEntity>>).data.forEach { location ->
+                    Row(
+                        Modifier
+                            .selectable(
+                                selected = (location.display == selectedLocation),
+                                onClick = {
+                                    onLocationSelected(location.display!!)
+                                }
+                            )
+                            .padding(horizontal = 15.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = location.display!!
+                        )
+                        RadioButton(
+                            selected = (location.display == selectedLocation),
+                            onClick = { onLocationSelected(location.display!!) },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = colorResource(id = R.color.allergy_orange)
+                            )
+                        )
+                    }
+                }
+            }
+            else -> {
+                Text(
+                    text = stringResource(R.string.error_fetching_locations),
+                    color = Color.Red
+                )
+            }
+        }
+    }
+    Column(buttonsModifier) {
+        Row {
+            ActionDialogButton({ onDialogClose(); onLocationSelected(currentLocation) }, R.color.dark_grey_for_stroke, R.string.dialog_button_cancel)
+            ActionDialogButton({ onDialogClose(); viewModel.setLocation(selectedLocation) }, R.color.allergy_orange, R.string.dialog_button_select_location)
+        }
+    }}
 
 @Composable
 fun ActionDialogButton(onClick: () -> Unit, buttonColor: Int, buttonText: Int) {
@@ -149,10 +149,10 @@ fun LocationDialogTitle() {
 
 @Composable
 fun CurrentLocation(location: String) {
-    Row(Modifier.padding(15.dp)) {
+    Row(Modifier.padding(top = 25.dp, start = 15.dp, bottom = 10.dp)) {
         Text(
             text = stringResource(R.string.location_dialog_current_location),
-            color = Color.Gray
+            color = Color.Gray,
         )
         Text(
             text = location,
