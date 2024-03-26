@@ -254,7 +254,7 @@ public interface RestApi {
      * @param uuid the uuid of the visit
      * @return a visit
      */
-    @GET("visit/{uuid}")
+    @GET("visit/{uuid}?v=full")
     Call<Visit> getVisitByUuid(@Path("uuid") String uuid);
 
     /**
