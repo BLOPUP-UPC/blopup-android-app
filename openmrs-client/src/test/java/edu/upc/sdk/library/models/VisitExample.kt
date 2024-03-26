@@ -3,9 +3,13 @@ package edu.upc.sdk.library.models
 import edu.upc.blopup.model.Treatment
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.databases.entities.ConceptEntity
-import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsResponse
+import edu.upc.sdk.library.databases.entities.LocationEntity
+import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
+import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDateWithoutTime
 import edu.upc.sdk.utilities.DateUtils.formatToOpenmrsDate
 import org.joda.time.Instant
+import java.time.LocalDateTime
 import java.util.UUID
 
 
@@ -83,9 +87,54 @@ object VisitExample {
                                     }
                                 displayValue = if (value) "1.0" else "0.0"
                                 display = "Adherence: $displayValue"
-                                dateCreated = date.formatAsOpenMrsResponse()
-                                obsDatetime = date.formatAsOpenMrsResponse()
+                                dateCreated = date.formatAsOpenMrsDateWithoutTime()
+                                obsDatetime = date.formatAsOpenMrsDateWithoutTime()
                             }
+                        }
+                    )
+                }
+            )
+        }
+    }
+
+    fun withVitals(visitUuid: String, visitStartDate: LocalDateTime, visitLocation:String, systolic: Int, diastolic: Int, pulse: Int, weight: Float?, height: Int?): Visit {
+        return Visit().apply {
+            uuid = visitUuid
+            location = LocationEntity(visitLocation)
+            startDatetime = visitStartDate.formatAsOpenMrsDate()
+            encounters = listOf(
+                Encounter().apply {
+                    encounterType = EncounterType(EncounterType.VITALS)
+                    observations = listOf(
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+                            }
+                            displayValue = systolic.toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+                            }
+                            displayValue = diastolic.toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
+                            }
+                            displayValue = pulse.toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
+                            }
+                            displayValue = weight?.toString()
+                        },
+                        Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT
+                            }
+                            displayValue = height?.toString()
                         }
                     )
                 }

@@ -26,6 +26,8 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.TimeZone
+import java.time.LocalDateTime as JavaLocalDateTime
+import java.time.format.DateTimeFormatter as JavaDateTimeFormatter
 
 object DateUtils {
     const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy"
@@ -39,6 +41,10 @@ object DateUtils {
     @Deprecated("Use java.time instead")
     fun parseFromOpenmrsDate(dateTime: String): Instant {
         return Instant.parse(dateTime, DateTimeFormat.forPattern(OPEN_MRS_RESPONSE_FORMAT).withZoneUTC())
+    }
+
+    fun parseLocalDateFromOpenmrsDate(dateTime: String): JavaLocalDateTime {
+        return JavaLocalDateTime.parse(dateTime, JavaDateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
     }
 
     @Deprecated("Use java.time instead")
@@ -256,11 +262,15 @@ object DateUtils {
         return false
     }
 
-    fun java.time.LocalDate.formatAsDefaultOpenMrsFormat(): String {
+    fun java.time.LocalDate.formatAsDate(): String {
         return java.time.format.DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT).format(this)
     }
 
-    fun java.time.LocalDate.formatAsOpenMrsResponse(): String {
+    fun java.time.LocalDate.formatAsOpenMrsDateWithoutTime(): String {
         return java.time.format.DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT_WO_TIME).format(this)
+    }
+
+    fun java.time.LocalDateTime.formatAsOpenMrsDate(): String {
+        return java.time.format.DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT).format(this.atOffset(java.time.ZoneOffset.UTC))
     }
 }
