@@ -33,6 +33,7 @@ class NewVisitRepository @Inject constructor(val restApi: RestApi){
 
         return Visit(
             visitUuid,
+            UUID.fromString(openMRSVisit.patient.uuid),
             openMRSVisit.location.display ?: "",
             visitStartDate,
             BloodPressure(systolic, diastolic, pulse),

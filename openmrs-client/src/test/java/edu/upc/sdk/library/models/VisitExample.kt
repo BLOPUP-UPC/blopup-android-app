@@ -97,8 +97,11 @@ object VisitExample {
         }
     }
 
-    fun withVitals(visitUuid: String, visitStartDate: LocalDateTime, visitLocation:String, systolic: Int, diastolic: Int, pulse: Int, weight: Float?, height: Int?): Visit {
+    fun withVitals(visitUuid: String, patientUuid: String, visitStartDate: LocalDateTime, visitLocation:String, systolic: Int, diastolic: Int, pulse: Int, weight: Float?, height: Int?): Visit {
         return Visit().apply {
+            patient = Patient().apply {
+                uuid = patientUuid
+            }
             uuid = visitUuid
             location = LocationEntity(visitLocation)
             startDatetime = visitStartDate.formatAsOpenMrsDate()

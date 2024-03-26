@@ -5,6 +5,7 @@ import java.util.UUID
 
 data class Visit(
     val id: UUID,
+    val patientId: UUID,
     val location: String,
     val startDate: LocalDateTime,
     val bloodPressure: BloodPressure,
