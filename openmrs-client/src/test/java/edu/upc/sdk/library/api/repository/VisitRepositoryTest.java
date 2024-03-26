@@ -22,7 +22,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -57,7 +56,6 @@ import retrofit2.Response;
 import rx.Observable;
 
 @RunWith(AndroidJUnit4.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class VisitRepositoryTest {
 
     @Mock
