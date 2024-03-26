@@ -13,7 +13,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import edu.upc.R
-import edu.upc.sdk.library.models.MedicationType
+import edu.upc.blopup.model.MedicationType
 import java.time.LocalDate
 
 class BloodPressureChart(private val context: Context) {

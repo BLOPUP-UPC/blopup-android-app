@@ -1,15 +1,15 @@
 package edu.upc.sdk.library.api.repository
 
+import edu.upc.blopup.model.MedicationType
+import edu.upc.blopup.model.Treatment
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterProviderCreate
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
-import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate

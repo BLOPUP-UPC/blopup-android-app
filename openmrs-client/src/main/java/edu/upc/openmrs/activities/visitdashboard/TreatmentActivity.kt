@@ -15,6 +15,11 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.model.Doctor
+import edu.upc.blopup.model.MedicationType
+import edu.upc.blopup.model.Treatment
+import edu.upc.blopup.model.Treatment.Companion.RECOMMENDED_BY_BLOPUP
+import edu.upc.blopup.model.Treatment.Companion.RECOMMENDED_BY_OTHER
 import edu.upc.databinding.TreatmentFormBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
@@ -22,13 +27,8 @@ import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.ME
 import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.MEDICATION_TYPE
 import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.RECOMMENDED_BY
 import edu.upc.openmrs.bundle.CustomDialogBundle
-import edu.upc.sdk.library.models.Doctor
-import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.OperationType
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.Treatment
-import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_BLOPUP
-import edu.upc.sdk.library.models.Treatment.Companion.RECOMMENDED_BY_OTHER
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import edu.upc.sdk.utilities.ToastUtil

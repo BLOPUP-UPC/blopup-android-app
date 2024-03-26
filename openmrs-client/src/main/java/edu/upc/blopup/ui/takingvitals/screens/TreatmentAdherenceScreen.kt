@@ -39,12 +39,12 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.CheckTreatment
+import edu.upc.blopup.model.MedicationType
+import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.ErrorDialog
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
-import edu.upc.sdk.library.models.MedicationType
-import edu.upc.sdk.library.models.Treatment
 
 @Composable
 fun TreatmentAdherenceScreen(

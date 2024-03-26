@@ -1,5 +1,7 @@
 package edu.upc.sdk.library.models
 
+import edu.upc.blopup.model.MedicationType
+import edu.upc.blopup.model.Treatment
 import org.joda.time.Instant
 import java.time.LocalDate
 import java.util.UUID

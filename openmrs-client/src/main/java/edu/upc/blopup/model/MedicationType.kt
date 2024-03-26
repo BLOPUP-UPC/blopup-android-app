@@ -1,4 +1,4 @@
-package edu.upc.sdk.library.models
+package edu.upc.blopup.model
 
 import android.content.Context
 import edu.upc.R

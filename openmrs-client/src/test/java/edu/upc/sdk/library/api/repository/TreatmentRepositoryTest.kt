@@ -1,6 +1,8 @@
 package edu.upc.sdk.library.api.repository
 
 import androidx.work.WorkManager
+import edu.upc.blopup.model.MedicationType
+import edu.upc.blopup.model.Treatment
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.api.RestApi
@@ -10,11 +12,9 @@ import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Encountercreate
-import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.library.models.VisitExample

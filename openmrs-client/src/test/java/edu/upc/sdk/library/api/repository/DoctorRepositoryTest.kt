@@ -1,13 +1,13 @@
 package edu.upc.sdk.library.api.repository
 
 import androidx.work.WorkManager
+import edu.upc.blopup.model.Doctor
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder
 import edu.upc.sdk.library.api.repository.DoctorRepository.Companion.DOCTOR_PROVIDER_UUID
 import edu.upc.sdk.library.api.repository.DoctorRepository.ContactDoctorRequest
 import edu.upc.sdk.library.databases.AppDatabase
-import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.Person
 import edu.upc.sdk.library.models.Provider
 import edu.upc.sdk.library.models.ProviderAttribute

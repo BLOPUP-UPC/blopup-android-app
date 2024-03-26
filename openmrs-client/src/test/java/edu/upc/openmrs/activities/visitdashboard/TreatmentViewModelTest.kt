@@ -1,9 +1,9 @@
 package edu.upc.openmrs.activities.visitdashboard
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import edu.upc.blopup.model.Doctor
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
 import io.mockk.coEvery

@@ -1,5 +1,6 @@
 package edu.upc.sdk.library.models
 
+import edu.upc.blopup.model.Treatment
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsResponse

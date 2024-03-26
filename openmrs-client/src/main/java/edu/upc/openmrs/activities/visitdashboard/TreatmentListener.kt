@@ -1,6 +1,6 @@
 package edu.upc.openmrs.activities.visitdashboard
 
-import edu.upc.sdk.library.models.Treatment
+import edu.upc.blopup.model.Treatment
 
 interface TreatmentListener {
     fun onFinaliseClicked(treatment: Treatment)

@@ -3,6 +3,7 @@ package edu.upc.blopup.ui.takingvitals
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.CheckTreatment
+import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.toggles.BuildConfigWrapper
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
@@ -16,7 +17,6 @@ import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.WeightMeasurement
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.MedicationType
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result

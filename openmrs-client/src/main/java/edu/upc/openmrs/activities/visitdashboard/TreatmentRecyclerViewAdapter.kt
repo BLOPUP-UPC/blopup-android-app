@@ -10,7 +10,7 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import edu.upc.R
-import edu.upc.sdk.library.models.Treatment
+import edu.upc.blopup.model.Treatment
 
 
 class TreatmentRecyclerViewAdapter(

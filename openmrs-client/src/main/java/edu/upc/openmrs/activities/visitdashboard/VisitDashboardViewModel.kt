@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.blopup.model.Treatment
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
@@ -16,7 +17,6 @@ import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
-import edu.upc.sdk.library.models.Treatment
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.library.models.bloodPressureTypeFromEncounter
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID

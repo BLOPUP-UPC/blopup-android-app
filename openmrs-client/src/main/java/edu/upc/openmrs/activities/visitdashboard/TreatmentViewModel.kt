@@ -3,12 +3,12 @@ package edu.upc.openmrs.activities.visitdashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.blopup.model.Doctor
+import edu.upc.blopup.model.Treatment
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.OperationType
-import edu.upc.sdk.library.models.Treatment
 import javax.inject.Inject
 
 @HiltViewModel

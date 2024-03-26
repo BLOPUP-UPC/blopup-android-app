@@ -2,8 +2,8 @@ package edu.upc.sdk.library.api.repository
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import edu.upc.blopup.model.Doctor
 import edu.upc.sdk.library.CrashlyticsLoggerImpl
-import edu.upc.sdk.library.models.Doctor
 import edu.upc.sdk.library.models.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
