@@ -15,21 +15,31 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NewVisitRepository @Inject constructor(val restApi: RestApi){
+class NewVisitRepository @Inject constructor(val restApi: RestApi) {
 
     fun getVisitByUuid(visitUuid: UUID): Visit {
 
         val openMRSVisit = restApi.getVisitByUuid(visitUuid.toString()).execute().body()
 
-        val vitalsEncounter = openMRSVisit?.encounters?.find { it.encounterType?.display == EncounterType.VITALS }
+        val vitalsEncounter =
+            openMRSVisit?.encounters?.find { it.encounterType?.display == EncounterType.VITALS }
 
-        val systolic = vitalsEncounter?.observations?.find { it.concept?.uuid  == SYSTOLIC_FIELD_CONCEPT }?.displayValue?.toInt() ?: throw Exception("Systolic is null")
-        val diastolic = vitalsEncounter.observations.find { it.concept?.uuid  == DIASTOLIC_FIELD_CONCEPT }?.displayValue?.toInt() ?: throw Exception("Diastolic is null")
-        val pulse = vitalsEncounter.observations.find { it.concept?.uuid  == HEART_RATE_FIELD_CONCEPT }?.displayValue?.toInt() ?: throw Exception("Pulse is null")
-        val weight = vitalsEncounter.observations.find { it.concept?.uuid  == WEIGHT_FIELD_CONCEPT }?.displayValue?.toFloat()
-        val height = vitalsEncounter.observations.find { it.concept?.uuid  == HEIGHT_FIELD_CONCEPT }?.displayValue?.toInt()
+        val systolic =
+            vitalsEncounter?.observations?.find { it.concept?.uuid == SYSTOLIC_FIELD_CONCEPT }?.displayValue?.toInt()
+                ?: throw Exception("Systolic is null")
+        val diastolic =
+            vitalsEncounter.observations.find { it.concept?.uuid == DIASTOLIC_FIELD_CONCEPT }?.displayValue?.toInt()
+                ?: throw Exception("Diastolic is null")
+        val pulse =
+            vitalsEncounter.observations.find { it.concept?.uuid == HEART_RATE_FIELD_CONCEPT }?.displayValue?.toInt()
+                ?: throw Exception("Pulse is null")
+        val weight =
+            vitalsEncounter.observations.find { it.concept?.uuid == WEIGHT_FIELD_CONCEPT }?.displayValue?.toFloat()
+        val height =
+            vitalsEncounter.observations.find { it.concept?.uuid == HEIGHT_FIELD_CONCEPT }?.displayValue?.toInt()
 
-        val visitStartDate = openMRSVisit.startDatetime.let { DateUtils.parseLocalDateFromOpenmrsDate(it) }
+        val visitStartDate =
+            openMRSVisit.startDatetime.let { DateUtils.parseLocalDateFromOpenmrsDate(it) }
 
         return Visit(
             visitUuid,
@@ -41,5 +51,8 @@ class NewVisitRepository @Inject constructor(val restApi: RestApi){
             weight
         )
     }
-
 }
+
+
+
+

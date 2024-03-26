@@ -18,13 +18,23 @@ import kotlinx.coroutines.withContext
 import org.joda.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.Boolean
+import kotlin.Exception
+import kotlin.Result
+import kotlin.String
+import kotlin.apply
+import kotlin.let
+import kotlin.to
+import kotlin.toString
 import edu.upc.sdk.library.models.Result as OpenMRSResult
 
 @Singleton
 class TreatmentRepository @Inject constructor(
     val visitRepository: VisitRepository,
+    private val newVisitRepository: NewVisitRepository,
     private val encounterRepository: EncounterRepository,
     private val doctorRepository: DoctorRepository,
 ) :
@@ -32,7 +42,7 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun saveTreatment(treatment: Treatment) {
         withContext(Dispatchers.IO) {
-            val currentVisit = visitRepository.getVisitByUuid(treatment.visitUuid)
+            val currentVisit = newVisitRepository.getVisitByUuid(UUID.fromString(treatment.visitUuid))
 
             val encounter = createEncounterFromTreatment(currentVisit, treatment)
 
@@ -207,14 +217,14 @@ class TreatmentRepository @Inject constructor(
 
     private fun getMedicationTypesFromObservation(observation: Observation): Set<MedicationType> {
         return observation.groupMembers?.map { groupMember ->
-            MedicationType.values().find { medicationType ->
+            MedicationType.entries.find { medicationType ->
                 medicationType.conceptId == groupMember.valueCodedName
             }!!
         }?.toSet() ?: emptySet()
     }
 
     private fun createEncounterFromTreatment(
-        currentVisit: Visit,
+        currentVisit: edu.upc.blopup.model.Visit ,
         treatment: Treatment,
     ) : Encountercreate {
 
@@ -223,25 +233,25 @@ class TreatmentRepository @Inject constructor(
 
         return Encountercreate().apply {
             encounterType = TREATMENT_ENCOUNTER_TYPE
-            patient = currentVisit.patient.uuid
-            visit = currentVisit.uuid
+            patient = currentVisit.patientId.toString()
+            visit = currentVisit.id.toString()
             observations = listOf(
                 observation(
                     ObservationConcept.RECOMMENDED_BY.uuid,
                     treatment.recommendedBy,
-                    currentVisit.patient.uuid!!
+                    currentVisit.patientId.toString()
                 ),
                 observation(
                     ObservationConcept.MEDICATION_NAME.uuid,
                     treatment.medicationName,
-                    currentVisit.patient.uuid!!
+                    currentVisit.patientId.toString()
                 ),
                 observation(
                     ObservationConcept.ACTIVE.uuid,
                     if (treatment.isActive) "1.0" else "0.0",
-                    currentVisit.patient.uuid!!
+                    currentVisit.patientId.toString()
                 ),
-                drugFamiliesObservation(currentVisit.patient.uuid!!, treatment)
+                drugFamiliesObservation(currentVisit.patientId.toString(), treatment)
             )
             provider?.let { encounterProvider = listOf(it) }
         }.let { encounter ->

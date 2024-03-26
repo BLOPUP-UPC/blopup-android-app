@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.api.repository
 
 import androidx.work.WorkManager
+import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
 import edu.upc.sdk.library.OpenmrsAndroid
@@ -37,6 +38,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import rx.Observable
+import java.time.LocalDateTime
 import java.util.UUID
 
 class TreatmentRepositoryTest {
@@ -47,6 +49,8 @@ class TreatmentRepositoryTest {
 
     private lateinit var visitRepository: VisitRepository
 
+    private lateinit var newVisitRepository: NewVisitRepository
+
     private lateinit var encounterRepository: EncounterRepository
 
     private lateinit var doctorRepository: DoctorRepository
@@ -55,11 +59,17 @@ class TreatmentRepositoryTest {
     fun setUp() {
         restApi = mockk(relaxed = true)
         visitRepository = mockk(relaxed = true)
+        newVisitRepository = mockk(relaxed = true)
         encounterRepository = mockk(relaxed = true)
         doctorRepository = mockk(relaxed = true)
 
         mockStaticMethodsNeededToInstantiateBaseRepository()
-        treatmentRepository = TreatmentRepository(visitRepository, encounterRepository, doctorRepository)
+        treatmentRepository = TreatmentRepository(
+            visitRepository,
+            newVisitRepository,
+            encounterRepository,
+            doctorRepository
+        )
     }
 
     @Test
@@ -136,8 +146,8 @@ class TreatmentRepositoryTest {
 
     @Test
     fun `should save the Treatment in OpenMRS with medication for one drug family`() {
-        val patientUuid = UUID.randomUUID().toString()
-        val visitUuid = UUID.randomUUID().toString()
+        val patientUuid = UUID.randomUUID()
+        val visitUuid = UUID.randomUUID()
 
         val treatment = Treatment(
             "Other",
@@ -147,12 +157,12 @@ class TreatmentRepositoryTest {
             setOf(MedicationType.DIURETIC),
             "25mg/dia",
             true,
-            visitUuid
+            visitUuid.toString()
         )
 
         val expectedTreatmentEncounter = Encountercreate().apply {
-            patient = patientUuid
-            visit = visitUuid
+            patient = patientUuid.toString()
+            visit = visitUuid.toString()
             encounterType = TREATMENT_ENCOUNTER_TYPE
             observations = listOf(
                 Obscreate().apply {
@@ -184,9 +194,13 @@ class TreatmentRepositoryTest {
         val capturedTreatmentEncounter = slot<Encountercreate>()
 
         val call = mockk<Call<Encounter>>(relaxed = true)
-        every { visitRepository.getVisitByUuid(any()) } returns Visit().apply {
-            uuid = visitUuid; patient = Patient().apply { uuid = patientUuid }
-        }
+        every { newVisitRepository.getVisitByUuid(any()) } returns edu.upc.blopup.model.Visit(
+            visitUuid,
+            patientUuid,
+            "Casa del Aleh",
+            LocalDateTime.now(),
+            BloodPressure(120, 80, 80)
+        )
         coEvery { restApi.createEncounter(any()) } returns call
         coEvery { call.execute() } returns Response.success(Encounter().apply {
             uuid = "encounterUuid"
