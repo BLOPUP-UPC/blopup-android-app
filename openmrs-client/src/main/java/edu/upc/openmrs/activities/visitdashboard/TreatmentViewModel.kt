@@ -6,14 +6,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.model.Doctor
 import edu.upc.blopup.model.Treatment
 import edu.upc.openmrs.activities.BaseViewModel
+import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.models.OperationType
 import javax.inject.Inject
 
 @HiltViewModel
-class TreatmentViewModel @Inject constructor(private val treatmentRepository: TreatmentRepository, private val doctorRepository: DoctorRepository) :
+class TreatmentViewModel @Inject constructor(
+    private val treatmentRepository: TreatmentRepository,
+    private val doctorRepository: DoctorRepository
+) :
     BaseViewModel<Treatment>() {
+
+    private val logger = OpenMRSLogger()
 
     private val _fieldValidation: MutableLiveData<MutableMap<String, Boolean>> =
         MutableLiveData<MutableMap<String, Boolean>>().apply {
@@ -52,7 +58,7 @@ class TreatmentViewModel @Inject constructor(private val treatmentRepository: Tr
             treatmentRepository.saveTreatment(treatment.value!!)
             setContent(treatment.value!!)
         } catch (e: Exception) {
-            setError(e)
+            logger.e("Error registering training. ${e.javaClass}: ${e.message})")
         }
 
     fun updateFieldValidation(fieldName: String, isValid: Boolean) {
