@@ -154,7 +154,7 @@ fun LocationsMenuAndBottomButtons(
             ActionDialogButton(
                 { onDialogClose(); onSetLocation(selectedLocation) },
                 R.color.allergy_orange,
-                R.string.dialog_button_select_location
+                R.string.dialog_button_select_location,
             )
         }
     }
@@ -192,13 +192,13 @@ fun LocationDialogTitle() {
 
 @Composable
 fun CurrentLocation(location: ResultUiState<String>) {
-    Row(Modifier.padding(top = 25.dp, start = 15.dp, bottom = 10.dp)) {
-        Text(
-            text = stringResource(R.string.location_dialog_current_location),
-            color = Color.Gray,
-        )
-        when (location) {
-            is ResultUiState.Success -> {
+    when (location) {
+        is ResultUiState.Success -> {
+            Row(Modifier.padding(top = 25.dp, start = 15.dp, bottom = 10.dp)) {
+                Text(
+                    text = stringResource(R.string.location_dialog_current_location),
+                    color = Color.Gray,
+                )
                 Text(
                     text = location.data,
                     color = Color.Gray,
@@ -206,16 +206,17 @@ fun CurrentLocation(location: ResultUiState<String>) {
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
+        }
 
-            else -> {
-                Text(
-                    text = stringResource(R.string.error_fetching_location),
-                    color = Color.Red,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-            }
+        else -> {
+            Text(
+                text = stringResource(R.string.error_fetching_location),
+                color = Color.Red,
+                modifier = Modifier.padding(15.dp)
+            )
         }
     }
+
 }
 
 
