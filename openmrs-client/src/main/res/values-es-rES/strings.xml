@@ -265,5 +265,6 @@
     <string name="retry">Reintentar</string>
     <string name="data_received_successfully"> Datos recibidos con éxito.</string>
     <string name="waiting_for_data">Esperando recibir datos…</string>
+    <string name="error_fetching_location">Error actualizando la ubicación</string>
 
 </resources>

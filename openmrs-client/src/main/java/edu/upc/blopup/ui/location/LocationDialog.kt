@@ -57,7 +57,7 @@ fun LocationDialogScreen(
 fun LocationDialog(
     show: Boolean,
     onDialogClose: () -> Unit,
-    currentLocation: String,
+    currentLocation: ResultUiState<String>,
     locationsList: ResultUiState<List<LocationEntity>>,
     onSetLocation: (String) -> Unit
 ) {
@@ -72,11 +72,32 @@ fun LocationDialog(
 
                 CurrentLocation(currentLocation)
 
-                LocationsMenuAndBottomButtons(onDialogClose, Modifier.padding(top = 10.dp).align(Alignment.End), currentLocation, locationsList, onSetLocation)
+                when (currentLocation) {
+                    is ResultUiState.Success -> {
+                        LocationsMenuAndBottomButtons(
+                            onDialogClose,
+                            Modifier
+                                .padding(top = 10.dp)
+                                .align(Alignment.End),
+                            currentLocation.data,
+                            locationsList,
+                            onSetLocation
+                        )
+                    }
 
+                    ResultUiState.Error ->
+                        Text(
+                            text = stringResource(R.string.error_fetching_locations),
+                            color = Color.Red,
+                            modifier = Modifier.padding(15.dp)
+                        )
+
+                    ResultUiState.Loading -> {}
+                }
             }
         }
-    }}
+    }
+}
 
 @Composable
 fun LocationsMenuAndBottomButtons(
@@ -119,6 +140,7 @@ fun LocationsMenuAndBottomButtons(
                     }
                 }
             }
+
             else -> {
                 Text(
                     text = stringResource(R.string.error_fetching_locations),
@@ -129,10 +151,19 @@ fun LocationsMenuAndBottomButtons(
     }
     Column(modifier) {
         Row {
-            ActionDialogButton({ onDialogClose(); onLocationSelected(currentLocation) }, R.color.dark_grey_for_stroke, R.string.dialog_button_cancel)
-            ActionDialogButton({ onDialogClose(); onSetLocation(selectedLocation) }, R.color.allergy_orange, R.string.dialog_button_select_location)
+            ActionDialogButton(
+                { onDialogClose(); onLocationSelected(currentLocation) },
+                R.color.dark_grey_for_stroke,
+                R.string.dialog_button_cancel
+            )
+            ActionDialogButton(
+                { onDialogClose(); onSetLocation(selectedLocation) },
+                R.color.allergy_orange,
+                R.string.dialog_button_select_location
+            )
         }
-    }}
+    }
+}
 
 @Composable
 fun ActionDialogButton(onClick: () -> Unit, buttonColor: Int, buttonText: Int) {
@@ -165,35 +196,57 @@ fun LocationDialogTitle() {
 }
 
 @Composable
-fun CurrentLocation(location: String) {
+fun CurrentLocation(location: ResultUiState<String>) {
     Row(Modifier.padding(top = 25.dp, start = 15.dp, bottom = 10.dp)) {
         Text(
             text = stringResource(R.string.location_dialog_current_location),
             color = Color.Gray,
         )
-        Text(
-            text = location,
-            color = Color.Gray,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 8.dp)
-        )
+        when (location) {
+            is ResultUiState.Success -> {
+                Text(
+                    text = location.data,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+
+            else -> {
+                Text(
+                    text = stringResource(R.string.error_fetching_location),
+                    color = Color.Red,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+        }
     }
 }
 
 
+//@Preview
+//@Composable
+//fun LocationDialogPreview() {
+//    LocationDialog(
+//        show = true,
+//        onDialogClose = {},
+//        currentLocation = ResultUiState.Success("Nursery"),
+//        locationsList = ResultUiState.Success(
+//            listOf(
+//                LocationEntity(display = "Nursery"),
+//                LocationEntity(display = "Hospital")
+//            )
+//        )
+//    ) {}
+//}
+
 @Preview
 @Composable
-fun LocationDialogPreview() {
+fun LocationDialogErrorPreview() {
     LocationDialog(
         show = true,
         onDialogClose = {},
-        currentLocation = "Nursery",
-        locationsList = ResultUiState.Success(
-            listOf(
-                LocationEntity(display = "Nursery"),
-                LocationEntity(display = "Hospital")
-            )
-        ),
-        onSetLocation = {}
-    )
+        currentLocation = ResultUiState.Error,
+        locationsList = ResultUiState.Error
+    ) {}
 }

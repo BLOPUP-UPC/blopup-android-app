@@ -406,5 +406,6 @@
     <string name="checked_icon_green" translatable="false">checked icon green</string>
     <string name="grey_arrow_to_do_dropdown" translatable="false">grey arrow to do dropdown</string>
     <string name="doctor_info" translatable="false">%1$s - Nº Coleg. %2$s</string>
+    <string name="error_fetching_location" translatable="false">Error updating current location</string>
     />
 </resources>

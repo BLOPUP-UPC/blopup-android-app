@@ -20,9 +20,27 @@ open class LocationViewModel @Inject constructor(
         MutableStateFlow(ResultUiState.Loading)
     var locationsListResultUiState: StateFlow<ResultUiState<List<LocationEntity>>> = _locationsListResultUiState.asStateFlow()
 
-    fun getLocation() = locationRepository.getCurrentLocation()
+    fun getLocation() : ResultUiState<String> {
+        return try {
+            when(val response = locationRepository.getCurrentLocation()) {
+                is Result.Success -> ResultUiState.Success(response.data)
+                else -> ResultUiState.Error
+            }
+        } catch (e: Exception) {
+            ResultUiState.Error
+        }
+    }
 
-    fun setLocation(location: String) = locationRepository.setLocation(location)
+    fun setLocation(location: String) : ResultUiState<Boolean> {
+        return try {
+            when(val response = locationRepository.setLocation(location)) {
+                is Result.Success -> ResultUiState.Success(response.data)
+                else -> ResultUiState.Error
+            }
+        } catch (e: Exception) {
+            ResultUiState.Error
+        }
+    }
 
     suspend fun getAllLocations() {
         val response = locationRepository.getAllLocations()

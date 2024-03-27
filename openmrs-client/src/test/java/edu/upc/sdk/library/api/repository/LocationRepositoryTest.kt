@@ -75,6 +75,53 @@ class LocationRepositoryTest{
         }
     }
 
+    @Test
+    fun `should return success if returns the current location`() {
+
+        val location = "Hospital"
+
+        every { OpenmrsAndroid.getLocation() } returns location
+
+        val result = locationRepository.getCurrentLocation()
+
+        assert(result is OpenMRSResult.Success)
+        assert((result as OpenMRSResult.Success).data == location)
+    }
+
+    @Test
+    fun `should return error if it does not return the current location`() {
+
+        every { OpenmrsAndroid.getLocation() } throws Exception("Error fetching location")
+
+        val result = locationRepository.getCurrentLocation()
+
+        assert(result is OpenMRSResult.Error)
+    }
+
+    @Test
+    fun `should return success if the new location is saved`() {
+
+        val location = "Hospital"
+
+        every { OpenmrsAndroid.setLocation(location) } returns Unit
+
+        val result = locationRepository.setLocation(location)
+
+        assert(result is OpenMRSResult.Success)
+    }
+
+    @Test
+    fun `should return error if it does not save the new location`() {
+        val location = "Hospital"
+
+        every { OpenmrsAndroid.setLocation(location) } throws Exception("Error saving location")
+
+        val result = locationRepository.setLocation(location)
+
+        assert(result is OpenMRSResult.Error)
+    }
+
+
     private fun mockStaticMethodsNeededToInstantiateBaseRepository() {
         mockkStatic(OpenmrsAndroid::class)
         every { OpenmrsAndroid.getServerUrl() } returns "http://localhost:8080/openmrs"

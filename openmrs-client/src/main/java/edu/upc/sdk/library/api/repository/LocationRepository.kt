@@ -37,7 +37,9 @@ class LocationRepository @Inject constructor() : BaseRepository(null) {
             val response = restApi.getLocations(null).execute()
             if (response.isSuccessful) {
                 for (result in response.body()!!.results) {
-                    if (result.display?.trim().equals(OpenmrsAndroid.getLocation().trim(), ignoreCase = true)) {
+                    if (result.display?.trim()
+                            .equals(OpenmrsAndroid.getLocation().trim(), ignoreCase = true)
+                    ) {
                         return result
                     }
                 }
@@ -45,9 +47,27 @@ class LocationRepository @Inject constructor() : BaseRepository(null) {
             return null
         }
 
-    fun getCurrentLocation() : String  = OpenmrsAndroid.getLocation().trim()
+    fun getCurrentLocation(): Result<String> {
+        return try {
+            val response = OpenmrsAndroid.getLocation().trim()
+            if (response.isNotEmpty()) {
+                Result.Success(response)
+            } else {
+                Result.Error(Exception("Error fetching location"))
+            }
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
 
-    fun setLocation(location: String) : Unit = OpenmrsAndroid.setLocation(location)
+    fun setLocation(location: String): Result<Boolean> {
+        return try {
+            val response = OpenmrsAndroid.setLocation(location)
+            Result.Success(true)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
 
     suspend fun getAllLocations(): Result<List<LocationEntity>> {
         return withContext(Dispatchers.IO) {
