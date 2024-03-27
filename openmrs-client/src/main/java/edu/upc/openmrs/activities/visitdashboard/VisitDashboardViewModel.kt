@@ -9,6 +9,7 @@ import edu.upc.blopup.model.Treatment
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
@@ -24,12 +25,13 @@ import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES
 import kotlinx.coroutines.launch
 import org.joda.time.Instant
 import rx.android.schedulers.AndroidSchedulers
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class VisitDashboardViewModel @Inject constructor(
     private val visitDAO: VisitDAO,
-    private val visitRepository: VisitRepository,
+    private val newVisitRepository: NewVisitRepository,
     private val treatmentRepository: TreatmentRepository,
     private val encounterRepository: EncounterRepository,
     private val doctorRepository: DoctorRepository,
@@ -76,19 +78,11 @@ class VisitDashboardViewModel @Inject constructor(
         )
     }
 
-    fun endCurrentVisit(): LiveData<Result<Boolean>> {
+    suspend fun endCurrentVisit(): LiveData<Result<Boolean>> {
         val endVisitResult = MutableLiveData<Result<Boolean>>()
 
         if (visit != null) {
-            addSubscription(
-                visitRepository.endVisit(visit)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        endVisitResult.value = Result.Success(it)
-                    }, {
-                        endVisitResult.value = Result.Error(it)
-                    })
-            )
+            endVisitResult.value = Result.Success(newVisitRepository.endVisit(UUID.fromString(visit!!.uuid)))
         }
         return endVisitResult
     }
@@ -122,9 +116,10 @@ class VisitDashboardViewModel @Inject constructor(
         val response = encounterRepository.removeEncounter(treatment.treatmentUuid)
 
         if (response.isSuccess && _treatments.value is Result.Success) {
-            _treatments.value = (_treatments.value as Result.Success<List<Treatment>>).data.toMutableList().apply {
-                remove(treatment)
-            }.let { Result.Success(it) }
+            _treatments.value =
+                (_treatments.value as Result.Success<List<Treatment>>).data.toMutableList().apply {
+                    remove(treatment)
+                }.let { Result.Success(it) }
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentSuccess
         } else {
             _treatmentOperationsLiveData.value = ResultType.RemoveTreatmentError
@@ -135,5 +130,6 @@ class VisitDashboardViewModel @Inject constructor(
         visit?.let { fetchActiveTreatments(it.patient, it) }
     }
 
-    suspend fun sendMessageToDoctor(message: String): kotlin.Result<Boolean> = doctorRepository.sendMessageToDoctor(message)
+    suspend fun sendMessageToDoctor(message: String): kotlin.Result<Boolean> =
+        doctorRepository.sendMessageToDoctor(message)
 }

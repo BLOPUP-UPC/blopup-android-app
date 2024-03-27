@@ -6,6 +6,7 @@ import edu.upc.openmrs.activities.visitdashboard.VisitDashboardViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
@@ -39,7 +40,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
     private lateinit var visitDAO: VisitDAO
 
-    private lateinit var visitRepository: VisitRepository
+    private lateinit var visitRepository: NewVisitRepository
 
     private lateinit var doctorRepository: DoctorRepository
 
@@ -85,7 +86,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun fetchCurrentVisit_error() {
         val throwable = Throwable("Error message")
-        every  {visitDAO.getVisitByID(any())} returns Observable.error(throwable)
+        every { visitDAO.getVisitByID(any()) } returns Observable.error(throwable)
 
         viewModel.fetchCurrentVisit()
 
@@ -98,7 +99,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
         coEvery { doctorRepository.sendMessageToDoctor(message) } returns kotlin.Result.success(true)
 
-       runBlocking { viewModel.sendMessageToDoctor(message) }
+        runBlocking { viewModel.sendMessageToDoctor(message) }
 
         coVerify { doctorRepository.sendMessageToDoctor(message) }
     }
@@ -107,11 +108,13 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     fun endCurrentVisit_success() {
 
         every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
-        every { visitRepository.endVisit(any()) } returns Observable.just(true)
+        coEvery { visitRepository.endVisit(any()) } returns true
 
         viewModel.fetchCurrentVisit().runCatching {
-            viewModel.endCurrentVisit().observeForever { visitEnded ->
-                assertTrue(visitEnded.equals(Result.Success(true)))
+            runBlocking {
+                viewModel.endCurrentVisit().observeForever { visitEnded ->
+                    assertTrue(visitEnded.equals(Result.Success(true)))
+                }
             }
         }
     }
@@ -120,11 +123,13 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
     fun endCurrentVisit_error() {
         val throwable = Throwable("Error message")
         every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
-        every { visitRepository.endVisit(any()) } returns Observable.error(throwable)
+        coEvery { visitRepository.endVisit(any()) } throws throwable
 
         viewModel.fetchCurrentVisit().runCatching {
-            viewModel.endCurrentVisit().observeForever { visitEnded ->
-                assert(visitEnded.equals(Result.Error(throwable)))
+            runBlocking {
+                viewModel.endCurrentVisit().observeForever { visitEnded ->
+                    assert(visitEnded.equals(Result.Error(throwable)))
+                }
             }
         }
     }
@@ -175,7 +180,9 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val treatmentList = listOf(treatmentUpdated)
 
         coEvery { treatmentRepository.finalise(treatment) } returns kotlin.Result.success(true)
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(
+            treatmentList
+        )
 
         runBlocking {
             viewModel.finaliseTreatment(treatment)
@@ -192,15 +199,19 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val treatmentTwo = TreatmentExample.activeTreatment()
         val treatmentList = listOf(treatmentTwo)
 
-        coEvery { encounterRepository.removeEncounter(treatmentOne.treatmentUuid) } returns kotlin.Result.success(true)
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
+        coEvery { encounterRepository.removeEncounter(treatmentOne.treatmentUuid) } returns kotlin.Result.success(
+            true
+        )
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(
+            treatmentList
+        )
 
         runBlocking {
             viewModel.removeTreatment(treatmentOne)
             coVerify {
                 encounterRepository.removeEncounter(treatmentOne.treatmentUuid)
             }
-        // I wanted to check the value of the treatments list but I cannot set the visit mock because it is a val. I tried to use a spy but it didn't work
+            // I wanted to check the value of the treatments list but I cannot set the visit mock because it is a val. I tried to use a spy but it didn't work
 //            assertEquals(treatmentList, viewModel.treatments.value)
         }
     }
@@ -213,11 +224,17 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         val visit = Visit().apply {
             id = 1L
             this.patient = patient
-            encounters = listOf(Encounter().apply { encounterType = EncounterType(EncounterType.VITALS) })
+            encounters =
+                listOf(Encounter().apply { encounterType = EncounterType(EncounterType.VITALS) })
         }
 
         every { visitDAO.getVisitByID(any()) } returns Observable.just(visit)
-        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit) } returns Result.Success(
+        coEvery {
+            treatmentRepository.fetchActiveTreatmentsAtAGivenTime(
+                patient,
+                visit
+            )
+        } returns Result.Success(
             listOf()
         )
 

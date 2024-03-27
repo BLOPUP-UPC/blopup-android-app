@@ -98,6 +98,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                     displayVisit(this)
                     contactDoctorToggle.check({ notifyDoctorIfNeeded(patient.identifier.identifier) })
                 }.onFailure { logger.e(it.stackTraceToString()) }
+
                 is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
                 else -> throw IllegalStateException()
             }
@@ -271,55 +272,55 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     private fun notifyDoctorIfNeeded(patientId: String?) {
-            viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
-                if (!requireArguments().getBoolean(IS_NEW_VITALS) || viewModel.doctorHasBeenContacted.value == true) return@observe
+        viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
+            if (!requireArguments().getBoolean(IS_NEW_VITALS) || viewModel.doctorHasBeenContacted.value == true) return@observe
 
-                val location = viewModel.visit?.location?.name ?: "el servei assistencial."
+            val location = viewModel.visit?.location?.name ?: "el servei assistencial."
 
-                if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
-                    showLongToast(
-                        requireContext(),
-                        ToastUtil.ToastType.NOTICE,
-                        R.string.message_to_doctor
-                    )
-                    val bloodPressureValues = getString(
-                        R.string.stage_II_b_msg,
-                        bloodPressureResult.systolicValue.toInt().toString(),
-                        bloodPressureResult.diastolicValue.toInt().toString()
-                    )
-                    lifecycleScope.launch {
-                        val result = viewModel.sendMessageToDoctor(
-                            getString(
-                                R.string.telegram_message,
-                                patientId,
-                                bloodPressureValues,
-                                location
-                            )
+            if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
+                showLongToast(
+                    requireContext(),
+                    ToastUtil.ToastType.NOTICE,
+                    R.string.message_to_doctor
+                )
+                val bloodPressureValues = getString(
+                    R.string.stage_II_b_msg,
+                    bloodPressureResult.systolicValue.toInt().toString(),
+                    bloodPressureResult.diastolicValue.toInt().toString()
+                )
+                lifecycleScope.launch {
+                    val result = viewModel.sendMessageToDoctor(
+                        getString(
+                            R.string.telegram_message,
+                            patientId,
+                            bloodPressureValues,
+                            location
                         )
-                        handleContactDoctorResult(result)
-                    }
-                }
-
-                if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
-                    binding.callToDoctorBanner.visibility = View.VISIBLE
-                    val bloodPressureValues = getString(
-                        R.string.stage_II_c_msg,
-                        bloodPressureResult.systolicValue.toInt().toString(),
-                        bloodPressureResult.diastolicValue.toInt().toString()
                     )
-                    lifecycleScope.launch {
-                        val result = viewModel.sendMessageToDoctor(
-                            getString(
-                                R.string.telegram_message,
-                                patientId,
-                                bloodPressureValues,
-                                location
-                            )
-                        )
-                        handleContactDoctorResult(result)
-                    }
+                    handleContactDoctorResult(result)
                 }
             }
+
+            if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
+                binding.callToDoctorBanner.visibility = View.VISIBLE
+                val bloodPressureValues = getString(
+                    R.string.stage_II_c_msg,
+                    bloodPressureResult.systolicValue.toInt().toString(),
+                    bloodPressureResult.diastolicValue.toInt().toString()
+                )
+                lifecycleScope.launch {
+                    val result = viewModel.sendMessageToDoctor(
+                        getString(
+                            R.string.telegram_message,
+                            patientId,
+                            bloodPressureValues,
+                            location
+                        )
+                    )
+                    handleContactDoctorResult(result)
+                }
+            }
+        }
     }
 
     private fun handleContactDoctorResult(result: kotlin.Result<Boolean>) {
@@ -334,20 +335,22 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     fun endVisit() {
-        viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { result ->
-            when (result) {
-                is Result.Success -> {
-                    requireActivity().finish()
-                }
-
-                is Result.Error -> {
-                    if (result.throwable() is UnknownHostException) {
-                        ToastUtil.error(getString(R.string.no_internet_connection))
+        lifecycleScope.launch {
+            viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Result.Success -> {
+                        requireActivity().finish()
                     }
-                }
 
-                else -> {
-                    ToastUtil.error(getString(R.string.visit_ending_error))
+                    is Result.Error -> {
+                        if (result.throwable() is UnknownHostException) {
+                            ToastUtil.error(getString(R.string.no_internet_connection))
+                        }
+                    }
+
+                    else -> {
+                        ToastUtil.error(getString(R.string.visit_ending_error))
+                    }
                 }
             }
         }
