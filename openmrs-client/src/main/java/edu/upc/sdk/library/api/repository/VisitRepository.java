@@ -150,30 +150,6 @@ public class VisitRepository extends BaseRepository {
     }
 
     /**
-     * This method ends an active visit of a patient.
-     *
-     * @param visit visit to be ended
-     * @return observable boolean true if operation is successful
-     * @see Visit
-     */
-    public Observable<Boolean> endVisit(Visit visit) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            // Don't pass the full visit to the API as it will return an error, instead create an empty visit.
-            Visit emptyVisitWithStopDate = new Visit();
-            emptyVisitWithStopDate.setStopDatetime(Instant.now().toString());
-
-            Response<Visit> response = restApi.endVisitByUUID(visit.getUuid(), emptyVisitWithStopDate).execute();
-            if (response.isSuccessful()) {
-                visit.setStopDatetime(emptyVisitWithStopDate.getStopDatetime());
-                visitDAO.saveOrUpdate(visit, visit.patient.getId()).single().toBlocking().first();
-                return true;
-            } else {
-                throw new Exception("endVisitByUuid error: " + response.message());
-            }
-        });
-    }
-
-    /**
      * Start visit for a patient.
      *
      * @param patient the patient to start a visit for
