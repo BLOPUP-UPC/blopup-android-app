@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardMainViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
@@ -11,6 +12,13 @@ import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import io.mockk.MockKAnnotations
+import io.mockk.Ordering
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -25,6 +33,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.never
 import rx.Observable
+import java.util.UUID
 
 
 @RunWith(JUnit4::class)
@@ -33,17 +42,20 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Mock
+    @MockK
     lateinit var patientDAO: PatientDAO
 
-    @Mock
+    @MockK
     lateinit var visitDAO: VisitDAO
 
-    @Mock
+    @MockK
     lateinit var visitRepository: VisitRepository
 
-    @Mock
+    @MockK
     lateinit var patientRepository: PatientRepository
+
+    @MockK
+    lateinit var newVisitRepository: NewVisitRepository
 
     private lateinit var savedStateHandle: SavedStateHandle
 
@@ -56,12 +68,14 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
     @Before
     override fun setUp() {
         super.setUp()
+        MockKAnnotations.init(this)
         patient = createPatient(PATIENT_ID)
-        Mockito.`when`(patientDAO.findPatientByID(PATIENT_ID.toString())).thenReturn(patient)
+        every { patientDAO.findPatientByID(PATIENT_ID.toString()) } returns patient
+
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, PATIENT_ID) }
         viewModel = PatientDashboardMainViewModel(
             patientDAO, visitDAO, patientRepository,
-            visitRepository, savedStateHandle
+            visitRepository, newVisitRepository, savedStateHandle
         )
         visitList = createVisitList()
     }
@@ -81,48 +95,43 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
             uuid = "e4cc001c-884e-4cc1-b55d-30c49a48dcc5"
         }
 
-        Mockito.`when`(visitDAO.getActiveVisitByPatientId(patient.id))
-            .thenReturn(Observable.just(visit))
+        every { visitDAO.getActiveVisitByPatientId(patient.id) } returns Observable.just(visit)
+        coEvery { newVisitRepository.endVisit(UUID.fromString(visit.uuid)) } returns true
 
-        Mockito.`when`(visitRepository.endVisit(visit))
-            .thenReturn(Observable.just(true))
+        runBlocking {
+            val actual = viewModel.endActiveVisit()
+            assertEquals(true, actual.value)
+        }
 
-        val actual = viewModel.endActiveVisit()
-
-        assertEquals(true, actual.value)
     }
 
     @Test
     fun updateLocalPatientWhenSyncingData() {
         val serverPatient = Patient()
-        Mockito.`when`(patientRepository.downloadPatientByUuid(any()))
-            .thenReturn(Observable.just(serverPatient))
-        Mockito.`when`(visitRepository.syncVisitsData(any()))
-            .thenReturn(Observable.just(emptyList<Visit>()))
-        Mockito.`when`(visitRepository.syncLastVitals(any()))
-            .thenReturn(Observable.just(null))
+        every { patientRepository.downloadPatientByUuid(any()) } returns Observable.just(
+            serverPatient
+        )
+        every { visitRepository.syncVisitsData(any()) } returns Observable.just(emptyList<Visit>())
+        every { visitRepository.syncLastVitals(any()) } returns Observable.just(null)
 
         viewModel.syncPatientData()
 
-        val inOrder: InOrder = inOrder(patientDAO)
-        inOrder.verify(patientDAO).findPatientByID(PATIENT_ID.toString())
-        inOrder.verify(patientDAO, atLeastOnce()).updatePatient(PATIENT_ID, serverPatient)
+        verify(Ordering.ORDERED) {
+            patientDAO.findPatientByID(PATIENT_ID.toString())
+            patientDAO.updatePatient(PATIENT_ID, serverPatient)
+        }
     }
 
     @Test
     fun notUpdateLocalPatientWithServerWhenItsEquals() {
-        Mockito.`when`(patientRepository.downloadPatientByUuid(any()))
-            .thenReturn(Observable.just(patient))
-        Mockito.`when`(visitRepository.syncVisitsData(any()))
-            .thenReturn(Observable.just(emptyList<Visit>()))
-        Mockito.`when`(visitRepository.syncLastVitals(any()))
-            .thenReturn(Observable.just(null))
+        every { patientRepository.downloadPatientByUuid(any()) } returns Observable.just(patient)
+        every { visitRepository.syncVisitsData(any()) } returns Observable.just(emptyList<Visit>())
+        every { visitRepository.syncLastVitals(any()) } returns Observable.just(null)
 
         viewModel.syncPatientData()
 
-        val inOrder: InOrder = inOrder(patientDAO)
-        inOrder.verify(patientDAO).findPatientByID(PATIENT_ID.toString())
-        inOrder.verify(patientDAO, never()).updatePatient(PATIENT_ID, patient)
+        verify { patientDAO.findPatientByID(PATIENT_ID.toString()) }
+        verify(exactly = 0) { patientDAO.updatePatient(PATIENT_ID, patient) }
     }
 
     companion object {

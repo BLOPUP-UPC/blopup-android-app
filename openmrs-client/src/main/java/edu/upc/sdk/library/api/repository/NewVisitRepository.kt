@@ -63,7 +63,8 @@ class NewVisitRepository @Inject constructor(val restApi: RestApi, val visitDAO:
         val visitWithEndDate = OpenMRSVisit().apply {
             stopDatetime = endVisitDateTime.toInstant(ZoneOffset.UTC).toString()
         }
-        val response = restApi.endVisitByUUID(visitId.toString(), visitWithEndDate).execute()
+        val call = restApi.endVisitByUUID(visitId.toString(), visitWithEndDate)
+        val response = call.execute()
 
         if (response.isSuccessful) {
             try {

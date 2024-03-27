@@ -19,7 +19,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +37,8 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.execute
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -126,9 +130,11 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     }
 
     fun endActiveVisit() {
-        viewModel.endActiveVisit().observe(this) { visitEnded ->
-            if (visitEnded) {
-                startVitalsMeasurement()
+        lifecycleScope.launch {
+            viewModel.endActiveVisit().observe(this@PatientDashboardActivity) { visitEnded ->
+                if (visitEnded) {
+                    startVitalsMeasurement()
+                }
             }
         }
     }

@@ -3,8 +3,10 @@ package edu.upc.openmrs.activities.patientdashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.OpenMRSLogger
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
@@ -14,8 +16,11 @@ import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
+import java.util.UUID
 import javax.inject.Inject
 
 
@@ -25,6 +30,7 @@ class PatientDashboardMainViewModel @Inject constructor(
     private val visitDAO: VisitDAO,
     private val patientRepository: PatientRepository,
     private val visitRepository: VisitRepository,
+    private val newVisitRepository: NewVisitRepository,
     savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Unit>() {
 
@@ -42,24 +48,14 @@ class PatientDashboardMainViewModel @Inject constructor(
         return liveData
     }
 
-    fun endActiveVisit(): LiveData<Boolean> {
-        val endVisitResult = MutableLiveData<Boolean>()
+    suspend fun endActiveVisit(): LiveData<Boolean> {
+        val endVisitResult: MutableLiveData<Boolean> = MutableLiveData(false)
+        val activeVisit =
+            visitDAO.getActiveVisitByPatientId(patientId.toLong()).toBlocking().first()
 
-        addSubscription(visitDAO.getActiveVisitByPatientId(patientId.toLong())
-            .observeOn(AndroidSchedulers.mainThread())
-            .flatMap { activeVisit ->
-                if (activeVisit != null) {
-                    visitRepository.endVisit(activeVisit)
-                        .observeOn(AndroidSchedulers.mainThread())
-                } else {
-                    Observable.empty()
-                }
-            }
-            .subscribe(
-                { endVisitResult.value = true },
-                { endVisitResult.value = false }
-            )
-        )
+        if (activeVisit != null) {
+            endVisitResult.value = newVisitRepository.endVisit(UUID.fromString(activeVisit.uuid))
+        }
         return endVisitResult
     }
 
