@@ -89,8 +89,6 @@
     <string name="data_type_not_available_for_this_field">Gráfico no disponible para este campo.</string>
     <string name="charts_view_toolbar_title">Vistas de los gráficos</string>
     <string name="snackbar_choose">Escoger</string>
-    <string name="showcase_register_patient">Haz click aquí para registrar un nuevo paciente.</string>
-    <string name="showcase_find_patients">Haz click aquí para buscar en todos los pacientes</string>
     <string name="contact_us">Contáctenos</string>
     <string name="contact_us_text">Contáctenos</string>
     <string name="visit_dashboard_label">Encuentros</string>

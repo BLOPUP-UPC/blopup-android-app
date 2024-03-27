@@ -17,15 +17,10 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.SparseArray
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
-import com.github.amlcurran.showcaseview.OnShowcaseEventListener
-import com.github.amlcurran.showcaseview.ShowcaseView
-import com.github.amlcurran.showcaseview.targets.Target
-import com.github.amlcurran.showcaseview.targets.ViewTarget
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentDashboardBinding
@@ -47,54 +42,7 @@ class DashboardFragment : BaseFragment(), View.OnClickListener {
         val settings2 =
             requireActivity().getSharedPreferences(ApplicationConstants.OPENMRS_PREF_FILE, 0)
         if (settings2.getBoolean("my_first_time", true)) {
-            showOverlayTutorial(
-                (binding.findPatientView).id, getString(R.string.dashboard_search_icon_label),
-                getString(R.string.showcase_find_patients), R.style.CustomShowcaseTheme,
-                ApplicationConstants.ShowCaseViewConstants.SHOW_FIND_PATIENT, true
-            )
             settings2.edit().putBoolean("my_first_time", false).apply()
-        }
-    }
-
-    private fun showOverlayTutorial(
-        view: Int, title: String, content: String, styleTheme: Int,
-        currentViewCount: Int, showTextBelow: Boolean
-    ) {
-        val viewTarget: Target = ViewTarget(view, this.activity)
-        val builder = ShowcaseView.Builder(this.activity)
-            .setTarget(viewTarget)
-            .setContentTitle(title)
-            .setContentText(content)
-            .hideOnTouchOutside()
-            .setStyle(styleTheme)
-            .setShowcaseEventListener(object : OnShowcaseEventListener {
-                override fun onShowcaseViewHide(showcaseView: ShowcaseView) {
-                    when (currentViewCount) {
-                        ApplicationConstants.ShowCaseViewConstants.SHOW_ACTIVE_VISITS -> showOverlayTutorial(
-                            (binding.registryPatientView).id,
-                            getString(R.string.action_register_patient),
-                            getString(R.string.showcase_register_patient),
-                            R.style.CustomShowcaseTheme,
-                            ApplicationConstants.ShowCaseViewConstants.SHOW_REGISTER_PATIENT,
-                            false
-                        )
-                    }
-                    showcaseView.visibility = View.GONE
-                }
-
-                override fun onShowcaseViewDidHide(showcaseView: ShowcaseView) { //This method is intentionally left blank
-                }
-
-                override fun onShowcaseViewShow(showcaseView: ShowcaseView) { //This method is intentionally left blank
-                }
-
-                override fun onShowcaseViewTouchBlocked(motionEvent: MotionEvent) { //This method is intentionally left blank
-                }
-            })
-        if (showTextBelow) {
-            builder.build()
-        } else {
-            builder.build().forceTextPosition(ShowcaseView.ABOVE_SHOWCASE)
         }
     }
 

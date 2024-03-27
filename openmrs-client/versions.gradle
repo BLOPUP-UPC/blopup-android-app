@@ -27,7 +27,6 @@ versions.roomCompiler = '2.6.1'
 versions.workManager = '2.9.0'
 
 versions.MPAndroidChart = 'v3.1.0'
-versions.showcaseview = '5.4.3'
 versions.jbcrypt = '0.4'
 versions.countryCodePicker = '2.4.0'
 versions.AppIntro = '6.0.0'

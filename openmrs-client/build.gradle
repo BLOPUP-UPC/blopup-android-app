@@ -265,7 +265,6 @@ dependencies {
 
     // Third Party UI Libraries
     implementation "com.github.PhilJay:MPAndroidChart:${versions.MPAndroidChart}"
-    implementation "com.github.amlcurran.showcaseview:library:${versions.showcaseview}"
     implementation "org.mindrot:jbcrypt:${versions.jbcrypt}"
     implementation "com.github.AppIntro:AppIntro:${versions.AppIntro}"
     implementation "androidx.multidex:multidex:${versions.multidex}"

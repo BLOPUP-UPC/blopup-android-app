@@ -99,12 +99,6 @@ object ApplicationConstants {
         val LANGUAGE_CODE = arrayOf("en", "es", "ca")
     }
 
-    object ShowCaseViewConstants {
-        const val SHOW_FIND_PATIENT = 1
-        const val SHOW_ACTIVE_VISITS = 2
-        const val SHOW_REGISTER_PATIENT = 3
-    }
-
     object VitalsConceptType {
         const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

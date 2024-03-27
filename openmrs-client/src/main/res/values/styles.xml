@@ -19,14 +19,6 @@
         <item name="background">@color/primary_dark</item>
         <item name="actionMenuTextColor">@android:color/white</item>
     </style>
-    <style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title.Light">
-        <item name="android:textColor">#deffffff</item>
-    </style>
-
-    <style name="CustomText" parent="TextAppearance.ShowcaseView.Detail.Light">
-        <item name="android:textColor">#8affffff</item>
-    </style>
-
     <style name="Blopup.TabLayout" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">@dimen/text_base</item>
     </style>

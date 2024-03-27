@@ -125,8 +125,6 @@
     <string name="invalid_URL_message">URL no vàlida</string>
     <string name="contact_us">Contacta\'ns</string>
     <string name="contact_us_text">Contacta\'ns</string>
-    <string name="showcase_find_patients">Prem aquí per buscar tots els pacients</string>
-    <string name="showcase_register_patient">Prem aquí per registrar un pacient</string>
     <string name="data_type_not_available_for_this_field">Gràfic no disponible per aquest camp</string>
     <string name="snackbar_server_error">El servidor ha caigut. Si-us-plau, seleccioni\'n un diferent.</string>
     <string name="snackbar_choose">Triar</string>

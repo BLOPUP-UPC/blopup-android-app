@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/call_doctor_banner_text"
         android:lineSpacingExtra="2sp"
-        android:padding="@dimen/text_padding"/>
+        android:padding="24dp"/>
 
     <RelativeLayout
         android:id="@+id/buttons"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:paddingEnd="@dimen/text_padding"
+            android:paddingEnd="24dp"
             android:text="@string/cancel_capitalized"
             android:textColor="@color/color_accent"
             android:lineSpacingExtra="2dp"
@@ -42,8 +42,8 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:paddingStart="@dimen/text_padding"
-            android:paddingEnd="@dimen/text_padding"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
             android:text="@string/call_button_text"
             android:textColor="@color/color_accent"
             android:textStyle="bold" />

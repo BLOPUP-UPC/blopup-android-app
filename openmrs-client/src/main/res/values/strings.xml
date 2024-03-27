@@ -222,10 +222,6 @@
     <string name="blopup_helpdesk" translatable="false">Blopup helpdesk</string>
     <string name="contact_us_message_hint" tools:ignore="MissingTranslation">Write your message here</string>
 
-    <!-- ShowCaseView -->
-    <string name="showcase_find_patients" tools:ignore="MissingTranslation">Click here to search through all the patients</string>
-    <string name="showcase_register_patient" tools:ignore="MissingTranslation">Click here to register a new patient</string>
-
     <!-- Chart Activity -->
     <string name="data_type_not_available_for_this_field" tools:ignore="MissingTranslation">Chart not available for this field</string>
 
