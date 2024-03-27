@@ -58,7 +58,8 @@ class TreatmentViewModel @Inject constructor(
             treatmentRepository.saveTreatment(treatment.value!!)
             setContent(treatment.value!!)
         } catch (e: Exception) {
-            logger.e("Error registering training. ${e.javaClass}: ${e.message})")
+            logger.e("Error registering treatment. ${e.javaClass}: ${e.message})")
+            setError(e)
         }
 
     fun updateFieldValidation(fieldName: String, isValid: Boolean) {
