@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit.SECONDS
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -60,7 +62,7 @@ class NewVisitRepository @Inject constructor(val restApi: RestApi, val visitDAO:
     suspend fun endVisit(visitId: UUID): Boolean {
         var result = false
 
-        val endVisitDateTime = LocalDateTime.now()
+        val endVisitDateTime = LocalDateTime.now().truncatedTo(SECONDS)
         val visitWithEndDate = OpenMRSVisit().apply {
             stopDatetime = endVisitDateTime.toInstant(ZoneOffset.UTC).toString()
         }
