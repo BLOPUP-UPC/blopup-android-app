@@ -7,6 +7,8 @@ import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.utilities.DateUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.UUID
@@ -28,16 +30,13 @@ class NewVisitRepository @Inject constructor(val restApi: RestApi, val visitDAO:
 
         val systolic =
             vitalsObservations?.find { it.display?.contains("Systolic") == true }?.displayValue?.toDouble()
-                ?.toInt()
-                ?: throw Exception("Systolic is null")
+                ?.toInt() ?: throw Exception("Systolic is null")
         val diastolic =
             vitalsObservations.find { it.display?.contains("Diastolic") == true }?.displayValue?.toDouble()
-                ?.toInt()
-                ?: throw Exception("Diastolic is null")
+                ?.toInt() ?: throw Exception("Diastolic is null")
         val pulse =
             vitalsObservations.find { it.display?.contains("Pulse") == true }?.displayValue?.toDouble()
-                ?.toInt()
-                ?: throw Exception("Pulse is null")
+                ?.toInt() ?: throw Exception("Pulse is null")
         val weight =
             vitalsObservations.find { it.display?.contains("Weight") == true }?.displayValue?.toFloat()
         val height =
@@ -59,27 +58,34 @@ class NewVisitRepository @Inject constructor(val restApi: RestApi, val visitDAO:
     }
 
     suspend fun endVisit(visitId: UUID): Boolean {
+        var result = false
+
         val endVisitDateTime = LocalDateTime.now()
         val visitWithEndDate = OpenMRSVisit().apply {
             stopDatetime = endVisitDateTime.toInstant(ZoneOffset.UTC).toString()
         }
-        val call = restApi.endVisitByUUID(visitId.toString(), visitWithEndDate)
-        val response = call.execute()
 
-        if (response.isSuccessful) {
-            try {
-                val localVisitId =
-                    visitDAO.getVisitsIDByUUID(visitId.toString()).single().toBlocking().first()
-                val localVisit = visitDAO.getVisitByID(localVisitId).single().toBlocking().first()
-                localVisit.patient.id?.let {
-                    visitDAO.saveOrUpdate(localVisit, it).single().toBlocking().first()
+        withContext(Dispatchers.IO) {
+            val call = restApi.endVisitByUUID(visitId.toString(), visitWithEndDate)
+            val response = call.execute()
+
+            if (response.isSuccessful) {
+                try {
+                    val localVisitId =
+                        visitDAO.getVisitsIDByUUID(visitId.toString()).single().toBlocking().first()
+                    val localVisit =
+                        visitDAO.getVisitByID(localVisitId).single().toBlocking().first()
+                    localVisit.patient.id?.let {
+                        visitDAO.saveOrUpdate(localVisit, it).single().toBlocking().first()
+                    }
+                } catch (e: Exception) {
+                    logger.e("Error updating visit end date in local database: ${e.javaClass.simpleName}: ${e.message}")
                 }
-            } catch (e: Exception) {
-                logger.e("Error updating visit end date in local database: ${e.javaClass.simpleName}: ${e.message}")
+                result = true
+            } else {
+                throw Exception("endVisitByUuid error: " + response.message())
             }
-            return true
-        } else {
-            throw Exception("endVisitByUuid error: " + response.message())
         }
+        return result
     }
 }
