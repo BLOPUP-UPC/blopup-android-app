@@ -85,12 +85,7 @@ fun LocationDialog(
                         )
                     }
 
-                    ResultUiState.Error ->
-                        Text(
-                            text = stringResource(R.string.error_fetching_locations),
-                            color = Color.Red,
-                            modifier = Modifier.padding(15.dp)
-                        )
+                    ResultUiState.Error -> {}
 
                     ResultUiState.Loading -> {}
                 }
@@ -224,21 +219,21 @@ fun CurrentLocation(location: ResultUiState<String>) {
 }
 
 
-//@Preview
-//@Composable
-//fun LocationDialogPreview() {
-//    LocationDialog(
-//        show = true,
-//        onDialogClose = {},
-//        currentLocation = ResultUiState.Success("Nursery"),
-//        locationsList = ResultUiState.Success(
-//            listOf(
-//                LocationEntity(display = "Nursery"),
-//                LocationEntity(display = "Hospital")
-//            )
-//        )
-//    ) {}
-//}
+@Preview
+@Composable
+fun LocationDialogPreview() {
+    LocationDialog(
+        show = true,
+        onDialogClose = {},
+        currentLocation = ResultUiState.Success("Nursery"),
+        locationsList = ResultUiState.Success(
+            listOf(
+                LocationEntity(display = "Nursery"),
+                LocationEntity(display = "Hospital")
+            )
+        )
+    ) {}
+}
 
 @Preview
 @Composable
