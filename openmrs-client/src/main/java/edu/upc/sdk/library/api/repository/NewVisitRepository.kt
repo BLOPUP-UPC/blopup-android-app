@@ -9,9 +9,9 @@ import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.utilities.DateUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Call
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
 import java.time.temporal.ChronoUnit.SECONDS
 import java.util.UUID
 import javax.inject.Inject
@@ -59,16 +59,14 @@ class NewVisitRepository @Inject constructor(val restApi: RestApi, val visitDAO:
         )
     }
 
-    suspend fun endVisit(visitId: UUID): Boolean {
-        var result = false
-
-        val endVisitDateTime = LocalDateTime.now().truncatedTo(SECONDS)
-        val visitWithEndDate = OpenMRSVisit().apply {
-            stopDatetime = endVisitDateTime.toInstant(ZoneOffset.UTC).toString()
-        }
-
+    suspend fun endVisit(visitId: UUID): Boolean =
         withContext(Dispatchers.IO) {
-            val call = restApi.endVisitByUUID(visitId.toString(), visitWithEndDate)
+            val endVisitDateTime = LocalDateTime.now().truncatedTo(SECONDS).toInstant(ZoneOffset.UTC).toString()
+            val visitWithEndDate = OpenMRSVisit().apply {
+                stopDatetime = endVisitDateTime
+            }
+
+            val call: Call<OpenMRSVisit> = restApi.endVisitByUUID(visitId.toString(), visitWithEndDate)
             val response = call.execute()
 
             if (response.isSuccessful) {
@@ -78,16 +76,15 @@ class NewVisitRepository @Inject constructor(val restApi: RestApi, val visitDAO:
                     val localVisit =
                         visitDAO.getVisitByID(localVisitId).single().toBlocking().first()
                     localVisit.patient.id?.let {
+                        localVisit.stopDatetime = endVisitDateTime
                         visitDAO.saveOrUpdate(localVisit, it).single().toBlocking().first()
                     }
                 } catch (e: Exception) {
                     logger.e("Error updating visit end date in local database: ${e.javaClass.simpleName}: ${e.message}")
                 }
-                result = true
+                true
             } else {
                 throw Exception("endVisitByUuid error: " + response.message())
             }
         }
-        return result
-    }
 }
