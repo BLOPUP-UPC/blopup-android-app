@@ -3,13 +3,10 @@ package edu.upc.sdk.library.api.repository
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.Visit
-import edu.upc.openmrs.application.OpenMRS
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.LocationDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.databases.entities.LocationEntity
-import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.VisitExample
 import io.mockk.Called
@@ -202,11 +199,11 @@ class NewVisitRepositoryTest {
         every { call.execute() } returns Response.success(openMRSVisit)
         every { visitDAO.saveOrUpdate(any(), any()) } returns Observable.just(1)
 
-        val result = visitRepository.startVisit(patient)
-
+        runBlocking {
+            val result = visitRepository.startVisit(patient)
+            assertEquals(result, expectedVisit)
+        }
         verify { restApi.startVisit(any()) }
-
-        assertEquals(result, expectedVisit)
     }
 
     @Test(expected = IOException::class)
@@ -218,7 +215,7 @@ class NewVisitRepositoryTest {
         every { restApi.startVisit(any()) } returns call
         every { call.execute() } returns Response.error(500, mockk<ResponseBody>())
 
-        visitRepository.startVisit(patient)
+        runBlocking { visitRepository.startVisit(patient) }
 
         verify { restApi.startVisit(any()) }
         verify { visitDAO wasNot Called }
@@ -257,10 +254,11 @@ class NewVisitRepositoryTest {
         every { call.execute() } returns Response.success(openMRSVisit)
         every { visitDAO.saveOrUpdate(any(), any()) } throws Exception()
 
-        val result = visitRepository.startVisit(patient)
+        runBlocking {
+            val result = visitRepository.startVisit(patient)
 
+            assertEquals(result, expectedVisit)
+        }
         verify { restApi.startVisit(any()) }
-
-        assertEquals(result, expectedVisit)
     }
 }

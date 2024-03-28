@@ -24,6 +24,7 @@ import org.joda.time.format.DateTimeFormatter
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.Date
 import java.util.TimeZone
 import java.time.LocalDateTime as JavaLocalDateTime
@@ -260,6 +261,15 @@ object DateUtils {
             return date != null
         }
         return false
+    }
+
+    @JvmStatic
+    fun formatLocalDateTimeAsDateWithTime(localDateTime: LocalDateTime): String {
+        return localDateTime.format(
+            java.time.format.DateTimeFormatter.ofPattern(
+                DATE_WITH_TIME_FORMAT
+            )
+        )
     }
 
     fun java.time.LocalDate.formatAsDate(): String {

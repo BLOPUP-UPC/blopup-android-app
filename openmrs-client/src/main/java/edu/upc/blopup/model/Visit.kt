@@ -11,5 +11,5 @@ data class Visit(
     val bloodPressure: BloodPressure,
     val heightCm: Int? = null,
     val weightKg: Float? = null,
-    val endDate: LocalDateTime? = null
+    var endDate: LocalDateTime? = null
 )
