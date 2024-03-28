@@ -11,7 +11,6 @@ import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.BloodPressureResult
 import edu.upc.sdk.library.models.Encounter
@@ -50,7 +49,7 @@ class VisitDashboardViewModel @Inject constructor(
     private val _doctorHasBeenContacted: MutableLiveData<Boolean> = MutableLiveData(false)
     val doctorHasBeenContacted: LiveData<Boolean> get() = _doctorHasBeenContacted
 
-    private val visitId: Long = savedStateHandle[VISIT_UUID]!!
+    private val visitUuid: String = savedStateHandle[VISIT_UUID]!!
     val visit: Visit?
         get() {
             val visitResult = result.value
@@ -63,6 +62,7 @@ class VisitDashboardViewModel @Inject constructor(
 
     fun fetchCurrentVisit() {
         setLoading()
+        val visitId = visitDAO.getVisitsIDByUUID(visitUuid).toBlocking().first()
         addSubscription(
             visitDAO.getVisitByID(visitId).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ visit ->

@@ -62,8 +62,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     private val logger = OpenmrsAndroid.getOpenMRSLogger()
 
     companion object {
-        fun newInstance(visitId: Long, isNewVitals: Boolean) = VisitDashboardFragment().apply {
-            arguments = bundleOf(Pair(VISIT_UUID, visitId), Pair(IS_NEW_VITALS, isNewVitals))
+        fun newInstance(visitUuid: String, isNewVitals: Boolean) = VisitDashboardFragment().apply {
+            arguments = bundleOf(Pair(VISIT_UUID, visitUuid), Pair(IS_NEW_VITALS, isNewVitals))
         }
     }
 

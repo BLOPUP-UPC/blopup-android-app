@@ -23,9 +23,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.model.Visit
 import edu.upc.databinding.FragmentPatientVisitBinding
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
@@ -34,13 +36,15 @@ import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.OperationType.PatientVisitStarting
 import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ToastUtil.error
+import kotlinx.coroutines.launch
+import java.util.UUID
+import edu.upc.openmrs.activities.BaseFragment
 
 @AndroidEntryPoint
-class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
+class PatientVisitsFragment : BaseFragment() {
     private var _binding: FragmentPatientVisitBinding? = null
     private val binding get() = _binding!!
 
@@ -100,7 +104,7 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     dismissCurrentDialog()
                     when (result.operationType) {
                         PatientVisitsFetching -> showVisitsList(result.data)
-                        PatientVisitStarting -> goToVisitDashboard(result.data[0].id!!)
+                        PatientVisitStarting -> goToVisitDashboard(result.data[0].id)
                         else -> {
                         }
                     }
@@ -125,8 +129,11 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
         viewModel.fetchVisitsData()
     }
 
+
     fun startVisit() {
-        viewModel.startVisit()
+        lifecycleScope.launch {
+            return@launch viewModel.startVisit()
+        }
     }
 
     private fun showVisitsList(visits: List<Visit>) {
@@ -157,9 +164,9 @@ class PatientVisitsFragment : edu.upc.openmrs.activities.BaseFragment() {
         patientDashboardActivity.dismissCustomFragmentDialog()
     }
 
-    fun goToVisitDashboard(visitID: Long) {
+    fun goToVisitDashboard(visitID: UUID) {
         Intent(activity, VisitDashboardActivity::class.java).apply {
-            putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, visitID)
+            putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, visitID.toString())
             startActivity(this)
         }
     }

@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.upc.R;
-import edu.upc.sdk.library.models.Visit;
+import edu.upc.blopup.model.Visit;
 import edu.upc.sdk.utilities.DateUtils;
 
 public class PatientVisitsRecyclerViewAdapter extends RecyclerView.Adapter<PatientVisitsRecyclerViewAdapter.VisitViewHolder> {
@@ -51,10 +51,10 @@ public class PatientVisitsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
     public void onBindViewHolder(@NonNull VisitViewHolder visitViewHolder, final int position) {
         final int adapterPos = visitViewHolder.getAdapterPosition();
         Visit visit = mVisits.get(adapterPos);
-        visitViewHolder.mVisitStart.setText(DateUtils.convertTime1(visit.getStartDatetime(), DateUtils.DATE_WITH_TIME_FORMAT));
-        if (DateUtils.convertTime(visit.getStopDatetime()) != null) {
+        visitViewHolder.mVisitStart.setText(DateUtils.formatLocalDateTimeAsDateWithTime(visit.getStartDate()));
+        if (visit.getEndDate() != null) {
             visitViewHolder.mVisitEnd.setVisibility(View.VISIBLE);
-            visitViewHolder.mVisitEnd.setText(DateUtils.convertTime1((visit.getStopDatetime()), DateUtils.DATE_WITH_TIME_FORMAT));
+            visitViewHolder.mVisitEnd.setText(DateUtils.formatLocalDateTimeAsDateWithTime(visit.getEndDate()));
 
             Drawable icon = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.past_visit_dot, null);
             icon.setBounds(0, 0, icon.getIntrinsicHeight(), icon.getIntrinsicWidth());
@@ -68,7 +68,7 @@ public class PatientVisitsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
             visitViewHolder.mVisitStatus.setText(mContext.getString(R.string.active_visit_label));
         }
         if (visit.getLocation() != null) {
-            visitViewHolder.mVisitPlace.setText(mContext.getString(R.string.visit_in, visit.getLocation().getDisplay()));
+            visitViewHolder.mVisitPlace.setText(mContext.getString(R.string.visit_in, visit.getLocation()));
         }
 
         visitViewHolder.mCardView.setOnClickListener(view -> mContext.goToVisitDashboard(mVisits.get(adapterPos).getId()));

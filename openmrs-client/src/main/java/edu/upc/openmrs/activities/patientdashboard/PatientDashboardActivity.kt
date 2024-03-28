@@ -19,7 +19,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
@@ -37,7 +36,6 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.execute
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -156,7 +154,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId.toLong()).execute()
             startActivity(
                 Intent(this, VisitDashboardActivity::class.java)
-                    .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, activeVisit.id)
+                    .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, activeVisit.uuid)
                     .putExtra(ApplicationConstants.BundleKeys.IS_NEW_VITALS, true)
             )
 

@@ -14,6 +14,7 @@
 
 package edu.upc.openmrs.test;
 
+import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
@@ -27,12 +28,15 @@ import org.mockito.junit.MockitoRule;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import edu.upc.BuildConfig;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.library.models.Encounter;
+import edu.upc.sdk.library.models.EncounterType;
+import edu.upc.sdk.library.models.Observation;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientIdentifier;
-import edu.upc.sdk.library.models.Person;
 import edu.upc.sdk.library.models.PersonAddress;
 import edu.upc.sdk.library.models.PersonAttribute;
 import edu.upc.sdk.library.models.PersonAttributeType;
@@ -58,7 +62,7 @@ public abstract class ACUnitTestBase {
     protected Patient createPatient(Long id) {
         Patient patient = new Patient(id, "",
                 Collections.singletonList(createIdentifier(id)));
-        patient.setUuid("patient_one_uuid" + id);
+        patient.setUuid(UUID.randomUUID().toString());
         updatePatientData(id, patient);
         return patient;
     }
@@ -115,16 +119,6 @@ public abstract class ACUnitTestBase {
         return patient;
     }
 
-    protected Person createPerson(Long id) {
-        return new Person(Collections.singletonList(createPersonName(id)), "M", "25-02-2016", false, Collections.singletonList(createPersonAddress(id)), Collections.singletonList(createPersonAttributes(id)), null, new Resource(), false, false);
-    }
-
-    private PersonAttribute createPersonAttributes(Long id) {
-        PersonAttribute personAttribute = new PersonAttribute();
-        personAttribute.setValue("value");
-        return personAttribute;
-    }
-
     protected List<Visit> createVisitList() {
         ArrayList<Visit> visits = new ArrayList();
         visits.add(createVisit("visit1", 1L));
@@ -134,10 +128,38 @@ public abstract class ACUnitTestBase {
 
     protected Visit createVisit(String display, long patientId) {
         Visit visit = new Visit();
+        visit.setStartDatetime("2019-01-01T00:00:00.000+0000");
         visit.location = new LocationEntity(display);
         visit.visitType = new VisitType(display);
         visit.patient = createPatient(patientId);
+        visit.setUuid(UUID.randomUUID().toString());
+        ArrayList<Observation> observations = getObservations();
+        visit.encounters = new ArrayList<>();
+        Encounter encounter = new Encounter();
+        encounter.setEncounterType(new EncounterType(EncounterType.VITALS));
+        encounter.setObservations(observations);
+        visit.encounters.add(encounter);
         return visit;
+    }
+
+    @NonNull
+    private static ArrayList<Observation> getObservations() {
+        Observation systolic = new Observation();
+        systolic.setDisplayValue("120");
+        systolic.setDisplay("Systolic");
+        Observation diastolic = new Observation();
+        diastolic.setDisplayValue("80");
+        diastolic.setDisplay("Diastolic");
+        Observation pulse = new Observation();
+        pulse.setDisplayValue("90");
+        pulse.setDisplay("Pulse");
+        return new ArrayList<Observation>() {
+            {
+                add(systolic);
+                add(diastolic);
+                add(pulse);
+            }
+        };
     }
 
     protected <T> Call<Results<T>> mockSuccessCall(List<T> list) {

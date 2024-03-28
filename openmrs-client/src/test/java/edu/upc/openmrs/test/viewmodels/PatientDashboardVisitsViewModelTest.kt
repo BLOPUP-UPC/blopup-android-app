@@ -4,13 +4,19 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientDashboardVisitsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
-import edu.upc.sdk.library.api.repository.VisitRepository
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.library.models.typeConverters.VisitConverter
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -20,8 +26,6 @@ import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mock
-import org.mockito.Mockito
 import rx.Observable
 
 @RunWith(JUnit4::class)
@@ -30,14 +34,14 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Mock
+    @MockK
     lateinit var patientDAO: PatientDAO
 
-    @Mock
+    @MockK
     lateinit var visitDAO: VisitDAO
 
-    @Mock
-    lateinit var visitRepository: VisitRepository
+    @MockK
+    lateinit var newVisitRepository: NewVisitRepository
 
     private lateinit var savedStateHandle: SavedStateHandle
 
@@ -50,29 +54,41 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
     @Before
     override fun setUp() {
         super.setUp()
+        MockKAnnotations.init(this)
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, PATIENT_ID) }
-        viewModel = PatientDashboardVisitsViewModel(patientDAO, visitDAO, visitRepository, savedStateHandle)
+        viewModel =
+            PatientDashboardVisitsViewModel(
+                patientDAO,
+                visitDAO,
+                newVisitRepository,
+                savedStateHandle
+            )
         patient = createPatient(PATIENT_ID.toLong())
         visitList = createVisitList()
     }
 
     @Test
     fun fetchVisitsData_success() {
-        Mockito.`when`(visitDAO.getVisitsByPatientID(PATIENT_ID.toLong())).thenReturn(Observable.just(visitList))
+        every { visitDAO.getVisitsByPatientID(PATIENT_ID.toLong()) } returns Observable.just(
+            visitList
+        )
 
         viewModel.fetchVisitsData()
 
+        val parsedVisits = visitList.map { VisitConverter.createVisitFromOpenMRSVisit(it) }
+
         val actualResult = (viewModel.result.value as Result.Success).data
 
-        assertIterableEquals(visitList, actualResult)
+        assertIterableEquals(parsedVisits, actualResult)
     }
 
     @Test
     fun fetchVisitsData_error() {
         val errorMsg = "Error message!"
         val throwable = Throwable(errorMsg)
-        Mockito.`when`(visitDAO.getVisitsByPatientID(PATIENT_ID.toLong())).thenReturn(Observable.error(throwable))
-
+        every { visitDAO.getVisitsByPatientID(PATIENT_ID.toLong()) } returns Observable.error(
+            throwable
+        )
 
         viewModel.fetchVisitsData()
 
@@ -84,7 +100,9 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun hasActiveVisit_shouldBeTrue() {
         val visit = visitList[0]
-        Mockito.`when`(visitDAO.getActiveVisitByPatientId(PATIENT_ID.toLong())).thenReturn(Observable.just(visit))
+        every { visitDAO.getActiveVisitByPatientId(PATIENT_ID.toLong()) } returns Observable.just(
+            visit
+        )
 
         viewModel.hasActiveVisit().observeForever { hasActiveVisit -> assertTrue(hasActiveVisit) }
     }
@@ -92,18 +110,21 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
     @Test
     fun hasActiveVisit_shouldBeFalse() {
         val visit = null
-        Mockito.`when`(visitDAO.getActiveVisitByPatientId(PATIENT_ID.toLong())).thenReturn(Observable.just(visit))
+        every { visitDAO.getActiveVisitByPatientId(PATIENT_ID.toLong()) } returns Observable.just(
+            visit
+        )
 
         viewModel.hasActiveVisit().observeForever { hasActiveVisit -> assertFalse(hasActiveVisit) }
     }
 
     @Test
     fun startVisit_success() {
-        val visit = visitList[0]
-        Mockito.`when`(patientDAO.findPatientByID(PATIENT_ID)).thenReturn(patient)
-        Mockito.`when`(visitRepository.startVisit(patient)).thenReturn(Observable.just(visit))
+        val visit = VisitConverter.createVisitFromOpenMRSVisit(visitList[0])
 
-        viewModel.startVisit()
+        coEvery { patientDAO.findPatientByID(PATIENT_ID) } returns patient
+        coEvery { newVisitRepository.startVisit(patient) } returns visit
+
+        runBlocking { viewModel.startVisit() }
 
         val actualResult = (viewModel.result.value as Result.Success).data[0]
 
