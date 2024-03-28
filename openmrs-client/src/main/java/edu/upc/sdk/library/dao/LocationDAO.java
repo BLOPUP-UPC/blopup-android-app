@@ -17,6 +17,9 @@ package edu.upc.sdk.library.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
@@ -27,12 +30,17 @@ import rx.Observable;
 
 /**
  * The type Location dao.
- */
+ */@Singleton
 public class LocationDAO {
+    @Inject
+    public LocationDAO() {
+    }
+
     /**
      * The Location room dao.
      */
     final LocationRoomDAO locationRoomDAO = AppDatabase.getDatabase(OpenmrsAndroid.getInstance().getApplicationContext()).locationRoomDAO();
+
 
     /**
      * Save location observable.
