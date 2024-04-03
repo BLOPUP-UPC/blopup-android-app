@@ -35,11 +35,7 @@ class DashboardActivity : ACBaseActivity() {
                         AppToolBarWithMenu(
                             "BLOPUP",
                             false,
-                            onBackAction = {
-                                if (!navigationController.popBackStack()) {
-                                    finish()
-                                }
-                            },
+                            onBackAction = {},
                             this@DashboardActivity::logout,
                             OpenmrsAndroid.getUsername(),
                             false
