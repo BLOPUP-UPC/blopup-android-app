@@ -8,7 +8,6 @@ import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterType
@@ -50,6 +49,8 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
     private lateinit var viewModel: VisitDashboardViewModel
 
+    private val visitUuid = "1"
+
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -63,7 +64,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         visitRepository = mockk()
         doctorRepository = mockk()
         visitDAO = mockk()
-        val savedStateHandle = SavedStateHandle().apply { set(VISIT_UUID, 1L) }
+        val savedStateHandle = SavedStateHandle().apply { set(VISIT_UUID, visitUuid) }
         viewModel = VisitDashboardViewModel(
             visitDAO,
             visitRepository,
@@ -72,6 +73,7 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
             doctorRepository,
             savedStateHandle
         )
+        every { visitDAO.getVisitsIDByUUID(visitUuid) } returns Observable.just(1L)
     }
 
     @Test
