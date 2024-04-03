@@ -37,9 +37,9 @@ import java.util.List;
 
 import edu.upc.BuildConfig;
 import edu.upc.R;
+import edu.upc.blopup.ui.dashboard.DashboardActivity;
 import edu.upc.databinding.FragmentLoginBinding;
 import edu.upc.openmrs.activities.ACBaseFragment;
-import edu.upc.openmrs.activities.dashboard.DashboardActivity;
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;

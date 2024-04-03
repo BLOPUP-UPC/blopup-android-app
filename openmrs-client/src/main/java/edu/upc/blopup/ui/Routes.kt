@@ -8,4 +8,5 @@ open class Routes(val id: String) {
     object WeightDataScreen : Routes("Weight Data Screen")
     object MeasureHeightScreen : Routes("Measure Height Data Screen")
     object TreatmentAdherenceScreen : Routes("Treatment Adherence Data Screen")
+    object DashboardScreen : Routes("Dashboard Screen")
 }

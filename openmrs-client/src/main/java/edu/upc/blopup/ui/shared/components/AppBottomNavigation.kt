@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.shared.components
 
 import android.content.Intent
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountCircle
@@ -11,12 +12,14 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import edu.upc.R
@@ -31,7 +34,7 @@ fun AppBottomNavigationBar(navController: NavController) {
         ItemsBottomNav.Register
     )
 
-    BottomAppBar {
+    BottomAppBar(Modifier.height(60.dp), containerColor = colorResource(R.color.primary)) {
         val backStackEntry = navController.currentBackStackEntryAsState()
 
         NavigationBar(containerColor = colorResource(R.color.primary)) {
@@ -41,7 +44,7 @@ fun AppBottomNavigationBar(navController: NavController) {
                 NavigationBarItem(
                     selected = selected,
                     onClick = {
-                        context.startActivity(Intent(context, it.route::class.java))
+                        context.startActivity(Intent(context, Class.forName(it.route)))
                     },
                     icon = {
                         Icon(
@@ -63,9 +66,9 @@ fun AppBottomNavigationBar(navController: NavController) {
 }
 
 sealed class ItemsBottomNav(val icon: ImageVector, val label: Int, val description:String,  val route: String) {
-    data object Home : ItemsBottomNav(Icons.Outlined.Home, R.string.bottom_navigation_option_home, "Menu icon","DashboardActivity")
-    data object Search : ItemsBottomNav(Icons.Default.Search, R.string.bottom_navigation_option_search, "Search icon", "SyncedPatientsActivity")
-    data object Register : ItemsBottomNav(Icons.Outlined.AccountCircle, R.string.bottom_navigation_option_register, "Person icon", "AddEditPatientActivity")
+    data object Home : ItemsBottomNav(Icons.Outlined.Home, R.string.bottom_navigation_option_home, "Menu icon","edu.upc.blopup.ui.dashboard.DashboardActivity")
+    data object Search : ItemsBottomNav(Icons.Default.Search, R.string.bottom_navigation_option_search, "Search icon", "edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity")
+    data object Register : ItemsBottomNav(Icons.Outlined.AccountCircle, R.string.bottom_navigation_option_register, "Person icon", "edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity")
 }
 
 @Preview

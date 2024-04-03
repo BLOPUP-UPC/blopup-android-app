@@ -44,6 +44,7 @@ fun AppToolBarWithMenu(
     onBackAction: () -> Unit,
     onLogout: () -> Unit,
     username: String,
+    showGoBackButton: Boolean = true
 ) {
     val show = remember { mutableStateOf(false) }
     TopAppBar(
@@ -55,21 +56,23 @@ fun AppToolBarWithMenu(
             Text(title)
         },
         navigationIcon = {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_back),
-                contentDescription = "Back",
-                tint = colorResource(R.color.white),
-                modifier = Modifier
-                    .clickable {
-                        if (isDataScreen) {
-                            show.value = true
-                        } else {
-                            onBackAction()
+            if(showGoBackButton){
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_back),
+                    contentDescription = "Back",
+                    tint = colorResource(R.color.white),
+                    modifier = Modifier
+                        .clickable {
+                            if (isDataScreen) {
+                                show.value = true
+                            } else {
+                                onBackAction()
+                            }
                         }
-                    }
-                    .padding(horizontal = 16.dp)
-                    .testTag("back_button")
-            )
+                        .padding(horizontal = 16.dp)
+                        .testTag("back_button")
+                )
+            }
         }, actions = {
             OptionsMenu(onLogout, username)
         }

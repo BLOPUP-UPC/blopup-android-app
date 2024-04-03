@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro2
 import com.github.appintro.AppIntroFragment
 import edu.upc.R
-import edu.upc.openmrs.activities.dashboard.DashboardActivity
+import edu.upc.blopup.ui.dashboard.DashboardActivity
 import edu.upc.sdk.library.OpenmrsAndroid
 
 class IntroActivity : AppIntro2() {

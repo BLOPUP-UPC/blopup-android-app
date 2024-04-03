@@ -42,6 +42,9 @@
             android:label="@string/title_activity_vitals"
             android:theme="@style/AppTheme" />
         <activity
+        android:name=".blopup.ui.dashboard.DashboardActivity"
+        android:theme="@style/AppTheme" />
+        <activity
             android:name=".openmrs.activities.introduction.SplashActivity"
             android:exported="true"
             android:noHistory="true"
