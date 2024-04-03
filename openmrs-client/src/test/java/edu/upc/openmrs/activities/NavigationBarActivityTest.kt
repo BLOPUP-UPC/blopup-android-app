@@ -2,10 +2,9 @@ package edu.upc.openmrs.activities
 
 import android.view.MenuItem
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import edu.upc.blopup.ui.dashboard.DashboardActivity
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
-import edu.upc.openmrs.activities.dashboard.DashboardActivity
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
-import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.doNothing

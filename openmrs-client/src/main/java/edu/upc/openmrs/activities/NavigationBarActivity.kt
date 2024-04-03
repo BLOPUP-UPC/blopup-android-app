@@ -4,8 +4,8 @@ import android.content.Intent
 import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import edu.upc.R
+import edu.upc.blopup.ui.dashboard.DashboardActivity
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
-import edu.upc.openmrs.activities.dashboard.DashboardActivity
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
 
 open class NavigationBarActivity : ACBaseActivity() {

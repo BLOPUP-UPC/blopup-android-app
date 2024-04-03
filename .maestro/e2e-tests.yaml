@@ -15,8 +15,7 @@ tags:
     file: "subflows/Login.yaml"
 - runFlow:
     when:
-      visible:
-        id: "${APP_ID}:id/registryPatientView"
+      visible: "Find Patients"
     file: "subflows/CreatePatient.yaml"
 - assertVisible: "START VISIT"
 - runFlow:

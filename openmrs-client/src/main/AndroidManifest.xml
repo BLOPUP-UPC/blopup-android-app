@@ -59,10 +59,6 @@
         <meta-data
             android:name="buildVersion"
             android:value="0" />
-
-        <activity
-            android:name=".openmrs.activities.dashboard.DashboardActivity"
-            android:theme="@style/AppThemeOrig" />
         <activity
             android:name=".openmrs.activities.introduction.IntroActivity"
             android:label="Introduction"
