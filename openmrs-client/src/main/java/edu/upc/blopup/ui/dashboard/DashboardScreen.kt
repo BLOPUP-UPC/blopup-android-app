@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -79,9 +80,9 @@ fun DashboardCard(modifier: Modifier, icon: Int, label: Int ) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(painter = painterResource(icon), contentDescription = "Search icon")
+            Image(modifier = Modifier.size(80.dp),  painter = painterResource(icon), contentDescription = "Search icon")
             Spacer(modifier = Modifier.padding(10.dp))
-            Text(text = stringResource(label), color = colorResource(R.color.dark_grey_for_stroke))
+            Text(text = stringResource(label), color = colorResource(R.color.dark_grey_for_stroke), fontSize = MaterialTheme.typography.bodyLarge.fontSize)
         }
     }
 }

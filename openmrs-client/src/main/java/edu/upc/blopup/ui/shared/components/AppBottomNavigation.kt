@@ -1,7 +1,7 @@
 package edu.upc.blopup.ui.shared.components
 
 import android.content.Intent
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountCircle
@@ -20,6 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import edu.upc.R
@@ -35,7 +37,7 @@ fun AppBottomNavigationBar(navController: NavController) {
         ItemsBottomNav.Register
     )
 
-    BottomAppBar(Modifier.height(60.dp), containerColor = colorResource(R.color.primary)) {
+    BottomAppBar(containerColor = colorResource(R.color.primary)) {
         NavigationBar(containerColor = colorResource(R.color.primary)) {
             menuItems.forEach {
                 val selected =  it.route == ItemsBottomNav.Home.route
@@ -53,13 +55,15 @@ fun AppBottomNavigationBar(navController: NavController) {
                         Icon(
                             it.icon,
                             contentDescription = it.description,
-                            tint = if (selected) Color.White else Color.LightGray
+                            tint = if (selected) Color.White else Color.LightGray,
+                            modifier = Modifier.size(30.dp)
                         )
                     },
                     label = {
                         Text(
                             stringResource(it.label),
-                            color = if (selected) Color.White else Color.LightGray
+                            color = if (selected) Color.White else Color.LightGray,
+                            fontSize = TextUnit(16f, TextUnitType.Sp),
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
