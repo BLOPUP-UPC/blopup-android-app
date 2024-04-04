@@ -165,6 +165,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -341,6 +342,9 @@ dependencies {
     debugImplementation 'com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v1.0.6'
     debugImplementation 'androidx.fragment:fragment-testing:1.6.2'
     debugImplementation "androidx.test:monitor:1.6.1"
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+
 }
 
 kapt {

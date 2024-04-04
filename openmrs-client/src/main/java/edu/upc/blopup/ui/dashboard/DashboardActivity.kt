@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.blopup.ui.Routes
+import edu.upc.blopup.ui.addeditpatient.AddEditPatientScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.openmrs.activities.ACBaseActivity
@@ -53,6 +54,9 @@ class DashboardActivity : ACBaseActivity() {
                     ) {
                         composable(Routes.DashboardScreen.id) {
                             DashboardScreen()
+                        }
+                        composable(Routes.AddEditPatientScreen.id) {
+                            AddEditPatientScreen()
                         }
                     }
                 }
