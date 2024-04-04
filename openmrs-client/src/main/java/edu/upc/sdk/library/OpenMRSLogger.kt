@@ -17,13 +17,7 @@ import android.util.Log
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.app
-import java.lang.IllegalStateException
-import kotlin.coroutines.coroutineContext
 
-/**
- * The type Open mrs logger.
- */
 class OpenMRSLogger {
     private val androidDefaultUEH: Thread.UncaughtExceptionHandler?
 

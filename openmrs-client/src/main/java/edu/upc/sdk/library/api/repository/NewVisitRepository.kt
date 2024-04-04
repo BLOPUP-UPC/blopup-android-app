@@ -22,11 +22,11 @@ import edu.upc.sdk.library.models.Visit as OpenMRSVisit
 
 @Singleton
 class NewVisitRepository @Inject constructor(
-    val restApi: RestApi, val visitDAO: VisitDAO, private val locationDAO: LocationDAO
+    val restApi: RestApi,
+    val visitDAO: VisitDAO,
+    private val locationDAO: LocationDAO,
+    private val logger: OpenMRSLogger
 ) {
-
-    private val logger = OpenMRSLogger()
-
     fun getVisitByUuid(visitUuid: UUID): Visit {
         val openMRSVisit = restApi.getVisitByUuid(visitUuid.toString()).execute().body()
         return VisitConverter.createVisitFromOpenMRSVisit(openMRSVisit)

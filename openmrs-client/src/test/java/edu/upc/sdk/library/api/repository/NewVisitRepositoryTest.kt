@@ -3,6 +3,7 @@ package edu.upc.sdk.library.api.repository
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.Visit
+import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.LocationDAO
 import edu.upc.sdk.library.dao.VisitDAO
@@ -45,6 +46,9 @@ class NewVisitRepositoryTest {
 
     @MockK
     private lateinit var locationDAO: LocationDAO
+
+    @MockK
+    private lateinit var logger: OpenMRSLogger
 
     @InjectMockKs
     private lateinit var visitRepository: NewVisitRepository
