@@ -84,4 +84,18 @@ class NewVisitRepository @Inject constructor(
                 throw IOException(response.message())
             }
         }
+
+    suspend fun deleteVisit(visitUuid: UUID): Boolean = withContext(Dispatchers.IO) {
+        val call = restApi.deleteVisit(visitUuid.toString())
+        val response = call.execute()
+        if (response.isSuccessful) {
+            visitDAO.deleteVisitByUuid(visitUuid.toString()).toBlocking().first()
+
+            return@withContext true
+        }
+
+        logger.e("Error deleting the visit with uuid: $visitUuid in the server $response")
+
+        return@withContext false
+    }
 }

@@ -19,6 +19,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -260,5 +261,41 @@ class NewVisitRepositoryTest {
             assertEquals(result, expectedVisit)
         }
         verify { restApi.startVisit(any()) }
+    }
+
+    @Test
+    fun `should delete visit`() {
+        val visitUuid = UUID.randomUUID()
+
+        val response = Response.success("".toResponseBody(null))
+
+        val call = mockk<Call<ResponseBody>>(relaxed = true)
+        every { restApi.deleteVisit(visitUuid.toString()) } returns call
+        every { call.execute() } returns response
+        every { visitDAO.deleteVisitByUuid(visitUuid.toString()) } returns Observable.just(true)
+
+        runBlocking {
+            val result = visitRepository.deleteVisit(visitUuid)
+
+            assertEquals(result, true)
+        }
+    }
+
+    @Test
+    fun `should return false if delete visit fails and local visit is not deleted`() {
+        val visitUuid = UUID.randomUUID()
+
+        val response = Response.error<ResponseBody>(500, "".toResponseBody(null))
+
+        val call = mockk<Call<ResponseBody>>(relaxed = true)
+        every { restApi.deleteVisit(visitUuid.toString()) } returns call
+        every { call.execute() } returns response
+
+        runBlocking {
+            val result = visitRepository.deleteVisit(visitUuid)
+
+            verify { visitDAO wasNot Called }
+            assertEquals(result, false)
+        }
     }
 }
