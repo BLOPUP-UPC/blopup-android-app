@@ -207,14 +207,16 @@ class NewVisitRepositoryTest {
             visit.heightCm
         )
 
-        val callStartVisit = mockk<Call<OpenMRSVisit>>(relaxed = true)
-        val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)
         every { locationDAO.findLocationByName(any()) } returns LocationEntity(location)
-        every { restApi.startVisit(any()) } returns callStartVisit
-        every { restApi.createEncounter(any()) } returns callCreateEncounter
 
+        val callStartVisit = mockk<Call<OpenMRSVisit>>(relaxed = true)
+        every { restApi.startVisit(any()) } returns callStartVisit
         every { callStartVisit.execute() } returns Response.success(expectedOpenMRSVisit)
+
+        val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)
+        every { restApi.createEncounter(any()) } returns callCreateEncounter
         every { callCreateEncounter.execute() } returns Response.success(Encounter())
+
         every { visitDAO.saveOrUpdate(any(), any()) } returns Observable.just(1)
 
         runBlocking {
@@ -286,6 +288,32 @@ class NewVisitRepositoryTest {
             assertEquals(result, expectedVisit)
         }
         verify { restApi.startVisit(any()) }
+    }
+
+    @Test(expected = IOException::class)
+    fun `should delete visit if creating visit encounters fails`() {
+        val visit = VisitExample.random()
+        val patient = Patient().apply { uuid = UUID.randomUUID().toString(); id = 123L }
+
+        every { locationDAO.findLocationByName(any()) } returns LocationEntity("La casa de Aleh")
+
+        val callStartVisit = mockk<Call<OpenMRSVisit>>(relaxed = true)
+        every { restApi.startVisit(any()) } returns callStartVisit
+        every { callStartVisit.execute() } returns Response.success(edu.upc.sdk.library.models.Visit())
+
+        val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)
+        every { restApi.createEncounter(any()) } returns callCreateEncounter
+        every { callCreateEncounter.execute() } returns Response.error(500, mockk<ResponseBody>())
+
+        val callDeleteVisit = mockk<Call<ResponseBody>>(relaxed = true)
+        every { restApi.deleteVisit(visit.id.toString()) } returns callDeleteVisit
+        every { callDeleteVisit.execute() } returns Response.error<ResponseBody>(500, "".toResponseBody(null))
+        every { visitDAO.deleteVisitByUuid(visit.id.toString()) } returns Observable.just(true)
+
+        runBlocking { visitRepository.startVisit(patient, visit) }
+
+        verify { restApi.startVisit(any()) }
+        verify { visitDAO wasNot Called }
     }
 
     @Test
