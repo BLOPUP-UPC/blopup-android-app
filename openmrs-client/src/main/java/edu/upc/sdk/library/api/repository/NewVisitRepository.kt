@@ -9,13 +9,12 @@ import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.VisitType
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
+import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import java.io.IOException
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit.SECONDS
+import java.time.Instant
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,8 +33,7 @@ class NewVisitRepository @Inject constructor(
     }
 
     suspend fun endVisit(visitId: UUID): Boolean = withContext(Dispatchers.IO) {
-        val endVisitDateTime =
-            LocalDateTime.now().truncatedTo(SECONDS).toInstant(ZoneOffset.UTC).toString()
+        val endVisitDateTime = Instant.now().formatAsOpenMrsDate()
         val visitWithEndDate = OpenMRSVisit().apply {
             stopDatetime = endVisitDateTime
         }
@@ -64,7 +62,7 @@ class NewVisitRepository @Inject constructor(
     suspend fun startVisit(patient: Patient): Visit =
         withContext(Dispatchers.IO) {
             val openMRSVisit = OpenMRSVisit().apply {
-                startDatetime = LocalDateTime.now().truncatedTo(SECONDS).toInstant(ZoneOffset.UTC).toString()
+                startDatetime = Instant.now().formatAsOpenMrsDate()
                 this.patient = patient
                 location = locationDAO.findLocationByName(OpenmrsAndroid.getLocation())
                 visitType = VisitType("FACILITY", OpenmrsAndroid.getVisitTypeUUID())
