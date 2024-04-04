@@ -4,8 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientDashboardVisitsViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
-import edu.upc.sdk.library.api.repository.NewVisitRepository
-import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -13,10 +11,8 @@ import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,13 +31,7 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    lateinit var patientDAO: PatientDAO
-
-    @MockK
     lateinit var visitDAO: VisitDAO
-
-    @MockK
-    lateinit var newVisitRepository: NewVisitRepository
 
     private lateinit var savedStateHandle: SavedStateHandle
 
@@ -58,9 +48,7 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, PATIENT_ID) }
         viewModel =
             PatientDashboardVisitsViewModel(
-                patientDAO,
                 visitDAO,
-                newVisitRepository,
                 savedStateHandle
             )
         patient = createPatient(PATIENT_ID.toLong())
@@ -115,20 +103,6 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
         )
 
         viewModel.hasActiveVisit().observeForever { hasActiveVisit -> assertFalse(hasActiveVisit) }
-    }
-
-    @Test
-    fun startVisit_success() {
-        val visit = VisitConverter.createVisitFromOpenMRSVisit(visitList[0])
-
-        coEvery { patientDAO.findPatientByID(PATIENT_ID) } returns patient
-        coEvery { newVisitRepository.startVisit(patient) } returns visit
-
-        runBlocking { viewModel.startVisit() }
-
-        val actualResult = (viewModel.result.value as Result.Success).data[0]
-
-        assertEquals(visit, actualResult)
     }
 
     companion object {

@@ -46,7 +46,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,7 +63,6 @@ import edu.upc.openmrs.activities.addeditpatient.SimilarPatientsRecyclerViewAdap
 import edu.upc.openmrs.activities.login.LoginActivity;
 import edu.upc.openmrs.activities.login.LoginFragment;
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
-import edu.upc.openmrs.activities.patientdashboard.visits.PatientVisitsFragment;
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardFragment;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;
@@ -81,7 +79,7 @@ public class CustomFragmentDialog extends DialogFragment {
 
     public enum OnClickAction {
         SET_URL, SHOW_URL_DIALOG, DISMISS_URL_DIALOG, DISMISS, LOGOUT, FINISH, INTERNET, UNAUTHORIZED, END_VISIT, FINISH_ACTIVITY,
-        START_VISIT, LOGIN, REGISTER_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER, END_VITALS, END_VISIT_START_NEW_VISIT
+        LOGIN, REGISTER_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER, END_VITALS, END_VISIT_START_NEW_VISIT
     }
 
     protected LayoutInflater mInflater;
@@ -413,10 +411,6 @@ public class CustomFragmentDialog extends DialogFragment {
                             .endVisit();
                     dismiss();
                     break;
-                case START_VISIT:
-                    doStartVisitAction();
-                    dismiss();
-                    break;
                 case REGISTER_PATIENT:
                     ((AddEditPatientFragment) getParentFragmentManager()
                             .findFragmentById(R.id.patientInfoContentFrame))
@@ -457,24 +451,6 @@ public class CustomFragmentDialog extends DialogFragment {
         if (activity instanceof PatientDashboardActivity) {
             PatientDashboardActivity pda = ((PatientDashboardActivity) activity);
             pda.endActiveVisit();
-        }
-    }
-
-    private void doStartVisitAction() {
-        Activity activity = getActivity();
-        if (activity instanceof PatientDashboardActivity) {
-            PatientDashboardActivity pda = ((PatientDashboardActivity) activity);
-            List<Fragment> fragments = pda.getSupportFragmentManager().getFragments();
-            PatientVisitsFragment fragment = null;
-            for (Fragment frag : fragments) {
-                if (frag instanceof PatientVisitsFragment) {
-                    fragment = (PatientVisitsFragment) frag;
-                    break;
-                }
-            }
-            if (fragment != null) {
-                fragment.startVisit();
-            }
         }
     }
 

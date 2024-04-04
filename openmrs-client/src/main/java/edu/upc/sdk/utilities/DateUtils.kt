@@ -280,7 +280,11 @@ object DateUtils {
         return java.time.format.DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT_WO_TIME).format(this)
     }
 
-    fun java.time.LocalDateTime.formatAsOpenMrsDate(): String {
+    fun LocalDateTime.formatAsOpenMrsDate(): String {
+        return java.time.format.DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT).format(this.atOffset(java.time.ZoneOffset.UTC))
+    }
+
+    fun java.time.Instant.formatAsOpenMrsDate(): String {
         return java.time.format.DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT).format(this.atOffset(java.time.ZoneOffset.UTC))
     }
 }

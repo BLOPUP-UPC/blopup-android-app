@@ -23,12 +23,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.model.Visit
 import edu.upc.databinding.FragmentPatientVisitBinding
+import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
 import edu.upc.openmrs.utilities.makeGone
@@ -39,9 +39,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ToastUtil.error
-import kotlinx.coroutines.launch
 import java.util.UUID
-import edu.upc.openmrs.activities.BaseFragment
 
 @AndroidEntryPoint
 class PatientVisitsFragment : BaseFragment() {
@@ -127,13 +125,6 @@ class PatientVisitsFragment : BaseFragment() {
 
     private fun fetchPatientVisits() {
         viewModel.fetchVisitsData()
-    }
-
-
-    fun startVisit() {
-        lifecycleScope.launch {
-            return@launch viewModel.startVisit()
-        }
     }
 
     private fun showVisitsList(visits: List<Visit>) {

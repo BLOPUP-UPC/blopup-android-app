@@ -16,7 +16,6 @@ package edu.upc.sdk.library.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -30,15 +29,6 @@ import io.reactivex.Single;
  */
 @Dao
 public interface VisitRoomDAO {
-    /**
-     * Add or update long.
-     *
-     * @param visitEntity the visit entity
-     * @return the long
-     */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long addOrUpdate(VisitEntity visitEntity);
-
     /**
      * Add visit long.
      *
