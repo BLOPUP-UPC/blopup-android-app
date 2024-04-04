@@ -37,9 +37,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
 import edu.upc.blopup.ui.shared.components.SubmitButton
@@ -105,15 +104,15 @@ fun AddEditPatientForm() {
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(selected = gender == "M" , onClick = { gender = "M"}, colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange)))
-                Text(text = stringResource(R.string.male), fontSize = TextUnit(16f, TextUnitType.Sp))
+                Text(text = stringResource(R.string.male), fontSize = 16.sp)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(selected = gender == "F", onClick = { gender = "F"}, colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange)))
-                Text(text = stringResource(R.string.female), fontSize = TextUnit(16f, TextUnitType.Sp))
+                Text(text = stringResource(R.string.female), fontSize = 16.sp)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(selected = gender == "N", onClick = { gender = "N"}, colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange)))
-                Text(text = stringResource(R.string.non_binary), fontSize = TextUnit(16f, TextUnitType.Sp))
+                Text(text = stringResource(R.string.non_binary), fontSize = 16.sp)
             }
         }
         Column {
@@ -150,7 +149,7 @@ fun AddEditPatientForm() {
                 value = estimatedYears,
                 isError = dateOfBirth.isEmpty() && estimatedYears.isEmpty(),
                 onValueChange = { estimatedYears = it },
-                label = { Text(text = stringResource(R.string.estyr), fontSize = TextUnit(16f, TextUnitType.Sp)) },
+                label = { Text(text = stringResource(R.string.estyr), fontSize = 16.sp) },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.primary),
                     focusedLabelColor = colorResource(R.color.primary),
@@ -184,7 +183,7 @@ fun StructureLabelText(label: Int) {
         color = Color.Gray,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(bottom = 7.dp),
-        fontSize = TextUnit(16f, TextUnitType.Sp)
+        fontSize = 16.sp
     )
 }
 

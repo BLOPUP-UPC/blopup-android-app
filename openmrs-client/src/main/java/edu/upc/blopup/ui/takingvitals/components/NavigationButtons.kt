@@ -15,8 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.sp
 import edu.upc.R
 import edu.upc.blopup.ui.shared.components.AppDialog
 
@@ -50,7 +49,7 @@ fun NavigationTextButton(onClick: () -> Unit, action: Int) {
             text = stringResource(action),
             color = Color.Black,
             fontWeight = FontWeight.Bold,
-            fontSize = TextUnit(16f, TextUnitType.Sp)
+            fontSize = 16.sp
         )
     }
 }

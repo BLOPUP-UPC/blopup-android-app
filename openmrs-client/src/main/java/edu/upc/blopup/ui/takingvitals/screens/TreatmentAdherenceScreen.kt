@@ -34,9 +34,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import edu.upc.R
 import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.model.MedicationType
@@ -133,7 +132,7 @@ fun TreatmentAdherence(
                 text = stringResource(R.string.treatment_adherence_title),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = TextUnit(20f, TextUnitType.Sp)
+                    fontSize = 20.sp
                 ),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -150,7 +149,7 @@ fun TreatmentAdherence(
                 is ResultUiState.Success -> {
                     Text(
                         text = stringResource(R.string.treatment_adherence_text),
-                        fontSize = TextUnit(16f, TextUnitType.Sp),
+                        fontSize = 16.sp,
                     )
                     treatmentOptions = getTreatmentOptions(treatments.data)
                     TreatmentCheckBox(treatmentOptions)
@@ -194,7 +193,7 @@ fun TreatmentCheckBox(treatmentOptions: List<CheckTreatment>) {
                     Text(
                         text = checkTreatment.medicationName,
                         modifier = Modifier.padding(bottom = 4.dp),
-                        fontSize = TextUnit(16f, TextUnitType.Sp),
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Row {
@@ -203,7 +202,7 @@ fun TreatmentCheckBox(treatmentOptions: List<CheckTreatment>) {
                             .joinToString(" • ")
                         Text(
                             text = medicationTypesString,
-                            fontSize = TextUnit(14f, TextUnitType.Sp),
+                            fontSize = 14.sp,
                         )
                     }
                 }

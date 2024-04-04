@@ -18,8 +18,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.upc.R
@@ -48,7 +46,7 @@ fun HowToActivateBPDeviceScreen(onClickReceiveData: () -> Unit) {
 
         Text(
             text = instructionsText(),
-            fontSize = TextUnit(16f, TextUnitType.Sp),
+            fontSize = 16.sp,
             lineHeight = 23.sp,
             modifier = Modifier.padding(bottom = 20.dp)
         )

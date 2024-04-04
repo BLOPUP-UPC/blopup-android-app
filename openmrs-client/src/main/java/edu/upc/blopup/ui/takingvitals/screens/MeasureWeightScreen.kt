@@ -16,9 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import edu.upc.R
 import edu.upc.blopup.ui.takingvitals.components.BluetoothButton
 
@@ -55,13 +54,13 @@ fun WeightInstructions() {
             text = stringResource(R.string.weight_instructions_title),
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = TextUnit(20f, TextUnitType.Sp)
+                fontSize = 20.sp
             ),
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(
             text = stringResource(R.string.weight_instructions),
-            fontSize = TextUnit(16f, TextUnitType.Sp),
+            fontSize = 16.sp,
         )
     }
 }
