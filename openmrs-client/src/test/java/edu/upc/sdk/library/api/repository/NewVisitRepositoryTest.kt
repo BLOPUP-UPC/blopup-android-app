@@ -3,13 +3,18 @@ package edu.upc.sdk.library.api.repository
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.Visit
+import edu.upc.blopup.model.VisitExample
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.LocationDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.databases.entities.LocationEntity
+import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.EncounterType
+import edu.upc.sdk.library.models.Encountercreate
+import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.VisitExample
+import edu.upc.sdk.utilities.ApplicationConstants
 import io.mockk.Called
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -34,6 +39,7 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit.SECONDS
 import java.util.UUID
 import edu.upc.sdk.library.models.Visit as OpenMRSVisit
+import edu.upc.sdk.library.models.VisitExample as OpenMRSVisitExample
 
 @RunWith(AndroidJUnit4::class)
 class NewVisitRepositoryTest {
@@ -47,7 +53,7 @@ class NewVisitRepositoryTest {
     @MockK
     private lateinit var locationDAO: LocationDAO
 
-    @MockK
+    @MockK(relaxed = true)
     private lateinit var logger: OpenMRSLogger
 
     @InjectMockKs
@@ -72,7 +78,7 @@ class NewVisitRepositoryTest {
             70.0f
         )
 
-        val openMRSVisit = VisitExample.withVitals(
+        val openMRSVisit = OpenMRSVisitExample.withVitals(
             visitUuid.toString(),
             patientUuid.toString(),
             expectedVisit.startDate,
@@ -138,11 +144,13 @@ class NewVisitRepositoryTest {
 
         runBlocking {
             visitRepository.endVisit(visitUuid)
+
+
         }
     }
 
     @Test
-    fun `should log an error and continue if updating local database fails`() {
+    fun `end visit should log an error and continue if updating local database fails`() {
         val visitUuid = UUID.randomUUID()
         val patientUuid = UUID.randomUUID()
 
@@ -176,39 +184,46 @@ class NewVisitRepositoryTest {
         val patientId = UUID.randomUUID()
         val visitId = UUID.randomUUID()
         val patient = Patient().apply { uuid = patientId.toString(); id = 123L }
-        val expectedVisit = Visit(
+        val location = "La casa de Ale"
+        val visit = Visit(
             visitId,
             patientId,
-            "La casa de Ale",
+            location,
             LocalDateTime.now().truncatedTo(SECONDS),
             BloodPressure(120, 80, 70),
             177,
             70.0f
         )
 
-        val openMRSVisit = VisitExample.withVitals(
+        val expectedOpenMRSVisit = OpenMRSVisitExample.withVitals(
             visitId.toString(),
             patientId.toString(),
-            expectedVisit.startDate,
-            expectedVisit.location,
-            expectedVisit.bloodPressure.systolic,
-            expectedVisit.bloodPressure.diastolic,
-            expectedVisit.bloodPressure.pulse,
-            expectedVisit.weightKg,
-            expectedVisit.heightCm
+            visit.startDate,
+            visit.location,
+            visit.bloodPressure.systolic,
+            visit.bloodPressure.diastolic,
+            visit.bloodPressure.pulse,
+            visit.weightKg,
+            visit.heightCm
         )
 
-        val call = mockk<Call<OpenMRSVisit>>(relaxed = true)
-        every { locationDAO.findLocationByName(any()) } returns LocationEntity("La casa de Ale")
-        every { restApi.startVisit(any()) } returns call
-        every { call.execute() } returns Response.success(openMRSVisit)
+        val callStartVisit = mockk<Call<OpenMRSVisit>>(relaxed = true)
+        val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)
+        every { locationDAO.findLocationByName(any()) } returns LocationEntity(location)
+        every { restApi.startVisit(any()) } returns callStartVisit
+        every { restApi.createEncounter(any()) } returns callCreateEncounter
+
+        every { callStartVisit.execute() } returns Response.success(expectedOpenMRSVisit)
+        every { callCreateEncounter.execute() } returns Response.success(Encounter())
         every { visitDAO.saveOrUpdate(any(), any()) } returns Observable.just(1)
 
         runBlocking {
-            val result = visitRepository.startVisit(patient)
-            assertEquals(result, expectedVisit)
+            val result = visitRepository.startVisit(patient, visit)
+            assertEquals(result, visit)
         }
-        verify { restApi.startVisit(any()) }
+
+        verify(exactly = 1) { restApi.startVisit(any()) }
+        verify(exactly = 1) { restApi.createEncounter(any()) }
     }
 
     @Test(expected = IOException::class)
@@ -220,7 +235,7 @@ class NewVisitRepositoryTest {
         every { restApi.startVisit(any()) } returns call
         every { call.execute() } returns Response.error(500, mockk<ResponseBody>())
 
-        runBlocking { visitRepository.startVisit(patient) }
+        runBlocking { visitRepository.startVisit(patient, visit = VisitExample.random()) }
 
         verify { restApi.startVisit(any()) }
         verify { visitDAO wasNot Called }
@@ -241,7 +256,7 @@ class NewVisitRepositoryTest {
             70.0f
         )
 
-        val openMRSVisit = VisitExample.withVitals(
+        val openMRSVisit = OpenMRSVisitExample.withVitals(
             visitId.toString(),
             patientId.toString(),
             expectedVisit.startDate,
@@ -253,14 +268,20 @@ class NewVisitRepositoryTest {
             expectedVisit.heightCm
         )
 
-        val call = mockk<Call<OpenMRSVisit>>(relaxed = true)
         every { locationDAO.findLocationByName(any()) } returns LocationEntity("La casa de Ale")
+
+        val call = mockk<Call<OpenMRSVisit>>(relaxed = true)
         every { restApi.startVisit(any()) } returns call
         every { call.execute() } returns Response.success(openMRSVisit)
+
+        val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)
+        every { restApi.createEncounter(any()) } returns callCreateEncounter
+        every { callCreateEncounter.execute() } returns Response.success(Encounter())
+
         every { visitDAO.saveOrUpdate(any(), any()) } throws Exception()
 
         runBlocking {
-            val result = visitRepository.startVisit(patient)
+            val result = visitRepository.startVisit(patient, visit = VisitExample.random())
 
             assertEquals(result, expectedVisit)
         }
@@ -301,5 +322,47 @@ class NewVisitRepositoryTest {
             verify { visitDAO wasNot Called }
             assertEquals(result, false)
         }
+    }
+
+    private fun givenEncounterCreate(visit: Visit) = Encountercreate().apply {
+        this.visit = visit.id.toString()
+        this.patient = visit.patientId.toString()
+        encounterType = EncounterType.VITALS
+        observations = listOfNotNull(
+            Obscreate().apply {
+                concept = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+                value = visit.bloodPressure.systolic.toString()
+                obsDatetime = visit.startDate.toString()
+                person = visit.patientId.toString()
+            },
+            Obscreate().apply {
+                concept = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+                value = visit.bloodPressure.diastolic.toString()
+                obsDatetime = visit.startDate.toString()
+                person = visit.patientId.toString()
+            },
+            Obscreate().apply {
+                concept = ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
+                value = visit.bloodPressure.pulse.toString()
+                obsDatetime = visit.startDate.toString()
+                person = visit.patientId.toString()
+            },
+            visit.heightCm?.let {
+                Obscreate().apply {
+                    concept = ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT
+                    value = it.toString()
+                    obsDatetime = visit.startDate.toString()
+                    person = visit.patientId.toString()
+                }
+            },
+            visit.weightKg?.let {
+                Obscreate().apply {
+                    concept = ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
+                    value = it.toString()
+                    obsDatetime = visit.startDate.toString()
+                    person = visit.patientId.toString()
+                }
+            }
+        )
     }
 }
