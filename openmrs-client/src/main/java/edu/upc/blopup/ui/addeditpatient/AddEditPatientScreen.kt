@@ -1,5 +1,7 @@
 package edu.upc.blopup.ui.addeditpatient
 
+import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +11,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -42,9 +46,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
 import edu.upc.blopup.ui.shared.components.SubmitButton
@@ -67,11 +73,14 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
     val familyNameError = remember { mutableStateOf(false) }
     var dateOfBirth by remember { mutableStateOf("") }
     var countryOfBirth by remember { mutableStateOf("") }
+    var languageSelected by remember { mutableStateOf("") }
     val datePickerState = rememberDatePickerState()
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var estimatedYears by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
     var showCountryOfBirthDialog by remember { mutableStateOf(false) }
+    var showLanguagesDialog by remember { mutableStateOf(false) }
+    var showLegalConsentDialog by remember { mutableStateOf(false) }
 
     Column(
         Modifier
@@ -268,9 +277,82 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
         }
         Column {
             StructureLabelText(R.string.record_patient_consent)
+            Box(
+                modifier = Modifier
+                    .clickable { showLanguagesDialog = true }
+                    .border(
+                        width = 1.dp,
+                        color = if (languageSelected.isEmpty()) MaterialTheme.colorScheme.error else Color.Gray,
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(horizontal = 16.dp, vertical = 15.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = languageSelected.ifEmpty { stringResource(R.string.select_language) },
+                        fontSize = 16.sp,
+                        color = if (languageSelected.isEmpty()) MaterialTheme.colorScheme.error else Color.Black,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(
+                        Icons.Filled.ArrowDropDown,
+                        tint = Color.Gray,
+                        contentDescription = null
+                    )
+                }
+                if (showLanguagesDialog) {
+                    LanguagesDialog(context, { language ->
+                        languageSelected = language
+                    }) { showLanguagesDialog = false }
+                }
+            }
+            Text(
+                text = stringResource(id = R.string.record_legal_consent_u),
+                textDecoration = TextDecoration.Underline,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .clickable {
+                        if (languageSelected.isNotEmpty()) {
+                            showLegalConsentDialog = true
+                        }
+                    },
+                color = if(languageSelected.isEmpty()) Color.Gray else colorResource(R.color.allergy_orange)
+            )
+            if(showLegalConsentDialog){
+                LegalConsentDialog(languageSelected) { showLegalConsentDialog = false }
+            }
         }
         Column {
             SubmitButton(title = R.string.action_submit, onClickNext = { }, enabled = false)
+        }
+    }
+}
+
+@Composable
+fun LanguagesDialog(
+    context: Context,
+    onLanguageSelected: (String) -> Unit,
+    onDialogClose: () -> Unit
+) {
+    Dialog(onDismissRequest = { onDialogClose() }) {
+        Column(
+            Modifier
+                .background(Color.White)
+                .padding(10.dp)
+        ) {
+            LazyColumn {
+                val languagesArray = context.resources.getStringArray(R.array.languages)
+                items(languagesArray) {
+                    Text(
+                        text = it,
+                        color = Color.Gray,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .clickable { onLanguageSelected(it); onDialogClose() })
+                }
+            }
         }
     }
 }
@@ -291,4 +373,10 @@ fun StructureLabelText(label: Int) {
 @Composable
 fun AddEditPatientPreview() {
     AddEditPatientForm { false }
+}
+
+@Preview
+@Composable
+fun LanguageDialogPreview() {
+    LanguagesDialog(LocalContext.current, {}) {}
 }

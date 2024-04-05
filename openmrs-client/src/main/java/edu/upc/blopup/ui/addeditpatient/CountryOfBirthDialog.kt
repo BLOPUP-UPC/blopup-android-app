@@ -40,7 +40,7 @@ fun CountryOfBirthDialog(onCloseDialog: () -> Unit, onCountrySelected: (Country)
 
     var searchInput by remember { mutableStateOf("") }
 
-    Dialog(onDismissRequest = { }) {
+    Dialog(onDismissRequest = { onCloseDialog() }) {
         Column(
             Modifier
                 .background(Color.White)

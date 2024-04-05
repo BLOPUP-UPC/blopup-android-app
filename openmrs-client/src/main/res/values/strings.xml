@@ -50,6 +50,7 @@
     <string name="register_patient_error" tools:ignore="MissingTranslation">Something went wrong and the patient has not been created. Please, try again.</string>
     <string name="update_patient_success" tools:ignore="MissingTranslation">Patient %s updated</string>
     <string name="update_patient_error" tools:ignore="MissingTranslation">Patient %s cannot be updated due to server error</string>
+    <string name="select_language" tools:ignore="MissingTranslation">Select language</string>
 
     <!-- SimilarPatients dialog -->
     <string name="similar_patients_dialog_title" tools:ignore="MissingTranslation">Similar patients found</string>
