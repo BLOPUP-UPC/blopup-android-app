@@ -14,7 +14,7 @@
     <string name="emptyerror">Obligatori</string>
     <string name="choose_option_error">Si us plau, esculli una opció</string>
     <string name="choose_options_error">Si us plau, esculli una opció com a mínim</string>
-    <string name="fname_invalid_error">El nom no pot tenir ni símbols ni números.</string>
+    <string name="fname_invalid_error">El camp no pot tenir símbols.</string>
     <string name="reg_firstname_hint">Nom*</string>
     <string name="reg_surname_hint">Cognom*</string>
     <string name="reg_ques_name">Nom de pacient</string>

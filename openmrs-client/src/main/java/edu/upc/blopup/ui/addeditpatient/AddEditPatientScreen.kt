@@ -21,6 +21,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.RadioButton
@@ -47,20 +48,23 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
 import edu.upc.blopup.ui.shared.components.SubmitButton
+import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
 import java.time.Instant
 import java.time.ZoneId
 
 @Composable
 fun AddEditPatientScreen(viewModel: AddEditPatientViewModel = hiltViewModel()) {
-    AddEditPatientForm()
+    AddEditPatientForm(viewModel::isNameOrSurnameInvalidFormat)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditPatientForm() {
+fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
     val context = LocalContext.current
     var name by remember { mutableStateOf("") }
+    val nameError = remember { mutableStateOf(false) }
     var familyName by remember { mutableStateOf("") }
+    val familyNameError = remember { mutableStateOf(false) }
     var dateOfBirth by remember { mutableStateOf("") }
     var countryOfBirth by remember { mutableStateOf("") }
     val datePickerState = rememberDatePickerState()
@@ -81,51 +85,90 @@ fun AddEditPatientForm() {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = name,
-                onValueChange = { name = it },
+                onValueChange = {
+                    name = it
+                    nameError.value = isNameOrSurnameInvalidFormat(it)
+                },
                 label = { Text(text = stringResource(R.string.reg_firstname_hint)) },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.primary),
                     focusedLabelColor = colorResource(R.color.primary),
-                    cursorColor = Color.Black),
-                isError = name.isEmpty()
+                    cursorColor = Color.Black
+                ),
+                isError = name.isEmpty() || nameError.value,
+                supportingText = {
+                    if (nameError.value) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.fname_invalid_error),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                },
+                singleLine = true
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = familyName,
-                onValueChange = { familyName = it },
+                onValueChange = {
+                    familyName = it
+                    familyNameError.value = isNameOrSurnameInvalidFormat(it)
+                },
                 label = { Text(text = stringResource(R.string.reg_surname_hint)) },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.primary),
                     focusedLabelColor = colorResource(R.color.primary),
-                    cursorColor = Color.Black),
-                isError = familyName.isEmpty()
-
+                    cursorColor = Color.Black
+                ),
+                isError = familyName.isEmpty() || familyNameError.value,
+                supportingText = {
+                    if (familyNameError.value) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.fname_invalid_error),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                },
+                singleLine = true
             )
         }
         Column {
             StructureLabelText(R.string.reg_ques_gender)
-            if(gender.isEmpty()) {
+            if (gender.isEmpty()) {
                 Text(
                     stringResource(R.string.choose_option_error),
                     color = colorResource(R.color.error_red)
                 )
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                RadioButton(selected = gender == "M" , onClick = { gender = "M"}, colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange)))
+                RadioButton(
+                    selected = gender == "M",
+                    onClick = { gender = "M" },
+                    colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange))
+                )
                 Text(text = stringResource(R.string.male), fontSize = 16.sp)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                RadioButton(selected = gender == "F", onClick = { gender = "F"}, colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange)))
+                RadioButton(
+                    selected = gender == "F",
+                    onClick = { gender = "F" },
+                    colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange))
+                )
                 Text(text = stringResource(R.string.female), fontSize = 16.sp)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                RadioButton(selected = gender == "N", onClick = { gender = "N"}, colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange)))
+                RadioButton(
+                    selected = gender == "N",
+                    onClick = { gender = "N" },
+                    colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange))
+                )
                 Text(text = stringResource(R.string.non_binary), fontSize = 16.sp)
             }
         }
         Column {
             val date = datePickerState.selectedDateMillis
-            if(date != null) {
+            if (date != null) {
                 val localDate = Instant.ofEpochMilli(date).atZone(ZoneId.of("UTC")).toLocalDate()
                 dateOfBirth = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
             }
@@ -135,11 +178,17 @@ fun AddEditPatientForm() {
                 value = dateOfBirth,
                 onValueChange = { dateOfBirth = it },
                 isError = dateOfBirth.isEmpty() && estimatedYears.isEmpty(),
-                label = { Text(text = stringResource(R.string.dob_hint),  modifier = Modifier.clickable(onClick = { showDatePickerDialog = true })) },
+                label = {
+                    Text(
+                        text = stringResource(R.string.dob_hint),
+                        modifier = Modifier.clickable(onClick = { showDatePickerDialog = true })
+                    )
+                },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.primary),
                     focusedLabelColor = colorResource(R.color.primary),
-                    cursorColor = Color.Black),
+                    cursorColor = Color.Black
+                ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 trailingIcon = {
                     Icon(
@@ -149,9 +198,15 @@ fun AddEditPatientForm() {
                         modifier = Modifier.clickable(onClick = { showDatePickerDialog = true })
                     )
                 })
-            Text(text = stringResource(id = R.string.label_or), textAlign = TextAlign.Center, color = Color.Gray, modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp), fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(id = R.string.label_or),
+                textAlign = TextAlign.Center,
+                color = Color.Gray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                fontWeight = FontWeight.Bold
+            )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = estimatedYears,
@@ -161,12 +216,14 @@ fun AddEditPatientForm() {
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.primary),
                     focusedLabelColor = colorResource(R.color.primary),
-                    cursorColor = Color.Black),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                    cursorColor = Color.Black
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
             if (showDatePickerDialog) {
                 DatePickerDialog(onDismissRequest = { showDatePickerDialog = false },
                     confirmButton = {
-                        Button(onClick = {showDatePickerDialog = false }) {
+                        Button(onClick = { showDatePickerDialog = false }) {
                             Text(text = stringResource(R.string.ok))
                         }
                     }) {
@@ -182,7 +239,7 @@ fun AddEditPatientForm() {
                     .clickable { showCountryOfBirthDialog = true }
                     .border(
                         width = 1.dp,
-                        color = if (countryOfBirth.isEmpty()) colorResource(R.color.error_red) else Color.Gray,
+                        color = if (countryOfBirth.isEmpty()) MaterialTheme.colorScheme.error else Color.Gray,
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(horizontal = 16.dp, vertical = 15.dp)
@@ -191,7 +248,7 @@ fun AddEditPatientForm() {
                     Text(
                         text = countryOfBirth.ifEmpty { stringResource(R.string.country_of_birth_default) },
                         fontSize = 16.sp,
-                        color = if (countryOfBirth.isEmpty()) colorResource(R.color.error_red) else Color.Black,
+                        color = if (countryOfBirth.isEmpty()) MaterialTheme.colorScheme.error else Color.Black,
                         modifier = Modifier.weight(1f)
                     )
                     Icon(
@@ -201,17 +258,19 @@ fun AddEditPatientForm() {
                     )
                 }
             }
-            if(showCountryOfBirthDialog) {
-                CountryOfBirthDialog (onCloseDialog = { showCountryOfBirthDialog = false }, onCountrySelected = { selectedCountry ->
-                    countryOfBirth = selectedCountry.getLabel(context)
-                } )
+            if (showCountryOfBirthDialog) {
+                CountryOfBirthDialog(
+                    onCloseDialog = { showCountryOfBirthDialog = false },
+                    onCountrySelected = { selectedCountry ->
+                        countryOfBirth = selectedCountry.getLabel(context)
+                    })
             }
         }
         Column {
             StructureLabelText(R.string.record_patient_consent)
         }
         Column {
-            SubmitButton(title = R.string.action_submit, onClickNext = { }, enabled = false )
+            SubmitButton(title = R.string.action_submit, onClickNext = { }, enabled = false)
         }
     }
 }
@@ -231,5 +290,5 @@ fun StructureLabelText(label: Int) {
 @Preview
 @Composable
 fun AddEditPatientPreview() {
-    AddEditPatientForm()
+    AddEditPatientForm { false }
 }

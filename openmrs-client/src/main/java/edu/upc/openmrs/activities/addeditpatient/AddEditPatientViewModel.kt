@@ -228,6 +228,10 @@ class AddEditPatientViewModel @Inject constructor(
         isEverythingValid()
     }
 
+    fun isNameOrSurnameInvalidFormat(input: String): Boolean {
+        return !StringUtils.validateText(input, StringUtils.ILLEGAL_CHARACTERS)
+    }
+
     private fun isEverythingValid() {
         _isPatientValidLiveData.value =
             _isNameValidLiveData.value?.first == true &&

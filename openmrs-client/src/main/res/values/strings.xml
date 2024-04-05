@@ -32,7 +32,7 @@
     <string name="emptyerror" tools:ignore="MissingTranslation">Required</string>
     <string name="choose_option_error" tools:ignore="MissingTranslation">Please, choose an option</string>
     <string name="choose_options_error" tools:ignore="MissingTranslation">Please, choose at least one option</string>
-    <string name="fname_invalid_error" tools:ignore="MissingTranslation">Given name cannot contain symbols or numbers</string>
+    <string name="fname_invalid_error" tools:ignore="MissingTranslation">Field cannot contain symbols</string>
     <string name="empty_value" tools:ignore="MissingTranslation">\u0020</string>
     <string name="reg_firstname_hint" tools:ignore="MissingTranslation">Name*</string>
     <string name="reg_surname_hint" tools:ignore="MissingTranslation">Family name*</string>

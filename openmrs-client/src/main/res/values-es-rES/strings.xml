@@ -94,7 +94,7 @@
     <string name="visit_dashboard_label">Encuentros</string>
     <string name="login_button">Iniciar sesión</string>
     <string name="login_location_select">Ubicación de la sesión</string>
-    <string name="fname_invalid_error">El nombre no puede contener ni símbolos ni números.</string>
+    <string name="fname_invalid_error">El campo no puede contener símbolos.</string>
     <string name="frag_settings_build">Crear:</string>
     <string name="authenticate_service_error_message">Error en el servicio de verificación de autenticación</string>
     <string name="authenticate_check_service_error_response_message">Error en la respuesta del servicio de verificación de autenticación</string>
