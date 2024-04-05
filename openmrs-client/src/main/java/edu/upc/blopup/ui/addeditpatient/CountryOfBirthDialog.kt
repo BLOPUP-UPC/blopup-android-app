@@ -35,7 +35,7 @@ import edu.upc.R
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 
 @Composable
-fun CountryOfBirthDialog(closeDialog: () -> Unit) {
+fun CountryOfBirthDialog(onCloseDialog: () -> Unit, onCountrySelected: (Country) -> Unit) {
     val context = LocalContext.current
 
     var searchInput by remember { mutableStateOf("") }
@@ -61,7 +61,7 @@ fun CountryOfBirthDialog(closeDialog: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 10.dp)
-                    .clickable { closeDialog() },
+                    .clickable { onCloseDialog() },
                 value = searchInput,
                 onValueChange = { searchInput = it },
                 label = { Text(text = stringResource(R.string.search_hint_text)) },
@@ -74,7 +74,7 @@ fun CountryOfBirthDialog(closeDialog: () -> Unit) {
             LazyColumn {
                 val countryList = Country.entries.sortedBy { it.getLabel(context) }
                 items(countryList.filter { it.getLabel(context).contains(searchInput, true)}) {
-                    ListItem(it, context)
+                    ListItem(it, context, onItemSelected = { onCountrySelected(it); onCloseDialog() })
                 }
             }
         }
@@ -84,11 +84,11 @@ fun CountryOfBirthDialog(closeDialog: () -> Unit) {
 }
 
 @Composable
-fun ListItem(country: Country, context: Context) {
+fun ListItem(country: Country, context: Context, onItemSelected: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp),
+            .padding(vertical = 10.dp).clickable { onItemSelected() },
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
     ) {
         Image(
@@ -103,11 +103,11 @@ fun ListItem(country: Country, context: Context) {
 @Preview
 @Composable
 fun CountryOfBirthDialogPreview() {
-    CountryOfBirthDialog {}
+    CountryOfBirthDialog({}, {})
 }
 
 @Preview
 @Composable
 fun ListItemPreview() {
-    ListItem(Country.ARGENTINA, LocalContext.current)
+    ListItem(Country.ARGENTINA, LocalContext.current) {}
 }

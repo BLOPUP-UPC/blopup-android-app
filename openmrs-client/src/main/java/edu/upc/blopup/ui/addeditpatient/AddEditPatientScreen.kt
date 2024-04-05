@@ -1,13 +1,16 @@
 package edu.upc.blopup.ui.addeditpatient
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -32,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +58,7 @@ fun AddEditPatientScreen(viewModel: AddEditPatientViewModel = hiltViewModel()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditPatientForm() {
+    val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var familyName by remember { mutableStateOf("") }
     var dateOfBirth by remember { mutableStateOf("") }
@@ -171,26 +176,35 @@ fun AddEditPatientForm() {
         }
         Column {
             StructureLabelText(R.string.country_of_birth_label)
-            OutlinedTextField(
-                trailingIcon = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showCountryOfBirthDialog = true }
+                    .border(
+                        width = 1.dp,
+                        color = if (countryOfBirth.isEmpty()) colorResource(R.color.error_red) else Color.Gray,
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(horizontal = 16.dp, vertical = 15.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = countryOfBirth.ifEmpty { stringResource(R.string.country_of_birth_default) },
+                        fontSize = 16.sp,
+                        color = if (countryOfBirth.isEmpty()) colorResource(R.color.error_red) else Color.Black,
+                        modifier = Modifier.weight(1f)
+                    )
                     Icon(
                         Icons.Filled.ArrowDropDown,
                         tint = Color.Gray,
                         contentDescription = null
                     )
-                },
-                modifier = Modifier.fillMaxWidth().clickable { showCountryOfBirthDialog = true  },
-                value = countryOfBirth,
-                isError = countryOfBirth.isEmpty(),
-                onValueChange = { countryOfBirth = it },
-                label = { Text(text = stringResource(R.string.country_of_birth_default), fontSize = 16.sp) },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorResource(R.color.primary),
-                    focusedLabelColor = colorResource(R.color.primary),
-                    cursorColor = Color.Black)
-            )
+                }
+            }
             if(showCountryOfBirthDialog) {
-                CountryOfBirthDialog { showCountryOfBirthDialog = false }
+                CountryOfBirthDialog (onCloseDialog = { showCountryOfBirthDialog = false }, onCountrySelected = { selectedCountry ->
+                    countryOfBirth = selectedCountry.getLabel(context)
+                } )
             }
         }
         Column {
