@@ -14,14 +14,9 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import static edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID;
-
 import androidx.annotation.NonNull;
 
-import org.joda.time.Instant;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -32,28 +27,20 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import edu.upc.sdk.library.OpenMRSLogger;
-import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.dao.EncounterDAO;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
 import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.EncounterType;
-import edu.upc.sdk.library.models.Encountercreate;
-import edu.upc.sdk.library.models.Obscreate;
 import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.Result;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
-import edu.upc.sdk.library.models.VisitType;
-import edu.upc.sdk.library.models.Vital;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
-import rx.schedulers.Schedulers;
 
 
 /**
@@ -151,37 +138,6 @@ public class VisitRepository extends BaseRepository {
         });
     }
 
-    /**
-     * Start visit for a patient.
-     *
-     * @param patient the patient to start a visit for
-     */
-    public Observable<Visit> startVisit(final Patient patient) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            final Visit visit = new Visit();
-            visit.setStartDatetime(Instant.now().toString());
-            visit.setPatient(patient);
-            visit.setLocation(locationDAO.findLocationByName(OpenmrsAndroid.getLocation()));
-            VisitType visitType = new VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID);
-            visit.setVisitType(visitType);
-
-            Call<Visit> call = restApi.startVisit(visit);
-            Response<Visit> response = call.execute();
-
-            if (response.isSuccessful()) {
-                Visit newVisit = response.body(); // The VisitType in response contains null display string. Needs a fix (AC-1030)
-                assert newVisit != null;
-                newVisit.visitType = visitType; // Temporary workaround
-
-                visitDAO.saveOrUpdate(newVisit, patient.getId()).toBlocking().forEach(newVisit::setId);
-
-                return newVisit;
-            } else {
-                throw new IOException(response.message());
-            }
-        });
-    }
-
     public Optional<Visit> getLatestVisitWithHeight(long patientId) {
         List<Visit> visits = visitDAO.getVisitsByPatientID(patientId)
                 .toBlocking().first().stream()
@@ -224,38 +180,5 @@ public class VisitRepository extends BaseRepository {
             logger.e(Objects.requireNonNull(e.getMessage()));
             throw new IOException("Error fetching visit by uuid: " + visitUuid + " " + e.getMessage());
         }
-    }
-
-    public Observable<Result<Boolean>> createVisitWithVitals(Patient patient, List<Vital> vitals) {
-        Encountercreate encounterCreate = new Encountercreate();
-        List<Obscreate> observations = new ArrayList<>();
-        for (Vital vital : vitals) {
-            if (vital.validate()) {
-                Obscreate observation = new Obscreate();
-                observation.setConcept(vital.getConcept());
-                observation.setValue(vital.getValue());
-                observation.setObsDatetime(Instant.now().toString());
-                observation.setPerson(patient.getUuid());
-                observations.add(observation);
-            }
-        }
-        encounterCreate.setObservations(observations);
-        encounterCreate.setEncounterType(EncounterType.VITALS);
-        encounterCreate.setPatient(patient.getUuid());
-
-        startVisit(patient).toBlocking().first();
-
-        return encounterRepository.saveEncounter(encounterCreate)
-                .observeOn(Schedulers.io())
-                .map(encounterResult -> {
-                    if (encounterResult instanceof Result.Error) {
-                        try {
-                            deleteVisitByUuid(getActiveVisitByPatientId(patient.getId()).getUuid());
-                        } catch (IOException exception) {
-                            logger.e("Error deleting visit after failed encounter creation: " + exception.getMessage());
-                        }
-                    }
-                    return encounterResult;
-                });
     }
 }

@@ -2,18 +2,18 @@ package edu.upc.blopup.toggles
 
 import edu.upc.BuildConfig
 
-val hardcodeBluetoothDataToggle = ReleaseToggle(BuildConfigWrapper.hardcodeBluetoothDataToggle)
-val contactDoctorToggle = ReleaseToggle(BuildConfigWrapper.contactDoctorToggle)
+val hardcodeBluetoothDataToggle = ReleaseToggle { BuildConfigWrapper.hardcodeBluetoothDataToggle }
+val contactDoctorToggle = ReleaseToggle { BuildConfigWrapper.contactDoctorToggle }
 
 typealias OnToggleEnabled = () -> Unit
 typealias OnToggleDisabled = () -> Unit
 
-data class ReleaseToggle(val enabled: Boolean = false)
+data class ReleaseToggle(val enabled: () -> Boolean = { false })
 
 fun ReleaseToggle.check(
     onToggleEnabled: OnToggleEnabled? = null,
     onToggleDisabled: OnToggleDisabled? = null
-) = if (this.enabled) onToggleEnabled?.invoke() else onToggleDisabled?.invoke()
+) = if (this.enabled()) onToggleEnabled?.invoke() else onToggleDisabled?.invoke()
 
 //object to be able to mock BuildConfig in tests.
 object BuildConfigWrapper {

@@ -1,5 +1,6 @@
 package edu.upc.sdk.library.api.repository
 
+import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.Visit
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.OpenmrsAndroid
@@ -15,6 +16,7 @@ import edu.upc.sdk.library.models.VisitType
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
+import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,7 +33,8 @@ class NewVisitRepository @Inject constructor(
     val restApi: RestApi,
     val visitDAO: VisitDAO,
     private val locationDAO: LocationDAO,
-    private val logger: OpenMRSLogger
+    private val logger: OpenMRSLogger,
+    private val oldVisitRepository: VisitRepository
 ) {
     fun getVisitByUuid(visitUuid: UUID): Visit {
         val openMRSVisit = restApi.getVisitByUuid(visitUuid.toString()).execute().body()
@@ -65,57 +68,14 @@ class NewVisitRepository @Inject constructor(
         }
     }
 
-    suspend fun startVisit(patient: Patient, visit: Visit): Result<Visit> = withContext(Dispatchers.IO) {
+    suspend fun startVisit(patient: Patient, bloodPressure: BloodPressure, heightCm: Int?, weightKg: Float?): Result<Visit> = withContext(Dispatchers.IO) {
         val now = Instant.now()
+        val location = OpenmrsAndroid.getLocation()
         val openMRSVisit = OpenMRSVisit().apply {
             startDatetime = now.formatAsOpenMrsDate()
             this.patient = patient
-            location = locationDAO.findLocationByName(OpenmrsAndroid.getLocation())
+            this.location = locationDAO.findLocationByName(location)
             visitType = VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID)
-        }
-        val encounterCreate = Encountercreate().apply {
-            this.visit = visit.id.toString()
-            this.patient = patient.uuid
-            encounterType = EncounterType.VITALS
-            observations = listOfNotNull(
-                Obscreate().apply {
-                    concept = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
-                    value = visit.bloodPressure.systolic.toString()
-                    obsDatetime = now.toString()
-                    person = patient.uuid
-                },
-                Obscreate().apply {
-                    concept = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
-                    value = visit.bloodPressure.diastolic.toString()
-                    obsDatetime = now.toString()
-                    person = patient.uuid
-                },
-                Obscreate().apply {
-                    concept =
-                        ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
-                    value = visit.bloodPressure.pulse.toString()
-                    obsDatetime = now.toString()
-                    person = patient.uuid
-                },
-                visit.heightCm?.let {
-                    Obscreate().apply {
-                        concept =
-                            ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT
-                        value = it.toString()
-                        obsDatetime = now.toString()
-                        person = patient.uuid
-                    }
-                },
-                visit.weightKg?.let {
-                    Obscreate().apply {
-                        concept =
-                            ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
-                        value = it.toString()
-                        obsDatetime = now.toString()
-                        person = patient.uuid
-                    }
-                }
-            )
         }
 
         restApi.startVisit(openMRSVisit).execute().run {
@@ -124,31 +84,91 @@ class NewVisitRepository @Inject constructor(
                 return@withContext Result.Error(IOException("Error starting visit ${message()}"))
             }
 
-            val newVisit = body()
-            restApi.createEncounter(encounterCreate).execute().run {
-                if (!isSuccessful) {
-                    logger.e("Error createing the encounter: ${message()}")
-                    deleteVisit(visit.id)
-                    return@withContext Result.Error(IOException("Error creating encounter ${message()}"))
+            val visitFromServer = this.body()!!
+
+            val visit = Visit(
+                UUID.fromString(visitFromServer.uuid),
+                UUID.fromString(patient.uuid),
+                location,
+                visitFromServer.startDatetime.let { DateUtils.parseLocalDateFromOpenmrsDate(it) },
+                bloodPressure,
+                heightCm,
+                weightKg
+            )
+
+            val result = addVisitEncounter(visit)
+            if (result is Result.Success) {
+                try {
+                    oldVisitRepository.syncVisitsData(patient).toBlocking().first()
+                } catch (e: Exception) {
+                    logger.e("Error saving new visit in local database: ${e.javaClass.simpleName}: ${e.message}")
                 }
             }
 
-            try {
-                visitDAO.saveOrUpdate(newVisit, patient.id!!).toBlocking()
-                // In the old impl we are updating the visit with the encounters and storing the encounter in Room
-            } catch (e: Exception) {
-                logger.e("Error saving new visit in local database: ${e.javaClass.simpleName}: ${e.message}")
-            }
-            return@withContext Result.Success(VisitConverter.createVisitFromOpenMRSVisit(newVisit))
+            return@withContext result
         }
     }
 
-    suspend fun deleteVisit(visitUuid: UUID): Boolean = withContext(Dispatchers.IO) {
+    private suspend fun addVisitEncounter(visit: Visit): Result<Visit> {
+        val encounterCreate = Encountercreate().apply {
+            this.visit = visit.id.toString()
+            this.patient = visit.patientId.toString()
+            encounterType = EncounterType.VITALS
+            observations = listOfNotNull(
+                Obscreate().apply {
+                    concept = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+                    value = visit.bloodPressure.systolic.toString()
+                    obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                    person = visit.patientId.toString()
+                },
+                Obscreate().apply {
+                    concept = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+                    value = visit.bloodPressure.diastolic.toString()
+                    obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                    person = visit.patientId.toString()
+                },
+                Obscreate().apply {
+                    concept =
+                        ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
+                    value = visit.bloodPressure.pulse.toString()
+                    obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                    person = visit.patientId.toString()
+                },
+                visit.heightCm?.let {
+                    Obscreate().apply {
+                        concept =
+                            ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT
+                        value = it.toString()
+                        obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                        person = visit.patientId.toString()
+                    }
+                },
+                visit.weightKg?.let {
+                    Obscreate().apply {
+                        concept =
+                            ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
+                        value = it.toString()
+                        obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                        person = visit.patientId.toString()
+                    }
+                }
+            )
+        }
+
+        restApi.createEncounter(encounterCreate).execute().run {
+            if (!isSuccessful) {
+                logger.e("Error createing the encounter: ${message()}")
+                deleteVisit(visit.id)
+                return Result.Error(IOException("Error creating encounter ${message()}"))
+            }
+        }
+        return Result.Success(visit)
+    }
+
+    private suspend fun deleteVisit(visitUuid: UUID): Boolean = withContext(Dispatchers.IO) {
         val call = restApi.deleteVisit(visitUuid.toString())
         val response = call.execute()
         if (response.isSuccessful) {
-            visitDAO.deleteVisitByUuid(visitUuid.toString()).toBlocking().first()
-
             return@withContext true
         }
 

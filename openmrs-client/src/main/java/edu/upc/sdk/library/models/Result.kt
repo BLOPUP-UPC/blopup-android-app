@@ -18,6 +18,8 @@ sealed class Result<out T> {
         fun throwable() = this.throwable
     }
 
+    // This state make no sense here???
+    // Loading should be used in the ResultUiState
     class Loading(val operationType: OperationType = GeneralOperation) : Result<Nothing>()
 
 }

@@ -3,12 +3,14 @@ package edu.upc.blopup.ui.takingvitals
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.CheckTreatment
+import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.toggles.BuildConfigWrapper
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
 import edu.upc.sdk.library.api.repository.BluetoothConnectionException
 import edu.upc.sdk.library.api.repository.Measurement
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
@@ -21,7 +23,6 @@ import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
-import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.library.models.VisitExample
 import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -37,6 +38,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.mockkObject
+import io.mockk.unmockkObject
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,12 +47,12 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.*
+import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import rx.Observable
 import java.util.Optional
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
@@ -70,6 +72,9 @@ class VitalsViewModelTest {
 
     @MockK(relaxUnitFun = true)
     private lateinit var visitRepository: VisitRepository
+
+    @MockK
+    private lateinit var newVisitRepository: NewVisitRepository
 
     @MockK
     private lateinit var patientDAO: PatientDAO
@@ -100,7 +105,14 @@ class VitalsViewModelTest {
 
         every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
 
+        mockkObject(BuildConfigWrapper)
+
         MockKAnnotations.init(this)
+    }
+
+    @After
+    fun tearDown() {
+        unmockkObject(BuildConfigWrapper)
     }
 
     @Test
@@ -238,25 +250,27 @@ class VitalsViewModelTest {
     }
 
     @Test
-    fun `should create new visit and add vitals information`() {
-        val visit = Visit().apply {
-            uuid = "visitUuid"
-            patient = testPatient
-        }
-        viewModel.saveHeight("170")
+    fun `should create new visit and add vitals information`() = runTest {
+        val visit = edu.upc.blopup.model.VisitExample.random(heightCm = 170)
 
         every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
-        every { visitRepository.startVisit(testPatient) } returns Observable.just(visit)
-        every {
-            visitRepository.createVisitWithVitals(testPatient, viewModel.vitalsUiState.value)
-        } returns Observable.just(Result.Success(true))
+        coEvery {
+            newVisitRepository.startVisit(testPatient, ofType(BloodPressure::class), visit.heightCm, ofType(Float::class))
+        } returns Result.Success(visit)
 
+        every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns true
+
+        viewModel.receiveBloodPressureData()
+        viewModel.receiveWeightData()
+        viewModel.saveHeight(visit.heightCm.toString())
         viewModel.createVisit()
 
-        verify {
-            visitRepository.createVisitWithVitals(
+        coVerify {
+            newVisitRepository.startVisit(
                 testPatient,
-                viewModel.vitalsUiState.value
+                any(BloodPressure::class),
+                visit.heightCm,
+                ofType(Float::class)
             )
         }
     }
@@ -334,7 +348,6 @@ class VitalsViewModelTest {
 
     @Test
     fun `should set bpBluetoothConnectionResultUiState to Error when bluetooth connection fails`() {
-        mockkObject(BuildConfigWrapper)
         every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns false
 
         every { readBloodPressureRepository.start(any(), any()) } answers {
@@ -351,7 +364,6 @@ class VitalsViewModelTest {
 
     @Test
     fun `should set scaleBluetoothConnectionResultUiState to Error when bluetooth connection fails`() {
-        mockkObject(BuildConfigWrapper)
         every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns false
 
         every { readScaleRepository.start(any()) } answers {

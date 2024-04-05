@@ -10,12 +10,9 @@ import edu.upc.sdk.library.dao.LocationDAO
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.EncounterType
-import edu.upc.sdk.library.models.Encountercreate
-import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import io.mockk.Called
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -58,6 +55,9 @@ class NewVisitRepositoryTest {
 
     @MockK(relaxed = true)
     private lateinit var logger: OpenMRSLogger
+
+    @MockK
+    private lateinit var oldVisitRepository: VisitRepository
 
     @InjectMockKs
     private lateinit var visitRepository: NewVisitRepository
@@ -187,7 +187,7 @@ class NewVisitRepositoryTest {
         val patientId = UUID.randomUUID()
         val visitId = UUID.randomUUID()
         val patient = Patient().apply { uuid = patientId.toString(); id = 123L }
-        val location = "La casa de Ale"
+        val location = ""
         val visit = Visit(
             visitId,
             patientId,
@@ -220,20 +220,20 @@ class NewVisitRepositoryTest {
         every { restApi.createEncounter(any()) } returns callCreateEncounter
         every { callCreateEncounter.execute() } returns Response.success(Encounter())
 
-        every { visitDAO.saveOrUpdate(any(), any()) } returns Observable.just(1)
-
         runBlocking {
-            val result = visitRepository.startVisit(patient, visit)
+            val result = visitRepository.startVisit(patient, visit.bloodPressure, visit.heightCm, visit.weightKg)
             assertEquals(result, Result.Success(visit))
         }
 
         verify(exactly = 1) { restApi.startVisit(any()) }
         verify(exactly = 1) { restApi.createEncounter(any()) }
+        verify(exactly = 1) { oldVisitRepository.syncVisitsData(patient) }
     }
 
     @Test
     fun `should throw exception when starting visit in server fails`() {
         val patient = Patient().apply { uuid = UUID.randomUUID().toString(); id = 123L }
+        val visit = VisitExample.random()
 
         val call = mockk<Call<OpenMRSVisit>>(relaxed = true)
         every { locationDAO.findLocationByName(any()) } returns LocationEntity("La casa de Ale")
@@ -241,7 +241,7 @@ class NewVisitRepositoryTest {
         every { call.execute() } returns Response.error(500, mockk<ResponseBody>("Generic error"))
 
         runBlocking {
-            val result = visitRepository.startVisit(patient, visit = VisitExample.random())
+            val result = visitRepository.startVisit(patient, visit.bloodPressure, visit.heightCm, visit.weightKg)
             assertThat(result, instanceOf(Result.Error::class.java))
             when(result) {
                 is Result.Error -> assertEquals(result.throwable.message, "Error starting visit Response.error()")
@@ -250,7 +250,7 @@ class NewVisitRepositoryTest {
         }
 
         verify { restApi.startVisit(any()) }
-        verify { visitDAO wasNot Called }
+        verify { oldVisitRepository wasNot Called }
     }
 
     @Test
@@ -261,7 +261,7 @@ class NewVisitRepositoryTest {
         val expectedVisit = Visit(
             visitId,
             patientId,
-            "La casa de Ale",
+            "",
             LocalDateTime.now().truncatedTo(SECONDS),
             BloodPressure(120, 80, 70),
             177,
@@ -290,10 +290,10 @@ class NewVisitRepositoryTest {
         every { restApi.createEncounter(any()) } returns callCreateEncounter
         every { callCreateEncounter.execute() } returns Response.success(Encounter())
 
-        every { visitDAO.saveOrUpdate(any(), any()) } throws Exception()
+        every { oldVisitRepository.syncVisitsData(patient) } throws Exception()
 
         runBlocking {
-            val result = visitRepository.startVisit(patient, visit = VisitExample.random())
+            val result = visitRepository.startVisit(patient, expectedVisit.bloodPressure, expectedVisit.heightCm, expectedVisit.weightKg)
 
             assertEquals(result, Result.Success(expectedVisit))
         }
@@ -309,7 +309,11 @@ class NewVisitRepositoryTest {
 
         val callStartVisit = mockk<Call<OpenMRSVisit>>(relaxed = true)
         every { restApi.startVisit(any()) } returns callStartVisit
-        every { callStartVisit.execute() } returns Response.success(edu.upc.sdk.library.models.Visit())
+        every { callStartVisit.execute() } returns
+                Response.success(edu.upc.sdk.library.models.Visit().apply {
+                    uuid = visit.id.toString()
+                    startDatetime = visit.startDate.formatAsOpenMrsDate()
+                })
 
         val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)
         every { restApi.createEncounter(any()) } returns callCreateEncounter
@@ -318,10 +322,9 @@ class NewVisitRepositoryTest {
         val callDeleteVisit = mockk<Call<ResponseBody>>(relaxed = true)
         every { restApi.deleteVisit(visit.id.toString()) } returns callDeleteVisit
         every { callDeleteVisit.execute() } returns Response.error<ResponseBody>(500, "".toResponseBody(null))
-        every { visitDAO.deleteVisitByUuid(visit.id.toString()) } returns Observable.just(true)
 
         runBlocking {
-            val result = visitRepository.startVisit(patient, visit)
+            val result = visitRepository.startVisit(patient, visit.bloodPressure, visit.heightCm, visit.weightKg)
             assertThat(result, instanceOf(Result.Error::class.java))
             when(result) {
                 is Result.Error -> assertEquals(result.throwable.message, "Error creating encounter Response.error()")
@@ -331,84 +334,6 @@ class NewVisitRepositoryTest {
 
         verify { restApi.startVisit(any()) }
         verify(exactly = 1) { restApi.deleteVisit(any()) }
-        verify { visitDAO wasNot Called }
-    }
-
-    @Test
-    fun `should delete visit`() {
-        val visitUuid = UUID.randomUUID()
-
-        val response = Response.success("".toResponseBody(null))
-
-        val call = mockk<Call<ResponseBody>>(relaxed = true)
-        every { restApi.deleteVisit(visitUuid.toString()) } returns call
-        every { call.execute() } returns response
-        every { visitDAO.deleteVisitByUuid(visitUuid.toString()) } returns Observable.just(true)
-
-        runBlocking {
-            val result = visitRepository.deleteVisit(visitUuid)
-
-            assertEquals(result, true)
-        }
-    }
-
-    @Test
-    fun `should return false if delete visit fails and local visit is not deleted`() {
-        val visitUuid = UUID.randomUUID()
-
-        val response = Response.error<ResponseBody>(500, "".toResponseBody(null))
-
-        val call = mockk<Call<ResponseBody>>(relaxed = true)
-        every { restApi.deleteVisit(visitUuid.toString()) } returns call
-        every { call.execute() } returns response
-
-        runBlocking {
-            val result = visitRepository.deleteVisit(visitUuid)
-
-            verify { visitDAO wasNot Called }
-            assertEquals(result, false)
-        }
-    }
-
-    private fun givenEncounterCreate(visit: Visit) = Encountercreate().apply {
-        this.visit = visit.id.toString()
-        this.patient = visit.patientId.toString()
-        encounterType = EncounterType.VITALS
-        observations = listOfNotNull(
-            Obscreate().apply {
-                concept = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
-                value = visit.bloodPressure.systolic.toString()
-                obsDatetime = visit.startDate.toString()
-                person = visit.patientId.toString()
-            },
-            Obscreate().apply {
-                concept = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
-                value = visit.bloodPressure.diastolic.toString()
-                obsDatetime = visit.startDate.toString()
-                person = visit.patientId.toString()
-            },
-            Obscreate().apply {
-                concept = ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
-                value = visit.bloodPressure.pulse.toString()
-                obsDatetime = visit.startDate.toString()
-                person = visit.patientId.toString()
-            },
-            visit.heightCm?.let {
-                Obscreate().apply {
-                    concept = ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT
-                    value = it.toString()
-                    obsDatetime = visit.startDate.toString()
-                    person = visit.patientId.toString()
-                }
-            },
-            visit.weightKg?.let {
-                Obscreate().apply {
-                    concept = ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
-                    value = it.toString()
-                    obsDatetime = visit.startDate.toString()
-                    person = visit.patientId.toString()
-                }
-            }
-        )
+        verify { oldVisitRepository wasNot Called }
     }
 }

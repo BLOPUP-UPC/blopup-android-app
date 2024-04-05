@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.CheckTreatment
+import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
@@ -32,6 +34,7 @@ open class VitalsViewModel @Inject constructor(
     private val readBloodPressureRepository: ReadBloodPressureRepository,
     private val readScaleRepository: ReadScaleRepository,
     private val visitRepository: VisitRepository,
+    private val newVisitRepository: NewVisitRepository,
     patientDAO: PatientDAO,
     private val treatmentRepository: TreatmentRepository,
     savedStateHandle: SavedStateHandle
@@ -181,22 +184,24 @@ open class VitalsViewModel @Inject constructor(
 
     fun createVisit() {
         _createVisitResultUiState.value = ResultUiState.Loading
-        visitRepository.createVisitWithVitals(patient, _vitalsUiState.value)
-            .subscribe { result ->
-                when (result) {
-                    is Result.Success -> {
-                        _createVisitResultUiState.value = ResultUiState.Success(Unit)
-                    }
+        val bloodPressure = BloodPressure(
+            _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }?.value!!.toInt(),
+            _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }?.value!!.toInt(),
+            _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }?.value!!.toInt()
+        )
 
-                    is Result.Loading -> {
-                        _createVisitResultUiState.value = ResultUiState.Loading
-                    }
-
-                    is Result.Error -> {
-                        _createVisitResultUiState.value = ResultUiState.Error
-                    }
-                }
+        viewModelScope.launch {
+            when (newVisitRepository.startVisit(
+                patient,
+                bloodPressure,
+                _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT }?.value?.toInt(),
+                _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }?.value?.toFloat(),
+            )) {
+                is Result.Success -> _createVisitResultUiState.value = ResultUiState.Success(Unit)
+                is Result.Error -> _createVisitResultUiState.value = ResultUiState.Error
+                is Result.Loading -> _createVisitResultUiState.value = ResultUiState.Loading
             }
+        }
     }
 
     private fun hardcodeBloodPressureBluetoothData() {
