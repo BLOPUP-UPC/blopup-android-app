@@ -25,7 +25,6 @@ import androidx.annotation.Nullable;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.File;
 import java.util.Map;
 
 import edu.upc.BuildConfig;
@@ -37,10 +36,7 @@ import edu.upc.sdk.utilities.ApplicationConstants;
 public class OpenmrsAndroid {
     @SuppressLint("StaticFieldLeak")
     private volatile static Context instance;
-    private static final String OPENMRS_DIR_NAME = "OpenMRS";
-    private static final String OPENMRS_DIR_PATH = File.separator + OPENMRS_DIR_NAME;
     private static String externalDirectoryPath;
-    private static String secretKey;
 
     private static final OpenMRSLogger logger = new OpenMRSLogger();
 
@@ -77,28 +73,12 @@ public class OpenmrsAndroid {
     }
 
     /**
-     * Gets open mrs dir.
-     *
-     * @return the open mrs dir
-     */
-    public static String getOpenMRSDir() {
-        return externalDirectoryPath + OPENMRS_DIR_PATH;
-    }
-
-    /**
      * Gets open mrs logger.
      *
      * @return the open mrs logger
      */
     public static OpenMRSLogger getOpenMRSLogger() {
         return logger;
-    }
-
-    /**
-     * Delete secret key.
-     */
-    public static void deleteSecretKey() {
-        secretKey = null;
     }
 
     /**
@@ -273,27 +253,6 @@ public class OpenmrsAndroid {
     }
 
     /**
-     * Gets visit type uuid.
-     *
-     * @return the visit type uuid
-     */
-    public static String getVisitTypeUUID() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getString(ApplicationConstants.VISIT_TYPE_UUID, "");
-    }
-
-    /**
-     * Sets visit type uuid.
-     *
-     * @param visitTypeUUID the visit type uuid
-     */
-    public static void setVisitTypeUUID(String visitTypeUUID) {
-        SharedPreferences.Editor editor = getOpenMRSSharedPreferences().edit();
-        editor.putString(ApplicationConstants.VISIT_TYPE_UUID, visitTypeUUID);
-        editor.apply();
-    }
-
-    /**
      * Gets sync state.
      *
      * @return the sync state
@@ -340,7 +299,6 @@ public class OpenmrsAndroid {
         editor.remove(ApplicationConstants.AUTHORIZATION_TOKEN);
         OpenmrsAndroid.clearCurrentLoggedInUserInfo();
         editor.remove(ApplicationConstants.UserKeys.PASSWORD);
-        OpenmrsAndroid.deleteSecretKey();
         editor.apply();
     }
 }

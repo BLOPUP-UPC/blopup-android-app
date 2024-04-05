@@ -121,7 +121,6 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
                     mLogger.d(response.body().toString());
                     Session session = response.body();
                     if (session.isAuthenticated()) {
-                        OpenmrsAndroid.deleteSecretKey();
                         String sessionID = getSessionIdFromHeaders(response);
 
                         if (wipeDatabase) {
@@ -136,7 +135,6 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
                             OpenmrsAndroid.setPasswordAndHashedPassword(password);
                         }
 
-                        OpenmrsAndroid.setVisitTypeUUID(ApplicationConstants.DEFAULT_VISIT_TYPE_UUID);
                         setLogin(url);
                         userService.updateUserInformation(username);
 

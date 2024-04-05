@@ -22,19 +22,15 @@ object ApplicationConstants {
     const val AUTHORIZATION_TOKEN = "authorisation"
     const val LOCATION = "location"
     const val FIRST = true
-    const val VISIT_TYPE_UUID = "visit_type_uuid"
     const val LAST_SESSION_TOKEN = "last_session_id"
     const val LAST_LOGIN_SERVER_URL = "last_login_server_url"
     const val DB_NAME = "openmrs.db"
-    const val DEFAULT_VISIT_TYPE_UUID = "7b0f5697-27e3-40c4-8bae-f4049abfb4ed"
+    const val FACILITY_VISIT_TYPE_UUID = "7b0f5697-27e3-40c4-8bae-f4049abfb4ed"
     const val DEFAULT_BCRYPT_ROUND = 8
     const val SPLASH_TIMER = 3500
     const val PACKAGE_NAME = "edu.upc"
     const val USER_GUIDE = "https://blopup-upc.github.io/blopup-android-user-guide/"
-    const val OPENMRS_PREF_FILE = "OpenMRSPrefFile"
     const val BUNDLE = "bundle"
-    const val PRIMARY_KEY_ID = "_id"
-    const val ABOUT_OPENMRS_URL = "https://openmrs.org/about/"
 
     object OpenMRSSharedPreferenceNames {
         const val SHARED_PREFERENCES_NAME = "shared_preferences"
@@ -58,8 +54,6 @@ object ApplicationConstants {
     object DialogTAG {
         const val LOGOUT_DIALOG_TAG = "logoutDialog"
         const val END_VISIT_DIALOG_TAG = "endVisitDialogTag"
-        const val END_VITALS_TAG = "endVitalsTag"
-        const val START_VISIT_DIALOG_TAG = "startVisitDialog"
         const val START_VISIT_IMPOSSIBLE_DIALOG_TAG = "startVisitImpossibleDialog"
         const val WARNING_LOST_DATA_DIALOG_TAG = "warningLostDataDialog"
         const val SIMILAR_PATIENTS_TAG = "similarPatientsDialogTag"
@@ -94,7 +88,6 @@ object ApplicationConstants {
     }
 
     object OpenMRSlanguage {
-        const val KEY_LANGUAGE_MODE = "key_language_mode"
         val LANGUAGE_LIST = arrayOf("English", "Español", "Català")
         val LANGUAGE_CODE = arrayOf("en", "es", "ca")
     }

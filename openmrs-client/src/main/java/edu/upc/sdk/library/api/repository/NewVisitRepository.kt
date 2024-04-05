@@ -13,6 +13,7 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.VisitType
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -69,7 +70,7 @@ class NewVisitRepository @Inject constructor(
             startDatetime = now.formatAsOpenMrsDate()
             this.patient = patient
             location = locationDAO.findLocationByName(OpenmrsAndroid.getLocation())
-            visitType = VisitType("FACILITY", OpenmrsAndroid.getVisitTypeUUID())
+            visitType = VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID)
         }
         val encounterCreate = Encountercreate().apply {
             this.visit = visit.id.toString()

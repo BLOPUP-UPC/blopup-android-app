@@ -1,10 +1,10 @@
 package edu.upc.sdk.library.models
 
 import edu.upc.blopup.model.Treatment
-import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.databases.entities.LocationEntity
+import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDateWithoutTime
 import edu.upc.sdk.utilities.DateUtils.formatToOpenmrsDate
@@ -105,7 +105,7 @@ object VisitExample {
             uuid = visitUuid
             location = LocationEntity(visitLocation)
             startDatetime = visitStartDate.formatAsOpenMrsDate()
-            visitType = VisitType("FACILITY", OpenmrsAndroid.getVisitTypeUUID())
+            visitType = VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID)
             encounters = listOf(
                 Encounter().apply {
                     encounterType = EncounterType(EncounterType.VITALS)

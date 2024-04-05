@@ -14,6 +14,8 @@
 
 package edu.upc.sdk.library.api.repository;
 
+import static edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID;
+
 import androidx.annotation.NonNull;
 
 import org.joda.time.Instant;
@@ -160,7 +162,7 @@ public class VisitRepository extends BaseRepository {
             visit.setStartDatetime(Instant.now().toString());
             visit.setPatient(patient);
             visit.setLocation(locationDAO.findLocationByName(OpenmrsAndroid.getLocation()));
-            VisitType visitType = new VisitType("FACILITY", OpenmrsAndroid.getVisitTypeUUID());
+            VisitType visitType = new VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID);
             visit.setVisitType(visitType);
 
             Call<Visit> call = restApi.startVisit(visit);
