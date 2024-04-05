@@ -14,14 +14,3 @@ data class Visit(
     var endDate: LocalDateTime? = null
 )
 
-object VisitExample {
-    fun random(): Visit {
-        return Visit(
-            id = UUID.randomUUID(),
-            patientId = UUID.randomUUID(),
-            location = "location",
-            startDate = LocalDateTime.now(),
-            bloodPressure = BloodPressureExample.random(),
-        )
-    }
-}
