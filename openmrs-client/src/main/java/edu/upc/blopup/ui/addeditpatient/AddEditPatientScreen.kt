@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
@@ -56,10 +57,12 @@ fun AddEditPatientForm() {
     var name by remember { mutableStateOf("") }
     var familyName by remember { mutableStateOf("") }
     var dateOfBirth by remember { mutableStateOf("") }
+    var countryOfBirth by remember { mutableStateOf("") }
     val datePickerState = rememberDatePickerState()
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var estimatedYears by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
+    var showCountryOfBirthDialog by remember { mutableStateOf(false) }
 
     Column(
         Modifier
@@ -164,6 +167,30 @@ fun AddEditPatientForm() {
                     }) {
                     DatePicker(state = datePickerState)
                 }
+            }
+        }
+        Column {
+            StructureLabelText(R.string.country_of_birth_label)
+            OutlinedTextField(
+                trailingIcon = {
+                    Icon(
+                        Icons.Filled.ArrowDropDown,
+                        tint = Color.Gray,
+                        contentDescription = null
+                    )
+                },
+                modifier = Modifier.fillMaxWidth().clickable { showCountryOfBirthDialog = true  },
+                value = countryOfBirth,
+                isError = countryOfBirth.isEmpty(),
+                onValueChange = { countryOfBirth = it },
+                label = { Text(text = stringResource(R.string.country_of_birth_default), fontSize = 16.sp) },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = colorResource(R.color.primary),
+                    focusedLabelColor = colorResource(R.color.primary),
+                    cursorColor = Color.Black)
+            )
+            if(showCountryOfBirthDialog) {
+                CountryOfBirthDialog { showCountryOfBirthDialog = false }
             }
         }
         Column {
