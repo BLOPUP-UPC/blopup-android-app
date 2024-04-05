@@ -14,6 +14,7 @@ import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import io.mockk.Called
 import io.mockk.MockKAnnotations
@@ -26,6 +27,8 @@ import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -33,13 +36,13 @@ import org.junit.runner.RunWith
 import retrofit2.Call
 import retrofit2.Response
 import rx.Observable
-import java.io.IOException
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit.SECONDS
 import java.util.UUID
 import edu.upc.sdk.library.models.Visit as OpenMRSVisit
 import edu.upc.sdk.library.models.VisitExample as OpenMRSVisitExample
+
 
 @RunWith(AndroidJUnit4::class)
 class NewVisitRepositoryTest {
@@ -221,23 +224,30 @@ class NewVisitRepositoryTest {
 
         runBlocking {
             val result = visitRepository.startVisit(patient, visit)
-            assertEquals(result, visit)
+            assertEquals(result, Result.Success(visit))
         }
 
         verify(exactly = 1) { restApi.startVisit(any()) }
         verify(exactly = 1) { restApi.createEncounter(any()) }
     }
 
-    @Test(expected = IOException::class)
+    @Test
     fun `should throw exception when starting visit in server fails`() {
         val patient = Patient().apply { uuid = UUID.randomUUID().toString(); id = 123L }
 
         val call = mockk<Call<OpenMRSVisit>>(relaxed = true)
         every { locationDAO.findLocationByName(any()) } returns LocationEntity("La casa de Ale")
         every { restApi.startVisit(any()) } returns call
-        every { call.execute() } returns Response.error(500, mockk<ResponseBody>())
+        every { call.execute() } returns Response.error(500, mockk<ResponseBody>("Generic error"))
 
-        runBlocking { visitRepository.startVisit(patient, visit = VisitExample.random()) }
+        runBlocking {
+            val result = visitRepository.startVisit(patient, visit = VisitExample.random())
+            assertThat(result, instanceOf(Result.Error::class.java))
+            when(result) {
+                is Result.Error -> assertEquals(result.throwable.message, "Error starting visit Response.error()")
+                else -> {}
+            }
+        }
 
         verify { restApi.startVisit(any()) }
         verify { visitDAO wasNot Called }
@@ -285,12 +295,12 @@ class NewVisitRepositoryTest {
         runBlocking {
             val result = visitRepository.startVisit(patient, visit = VisitExample.random())
 
-            assertEquals(result, expectedVisit)
+            assertEquals(result, Result.Success(expectedVisit))
         }
         verify { restApi.startVisit(any()) }
     }
 
-    @Test(expected = IOException::class)
+    @Test
     fun `should delete visit if creating visit encounters fails`() {
         val visit = VisitExample.random()
         val patient = Patient().apply { uuid = UUID.randomUUID().toString(); id = 123L }
@@ -310,9 +320,17 @@ class NewVisitRepositoryTest {
         every { callDeleteVisit.execute() } returns Response.error<ResponseBody>(500, "".toResponseBody(null))
         every { visitDAO.deleteVisitByUuid(visit.id.toString()) } returns Observable.just(true)
 
-        runBlocking { visitRepository.startVisit(patient, visit) }
+        runBlocking {
+            val result = visitRepository.startVisit(patient, visit)
+            assertThat(result, instanceOf(Result.Error::class.java))
+            when(result) {
+                is Result.Error -> assertEquals(result.throwable.message, "Error creating encounter Response.error()")
+                else -> {}
+            }
+        }
 
         verify { restApi.startVisit(any()) }
+        verify(exactly = 1) { restApi.deleteVisit(any()) }
         verify { visitDAO wasNot Called }
     }
 

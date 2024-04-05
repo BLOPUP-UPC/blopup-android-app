@@ -10,6 +10,7 @@ import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.VisitType
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -64,7 +65,7 @@ class NewVisitRepository @Inject constructor(
         }
     }
 
-    suspend fun startVisit(patient: Patient, visit: Visit): Visit = withContext(Dispatchers.IO) {
+    suspend fun startVisit(patient: Patient, visit: Visit): Result<Visit> = withContext(Dispatchers.IO) {
         val now = Instant.now()
         val openMRSVisit = OpenMRSVisit().apply {
             startDatetime = now.formatAsOpenMrsDate()
@@ -119,30 +120,26 @@ class NewVisitRepository @Inject constructor(
 
         restApi.startVisit(openMRSVisit).execute().run {
             if (!isSuccessful) {
-                throw IOException("Error starting visit ${message()}")
+                logger.e("Error starting visit: ${message()}")
+                return@withContext Result.Error(IOException("Error starting visit ${message()}"))
+            }
+
+            val newVisit = body()
+            restApi.createEncounter(encounterCreate).execute().run {
+                if (!isSuccessful) {
+                    logger.e("Error createing the encounter: ${message()}")
+                    deleteVisit(visit.id)
+                    return@withContext Result.Error(IOException("Error creating encounter ${message()}"))
+                }
             }
 
             try {
-                val newVisit = body()
-                restApi.createEncounter(encounterCreate).execute().run {
-                    if (!isSuccessful) {
-                        throw IOException("syncEncounter error: ${message()}")
-                    }
-                }
-
-                try {
-                    visitDAO.saveOrUpdate(newVisit, patient.id!!).toBlocking()
-                    // In the old impl we are updating the visit with the encounters and storing the encounter in Room
-                } catch (e: Exception) {
-                    logger.e("Error saving new visit in local database: ${e.javaClass.simpleName}: ${e.message}")
-                }
-                return@withContext VisitConverter.createVisitFromOpenMRSVisit(newVisit)
+                visitDAO.saveOrUpdate(newVisit, patient.id!!).toBlocking()
+                // In the old impl we are updating the visit with the encounters and storing the encounter in Room
             } catch (e: Exception) {
-                logger.e("Error starting visit: ${e.javaClass.simpleName}: ${e.message}")
-                logger.i("Deleting visit with uuid: ${visit.id}")
-                deleteVisit(visit.id)
-                throw e
+                logger.e("Error saving new visit in local database: ${e.javaClass.simpleName}: ${e.message}")
             }
+            return@withContext Result.Success(VisitConverter.createVisitFromOpenMRSVisit(newVisit))
         }
     }
 

@@ -2,6 +2,10 @@ package edu.upc.sdk.library.models
 
 import edu.upc.sdk.library.models.OperationType.GeneralOperation
 
+/**
+ * This class is used to represent the result of an operation.
+ * This class should be used to return data from repositories
+ */
 sealed class Result<out T> {
     data class Success<out T>(val data: T, val operationType: OperationType = GeneralOperation) :
         Result<T>()
