@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.addeditpatient
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,37 +53,76 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
 import edu.upc.blopup.ui.shared.components.SubmitButton
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
+import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
+import edu.upc.sdk.utilities.ApplicationConstants
 import java.time.Instant
 import java.time.ZoneId
 
 @Composable
 fun AddEditPatientScreen(viewModel: AddEditPatientViewModel = hiltViewModel()) {
-    AddEditPatientForm(viewModel::isNameOrSurnameInvalidFormat)
-}
+    AddEditPatientForm(
+        viewModel::isNameOrSurnameInvalidFormat,
+        viewModel::setPatientData,
+        viewModel::confirmPatient
+    )
+    }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
+fun AddEditPatientForm(
+    isNameOrSurnameInvalidFormat: (String) -> Boolean,
+    setPatientData: (String, String, String, String, String, String) -> Unit,
+    updateOrRegisterPatient: () -> Unit,
+) {
     val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var nameError by remember { mutableStateOf(false) }
     var familyName by remember { mutableStateOf("") }
     var familyNameError by remember { mutableStateOf(false) }
+    var gender by remember { mutableStateOf("") }
     var dateOfBirth by remember { mutableStateOf("") }
+    var estimatedYears by remember { mutableStateOf("") }
     var countryOfBirth by remember { mutableStateOf("") }
     var languageSelected by remember { mutableStateOf("") }
     var legalConsentFile by remember { mutableStateOf("") }
     val datePickerState = rememberDatePickerState()
     var showDatePickerDialog by remember { mutableStateOf(false) }
-    var estimatedYears by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("") }
     var showCountryOfBirthDialog by remember { mutableStateOf(false) }
     var showLanguagesDialog by remember { mutableStateOf(false) }
     var showLegalConsentDialog by remember { mutableStateOf(false) }
+
+    var isSubmitEnabled by remember { mutableStateOf(false) }
+
+
+    fun checkAllFieldsFilled(): Boolean {
+        return name.isNotBlank() &&
+                familyName.isNotBlank() &&
+                gender.isNotBlank() &&
+                (dateOfBirth.isNotBlank() || estimatedYears.isNotBlank()) &&
+                countryOfBirth.isNotBlank() &&
+                legalConsentFile.isNotBlank()
+    }
+
+    DisposableEffect(
+        name,
+        familyName,
+        gender,
+        dateOfBirth,
+        estimatedYears,
+        countryOfBirth,
+        legalConsentFile
+    ) {
+        isSubmitEnabled = checkAllFieldsFilled()
+        onDispose { }
+    }
+
+
 
     Column(
         Modifier
@@ -318,15 +359,40 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
                             showLegalConsentDialog = true
                         }
                     },
-                color = if(languageSelected.isEmpty()) Color.Gray else colorResource(R.color.allergy_orange)
+                color = if (languageSelected.isEmpty()) Color.Gray else colorResource(R.color.allergy_orange)
             )
-            if(showLegalConsentDialog){
-                LegalConsentDialog(languageSelected, { showLegalConsentDialog = false }, context, { legalConsentFile = it })
+            if (showLegalConsentDialog) {
+                LegalConsentDialog(
+                    languageSelected,
+                    { showLegalConsentDialog = false },
+                    context,
+                    { legalConsentFile = it })
             }
         }
         Column {
-            SubmitButton(title = R.string.action_submit, onClickNext = { }, enabled = false)
+            SubmitButton(
+                title = R.string.action_submit,
+                onClickNext = {
+                    setPatientData(
+                        name,
+                        familyName,
+                        dateOfBirth,
+                        estimatedYears,
+                        gender,
+                        countryOfBirth
+                    )
+                    updateOrRegisterPatient()
+                },
+                enabled = isSubmitEnabled
+            )
         }
+    }
+}
+
+private fun startPatientDashboardActivity(context: Context, patientId: Long?) {
+    Intent(context, PatientDashboardActivity::class.java).apply {
+        putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientId)
+        startActivity(context, this, null)
     }
 }
 
@@ -373,7 +439,7 @@ fun StructureLabelText(label: Int) {
 @Preview
 @Composable
 fun AddEditPatientPreview() {
-    AddEditPatientForm { false }
+    AddEditPatientForm({ false }, { _, _, _, _, _, _ -> }, {})
 }
 
 @Preview
