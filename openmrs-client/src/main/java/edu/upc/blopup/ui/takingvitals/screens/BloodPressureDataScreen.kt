@@ -16,27 +16,22 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
+import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.ErrorDialog
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.OnBackPressButtonConfirmDialog
 import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
-import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
-import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
-import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
-import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
-import edu.upc.sdk.library.models.Vital
 
 @Composable
 fun BloodPressureDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
-    vitals: MutableList<Vital>,
+    bloodPressureState: BloodPressure?,
     bpBluetoothConnectionResultUiState: ResultUiState<Unit>,
     receiveBpData: () -> Unit
 ) {
@@ -63,7 +58,7 @@ fun BloodPressureDataScreen(
 
             is ResultUiState.Success -> {
                 DataReceivedSuccessfully()
-                BloodPressureDataCards(vitals)
+                BloodPressureDataCards(bloodPressureState)
                 NavigationButtons(onClickNext, onClickBack)
                 OnBackPressButtonConfirmDialog(onClickBack)
             }
@@ -82,14 +77,14 @@ fun BloodPressureDataScreen(
 }
 
 @Composable
-fun BloodPressureDataCards(vitals: MutableList<Vital>) {
+fun BloodPressureDataCards(bloodPressureState: BloodPressure?) {
     Row {
         VitalDataCard(
             modifier = Modifier.weight(0.5f),
             icon = Icons.Default.Favorite,
             contentDescription = "heart filled in black",
             title = stringResource(id = R.string.systolic_label),
-            value = vitals.find { it.concept == SYSTOLIC_FIELD_CONCEPT }?.value ?: "--",
+            value = bloodPressureState?.systolic.toString(),
             measure = "mmHg"
         )
         VitalDataCard(
@@ -97,7 +92,7 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
             icon = Icons.Default.FavoriteBorder,
             contentDescription = "heart outline",
             title = stringResource(id = R.string.diastolic_label),
-            value = vitals.find { it.concept == DIASTOLIC_FIELD_CONCEPT }?.value ?: "--",
+            value = bloodPressureState?.diastolic.toString(),
             measure = "mmHg"
         )
         VitalDataCard(
@@ -105,7 +100,7 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
             icon = ImageVector.vectorResource(id = R.drawable.pulse_icon),
             contentDescription = "pulse symbol",
             title = stringResource(id = R.string.pulse_label),
-            value = vitals.find { it.concept == HEART_RATE_FIELD_CONCEPT }?.value ?: "--",
+            value = bloodPressureState?.pulse.toString(),
             measure = "/min"
         )
     }
@@ -114,16 +109,11 @@ fun BloodPressureDataCards(vitals: MutableList<Vital>) {
 
 @Preview
 @Composable
-fun BloodPressureDataScreenPreviewSuccess(
-    @PreviewParameter(
-        DataScreenParameters::class,
-        1
-    ) vitals: MutableList<Vital>
-) {
+fun BloodPressureDataScreenPreviewSuccess() {
     BloodPressureDataScreen(
         {},
         {},
-        vitals,
+        BloodPressure(122, 80, 60),
         ResultUiState.Success(Unit),
         {}
     )
@@ -131,16 +121,11 @@ fun BloodPressureDataScreenPreviewSuccess(
 
 @Preview
 @Composable
-fun BloodPressureDataScreenPreviewError(
-    @PreviewParameter(
-        DataScreenParameters::class,
-        1
-    ) vitals: MutableList<Vital>
-) {
+fun BloodPressureDataScreenPreviewError() {
     BloodPressureDataScreen(
         {},
         {},
-        vitals,
+        BloodPressure(120, 80, 60),
         ResultUiState.Error,
         {}
     )
@@ -148,16 +133,11 @@ fun BloodPressureDataScreenPreviewError(
 
 @Preview
 @Composable
-fun BloodPressureDataScreenPreviewLoading(
-    @PreviewParameter(
-        DataScreenParameters::class,
-        1
-    ) vitals: MutableList<Vital>
-) {
+fun BloodPressureDataScreenPreviewLoading() {
     BloodPressureDataScreen(
         {},
         {},
-        vitals,
+        BloodPressure(120, 80, 60),
         ResultUiState.Loading,
         {}
     )

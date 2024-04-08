@@ -116,11 +116,12 @@ class VitalsViewModelTest {
 
     @Test
     fun `should receive Blood Pressure data`() = runTest {
+        val bloodPressure = BloodPressure(120, 80, 70)
         val measurements = BloodPressureViewState.Content(
             Measurement(
-                120,
-                80,
-                70
+                bloodPressure.systolic,
+                bloodPressure.diastolic,
+                bloodPressure.pulse
             )
         )
 
@@ -139,23 +140,18 @@ class VitalsViewModelTest {
 
         every { readBloodPressureRepository.disconnect() } answers {}
 
-        val expectedResult = mutableListOf(
-            Vital(SYSTOLIC_FIELD_CONCEPT, "120"),
-            Vital(DIASTOLIC_FIELD_CONCEPT, "80"),
-            Vital(HEART_RATE_FIELD_CONCEPT, "70")
-        )
-
         viewModel.receiveBloodPressureData()
 
-        val result = viewModel.vitalsUiState.first()
+        val result = viewModel.bloodPressureUiState.first()
 
-        assertEquals(expectedResult, result)
-        verify { readBloodPressureRepository.disconnect() }
-
+        assertEquals(bloodPressure, result)
         assertEquals(
             ResultUiState.Success(Unit),
             viewModel.bpBluetoothConnectionResultUiState.value
         )
+
+        verify { readBloodPressureRepository.disconnect() }
+
     }
 
     @Test

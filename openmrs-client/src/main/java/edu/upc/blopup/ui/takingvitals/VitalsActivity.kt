@@ -84,8 +84,6 @@ class VitalsActivity : ACBaseActivity() {
                     },
                 ) { innerPadding ->
 
-                    val uiState by viewModel.vitalsUiState.collectAsState()
-
                     NavHost(
                         navController = navigationController,
                         startDestination = Routes.MeasureBloodPressureScreen.id,
@@ -115,12 +113,13 @@ class VitalsActivity : ACBaseActivity() {
                         composable(Routes.BloodPressureDataScreen.id) {
                             topBarTitle = R.string.blood_pressure_data
                             isDataScreen = true
+                            val bloodPressureState by viewModel.bloodPressureUiState.collectAsState()
                             val bpBluetoothConnectionResultUiState by viewModel.bpBluetoothConnectionResultUiState.collectAsState()
 
                             BloodPressureDataScreen(
                                 { navigationController.navigate(Routes.MeasureWeightScreen.id) },
                                 navigationController::popBackStack,
-                                uiState,
+                                bloodPressureState,
                                 bpBluetoothConnectionResultUiState,
                                 viewModel::receiveBloodPressureData
                             )
@@ -137,10 +136,11 @@ class VitalsActivity : ACBaseActivity() {
                         composable(Routes.WeightDataScreen.id) {
                             topBarTitle = R.string.weight_data
                             isDataScreen = true
+                            val weightState by viewModel.weightUiState.collectAsState()
                             val scaleBluetoothConnectionResultUiState by viewModel.scaleBluetoothConnectionResultUiState.collectAsState()
 
                             WeightDataScreen(
-                                viewModel.weightUiState.collectAsState().value,
+                                weightState,
                                 { navigationController.navigate(Routes.MeasureHeightScreen.id) },
                                 {
                                     navigationController.popBackStack()

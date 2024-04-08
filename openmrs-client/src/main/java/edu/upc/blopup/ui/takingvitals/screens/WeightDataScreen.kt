@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
@@ -21,10 +20,8 @@ import edu.upc.blopup.ui.shared.components.ErrorDialog
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.OnBackPressButtonConfirmDialog
 import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
-import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
-import edu.upc.sdk.library.models.Vital
 
 @Composable
 fun WeightDataScreen(
@@ -92,12 +89,7 @@ fun WeighDataCard(weightData: String?) {
 
 @Preview
 @Composable
-fun WeightDataScreenPreview(
-    @PreviewParameter(
-        DataScreenParameters::class,
-        1
-    ) vitals: MutableList<Vital>
-) {
+fun WeightDataScreenPreview() {
     Column {
         LoadingSpinner(
             Modifier

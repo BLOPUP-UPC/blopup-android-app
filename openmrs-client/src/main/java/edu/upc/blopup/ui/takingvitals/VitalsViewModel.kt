@@ -20,7 +20,6 @@ import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,8 +42,8 @@ open class VitalsViewModel @Inject constructor(
     private val patientId: Long =
         savedStateHandle[ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE]!!
 
-    private val _vitalsUiState = MutableStateFlow((mutableListOf<Vital>()))
-    val vitalsUiState: StateFlow<MutableList<Vital>> = _vitalsUiState.asStateFlow()
+    private val _bloodPressureUiState = MutableStateFlow<BloodPressure?>(null)
+    val bloodPressureUiState: StateFlow<BloodPressure?> = _bloodPressureUiState.asStateFlow()
 
     private val _weightUiState = MutableStateFlow<String?>(null)
     val weightUiState: StateFlow<String?> = _weightUiState.asStateFlow()
@@ -134,21 +133,11 @@ open class VitalsViewModel @Inject constructor(
                         { state: BloodPressureViewState ->
                             when (state) {
                                 is BloodPressureViewState.Content -> {
-                                    _vitalsUiState.value =
-                                        mutableListOf(
-                                            Vital(
-                                                NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                                                state.measurement.systolic.toString()
-                                            ),
-                                            Vital(
-                                                NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                                                state.measurement.diastolic.toString()
-                                            ),
-                                            Vital(
-                                                NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                                                state.measurement.heartRate.toString()
-                                            )
-                                        )
+                                    _bloodPressureUiState.value = BloodPressure(
+                                        state.measurement.systolic,
+                                        state.measurement.diastolic,
+                                        state.measurement.heartRate
+                                    )
                                     _bpBluetoothConnectionResultUiState.value =
                                         ResultUiState.Success(Unit)
                                 }
@@ -175,16 +164,11 @@ open class VitalsViewModel @Inject constructor(
 
     fun createVisit() {
         _createVisitResultUiState.value = ResultUiState.Loading
-        val bloodPressure = BloodPressure(
-            _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }?.value!!.toInt(),
-            _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }?.value!!.toInt(),
-            _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }?.value!!.toInt()
-        )
 
         viewModelScope.launch {
             when (newVisitRepository.startVisit(
                 patient,
-                bloodPressure,
+                _bloodPressureUiState.value!!,
                 _heightUiState.value?.toInt(),
                 _weightUiState.value?.toFloat(),
             )) {
@@ -196,21 +180,11 @@ open class VitalsViewModel @Inject constructor(
     }
 
     private fun hardcodeBloodPressureBluetoothData() {
-        _vitalsUiState.value =
-            mutableListOf(
-                Vital(
-                    NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
-                    (80..139).random().toString()
-                ),
-                Vital(
-                    NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
-                    (50..89).random().toString()
-                ),
-                Vital(
-                    NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
-                    (55..120).random().toString()
-                )
-            )
+        _bloodPressureUiState.value = BloodPressure(
+            (80..139).random(),
+            (50..89).random(),
+            (55..120).random()
+        )
         _bpBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
     }
 
