@@ -99,15 +99,6 @@ open class VitalsViewModel @Inject constructor(
                     readScaleRepository.start { state: ScaleViewState ->
                         when (state) {
                             is ScaleViewState.Content -> {
-                                val copy = _vitalsUiState.value.toMutableList()
-
-                                copy.add(
-                                    Vital(
-                                        NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
-                                        state.weightMeasurement.weight.toString()
-                                    )
-                                )
-                                _vitalsUiState.value = copy
                                 _weightUiState.value = state.weightMeasurement.weight.toString()
                                 _scaleBluetoothConnectionResultUiState.value =
                                     ResultUiState.Success(Unit)
@@ -125,7 +116,6 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun removeWeightData() {
-        _vitalsUiState.value.removeIf { it.concept == NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
         _weightUiState.value = null
     }
 
@@ -200,7 +190,7 @@ open class VitalsViewModel @Inject constructor(
                 patient,
                 bloodPressure,
                 _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.HEIGHT_FIELD_CONCEPT }?.value?.toInt(),
-                _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT }?.value?.toFloat(),
+                _weightUiState.value?.toFloat(),
             )) {
                 is Result.Success -> _createVisitResultUiState.value = ResultUiState.Success(Unit)
                 is Result.Error -> _createVisitResultUiState.value = ResultUiState.Error
@@ -229,15 +219,7 @@ open class VitalsViewModel @Inject constructor(
     }
 
     private fun hardcodeWeightData() {
-        val randomWeight = (50..150).random().toString()
-        _vitalsUiState.value.removeIf { it.concept == NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
-        _vitalsUiState.value.add(
-            Vital(
-                NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
-                randomWeight
-            )
-        )
-        _weightUiState.value = randomWeight
+        _weightUiState.value = (50..150).random().toString()
         _scaleBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
     }
 }

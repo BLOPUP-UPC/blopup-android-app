@@ -28,11 +28,11 @@ import edu.upc.sdk.library.models.Vital
 
 @Composable
 fun WeightDataScreen(
+    weight: String?,
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
     scaleBluetoothConnectionResultUiState: ResultUiState<Unit>,
-    receiveWeightData: () -> Unit,
-    weightData: String?
+    receiveWeightData: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -57,7 +57,7 @@ fun WeightDataScreen(
 
             is ResultUiState.Success -> {
                 DataReceivedSuccessfully()
-                WeighDataCard(weightData)
+                WeighDataCard(weight)
                 NavigationButtons(onClickNext, onClickBack)
                 OnBackPressButtonConfirmDialog(onClickBack)
             }

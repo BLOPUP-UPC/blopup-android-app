@@ -140,14 +140,14 @@ class VitalsActivity : ACBaseActivity() {
                             val scaleBluetoothConnectionResultUiState by viewModel.scaleBluetoothConnectionResultUiState.collectAsState()
 
                             WeightDataScreen(
+                                viewModel.weightUiState.collectAsState().value,
                                 { navigationController.navigate(Routes.MeasureHeightScreen.id) },
                                 {
                                     navigationController.popBackStack()
                                     viewModel.removeWeightData()
                                 },
                                 scaleBluetoothConnectionResultUiState,
-                                viewModel::receiveWeightData,
-                                viewModel.weightUiState.collectAsState().value
+                                viewModel::receiveWeightData
                             )
                         }
                         composable(Routes.MeasureHeightScreen.id) {
