@@ -45,8 +45,8 @@ open class VitalsViewModel @Inject constructor(
     private val _bloodPressureUiState = MutableStateFlow<BloodPressure?>(null)
     val bloodPressureUiState: StateFlow<BloodPressure?> = _bloodPressureUiState.asStateFlow()
 
-    private val _weightUiState = MutableStateFlow<String?>(null)
-    val weightUiState: StateFlow<String?> = _weightUiState.asStateFlow()
+    private val _weightUiState = MutableStateFlow<ResultUiState<String>>(ResultUiState.Loading)
+    val weightUiState: StateFlow<ResultUiState<String>> = _weightUiState.asStateFlow()
 
     private val _heightUiState = MutableStateFlow<String?>(null)
 
@@ -64,11 +64,6 @@ open class VitalsViewModel @Inject constructor(
         MutableStateFlow(ResultUiState.Loading)
     var bpBluetoothConnectionResultUiState: StateFlow<ResultUiState<Unit>> =
         _bpBluetoothConnectionResultUiState.asStateFlow()
-
-    private val _scaleBluetoothConnectionResultUiState: MutableStateFlow<ResultUiState<Unit>> =
-        MutableStateFlow(ResultUiState.Loading)
-    var scaleBluetoothConnectionResultUiState: StateFlow<ResultUiState<Unit>> =
-        _scaleBluetoothConnectionResultUiState.asStateFlow()
 
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
         val treatmentAdherenceInfo = checkTreatmentList.map {
@@ -90,8 +85,6 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun receiveWeightData() {
-        _scaleBluetoothConnectionResultUiState.value = ResultUiState.Loading
-
         hardcodeBluetoothDataToggle.check(
 
             { hardcodeWeightData() },
@@ -100,13 +93,11 @@ open class VitalsViewModel @Inject constructor(
                     readScaleRepository.start { state: ScaleViewState ->
                         when (state) {
                             is ScaleViewState.Content -> {
-                                _weightUiState.value = state.weightMeasurement.weight.toString()
-                                _scaleBluetoothConnectionResultUiState.value =
-                                    ResultUiState.Success(Unit)
+                                _weightUiState.value = ResultUiState.Success(state.weightMeasurement.weight.toString())
                             }
 
                             is ScaleViewState.Error -> {
-                                _scaleBluetoothConnectionResultUiState.value = ResultUiState.Error
+                                _weightUiState.value = ResultUiState.Error
                             }
                         }
                         readScaleRepository.disconnect()
@@ -117,7 +108,7 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun removeWeightData() {
-        _weightUiState.value = null
+        _weightUiState.value = ResultUiState.Loading
     }
 
     fun receiveBloodPressureData() {
@@ -165,12 +156,17 @@ open class VitalsViewModel @Inject constructor(
     fun createVisit() {
         _createVisitResultUiState.value = ResultUiState.Loading
 
+        val weight = when(_weightUiState.value) {
+            is ResultUiState.Success -> (_weightUiState.value as ResultUiState.Success<String>).data.toFloat()
+            else -> null
+        }
+
         viewModelScope.launch {
             when (newVisitRepository.startVisit(
                 patient,
                 _bloodPressureUiState.value!!,
                 _heightUiState.value?.toInt(),
-                _weightUiState.value?.toFloat(),
+                weight,
             )) {
                 is Result.Success -> _createVisitResultUiState.value = ResultUiState.Success(Unit)
                 is Result.Error -> _createVisitResultUiState.value = ResultUiState.Error
@@ -189,7 +185,6 @@ open class VitalsViewModel @Inject constructor(
     }
 
     private fun hardcodeWeightData() {
-        _weightUiState.value = (50..150).random().toString()
-        _scaleBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
+        _weightUiState.value = ResultUiState.Success((50..150).random().toString())
     }
 }

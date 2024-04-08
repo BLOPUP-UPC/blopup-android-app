@@ -137,7 +137,6 @@ class VitalsActivity : ACBaseActivity() {
                             topBarTitle = R.string.weight_data
                             isDataScreen = true
                             val weightState by viewModel.weightUiState.collectAsState()
-                            val scaleBluetoothConnectionResultUiState by viewModel.scaleBluetoothConnectionResultUiState.collectAsState()
 
                             WeightDataScreen(
                                 weightState,
@@ -146,7 +145,6 @@ class VitalsActivity : ACBaseActivity() {
                                     navigationController.popBackStack()
                                     viewModel.removeWeightData()
                                 },
-                                scaleBluetoothConnectionResultUiState,
                                 viewModel::receiveWeightData
                             )
                         }

@@ -25,10 +25,9 @@ import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
 
 @Composable
 fun WeightDataScreen(
-    weight: String?,
+    weightState: ResultUiState<String>,
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
-    scaleBluetoothConnectionResultUiState: ResultUiState<Unit>,
     receiveWeightData: () -> Unit
 ) {
     Column(
@@ -37,7 +36,7 @@ fun WeightDataScreen(
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        when (scaleBluetoothConnectionResultUiState) {
+        when (weightState) {
             is ResultUiState.Loading -> {
                 LoadingSpinner(
                     Modifier
@@ -54,7 +53,7 @@ fun WeightDataScreen(
 
             is ResultUiState.Success -> {
                 DataReceivedSuccessfully()
-                WeighDataCard(weight)
+                WeighDataCard(weightState.data)
                 NavigationButtons(onClickNext, onClickBack)
                 OnBackPressButtonConfirmDialog(onClickBack)
             }
@@ -74,7 +73,7 @@ fun WeightDataScreen(
 
 
 @Composable
-fun WeighDataCard(weightData: String?) {
+fun WeighDataCard(weight: String) {
     VitalDataCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -82,7 +81,7 @@ fun WeighDataCard(weightData: String?) {
         icon = ImageVector.vectorResource(id = R.drawable.scale_icon),
         contentDescription = "Scale icon",
         title = stringResource(id = R.string.weight_value_label),
-        value = weightData ?: "--",
+        value = weight,
         measure = "Kg"
     )
 }
