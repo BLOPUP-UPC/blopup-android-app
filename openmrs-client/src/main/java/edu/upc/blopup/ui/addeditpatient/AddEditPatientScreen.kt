@@ -68,9 +68,9 @@ fun AddEditPatientScreen(viewModel: AddEditPatientViewModel = hiltViewModel()) {
 fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
     val context = LocalContext.current
     var name by remember { mutableStateOf("") }
-    val nameError = remember { mutableStateOf(false) }
+    var nameError by remember { mutableStateOf(false) }
     var familyName by remember { mutableStateOf("") }
-    val familyNameError = remember { mutableStateOf(false) }
+    var familyNameError by remember { mutableStateOf(false) }
     var dateOfBirth by remember { mutableStateOf("") }
     var countryOfBirth by remember { mutableStateOf("") }
     var languageSelected by remember { mutableStateOf("") }
@@ -96,7 +96,7 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
                 value = name,
                 onValueChange = {
                     name = it
-                    nameError.value = isNameOrSurnameInvalidFormat(it)
+                    nameError = isNameOrSurnameInvalidFormat(it)
                 },
                 label = { Text(text = stringResource(R.string.reg_firstname_hint)) },
                 colors = OutlinedTextFieldDefaults.colors(
@@ -104,9 +104,9 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
                     focusedLabelColor = colorResource(R.color.primary),
                     cursorColor = Color.Black
                 ),
-                isError = name.isEmpty() || nameError.value,
+                isError = name.isEmpty() || nameError,
                 supportingText = {
-                    if (nameError.value) {
+                    if (nameError) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = stringResource(R.string.fname_invalid_error),
@@ -121,7 +121,7 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
                 value = familyName,
                 onValueChange = {
                     familyName = it
-                    familyNameError.value = isNameOrSurnameInvalidFormat(it)
+                    familyNameError = isNameOrSurnameInvalidFormat(it)
                 },
                 label = { Text(text = stringResource(R.string.reg_surname_hint)) },
                 colors = OutlinedTextFieldDefaults.colors(
@@ -129,9 +129,9 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
                     focusedLabelColor = colorResource(R.color.primary),
                     cursorColor = Color.Black
                 ),
-                isError = familyName.isEmpty() || familyNameError.value,
+                isError = familyName.isEmpty() || familyNameError,
                 supportingText = {
-                    if (familyNameError.value) {
+                    if (familyNameError) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = stringResource(R.string.fname_invalid_error),
