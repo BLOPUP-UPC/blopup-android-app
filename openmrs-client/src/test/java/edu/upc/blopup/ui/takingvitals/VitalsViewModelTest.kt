@@ -140,11 +140,7 @@ class VitalsViewModelTest {
 
         val result = viewModel.bloodPressureUiState.first()
 
-        assertEquals(bloodPressure, result)
-        assertEquals(
-            ResultUiState.Success(Unit),
-            viewModel.bpBluetoothConnectionResultUiState.value
-        )
+        assertEquals(ResultUiState.Success(bloodPressure), result)
 
         verify { readBloodPressureRepository.disconnect() }
 
@@ -339,7 +335,7 @@ class VitalsViewModelTest {
 
         viewModel.receiveBloodPressureData()
 
-        assertEquals(ResultUiState.Error, viewModel.bpBluetoothConnectionResultUiState.value)
+        assertEquals(ResultUiState.Error, viewModel.bloodPressureUiState.value)
     }
 
     @Test

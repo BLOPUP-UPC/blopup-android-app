@@ -114,13 +114,11 @@ class VitalsActivity : ACBaseActivity() {
                             topBarTitle = R.string.blood_pressure_data
                             isDataScreen = true
                             val bloodPressureState by viewModel.bloodPressureUiState.collectAsState()
-                            val bpBluetoothConnectionResultUiState by viewModel.bpBluetoothConnectionResultUiState.collectAsState()
 
                             BloodPressureDataScreen(
                                 { navigationController.navigate(Routes.MeasureWeightScreen.id) },
                                 navigationController::popBackStack,
                                 bloodPressureState,
-                                bpBluetoothConnectionResultUiState,
                                 viewModel::receiveBloodPressureData
                             )
                         }
@@ -141,10 +139,7 @@ class VitalsActivity : ACBaseActivity() {
                             WeightDataScreen(
                                 weightState,
                                 { navigationController.navigate(Routes.MeasureHeightScreen.id) },
-                                {
-                                    navigationController.popBackStack()
-                                    viewModel.removeWeightData()
-                                },
+                                navigationController::popBackStack,
                                 viewModel::receiveWeightData
                             )
                         }

@@ -42,8 +42,8 @@ open class VitalsViewModel @Inject constructor(
     private val patientId: Long =
         savedStateHandle[ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE]!!
 
-    private val _bloodPressureUiState = MutableStateFlow<BloodPressure?>(null)
-    val bloodPressureUiState: StateFlow<BloodPressure?> = _bloodPressureUiState.asStateFlow()
+    private val _bloodPressureUiState = MutableStateFlow<ResultUiState<BloodPressure>>(ResultUiState.Loading)
+    val bloodPressureUiState: StateFlow<ResultUiState<BloodPressure>> = _bloodPressureUiState.asStateFlow()
 
     private val _weightUiState = MutableStateFlow<ResultUiState<String>>(ResultUiState.Loading)
     val weightUiState: StateFlow<ResultUiState<String>> = _weightUiState.asStateFlow()
@@ -59,11 +59,6 @@ open class VitalsViewModel @Inject constructor(
     private val _treatmentsResultUiState: MutableStateFlow<ResultUiState<List<Treatment>>> =
         MutableStateFlow(ResultUiState.Loading)
     var treatmentsResultUiState: StateFlow<ResultUiState<List<Treatment>>> = _treatmentsResultUiState.asStateFlow()
-
-    private val _bpBluetoothConnectionResultUiState: MutableStateFlow<ResultUiState<Unit>> =
-        MutableStateFlow(ResultUiState.Loading)
-    var bpBluetoothConnectionResultUiState: StateFlow<ResultUiState<Unit>> =
-        _bpBluetoothConnectionResultUiState.asStateFlow()
 
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
         val treatmentAdherenceInfo = checkTreatmentList.map {
@@ -85,6 +80,8 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun receiveWeightData() {
+        _weightUiState.value = ResultUiState.Loading
+
         hardcodeBluetoothDataToggle.check(
 
             { hardcodeWeightData() },
@@ -107,12 +104,8 @@ open class VitalsViewModel @Inject constructor(
         )
     }
 
-    fun removeWeightData() {
-        _weightUiState.value = ResultUiState.Loading
-    }
-
     fun receiveBloodPressureData() {
-        _bpBluetoothConnectionResultUiState.value = ResultUiState.Loading
+        _bloodPressureUiState.value = ResultUiState.Loading
 
         hardcodeBluetoothDataToggle.check(
             { hardcodeBloodPressureBluetoothData() },
@@ -124,17 +117,15 @@ open class VitalsViewModel @Inject constructor(
                         { state: BloodPressureViewState ->
                             when (state) {
                                 is BloodPressureViewState.Content -> {
-                                    _bloodPressureUiState.value = BloodPressure(
+                                    _bloodPressureUiState.value = ResultUiState.Success(BloodPressure(
                                         state.measurement.systolic,
                                         state.measurement.diastolic,
                                         state.measurement.heartRate
-                                    )
-                                    _bpBluetoothConnectionResultUiState.value =
-                                        ResultUiState.Success(Unit)
+                                    ))
                                 }
 
                                 is BloodPressureViewState.Error -> {
-                                    _bpBluetoothConnectionResultUiState.value = ResultUiState.Error
+                                    _bloodPressureUiState.value = ResultUiState.Error
                                 }
                             }
                             readBloodPressureRepository.disconnect()
@@ -156,15 +147,24 @@ open class VitalsViewModel @Inject constructor(
     fun createVisit() {
         _createVisitResultUiState.value = ResultUiState.Loading
 
-        val weight = when(_weightUiState.value) {
-            is ResultUiState.Success -> (_weightUiState.value as ResultUiState.Success<String>).data.toFloat()
-            else -> null
+        val bloodPressure = _bloodPressureUiState.value.let {
+            when (it) {
+                is ResultUiState.Success -> it.data
+                else -> throw IllegalStateException("Blood pressure data not available")
+            }
+        }
+
+        val weight = _weightUiState.value.let {
+            when (it) {
+                is ResultUiState.Success -> it.data.toFloat()
+                else -> null
+            }
         }
 
         viewModelScope.launch {
             when (newVisitRepository.startVisit(
                 patient,
-                _bloodPressureUiState.value!!,
+                bloodPressure,
                 _heightUiState.value?.toInt(),
                 weight,
             )) {
@@ -176,12 +176,11 @@ open class VitalsViewModel @Inject constructor(
     }
 
     private fun hardcodeBloodPressureBluetoothData() {
-        _bloodPressureUiState.value = BloodPressure(
+        _bloodPressureUiState.value = ResultUiState.Success(BloodPressure(
             (80..139).random(),
             (50..89).random(),
             (55..120).random()
-        )
-        _bpBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
+        ))
     }
 
     private fun hardcodeWeightData() {

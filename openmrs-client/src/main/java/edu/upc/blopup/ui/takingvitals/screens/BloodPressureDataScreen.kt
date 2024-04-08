@@ -31,8 +31,7 @@ import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
 fun BloodPressureDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
-    bloodPressureState: BloodPressure?,
-    bpBluetoothConnectionResultUiState: ResultUiState<Unit>,
+    bloodPressureState: ResultUiState<BloodPressure>,
     receiveBpData: () -> Unit
 ) {
     Column(
@@ -41,7 +40,7 @@ fun BloodPressureDataScreen(
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        when (bpBluetoothConnectionResultUiState) {
+        when (bloodPressureState) {
             is ResultUiState.Loading -> {
                 LoadingSpinner(
                     Modifier
@@ -58,14 +57,14 @@ fun BloodPressureDataScreen(
 
             is ResultUiState.Success -> {
                 DataReceivedSuccessfully()
-                BloodPressureDataCards(bloodPressureState)
+                BloodPressureDataCards(bloodPressureState.data)
                 NavigationButtons(onClickNext, onClickBack)
                 OnBackPressButtonConfirmDialog(onClickBack)
             }
 
             is ResultUiState.Error -> {
                 ErrorDialog(
-                    show = bpBluetoothConnectionResultUiState is ResultUiState.Error,
+                    show = true,
                     onDismiss = { onClickBack() },
                     onConfirm = { receiveBpData() },
                     title = R.string.bluetooth_error_connection,
@@ -113,10 +112,8 @@ fun BloodPressureDataScreenPreviewSuccess() {
     BloodPressureDataScreen(
         {},
         {},
-        BloodPressure(122, 80, 60),
-        ResultUiState.Success(Unit),
-        {}
-    )
+        ResultUiState.Success(BloodPressure(122, 80, 60))
+    ) {}
 }
 
 @Preview
@@ -125,10 +122,8 @@ fun BloodPressureDataScreenPreviewError() {
     BloodPressureDataScreen(
         {},
         {},
-        BloodPressure(120, 80, 60),
-        ResultUiState.Error,
-        {}
-    )
+        ResultUiState.Error
+    ) {}
 }
 
 @Preview
@@ -137,9 +132,7 @@ fun BloodPressureDataScreenPreviewLoading() {
     BloodPressureDataScreen(
         {},
         {},
-        BloodPressure(120, 80, 60),
-        ResultUiState.Loading,
-        {}
-    )
+        ResultUiState.Loading
+    ) {}
 }
 
