@@ -74,6 +74,7 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
     var dateOfBirth by remember { mutableStateOf("") }
     var countryOfBirth by remember { mutableStateOf("") }
     var languageSelected by remember { mutableStateOf("") }
+    var legalConsentFile by remember { mutableStateOf("") }
     val datePickerState = rememberDatePickerState()
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var estimatedYears by remember { mutableStateOf("") }
@@ -320,7 +321,7 @@ fun AddEditPatientForm(isNameOrSurnameInvalidFormat: (String) -> Boolean) {
                 color = if(languageSelected.isEmpty()) Color.Gray else colorResource(R.color.allergy_orange)
             )
             if(showLegalConsentDialog){
-                LegalConsentDialog(languageSelected) { showLegalConsentDialog = false }
+                LegalConsentDialog(languageSelected, { showLegalConsentDialog = false }, context, { legalConsentFile = it })
             }
         }
         Column {
