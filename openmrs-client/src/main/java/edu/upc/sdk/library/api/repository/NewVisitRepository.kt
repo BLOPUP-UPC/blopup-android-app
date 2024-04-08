@@ -176,10 +176,6 @@ class NewVisitRepository @Inject constructor(
         return@withContext false
     }
 
-    companion object {
-        const val DOCTOR_PROVIDER_UUID = "2775ad68-1a28-450f-a270-6ac5d0120636"
-    }
-
     object VitalsConceptType {
         const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

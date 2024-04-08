@@ -46,6 +46,9 @@ open class VitalsViewModel @Inject constructor(
     private val _vitalsUiState = MutableStateFlow((mutableListOf<Vital>()))
     val vitalsUiState: StateFlow<MutableList<Vital>> = _vitalsUiState.asStateFlow()
 
+    private val _weightUiState = MutableStateFlow<String?>(null)
+    val weightUiState: StateFlow<String?> = _weightUiState.asStateFlow()
+
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
     private val _createVisitResultUiState: MutableStateFlow<ResultUiState<Unit>?> = MutableStateFlow(null)
@@ -105,6 +108,7 @@ open class VitalsViewModel @Inject constructor(
                                     )
                                 )
                                 _vitalsUiState.value = copy
+                                _weightUiState.value = state.weightMeasurement.weight.toString()
                                 _scaleBluetoothConnectionResultUiState.value =
                                     ResultUiState.Success(Unit)
                             }
@@ -122,6 +126,7 @@ open class VitalsViewModel @Inject constructor(
 
     fun removeWeightData() {
         _vitalsUiState.value.removeIf { it.concept == NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
+        _weightUiState.value = null
     }
 
     fun receiveBloodPressureData() {
@@ -224,13 +229,15 @@ open class VitalsViewModel @Inject constructor(
     }
 
     private fun hardcodeWeightData() {
+        val randomWeight = (50..150).random().toString()
         _vitalsUiState.value.removeIf { it.concept == NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
         _vitalsUiState.value.add(
             Vital(
                 NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
-                (50..150).random().toString()
+                randomWeight
             )
         )
+        _weightUiState.value = randomWeight
         _scaleBluetoothConnectionResultUiState.value = ResultUiState.Success(Unit)
     }
 }

@@ -24,16 +24,15 @@ import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
 import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
-import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 import edu.upc.sdk.library.models.Vital
 
 @Composable
 fun WeightDataScreen(
     onClickNext: () -> Unit,
     onClickBack: () -> Unit,
-    vitals: MutableList<Vital>,
     scaleBluetoothConnectionResultUiState: ResultUiState<Unit>,
-    receiveWeightData: () -> Unit
+    receiveWeightData: () -> Unit,
+    weightData: String?
 ) {
     Column(
         modifier = Modifier
@@ -58,7 +57,7 @@ fun WeightDataScreen(
 
             is ResultUiState.Success -> {
                 DataReceivedSuccessfully()
-                WeighDataCard(vitals)
+                WeighDataCard(weightData)
                 NavigationButtons(onClickNext, onClickBack)
                 OnBackPressButtonConfirmDialog(onClickBack)
             }
@@ -78,7 +77,7 @@ fun WeightDataScreen(
 
 
 @Composable
-fun WeighDataCard(vitals: MutableList<Vital>) {
+fun WeighDataCard(weightData: String?) {
     VitalDataCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,7 +85,7 @@ fun WeighDataCard(vitals: MutableList<Vital>) {
         icon = ImageVector.vectorResource(id = R.drawable.scale_icon),
         contentDescription = "Scale icon",
         title = stringResource(id = R.string.weight_value_label),
-        value = vitals.find { it.concept == WEIGHT_FIELD_CONCEPT }?.value ?: "--",
+        value = weightData ?: "--",
         measure = "Kg"
     )
 }

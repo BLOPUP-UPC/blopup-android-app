@@ -145,9 +145,9 @@ class VitalsActivity : ACBaseActivity() {
                                     navigationController.popBackStack()
                                     viewModel.removeWeightData()
                                 },
-                                uiState,
                                 scaleBluetoothConnectionResultUiState,
-                                viewModel::receiveWeightData
+                                viewModel::receiveWeightData,
+                                viewModel.weightUiState.collectAsState().value
                             )
                         }
                         composable(Routes.MeasureHeightScreen.id) {

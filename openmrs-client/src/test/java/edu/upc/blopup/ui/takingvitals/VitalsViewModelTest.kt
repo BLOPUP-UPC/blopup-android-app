@@ -201,6 +201,40 @@ class VitalsViewModelTest {
     }
 
     @Test
+    fun `should receive Weight data good format`() = runTest {
+        val weight = 70f
+        val weightMeasurement = ScaleViewState.Content(
+            WeightMeasurement(weight)
+        )
+
+        mockkObject(BuildConfigWrapper)
+        every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns false
+
+        every {
+            readScaleRepository.start(
+                captureLambda()
+            )
+        } answers {
+            val weightCallback = firstArg<(ScaleViewState) -> Unit>()
+            weightCallback(weightMeasurement)
+        }
+
+        every { readScaleRepository.disconnect() } answers {}
+
+        viewModel.receiveWeightData()
+
+        val result = viewModel.weightUiState.first()
+
+        assertEquals(weight.toString(), result)
+        assertEquals(
+            ResultUiState.Success(Unit),
+            viewModel.scaleBluetoothConnectionResultUiState.value
+        )
+
+        verify { readScaleRepository.disconnect() }
+    }
+
+    @Test
     fun `should get latest height data when present`() = runTest {
         val height = "170"
         val visit = VisitExample.random().apply {
