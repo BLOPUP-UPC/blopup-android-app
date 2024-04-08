@@ -14,7 +14,6 @@ import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
 import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
 import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
-import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
@@ -161,47 +160,6 @@ class VitalsViewModelTest {
 
     @Test
     fun `should receive Weight data`() = runTest {
-        val weightMeasurement = ScaleViewState.Content(
-            WeightMeasurement(
-                70f
-            )
-        )
-
-        mockkObject(BuildConfigWrapper)
-        every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns false
-
-        every {
-            readScaleRepository.start(
-                captureLambda()
-            )
-        } answers {
-            val weightCallback = firstArg<(ScaleViewState) -> Unit>()
-            weightCallback(weightMeasurement)
-        }
-
-        every {
-            readScaleRepository.disconnect()
-        } answers {}
-
-        val expectedResult = mutableListOf(
-            Vital(WEIGHT_FIELD_CONCEPT, "70.0")
-        )
-
-        viewModel.receiveWeightData()
-
-        val result = viewModel.vitalsUiState.first()
-
-        assertEquals(expectedResult, result)
-        verify { readScaleRepository.disconnect() }
-
-        assertEquals(
-            ResultUiState.Success(Unit),
-            viewModel.scaleBluetoothConnectionResultUiState.value
-        )
-    }
-
-    @Test
-    fun `should receive Weight data good format`() = runTest {
         val weight = 70f
         val weightMeasurement = ScaleViewState.Content(
             WeightMeasurement(weight)

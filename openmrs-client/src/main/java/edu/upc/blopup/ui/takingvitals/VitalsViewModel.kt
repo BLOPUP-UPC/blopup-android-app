@@ -49,6 +49,8 @@ open class VitalsViewModel @Inject constructor(
     private val _weightUiState = MutableStateFlow<String?>(null)
     val weightUiState: StateFlow<String?> = _weightUiState.asStateFlow()
 
+    private val _heightUiState = MutableStateFlow<String?>(null)
+
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
     private val _createVisitResultUiState: MutableStateFlow<ResultUiState<Unit>?> = MutableStateFlow(null)
@@ -164,13 +166,7 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun saveHeight(height: String) {
-        _vitalsUiState.value.removeIf { it.concept == NewVisitRepository.VitalsConceptType.HEIGHT_FIELD_CONCEPT }
-        _vitalsUiState.value.add(
-            Vital(
-                NewVisitRepository.VitalsConceptType.HEIGHT_FIELD_CONCEPT,
-                height
-            )
-        )
+        _heightUiState.value = height
     }
 
     fun getLastHeightFromVisits() =
@@ -189,7 +185,7 @@ open class VitalsViewModel @Inject constructor(
             when (newVisitRepository.startVisit(
                 patient,
                 bloodPressure,
-                _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.HEIGHT_FIELD_CONCEPT }?.value?.toInt(),
+                _heightUiState.value?.toInt(),
                 _weightUiState.value?.toFloat(),
             )) {
                 is Result.Success -> _createVisitResultUiState.value = ResultUiState.Success(Unit)
