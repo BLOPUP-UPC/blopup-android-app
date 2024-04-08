@@ -40,6 +40,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -225,6 +226,7 @@ class VitalsViewModelTest {
         assertEquals("", result)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `should create new visit and add vitals information`() = runTest {
         val visit = edu.upc.blopup.model.VisitExample.random(heightCm = 170)
@@ -239,6 +241,7 @@ class VitalsViewModelTest {
         viewModel.receiveBloodPressureData()
         viewModel.receiveWeightData()
         viewModel.saveHeight(visit.heightCm.toString())
+        advanceUntilIdle()
         viewModel.createVisit()
 
         coVerify {

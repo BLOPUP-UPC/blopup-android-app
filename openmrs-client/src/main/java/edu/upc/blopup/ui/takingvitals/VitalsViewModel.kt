@@ -21,6 +21,7 @@ import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -176,14 +177,20 @@ open class VitalsViewModel @Inject constructor(
     }
 
     private fun hardcodeBloodPressureBluetoothData() {
-        _bloodPressureUiState.value = ResultUiState.Success(BloodPressure(
-            (80..139).random(),
-            (50..89).random(),
-            (55..120).random()
-        ))
+        viewModelScope.launch {
+            delay(5000)
+            _bloodPressureUiState.value = ResultUiState.Success(BloodPressure(
+                (80..139).random(),
+                (50..89).random(),
+                (55..120).random()
+            ))
+        }
     }
 
     private fun hardcodeWeightData() {
-        _weightUiState.value = ResultUiState.Success((50..150).random().toString())
+        viewModelScope.launch {
+            delay(5000)
+            _weightUiState.value = ResultUiState.Success((50..150).random().toString())
+        }
     }
 }
