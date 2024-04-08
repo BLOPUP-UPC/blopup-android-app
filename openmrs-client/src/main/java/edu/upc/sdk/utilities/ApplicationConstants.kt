@@ -13,8 +13,6 @@
  */
 package edu.upc.sdk.utilities
 
-import edu.upc.sdk.library.models.EncounterType
-
 
 object ApplicationConstants {
     const val SERVER_URL = "server_url"
@@ -78,26 +76,9 @@ object ApplicationConstants {
             "edu.upc.openmrs.services.AuthenticateCheckService"
     }
 
-    object EncounterTypes {
-        const val VITALS = "67a71486-1a54-468f-ac3e-7091a9a79584"
-
-        @JvmField
-        var ENCOUNTER_TYPES_DISPLAYS = arrayOf(
-            EncounterType.VITALS
-        )
-    }
-
     object OpenMRSlanguage {
         val LANGUAGE_LIST = arrayOf("English", "Español", "Català")
         val LANGUAGE_CODE = arrayOf("en", "es", "ca")
-    }
-
-    object VitalsConceptType {
-        const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        const val HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        const val WEIGHT_FIELD_CONCEPT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        const val HEIGHT_FIELD_CONCEPT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     }
 
     object PatientDashboardTabs {

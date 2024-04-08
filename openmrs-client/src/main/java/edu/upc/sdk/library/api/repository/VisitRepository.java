@@ -36,7 +36,6 @@ import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
-import edu.upc.sdk.utilities.ApplicationConstants;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -122,7 +121,7 @@ public class VisitRepository extends BaseRepository {
      */
     public Observable<Encounter> syncLastVitals(final String patientUuid) {
         return AppDatabaseHelper.createObservableIO(() -> {
-            Call<Results<Encounter>> call = restApi.getLastVitals(patientUuid, ApplicationConstants.EncounterTypes.VITALS, "full", 1, "desc");
+            Call<Results<Encounter>> call = restApi.getLastVitals(patientUuid, NewVisitRepository.EncounterTypes.VITALS, "full", 1, "desc");
             Response<Results<Encounter>> response = call.execute();
 
             if (response.isSuccessful()) {

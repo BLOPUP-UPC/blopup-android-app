@@ -6,10 +6,6 @@ class Vital(val concept: String, val value: String) {
         const val DEFAULT_VALUE = -1.0F
     }
 
-    fun validate(): Boolean {
-        return value.isNotEmpty() && value.toFloat() != DEFAULT_VALUE
-    }
-
     override fun toString(): String {
         return "Vital(concept=$concept, value=$value)"
     }

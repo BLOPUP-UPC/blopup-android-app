@@ -100,7 +100,7 @@ open class VitalsViewModel @Inject constructor(
 
                                 copy.add(
                                     Vital(
-                                        ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
+                                        NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
                                         state.weightMeasurement.weight.toString()
                                     )
                                 )
@@ -121,7 +121,7 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun removeWeightData() {
-        _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
+        _vitalsUiState.value.removeIf { it.concept == NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
     }
 
     fun receiveBloodPressureData() {
@@ -140,15 +140,15 @@ open class VitalsViewModel @Inject constructor(
                                     _vitalsUiState.value =
                                         mutableListOf(
                                             Vital(
-                                                ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                                                NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
                                                 state.measurement.systolic.toString()
                                             ),
                                             Vital(
-                                                ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                                                NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
                                                 state.measurement.diastolic.toString()
                                             ),
                                             Vital(
-                                                ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                                                NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
                                                 state.measurement.heartRate.toString()
                                             )
                                         )
@@ -169,10 +169,10 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun saveHeight(height: String) {
-        _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT }
+        _vitalsUiState.value.removeIf { it.concept == NewVisitRepository.VitalsConceptType.HEIGHT_FIELD_CONCEPT }
         _vitalsUiState.value.add(
             Vital(
-                ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT,
+                NewVisitRepository.VitalsConceptType.HEIGHT_FIELD_CONCEPT,
                 height
             )
         )
@@ -185,17 +185,17 @@ open class VitalsViewModel @Inject constructor(
     fun createVisit() {
         _createVisitResultUiState.value = ResultUiState.Loading
         val bloodPressure = BloodPressure(
-            _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }?.value!!.toInt(),
-            _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }?.value!!.toInt(),
-            _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }?.value!!.toInt()
+            _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT }?.value!!.toInt(),
+            _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT }?.value!!.toInt(),
+            _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT }?.value!!.toInt()
         )
 
         viewModelScope.launch {
             when (newVisitRepository.startVisit(
                 patient,
                 bloodPressure,
-                _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT }?.value?.toInt(),
-                _vitalsUiState.value.find { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }?.value?.toFloat(),
+                _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.HEIGHT_FIELD_CONCEPT }?.value?.toInt(),
+                _vitalsUiState.value.find { it.concept == NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT }?.value?.toFloat(),
             )) {
                 is Result.Success -> _createVisitResultUiState.value = ResultUiState.Success(Unit)
                 is Result.Error -> _createVisitResultUiState.value = ResultUiState.Error
@@ -208,15 +208,15 @@ open class VitalsViewModel @Inject constructor(
         _vitalsUiState.value =
             mutableListOf(
                 Vital(
-                    ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
+                    NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT,
                     (80..139).random().toString()
                 ),
                 Vital(
-                    ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
+                    NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT,
                     (50..89).random().toString()
                 ),
                 Vital(
-                    ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
+                    NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT,
                     (55..120).random().toString()
                 )
             )
@@ -224,10 +224,10 @@ open class VitalsViewModel @Inject constructor(
     }
 
     private fun hardcodeWeightData() {
-        _vitalsUiState.value.removeIf { it.concept == ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
+        _vitalsUiState.value.removeIf { it.concept == NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT }
         _vitalsUiState.value.add(
             Vital(
-                ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
+                NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT,
                 (50..150).random().toString()
             )
         )

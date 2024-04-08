@@ -10,6 +10,7 @@ import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.NewVisitRepository.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.BloodPressureResult
@@ -20,7 +21,6 @@ import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.library.models.bloodPressureTypeFromEncounter
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
-import edu.upc.sdk.utilities.ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS
 import kotlinx.coroutines.launch
 import org.joda.time.Instant
 import rx.android.schedulers.AndroidSchedulers

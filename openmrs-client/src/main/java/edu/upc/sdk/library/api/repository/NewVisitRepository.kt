@@ -14,7 +14,6 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.VisitType
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
-import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
@@ -116,20 +115,20 @@ class NewVisitRepository @Inject constructor(
             encounterType = EncounterType.VITALS
             observations = listOfNotNull(
                 Obscreate().apply {
-                    concept = ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+                    concept = VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
                     value = visit.bloodPressure.systolic.toString()
                     obsDatetime = visit.startDate.formatAsOpenMrsDate()
                     person = visit.patientId.toString()
                 },
                 Obscreate().apply {
-                    concept = ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+                    concept = VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
                     value = visit.bloodPressure.diastolic.toString()
                     obsDatetime = visit.startDate.formatAsOpenMrsDate()
                     person = visit.patientId.toString()
                 },
                 Obscreate().apply {
                     concept =
-                        ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
+                        VitalsConceptType.HEART_RATE_FIELD_CONCEPT
                     value = visit.bloodPressure.pulse.toString()
                     obsDatetime = visit.startDate.formatAsOpenMrsDate()
                     person = visit.patientId.toString()
@@ -137,7 +136,7 @@ class NewVisitRepository @Inject constructor(
                 visit.heightCm?.let {
                     Obscreate().apply {
                         concept =
-                            ApplicationConstants.VitalsConceptType.HEIGHT_FIELD_CONCEPT
+                            VitalsConceptType.HEIGHT_FIELD_CONCEPT
                         value = it.toString()
                         obsDatetime = visit.startDate.formatAsOpenMrsDate()
                         person = visit.patientId.toString()
@@ -146,7 +145,7 @@ class NewVisitRepository @Inject constructor(
                 visit.weightKg?.let {
                     Obscreate().apply {
                         concept =
-                            ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
+                            VitalsConceptType.WEIGHT_FIELD_CONCEPT
                         value = it.toString()
                         obsDatetime = visit.startDate.formatAsOpenMrsDate()
                         person = visit.patientId.toString()
@@ -175,5 +174,26 @@ class NewVisitRepository @Inject constructor(
         logger.e("Error deleting the visit with uuid: $visitUuid in the server $response")
 
         return@withContext false
+    }
+
+    companion object {
+        const val DOCTOR_PROVIDER_UUID = "2775ad68-1a28-450f-a270-6ac5d0120636"
+    }
+
+    object VitalsConceptType {
+        const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        const val HEART_RATE_FIELD_CONCEPT = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        const val WEIGHT_FIELD_CONCEPT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        const val HEIGHT_FIELD_CONCEPT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    }
+
+    object EncounterTypes {
+        const val VITALS = "67a71486-1a54-468f-ac3e-7091a9a79584"
+
+        @JvmField
+        var ENCOUNTER_TYPES_DISPLAYS = arrayOf(
+            EncounterType.VITALS
+        )
     }
 }

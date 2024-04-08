@@ -24,8 +24,8 @@ import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
 import edu.upc.blopup.ui.takingvitals.components.DataScreenParameters
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
+import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 import edu.upc.sdk.library.models.Vital
-import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 
 @Composable
 fun WeightDataScreen(

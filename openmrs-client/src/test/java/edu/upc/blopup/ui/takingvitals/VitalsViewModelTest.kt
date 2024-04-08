@@ -11,6 +11,10 @@ import edu.upc.sdk.library.api.repository.BloodPressureViewState
 import edu.upc.sdk.library.api.repository.BluetoothConnectionException
 import edu.upc.sdk.library.api.repository.Measurement
 import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
+import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+import edu.upc.sdk.library.api.repository.NewVisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
@@ -26,10 +30,6 @@ import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.VisitExample
 import edu.upc.sdk.library.models.Vital
 import edu.upc.sdk.utilities.ApplicationConstants
-import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
-import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
-import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
-import edu.upc.sdk.utilities.ApplicationConstants.VitalsConceptType.WEIGHT_FIELD_CONCEPT
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

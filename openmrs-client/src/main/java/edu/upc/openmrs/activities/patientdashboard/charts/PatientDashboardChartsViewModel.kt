@@ -2,10 +2,10 @@ package edu.upc.openmrs.activities.patientdashboard.charts
 
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
 import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import org.json.JSONArray
 import org.json.JSONException
@@ -32,7 +32,7 @@ class PatientDashboardChartsViewModel @Inject constructor(
     }
 
     private fun getObservationListFromVisits(visits: List<Visit>): JSONObject {
-        val displayableEncounterTypesArray = HashSet(ApplicationConstants.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS.toList())
+        val displayableEncounterTypesArray = HashSet(NewVisitRepository.EncounterTypes.ENCOUNTER_TYPES_DISPLAYS.toList())
         val observationList = JSONObject()
         for (visit in visits) {
             val encounters = visit.encounters
