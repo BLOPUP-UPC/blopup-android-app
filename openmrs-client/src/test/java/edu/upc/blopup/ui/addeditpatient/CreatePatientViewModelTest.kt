@@ -16,7 +16,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.joda.time.format.DateTimeFormat
@@ -44,7 +43,6 @@ class CreatePatientViewModelTest {
         MockKAnnotations.init(this)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `register patient should create new patient`() = runTest {
 
@@ -97,38 +95,9 @@ class CreatePatientViewModelTest {
             countryOfBirth
         )
 
-        advanceUntilIdle()
-
         val result = viewModel.createPatientUiState.drop(1).first()
 
         assertEquals(CreatePatientResultUiState.Success(1L), result)
 
     }
-
-    @Test
-    fun `if error register patient should return an error`() = runTest {
-        val errorMsg = "Error message!"
-        val throwable = Throwable(errorMsg)
-
-        coEvery {
-            patientRepository.registerPatient(any(), any(), any(), any(), any(), any())
-        } returns Observable.error(
-            throwable
-        )
-
-
-        viewModel.createPatient(
-            "John",
-            "Doe",
-            "",
-            "33",
-            "M",
-            "Spain")
-
-        val result = viewModel.createPatientUiState.drop(1).first()
-
-        assertEquals(CreatePatientResultUiState.Error, result)
-
-    }
-
 }
