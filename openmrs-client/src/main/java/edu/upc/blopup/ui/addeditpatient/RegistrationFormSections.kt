@@ -114,7 +114,7 @@ fun FullNameSection(
 
 @Composable
 fun GenderSection(gender: String, setGender: (String) -> Unit) {
-    Column {
+    Column(Modifier.padding(vertical = 15.dp )) {
         StructureLabelText(R.string.reg_ques_gender)
         if (gender.isEmpty()) {
             Text(
@@ -162,7 +162,7 @@ fun DateOfBirthSection(
     var formattedDateOfBirth by remember { mutableStateOf(dateOfBirth) }
 
 
-    Column {
+    Column(Modifier.padding(vertical = 15.dp )) {
         val date = datePickerState.selectedDateMillis
         if (date != null) {
             val localDate = Instant.ofEpochMilli(date).atZone(ZoneId.of("UTC")).toLocalDate()
@@ -237,7 +237,7 @@ fun CountryOfBirthSection(
 ) {
     var showCountryOfBirthDialog by remember { mutableStateOf(false) }
 
-    Column {
+    Column(Modifier.padding(vertical = 15.dp )) {
         StructureLabelText(R.string.country_of_birth_label)
         Box(
             modifier = Modifier
@@ -281,7 +281,7 @@ fun LegalConsentSection(context: Context, setLegalConsentFile: (String) -> Unit)
     var languageSelected by remember { mutableStateOf("") }
 
 
-    Column {
+    Column(Modifier.padding(vertical = 15.dp )) {
         StructureLabelText(R.string.record_patient_consent)
         Box(
             modifier = Modifier

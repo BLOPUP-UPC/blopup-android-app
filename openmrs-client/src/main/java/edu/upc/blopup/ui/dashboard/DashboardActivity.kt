@@ -5,6 +5,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
@@ -30,16 +34,19 @@ class DashboardActivity : ACBaseActivity() {
             setContent {
 
                 val navigationController = rememberNavController()
+                var showBackButtonInMenu by remember { mutableStateOf(false) }
 
                 Scaffold(
                     topBar = {
                         AppToolBarWithMenu(
                             "BLOPUP",
                             false,
-                            onBackAction = {},
+                            onBackAction = {if (!navigationController.popBackStack()) {
+                                finish()
+                            }},
                             this@DashboardActivity::logout,
                             OpenmrsAndroid.getUsername(),
-                            false
+                            showBackButtonInMenu
                         )
                     },
                     bottomBar = {
@@ -53,9 +60,11 @@ class DashboardActivity : ACBaseActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(Routes.DashboardScreen.id) {
-                            DashboardScreen()
+                            showBackButtonInMenu = false
+                            DashboardScreen { navigationController.navigate(Routes.AddEditPatientScreen.id) }
                         }
                         composable(Routes.AddEditPatientScreen.id) {
+                            showBackButtonInMenu = true
                             AddEditPatientScreen()
                         }
                     }
