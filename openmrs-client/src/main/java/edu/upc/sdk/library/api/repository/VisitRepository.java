@@ -48,7 +48,6 @@ import rx.Observable;
 @Singleton
 public class VisitRepository extends BaseRepository {
 
-    private final LocationDAO locationDAO;
     private final VisitDAO visitDAO;
     private final EncounterDAO encounterDAO;
 
@@ -63,7 +62,6 @@ public class VisitRepository extends BaseRepository {
         super(null);
         visitDAO = new VisitDAO();
         encounterDAO = new EncounterDAO();
-        locationDAO = new LocationDAO();
     }
 
     /**
@@ -79,7 +77,6 @@ public class VisitRepository extends BaseRepository {
         super(restApi, logger);
         this.visitDAO = visitDAO;
         this.encounterDAO = encounterDAO;
-        this.locationDAO = locationDAO;
         this.encounterRepository = encounterRepository;
     }
 
@@ -150,10 +147,6 @@ public class VisitRepository extends BaseRepository {
             return Optional.empty();
         }
         return Optional.of(visits.get(0));
-    }
-
-    public Visit getActiveVisitByPatientId(long patientId) {
-        return visitDAO.getActiveVisitByPatientId(patientId).toBlocking().first();
     }
 
     public void deleteVisitByUuid(String visitUuid) throws IOException {

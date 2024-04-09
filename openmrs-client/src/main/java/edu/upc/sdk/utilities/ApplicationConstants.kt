@@ -80,11 +80,4 @@ object ApplicationConstants {
         val LANGUAGE_LIST = arrayOf("English", "Español", "Català")
         val LANGUAGE_CODE = arrayOf("en", "es", "ca")
     }
-
-    object PatientDashboardTabs {
-        const val DETAILS_TAB_POS = 0
-        const val VISITS_TAB_POS = 1
-        const val CHARTS_TAB_POS = 2
-        const val TAB_COUNT = 3
-    }
 }

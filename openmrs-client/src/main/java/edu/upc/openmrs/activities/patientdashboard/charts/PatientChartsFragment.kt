@@ -14,12 +14,10 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -105,7 +103,6 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun showChartActivity(vitalName: String) {
         try {
             val systolicData = observationList!!.getJSONObject("Systolic blood pressure")

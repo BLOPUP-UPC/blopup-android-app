@@ -40,6 +40,17 @@ class NewVisitRepository @Inject constructor(
         return VisitConverter.createVisitFromOpenMRSVisit(openMRSVisit)
     }
 
+    fun getVisitsByPatientUuid(patientId: UUID): List<Visit> {
+        val result = restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)").execute()
+
+        if (result.isSuccessful) {
+            val visits = result.body()?.results
+            return visits?.map { VisitConverter.createVisitFromOpenMRSVisit(it) } ?: emptyList()
+        }
+
+        throw IOException("Error getting visits by patient uuid: ${result.message()}")
+    }
+
     suspend fun endVisit(visitId: UUID): Boolean = withContext(Dispatchers.IO) {
         val endVisitDateTime = Instant.now().formatAsOpenMrsDate()
         val visitWithEndDate = OpenMRSVisit().apply {

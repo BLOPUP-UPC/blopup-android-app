@@ -121,16 +121,24 @@ object VisitExample {
                         Observation().apply {
                             display = "Pulse: $pulse"
                             displayValue = pulse.toString()
-                        },
-                        Observation().apply {
-                            display = "Weight (kg): $weight"
-                            displayValue = weight?.toString()
-                        },
-                        Observation().apply {
-                            display = "Height (cm): $height"
-                            displayValue = height?.toString()
                         }
                     )
+                    weight?.let {
+                        observations = observations.plus(
+                            Observation().apply {
+                                display = "Weight (kg): $weight"
+                                displayValue = weight.toString()
+                            }
+                        )
+                    }
+                    height?.let {
+                        observations = observations.plus(
+                            Observation().apply {
+                                display = "Height (cm): $height"
+                                displayValue = height.toString()
+                            }
+                        )
+                    }
                 }
             )
         }

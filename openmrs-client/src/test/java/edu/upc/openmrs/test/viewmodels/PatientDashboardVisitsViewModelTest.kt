@@ -17,9 +17,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertIterableEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import rx.Observable
@@ -83,26 +81,6 @@ class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
         val actualResult = (viewModel.result.value as Result.Error).throwable.message
 
         assertEquals(errorMsg, actualResult)
-    }
-
-    @Test
-    fun hasActiveVisit_shouldBeTrue() {
-        val visit = visitList[0]
-        every { visitDAO.getActiveVisitByPatientId(PATIENT_ID.toLong()) } returns Observable.just(
-            visit
-        )
-
-        viewModel.hasActiveVisit().observeForever { hasActiveVisit -> assertTrue(hasActiveVisit) }
-    }
-
-    @Test
-    fun hasActiveVisit_shouldBeFalse() {
-        val visit = null
-        every { visitDAO.getActiveVisitByPatientId(PATIENT_ID.toLong()) } returns Observable.just(
-            visit
-        )
-
-        viewModel.hasActiveVisit().observeForever { hasActiveVisit -> assertFalse(hasActiveVisit) }
     }
 
     companion object {

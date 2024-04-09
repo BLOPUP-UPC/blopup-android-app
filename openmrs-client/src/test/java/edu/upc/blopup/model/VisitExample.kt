@@ -4,12 +4,12 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 object VisitExample {
-    fun random(heightCm: Int? = null): Visit {
+    fun random(heightCm: Int? = null, patientId: UUID = UUID.randomUUID()): Visit {
         return Visit(
             id = UUID.randomUUID(),
-            patientId = UUID.randomUUID(),
+            patientId = patientId,
             location = "location",
-            startDate = LocalDateTime.now(),
+            startDate = LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS),
             bloodPressure = BloodPressureExample.random(),
             heightCm = heightCm,
         )

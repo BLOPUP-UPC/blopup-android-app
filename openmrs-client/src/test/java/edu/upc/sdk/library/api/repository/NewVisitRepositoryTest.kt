@@ -12,6 +12,7 @@ import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import io.mockk.Called
 import io.mockk.MockKAnnotations
@@ -33,6 +34,7 @@ import org.junit.runner.RunWith
 import retrofit2.Call
 import retrofit2.Response
 import rx.Observable
+import java.io.IOException
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit.SECONDS
@@ -101,6 +103,74 @@ class NewVisitRepositoryTest {
         val result = visitRepository.getVisitByUuid(visitUuid)
 
         assertEquals(expectedVisit, result)
+    }
+
+    @Test
+    fun `should get all visits by uuid`() {
+        val visit1 = VisitExample.random();
+        val visit2 = VisitExample.random(patientId = visit1.patientId);
+
+        val openMRSVisit1 = OpenMRSVisitExample.withVitals(
+            visit1.id.toString(),
+            visit1.patientId.toString(),
+            visit1.startDate,
+            visit1.location,
+            visit1.bloodPressure.systolic,
+            visit1.bloodPressure.diastolic,
+            visit1.bloodPressure.pulse,
+            visit1.weightKg,
+            visit1.heightCm
+        )
+        val openMRSVisit2 = OpenMRSVisitExample.withVitals(
+            visit2.id.toString(),
+            visit2.patientId.toString(),
+            visit2.startDate,
+            visit2.location,
+            visit2.bloodPressure.systolic,
+            visit2.bloodPressure.diastolic,
+            visit2.bloodPressure.pulse,
+            visit2.weightKg,
+            visit2.heightCm
+        )
+
+        val response = Response.success(Results<OpenMRSVisit>().apply{
+            results = listOf(openMRSVisit1, openMRSVisit2)
+        })
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(visit1.patientId.toString(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { call.execute() } returns response
+
+        val result = visitRepository.getVisitsByPatientUuid(visit1.patientId)
+
+        assertEquals(listOf(visit1, visit2), result)
+    }
+
+    @Test
+    fun `should return empty list when no visits found`() {
+        val patientId = UUID.randomUUID()
+        val response = Response.success(Results<OpenMRSVisit>().apply{
+            results = emptyList()
+        })
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { call.execute() } returns response
+
+        val result = visitRepository.getVisitsByPatientUuid(patientId)
+
+        assertEquals(emptyList<Visit>(), result)
+    }
+
+    @Test(expected = IOException::class)
+    fun `should throw exception with not successful network response`() {
+        val patientId = UUID.randomUUID()
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        every { call.execute() } returns Response.error(500, mockk<ResponseBody>("Generic error"))
+
+        visitRepository.getVisitsByPatientUuid(patientId)
     }
 
     @Test

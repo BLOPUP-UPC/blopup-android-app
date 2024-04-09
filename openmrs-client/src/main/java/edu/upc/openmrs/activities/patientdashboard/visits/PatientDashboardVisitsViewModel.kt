@@ -1,7 +1,5 @@
 package edu.upc.openmrs.activities.patientdashboard.visits
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.model.Visit
@@ -33,13 +31,5 @@ class PatientDashboardVisitsViewModel @Inject constructor(
                 },
                 { setError(it, PatientVisitsFetching) }
             ))
-    }
-
-    fun hasActiveVisit(): LiveData<Boolean> {
-        val liveData = MutableLiveData<Boolean>()
-        addSubscription(visitDAO.getActiveVisitByPatientId(patientId.toLong())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { visit -> liveData.value = visit != null })
-        return liveData
     }
 }
