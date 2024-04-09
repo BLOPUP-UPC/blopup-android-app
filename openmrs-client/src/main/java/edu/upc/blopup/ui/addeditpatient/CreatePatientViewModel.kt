@@ -25,8 +25,9 @@ class CreatePatientViewModel @Inject constructor(private val patientRepository: 
     fun createPatient  (name: String, familyName: String, dateOfBirth: String, estimatedYears: String, gender: String, countryOfBirth: String) {
         _createPatientUiState.value = CreatePatientResultUiState.Loading
 
-        var birthdateEstimated: Boolean = false
-        var birthdate = ""
+        val birthdateEstimated: Boolean
+        val birthdate: String
+
         if (estimatedYears.isNotEmpty()) {
             birthdateEstimated = true
             val approximateBirthdate =
