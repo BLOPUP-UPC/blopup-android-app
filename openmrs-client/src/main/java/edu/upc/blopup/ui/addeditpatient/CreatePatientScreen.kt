@@ -37,12 +37,12 @@ import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 
 @Composable
-fun AddEditPatientScreen(
+fun CreatePatientScreen(
     viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
     val createPatientUiState = viewModel.createPatientUiState.collectAsState()
 
-    AddEditPatientForm(
+    CreatePatientForm(
         viewModel::isNameOrSurnameInvalidFormat,
         viewModel::createPatient,
         createPatientUiState.value
@@ -50,7 +50,7 @@ fun AddEditPatientScreen(
 }
 
 @Composable
-fun AddEditPatientForm(
+fun CreatePatientForm(
     isNameOrSurnameInvalidFormat: (String) -> Boolean,
     createPatient: (String, String, String, String, String, String) -> Unit,
     createPatientUiState: CreatePatientResultUiState,
@@ -205,14 +205,14 @@ fun LanguagesDialog(
 
 @Preview
 @Composable
-fun AddEditPatientPreview() {
-    AddEditPatientForm({ false }, { _, _, _, _, _, _ -> }, CreatePatientResultUiState.NotCreated)
+fun CreatePatientPreview() {
+    CreatePatientForm({ false }, { _, _, _, _, _, _ -> }, CreatePatientResultUiState.NotCreated)
 }
 
 @Preview
 @Composable
-fun AddEditPatientLoadingPreview() {
-    AddEditPatientForm({ false }, { _, _, _, _, _, _ -> }, CreatePatientResultUiState.Loading)
+fun CreatePatientLoadingPreview() {
+    CreatePatientForm({ false }, { _, _, _, _, _, _ -> }, CreatePatientResultUiState.Loading)
 }
 
 @Preview
