@@ -23,6 +23,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import edu.upc.BuildConfig;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -35,6 +36,9 @@ import edu.upc.sdk.library.models.IdentifierType;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientIdentifier;
+import edu.upc.sdk.library.models.PersonAttribute;
+import edu.upc.sdk.library.models.PersonAttributeType;
+import edu.upc.sdk.library.models.PersonName;
 import edu.upc.sdk.library.models.ResultType;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.utilities.PatientComparator;
@@ -107,6 +111,44 @@ public class PatientRepository extends BaseRepository {
                 Long id = patientDAO.savePatient(patient).single().toBlocking().first();
                 patient.setId(id);
                 return patient;
+        });
+    }
+
+    public Observable<Patient> registerPatient(String name, String familyName, String dateOfBirth, Boolean isBirthdateEstimated, String gender, String countryOfBirth) {
+
+        PersonName personName = new PersonName();
+        personName.setGivenName(name);
+        personName.setFamilyName(familyName);
+
+        ArrayList<PersonName> names = new ArrayList<>();
+        names.add(personName);
+
+        Patient patient = new Patient();
+        patient.setDeceased(false);
+        patient.setNames(names);
+
+        patient.setBirthdate(dateOfBirth);
+        patient.setBirthdateEstimated(isBirthdateEstimated);
+
+        patient.setGender(gender);
+
+        PersonAttributeType personAttributeType = new PersonAttributeType();
+        personAttributeType.setUuid(BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID);
+
+        PersonAttribute personAttribute = new PersonAttribute();
+        personAttribute.setAttributeType(personAttributeType);
+        personAttribute.setValue(countryOfBirth);
+
+        ArrayList<PersonAttribute> attributes = new ArrayList<>();
+        attributes.add(personAttribute);
+
+        patient.setAttributes(attributes);
+
+        return AppDatabaseHelper.createObservableIO(() -> {
+            syncPatient(patient).single().toBlocking().first();
+            Long id = patientDAO.savePatient(patient).single().toBlocking().first();
+            patient.setId(id);
+            return patient;
         });
     }
 

@@ -61,7 +61,7 @@ class DashboardActivity : ACBaseActivity() {
                     ) {
                         composable(Routes.DashboardScreen.id) {
                             showBackButtonInMenu = false
-                            DashboardScreen { navigationController.navigate(Routes.AddEditPatientScreen.id) }
+                            DashboardScreen()
                         }
                         composable(Routes.AddEditPatientScreen.id) {
                             showBackButtonInMenu = true

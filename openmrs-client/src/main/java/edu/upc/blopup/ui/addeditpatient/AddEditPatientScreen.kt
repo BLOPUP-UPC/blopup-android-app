@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,25 +30,32 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
+import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ToastUtil
 
 @Composable
-fun AddEditPatientScreen(viewModel: AddEditPatientViewModel = hiltViewModel()) {
+fun AddEditPatientScreen(
+    viewModel: AddEditPatientViewModel = hiltViewModel(),
+    newViewModel: CreatePatientViewModel = hiltViewModel()
+) {
+    val createPatientUiState = newViewModel.createPatientUiState.collectAsState()
+
     AddEditPatientForm(
         viewModel::isNameOrSurnameInvalidFormat,
-        viewModel::setPatientData,
-        viewModel::confirmPatient
+        newViewModel::createPatient,
+        createPatientUiState.value
     )
 }
 
 @Composable
 fun AddEditPatientForm(
     isNameOrSurnameInvalidFormat: (String) -> Boolean,
-    setPatientData: (String, String, String, String, String, String) -> Unit,
-    updateOrRegisterPatient: () -> Unit,
+    createPatient: (String, String, String, String, String, String) -> Unit,
+    createPatientUiState: CreatePatientResultUiState,
 ) {
     val context = LocalContext.current
     var name by remember { mutableStateOf("") }
@@ -113,21 +121,50 @@ fun AddEditPatientForm(
         LegalConsentSection(context) { legalConsentFile = it }
 
         Column {
-            SubmitButton(
-                title = R.string.action_submit,
-                onClickNext = {
-                    setPatientData(
-                        name,
-                        familyName,
-                        dateOfBirth,
-                        estimatedYears,
-                        gender,
-                        countryOfBirth
+            when (createPatientUiState) {
+                CreatePatientResultUiState.NotCreated -> {
+                    SubmitButton(
+                        title = R.string.action_submit,
+                        onClickNext = {
+                            createPatient(
+                                name,
+                                familyName,
+                                dateOfBirth,
+                                estimatedYears,
+                                gender,
+                                countryOfBirth
+                            )
+                        },
+                        enabled = isSubmitEnabled
                     )
-                    updateOrRegisterPatient()
-                },
-                enabled = isSubmitEnabled
-            )
+                }
+                CreatePatientResultUiState.Error -> {
+                    SubmitButton(
+                        title = R.string.action_submit,
+                        onClickNext = {
+                            createPatient(
+                                name,
+                                familyName,
+                                dateOfBirth,
+                                estimatedYears,
+                                gender,
+                                countryOfBirth
+                            )
+                        },
+                        enabled = isSubmitEnabled
+                    )
+                    ToastUtil.error(context.getString(R.string.register_patient_error))
+                }
+
+                CreatePatientResultUiState.Loading -> {
+                    LoadingSpinner(modifier = Modifier.padding(5.dp), color = R.color.allergy_orange)
+                }
+
+                is CreatePatientResultUiState.Success -> {
+                    startPatientDashboardActivity(context, createPatientUiState.data)
+                }
+
+            }
         }
     }
 }
@@ -171,7 +208,13 @@ fun LanguagesDialog(
 @Preview
 @Composable
 fun AddEditPatientPreview() {
-    AddEditPatientForm({ false }, { _, _, _, _, _, _ -> }, {})
+    AddEditPatientForm({ false }, { _, _, _, _, _, _ -> }, CreatePatientResultUiState.NotCreated)
+}
+
+@Preview
+@Composable
+fun AddEditPatientLoadingPreview() {
+    AddEditPatientForm({ false }, { _, _, _, _, _, _ -> }, CreatePatientResultUiState.Loading)
 }
 
 @Preview
