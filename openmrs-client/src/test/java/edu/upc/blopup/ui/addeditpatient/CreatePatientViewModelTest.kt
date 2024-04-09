@@ -16,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.joda.time.format.DateTimeFormat
@@ -43,6 +44,7 @@ class CreatePatientViewModelTest {
         MockKAnnotations.init(this)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `register patient should create new patient`() = runTest {
 
@@ -94,6 +96,8 @@ class CreatePatientViewModelTest {
             gender,
             countryOfBirth
         )
+
+        advanceUntilIdle()
 
         val result = viewModel.createPatientUiState.drop(1).first()
 
