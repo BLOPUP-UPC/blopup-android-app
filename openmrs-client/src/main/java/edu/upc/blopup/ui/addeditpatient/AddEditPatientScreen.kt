@@ -32,21 +32,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 
 @Composable
 fun AddEditPatientScreen(
-    viewModel: AddEditPatientViewModel = hiltViewModel(),
-    newViewModel: CreatePatientViewModel = hiltViewModel()
+    viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
-    val createPatientUiState = newViewModel.createPatientUiState.collectAsState()
+    val createPatientUiState = viewModel.createPatientUiState.collectAsState()
 
     AddEditPatientForm(
         viewModel::isNameOrSurnameInvalidFormat,
-        newViewModel::createPatient,
+        viewModel::createPatient,
         createPatientUiState.value
     )
 }

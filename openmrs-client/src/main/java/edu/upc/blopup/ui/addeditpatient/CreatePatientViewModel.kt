@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.utilities.DateUtils
+import edu.upc.sdk.utilities.StringUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,6 +61,9 @@ class CreatePatientViewModel @Inject constructor(private val patientRepository: 
                 _createPatientUiState.value = CreatePatientResultUiState.Error
             }
         }
+    }
 
+    fun isNameOrSurnameInvalidFormat(input: String): Boolean {
+        return !StringUtils.validateText(input, StringUtils.ILLEGAL_CHARACTERS)
     }
 }
