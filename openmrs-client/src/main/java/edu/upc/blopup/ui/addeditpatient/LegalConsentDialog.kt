@@ -55,7 +55,8 @@ fun LegalConsentDialog(
     languageSelected: String,
     onCloseDialog: () -> Unit,
     context: Context,
-    onSaveLegalConsent: (String) -> Unit
+    onSaveLegalConsent: (String) -> Unit,
+    legalConsentFile: String
 ) {
 
     var isRecordingInProcess by remember { mutableStateOf(false) }
@@ -111,8 +112,12 @@ fun LegalConsentDialog(
                     SubmitButton(
                         title = R.string.record_legal_consent,
                         onClickNext = {
-                            isRecordingInProcess =
-                                true; audioRecorder.startRecording(); audioRecorder.startPlaying()
+                            isRecordingInProcess = true
+                            if(legalConsentFile.isNotEmpty()) {
+                                FileUtils.removeLocalRecordingFile(legalConsentFile)
+                            }
+                            audioRecorder.startRecording()
+                            audioRecorder.startPlaying()
                         },
                         enabled = true
                     )
@@ -277,5 +282,5 @@ private fun getLanguageCode(language: String?, context: Context): String? {
 @Preview
 @Composable
 fun LegalConsentDialogPreview() {
-    LegalConsentDialog("en", {}, LocalContext.current, {})
+    LegalConsentDialog("en", {}, LocalContext.current, {}, "")
 }

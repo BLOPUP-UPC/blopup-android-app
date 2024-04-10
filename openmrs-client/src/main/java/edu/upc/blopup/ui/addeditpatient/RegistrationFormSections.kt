@@ -342,7 +342,7 @@ fun LegalConsentSection(
         }
 
         Text(
-            text = stringResource(id = R.string.record_legal_consent_u),
+            text = if(legalConsentFile.isEmpty()) stringResource(id = R.string.record_legal_consent_u) else stringResource(id = R.string.record_again_legal_consent),
             textDecoration = TextDecoration.Underline,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -359,7 +359,9 @@ fun LegalConsentSection(
                 languageSelected,
                 { showLegalConsentDialog = false },
                 context,
-                { setLegalConsentFile(it) })
+                { setLegalConsentFile(it) },
+                legalConsentFile
+            )
         }
     }
 }
