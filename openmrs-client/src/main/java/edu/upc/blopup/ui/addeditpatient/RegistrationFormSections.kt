@@ -2,6 +2,7 @@ package edu.upc.blopup.ui.addeditpatient
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,8 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -289,9 +292,9 @@ fun LegalConsentSection(
     setLegalConsentFile: (String) -> Unit,
     legalConsentFile: String,
 ) {
-    var showLanguagesDialog by remember { mutableStateOf(false) }
+    var showLanguagesDropDownList by remember { mutableStateOf(false) }
     var showLegalConsentDialog by remember { mutableStateOf(false) }
-    var languageSelected by remember { mutableStateOf("") }
+    var languageSelected by remember { mutableStateOf(context.getString(R.string.select_language)) }
 
 
     Column(Modifier.padding(vertical = 15.dp)) {
@@ -299,20 +302,27 @@ fun LegalConsentSection(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
-                    .clickable { showLanguagesDialog = true }
+                    .clickable { showLanguagesDropDownList = true }
                     .border(
                         width = 1.dp,
-                        color = if (languageSelected.isEmpty()) MaterialTheme.colorScheme.error else Color.Gray,
+                        color = if (languageSelected == context.getString(R.string.select_language)) MaterialTheme.colorScheme.error else Color.Gray,
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(15.dp)
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround) {
-                    Box(modifier = Modifier.padding(end = 15.dp).width(145.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 15.dp)
+                            .width(145.dp)
+                    ) {
                         Text(
-                            text = languageSelected.ifEmpty { stringResource(R.string.select_language) },
+                            text = languageSelected,
                             fontSize = 16.sp,
-                            color = if (languageSelected.isEmpty()) MaterialTheme.colorScheme.error else Color.Black,
+                            color = if (languageSelected == context.getString(R.string.select_language)) MaterialTheme.colorScheme.error else Color.Black,
                         )
                     }
                     Icon(
@@ -321,13 +331,8 @@ fun LegalConsentSection(
                         contentDescription = null,
                     )
                 }
-                if (showLanguagesDialog) {
-                    LanguagesDialog(context, { language ->
-                        languageSelected = language
-                    }) { showLanguagesDialog = false }
-                }
+                ShowLanguagesDropDownList(context, showLanguagesDropDownList, { showLanguagesDropDownList = false }, { language -> languageSelected = language })
             }
-
             if (legalConsentFile.isNotEmpty()) {
                 Image(
                     painter = painterResource(id = R.drawable.saved_recording_icon),
@@ -342,17 +347,19 @@ fun LegalConsentSection(
         }
 
         Text(
-            text = if(legalConsentFile.isEmpty()) stringResource(id = R.string.record_legal_consent_u) else stringResource(id = R.string.record_again_legal_consent),
+            text = if (legalConsentFile.isEmpty()) stringResource(id = R.string.record_legal_consent_u) else stringResource(
+                id = R.string.record_again_legal_consent
+            ),
             textDecoration = TextDecoration.Underline,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .padding(vertical = 10.dp)
                 .clickable {
-                    if (languageSelected.isNotEmpty()) {
+                    if (languageSelected != context.getString(R.string.select_language)) {
                         showLegalConsentDialog = true
                     }
                 },
-            color = if (languageSelected.isEmpty()) Color.Gray else colorResource(R.color.allergy_orange)
+            color = if (languageSelected == context.getString(R.string.select_language)) Color.Gray else colorResource(R.color.allergy_orange)
         )
         if (showLegalConsentDialog) {
             LegalConsentDialog(
@@ -365,6 +372,30 @@ fun LegalConsentSection(
         }
     }
 }
+
+@Composable
+fun ShowLanguagesDropDownList(
+    context: Context,
+    showLanguagesDialog: Boolean,
+    closeDropDown: () -> Unit,
+    onLanguageSelected: (String) -> Unit,
+) {
+    val languagesList = context.resources.getStringArray(R.array.languages)
+    DropdownMenu(
+        expanded = showLanguagesDialog,
+        onDismissRequest = { closeDropDown() },
+        modifier = Modifier.background(colorResource(R.color.white)).padding(5.dp)
+    ) {
+        languagesList.forEach { language ->
+            DropdownMenuItem(
+                onClick = {
+                    onLanguageSelected(language)
+                    closeDropDown()
+                },
+                text = { Text(text = language, color = Color.Gray) })
+        }
+    }}
+
 
 @Composable
 fun StructureLabelText(label: Int) {

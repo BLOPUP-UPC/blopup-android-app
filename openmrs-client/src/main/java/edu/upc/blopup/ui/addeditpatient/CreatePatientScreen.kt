@@ -3,17 +3,12 @@ package edu.upc.blopup.ui.addeditpatient
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -22,12 +17,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
@@ -182,35 +173,6 @@ private fun startPatientDashboardActivity(context: Context, patient: Patient) {
     }
 }
 
-@Composable
-fun LanguagesDialog(
-    context: Context,
-    onLanguageSelected: (String) -> Unit,
-    onDialogClose: () -> Unit
-) {
-    Dialog(onDismissRequest = { onDialogClose() }) {
-        Column(
-            Modifier
-                .background(Color.White)
-                .padding(10.dp)
-        ) {
-            LazyColumn {
-                val languagesArray = context.resources.getStringArray(R.array.languages)
-                items(languagesArray) {
-                    Text(
-                        text = it,
-                        color = Color.Gray,
-                        fontSize = 16.sp,
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .clickable { onLanguageSelected(it); onDialogClose() })
-                }
-            }
-        }
-    }
-}
-
-
 @Preview
 @Composable
 fun CreatePatientPreview() {
@@ -231,10 +193,4 @@ fun CreatePatientLoadingPreview() {
         CreatePatientResultUiState.Loading,
         DashboardActivity()
     )
-}
-
-@Preview
-@Composable
-fun LanguageDialogPreview() {
-    LanguagesDialog(LocalContext.current, {}) {}
 }
