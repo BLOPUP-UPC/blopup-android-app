@@ -2,6 +2,7 @@ package edu.upc.blopup.ui.addeditpatient
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -63,15 +64,15 @@ fun LegalConsentDialog(
     FileUtils.getRecordingFilePath().also { fileName = it }
     val inputFileId =
         if (BuildConfig.DEBUG) FileUtils.getFileByLanguage(
-        context as Activity?,
-        LegalConsentDialogFragment.TAG,
-        "test"
-    ) else
-        FileUtils.getFileByLanguage(
-        context as Activity?,
-        LegalConsentDialogFragment.TAG,
-        languageCode
-    )
+            context as Activity?,
+            LegalConsentDialogFragment.TAG,
+            "test"
+        ) else
+            FileUtils.getFileByLanguage(
+                context as Activity?,
+                LegalConsentDialogFragment.TAG,
+                languageCode
+            )
     val audioRecorder = remember {
         AudioRecorder(
             fileName,
@@ -96,7 +97,7 @@ fun LegalConsentDialog(
         Column(
             Modifier
                 .background(Color.White)
-                .padding(top = 30.dp)
+                .padding(top = 30.dp, bottom = 10.dp, start = 10.dp, end = 10.dp)
         ) {
             if (isRecordingInProcess) {
                 Row(
@@ -126,12 +127,12 @@ fun LegalConsentDialog(
                     .weight(1f)
             ) {
                 Text(text = stringResource(R.string.legal_consent_intro))
-                Text(text = stringResource(R.string.legal_consent))
-                BulletPointText(text = R.string.first_bullet_point)
-                BulletPointText(text = R.string.second_bullet_point)
-                BulletPointText(text = R.string.third_bullet_point)
-                BulletPointText(text = R.string.fourth_bullet_point)
-                Text(text = stringResource(R.string.bottom_text))
+                Text(text = getTextInLanguageSelected(languageCode!!, R.string.legal_consent, context))
+                BulletPointText(text = R.string.first_bullet_point, languageCode, context)
+                BulletPointText(text = R.string.second_bullet_point, languageCode = languageCode, context = context)
+                BulletPointText(text = R.string.third_bullet_point, languageCode = languageCode, context = context)
+                BulletPointText(text = R.string.fourth_bullet_point, languageCode = languageCode, context = context)
+                Text(text = getTextInLanguageSelected(languageCode, R.string.bottom_text, context))
             }
             if (!isRecordingInProcess) {
                 Column(Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
@@ -186,7 +187,7 @@ fun LegalConsentDialog(
 }
 
 @Composable
-fun BulletPointText(text: Int) {
+fun BulletPointText(text: Int, languageCode: String, context: Context) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(bottom = 10.dp)
@@ -196,8 +197,20 @@ fun BulletPointText(text: Int) {
                 setImageResource(R.drawable.circle)
             }
         }, modifier = Modifier.padding(end = 15.dp))
-        Text(text = stringResource(text))
+        Text(text = getTextInLanguageSelected(languageCode, text, context))
     }
+}
+
+private fun getTextInLanguageSelected(
+    selectedLanguage: String,
+    resourceId: Int,
+    context: Context
+): String {
+    val requestedLocale = Locale(selectedLanguage)
+    val config =
+        Configuration(context.resources.configuration).apply { setLocale(requestedLocale) }
+
+    return context.createConfigurationContext(config).getText(resourceId).toString()
 }
 
 private fun getLanguageCode(language: String?, context: Context): String? {
