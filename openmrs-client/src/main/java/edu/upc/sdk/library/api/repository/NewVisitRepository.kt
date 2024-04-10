@@ -187,6 +187,28 @@ class NewVisitRepository @Inject constructor(
         return@withContext false
     }
 
+    suspend fun getActiveVisit(patientId: UUID) = withContext(Dispatchers.IO) {
+        val result = restApi.findActiveVisitsByPatientUUID(patientId.toString()).execute()
+
+        if (result.isSuccessful) {
+            val visits = result.body()?.results
+            if (visits != null) {
+                when(visits.size) {
+                    0 -> return@withContext null
+                    1 -> return@withContext VisitConverter.createVisitFromOpenMRSVisit(visits[0])
+                    else -> {
+                        logger.i("More than one active visit for patient with id: $patientId")
+                        logger.i("Returning the first active visit")
+
+                        return@withContext VisitConverter.createVisitFromOpenMRSVisit(visits[0])
+                    }
+                }
+            }
+        }
+
+        throw IOException("Error getting active visits by patient uuid: ${result.message()}")
+    }
+
     object VitalsConceptType {
         const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

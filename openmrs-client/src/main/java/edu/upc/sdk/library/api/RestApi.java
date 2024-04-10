@@ -240,6 +240,15 @@ public interface RestApi {
                                                  @Query("v") String representation);
 
     /**
+     * Find active visits.
+     *
+     * @param patientUUID the patient uuid
+     * @return the call
+     */
+    @GET("visit?v=full&includeInactive=false")
+    Call<Results<Visit>> findActiveVisitsByPatientUUID(@Query("patient") String patientUUID);
+
+    /**
      * Gets visit type.
      *
      * @return the visit type

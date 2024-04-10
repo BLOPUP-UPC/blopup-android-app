@@ -29,6 +29,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -406,5 +407,103 @@ class NewVisitRepositoryTest {
         verify { restApi.startVisit(any()) }
         verify(exactly = 1) { restApi.deleteVisit(any()) }
         verify { oldVisitRepository wasNot Called }
+    }
+
+    @Test(expected = IOException::class)
+    fun `should throw exception if network fails`() = runTest {
+        val patientUuid = UUID.randomUUID()
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findActiveVisitsByPatientUUID(patientUuid.toString()) } returns call
+        coEvery { call.execute() } returns Response.error(500, mockk<ResponseBody>())
+
+        visitRepository.getActiveVisit(patientUuid)
+    }
+
+    @Test
+    fun `should return null if no active visit are found`() = runTest {
+        val patientUuid = UUID.randomUUID()
+        val response = Response.success(Results<OpenMRSVisit>().apply{
+            results = emptyList()
+        })
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findActiveVisitsByPatientUUID(patientUuid.toString()) } returns call
+        coEvery { call.execute() } returns response
+
+        val result = visitRepository.getActiveVisit(patientUuid)
+
+        assertNull(result)
+    }
+
+    @Test
+    fun `should return the visit if active`() = runTest {
+        val activeVisit = VisitExample.random();
+
+        val openMRSVisit = OpenMRSVisitExample.withVitals(
+            activeVisit.id.toString(),
+            activeVisit.patientId.toString(),
+            activeVisit.startDate,
+            activeVisit.location,
+            activeVisit.bloodPressure.systolic,
+            activeVisit.bloodPressure.diastolic,
+            activeVisit.bloodPressure.pulse,
+            activeVisit.weightKg,
+            activeVisit.heightCm
+        )
+
+        val response = Response.success(Results<OpenMRSVisit>().apply{
+            results = listOf(openMRSVisit)
+        })
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findActiveVisitsByPatientUUID(activeVisit.patientId.toString()) } returns call
+        coEvery { call.execute() } returns response
+
+        val result = visitRepository.getActiveVisit(activeVisit.patientId)
+
+        assertEquals(activeVisit, result)
+    }
+
+    @Test
+    fun `should return the last active visit last if more than one exists`() = runTest {
+        val activeVisit = VisitExample.random();
+        val activeVisit2 = VisitExample.random(patientId = activeVisit.patientId);
+
+        val openMRSVisit = OpenMRSVisitExample.withVitals(
+            activeVisit.id.toString(),
+            activeVisit.patientId.toString(),
+            activeVisit.startDate,
+            activeVisit.location,
+            activeVisit.bloodPressure.systolic,
+            activeVisit.bloodPressure.diastolic,
+            activeVisit.bloodPressure.pulse,
+            activeVisit.weightKg,
+            activeVisit.heightCm
+        )
+
+        val openMRSVisit2 = OpenMRSVisitExample.withVitals(
+            activeVisit2.id.toString(),
+            activeVisit2.patientId.toString(),
+            activeVisit2.startDate,
+            activeVisit2.location,
+            activeVisit2.bloodPressure.systolic,
+            activeVisit2.bloodPressure.diastolic,
+            activeVisit2.bloodPressure.pulse,
+            activeVisit2.weightKg,
+            activeVisit2.heightCm
+        )
+
+        val response = Response.success(Results<OpenMRSVisit>().apply{
+            results = listOf(openMRSVisit, openMRSVisit2)
+        })
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findActiveVisitsByPatientUUID(activeVisit.patientId.toString()) } returns call
+        coEvery { call.execute() } returns response
+
+        val result = visitRepository.getActiveVisit(activeVisit.patientId)
+
+        assertEquals(activeVisit, result)
     }
 }
