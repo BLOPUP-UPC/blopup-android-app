@@ -33,6 +33,7 @@ import edu.upc.R
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
+import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 
@@ -167,9 +168,10 @@ fun CreatePatientForm(
     }
 }
 
-private fun startPatientDashboardActivity(context: Context, patientId: Long?) {
+private fun startPatientDashboardActivity(context: Context, patient: Patient) {
     Intent(context, PatientDashboardActivity::class.java).apply {
-        putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientId)
+        putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient.id)
+        putExtra(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE, patient.uuid)
         startActivity(context, this, null)
     }
 }

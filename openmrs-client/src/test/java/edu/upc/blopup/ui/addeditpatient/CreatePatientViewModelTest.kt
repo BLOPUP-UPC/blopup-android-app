@@ -99,7 +99,7 @@ class CreatePatientViewModelTest {
 
         val result = viewModel.createPatientUiState.drop(1).first()
 
-        assertEquals(CreatePatientResultUiState.Success(1L), result)
+        assertEquals(CreatePatientResultUiState.Success(patient), result)
 
     }
 

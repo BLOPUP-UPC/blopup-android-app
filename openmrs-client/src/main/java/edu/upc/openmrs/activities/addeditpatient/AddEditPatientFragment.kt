@@ -64,6 +64,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.DateUtils.convertTimeString
@@ -143,7 +144,7 @@ class AddEditPatientFragment : BaseFragment() {
                 }
 
                 is Result.Success -> if (result.operationType == PatientRegistering) {
-                    startPatientDashboardActivity()
+                    startPatientDashboardActivity(result.data)
                     finishActivity()
                 }
 
@@ -674,9 +675,10 @@ class AddEditPatientFragment : BaseFragment() {
 
     private fun isLegalConsent() = viewModel.isLegalConsentValidLiveData.value == true
 
-    private fun startPatientDashboardActivity() {
+    private fun startPatientDashboardActivity(patient: Patient) {
         Intent(requireActivity(), PatientDashboardActivity::class.java).apply {
-            putExtra(PATIENT_ID_BUNDLE, viewModel.patient.id)
+            putExtra(PATIENT_ID_BUNDLE, patient.id)
+            putExtra(PATIENT_UUID_BUNDLE, patient.uuid)
             startActivity(this)
         }
     }

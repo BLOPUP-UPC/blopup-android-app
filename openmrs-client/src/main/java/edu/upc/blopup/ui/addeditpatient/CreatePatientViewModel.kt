@@ -54,7 +54,7 @@ class CreatePatientViewModel @Inject constructor(private val patientRepository: 
             try {
                 val patient = response?.toBlocking()?.first()
                 if (patient?.id != null) {
-                    _createPatientUiState.value = CreatePatientResultUiState.Success(patient.id!!)
+                    _createPatientUiState.value = CreatePatientResultUiState.Success(patient)
                 } else {
                     _createPatientUiState.value = CreatePatientResultUiState.Error
                 }
