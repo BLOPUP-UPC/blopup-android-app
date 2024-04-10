@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardMainViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
@@ -57,6 +58,9 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
     @MockK
     lateinit var newVisitRepository: NewVisitRepository
 
+    @MockK
+    lateinit var logger: OpenMRSLogger
+
     private lateinit var savedStateHandle: SavedStateHandle
 
     private lateinit var viewModel: PatientDashboardMainViewModel
@@ -75,7 +79,7 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
         savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, PATIENT_ID) }
         viewModel = PatientDashboardMainViewModel(
             patientDAO, visitDAO, patientRepository,
-            visitRepository, newVisitRepository, savedStateHandle
+            visitRepository, newVisitRepository, logger, savedStateHandle
         )
         visitList = createVisitList()
     }

@@ -19,18 +19,17 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -120,15 +119,27 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     }
 
     private fun setupActionFABs() {
+        viewModel.activeVisit.observe(this) { activeVisitState ->
+            when(activeVisitState) {
+                ResultUiState.Loading -> {
+                    binding.actionsFab.startVisitFab.hide()
+                }
+                ResultUiState.Error -> {
+                    ToastUtil.error(getString(R.string.visit_start_error))
+                    binding.actionsFab.startVisitFab.show()
+                }
+                is ResultUiState.Success -> {
+                    with(supportActionBar!!) {
+                        if (activeVisitState.data) showStartVisitImpossibleDialog(title)
+                        else startVitalsMeasurement()
+                    }
+                    binding.actionsFab.startVisitFab.show()
+                }
+            }
+        }
         with(binding.actionsFab) {
             startVisitFab.setOnClickListener {
-                viewModel.hasActiveVisit()
-                    .observeOnce(it.findViewTreeLifecycleOwner()!!) { hasActiveVisit ->
-                        with(supportActionBar!!) {
-                            if (hasActiveVisit) showStartVisitImpossibleDialog(title)
-                            else startVitalsMeasurement()
-                        }
-                    }
+                viewModel.fetchActiveVisit()
             }
         }
     }

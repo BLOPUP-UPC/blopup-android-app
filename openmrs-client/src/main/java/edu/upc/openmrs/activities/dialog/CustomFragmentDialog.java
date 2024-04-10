@@ -432,7 +432,7 @@ public class CustomFragmentDialog extends DialogFragment {
                     dismiss();
                     break;
                 case END_VISIT_START_NEW_VISIT:
-                    startVitals();
+                    endActiveVisit();
                     dismiss();
                     break;
                 case FINISH_ACTIVITY:
@@ -446,7 +446,7 @@ public class CustomFragmentDialog extends DialogFragment {
         };
     }
 
-    private void startVitals() {
+    private void endActiveVisit() {
         Activity activity = getActivity();
         if (activity instanceof PatientDashboardActivity) {
             PatientDashboardActivity pda = ((PatientDashboardActivity) activity);

@@ -3,7 +3,9 @@ package edu.upc.openmrs.activities.patientdashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
@@ -13,9 +15,10 @@ import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.OperationType
 import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import kotlinx.coroutines.launch
 import rx.android.schedulers.AndroidSchedulers
+import java.io.IOException
 import java.util.UUID
 import javax.inject.Inject
 
@@ -27,6 +30,7 @@ class PatientDashboardMainViewModel @Inject constructor(
     private val patientRepository: PatientRepository,
     private val visitRepository: VisitRepository,
     private val newVisitRepository: NewVisitRepository,
+    private val openMRSLogger: OpenMRSLogger,
     savedStateHandle: SavedStateHandle
 ) : edu.upc.openmrs.activities.BaseViewModel<Unit>() {
 
@@ -34,14 +38,22 @@ class PatientDashboardMainViewModel @Inject constructor(
     private val patient: Patient = patientDAO.findPatientByID(patientId)
     private val patientUuid: String = patient.uuid!!
 
+    private val _activeVisit = MutableLiveData<ResultUiState<Boolean>>()
+    val activeVisit: LiveData<ResultUiState<Boolean>> get() = _activeVisit
+
     private var runningSyncs = 0
 
-    fun hasActiveVisit(): LiveData<Boolean> {
-        val liveData = MutableLiveData<Boolean>()
-        addSubscription(visitDAO.getActiveVisitByPatientId(patientId.toLong())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { visit: Visit? -> liveData.value = visit != null })
-        return liveData
+    fun fetchActiveVisit() {
+        _activeVisit.value = ResultUiState.Loading
+        viewModelScope.launch {
+            try {
+                val result = newVisitRepository.getActiveVisit(UUID.fromString(patientUuid))
+                _activeVisit.value = ResultUiState.Success(result != null)
+            } catch (e: IOException) {
+                openMRSLogger.e("Error fetching active visit: ${e.message}", e)
+                _activeVisit.value = ResultUiState.Error
+            }
+        }
     }
 
     suspend fun endActiveVisit(): LiveData<Boolean> {
