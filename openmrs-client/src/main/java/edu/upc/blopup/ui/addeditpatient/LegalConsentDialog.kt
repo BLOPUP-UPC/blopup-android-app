@@ -31,7 +31,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,43 +100,12 @@ fun LegalConsentDialog(
         Column(
             Modifier
                 .background(Color.White)
-                .padding(top = 30.dp, bottom = 10.dp, start = 10.dp, end = 10.dp)
+                .padding(top = 30.dp)
         ) {
-            if (isRecordingInProcess) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 25.dp, start = 20.dp, end = 20.dp)
-                ) {
-                    Image(
-                        painterResource(R.drawable.recording_in_progress),
-                        contentDescription = "recording icon",
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .size(30.dp),
-                        colorFilter = ColorFilter.tint(colorResource(R.color.allergy_orange))
-                    )
-                    Text(
-                        text = stringResource(R.string.recording_in_progress),
-                        color = colorResource(R.color.allergy_orange),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    )
-                }
-            }
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 20.dp)
-                    .weight(1f)
-            ) {
-                Text(text = stringResource(R.string.legal_consent_intro))
-                Text(text = getTextInLanguageSelected(languageCode!!, R.string.legal_consent, context))
-                BulletPointText(text = R.string.first_bullet_point, languageCode, context)
-                BulletPointText(text = R.string.second_bullet_point, languageCode = languageCode, context = context)
-                BulletPointText(text = R.string.third_bullet_point, languageCode = languageCode, context = context)
-                BulletPointText(text = R.string.fourth_bullet_point, languageCode = languageCode, context = context)
-                Text(text = getTextInLanguageSelected(languageCode, R.string.bottom_text, context))
-            }
+            if (isRecordingInProcess) { ShowRecordingInProgress() }
+
+            LegalConsentWording(languageCode, context, Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 20.dp).weight(1f))
+
             if (!isRecordingInProcess) {
                 Column(Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
                     SubmitButton(
@@ -185,6 +157,78 @@ fun LegalConsentDialog(
         }
     }
 }
+
+@Composable
+fun ShowRecordingInProgress() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(bottom = 25.dp, start = 20.dp, end = 20.dp)
+    ) {
+        Image(
+            painterResource(R.drawable.recording_in_progress),
+            contentDescription = "recording icon",
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .size(30.dp),
+            colorFilter = ColorFilter.tint(colorResource(R.color.allergy_orange))
+        )
+        Text(
+            text = stringResource(R.string.recording_in_progress),
+            color = colorResource(R.color.allergy_orange),
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp
+        )
+    }}
+
+@Composable
+fun LegalConsentWording(languageCode: String?, context: Activity, modifier: Modifier) {
+    Column(
+        verticalArrangement = Arrangement.SpaceBetween, modifier = modifier
+    ) {
+        Text(text = stringResource(R.string.legal_consent_intro_first), modifier = Modifier.padding(bottom = 15.dp))
+        Text(text = legalConsentFormattedText())
+        Text(text = legalConsentFormattedTextSecond(), modifier = Modifier.padding(bottom = 15.dp))
+        Text(text = getTextInLanguageSelected(languageCode!!, R.string.legal_consent, context))
+        BulletPointText(text = R.string.first_bullet_point, languageCode, context)
+        BulletPointText(text = R.string.second_bullet_point, languageCode = languageCode, context = context)
+        BulletPointText(text = R.string.third_bullet_point, languageCode = languageCode, context = context)
+        BulletPointText(text = R.string.fourth_bullet_point, languageCode = languageCode, context = context)
+        Text(text = getTextInLanguageSelected(languageCode, R.string.bottom_text, context))
+    }
+}
+
+@Composable
+private fun legalConsentFormattedText() = buildAnnotatedString {
+    append(stringResource(R.string.legal_consent_intro_second))
+    append(" ")
+
+    withStyle(
+        SpanStyle(
+            fontWeight = FontWeight.Bold,
+        )
+    ) {
+        append(stringResource(R.string.to_pause))
+    }
+    append(" ")
+    append(stringResource(R.string.legal_consent_intro_third))
+}
+
+@Composable
+private fun legalConsentFormattedTextSecond() = buildAnnotatedString {
+    append(stringResource(R.string.legal_consent_intro_fourth))
+    append(" ")
+    withStyle(
+        SpanStyle(
+            fontWeight = FontWeight.Bold,
+        )
+    ) {
+        append(stringResource(R.string.stop_and_save))
+    }
+    append(" ")
+    append(stringResource(R.string.legal_consent_intro_fifth))
+}
+
+
 
 @Composable
 fun BulletPointText(text: Int, languageCode: String, context: Context) {

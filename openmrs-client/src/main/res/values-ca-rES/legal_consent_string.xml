@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="legal_consent_intro"><![CDATA[Hem de registrar el consentiment del pacient per registrar la informació personal. Llegirem en veu alta el text següent:<br><br>Un cop comenci la gravació, podeu fer una <b>pausa</b> i reprendre tantes vagades com vulgueu. Un cop acabat, premeu <b>Altura i envieu la gravació</b> per registrar el consentiment i poder continuar el procés de registre del pacient.<br>]]></string>
+    <string name="legal_consent_intro_first">Hem de registrar el consentiment del pacient per registrar la informació personal. Llegirem en veu alta el text següent:</string>
+    <string name="legal_consent_intro_second">Un cop comenci la gravació, podeu fer una</string>
+    <string name="to_pause">pausa</string>
+    <string name="legal_consent_intro_third">i reprendre tantes vagades com vulgueu.</string>
+    <string name="legal_consent_intro_fourth">Un cop acabat, premeu</string>
+    <string name="stop_and_save">Altura i envieu la gravació</string>
+    <string name="legal_consent_intro_fifth">per registrar el consentiment i poder continuar el procés de registre del pacient.</string>
     <string name="legal_consent">Els punts principals de la informació que t’hem donat oralment i per escrit son:\n</string>
     <string name="record_again_legal_consent"><u>Tornar a gravar</u></string>
     <string name="recording_success" tools:ignore="Untranslatable">Consentiment registrat correctament</string>

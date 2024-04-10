@@ -308,7 +308,7 @@ fun LegalConsentSection(
                     .padding(15.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround) {
-                    Box(modifier = Modifier.padding(end = 15.dp).width(130.dp)) {
+                    Box(modifier = Modifier.padding(end = 15.dp).width(145.dp)) {
                         Text(
                             text = languageSelected.ifEmpty { stringResource(R.string.select_language) },
                             fontSize = 16.sp,
