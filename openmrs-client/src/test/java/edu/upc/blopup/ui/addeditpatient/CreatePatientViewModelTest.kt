@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.addeditpatient
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.BuildConfig
 import edu.upc.blopup.RecordingHelper
 import edu.upc.sdk.library.api.repository.PatientRepository
@@ -22,11 +23,12 @@ import kotlinx.coroutines.test.setMain
 import org.joda.time.format.DateTimeFormat
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import rx.Observable
 
+@RunWith(AndroidJUnit4::class)
 class CreatePatientViewModelTest {
 
     @get:Rule
@@ -48,7 +50,6 @@ class CreatePatientViewModelTest {
         MockKAnnotations.init(this)
     }
 
-    @Ignore("Coroutine error. It work when running locally")
     @Test
     fun `register patient should create new patient`() = runTest {
 
@@ -107,7 +108,6 @@ class CreatePatientViewModelTest {
 
     }
 
-    @Ignore("Coroutine error. It work when running locally")
     @Test
     fun `if error register patient should return an error`() = runTest {
         val errorMsg = "Error message!"
