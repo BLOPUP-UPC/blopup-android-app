@@ -28,10 +28,7 @@ import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
 import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
-import edu.upc.openmrs.utilities.makeGone
-import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.dao.VisitDAO
-import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.execute
@@ -45,7 +42,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     private val viewModel: PatientDashboardMainViewModel by viewModels()
 
     private var patientId = 0L
-    private lateinit var patientUuid: String
+    private lateinit var patientUuid: UUID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,41 +58,15 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             if (it !== 0L) patientId = it else throw IllegalStateException("No valid patient id passed")
         }
         intent.getStringExtra(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE).also {
-            if (it !== null) patientUuid = it else  throw IllegalStateException("No valid patient uuid passed")
+            if (it !== null) patientUuid = UUID.fromString(it) else  throw IllegalStateException("No valid patient uuid passed")
         }
 
-        setupObserver()
+        initViewPager()
         setupActionFABs()
-
-        viewModel.syncPatientData()
-
-    }
-
-    private fun setupObserver() {
-        viewModel.result.observe(this) { result ->
-            when (result) {
-                is Result.Loading -> {
-                    binding.loadingPatient.makeVisible()
-                }
-
-                is Result.Success -> {
-                    binding.loadingPatient.makeGone()
-                    initViewPager()
-                }
-
-                is Result.Error -> {
-                    binding.loadingPatient.makeGone()
-                    ToastUtil.error(getString(R.string.synchronize_patient_error))
-                    initViewPager()
-                }
-
-                else -> throw IllegalStateException()
-            }
-        }
     }
 
     private fun initViewPager() {
-        val adapter = PatientDashboardPagerAdapter(supportFragmentManager, this, patientId, patientUuid)
+        val adapter = PatientDashboardPagerAdapter(supportFragmentManager, this, patientId, patientUuid.toString())
         with(binding) {
             pager.offscreenPageLimit = adapter.count - 1
             pager.adapter = adapter
@@ -140,7 +111,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
         with(binding.actionsFab) {
             startVisitFab.setOnClickListener {
-                viewModel.fetchActiveVisit()
+                viewModel.fetchActiveVisit(patientUuid)
             }
         }
     }
@@ -160,7 +131,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             Intent(this, VitalsActivity::class.java)
                 .putExtra(
                     ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                    viewModel.patientId.toLong()
+                    patientId
                 )
         )
     }
@@ -169,7 +140,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
-            val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId.toLong()).execute()
+            val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId).execute()
             startActivity(
                 Intent(this, VisitDashboardActivity::class.java)
                     .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, activeVisit.uuid)

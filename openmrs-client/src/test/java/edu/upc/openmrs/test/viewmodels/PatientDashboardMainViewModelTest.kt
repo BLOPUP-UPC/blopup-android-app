@@ -1,80 +1,88 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.SavedStateHandle
+import edu.upc.blopup.model.VisitExample
+import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardMainViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.NewVisitRepository
-import edu.upc.sdk.library.api.repository.PatientRepository
-import edu.upc.sdk.library.api.repository.VisitRepository
-import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import io.mockk.MockKAnnotations
-import io.mockk.Ordering
 import io.mockk.coEvery
-import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import rx.Observable
+import java.io.IOException
 import java.util.UUID
 
 
 @RunWith(JUnit4::class)
-class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
+class PatientDashboardMainViewModelTest() {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    lateinit var patientDAO: PatientDAO
-
-    @MockK
-    lateinit var visitDAO: VisitDAO
-
-    @MockK
-    lateinit var visitRepository: VisitRepository
-
-    @MockK
-    lateinit var patientRepository: PatientRepository
-
-    @MockK
     lateinit var newVisitRepository: NewVisitRepository
 
-    @MockK
+    @MockK(relaxed = true)
     lateinit var logger: OpenMRSLogger
 
-    private lateinit var savedStateHandle: SavedStateHandle
-
+    @InjectMockKs
     private lateinit var viewModel: PatientDashboardMainViewModel
 
     lateinit var patient: Patient
 
-    private lateinit var visitList: List<Visit>
-
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
-    override fun setUp() {
-        super.setUp()
+    fun setUp() {
+        // Set dispatcher
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         MockKAnnotations.init(this)
-        patient = createPatient(PATIENT_ID)
-        every { patientDAO.findPatientByID(PATIENT_ID.toString()) } returns patient
+    }
 
-        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, PATIENT_ID) }
-        viewModel = PatientDashboardMainViewModel(
-            patientDAO, visitDAO, patientRepository,
-            visitRepository, newVisitRepository, logger, savedStateHandle
-        )
-        visitList = createVisitList()
+    @Test
+    fun `fetch visit sets not found without active visit`() = runTest {
+        val visitId = UUID.randomUUID()
+        coEvery { newVisitRepository.getActiveVisit(visitId) } returns null
+
+        viewModel.fetchActiveVisit(visitId)
+
+        assertEquals(ActiveVisitResultUiState.NotFound, viewModel.activeVisit.value)
+    }
+
+    @Test
+    fun `fetch visit sets the active visit`() = runTest {
+        val visit = VisitExample.random()
+
+        coEvery { newVisitRepository.getActiveVisit(visit.id) } returns visit
+
+        viewModel.fetchActiveVisit(visit.id)
+
+        assertEquals(ActiveVisitResultUiState.Success(visit), viewModel.activeVisit.value)
+    }
+
+    @Test
+    fun `fetch visit sets error if network fails`() = runTest {
+        val visitId = UUID.randomUUID()
+        coEvery { newVisitRepository.getActiveVisit(visitId) } throws IOException()
+
+        runBlocking {
+            viewModel.fetchActiveVisit(visitId)
+            assertEquals(ActiveVisitResultUiState.Error, viewModel.activeVisit.value)
+        }
     }
 
     @Test
@@ -93,38 +101,5 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
             assertEquals(true, actual.value)
         }
 
-    }
-
-    @Test
-    fun updateLocalPatientWhenSyncingData() {
-        val serverPatient = Patient()
-        every { patientRepository.downloadPatientByUuid(any()) } returns Observable.just(
-            serverPatient
-        )
-        every { visitRepository.syncVisitsData(any()) } returns Observable.just(emptyList<Visit>())
-        every { visitRepository.syncLastVitals(any()) } returns Observable.just(null)
-
-        viewModel.syncPatientData()
-
-        verify(Ordering.ORDERED) {
-            patientDAO.findPatientByID(PATIENT_ID.toString())
-            patientDAO.updatePatient(PATIENT_ID, serverPatient)
-        }
-    }
-
-    @Test
-    fun notUpdateLocalPatientWithServerWhenItsEquals() {
-        every { patientRepository.downloadPatientByUuid(any()) } returns Observable.just(patient)
-        every { visitRepository.syncVisitsData(any()) } returns Observable.just(emptyList<Visit>())
-        every { visitRepository.syncLastVitals(any()) } returns Observable.just(null)
-
-        viewModel.syncPatientData()
-
-        verify { patientDAO.findPatientByID(PATIENT_ID.toString()) }
-        verify(exactly = 0) { patientDAO.updatePatient(PATIENT_ID, patient) }
-    }
-
-    companion object {
-        const val PATIENT_ID = 1L
     }
 }
