@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.blopup.ui.ResultUiState
+import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.PatientRepository
@@ -38,32 +38,33 @@ class PatientDashboardMainViewModel @Inject constructor(
     private val patient: Patient = patientDAO.findPatientByID(patientId)
     private val patientUuid: String = patient.uuid!!
 
-    private val _activeVisit = MutableLiveData<ResultUiState<Boolean>>()
-    val activeVisit: LiveData<ResultUiState<Boolean>> get() = _activeVisit
+    private val _activeVisit = MutableLiveData<ActiveVisitResultUiState>()
+    val activeVisit: LiveData<ActiveVisitResultUiState> get() = _activeVisit
 
     private var runningSyncs = 0
 
     fun fetchActiveVisit() {
-        _activeVisit.value = ResultUiState.Loading
+        _activeVisit.value = ActiveVisitResultUiState.Loading
         viewModelScope.launch {
             try {
                 val result = newVisitRepository.getActiveVisit(UUID.fromString(patientUuid))
-                _activeVisit.value = ResultUiState.Success(result != null)
+                if (result == null) {
+                    _activeVisit.value = ActiveVisitResultUiState.NotFound
+                } else {
+                    _activeVisit.value = ActiveVisitResultUiState.Success(result)
+                }
             } catch (e: IOException) {
                 openMRSLogger.e("Error fetching active visit: ${e.message}", e)
-                _activeVisit.value = ResultUiState.Error
+                _activeVisit.value = ActiveVisitResultUiState.Error
             }
         }
     }
 
-    suspend fun endActiveVisit(): LiveData<Boolean> {
+    suspend fun endActiveVisit(visitUUID: UUID): LiveData<Boolean> {
         val endVisitResult: MutableLiveData<Boolean> = MutableLiveData(false)
-        val activeVisit =
-            visitDAO.getActiveVisitByPatientId(patientId.toLong()).toBlocking().first()
 
-        if (activeVisit != null) {
-            endVisitResult.value = newVisitRepository.endVisit(UUID.fromString(activeVisit.uuid))
-        }
+        endVisitResult.value = newVisitRepository.endVisit(visitUUID)
+
         return endVisitResult
     }
 

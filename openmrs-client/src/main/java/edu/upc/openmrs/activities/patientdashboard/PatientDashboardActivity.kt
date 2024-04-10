@@ -24,7 +24,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.blopup.ui.ResultUiState
+import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
 import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
@@ -36,6 +36,7 @@ import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.execute
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 @AndroidEntryPoint
 class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
@@ -120,20 +121,20 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     private fun setupActionFABs() {
         viewModel.activeVisit.observe(this) { activeVisitState ->
+            binding.actionsFab.startVisitFab.show()
             when(activeVisitState) {
-                ResultUiState.Loading -> {
+                ActiveVisitResultUiState.Loading -> {
                     binding.actionsFab.startVisitFab.hide()
                 }
-                ResultUiState.Error -> {
+                ActiveVisitResultUiState.Error -> {
                     ToastUtil.error(getString(R.string.visit_start_error))
-                    binding.actionsFab.startVisitFab.show()
                 }
-                is ResultUiState.Success -> {
-                    with(supportActionBar!!) {
-                        if (activeVisitState.data) showStartVisitImpossibleDialog(title)
-                        else startVitalsMeasurement()
-                    }
-                    binding.actionsFab.startVisitFab.show()
+                is ActiveVisitResultUiState.Success -> {
+                    showStartVisitImpossibleDialog(title, activeVisitState.visit.id)
+                }
+
+                ActiveVisitResultUiState.NotFound -> {
+                    startVitalsMeasurement()
                 }
             }
         }
@@ -144,9 +145,9 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         }
     }
 
-    fun endActiveVisit() {
+    fun endActiveVisit(visitUuid: UUID) {
         lifecycleScope.launch {
-            viewModel.endActiveVisit().observe(this@PatientDashboardActivity) { visitEnded ->
+            viewModel.endActiveVisit(visitUuid).observe(this@PatientDashboardActivity) { visitEnded ->
                 if (visitEnded) {
                     startVitalsMeasurement()
                 }

@@ -26,13 +26,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.InOrder
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.inOrder
-import org.mockito.kotlin.any
-import org.mockito.kotlin.atLeastOnce
-import org.mockito.kotlin.never
 import rx.Observable
 import java.util.UUID
 
@@ -86,12 +79,6 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun activeVisitEndsSuccessfully() {
-
-        val patient = Patient().apply {
-            id = PATIENT_ID
-            uuid = "d384d23a-a91b-11ed-afa1-0242ac120002"
-        }
-
         val visit = Visit().apply {
             startDatetime = "2023-08-31T10:44:10.000+0000"
             id = 5
@@ -99,11 +86,10 @@ class PatientDashboardMainViewModelTest : ACUnitTestBaseRx() {
             uuid = "e4cc001c-884e-4cc1-b55d-30c49a48dcc5"
         }
 
-        every { visitDAO.getActiveVisitByPatientId(patient.id) } returns Observable.just(visit)
         coEvery { newVisitRepository.endVisit(UUID.fromString(visit.uuid)) } returns true
 
         runBlocking {
-            val actual = viewModel.endActiveVisit()
+            val actual = viewModel.endActiveVisit(UUID.fromString(visit.uuid))
             assertEquals(true, actual.value)
         }
 

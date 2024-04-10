@@ -14,13 +14,13 @@
 
 package edu.upc.openmrs.bundle;
 
-import edu.upc.sdk.library.models.Patient;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog;
+import edu.upc.sdk.library.models.Patient;
 
 public class CustomDialogBundle implements Serializable {
     private CustomFragmentDialog.OnClickAction leftButtonAction;
@@ -37,6 +37,7 @@ public class CustomDialogBundle implements Serializable {
     private Patient newPatient;
     private boolean loadingBar;
     private boolean progressDialog;
+    private UUID endVisitUuid;
 
     public boolean hasProgressDialog() {
         return progressDialog;
@@ -153,4 +154,8 @@ public class CustomDialogBundle implements Serializable {
     public void setLocationList(List<String> locationList) {
         this.locationList = locationList;
     }
+
+    public void setEndVisitUuid(UUID visitUuid) { this.endVisitUuid = visitUuid; }
+
+    public UUID getEndVisitId() { return endVisitUuid; }
 }

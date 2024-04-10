@@ -33,6 +33,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.upc.R;
@@ -204,7 +205,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         createAndShowDialog(bundle, ApplicationConstants.DialogTAG.LOGOUT_DIALOG_TAG);
     }
 
-    public void showStartVisitImpossibleDialog(CharSequence title) {
+    public void showStartVisitImpossibleDialog(CharSequence title, UUID visitUuid) {
         CustomDialogBundle bundle = new CustomDialogBundle();
         bundle.setTitleViewMessage(getString(R.string.start_visit_unsuccessful_dialog_title));
         bundle.setTextViewMessage(getString(R.string.start_visit_unsuccessful_dialog_message, title));
@@ -212,6 +213,7 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         bundle.setLeftButtonText(getString(R.string.dialog_button_cancel));
         bundle.setRightButtonAction(CustomFragmentDialog.OnClickAction.END_VISIT_START_NEW_VISIT);
         bundle.setRightButtonText(getString(R.string.action_start_visit));
+        bundle.setEndVisitUuid(visitUuid);
         createAndShowDialog(bundle, ApplicationConstants.DialogTAG.START_VISIT_IMPOSSIBLE_DIALOG_TAG);
     }
 

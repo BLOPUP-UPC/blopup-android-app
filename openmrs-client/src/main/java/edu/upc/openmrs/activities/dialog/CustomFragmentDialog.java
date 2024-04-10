@@ -54,6 +54,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import edu.upc.R;
 import edu.upc.openmrs.activities.ACBaseActivity;
@@ -432,7 +433,7 @@ public class CustomFragmentDialog extends DialogFragment {
                     dismiss();
                     break;
                 case END_VISIT_START_NEW_VISIT:
-                    endActiveVisit();
+                    endActiveVisit(mCustomDialogBundle.getEndVisitId());
                     dismiss();
                     break;
                 case FINISH_ACTIVITY:
@@ -446,11 +447,11 @@ public class CustomFragmentDialog extends DialogFragment {
         };
     }
 
-    private void endActiveVisit() {
+    private void endActiveVisit(UUID visitUuid) {
         Activity activity = getActivity();
         if (activity instanceof PatientDashboardActivity) {
             PatientDashboardActivity pda = ((PatientDashboardActivity) activity);
-            pda.endActiveVisit();
+            pda.endActiveVisit(visitUuid);
         }
     }
 
