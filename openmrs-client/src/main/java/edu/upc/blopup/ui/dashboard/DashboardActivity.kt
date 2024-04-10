@@ -65,7 +65,7 @@ class DashboardActivity : ACBaseActivity() {
                         }
                         composable(Routes.CreatePatientScreen.id) {
                             showBackButtonInMenu = true
-                            CreatePatientScreen()
+                            CreatePatientScreen(this@DashboardActivity)
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package edu.upc.blopup.ui.addeditpatient
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
@@ -30,6 +31,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
+import edu.upc.blopup.ui.dashboard.DashboardActivity
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
@@ -39,6 +41,7 @@ import edu.upc.sdk.utilities.ToastUtil
 
 @Composable
 fun CreatePatientScreen(
+    activity: Activity,
     viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
     val createPatientUiState = viewModel.createPatientUiState.collectAsState()
@@ -46,7 +49,8 @@ fun CreatePatientScreen(
     CreatePatientForm(
         viewModel::isNameOrSurnameInvalidFormat,
         viewModel::createPatient,
-        createPatientUiState.value
+        createPatientUiState.value,
+        activity
     )
 }
 
@@ -55,8 +59,8 @@ fun CreatePatientForm(
     isNameOrSurnameInvalidFormat: (String) -> Boolean,
     createPatient: (String, String, String, String, String, String) -> Unit,
     createPatientUiState: CreatePatientResultUiState,
+    activity: Activity,
 ) {
-    val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var familyName by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
@@ -115,9 +119,9 @@ fun CreatePatientForm(
             { estimatedYears = it })
 
 
-        CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, context)
+        CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, activity)
 
-        LegalConsentSection(context) { legalConsentFile = it }
+        LegalConsentSection(activity) { legalConsentFile = it }
 
         Column {
             when (createPatientUiState) {
@@ -152,7 +156,7 @@ fun CreatePatientForm(
                         },
                         enabled = isSubmitEnabled
                     )
-                    ToastUtil.error(context.getString(R.string.register_patient_error))
+                    ToastUtil.error(activity.getString(R.string.register_patient_error))
                 }
 
                 CreatePatientResultUiState.Loading -> {
@@ -160,7 +164,7 @@ fun CreatePatientForm(
                 }
 
                 is CreatePatientResultUiState.Success -> {
-                    startPatientDashboardActivity(context, createPatientUiState.data)
+                    startPatientDashboardActivity(activity, createPatientUiState.data)
                 }
 
             }
@@ -208,13 +212,23 @@ fun LanguagesDialog(
 @Preview
 @Composable
 fun CreatePatientPreview() {
-    CreatePatientForm({ false }, { _, _, _, _, _, _ -> }, CreatePatientResultUiState.NotCreated)
+    CreatePatientForm(
+        { false },
+        { _, _, _, _, _, _ -> },
+        CreatePatientResultUiState.NotCreated,
+        DashboardActivity()
+    )
 }
 
 @Preview
 @Composable
 fun CreatePatientLoadingPreview() {
-    CreatePatientForm({ false }, { _, _, _, _, _, _ -> }, CreatePatientResultUiState.Loading)
+    CreatePatientForm(
+        { false },
+        { _, _, _, _, _, _ -> },
+        CreatePatientResultUiState.Loading,
+        DashboardActivity()
+    )
 }
 
 @Preview
