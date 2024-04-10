@@ -178,7 +178,7 @@ open class VitalsViewModel @Inject constructor(
 
     private fun hardcodeBloodPressureBluetoothData() {
         viewModelScope.launch {
-            delay(5000)
+            delay(1000)
             _bloodPressureUiState.value = ResultUiState.Success(BloodPressure(
                 (80..139).random(),
                 (50..89).random(),
@@ -189,7 +189,7 @@ open class VitalsViewModel @Inject constructor(
 
     private fun hardcodeWeightData() {
         viewModelScope.launch {
-            delay(5000)
+            delay(1000)
             _weightUiState.value = ResultUiState.Success((50..150).random().toString())
         }
     }
