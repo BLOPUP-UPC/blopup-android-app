@@ -36,7 +36,7 @@ class Visit : Resource() {
     lateinit var visitType: VisitType
 
     @Expose
-    lateinit var location: LocationEntity
+    var location: LocationEntity? = null
 
     @Expose
     lateinit var startDatetime: String

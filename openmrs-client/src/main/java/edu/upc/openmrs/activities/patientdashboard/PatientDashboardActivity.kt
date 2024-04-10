@@ -44,7 +44,8 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     private val viewModel: PatientDashboardMainViewModel by viewModels()
 
-    private lateinit var patientId: String
+    private var patientId = 0L
+    private lateinit var patientUuid: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +57,12 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
             title = getString(R.string.app_name)
         }
 
-        patientId = viewModel.patientId
+        intent.getLongExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, 0).also {
+            if (it !== 0L) patientId = it else throw IllegalStateException("No valid patient id passed")
+        }
+        intent.getStringExtra(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE).also {
+            if (it !== null) patientUuid = it else  throw IllegalStateException("No valid patient uuid passed")
+        }
 
         setupObserver()
         setupActionFABs()
@@ -89,7 +95,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     }
 
     private fun initViewPager() {
-        val adapter = PatientDashboardPagerAdapter(supportFragmentManager, this, patientId)
+        val adapter = PatientDashboardPagerAdapter(supportFragmentManager, this, patientId, patientUuid)
         with(binding) {
             pager.offscreenPageLimit = adapter.count - 1
             pager.adapter = adapter

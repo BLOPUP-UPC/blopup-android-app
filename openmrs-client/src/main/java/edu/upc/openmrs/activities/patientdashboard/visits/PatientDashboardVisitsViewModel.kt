@@ -1,35 +1,29 @@
 package edu.upc.openmrs.activities.patientdashboard.visits
 
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.model.Visit
 import edu.upc.openmrs.activities.BaseViewModel
-import edu.upc.sdk.library.dao.VisitDAO
-import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
-import edu.upc.sdk.library.models.typeConverters.VisitConverter
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import rx.android.schedulers.AndroidSchedulers
+import edu.upc.sdk.library.api.repository.NewVisitRepository
+import kotlinx.coroutines.launch
+import java.io.IOException
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardVisitsViewModel @Inject constructor(
-    private val visitDAO: VisitDAO,
-    savedStateHandle: SavedStateHandle
+    private val visitRepository: NewVisitRepository
 ) : BaseViewModel<List<Visit>>() {
 
-    private val patientId: String = savedStateHandle[PATIENT_ID_BUNDLE]!!
-
-    fun fetchVisitsData() {
-        setLoading(PatientVisitsFetching)
-        addSubscription(visitDAO.getVisitsByPatientID(patientId.toLong())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { openMRSVisits ->
-                    setContent(openMRSVisits.map {
-                        VisitConverter.createVisitFromOpenMRSVisit(it)
-                    }, PatientVisitsFetching)
-                },
-                { setError(it, PatientVisitsFetching) }
-            ))
+    fun fetchVisitsData(patientId: UUID) {
+        setLoading()
+        viewModelScope.launch {
+            try {
+                val visits = visitRepository.getVisitsByPatientUuid(patientId)
+                setContent(visits)
+            } catch (exception: IOException) {
+                setError(exception)
+            }
+        }
     }
 }

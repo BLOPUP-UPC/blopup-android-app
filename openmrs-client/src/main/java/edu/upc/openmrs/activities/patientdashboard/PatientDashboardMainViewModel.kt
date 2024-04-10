@@ -3,7 +3,6 @@ package edu.upc.openmrs.activities.patientdashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.NewVisitRepository
@@ -16,9 +15,6 @@ import edu.upc.sdk.library.models.OperationType.PatientSynchronizing
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import java.util.UUID
 import javax.inject.Inject

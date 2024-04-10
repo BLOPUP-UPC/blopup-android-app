@@ -1,18 +1,20 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.SavedStateHandle
+import edu.upc.blopup.model.VisitExample
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientDashboardVisitsViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
-import edu.upc.sdk.library.dao.VisitDAO
+import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
-import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.library.models.typeConverters.VisitConverter
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -20,70 +22,55 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertIterableEquals
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import rx.Observable
+import java.io.IOException
+import java.util.UUID
 
 @RunWith(JUnit4::class)
-class PatientDashboardVisitsViewModelTest : ACUnitTestBaseRx() {
+class PatientDashboardVisitsViewModelTest() {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    lateinit var visitDAO: VisitDAO
+    lateinit var visitRepository: NewVisitRepository
 
-    private lateinit var savedStateHandle: SavedStateHandle
-
+    @InjectMockKs
     private lateinit var viewModel: PatientDashboardVisitsViewModel
 
     lateinit var patient: Patient
 
-    private lateinit var visitList: List<Visit>
-
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
-    override fun setUp() {
-        super.setUp()
+    fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+
         MockKAnnotations.init(this)
-        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, PATIENT_ID) }
-        viewModel =
-            PatientDashboardVisitsViewModel(
-                visitDAO,
-                savedStateHandle
-            )
-        patient = createPatient(PATIENT_ID.toLong())
-        visitList = createVisitList()
     }
 
     @Test
-    fun fetchVisitsData_success() {
-        every { visitDAO.getVisitsByPatientID(PATIENT_ID.toLong()) } returns Observable.just(
-            visitList
+    fun `fetch visits should return list of visits by patient uuid`() = runTest {
+        val patientUuid = UUID.randomUUID()
+        val visits = listOf(
+            VisitExample.random(), VisitExample.random()
         )
 
-        viewModel.fetchVisitsData()
+        coEvery { visitRepository.getVisitsByPatientUuid(patientUuid) } returns visits
 
-        val parsedVisits = visitList.map { VisitConverter.createVisitFromOpenMRSVisit(it) }
+        viewModel.fetchVisitsData(patientUuid)
 
         val actualResult = (viewModel.result.value as Result.Success).data
-
-        assertIterableEquals(parsedVisits, actualResult)
+        assertIterableEquals(visits, actualResult)
     }
 
     @Test
-    fun fetchVisitsData_error() {
-        val errorMsg = "Error message!"
-        val throwable = Throwable(errorMsg)
-        every { visitDAO.getVisitsByPatientID(PATIENT_ID.toLong()) } returns Observable.error(
-            throwable
-        )
+    fun `fetch visits should return error if repository fails`() = runTest {
+        val patientUuid = UUID.randomUUID()
+        val exception = IOException()
 
-        viewModel.fetchVisitsData()
+        coEvery { visitRepository.getVisitsByPatientUuid(patientUuid) } throws exception
 
-        val actualResult = (viewModel.result.value as Result.Error).throwable.message
+        viewModel.fetchVisitsData(patientUuid)
 
-        assertEquals(errorMsg, actualResult)
-    }
-
-    companion object {
-        const val PATIENT_ID = "1"
+        assertEquals(Result.Error(exception), viewModel.result.value)
     }
 }

@@ -23,6 +23,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.CoreMatchers.instanceOf
@@ -106,7 +107,7 @@ class NewVisitRepositoryTest {
     }
 
     @Test
-    fun `should get all visits by uuid`() {
+    fun `should get all visits by uuid`() = runTest {
         val visit1 = VisitExample.random();
         val visit2 = VisitExample.random(patientId = visit1.patientId);
 
@@ -138,7 +139,7 @@ class NewVisitRepositoryTest {
         })
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(visit1.patientId.toString(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(visit1.patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
         coEvery { call.execute() } returns response
 
         val result = visitRepository.getVisitsByPatientUuid(visit1.patientId)
@@ -147,14 +148,14 @@ class NewVisitRepositoryTest {
     }
 
     @Test
-    fun `should return empty list when no visits found`() {
+    fun `should return empty list when no visits found`() = runTest {
         val patientId = UUID.randomUUID()
         val response = Response.success(Results<OpenMRSVisit>().apply{
             results = emptyList()
         })
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
         coEvery { call.execute() } returns response
 
         val result = visitRepository.getVisitsByPatientUuid(patientId)
@@ -163,11 +164,11 @@ class NewVisitRepositoryTest {
     }
 
     @Test(expected = IOException::class)
-    fun `should throw exception with not successful network response`() {
+    fun `should throw exception with not successful network response`() = runTest {
         val patientId = UUID.randomUUID()
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
         every { call.execute() } returns Response.error(500, mockk<ResponseBody>("Generic error"))
 
         visitRepository.getVisitsByPatientUuid(patientId)

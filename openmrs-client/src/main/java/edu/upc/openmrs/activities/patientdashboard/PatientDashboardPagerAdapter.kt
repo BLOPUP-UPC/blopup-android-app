@@ -30,16 +30,17 @@ import edu.upc.openmrs.activities.patientdashboard.visits.PatientVisitsFragment
 
 class PatientDashboardPagerAdapter(private val fm: FragmentManager,
                                    private val context: Context,
-                                   private val mPatientId: String
+                                   private val mPatientId: Long,
+                                   private val mPatientUuid: String
 ) : FragmentPagerAdapter(fm) {
 
     private val registeredFragments = SparseArray<Fragment>()
 
     override fun getItem(i: Int): Fragment {
         return when (i) {
-            DETAILS_TAB_POS -> PatientDetailsFragment.newInstance(mPatientId)
-            VISITS_TAB_POS -> PatientVisitsFragment.newInstance(mPatientId)
-            CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId)
+            DETAILS_TAB_POS -> PatientDetailsFragment.newInstance(mPatientId.toString())
+            VISITS_TAB_POS -> PatientVisitsFragment.newInstance(mPatientId, mPatientUuid)
+            CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId.toString())
             else -> throw IllegalStateException()
         }
     }

@@ -136,6 +136,10 @@ class SyncedPatientsRecyclerViewAdapter(
                 ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                 patient.id
             )
+            intent.putExtra(
+                ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE,
+                patient.uuid
+            )
             mContext.startActivity(intent)
         }
     }

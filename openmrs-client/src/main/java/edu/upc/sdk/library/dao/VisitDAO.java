@@ -90,7 +90,7 @@ public class VisitDAO {
     private long saveVisit(Visit visit, long patientID) {
         EncounterDAO encounterDAO = new EncounterDAO();
         visit.setPatient(new PatientDAO().findPatientByID(String.valueOf(patientID)));
-        visit.location = new LocationEntity(OpenmrsAndroid.getLocation());
+        visit.setLocation(new LocationEntity(OpenmrsAndroid.getLocation()));
         VisitEntity visitEntity = AppDatabaseHelper.convert(visit);
         long visitID = visitRoomDAO.addVisit(visitEntity);
         if (visit.getEncounters() != null) {

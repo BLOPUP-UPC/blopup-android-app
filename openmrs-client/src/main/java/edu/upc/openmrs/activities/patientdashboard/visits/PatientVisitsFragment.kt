@@ -33,11 +33,10 @@ import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.sdk.library.models.OperationType.PatientVisitStarting
-import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
 import edu.upc.sdk.utilities.ToastUtil.error
 import java.util.UUID
 
@@ -49,6 +48,10 @@ class PatientVisitsFragment : BaseFragment() {
     private val viewModel: PatientDashboardVisitsViewModel by viewModels()
 
     private lateinit var patientDashboardActivity: PatientDashboardActivity
+
+    private val patientUuid: String by lazy {
+        requireArguments().getString(PATIENT_UUID_BUNDLE)!!
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -90,41 +93,22 @@ class PatientVisitsFragment : BaseFragment() {
     private fun setupObserver() {
         viewModel.result.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Result.Loading -> {
-                    when (result.operationType) {
-                        PatientVisitStarting -> showStartVisitProgressDialog()
-                        else -> {
-                        }
-                    }
-                }
-
+                is Result.Loading -> {}
                 is Result.Success -> {
                     dismissCurrentDialog()
-                    when (result.operationType) {
-                        PatientVisitsFetching -> showVisitsList(result.data)
-                        PatientVisitStarting -> goToVisitDashboard(result.data[0].id)
-                        else -> {
-                        }
-                    }
+                    showVisitsList(result.data)
                 }
 
                 is Result.Error -> {
                     dismissCurrentDialog()
-                    when (result.operationType) {
-                        PatientVisitsFetching -> showErrorFetchingVisits()
-                        PatientVisitStarting -> error(getString(R.string.visit_start_error))
-                        else -> {
-                        }
-                    }
+                    showErrorFetchingVisits()
                 }
-
-                else -> throw IllegalStateException()
             }
         }
     }
 
     private fun fetchPatientVisits() {
-        viewModel.fetchVisitsData()
+        viewModel.fetchVisitsData(UUID.fromString(patientUuid))
     }
 
     private fun showVisitsList(visits: List<Visit>) {
@@ -173,9 +157,12 @@ class PatientVisitsFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(patientId: String): PatientVisitsFragment {
+        fun newInstance(patientId: Long, patientUuid: String): PatientVisitsFragment {
             val fragment = PatientVisitsFragment()
-            fragment.arguments = bundleOf(Pair(PATIENT_ID_BUNDLE, patientId))
+            fragment.arguments = bundleOf(
+                Pair(PATIENT_ID_BUNDLE, patientId),
+                Pair(PATIENT_UUID_BUNDLE, patientUuid)
+            )
             return fragment
         }
     }

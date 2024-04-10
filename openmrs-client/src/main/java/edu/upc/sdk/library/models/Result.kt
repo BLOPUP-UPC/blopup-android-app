@@ -30,8 +30,6 @@ enum class OperationType {
     PatientRegistering,
     PatientFetching,
     PatientSynchronizing,
-    PatientVisitsFetching,
-    PatientVisitStarting,
     TreatmentUpdated}
 
 @Deprecated("Use ResultUiState instead")

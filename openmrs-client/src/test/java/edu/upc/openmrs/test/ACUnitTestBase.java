@@ -129,7 +129,7 @@ public abstract class ACUnitTestBase {
     protected Visit createVisit(String display, long patientId) {
         Visit visit = new Visit();
         visit.setStartDatetime("2019-01-01T00:00:00.000+0000");
-        visit.location = new LocationEntity(display);
+        visit.setLocation(new LocationEntity(display));
         visit.visitType = new VisitType(display);
         visit.patient = createPatient(patientId);
         visit.setUuid(UUID.randomUUID().toString());

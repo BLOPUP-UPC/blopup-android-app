@@ -174,7 +174,7 @@ object AppDatabaseHelper {
         visitEntity.patientKeyID = visit.patient.id!!
         visitEntity.visitType = visit.visitType.display
         if (visit.location != null) {
-            visitEntity.visitPlace = visit.location.display
+            visitEntity.visitPlace = visit.location?.display
         }
         visitEntity.isStartDate = visit.startDatetime
         visitEntity.stopDate = visit.stopDatetime

@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.dao.VisitDAO
-import edu.upc.sdk.library.models.OperationType.PatientVisitsFetching
 import edu.upc.sdk.library.models.Visit
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import org.json.JSONArray
@@ -26,7 +25,7 @@ class PatientDashboardChartsViewModel @Inject constructor(
         addSubscription(visitDAO.getVisitsByPatientID(patientId.toLong())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { visits: List<Visit> -> setContent(getObservationListFromVisits(visits), PatientVisitsFetching) },
+                        { visits: List<Visit> -> setContent(getObservationListFromVisits(visits)) },
                         { setError(it) }
                 ))
     }
