@@ -121,7 +121,7 @@ fun CreatePatientForm(
 
         CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, activity)
 
-        LegalConsentSection(activity) { legalConsentFile = it }
+        LegalConsentSection(activity, { legalConsentFile = it }, legalConsentFile)
 
         Column {
             when (createPatientUiState) {

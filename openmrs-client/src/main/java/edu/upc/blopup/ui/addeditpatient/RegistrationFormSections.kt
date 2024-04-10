@@ -1,13 +1,17 @@
 package edu.upc.blopup.ui.addeditpatient
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -33,7 +37,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -114,7 +120,7 @@ fun FullNameSection(
 
 @Composable
 fun GenderSection(gender: String, setGender: (String) -> Unit) {
-    Column(Modifier.padding(vertical = 15.dp )) {
+    Column(Modifier.padding(vertical = 15.dp)) {
         StructureLabelText(R.string.reg_ques_gender)
         if (gender.isEmpty()) {
             Text(
@@ -162,11 +168,12 @@ fun DateOfBirthSection(
     var formattedDateOfBirth by remember { mutableStateOf(dateOfBirth) }
 
 
-    Column(Modifier.padding(vertical = 15.dp )) {
+    Column(Modifier.padding(vertical = 15.dp)) {
         val date = datePickerState.selectedDateMillis
         if (date != null) {
             val localDate = Instant.ofEpochMilli(date).atZone(ZoneId.of("UTC")).toLocalDate()
-            formattedDateOfBirth = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
+            formattedDateOfBirth =
+                "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
         }
         StructureLabelText(R.string.reg_ques_dob)
         OutlinedTextField(
@@ -219,7 +226,9 @@ fun DateOfBirthSection(
         if (showDatePickerDialog) {
             DatePickerDialog(onDismissRequest = { showDatePickerDialog = false },
                 confirmButton = {
-                    Button(onClick = { onDateOfBirth(formattedDateOfBirth); showDatePickerDialog = false }) {
+                    Button(onClick = {
+                        onDateOfBirth(formattedDateOfBirth); showDatePickerDialog = false
+                    }) {
                         Text(text = stringResource(R.string.ok))
                     }
                 }) {
@@ -237,7 +246,7 @@ fun CountryOfBirthSection(
 ) {
     var showCountryOfBirthDialog by remember { mutableStateOf(false) }
 
-    Column(Modifier.padding(vertical = 15.dp )) {
+    Column(Modifier.padding(vertical = 15.dp)) {
         StructureLabelText(R.string.country_of_birth_label)
         Box(
             modifier = Modifier
@@ -275,43 +284,63 @@ fun CountryOfBirthSection(
 }
 
 @Composable
-fun LegalConsentSection(context: Context, setLegalConsentFile: (String) -> Unit) {
+fun LegalConsentSection(
+    context: Context,
+    setLegalConsentFile: (String) -> Unit,
+    legalConsentFile: String,
+) {
     var showLanguagesDialog by remember { mutableStateOf(false) }
     var showLegalConsentDialog by remember { mutableStateOf(false) }
     var languageSelected by remember { mutableStateOf("") }
 
 
-    Column(Modifier.padding(vertical = 15.dp )) {
+    Column(Modifier.padding(vertical = 15.dp)) {
         StructureLabelText(R.string.record_patient_consent)
-        Box(
-            modifier = Modifier
-                .clickable { showLanguagesDialog = true }
-                .border(
-                    width = 1.dp,
-                    color = if (languageSelected.isEmpty()) MaterialTheme.colorScheme.error else Color.Gray,
-                    shape = RoundedCornerShape(4.dp)
-                )
-                .padding(horizontal = 16.dp, vertical = 15.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = languageSelected.ifEmpty { stringResource(R.string.select_language) },
-                    fontSize = 16.sp,
-                    color = if (languageSelected.isEmpty()) MaterialTheme.colorScheme.error else Color.Black,
-                    modifier = Modifier.weight(1f)
-                )
-                Icon(
-                    Icons.Filled.ArrowDropDown,
-                    tint = Color.Gray,
-                    contentDescription = null
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .clickable { showLanguagesDialog = true }
+                    .border(
+                        width = 1.dp,
+                        color = if (languageSelected.isEmpty()) MaterialTheme.colorScheme.error else Color.Gray,
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(15.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround) {
+                    Box(modifier = Modifier.padding(end = 15.dp).width(130.dp)) {
+                        Text(
+                            text = languageSelected.ifEmpty { stringResource(R.string.select_language) },
+                            fontSize = 16.sp,
+                            color = if (languageSelected.isEmpty()) MaterialTheme.colorScheme.error else Color.Black,
+                        )
+                    }
+                    Icon(
+                        Icons.Filled.ArrowDropDown,
+                        tint = Color.Gray,
+                        contentDescription = null,
+                    )
+                }
+                if (showLanguagesDialog) {
+                    LanguagesDialog(context, { language ->
+                        languageSelected = language
+                    }) { showLanguagesDialog = false }
+                }
+            }
+
+            if (legalConsentFile.isNotEmpty()) {
+                Image(
+                    painter = painterResource(id = R.drawable.saved_recording_icon),
+                    contentDescription = "Saved recording icon",
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp)
+                        .size(35.dp),
+                    colorFilter = ColorFilter.tint(colorResource(id = R.color.allergy_orange)),
                 )
             }
-            if (showLanguagesDialog) {
-                LanguagesDialog(context, { language ->
-                    languageSelected = language
-                }) { showLanguagesDialog = false }
-            }
+
         }
+
         Text(
             text = stringResource(id = R.string.record_legal_consent_u),
             textDecoration = TextDecoration.Underline,
@@ -330,7 +359,7 @@ fun LegalConsentSection(context: Context, setLegalConsentFile: (String) -> Unit)
                 languageSelected,
                 { showLegalConsentDialog = false },
                 context,
-                { setLegalConsentFile(it)})
+                { setLegalConsentFile(it) })
         }
     }
 }
