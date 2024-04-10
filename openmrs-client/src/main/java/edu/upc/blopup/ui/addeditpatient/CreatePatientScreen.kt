@@ -57,7 +57,7 @@ fun CreatePatientScreen(
 @Composable
 fun CreatePatientForm(
     isNameOrSurnameInvalidFormat: (String) -> Boolean,
-    createPatient: (String, String, String, String, String, String) -> Unit,
+    createPatient: (String, String, String, String, String, String, String) -> Unit,
     createPatientUiState: CreatePatientResultUiState,
     activity: Activity,
 ) {
@@ -135,7 +135,8 @@ fun CreatePatientForm(
                                 dateOfBirth,
                                 estimatedYears,
                                 gender,
-                                countryOfBirth
+                                countryOfBirth,
+                                legalConsentFile
                             )
                         },
                         enabled = isSubmitEnabled
@@ -151,7 +152,8 @@ fun CreatePatientForm(
                                 dateOfBirth,
                                 estimatedYears,
                                 gender,
-                                countryOfBirth
+                                countryOfBirth,
+                                legalConsentFile
                             )
                         },
                         enabled = isSubmitEnabled
@@ -214,7 +216,7 @@ fun LanguagesDialog(
 fun CreatePatientPreview() {
     CreatePatientForm(
         { false },
-        { _, _, _, _, _, _ -> },
+        { _, _, _, _, _, _, _ -> },
         CreatePatientResultUiState.NotCreated,
         DashboardActivity()
     )
@@ -225,7 +227,7 @@ fun CreatePatientPreview() {
 fun CreatePatientLoadingPreview() {
     CreatePatientForm(
         { false },
-        { _, _, _, _, _, _ -> },
+        { _, _, _, _, _, _,_ -> },
         CreatePatientResultUiState.Loading,
         DashboardActivity()
     )

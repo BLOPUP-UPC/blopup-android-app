@@ -2,6 +2,7 @@ package edu.upc.blopup.ui.addeditpatient
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.BuildConfig
+import edu.upc.blopup.RecordingHelper
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAttribute
@@ -36,6 +37,9 @@ class CreatePatientViewModelTest {
 
     @MockK
     private lateinit var patientRepository: PatientRepository
+
+    @MockK
+    private lateinit var recordingHelper: RecordingHelper
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
@@ -83,8 +87,7 @@ class CreatePatientViewModelTest {
                 birthdate,
                 true,
                 gender,
-                countryOfBirth
-            )
+                countryOfBirth)
         } returns Observable.just(patient)
 
 
@@ -94,7 +97,8 @@ class CreatePatientViewModelTest {
             dateOfBirth,
             estimatedYears,
             gender,
-            countryOfBirth
+            countryOfBirth,
+            "file.mp3"
         )
 
         val result = viewModel.createPatientUiState.drop(1).first()
@@ -122,7 +126,8 @@ class CreatePatientViewModelTest {
             "",
             "33",
             "M",
-            "Spain")
+            "Spain",
+            "file.mp3")
 
         val result = viewModel.createPatientUiState.drop(1).first()
 

@@ -3,7 +3,9 @@ package edu.upc.blopup.ui.addeditpatient
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.blopup.RecordingHelper
 import edu.upc.sdk.library.api.repository.PatientRepository
+import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.StringUtils
 import kotlinx.coroutines.Dispatchers
@@ -16,13 +18,25 @@ import org.joda.time.format.DateTimeFormat
 import javax.inject.Inject
 
 @HiltViewModel
-class CreatePatientViewModel @Inject constructor(private val patientRepository: PatientRepository) : ViewModel() {
+class CreatePatientViewModel @Inject constructor(
+    private val patientRepository: PatientRepository,
+    private val recordingHelper: RecordingHelper) : ViewModel() {
 
-    private val _createPatientUiState = MutableStateFlow<CreatePatientResultUiState>(CreatePatientResultUiState.NotCreated)
-    val createPatientUiState: StateFlow<CreatePatientResultUiState> = _createPatientUiState.asStateFlow()
+    private val _createPatientUiState =
+        MutableStateFlow<CreatePatientResultUiState>(CreatePatientResultUiState.NotCreated)
+    val createPatientUiState: StateFlow<CreatePatientResultUiState> =
+        _createPatientUiState.asStateFlow()
 
 
-    fun createPatient  (name: String, familyName: String, dateOfBirth: String, estimatedYears: String, gender: String, countryOfBirth: String) {
+    fun createPatient(
+        name: String,
+        familyName: String,
+        dateOfBirth: String,
+        estimatedYears: String,
+        gender: String,
+        countryOfBirth: String,
+        legalConsentFileName: String
+    ) {
         _createPatientUiState.value = CreatePatientResultUiState.Loading
 
         val birthdateEstimated: Boolean
@@ -36,7 +50,10 @@ class CreatePatientViewModel @Inject constructor(private val patientRepository: 
                 .print(approximateBirthdate)
         } else {
             birthdateEstimated = false
-            val parsedBirthdate = DateTime.parse(dateOfBirth, DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT))
+            val parsedBirthdate = DateTime.parse(
+                dateOfBirth,
+                DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT)
+            )
             birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
                 .print(parsedBirthdate)
         }
@@ -55,6 +72,14 @@ class CreatePatientViewModel @Inject constructor(private val patientRepository: 
                 val patient = response?.toBlocking()?.first()
                 if (patient?.id != null) {
                     _createPatientUiState.value = CreatePatientResultUiState.Success(patient)
+                    recordingHelper.saveLegalConsent(LegalConsent().apply {
+                        val patientIdentifier = patient.identifier.identifier
+                        if (patientIdentifier != null) {
+                            this.patientIdentifier = patientIdentifier
+                            this.filePath = legalConsentFileName
+                        }
+                    })
+
                 } else {
                     _createPatientUiState.value = CreatePatientResultUiState.Error
                 }
