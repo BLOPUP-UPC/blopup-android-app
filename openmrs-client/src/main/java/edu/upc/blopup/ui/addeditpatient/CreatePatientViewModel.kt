@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.RecordingHelper
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.models.LegalConsent
+import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.StringUtils
 import kotlinx.coroutines.Dispatchers
@@ -92,4 +93,9 @@ class CreatePatientViewModel @Inject constructor(
     fun isNameOrSurnameInvalidFormat(input: String): Boolean {
         return !StringUtils.validateText(input, StringUtils.ILLEGAL_CHARACTERS)
     }
+
+    fun isValidBirthDate(input: String): Boolean {
+        return input.toInt() > ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
+    }
+
 }

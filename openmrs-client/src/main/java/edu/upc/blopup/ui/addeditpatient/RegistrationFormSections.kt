@@ -164,11 +164,13 @@ fun DateOfBirthSection(
     dateOfBirth: String,
     estimatedYears: String,
     onDateOfBirth: (String) -> Unit,
-    onEstimatedYears: (String) -> Unit
+    onEstimatedYears: (String) -> Unit,
+    isBirthDateValidRange: (String) -> Boolean
 ) {
     val datePickerState = rememberDatePickerState()
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var formattedDateOfBirth by remember { mutableStateOf(dateOfBirth) }
+    var birthdateError by remember { mutableStateOf(false) }
 
 
     Column(Modifier.padding(vertical = 15.dp)) {
@@ -216,21 +218,34 @@ fun DateOfBirthSection(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = estimatedYears,
-            isError = dateOfBirth.isEmpty() && estimatedYears.isEmpty(),
-            onValueChange = { onEstimatedYears(it) },
+            isError = (dateOfBirth.isEmpty() && estimatedYears.isEmpty()) || birthdateError,
+            onValueChange = {
+                onEstimatedYears(it)
+                birthdateError = isBirthDateValidRange(it)
+                onDateOfBirth("")
+            },
             label = { Text(text = stringResource(R.string.estyr), fontSize = 16.sp) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = colorResource(R.color.primary),
                 focusedLabelColor = colorResource(R.color.primary),
                 cursorColor = Color.Black
             ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            supportingText = {
+                if (birthdateError) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.age_out_of_bounds_message),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
         )
         if (showDatePickerDialog) {
             DatePickerDialog(onDismissRequest = { showDatePickerDialog = false },
                 confirmButton = {
                     Button(onClick = {
-                        onDateOfBirth(formattedDateOfBirth); showDatePickerDialog = false
+                        onDateOfBirth(formattedDateOfBirth); showDatePickerDialog = false; onEstimatedYears("")
                     }) {
                         Text(text = stringResource(R.string.ok))
                     }
@@ -331,7 +346,11 @@ fun LegalConsentSection(
                         contentDescription = null,
                     )
                 }
-                ShowLanguagesDropDownList(context, showLanguagesDropDownList, { showLanguagesDropDownList = false }, { language -> languageSelected = language })
+                ShowLanguagesDropDownList(
+                    context,
+                    showLanguagesDropDownList,
+                    { showLanguagesDropDownList = false },
+                    { language -> languageSelected = language })
             }
             if (legalConsentFile.isNotEmpty()) {
                 Image(
@@ -359,7 +378,9 @@ fun LegalConsentSection(
                         showLegalConsentDialog = true
                     }
                 },
-            color = if (languageSelected == context.getString(R.string.select_language)) Color.Gray else colorResource(R.color.allergy_orange)
+            color = if (languageSelected == context.getString(R.string.select_language)) Color.Gray else colorResource(
+                R.color.allergy_orange
+            )
         )
         if (showLegalConsentDialog) {
             LegalConsentDialog(
@@ -384,7 +405,9 @@ fun ShowLanguagesDropDownList(
     DropdownMenu(
         expanded = showLanguagesDialog,
         onDismissRequest = { closeDropDown() },
-        modifier = Modifier.background(colorResource(R.color.white)).padding(5.dp)
+        modifier = Modifier
+            .background(colorResource(R.color.white))
+            .padding(5.dp)
     ) {
         languagesList.forEach { language ->
             DropdownMenuItem(
@@ -394,7 +417,8 @@ fun ShowLanguagesDropDownList(
                 },
                 text = { Text(text = language, color = Color.Gray) })
         }
-    }}
+    }
+}
 
 
 @Composable

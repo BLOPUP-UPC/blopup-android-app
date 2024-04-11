@@ -43,7 +43,8 @@ fun CreatePatientScreen(
         viewModel::createPatient,
         createPatientUiState.value,
         activity,
-        goBackToDashboard
+        goBackToDashboard,
+        viewModel::isValidBirthDate
     )
 }
 
@@ -54,6 +55,7 @@ fun CreatePatientForm(
     createPatientUiState: CreatePatientResultUiState,
     activity: Activity,
     goBackToDashboard: () -> Unit,
+    isBirthDateValidRange: (String) -> Boolean,
 ) {
     var name by remember { mutableStateOf("") }
     var familyName by remember { mutableStateOf("") }
@@ -110,7 +112,9 @@ fun CreatePatientForm(
             dateOfBirth,
             estimatedYears,
             { dateOfBirth = it },
-            { estimatedYears = it })
+            { estimatedYears = it },
+            isBirthDateValidRange
+        )
 
 
         CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, activity)
@@ -185,7 +189,8 @@ fun CreatePatientPreview() {
         { _, _, _, _, _, _, _ -> },
         CreatePatientResultUiState.NotCreated,
         DashboardActivity(),
-        {}
+        {},
+        {true}
     )
 }
 
@@ -197,6 +202,7 @@ fun CreatePatientLoadingPreview() {
         { _, _, _, _, _, _,_ -> },
         CreatePatientResultUiState.Loading,
         DashboardActivity(),
-        {}
+        {},
+        {true}
     )
 }
