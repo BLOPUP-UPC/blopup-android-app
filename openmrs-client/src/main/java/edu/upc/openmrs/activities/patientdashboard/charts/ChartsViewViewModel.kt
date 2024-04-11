@@ -28,12 +28,6 @@ class ChartsViewViewModel @Inject constructor(
     private val visitRepository: NewVisitRepository
 ) :
     ViewModel() {
-    private val _visits = MutableLiveData<ResultUiState<List<Visit>>>()
-    val visits: LiveData<ResultUiState<List<Visit>>> get() = _visits
-
-    private val _treatments = MutableLiveData<Result<Map<LocalDate, List<TreatmentAdherence>>>>()
-    val treatments: LiveData<Result<Map<LocalDate, List<TreatmentAdherence>>>> get() = _treatments
-
     private val _visitsWithTreatments = MutableLiveData<ResultUiState<List<VisitWithAdherence>>>()
     val visitsWithTreatments: LiveData<ResultUiState<List<VisitWithAdherence>>> get() = _visitsWithTreatments
 

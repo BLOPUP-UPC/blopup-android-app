@@ -19,20 +19,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.R
 import edu.upc.databinding.FragmentPatientChartsBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.ToastUtil
-import edu.upc.sdk.utilities.ToastUtil.showShortToast
-import org.json.JSONArray
-import org.json.JSONException
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
 import org.json.JSONObject
 
 @AndroidEntryPoint
@@ -40,23 +34,19 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     private var _binding: FragmentPatientChartsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PatientDashboardChartsViewModel by viewModels()
-
-    private var observationList: JSONObject? = null
-
     private val patientId: Int by lazy {
         requireArguments().getString(PATIENT_ID_BUNDLE)!!.toInt()
     }
     private val patientUuud: String by lazy {
-        requireArguments().getString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE)!!
+        requireArguments().getString(PATIENT_UUID_BUNDLE)!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPatientChartsBinding.inflate(inflater, container, false)
 
+
         setupAdapter()
-        setupObserver()
-        fetchChartsData()
+        showChartsList()
 
         return binding.root
     }
@@ -74,30 +64,6 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
         }
     }
 
-    private fun setupObserver() {
-        viewModel.result.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Result.Loading -> {
-                }
-
-                is Result.Success -> {
-                    observationList = result.data
-                    showChartsList()
-                }
-
-                is Result.Error -> {
-                }
-
-                else -> {
-                }
-            }
-        }
-    }
-
-    private fun fetchChartsData() {
-        viewModel.fetchChartsData()
-    }
-
     private fun showChartsList() {
         with(binding) {
             vitalEmpty.makeGone()
@@ -107,35 +73,16 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     }
 
     override fun showChartActivity(vitalName: String) {
-        try {
-            val systolicData = observationList!!.getJSONObject("Systolic blood pressure")
-            val diastolicData = observationList!!.getJSONObject("Diastolic blood pressure")
-
-            val map = HashMap<String, Pair<Float, Float>>()
-            val dates = systolicData.keys()
-            for (key in dates) {
-                map.put(key, Pair(((systolicData.get(key) as JSONArray).get(0) as String).toFloat(), ((diastolicData.get(key) as JSONArray).get(0) as String).toFloat()))
+        Intent(
+            activity,
+            ChartsViewActivity::class.java
+        ).apply {
+            val bundle = Bundle().apply {
+                putInt(PATIENT_ID_BUNDLE, patientId)
+                putString(PATIENT_UUID_BUNDLE, patientUuud)
             }
-
-            try{
-                Intent(
-                    activity,
-                    ChartsViewActivity::class.java
-                ).apply {
-                    val bundle = Bundle().apply {
-                        putSerializable(ChartsViewActivity.BLOOD_PRESSURE, map)
-                        putInt(ChartsViewActivity.PATIENT_ID, patientId)
-                        putString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE, patientUuud)
-                    }
-                    putExtra(ApplicationConstants.BUNDLE, bundle)
-                    startActivity(this)
-                }
-            } catch (e: NumberFormatException) {
-                showShortToast(requireContext(), ToastUtil.ToastType.ERROR, getString(R.string.data_type_not_available_for_this_field))
-            }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-            showShortToast(requireContext(), ToastUtil.ToastType.ERROR, getString(R.string.patient_with_no_values_to_show))
+            putExtra(ApplicationConstants.BUNDLE, bundle)
+            startActivity(this)
         }
     }
 
@@ -144,17 +91,12 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
         _binding = null
     }
 
-    override fun onResume() {
-        super.onResume()
-        fetchChartsData()
-    }
-
     companion object {
         fun newInstance(patientId: String, patientUuid: String): PatientChartsFragment {
             val fragment = PatientChartsFragment()
             fragment.arguments = bundleOf(
                 Pair(PATIENT_ID_BUNDLE, patientId),
-                Pair(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE, patientUuid)
+                Pair(PATIENT_UUID_BUNDLE, patientUuid)
             )
             return fragment
         }

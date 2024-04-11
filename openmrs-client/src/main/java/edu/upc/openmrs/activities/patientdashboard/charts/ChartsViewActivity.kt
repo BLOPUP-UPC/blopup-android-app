@@ -15,8 +15,12 @@ import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
+import edu.upc.sdk.utilities.ToastUtil
 import java.time.LocalDate
 import java.util.UUID
 
@@ -32,11 +36,11 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     private lateinit var expandableSidebarListView: ExpandableListView
 
     private val patientLocalDbId by lazy {
-        this.intent.getBundleExtra(ApplicationConstants.BUNDLE)!!.getInt(PATIENT_ID)
+        this.intent.getBundleExtra(ApplicationConstants.BUNDLE)!!.getInt(PATIENT_ID_BUNDLE)
     }
 
     private val patientUuid by lazy {
-        this.intent.getBundleExtra(ApplicationConstants.BUNDLE)!!.getString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE)
+        this.intent.getBundleExtra(ApplicationConstants.BUNDLE)!!.getString(PATIENT_UUID_BUNDLE)
     }
 
     private var visitsDates: List<LocalDate>? = null
@@ -56,17 +60,28 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         viewModel.visitsWithTreatments.observe(this) { visitsWithTreatments ->
             when (visitsWithTreatments) {
                 is ResultUiState.Loading -> {
+                    mBinding.progressBar.makeVisible()
                     return@observe
                 }
 
                 is ResultUiState.Error -> {
+                    mBinding.progressBar.makeGone()
+                    ToastUtil.error(getString(R.string.visit_fetching_error))
                     return@observe
                 }
 
                 is ResultUiState.Success -> {
+                    if (visitsWithTreatments.data.isEmpty()) {
+                        mBinding.progressBar.makeGone()
+                        mBinding.noDataTextView.makeVisible()
+                        return@observe
+                    }
+
                     this.visitsDates = visitsWithTreatments.data.map { it.visit.startDate.toLocalDate() }
                     showVisitsChart(mBinding, visitsWithTreatments.data)
                     showTreatmentsChartAndSidebar(mBinding, visitsWithTreatments.data)
+                    mBinding.progressBar.makeGone()
+                    mBinding.chartsView.makeVisible()
                 }
             }
         }
@@ -194,11 +209,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
     override fun onNothingSelected() {
         // Explicit blank, not needed
-    }
-
-    companion object {
-        const val BLOOD_PRESSURE = "bloodPressure"
-        const val PATIENT_ID = "patientId"
     }
 }
 
