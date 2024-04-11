@@ -97,7 +97,7 @@ fun LegalConsentDialog(
         }
     }
 
-    Dialog(onDismissRequest = { onCloseDialog() }) {
+    Dialog(onDismissRequest = { if(!isRecordingInProcess) onCloseDialog() }) {
         Column(
             Modifier
                 .background(Color.White)
