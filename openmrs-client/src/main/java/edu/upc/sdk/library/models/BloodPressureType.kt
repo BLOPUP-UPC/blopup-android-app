@@ -50,22 +50,3 @@ enum class BloodPressureType {
     abstract fun relatedText(): Int
     abstract fun relatedRecommendation(): Int
 }
-
-fun bloodPressureTypeFromEncounter(encounter: Encounter): BloodPressureResult? {
-    val systolic =
-        encounter.observations.find { it.display?.contains("Systolic") == true }?.displayValue?.toDouble()
-    val diastolic =
-        encounter.observations.find { it.display?.contains("Diastolic") == true }?.displayValue?.toDouble()
-
-    if (systolic == null || diastolic == null) return null
-
-    val bloodPressureType = when {
-        systolic >= 180 || diastolic >= 110 -> BloodPressureType.STAGE_II_C
-        systolic >= 160 || diastolic >= 100 -> BloodPressureType.STAGE_II_B
-        systolic >= 140 || diastolic >= 90  -> BloodPressureType.STAGE_II_A
-        systolic >= 130 || diastolic >= 80  -> BloodPressureType.STAGE_I
-        else -> BloodPressureType.NORMAL
-    }
-
-    return BloodPressureResult(bloodPressureType, systolic, diastolic)
-}

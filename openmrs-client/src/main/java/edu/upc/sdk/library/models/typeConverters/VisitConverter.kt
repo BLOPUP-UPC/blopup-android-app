@@ -3,10 +3,10 @@ package edu.upc.sdk.library.models.typeConverters
 import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.Visit
 import edu.upc.sdk.library.models.EncounterType
-import edu.upc.sdk.library.models.Visit as OpenMRSVisit
 import edu.upc.sdk.utilities.DateUtils
 import java.time.LocalDateTime
 import java.util.UUID
+import edu.upc.sdk.library.models.Visit as OpenMRSVisit
 
 object VisitConverter {
 
@@ -37,7 +37,7 @@ object VisitConverter {
         return Visit(
             UUID.fromString(openMRSVisit?.uuid),
             UUID.fromString(openMRSVisit?.patient?.uuid),
-            openMRSVisit?.location?.display ?: "",
+            openMRSVisit?.location?.display ?: "el servei assistencial",
             openMRSVisit?.startDatetime?.let { DateUtils.parseLocalDateFromOpenmrsDate(it) }
                 ?: LocalDateTime.now(),
             bloodPressure,

@@ -31,8 +31,7 @@ import org.json.JSONObject
 
 @AndroidEntryPoint
 class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), PatientChartsRecyclerViewAdapter.OnClickListener {
-    private var _binding: FragmentPatientChartsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentPatientChartsBinding
 
     private val patientId: Int by lazy {
         requireArguments().getString(PATIENT_ID_BUNDLE)!!.toInt()
@@ -42,7 +41,7 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentPatientChartsBinding.inflate(inflater, container, false)
+        binding = FragmentPatientChartsBinding.inflate(inflater, container, false)
 
 
         setupAdapter()
@@ -84,11 +83,6 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
             putExtra(ApplicationConstants.BUNDLE, bundle)
             startActivity(this)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {

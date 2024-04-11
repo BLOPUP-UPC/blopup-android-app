@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Singleton
 class EncounterRepository @Inject constructor() : BaseRepository(null) {
-    suspend fun removeEncounter(encounterUuid: String?): kotlin.Result<Boolean> {
+    suspend fun removeEncounter(encounterUuid: String?): Result<Boolean> {
         return try {
             withContext(Dispatchers.IO) {
                 val response = restApi.deleteEncounter(encounterUuid).execute()

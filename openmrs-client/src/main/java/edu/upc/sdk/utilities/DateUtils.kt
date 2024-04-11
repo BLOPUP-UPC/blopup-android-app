@@ -44,6 +44,10 @@ object DateUtils {
         return Instant.parse(dateTime, DateTimeFormat.forPattern(OPEN_MRS_RESPONSE_FORMAT).withZoneUTC())
     }
 
+    fun parseInstantFromOpenmrsDate(dateTime: String): java.time.Instant {
+        return parseLocalDateFromOpenmrsDate(dateTime).toInstant(java.time.ZoneOffset.UTC)
+    }
+
     fun parseLocalDateFromOpenmrsDate(dateTime: String): JavaLocalDateTime {
         return JavaLocalDateTime.parse(dateTime, JavaDateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
     }

@@ -194,7 +194,7 @@ class TreatmentRepositoryTest {
         val capturedTreatmentEncounter = slot<Encountercreate>()
 
         val call = mockk<Call<Encounter>>(relaxed = true)
-        every { newVisitRepository.getVisitByUuid(any()) } returns edu.upc.blopup.model.Visit(
+        coEvery { newVisitRepository.getVisitByUuid(any()) } returns edu.upc.blopup.model.Visit(
             visitUuid,
             patientUuid,
             "Casa del Aleh",

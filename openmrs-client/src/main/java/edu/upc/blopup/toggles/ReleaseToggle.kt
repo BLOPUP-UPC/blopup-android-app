@@ -3,7 +3,6 @@ package edu.upc.blopup.toggles
 import edu.upc.BuildConfig
 
 val hardcodeBluetoothDataToggle = ReleaseToggle { BuildConfigWrapper.hardcodeBluetoothDataToggle }
-val contactDoctorToggle = ReleaseToggle { BuildConfigWrapper.contactDoctorToggle }
 
 typealias OnToggleEnabled = () -> Unit
 typealias OnToggleDisabled = () -> Unit
@@ -19,7 +18,4 @@ fun ReleaseToggle.check(
 object BuildConfigWrapper {
     val hardcodeBluetoothDataToggle: Boolean
         get() = BuildConfig.HARDCODE_BLUETOOTH_DATA_TOGGLE
-
-    val contactDoctorToggle: Boolean
-        get() = BuildConfig.CONTACT_DOCTOR_TOGGLE
 }

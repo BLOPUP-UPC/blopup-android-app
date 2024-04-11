@@ -1,98 +1,132 @@
 package edu.upc.openmrs.test.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.SavedStateHandle
+import edu.upc.blopup.model.VisitExample
+import edu.upc.blopup.ui.ResultUiState
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.dao.VisitDAO
-import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.EncounterType
+import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
-import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.mockk
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.joda.time.Instant
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import rx.Observable
+import java.io.IOException
 
 @RunWith(JUnit4::class)
-class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
+class VisitDashboardViewModelTest {
 
-    private lateinit var visitDAO: VisitDAO
+    @MockK
+    private lateinit var patientDAO: PatientDAO
 
+    @MockK
     private lateinit var visitRepository: NewVisitRepository
 
+    @MockK
     private lateinit var doctorRepository: DoctorRepository
 
+    @MockK
     private lateinit var treatmentRepository: TreatmentRepository
 
+    @MockK
     private lateinit var encounterRepository: EncounterRepository
 
+    @InjectMockKs
     private lateinit var viewModel: VisitDashboardViewModel
-
-    private val visitUuid = "1"
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
-    override fun setUp() {
-        super.setUp()
+    fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        treatmentRepository = mockk()
-        encounterRepository = mockk()
-        visitRepository = mockk()
-        doctorRepository = mockk()
-        visitDAO = mockk()
-        val savedStateHandle = SavedStateHandle().apply { set(VISIT_UUID, visitUuid) }
-        viewModel = VisitDashboardViewModel(
-            visitDAO,
-            visitRepository,
-            treatmentRepository,
-            encounterRepository,
-            doctorRepository,
-            savedStateHandle
+
+        MockKAnnotations.init(this)
+    }
+
+    @Test
+    fun `fetch current visit fails error`() = runTest {
+        val visit = VisitExample.random()
+        coEvery { visitRepository.getVisitByUuid(visit.id) } throws IOException()
+
+        viewModel.fetchCurrentVisit(visit.id)
+
+        assertEquals(ResultUiState.Error, viewModel.visit.value)
+        assertNull(viewModel.patient.value)
+        assertEquals(
+            Pair(
+                ResultUiState.Error,
+                ResultUiState.Error
+            ), viewModel.treatments.first()
         )
-        every { visitDAO.getVisitsIDByUUID(visitUuid) } returns Observable.just(1L)
     }
 
     @Test
-    fun fetchCurrentVisit_success() {
-        every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
+    fun `fetch current visit and treatments fails`() = runTest {
+        val patient = Patient()
+        val visit = VisitExample.random()
+        val treatment = TreatmentExample.activeTreatment()
+        coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
+        every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, visit) } returns Result.Error(IOException())
 
-        viewModel.fetchCurrentVisit()
+        viewModel.fetchCurrentVisit(visit.id)
 
-        assert(viewModel.result.value is Result<Visit>)
+        assertEquals(ResultUiState.Success(visit), viewModel.visit.value)
+        assertEquals(patient, viewModel.patient.value)
+        assertEquals(
+            Pair(
+                ResultUiState.Success(visit),
+                ResultUiState.Error
+            ), viewModel.treatments.first()
+        )
     }
 
     @Test
-    fun fetchCurrentVisit_error() {
-        val throwable = Throwable("Error message")
-        every { visitDAO.getVisitByID(any()) } returns Observable.error(throwable)
+    fun `fetch current visit and treatments`() = runTest {
+        val patient = Patient()
+        val visit = VisitExample.random()
+        val treatment = TreatmentExample.activeTreatment()
+        coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
+        every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, visit) } returns Result.Success(
+            listOf(treatment)
+        )
 
-        viewModel.fetchCurrentVisit()
+        viewModel.fetchCurrentVisit(visit.id)
 
-        assert(viewModel.result.value is Result.Error)
+        assertEquals(ResultUiState.Success(visit), viewModel.visit.value)
+        assertEquals(patient, viewModel.patient.value)
+        assertEquals(
+            Pair(
+                ResultUiState.Success(visit),
+                ResultUiState.Success(listOf(treatment))
+            ), viewModel.treatments.first()
+        )
     }
 
     @Test
@@ -108,67 +142,28 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun endCurrentVisit_success() {
+        val visit = VisitExample.random()
 
-        every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
         coEvery { visitRepository.endVisit(any()) } returns true
 
-        viewModel.fetchCurrentVisit().runCatching {
-            runBlocking {
-                viewModel.endCurrentVisit().observeForever { visitEnded ->
-                    assertTrue(visitEnded.equals(Result.Success(true)))
-                }
+        runBlocking {
+            viewModel.endCurrentVisit(visit.id).observeForever { visitEnded ->
+                assertTrue(visitEnded.equals(Result.Success(true)))
             }
         }
     }
 
     @Test
     fun endCurrentVisit_error() {
-        val throwable = Throwable("Error message")
-        every { visitDAO.getVisitByID(any()) } returns Observable.just(Visit())
+        val visit = VisitExample.random()
+        val throwable = IOException()
         coEvery { visitRepository.endVisit(any()) } throws throwable
 
-        viewModel.fetchCurrentVisit().runCatching {
-            runBlocking {
-                viewModel.endCurrentVisit().observeForever { visitEnded ->
-                    assert(visitEnded.equals(Result.Error(throwable)))
-                }
+        runBlocking {
+            viewModel.endCurrentVisit(visit.id).observeForever { visitEnded ->
+                assert(visitEnded.equals(Result.Error(throwable)))
             }
         }
-    }
-
-    @Test
-    fun filterAndSortEncounters() {
-
-        val firstEncounter = Encounter().apply {
-            encounterType = EncounterType("Vitals")
-            encounterDate = "2023-08-10T09:23:13.000+0200"
-        }
-
-        val secondEncounter = Encounter().apply {
-            encounterType = EncounterType("Vitals")
-            encounterDate = "2023-09-11T09:23:13.000+0200"
-        }
-
-        val thirdEncounter = Encounter().apply {
-            encounterType = EncounterType("Vitals")
-            encounterDate = "2023-10-12T09:23:13.000+0200"
-        }
-
-        val mostRecentEncounter = Encounter().apply {
-            encounterType = EncounterType("Vitals")
-            encounterDate = "2023-10-13T09:23:13.000+0200"
-        }
-
-        val encounters = listOf(
-            thirdEncounter,
-            mostRecentEncounter,
-            firstEncounter,
-            secondEncounter
-        )
-
-        val result = viewModel.filterLastVitalEncounter(encounters)
-
-        assertTrue(result.encounterDate.equals(mostRecentEncounter.encounterDate))
     }
 
     @Test
@@ -220,20 +215,17 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `should refresh the treatments for the current visit`() {
+        val visit = VisitExample.random()
         val patient = Patient().apply {
             id = 2L
         }
-        val visit = Visit().apply {
-            id = 1L
-            this.patient = patient
-            encounters =
-                listOf(Encounter().apply { encounterType = EncounterType(EncounterType.VITALS) })
-        }
 
-        every { visitDAO.getVisitByID(any()) } returns Observable.just(visit)
+        coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
+        every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
         coEvery {
             treatmentRepository.fetchActiveTreatmentsAtAGivenTime(
                 patient,
+                null,
                 visit
             )
         } returns Result.Success(
@@ -241,10 +233,10 @@ class VisitDashboardViewModelTest : ACUnitTestBaseRx() {
         )
 
         runBlocking {
-            viewModel.fetchCurrentVisit()
+            viewModel.fetchCurrentVisit(visit.id)
             viewModel.refreshTreatments()
             coVerify(exactly = 2) {
-                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visit)
+                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(any(), any(), any())
             }
         }
     }

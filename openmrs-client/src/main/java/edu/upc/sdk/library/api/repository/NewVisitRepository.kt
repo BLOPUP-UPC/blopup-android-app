@@ -35,9 +35,9 @@ class NewVisitRepository @Inject constructor(
     private val logger: OpenMRSLogger,
     private val oldVisitRepository: VisitRepository
 ) {
-    fun getVisitByUuid(visitUuid: UUID): Visit {
+    suspend fun getVisitByUuid(visitUuid: UUID): Visit = withContext(Dispatchers.IO) {
         val openMRSVisit = restApi.getVisitByUuid(visitUuid.toString()).execute().body()
-        return VisitConverter.createVisitFromOpenMRSVisit(openMRSVisit)
+        return@withContext VisitConverter.createVisitFromOpenMRSVisit(openMRSVisit)
     }
 
     suspend fun getVisitsByPatientUuid(patientId: UUID): List<Visit> = withContext(Dispatchers.IO) {

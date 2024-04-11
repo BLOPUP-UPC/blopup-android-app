@@ -31,39 +31,48 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.model.Treatment
-import edu.upc.blopup.toggles.check
-import edu.upc.blopup.toggles.contactDoctorToggle
+import edu.upc.blopup.model.Visit
+import edu.upc.blopup.ui.ResultUiState
 import edu.upc.databinding.FragmentVisitDashboardBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.models.BloodPressureType
-import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
-import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.library.models.bloodPressureTypeFromEncounter
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.TREATMENT
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 import edu.upc.sdk.utilities.ToastUtil
 import edu.upc.sdk.utilities.ToastUtil.showLongToast
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
+import java.util.UUID
 
 
 @AndroidEntryPoint
 class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), TreatmentListener {
-    private var _binding: FragmentVisitDashboardBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentVisitDashboardBinding
     private val viewModel: VisitDashboardViewModel by viewModels()
     private val logger = OpenmrsAndroid.getOpenMRSLogger()
 
+    private val visitUuid: UUID by lazy {
+        UUID.fromString(requireArguments().getString(VISIT_UUID)!!)
+    }
+
+    private val isNewVitals: Boolean by lazy {
+        requireArguments().getBoolean(IS_NEW_VITALS)
+    }
+
     companion object {
         fun newInstance(visitUuid: String, isNewVitals: Boolean) = VisitDashboardFragment().apply {
-            arguments = bundleOf(Pair(VISIT_UUID, visitUuid), Pair(IS_NEW_VITALS, isNewVitals))
+            arguments = bundleOf(
+                Pair(VISIT_UUID, visitUuid),
+                Pair(IS_NEW_VITALS, isNewVitals)
+            )
         }
     }
 
@@ -72,9 +81,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
+        binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
+        setupPatientNameObserver()
         setupVisitObserver()
         setUpTreatmentsObserver()
 
@@ -83,71 +93,48 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     override fun onResume() {
         super.onResume()
-        viewModel.fetchCurrentVisit()
+        viewModel.fetchCurrentVisit(visitUuid)
     }
 
     private fun setupVisitObserver() {
-        viewModel.result.observe(viewLifecycleOwner) { result ->
+        viewModel.visit.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Result.Loading -> {
-                }
+                is ResultUiState.Loading -> {}
+                is ResultUiState.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
 
-                is Result.Success -> result.data.runCatching {
-                    setActionBarTitle(patient.name.nameString)
+                is ResultUiState.Success -> result.data.runCatching {
                     recreateOptionsMenu()
                     displayVisit(this)
-                    contactDoctorToggle.check({ notifyDoctorIfNeeded(patient.identifier.identifier) })
+                    notifyDoctorIfNeeded(this)
                 }.onFailure { logger.e(it.stackTraceToString()) }
-
-                is Result.Error -> ToastUtil.error(getString(R.string.visit_fetching_error))
-                else -> throw IllegalStateException()
             }
+        }
+    }
+
+    private fun setupPatientNameObserver() {
+        viewModel.patient.observe(viewLifecycleOwner) {
+            setActionBarTitle(it.name.nameString)
         }
     }
 
     private fun displayVisit(visit: Visit) {
-        val encounter = visit.encounters.first()
+        setVitalsValues(visit)
+        showBmiValues(visit)
 
-        val bloodPressureType = bloodPressureTypeFromEncounter(encounter)?.bloodPressureType
-
-        setVitalsValues(encounter.observations)
-        showBmiChart(visit)
-
-        bloodPressureType?.let {
-            binding.bloodPressureLayout.makeVisible()
-            BloodPressureChart().createChart(
-                binding.visitDetailsLayout.findViewById(R.id.bp_speedview),
-                bloodPressureType
-            )
-            setBloodPressureTypeAndRecommendation(bloodPressureType)
-            setBloodPressureInformationDialog()
-            showAddTreatmentButton(visit)
-        }
-
+        binding.bloodPressureLayout.makeVisible()
+        BloodPressureChart().createChart(
+            binding.visitDetailsLayout.findViewById(R.id.bp_speedview),
+            visit.bloodPressureType()
+        )
+        setBloodPressureTypeAndRecommendation(visit.bloodPressureType())
+        setBloodPressureInformationDialog()
+        showAddTreatmentButton(visit)
     }
 
-    private fun setVitalsValues(observations: List<Observation>) {
-        for (observation in observations) {
-            val formattedDisplayValue: String =
-                formatValue(observation.displayValue!!)
-            if (observation.display!!.contains("Systolic")) {
-                binding.systolicValue.text = formattedDisplayValue
-            } else if (observation.display!!.contains("Diastolic")) {
-                binding.diastolicValue.text = formattedDisplayValue
-            } else if (observation.display!!.contains("Pulse")) {
-                binding.pulseValue.text = formattedDisplayValue
-            } else if (observation.display!!.contains("Weight")) {
-                binding.bmiLayout.makeVisible()
-                if (observation.displayValue!!.isNotEmpty()) binding.weightLayout.visibility =
-                    View.VISIBLE
-                binding.weightValue.text = formattedDisplayValue
-            } else if (observation.display!!.contains("Height")) {
-                binding.bmiLayout.makeVisible()
-                if (observation.displayValue!!.isNotEmpty()) binding.heightLayout.visibility =
-                    View.VISIBLE
-                binding.heightValue.text = formattedDisplayValue
-            }
-        }
+    private fun setVitalsValues(visit: Visit) {
+        binding.systolicValue.text = visit.bloodPressure.systolic.toString()
+        binding.diastolicValue.text = visit.bloodPressure.diastolic.toString()
+        binding.pulseValue.text = visit.bloodPressure.pulse.toString()
     }
 
     private fun setBloodPressureTypeAndRecommendation(bloodPressureType: BloodPressureType?) {
@@ -175,25 +162,31 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun showBmiChart(visit: Visit) {
-        val bmiData = BMICalculator().execute(visit.encounters.first().observations)
-        if (bmiData.isNotEmpty() && bmiData != "N/A") {
-            binding.bmiChartInclude.bmiChart.makeVisible()
-            BmiChart().setBMIValueAndChart(bmiData.toFloat(), binding.bmiLayout)
+    private fun showBmiValues(visit: Visit) {
+        if (visit.heightCm != null) {
+            binding.bmiLayout.makeVisible()
+            binding.heightLayout.makeVisible()
+            binding.heightValue.text = visit.heightCm.toString()
         }
-    }
+        if (visit.weightKg != null) {
+            binding.bmiLayout.makeVisible()
+            binding.weightLayout.makeVisible()
+            binding.weightValue.text = visit.weightKg.toString()
+        }
 
-    private fun formatValue(displayValue: String): String {
-        return if (displayValue.contains(".")) {
-            displayValue.substring(0, displayValue.indexOf('.')).trim { it <= ' ' }
-        } else {
-            displayValue.trim { it <= ' ' }
+        val bmiData = BMICalculator().execute(visit)
+        if (bmiData != null) {
+            binding.bmiChartInclude.bmiChart.makeVisible()
+            BmiChart().setBMIValueAndChart(bmiData, binding.bmiLayout)
         }
     }
 
     private fun setUpTreatmentsObserver() {
-        viewModel.treatments.observe(viewLifecycleOwner) { result ->
-            showTreatment(result)
+        lifecycleScope.launch {
+            viewModel.treatments.collectLatest { result ->
+                val visit = if (result.first is ResultUiState.Success) (result.first as ResultUiState.Success<Visit>).data else null
+                showTreatments(result.second, visit?.isActive() ?: false)
+            }
         }
 
         viewModel.treatmentOperationsLiveData.observe(viewLifecycleOwner) { treatment ->
@@ -221,24 +214,24 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     private fun showAddTreatmentButton(visit: Visit) {
         with(binding.addTreatmentButton) {
-            if (visit.isActiveVisit()) {
+            if (visit.isActive()) {
                 this.makeVisible()
                 this.setOnClickListener {
                     val intent = Intent(
                         requireContext(),
                         TreatmentActivity::class.java
                     )
-                    intent.putExtra(VISIT_UUID, viewModel.visit?.uuid)
+                    intent.putExtra(VISIT_UUID, visitUuid.toString())
                     requireContext().startActivity(intent)
                 }
             }
         }
     }
 
-    private fun showTreatment(treatments: Result<List<Treatment>>) {
-        if (treatments is Result.Success) {
+    private fun showTreatments(treatments: ResultUiState<List<Treatment>>, isVisitActive: Boolean) {
+        if (treatments is ResultUiState.Success) {
             binding.loadingTreatmentsProgressBar.makeGone()
-            showTreatmentList(treatments.data)
+            showTreatmentList(treatments.data, isVisitActive)
         } else {
             binding.loadingTreatmentsProgressBar.makeGone()
             binding.recommendedTreatmentsLayout.makeVisible()
@@ -253,15 +246,15 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun showTreatmentList(treatments: List<Treatment>) {
+    private fun showTreatmentList(treatments: List<Treatment>, isVisitActive: Boolean) {
         if (treatments.isNotEmpty()) {
             binding.recommendedTreatmentsLayout.makeVisible()
             val layoutManager = LinearLayoutManager(requireContext())
             binding.treatmentsVisitRecyclerView.layoutManager = layoutManager
             val treatmentAdapter = TreatmentRecyclerViewAdapter(
                 requireContext(),
-                viewModel.visit?.isActiveVisit()!!,
-                viewModel.visit?.uuid!!,
+                isVisitActive,
+                visitUuid.toString(),
                 this
             )
             binding.treatmentsVisitRecyclerView.adapter = treatmentAdapter
@@ -271,13 +264,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun notifyDoctorIfNeeded(patientId: String?) {
-        viewModel.bloodPressureType.observe(viewLifecycleOwner) { bloodPressureResult ->
-            if (!requireArguments().getBoolean(IS_NEW_VITALS) || viewModel.doctorHasBeenContacted.value == true) return@observe
+    private fun notifyDoctorIfNeeded(visit: Visit) {
+        if (!isNewVitals || viewModel.doctorHasBeenContacted.value == true) return
 
-            val location = viewModel.visit?.location?.name ?: "el servei assistencial."
+        val patientId = viewModel.patient.value?.id?.toString() ?: return
 
-            if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_B) {
+        when(visit.bloodPressureType()) {
+            BloodPressureType.STAGE_II_B -> {
                 showLongToast(
                     requireContext(),
                     ToastUtil.ToastType.NOTICE,
@@ -285,8 +278,8 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 )
                 val bloodPressureValues = getString(
                     R.string.stage_II_b_msg,
-                    bloodPressureResult.systolicValue.toInt().toString(),
-                    bloodPressureResult.diastolicValue.toInt().toString()
+                    visit.bloodPressure.systolic.toString(),
+                    visit.bloodPressure.diastolic.toString(),
                 )
                 lifecycleScope.launch {
                     val result = viewModel.sendMessageToDoctor(
@@ -294,19 +287,18 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                             R.string.telegram_message,
                             patientId,
                             bloodPressureValues,
-                            location
+                            visit.location
                         )
                     )
                     handleContactDoctorResult(result)
                 }
             }
-
-            if (bloodPressureResult?.bloodPressureType == BloodPressureType.STAGE_II_C) {
+            BloodPressureType.STAGE_II_C -> {
                 binding.callToDoctorBanner.visibility = View.VISIBLE
                 val bloodPressureValues = getString(
                     R.string.stage_II_c_msg,
-                    bloodPressureResult.systolicValue.toInt().toString(),
-                    bloodPressureResult.diastolicValue.toInt().toString()
+                    visit.bloodPressure.systolic.toString(),
+                    visit.bloodPressure.diastolic.toString(),
                 )
                 lifecycleScope.launch {
                     val result = viewModel.sendMessageToDoctor(
@@ -314,12 +306,13 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                             R.string.telegram_message,
                             patientId,
                             bloodPressureValues,
-                            location
+                            visit.location
                         )
                     )
                     handleContactDoctorResult(result)
                 }
             }
+            else -> {}
         }
     }
 
@@ -336,7 +329,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     fun endVisit() {
         lifecycleScope.launch {
-            viewModel.endCurrentVisit().observeOnce(viewLifecycleOwner) { result ->
+            viewModel.endCurrentVisit(visitUuid).observeOnce(viewLifecycleOwner) { result ->
                 when (result) {
                     is Result.Success -> {
                         requireActivity().finish()
@@ -368,8 +361,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater)
-        viewModel.visit?.run {
-            if (isActiveVisit()) menuInflater.inflate(R.menu.active_visit_menu, menu)
+        viewModel.visit.let {
+            if (it.value is ResultUiState.Success && (it.value as ResultUiState.Success<Visit>).data.isActive()) {
+                menuInflater.inflate(R.menu.active_visit_menu, menu)
+            }
         }
     }
 
@@ -393,11 +388,6 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
             else -> return super.onOptionsItemSelected(item)
         }
         return true
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onFinaliseClicked(treatment: Treatment) {

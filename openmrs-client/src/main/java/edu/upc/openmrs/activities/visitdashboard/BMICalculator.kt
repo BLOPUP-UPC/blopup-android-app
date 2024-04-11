@@ -1,29 +1,15 @@
 package edu.upc.openmrs.activities.visitdashboard
 
-import edu.upc.sdk.library.models.Observation
-import java.util.Locale
+import edu.upc.blopup.model.Visit
 import kotlin.math.pow
 
 class BMICalculator {
-    fun execute(observations: List<Observation>): String {
-        var weight = "0"
-        var height = "0"
-
-        for (obs in observations) {
-            if (obs.display!!.contains("Weight")) {
-                weight = obs.displayValue!!
-            }
-            if (obs.display!!.contains("Height")) {
-                height = obs.displayValue!!
-            }
-        }
-        if (weight == "0" || height == "0") {
-            return "N/A"
+    fun execute(visit: Visit): Float? {
+        if (visit.weightKg === null || visit.heightCm === null) {
+            return null
         }
 
-        val heightForBmi = (height.toDouble() / 100).pow(2.0)
-        val bmi = weight.toDouble() / heightForBmi
-
-        return String.format(Locale.US, "%.1f", bmi)
+        val heightForBmi = (visit.heightCm.toDouble() / 100).pow(2.0)
+        return (visit.weightKg.toDouble() / heightForBmi).toFloat()
     }
 }

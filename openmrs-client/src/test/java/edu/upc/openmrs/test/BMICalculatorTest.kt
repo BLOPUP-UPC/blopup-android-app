@@ -1,55 +1,40 @@
 package edu.upc.openmrs.test
 
+import edu.upc.blopup.model.VisitExample
 import edu.upc.openmrs.activities.visitdashboard.BMICalculator
-import edu.upc.sdk.library.models.Observation
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class BMICalculatorTest {
 
     private val calculator = BMICalculator()
 
-    private val weightObservation = Observation().apply {
-        display = "Weight (kg): 70.0"
-        displayValue = "70.0"
-    }
-    private val heightObservation = Observation().apply {
-        display= "Height (cm): 165.0"
-        displayValue= "165.0"
-    }
     @Test
     fun givenAWeightAndHeight_calculateBMI(){
-        val list = listOf(weightObservation, heightObservation)
+        val visit = VisitExample.random(heightCm = 165, weightKg = 70.0F)
 
-        val result = calculator.execute(list)
-
-        assertEquals("25.7", result)
+        assertEquals(25.711662F, calculator.execute(visit))
     }
 
     @Test
     fun givenJustWeightInput_returnANotApplicable(){
-        val list = listOf(weightObservation)
+        val visit = VisitExample.random(heightCm = 165, weightKg = null)
 
-        val result = calculator.execute(list)
-
-        assertEquals("N/A", result)
+        assertNull(calculator.execute(visit))
     }
 
     @Test
     fun givenJustHeightInput_returnANotApplicable(){
-        val list = listOf(heightObservation)
+        val visit = VisitExample.random(heightCm = null, weightKg = 80.1F)
 
-        val result = calculator.execute(list)
-
-        assertEquals("N/A", result)
+        assertNull(calculator.execute(visit))
     }
 
     @Test
     fun givenNonHeightOrWeightInput_returnANotApplicable(){
-        val list = emptyList<Observation>()
+        val visit = VisitExample.random(heightCm = null, weightKg = null)
 
-        val result = calculator.execute(list)
-
-        assertEquals("N/A", result)
+        assertNull(calculator.execute(visit))
     }
 }

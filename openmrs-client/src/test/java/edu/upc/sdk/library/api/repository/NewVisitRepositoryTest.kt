@@ -72,7 +72,7 @@ class NewVisitRepositoryTest {
     }
 
     @Test
-    fun `should get visit with Vitals by uuid`() {
+    fun `should get visit with Vitals by uuid`() = runTest {
         val visitUuid = UUID.randomUUID()
         val patientUuid = UUID.randomUUID()
         val expectedVisit = Visit(

@@ -17,18 +17,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.joda.time.Instant
 import java.time.LocalDate
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.Boolean
-import kotlin.Exception
 import kotlin.Result
-import kotlin.String
-import kotlin.apply
-import kotlin.let
-import kotlin.to
-import kotlin.toString
 import edu.upc.sdk.library.models.Result as OpenMRSResult
 
 @Singleton
@@ -113,15 +107,26 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun fetchActiveTreatmentsAtAGivenTime(
         patient: Patient,
-        visit: Visit
+        visit: Visit? = null,
+        newVisit: edu.upc.blopup.model.Visit? = null
     ): OpenMRSResult<List<Treatment>> {
-        val visitDate = parseFromOpenmrsDate(visit.startDatetime)
+        if (visit == null && newVisit == null) {
+            throw IllegalArgumentException("Visit or newVisit must be provided")
+        }
+
+        val visitId = visit?.uuid ?: newVisit?.id.toString()
+
+        val visitDate = if (visit !== null) {
+            parseFromOpenmrsDate(visit!!.startDatetime)
+        } else {
+            Instant.ofEpochMilli(newVisit!!.startDate.toInstant(ZoneOffset.UTC).toEpochMilli())
+        }
 
         val result = fetchAllTreatments(patient)
 
         if (result is OpenMRSResult.Success) {
             return OpenMRSResult.Success(result.data.filter { treatment ->
-                (treatment.creationDate.isBefore(visitDate) || treatment.visitUuid == visit.uuid)
+                (treatment.creationDate.isBefore(visitDate) || treatment.visitUuid == visitId)
                         && treatment.isActive
                         || (!treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate))
             })
