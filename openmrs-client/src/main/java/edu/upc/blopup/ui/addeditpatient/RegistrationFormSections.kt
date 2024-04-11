@@ -63,66 +63,22 @@ fun FullNameSection(
     setFamilyName: (String) -> Unit,
     isNameOrSurnameInvalidFormat: (String) -> Boolean
 ) {
-    var nameError by remember { mutableStateOf(false) }
-    var familyNameError by remember { mutableStateOf(false) }
-
     Column {
         StructureLabelText(R.string.reg_ques_name)
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = name,
-            onValueChange = {
-                setName(it)
-                nameError = isNameOrSurnameInvalidFormat(it)
-            },
-            label = { Text(text = stringResource(R.string.reg_firstname_hint)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = colorResource(R.color.primary),
-                focusedLabelColor = colorResource(R.color.primary),
-                cursorColor = Color.Black
-            ),
-            isError = name.isEmpty() || nameError,
-            supportingText = {
-                if (nameError) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.fname_invalid_error),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            },
-            singleLine = true
-        )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = familyName,
-            onValueChange = {
-                setFamilyName(it)
-                familyNameError = isNameOrSurnameInvalidFormat(it)
-            },
-            label = { Text(text = stringResource(R.string.reg_surname_hint)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = colorResource(R.color.primary),
-                focusedLabelColor = colorResource(R.color.primary),
-                cursorColor = Color.Black
-            ),
-            isError = familyName.isEmpty() || familyNameError,
-            supportingText = {
-                if (familyNameError) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.fname_invalid_error),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            },
-            singleLine = true
-        )
+
+        TextFieldWithValidation(name, setName, isNameOrSurnameInvalidFormat, R.string.reg_firstname_hint)
+        TextFieldWithValidation(familyName, setFamilyName, isNameOrSurnameInvalidFormat, R.string.reg_surname_hint)
     }
 }
 
 @Composable
 fun GenderSection(gender: String, setGender: (String) -> Unit) {
+    val genderOptions = listOf(
+        Pair("M", R.string.male),
+        Pair("F", R.string.female),
+        Pair("N", R.string.non_binary)
+    )
+
     Column(Modifier.padding(vertical = 15.dp)) {
         StructureLabelText(R.string.reg_ques_gender)
         if (gender.isEmpty()) {
@@ -131,29 +87,15 @@ fun GenderSection(gender: String, setGender: (String) -> Unit) {
                 color = colorResource(R.color.error_red)
             )
         }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(
-                selected = gender == "M",
-                onClick = { setGender("M") },
-                colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange))
-            )
-            Text(text = stringResource(R.string.male), fontSize = 16.sp)
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(
-                selected = gender == "F",
-                onClick = { setGender("F") },
-                colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange))
-            )
-            Text(text = stringResource(R.string.female), fontSize = 16.sp)
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(
-                selected = gender == "N",
-                onClick = { setGender("N") },
-                colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange))
-            )
-            Text(text = stringResource(R.string.non_binary), fontSize = 16.sp)
+        genderOptions.forEach { (value, labelResource) ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = gender == value,
+                    onClick = { setGender(value) },
+                    colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange))
+                )
+                Text(text = stringResource(labelResource), fontSize = 16.sp)
+            }
         }
     }
 }
@@ -266,31 +208,9 @@ fun CountryOfBirthSection(
 
     Column(Modifier.padding(vertical = 15.dp)) {
         StructureLabelText(R.string.country_of_birth_label)
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { showCountryOfBirthDialog = true }
-                .border(
-                    width = 1.dp,
-                    color = if (countryOfBirth.isEmpty()) MaterialTheme.colorScheme.error else Color.Gray,
-                    shape = RoundedCornerShape(4.dp)
-                )
-                .padding(horizontal = 16.dp, vertical = 15.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = countryOfBirth.ifEmpty { stringResource(R.string.country_of_birth_default) },
-                    fontSize = 16.sp,
-                    color = if (countryOfBirth.isEmpty()) MaterialTheme.colorScheme.error else Color.Black,
-                    modifier = Modifier.weight(1f)
-                )
-                Icon(
-                    Icons.Filled.ArrowDropDown,
-                    tint = Color.Gray,
-                    contentDescription = null
-                )
-            }
-        }
+
+        CountryOfBirthField(countryOfBirth) { showCountryOfBirthDialog = true }
+
         if (showCountryOfBirthDialog) {
             CountryOfBirthDialog(
                 onCloseDialog = { showCountryOfBirthDialog = false },
@@ -420,7 +340,6 @@ fun ShowLanguagesDropDownList(
     }
 }
 
-
 @Composable
 fun StructureLabelText(label: Int) {
     Text(
@@ -431,3 +350,66 @@ fun StructureLabelText(label: Int) {
         fontSize = 16.sp
     )
 }
+
+@Composable
+fun TextFieldWithValidation(
+    name: String,
+    setName: (String) -> Unit,
+    isNameOrSurnameInvalidFormat: (String) -> Boolean,
+    textHint: Int
+) {
+    var inputError by remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
+        value = name,
+        onValueChange = {
+            setName(it)
+            inputError = isNameOrSurnameInvalidFormat(it)
+        },
+        label = { Text(text = stringResource(textHint)) },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = colorResource(R.color.primary),
+            focusedLabelColor = colorResource(R.color.primary),
+            cursorColor = Color.Black
+        ),
+        isError = name.isEmpty() || inputError,
+        supportingText = {
+            if (inputError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.fname_invalid_error),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        singleLine = true
+    )}
+
+@Composable
+fun CountryOfBirthField(countryOfBirth: String, onShowCountryOfBirthDialog: () -> Unit, ) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onShowCountryOfBirthDialog() }
+            .border(
+                width = 1.dp,
+                color = if (countryOfBirth.isEmpty()) MaterialTheme.colorScheme.error else Color.Gray,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 15.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = countryOfBirth.ifEmpty { stringResource(R.string.country_of_birth_default) },
+                fontSize = 16.sp,
+                color = if (countryOfBirth.isEmpty()) MaterialTheme.colorScheme.error else Color.Black,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                Icons.Filled.ArrowDropDown,
+                tint = Color.Gray,
+                contentDescription = null
+            )
+        }
+    }}
