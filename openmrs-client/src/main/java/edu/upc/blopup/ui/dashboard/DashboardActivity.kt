@@ -61,11 +61,14 @@ class DashboardActivity : ACBaseActivity() {
                     ) {
                         composable(Routes.DashboardScreen.id) {
                             showBackButtonInMenu = false
-                            DashboardScreen()
+                            DashboardScreen ()
                         }
                         composable(Routes.CreatePatientScreen.id) {
                             showBackButtonInMenu = true
-                            CreatePatientScreen(this@DashboardActivity)
+                            CreatePatientScreen(
+                                this@DashboardActivity,
+                                { navigationController.navigate(Routes.DashboardScreen.id)}
+                            )
                         }
                     }
                 }

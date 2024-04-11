@@ -33,6 +33,7 @@ import edu.upc.sdk.utilities.ToastUtil
 @Composable
 fun CreatePatientScreen(
     activity: Activity,
+    goBackToDashboard: () -> Unit,
     viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
     val createPatientUiState = viewModel.createPatientUiState.collectAsState()
@@ -41,7 +42,8 @@ fun CreatePatientScreen(
         viewModel::isNameOrSurnameInvalidFormat,
         viewModel::createPatient,
         createPatientUiState.value,
-        activity
+        activity,
+        goBackToDashboard
     )
 }
 
@@ -51,6 +53,7 @@ fun CreatePatientForm(
     createPatient: (String, String, String, String, String, String, String) -> Unit,
     createPatientUiState: CreatePatientResultUiState,
     activity: Activity,
+    goBackToDashboard: () -> Unit,
 ) {
     var name by remember { mutableStateOf("") }
     var familyName by remember { mutableStateOf("") }
@@ -157,6 +160,7 @@ fun CreatePatientForm(
                 }
 
                 is CreatePatientResultUiState.Success -> {
+                    goBackToDashboard()
                     startPatientDashboardActivity(activity, createPatientUiState.data)
                 }
 
@@ -180,7 +184,8 @@ fun CreatePatientPreview() {
         { false },
         { _, _, _, _, _, _, _ -> },
         CreatePatientResultUiState.NotCreated,
-        DashboardActivity()
+        DashboardActivity(),
+        {}
     )
 }
 
@@ -191,6 +196,7 @@ fun CreatePatientLoadingPreview() {
         { false },
         { _, _, _, _, _, _,_ -> },
         CreatePatientResultUiState.Loading,
-        DashboardActivity()
+        DashboardActivity(),
+        {}
     )
 }
