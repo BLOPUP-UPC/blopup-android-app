@@ -13,7 +13,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import edu.upc.R
-import edu.upc.blopup.model.MedicationType
 import java.time.LocalDate
 
 class BloodPressureChart(private val context: Context) {
@@ -34,10 +33,9 @@ class BloodPressureChart(private val context: Context) {
 
     fun paintTreatmentsChart(
         chartLayout: LineChart,
-        bloodPressureData: List<BloodPressureChartValue>,
-        adherenceMap: Map<LocalDate, List<TreatmentAdherence>>
+        treatmentAdherence: List<TreatmentChartValue>
     ) {
-        setTreatmentsData(chartLayout, getTreatmentValues(bloodPressureData, adherenceMap))
+        setTreatmentsData(chartLayout, treatmentAdherence)
         applyCommonChartStyles(chartLayout)
         applyTreatmentsChartStyles(chartLayout)
     }
@@ -142,22 +140,6 @@ class BloodPressureChart(private val context: Context) {
         mChart.axisLeft.gridColor = Color.TRANSPARENT
     }
 
-    private fun getTreatmentValues(
-        bloodPressureValues: List<BloodPressureChartValue>,
-        adherenceMap: Map<LocalDate, List<TreatmentAdherence>>
-    ): List<TreatmentChartValue> {
-        return bloodPressureValues.map {
-            TreatmentChartValue(
-                it.date,
-                getAdherenceForDate(it.date, adherenceMap)
-            )
-        }
-    }
-
-    private fun getAdherenceForDate(date: LocalDate, adherenceMap: Map<LocalDate, List<TreatmentAdherence>>): FollowTreatments {
-        return adherenceMap[date]?.followTreatments() ?: FollowTreatments.NO_INFO
-    }
-
     private fun setTreatmentsData(chart: LineChart, treatmentsData: List<TreatmentChartValue>) {
         val allDatesValues = treatmentsData.map { it.date.toString() }
         val treatmentsEntries = treatmentsData.mapIndexed { index, value ->
@@ -255,30 +237,3 @@ class BloodPressureChart(private val context: Context) {
 data class BloodPressureChartValue(val date: LocalDate, val systolic: Float, val diastolic: Float)
 data class TreatmentChartValue(val date: LocalDate, val followTreatments: FollowTreatments)
 
-enum class FollowTreatments {
-    NO_INFO, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
-}
-
-data class TreatmentAdherence(
-    val medicationName: String,
-    var medicationType: Set<MedicationType>,
-    val adherence: Boolean,
-    val date: LocalDate
-)
-
-fun TreatmentAdherence.medicationTypeToString(context: Context): String {
-    return medicationType.joinToString(separator = " • ") { context.getString(it.label) }
-}
-
-fun TreatmentAdherence.icon(): Int {
-    return if (adherence) R.drawable.ic_tick else R.drawable.ic_cross
-}
-
-fun List<TreatmentAdherence>.followTreatments(): FollowTreatments {
-    val adherence = map { it.adherence }
-    return when {
-        adherence.all { it } -> FollowTreatments.FOLLOW_ALL
-        adherence.none { it } -> FollowTreatments.FOLLOW_NONE
-        else -> FollowTreatments.FOLLOW_SOME
-    }
-}

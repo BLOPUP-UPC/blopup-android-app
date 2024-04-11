@@ -5,7 +5,6 @@ import android.view.MotionEvent
 import android.widget.ExpandableListView
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
@@ -13,14 +12,13 @@ import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import edu.upc.R
+import edu.upc.blopup.ui.ResultUiState
 import edu.upc.databinding.ActivityChartsViewBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.utilities.makeVisible
-import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
-import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValueSelectedListener {
 
@@ -37,55 +35,89 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         this.intent.getBundleExtra(ApplicationConstants.BUNDLE)!!.getInt(PATIENT_ID)
     }
 
+    private val patientUuid by lazy {
+        this.intent.getBundleExtra(ApplicationConstants.BUNDLE)!!.getString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE)
+    }
+
+    private var visitsDates: List<LocalDate>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val mBinding = ActivityChartsViewBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
         setToolbar()
-        setUpCharts(mBinding)
-        setUpSidebarObserver(mBinding)
+        setUpObservers(mBinding)
 
-        lifecycleScope.launch { viewModel.fetchTreatments(patientLocalDbId) }
+        viewModel.fetchVisitsWithTreatments(patientLocalDbId, UUID.fromString(patientUuid))
     }
 
-    private fun setUpCharts(mBinding: ActivityChartsViewBinding) {
+    private fun setUpObservers(mBinding: ActivityChartsViewBinding) {
+        viewModel.visitsWithTreatments.observe(this) { visitsWithTreatments ->
+            when (visitsWithTreatments) {
+                is ResultUiState.Loading -> {
+                    return@observe
+                }
+
+                is ResultUiState.Error -> {
+                    return@observe
+                }
+
+                is ResultUiState.Success -> {
+                    this.visitsDates = visitsWithTreatments.data.map { it.visit.startDate.toLocalDate() }
+                    showVisitsChart(mBinding, visitsWithTreatments.data)
+                    showTreatmentsChartAndSidebar(mBinding, visitsWithTreatments.data)
+                }
+            }
+        }
+    }
+
+    private fun showVisitsChart(mBinding: ActivityChartsViewBinding, visits: List<VisitWithAdherence>) {
         bloodPressureChartView = mBinding.bloodPressureChart
         treatmentsChartView = mBinding.treatmentsChart
         bloodPressureChartPainter = BloodPressureChart(this)
 
-        val bloodPressureData = getBloodPressureValues()
+        val bloodPressureData = visits
+            .map {
+                BloodPressureChartValue(
+                    it.visit.startDate.toLocalDate(),
+                    it.visit.bloodPressure.systolic.toFloat(),
+                    it.visit.bloodPressure.diastolic.toFloat()
+                )
+        }
 
-        bloodPressureChartPainter.paintBloodPressureChart(bloodPressureChartView, bloodPressureData)
+        bloodPressureChartPainter.paintBloodPressureChart(
+            bloodPressureChartView,
+            bloodPressureData
+        )
         bloodPressureChartPainter.setListeners(treatmentsChartView, this, this)
     }
 
-    private fun setUpSidebarObserver(mBinding: ActivityChartsViewBinding) {
+    private fun showTreatmentsChartAndSidebar(mBinding: ActivityChartsViewBinding, visits: List<VisitWithAdherence>) {
         expandableSidebarListView = mBinding.expandableListView
 
-        viewModel.treatments.observe(this) { treatments ->
+        val visitsWithAnyTreatment = visits.filter { it.adherence.isNotEmpty() }
+        if (visitsWithAnyTreatment.isNotEmpty()) {
+            mBinding.treatmentsSideBar.makeVisible()
+            expandableSidebarAdapter = TreatmentsListExpandableListAdapter(
+                this.layoutInflater,
+                visitsWithAnyTreatment.map { it.visit.startDate.toLocalDate() },
+                visitsWithAnyTreatment.associateBy({ it.visit.startDate.toLocalDate() }, { it.adherence })
+            )
 
-            if(treatments is Result.Success) {
-                val adherenceMap = treatments.data
-                if (adherenceMap.isNotEmpty()) {
-                    mBinding.treatmentsSideBar.makeVisible()
-                    expandableSidebarAdapter = TreatmentsListExpandableListAdapter(
-                        this.layoutInflater,
-                        adherenceMap.map { it.key },
-                        adherenceMap
+            mBinding.marginTop.makeVisible()
+            treatmentsChartView.makeVisible()
+            bloodPressureChartPainter.paintTreatmentsChart(
+                treatmentsChartView,
+                visits.map {
+                    TreatmentChartValue(
+                        it.visit.startDate.toLocalDate(),
+                        it.adherence.followTreatments()
                     )
-
-                    mBinding.marginTop.makeVisible()
-                    treatmentsChartView.makeVisible()
-                    bloodPressureChartPainter.paintTreatmentsChart(
-                        treatmentsChartView,
-                        getBloodPressureValues(),
-                        adherenceMap
-                    )
-
-                    expandableSidebarListView.setAdapter(expandableSidebarAdapter)
                 }
-            }
+            )
+
+            expandableSidebarListView.setAdapter(expandableSidebarAdapter)
         }
     }
 
@@ -97,24 +129,6 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
             setSupportActionBar(toolbar)
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
-    }
-
-    private fun getBloodPressureValues(): List<BloodPressureChartValue> {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-
-        val mBundle = this.intent.getBundleExtra(ApplicationConstants.BUNDLE)
-
-        val bloodPressureData =
-            mBundle!!.getSerializable(BLOOD_PRESSURE) as HashMap<String, Pair<Float, Float>>
-        val chartValues = bloodPressureData.map {
-            BloodPressureChartValue(
-                LocalDate.parse(it.key, formatter),
-                it.value.first,
-                it.value.second
-            )
-        }
-        // We sort the values by date and remove duplicates keeping the last visit of the day
-        return chartValues.sortedBy { it.date }.distinctBy { it.date }
     }
 
     override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
@@ -164,15 +178,17 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
     override fun onValueSelected(e: Entry?, h: Highlight?) {
         if (e == null) return
 
-        val dateSelected = getBloodPressureValues().map { it.date }[e.x.toInt()]
-        val indexSelected = expandableSidebarAdapter.getTreatmentIdToExpand(dateSelected)
+        visitsDates.let {
+            val dateSelected = visitsDates?.get(e.x.toInt()) ?: return
 
-        if (indexSelected == -1) return
+            val indexSelected = expandableSidebarAdapter.getTreatmentIdToExpand(dateSelected)
+            if (indexSelected == -1) return
 
-        if (expandableSidebarListView.isGroupExpanded(indexSelected)) {
-            expandableSidebarListView.collapseGroup(indexSelected)
-        } else {
-            expandableSidebarListView.expandGroup(indexSelected)
+            if (expandableSidebarListView.isGroupExpanded(indexSelected)) {
+                expandableSidebarListView.collapseGroup(indexSelected)
+            } else {
+                expandableSidebarListView.expandGroup(indexSelected)
+            }
         }
     }
 

@@ -40,7 +40,7 @@ class PatientDashboardPagerAdapter(private val fm: FragmentManager,
         return when (i) {
             DETAILS_TAB_POS -> PatientDetailsFragment.newInstance(mPatientId.toString())
             VISITS_TAB_POS -> PatientVisitsFragment.newInstance(mPatientId, mPatientUuid)
-            CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId.toString())
+            CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId.toString(), mPatientUuid)
             else -> throw IllegalStateException()
         }
     }

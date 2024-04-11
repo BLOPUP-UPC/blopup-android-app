@@ -65,8 +65,7 @@ public class PatientChartsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
         return mVitalNameList.size();
     }
 
-    public void updateList(JSONObject observationList) {
-//        Iterator<String> keys = observationList.keys();
+    public void updateList() {
         String bloodPressureVital = mContext.getString(R.string.blood_pressure_evolution);
         mVitalNameList = Arrays.asList(bloodPressureVital);
         notifyDataSetChanged();

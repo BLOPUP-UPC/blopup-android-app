@@ -1,10 +1,13 @@
 package edu.upc.openmrs.activities.patientdashboard.charts
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.upc.R
+import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.model.Visit
 import edu.upc.blopup.ui.ResultUiState
@@ -33,13 +36,6 @@ class ChartsViewViewModel @Inject constructor(
 
     private val _visitsWithTreatments = MutableLiveData<ResultUiState<List<VisitWithAdherence>>>()
     val visitsWithTreatments: LiveData<ResultUiState<List<VisitWithAdherence>>> get() = _visitsWithTreatments
-
-    fun fetchVisits(patientId: UUID) {
-        viewModelScope.launch {
-            _visits.value = ResultUiState.Loading
-            _visits.value = ResultUiState.Success(visitRepository.getVisitsByPatientUuid(patientId))
-        }
-    }
 
     fun fetchVisitsWithTreatments(patientId: Int, patientUuiid: UUID) {
         viewModelScope.launch {
@@ -71,33 +67,6 @@ class ChartsViewViewModel @Inject constructor(
         }
     }
 
-    suspend fun fetchTreatments(patientId: Int) {
-        val patient: Patient = patientDAO.findPatientByID(patientId.toString())
-
-        when (val result = treatmentRepository.fetchAllTreatments(patient)) {
-            is Result.Success -> {
-                _treatments.value = Result.Success(treatmentsByAdherenceDate(result.data))
-            }
-            is Result.Error -> {
-                _treatments.value = Result.Error(result.throwable)
-            }
-            else -> {}
-        }
-    }
-
-    private fun treatmentsByAdherenceDate(treatments: List<Treatment>): Map<LocalDate, List<TreatmentAdherence>> {
-        return treatments.flatMap { treatment ->
-            treatment.adherence.map {
-                TreatmentAdherence(
-                    treatment.medicationName,
-                    treatment.medicationType,
-                    it.value,
-                    it.key
-                )
-            }
-        }.sortedBy { it.adherence }.groupBy { it.date }.toSortedMap(reverseOrder())
-    }
-
     private fun adherenceByDate(treatments: List<Treatment>): Map<LocalDate, List<TreatmentAdherence>> {
         return treatments.flatMap { treatment ->
             treatment.adherence.map {
@@ -116,3 +85,33 @@ data class VisitWithAdherence(
     val visit: Visit,
     val adherence: List<TreatmentAdherence>
 )
+
+data class TreatmentAdherence(
+    val medicationName: String,
+    var medicationType: Set<MedicationType>,
+    val adherence: Boolean,
+    val date: LocalDate
+)
+
+fun TreatmentAdherence.medicationTypeToString(context: Context): String {
+    return medicationType.joinToString(separator = " • ") { context.getString(it.label) }
+}
+
+fun TreatmentAdherence.icon(): Int {
+    return if (adherence) R.drawable.ic_tick else R.drawable.ic_cross
+}
+
+fun List<TreatmentAdherence>.followTreatments(): FollowTreatments {
+    val trueValues = this.filter { it.adherence }.size
+
+    return when {
+        this.isEmpty() -> FollowTreatments.NO_INFO
+        trueValues == 0 -> FollowTreatments.FOLLOW_NONE
+        trueValues == this.size -> FollowTreatments.FOLLOW_ALL
+        else -> FollowTreatments.FOLLOW_SOME
+    }
+}
+
+enum class FollowTreatments {
+    NO_INFO, FOLLOW_ALL, FOLLOW_SOME, FOLLOW_NONE
+}

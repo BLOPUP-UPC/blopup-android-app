@@ -25,12 +25,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
+import org.junit.runners.JUnit4
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(JUnit4::class)
 class ChartsViewViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -189,5 +189,22 @@ class ChartsViewViewModelTest {
 
             Assert.assertEquals(ResultUiState.Success(expectedVisitsWithAdherence), viewModel.visitsWithTreatments.value)
         }
+    }
+
+    @Test
+    fun `should return no info when list of adherence is empty`() {
+        val adherence = emptyList<TreatmentAdherence>()
+
+        Assert.assertEquals(FollowTreatments.NO_INFO, adherence.followTreatments())
+    }
+
+    @Test
+    fun `should return some when some adherence are true`() {
+        val adherence = listOf(
+            TreatmentAdherence("Tylenol", setOf(), true, LocalDate.now()),
+            TreatmentAdherence("Aspirin", setOf(), false, LocalDate.now())
+        )
+
+        Assert.assertEquals(FollowTreatments.FOLLOW_SOME, adherence.followTreatments())
     }
 }

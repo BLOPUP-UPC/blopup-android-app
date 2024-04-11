@@ -13,7 +13,7 @@ import java.time.LocalDate
 
 
 class TreatmentsListExpandableListAdapter(
-    val layoutInflater: LayoutInflater,
+    private val layoutInflater: LayoutInflater,
     private val expandableListTitle: List<LocalDate>,
     private val expandableListDetail: Map<LocalDate, List<TreatmentAdherence>>
 ) : BaseExpandableListAdapter() {

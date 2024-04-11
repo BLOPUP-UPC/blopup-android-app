@@ -47,6 +47,9 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     private val patientId: Int by lazy {
         requireArguments().getString(PATIENT_ID_BUNDLE)!!.toInt()
     }
+    private val patientUuud: String by lazy {
+        requireArguments().getString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE)!!
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPatientChartsBinding.inflate(inflater, container, false)
@@ -79,7 +82,7 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
 
                 is Result.Success -> {
                     observationList = result.data
-                    showChartsList(result.data)
+                    showChartsList()
                 }
 
                 is Result.Error -> {
@@ -95,11 +98,11 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
         viewModel.fetchChartsData()
     }
 
-    private fun showChartsList(observationList: JSONObject) {
+    private fun showChartsList() {
         with(binding) {
             vitalEmpty.makeGone()
             vitalList.makeVisible()
-            (vitalList.adapter as PatientChartsRecyclerViewAdapter).updateList(observationList)
+            (vitalList.adapter as PatientChartsRecyclerViewAdapter).updateList()
         }
     }
 
@@ -122,6 +125,7 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
                     val bundle = Bundle().apply {
                         putSerializable(ChartsViewActivity.BLOOD_PRESSURE, map)
                         putInt(ChartsViewActivity.PATIENT_ID, patientId)
+                        putString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE, patientUuud)
                     }
                     putExtra(ApplicationConstants.BUNDLE, bundle)
                     startActivity(this)
@@ -146,9 +150,12 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     }
 
     companion object {
-        fun newInstance(patientId: String): PatientChartsFragment {
+        fun newInstance(patientId: String, patientUuid: String): PatientChartsFragment {
             val fragment = PatientChartsFragment()
-            fragment.arguments = bundleOf(Pair(PATIENT_ID_BUNDLE, patientId))
+            fragment.arguments = bundleOf(
+                Pair(PATIENT_ID_BUNDLE, patientId),
+                Pair(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE, patientUuid)
+            )
             return fragment
         }
     }
