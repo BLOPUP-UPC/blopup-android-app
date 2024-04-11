@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.shared.components
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,10 +11,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -94,26 +89,6 @@ fun AppDialog(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun OnBackPressButtonConfirmDialog(onClickBack: () -> Unit) {
-    var showAlertDialog by remember { mutableStateOf(false) }
-    BackHandler {
-        showAlertDialog = true
-    }
-
-    if (showAlertDialog) {
-        AppDialog(
-            show = true,
-            onDismiss = { showAlertDialog = false },
-            onConfirm = { showAlertDialog = false; onClickBack() },
-            title = R.string.remove_vitals,
-            messageDialog = R.string.cancel_vitals_dialog_message,
-            onDismissText = R.string.keep_vitals_dialog_message,
-            onConfirmText = R.string.end_vitals_dialog_message
-        )
     }
 }
 

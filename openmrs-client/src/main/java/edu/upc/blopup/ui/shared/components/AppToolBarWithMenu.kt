@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.shared.components
 
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -47,7 +48,7 @@ fun AppToolBarWithMenu(
     isDataScreen: Boolean = false,
     isCreatePatientWithSomeInput : Boolean =  false
 ) {
-    val show = remember { mutableStateOf(false) }
+    var showLoseDataDialog by remember { mutableStateOf(false) }
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorResource(R.color.dark_teal),
@@ -65,7 +66,7 @@ fun AppToolBarWithMenu(
                     modifier = Modifier
                         .clickable {
                             if (isDataScreen || isCreatePatientWithSomeInput) {
-                                show.value = true
+                                showLoseDataDialog = true
                             } else {
                                 onBackAction()
                             }
@@ -78,10 +79,17 @@ fun AppToolBarWithMenu(
             OptionsMenu(onLogout, username)
         }
     )
+
+    if(isCreatePatientWithSomeInput || isDataScreen){
+        BackHandler {
+            showLoseDataDialog = true
+        }
+    }
+
     AppDialog(
-        show = show.value,
-        onDismiss = { show.value = false },
-        onConfirm = { show.value = false; onBackAction() },
+        show = showLoseDataDialog,
+        onDismiss = { showLoseDataDialog = false },
+        onConfirm = { showLoseDataDialog = false; onBackAction() },
         title = if (isDataScreen) R.string.remove_vitals else R.string.dialog_title_reset_patient,
         messageDialog = if (isDataScreen) R.string.cancel_vitals_dialog_message else R.string.dialog_message_data_lost,
         onDismissText = if (isDataScreen) R.string.keep_vitals_dialog_message else R.string.dialog_button_stay,

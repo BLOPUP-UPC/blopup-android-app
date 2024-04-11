@@ -18,7 +18,6 @@ import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.ErrorDialog
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
-import edu.upc.blopup.ui.shared.components.OnBackPressButtonConfirmDialog
 import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
@@ -55,7 +54,6 @@ fun WeightDataScreen(
                 DataReceivedSuccessfully()
                 WeighDataCard(weightState.data)
                 NavigationButtons(onClickNext, onClickBack)
-                OnBackPressButtonConfirmDialog(onClickBack)
             }
 
             is ResultUiState.Error -> {

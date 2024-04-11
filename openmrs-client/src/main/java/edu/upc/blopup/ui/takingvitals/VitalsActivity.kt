@@ -80,7 +80,7 @@ class VitalsActivity : ACBaseActivity() {
                             },
                             this@VitalsActivity::logout,
                             OpenmrsAndroid.getUsername(),
-                            isDataScreen)
+                            isDataScreen = isDataScreen)
                     },
                 ) { innerPadding ->
 

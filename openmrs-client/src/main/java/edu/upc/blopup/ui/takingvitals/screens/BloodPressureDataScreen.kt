@@ -22,7 +22,6 @@ import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.ErrorDialog
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
-import edu.upc.blopup.ui.shared.components.OnBackPressButtonConfirmDialog
 import edu.upc.blopup.ui.takingvitals.components.DataReceivedSuccessfully
 import edu.upc.blopup.ui.takingvitals.components.NavigationButtons
 import edu.upc.blopup.ui.takingvitals.components.VitalDataCard
@@ -59,7 +58,6 @@ fun BloodPressureDataScreen(
                 DataReceivedSuccessfully()
                 BloodPressureDataCards(bloodPressureState.data)
                 NavigationButtons(onClickNext, onClickBack)
-                OnBackPressButtonConfirmDialog(onClickBack)
             }
 
             is ResultUiState.Error -> {
