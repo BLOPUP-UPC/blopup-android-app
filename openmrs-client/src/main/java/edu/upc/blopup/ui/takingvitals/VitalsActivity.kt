@@ -73,14 +73,14 @@ class VitalsActivity : ACBaseActivity() {
                     topBar = {
                         AppToolBarWithMenu(
                             stringResource(topBarTitle),
-                            isDataScreen,
                             onBackAction = {
                                 if (!navigationController.popBackStack()) {
                                     finish()
                                 }
                             },
                             this@VitalsActivity::logout,
-                            OpenmrsAndroid.getUsername())
+                            OpenmrsAndroid.getUsername(),
+                            isDataScreen)
                     },
                 ) { innerPadding ->
 

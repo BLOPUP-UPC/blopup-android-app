@@ -387,7 +387,7 @@ fun TextFieldWithValidation(
     )}
 
 @Composable
-fun CountryOfBirthField(countryOfBirth: String, onShowCountryOfBirthDialog: () -> Unit, ) {
+fun CountryOfBirthField(countryOfBirth: String, onShowCountryOfBirthDialog: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

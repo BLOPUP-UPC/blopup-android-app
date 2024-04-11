@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.addeditpatient
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -17,12 +16,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
-import edu.upc.blopup.ui.dashboard.DashboardActivity
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
@@ -32,8 +31,8 @@ import edu.upc.sdk.utilities.ToastUtil
 
 @Composable
 fun CreatePatientScreen(
-    activity: Activity,
     goBackToDashboard: () -> Unit,
+    isFormWithSomeInput: () -> Unit,
     viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
     val createPatientUiState = viewModel.createPatientUiState.collectAsState()
@@ -42,9 +41,9 @@ fun CreatePatientScreen(
         viewModel::isNameOrSurnameInvalidFormat,
         viewModel::createPatient,
         createPatientUiState.value,
-        activity,
         goBackToDashboard,
-        viewModel::isValidBirthDate
+        viewModel::isValidBirthDate,
+        isFormWithSomeInput
     )
 }
 
@@ -53,10 +52,11 @@ fun CreatePatientForm(
     isNameOrSurnameInvalidFormat: (String) -> Boolean,
     createPatient: (String, String, String, String, String, String, String) -> Unit,
     createPatientUiState: CreatePatientResultUiState,
-    activity: Activity,
     goBackToDashboard: () -> Unit,
     isBirthDateValidRange: (String) -> Boolean,
+    isFormWithSomeInput: () -> Unit,
 ) {
+    val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var familyName by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
@@ -87,6 +87,9 @@ fun CreatePatientForm(
         legalConsentFile
     ) {
         isSubmitEnabled = checkAllFieldsFilled()
+        if(name.isNotEmpty() || familyName.isNotEmpty() || dateOfBirth.isNotEmpty() || estimatedYears.isNotEmpty() || countryOfBirth.isNotEmpty() || legalConsentFile.isNotEmpty()) {
+            isFormWithSomeInput()
+        }
         onDispose { }
     }
 
@@ -117,9 +120,9 @@ fun CreatePatientForm(
         )
 
 
-        CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, activity)
+        CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, context)
 
-        LegalConsentSection(activity, { legalConsentFile = it }, legalConsentFile)
+        LegalConsentSection(context, { legalConsentFile = it }, legalConsentFile)
 
         Column {
             when (createPatientUiState) {
@@ -156,7 +159,7 @@ fun CreatePatientForm(
                         },
                         enabled = isSubmitEnabled
                     )
-                    ToastUtil.error(activity.getString(R.string.register_patient_error))
+                    ToastUtil.error(context.getString(R.string.register_patient_error))
                 }
 
                 CreatePatientResultUiState.Loading -> {
@@ -165,7 +168,7 @@ fun CreatePatientForm(
 
                 is CreatePatientResultUiState.Success -> {
                     goBackToDashboard()
-                    startPatientDashboardActivity(activity, createPatientUiState.data)
+                    startPatientDashboardActivity(context, createPatientUiState.data)
                 }
 
             }
@@ -188,9 +191,9 @@ fun CreatePatientPreview() {
         { false },
         { _, _, _, _, _, _, _ -> },
         CreatePatientResultUiState.NotCreated,
-        DashboardActivity(),
         {},
-        {true}
+        {true},
+        {}
     )
 }
 
@@ -201,8 +204,8 @@ fun CreatePatientLoadingPreview() {
         { false },
         { _, _, _, _, _, _,_ -> },
         CreatePatientResultUiState.Loading,
-        DashboardActivity(),
         {},
-        {true}
+        { true },
+        { }
     )
 }

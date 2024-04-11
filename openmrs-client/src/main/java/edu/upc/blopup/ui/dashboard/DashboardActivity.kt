@@ -35,18 +35,19 @@ class DashboardActivity : ACBaseActivity() {
 
                 val navigationController = rememberNavController()
                 var showBackButtonInMenu by remember { mutableStateOf(false) }
+                var  isCreatePatientWithSomeInput by remember { mutableStateOf(false) }
 
                 Scaffold(
                     topBar = {
                         AppToolBarWithMenu(
                             "BLOPUP",
-                            false,
                             onBackAction = {if (!navigationController.popBackStack()) {
                                 finish()
                             }},
                             this@DashboardActivity::logout,
                             OpenmrsAndroid.getUsername(),
-                            showBackButtonInMenu
+                            showBackButtonInMenu,
+                            isCreatePatientWithSomeInput = isCreatePatientWithSomeInput
                         )
                     },
                     bottomBar = {
@@ -61,13 +62,13 @@ class DashboardActivity : ACBaseActivity() {
                     ) {
                         composable(Routes.DashboardScreen.id) {
                             showBackButtonInMenu = false
-                            DashboardScreen ()
+                            DashboardScreen()
                         }
                         composable(Routes.CreatePatientScreen.id) {
                             showBackButtonInMenu = true
                             CreatePatientScreen(
-                                this@DashboardActivity,
-                                { navigationController.navigate(Routes.DashboardScreen.id)}
+                                { navigationController.navigate(Routes.DashboardScreen.id)},
+                                { isCreatePatientWithSomeInput = true }
                             )
                         }
                     }

@@ -40,11 +40,12 @@ import edu.upc.sdk.library.OpenmrsAndroid
 @OptIn(ExperimentalMaterial3Api::class)
 fun AppToolBarWithMenu(
     title: String,
-    isDataScreen: Boolean,
     onBackAction: () -> Unit,
     onLogout: () -> Unit,
     username: String,
-    showGoBackButton: Boolean = true
+    showGoBackButton: Boolean = true,
+    isDataScreen: Boolean = false,
+    isCreatePatientWithSomeInput : Boolean =  false
 ) {
     val show = remember { mutableStateOf(false) }
     TopAppBar(
@@ -63,7 +64,7 @@ fun AppToolBarWithMenu(
                     tint = colorResource(R.color.white),
                     modifier = Modifier
                         .clickable {
-                            if (isDataScreen) {
+                            if (isDataScreen || isCreatePatientWithSomeInput) {
                                 show.value = true
                             } else {
                                 onBackAction()
@@ -81,10 +82,10 @@ fun AppToolBarWithMenu(
         show = show.value,
         onDismiss = { show.value = false },
         onConfirm = { show.value = false; onBackAction() },
-        title = R.string.remove_vitals,
-        messageDialog = R.string.cancel_vitals_dialog_message,
-        onDismissText = R.string.keep_vitals_dialog_message,
-        onConfirmText = R.string.end_vitals_dialog_message
+        title = if (isDataScreen) R.string.remove_vitals else R.string.dialog_title_reset_patient,
+        messageDialog = if (isDataScreen) R.string.cancel_vitals_dialog_message else R.string.dialog_message_data_lost,
+        onDismissText = if (isDataScreen) R.string.keep_vitals_dialog_message else R.string.dialog_button_stay,
+        onConfirmText = if (isDataScreen) R.string.end_vitals_dialog_message else R.string.dialog_button_leave
     )
 }
 
