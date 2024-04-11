@@ -35,7 +35,7 @@ class TreatmentsListExpandableListAdapter(
         val adherenceIcon = view.findViewById<ImageView>(R.id.adherence_icon)
 
         val treatment = getChild(listPosition, expandedListPosition)
-        expandedListNameView.text = treatment.name
+        expandedListNameView.text = treatment.medicationName
         expandedListTypesView.text = treatment.medicationTypeToString(layoutInflater.context)
 
         adherenceIcon.setImageResource(treatment.icon())

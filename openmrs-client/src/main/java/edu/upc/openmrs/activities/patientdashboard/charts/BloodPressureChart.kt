@@ -260,7 +260,7 @@ enum class FollowTreatments {
 }
 
 data class TreatmentAdherence(
-    val name: String,
+    val medicationName: String,
     var medicationType: Set<MedicationType>,
     val adherence: Boolean,
     val date: LocalDate
