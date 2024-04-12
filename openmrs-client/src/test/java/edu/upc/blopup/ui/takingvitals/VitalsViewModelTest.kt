@@ -17,7 +17,6 @@ import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.WeightMeasurement
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
@@ -64,9 +63,6 @@ class VitalsViewModelTest {
 
     @MockK
     private lateinit var treatmentRepository: TreatmentRepository
-
-    @MockK(relaxUnitFun = true)
-    private lateinit var visitRepository: VisitRepository
 
     @MockK
     private lateinit var newVisitRepository: NewVisitRepository

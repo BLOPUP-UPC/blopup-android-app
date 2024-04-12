@@ -18,7 +18,6 @@ import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
 import edu.upc.sdk.library.api.repository.TreatmentRepository
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -35,8 +34,7 @@ import javax.inject.Inject
 open class VitalsViewModel @Inject constructor(
     private val readBloodPressureRepository: ReadBloodPressureRepository,
     private val readScaleRepository: ReadScaleRepository,
-    private val visitRepository: VisitRepository,
-    private val newVisitRepository: NewVisitRepository,
+    private val visitRepository: NewVisitRepository,
     patientDAO: PatientDAO,
     private val treatmentRepository: TreatmentRepository,
     savedStateHandle: SavedStateHandle
@@ -149,7 +147,7 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun getLastHeightFromVisits() = viewModelScope.launch {
-        newVisitRepository.getLatestVisitWithHeight(UUID.fromString(patientUuid)).let {
+        visitRepository.getLatestVisitWithHeight(UUID.fromString(patientUuid)).let {
             if (it == null) {
                 _latestHeightUiState.value = LatestHeightResultUiState.NotFound
                 return@let
@@ -177,7 +175,7 @@ open class VitalsViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            when (val result = newVisitRepository.startVisit(
+            when (val result = visitRepository.startVisit(
                 patient,
                 bloodPressure,
                 _heightUiState.value?.toInt(),

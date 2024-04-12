@@ -13,31 +13,17 @@
  */
 package edu.upc.sdk.library.databases
 
-import edu.upc.sdk.library.OpenmrsAndroid
-import edu.upc.sdk.library.dao.EncounterDAO
-import edu.upc.sdk.library.dao.ObservationDAO
-import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.databases.entities.DiagnosisEntity
-import edu.upc.sdk.library.databases.entities.EncounterEntity
-import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.databases.entities.ObservationEntity
 import edu.upc.sdk.library.databases.entities.PatientEntity
-import edu.upc.sdk.library.databases.entities.VisitEntity
 import edu.upc.sdk.library.models.Diagnosis
-import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientIdentifier
 import edu.upc.sdk.library.models.PersonAddress
 import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.library.models.Resource
-import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.library.models.VisitType
-import edu.upc.sdk.utilities.DateUtils
-import edu.upc.sdk.utilities.DateUtils.convertTime
-import edu.upc.sdk.utilities.FormService.getFormByUuid
 import rx.Observable
 import rx.schedulers.Schedulers
 import java.util.concurrent.Callable
@@ -84,101 +70,6 @@ object AppDatabaseHelper {
             observationList.add(obs)
         }
         return observationList
-    }
-
-    @JvmStatic
-    fun convert(encounter: Encounter, visitID: Long?): EncounterEntity {
-        val encounterEntity =
-            EncounterEntity()
-        encounterEntity.id = encounter.id
-        encounterEntity.display = encounter.display
-        encounterEntity.uuid = encounter.uuid
-        if (visitID != null) {
-            encounterEntity.visitKeyId = visitID.toString()
-        }
-        encounterEntity.encounterDateTime = encounter.encounterDatetime.toString()
-        encounterEntity.encounterType = encounter.encounterType!!.display
-        encounterEntity.patientUuid = encounter.patient?.uuid
-        encounterEntity.formUuid = encounter.formUuid
-        if (null == encounter.location) {
-            encounterEntity.locationUuid = null
-        } else {
-            encounterEntity.locationUuid = encounter.location!!.uuid
-        }
-        if (encounter.encounterProviders.isEmpty()) {
-            encounterEntity.encounterProviderUuid = null
-        } else {
-            encounterEntity.encounterProviderUuid = encounter.encounterProviders[0].uuid
-        }
-        return encounterEntity
-    }
-
-    @JvmStatic
-    fun convert(entity: EncounterEntity): Encounter {
-        val encounter = Encounter()
-        if (null != entity.encounterType) {
-            encounter.encounterType = EncounterType(entity.encounterType)
-        }
-        encounter.id = entity.id
-        if (null != entity.visitKeyId) {
-            encounter.visitID = entity.visitKeyId.toLong()
-        }
-        encounter.uuid = entity.uuid
-        encounter.display = entity.display
-        val dateTime = entity.encounterDateTime.toLong()
-        encounter.setEncounterDatetime(convertTime(dateTime, DateUtils.OPEN_MRS_REQUEST_FORMAT))
-        encounter.observations = ObservationDAO().findObservationByEncounterID(entity.id)
-        val location: LocationEntity? = try {
-            AppDatabase
-                .getDatabase(OpenmrsAndroid.getInstance()?.applicationContext)
-                .locationRoomDAO()
-                .findLocationByUUID(entity.locationUuid)
-                .blockingGet()
-        } catch (e: Exception) {
-            null
-        }
-        encounter.location = location
-        encounter.form = getFormByUuid(entity.formUuid)
-        return encounter
-    }
-
-    @JvmStatic
-    fun convert(visitEntity: VisitEntity): Visit {
-        val visit = Visit()
-        visit.id = visitEntity.id
-        visit.uuid = visitEntity.uuid
-        visit.display = visitEntity.display
-        visit.visitType = VisitType(visitEntity.visitType)
-        try {
-            val locationEntity = AppDatabase
-                .getDatabase(OpenmrsAndroid.getInstance()?.applicationContext)
-                .locationRoomDAO()
-                .findLocationByName(visitEntity.visitPlace)
-                .blockingGet()
-            visit.location = locationEntity
-        } catch (e: Exception) {
-            visit.location = LocationEntity(visitEntity.visitPlace)
-        }
-        visit.startDatetime = visitEntity.startDate
-        visit.stopDatetime = visitEntity.stopDate
-        visit.encounters = EncounterDAO().findEncountersByVisitID(visitEntity.id)
-        visit.patient = PatientDAO().findPatientByID(visitEntity.patientKeyID.toString())
-        return visit
-    }
-
-    @JvmStatic
-    fun convert(visit: Visit): VisitEntity {
-        val visitEntity = VisitEntity()
-        visitEntity.id = visit.id
-        visitEntity.uuid = visit.uuid
-        visitEntity.patientKeyID = visit.patient.id!!
-        visitEntity.visitType = visit.visitType.display
-        if (visit.location != null) {
-            visitEntity.visitPlace = visit.location?.display
-        }
-        visitEntity.isStartDate = visit.startDatetime
-        visitEntity.stopDate = visit.stopDatetime
-        return visitEntity
     }
 
     @JvmStatic
