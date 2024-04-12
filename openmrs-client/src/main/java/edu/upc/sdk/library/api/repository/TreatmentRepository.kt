@@ -30,7 +30,7 @@ import edu.upc.sdk.library.models.Result as OpenMRSResult
 @Singleton
 class TreatmentRepository @Inject constructor(
     private val restApi: RestApi,
-    private val newVisitRepository: NewVisitRepository,
+    private val visitRepository: NewVisitRepository,
     private val encounterRepository: EncounterRepository,
     private val doctorRepository: DoctorRepository,
     private val crashlytics: CrashlyticsLogger
@@ -38,7 +38,7 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun saveTreatment(treatment: Treatment) {
         withContext(Dispatchers.IO) {
-            val currentVisit = newVisitRepository.getVisitByUuid(UUID.fromString(treatment.visitUuid))
+            val currentVisit = visitRepository.getVisitByUuid(UUID.fromString(treatment.visitUuid))
 
             val encounter = createEncounterFromTreatment(currentVisit, treatment)
 

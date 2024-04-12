@@ -14,10 +14,7 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import androidx.annotation.NonNull;
-
 import java.io.IOException;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -27,13 +24,8 @@ import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.dao.EncounterDAO;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.library.models.Visit;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
-import rx.Observable;
 
 
 /**
@@ -72,16 +64,6 @@ public class VisitRepository extends BaseRepository {
         this.visitDAO = visitDAO;
         this.encounterDAO = encounterDAO;
         this.encounterRepository = encounterRepository;
-    }
-
-    public Observable<List<Visit>> getAllVisitsForPatient(@NonNull Patient patient) throws IOException {
-        Call<Results<Visit>> call = restApi.findVisitsByPatientUUID(patient.getUuid(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)");
-        Response<Results<Visit>> response = call.execute();
-        if (response.isSuccessful()) {
-            return Observable.just(response.body().getResults());
-        } else {
-            throw new IOException("Error with fetching visits by patient uuid: " + response.message());
-        }
     }
 
     public void deleteVisitByUuid(String visitUuid) throws IOException {

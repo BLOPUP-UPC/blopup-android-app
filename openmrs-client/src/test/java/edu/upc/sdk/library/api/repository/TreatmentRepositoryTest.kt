@@ -37,7 +37,6 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import retrofit2.Call
 import retrofit2.Response
-import rx.Observable
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -47,10 +46,7 @@ class TreatmentRepositoryTest {
     private lateinit var restApi: RestApi
 
     @MockK
-    private lateinit var visitRepository: VisitRepository
-
-    @MockK
-    private lateinit var newVisitRepository: NewVisitRepository
+    private lateinit var visitRepository: NewVisitRepository
 
     @MockK
     private lateinit var encounterRepository: EncounterRepository
@@ -218,7 +214,7 @@ class TreatmentRepositoryTest {
         val capturedTreatmentEncounter = slot<Encountercreate>()
 
         val call = mockk<Call<Encounter>>(relaxed = true)
-        coEvery { newVisitRepository.getVisitByUuid(any()) } returns edu.upc.blopup.model.Visit(
+        coEvery { visitRepository.getVisitByUuid(any()) } returns edu.upc.blopup.model.Visit(
             visitUuid,
             patientUuid,
             "Casa del Aleh",
@@ -260,12 +256,6 @@ class TreatmentRepositoryTest {
 
     @Test
     fun `should return error if create encounter call fails`() {
-
-        coEvery { visitRepository.getAllVisitsForPatient(any()) } returns Observable.just(
-            listOf(
-                Visit()
-            )
-        )
         coEvery { restApi.createEncounter(any()) } returns createCall(
             Response.error(
                 400,
@@ -384,7 +374,7 @@ class TreatmentRepositoryTest {
             uuid = "encounterUuid"
             patient = Patient().apply { uuid = "18y3774283999cs" }
         })
-        coEvery { newVisitRepository.getVisitByUuid(UUID.fromString(treatmentToEdit.visitUuid)) } returns visit
+        coEvery { visitRepository.getVisitByUuid(UUID.fromString(treatmentToEdit.visitUuid)) } returns visit
 
         runBlocking {
             val result = treatmentRepository.updateTreatment(treatmentToEdit, treatmentUpdated)
