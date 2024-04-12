@@ -89,7 +89,6 @@ class VisitDashboardViewModelTest {
     fun `fetch current visit and treatments fails`() = runTest {
         val patient = Patient()
         val visit = VisitExample.random()
-        val treatment = TreatmentExample.activeTreatment()
         coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
         every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
         coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, visit) } returns Result.Error(IOException())

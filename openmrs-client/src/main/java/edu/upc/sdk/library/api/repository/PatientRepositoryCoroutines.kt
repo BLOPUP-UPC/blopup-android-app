@@ -74,8 +74,6 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
                     .toBlocking()
                     .first()
                 patient.id = id
-                VisitRepository().syncVisitsData(patient)
-                VisitRepository().syncLastVitals(patient.uuid)
                 return@withContext patient
             } catch (e: Exception) {
                 crashlytics.reportException(e, "Failed to save patient locally")

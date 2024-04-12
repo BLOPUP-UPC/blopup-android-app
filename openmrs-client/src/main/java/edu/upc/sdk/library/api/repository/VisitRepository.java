@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,8 +27,6 @@ import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.dao.EncounterDAO;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
-import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Visit;
@@ -77,26 +74,6 @@ public class VisitRepository extends BaseRepository {
         this.encounterRepository = encounterRepository;
     }
 
-    /**
-     * This method downloads visits data asynchronously from the server.
-     *
-     * @param patient
-     */
-    public Observable<List<Visit>> syncVisitsData(@NonNull final Patient patient) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            try {
-                List<Visit> visits = getAllVisitsForPatient(patient).toBlocking().first();
-                visitDAO.deleteVisitPatient(patient).toBlocking().subscribe();
-                for (Visit visit : visits) {
-                    visitDAO.saveOrUpdate(visit, patient.getId()).toBlocking().subscribe();
-                }
-                return visits;
-            } catch (IOException e) {
-                throw new Exception("Error with fetching visits by patient uuid: " + e.getMessage());
-            }
-        });
-    }
-
     public Observable<List<Visit>> getAllVisitsForPatient(@NonNull Patient patient) throws IOException {
         Call<Results<Visit>> call = restApi.findVisitsByPatientUUID(patient.getUuid(), "custom:(uuid,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)");
         Response<Results<Visit>> response = call.execute();
@@ -107,30 +84,6 @@ public class VisitRepository extends BaseRepository {
         }
     }
 
-    /**
-     * This method is used to sync Vitals of a patient in a visit
-     *
-     * @param patientUuid Patient UUID to get vitals from
-     * @return Encounter observable containing last vitals
-     */
-    public Observable<Encounter> syncLastVitals(final String patientUuid) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            Call<Results<Encounter>> call = restApi.getLastVitals(patientUuid, NewVisitRepository.EncounterTypes.VITALS, "full", 1, "desc");
-            Response<Results<Encounter>> response = call.execute();
-
-            if (response.isSuccessful()) {
-                if (!response.body().getResults().isEmpty()) {
-                    Encounter encounter = response.body().getResults().get(0);
-                    encounterDAO.saveLastVitalsEncounter(encounter, patientUuid);
-                    return encounter;
-                }
-                return new Encounter();
-            } else {
-                throw new IOException("Error with fetching last vitals: " + response.message());
-            }
-        });
-    }
-
     public void deleteVisitByUuid(String visitUuid) throws IOException {
         Response<ResponseBody> response = restApi.deleteVisit(visitUuid).execute();
 
@@ -139,20 +92,6 @@ public class VisitRepository extends BaseRepository {
 
         } else {
             throw new IOException(response.message());
-        }
-    }
-
-    public Visit getVisitByUuid(String visitUuid) throws IOException {
-        try {
-            Response<Visit> response = restApi.getVisitByUuid(visitUuid).execute();
-            if (response != null) {
-                return response.body();
-            } else {
-                throw new IOException("Error fetching visit by uuid: " + visitUuid);
-            }
-        } catch (Exception e) {
-            logger.e(Objects.requireNonNull(e.getMessage()));
-            throw new IOException("Error fetching visit by uuid: " + visitUuid + " " + e.getMessage());
         }
     }
 }

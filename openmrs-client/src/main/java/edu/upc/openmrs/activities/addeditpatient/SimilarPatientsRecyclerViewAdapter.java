@@ -33,13 +33,11 @@ import java.util.List;
 
 import edu.upc.R;
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
-import edu.upc.sdk.library.api.repository.VisitRepository;
 import edu.upc.sdk.library.dao.PatientDAO;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.DateUtils;
 import edu.upc.sdk.utilities.StringUtils;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<SimilarPatientsRecyclerViewAdapter.PatientViewHolder> {
     private final List<Patient> patientList;
@@ -114,12 +112,7 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
     }
 
     private void downloadPatient(Patient patient) {
-        new PatientDAO().savePatient(patient)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(id -> {
-                    new VisitRepository().syncVisitsData(patient);
-                    new VisitRepository().syncLastVitals(patient.getUuid());
-                });
+        new PatientDAO().savePatient(patient);
     }
 
     private void setBirthdate(PatientViewHolder holder, Patient patient) {

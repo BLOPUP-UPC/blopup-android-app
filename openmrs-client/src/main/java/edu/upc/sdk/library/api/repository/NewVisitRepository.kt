@@ -6,7 +6,6 @@ import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.LocationDAO
-import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
@@ -30,10 +29,8 @@ import edu.upc.sdk.library.models.Visit as OpenMRSVisit
 @Singleton
 class NewVisitRepository @Inject constructor(
     val restApi: RestApi,
-    val visitDAO: VisitDAO,
     private val locationDAO: LocationDAO,
-    private val logger: OpenMRSLogger,
-    private val oldVisitRepository: VisitRepository
+    private val logger: OpenMRSLogger
 ) {
     suspend fun getVisitByUuid(visitUuid: UUID): Visit = withContext(Dispatchers.IO) {
         val openMRSVisit = restApi.getVisitByUuid(visitUuid.toString()).execute().body()
@@ -95,16 +92,7 @@ class NewVisitRepository @Inject constructor(
                 weightKg
             )
 
-            val result = addVisitEncounter(visit)
-            if (result is Result.Success) {
-                try {
-                    oldVisitRepository.syncVisitsData(patient).toBlocking().first()
-                } catch (e: Exception) {
-                    logger.e("Error saving new visit in local database: ${e.javaClass.simpleName}: ${e.message}")
-                }
-            }
-
-            return@withContext result
+            return@withContext addVisitEncounter(visit)
         }
     }
 

@@ -7,14 +7,12 @@ import edu.upc.blopup.model.VisitExample
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.LocationDAO
-import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
-import io.mockk.Called
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -51,16 +49,10 @@ class NewVisitRepositoryTest {
     private lateinit var restApi: RestApi
 
     @MockK
-    private lateinit var visitDAO: VisitDAO
-
-    @MockK
     private lateinit var locationDAO: LocationDAO
 
     @MockK(relaxed = true)
     private lateinit var logger: OpenMRSLogger
-
-    @MockK
-    private lateinit var oldVisitRepository: VisitRepository
 
     @InjectMockKs
     private lateinit var visitRepository: NewVisitRepository
@@ -290,7 +282,6 @@ class NewVisitRepositoryTest {
 
         verify(exactly = 1) { restApi.startVisit(any()) }
         verify(exactly = 1) { restApi.createEncounter(any()) }
-        verify(exactly = 1) { oldVisitRepository.syncVisitsData(patient) }
     }
 
     @Test
@@ -313,7 +304,6 @@ class NewVisitRepositoryTest {
         }
 
         verify { restApi.startVisit(any()) }
-        verify { oldVisitRepository wasNot Called }
     }
 
     @Test
@@ -352,8 +342,6 @@ class NewVisitRepositoryTest {
         val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)
         every { restApi.createEncounter(any()) } returns callCreateEncounter
         every { callCreateEncounter.execute() } returns Response.success(Encounter())
-
-        every { oldVisitRepository.syncVisitsData(patient) } throws Exception()
 
         runBlocking {
             val result = visitRepository.startVisit(patient, expectedVisit.bloodPressure, expectedVisit.heightCm, expectedVisit.weightKg)
@@ -397,7 +385,6 @@ class NewVisitRepositoryTest {
 
         verify { restApi.startVisit(any()) }
         verify(exactly = 1) { restApi.deleteVisit(any()) }
-        verify { oldVisitRepository wasNot Called }
     }
 
     @Test(expected = IOException::class)

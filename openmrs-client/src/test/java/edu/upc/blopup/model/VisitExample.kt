@@ -9,10 +9,11 @@ object VisitExample {
         patientId: UUID = UUID.randomUUID(),
         startDateTime: LocalDateTime = LocalDateTime.now(),
         bloodPressure: BloodPressure = BloodPressureExample.random(),
-        weightKg : Float? = null
+        weightKg : Float? = null,
+        id: UUID = UUID.randomUUID()
     ): Visit {
         return Visit(
-            id = UUID.randomUUID(),
+            id = id,
             patientId = patientId,
             location = "location",
             startDate = startDateTime.truncatedTo(java.time.temporal.ChronoUnit.SECONDS),

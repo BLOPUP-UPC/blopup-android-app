@@ -3,6 +3,10 @@ package edu.upc.sdk.library
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.crashlytics.setCustomKeys
 import com.google.firebase.ktx.Firebase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import edu.upc.BuildConfig
 
 import retrofit2.Response
@@ -43,4 +47,13 @@ class CrashlyticsLoggerImpl : CrashlyticsLogger {
 
         Firebase.crashlytics.recordException(exception)
     }
+}
+
+
+@Module
+@InstallIn(SingletonComponent::class)
+class CrashlyticsModule {
+
+    @Provides
+    fun provideCrashlytics() : CrashlyticsLogger = CrashlyticsLoggerImpl()
 }

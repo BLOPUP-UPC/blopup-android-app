@@ -16,21 +16,12 @@ package edu.upc.sdk.library.dao;
 
 import android.content.Context;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.databases.AppDatabase;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.databases.entities.ObservationEntity;
-import edu.upc.sdk.library.databases.entities.VisitEntity;
-import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.Observation;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.Visit;
 import rx.Observable;
 
 /**
@@ -62,86 +53,6 @@ public class VisitDAO {
         observationRoomDAO = AppDatabase.getDatabase(context).observationRoomDAO();
         visitRoomDAO = AppDatabase.getDatabase(context).visitRoomDAO();
         encounterDAO = new EncounterDAO();
-    }
-
-    /**
-     * Save or update observable.
-     *
-     * @param visit     the visit
-     * @param patientId the patient id
-     * @return the observable
-     */
-    public Observable<Long> saveOrUpdate(Visit visit, long patientId) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            Long visitId = visit.getId();
-            if (visitId > 0) {
-                updateVisit(visit, visitId, patientId);
-            } else {
-                visitId = saveVisit(visit, patientId);
-            }
-            return visitId;
-        });
-    }
-
-    private long saveVisit(Visit visit, long patientID) {
-        EncounterDAO encounterDAO = new EncounterDAO();
-        visit.setPatient(new PatientDAO().findPatientByID(String.valueOf(patientID)));
-        visit.setLocation(new LocationEntity(OpenmrsAndroid.getLocation()));
-        VisitEntity visitEntity = AppDatabaseHelper.convert(visit);
-        long visitID = visitRoomDAO.addVisit(visitEntity);
-        if (visit.getEncounters() != null) {
-            for (Encounter encounter : visit.getEncounters()) {
-                long encounterID = encounterDAO.saveEncounter(encounter, visitID);
-                for (Observation obs : encounter.getObservations()) {
-                    ObservationEntity observationEntity = AppDatabaseHelper.convert(obs, encounterID);
-                    observationRoomDAO.addObservation(observationEntity);
-                }
-            }
-        }
-        return visitID;
-    }
-
-    private boolean updateVisit(Visit visit, long visitID, long patientID) {
-        EncounterDAO encounterDAO = new EncounterDAO();
-        ObservationDAO observationDAO = new ObservationDAO();
-        visit.setPatient(new PatientDAO().findPatientByID(String.valueOf(patientID)));
-        if (visit.getEncounters() != null) {
-            for (Encounter encounter : visit.getEncounters()) {
-                long encounterID = encounterDAO.getEncounterByUUID(encounter.getUuid());
-
-                if (encounterID > 0) {
-                    encounterDAO.updateEncounter(encounterID, encounter, visitID);
-                } else {
-                    encounterID = encounterDAO.saveEncounter(encounter, visitID);
-                }
-
-                List<Observation> oldObs = observationDAO.findObservationByEncounterID(encounterID);
-                for (Observation obs : oldObs) {
-                    ObservationEntity observationEntity = AppDatabaseHelper.convert(obs, encounterID);
-                    observationRoomDAO.deleteObservation(observationEntity);
-                }
-
-                for (Observation obs : encounter.getObservations()) {
-                    ObservationEntity observationEntity = AppDatabaseHelper.convert(obs, encounterID);
-                    observationRoomDAO.addObservation(observationEntity);
-                }
-            }
-        }
-        return visitRoomDAO.updateVisit(AppDatabaseHelper.convert(visit)) > 0;
-    }
-
-    /**
-     * Delete all visits by patient.
-     *
-     * @param patient the patient
-     * @return wether if the operation went well or not
-     */
-    public Observable<Boolean> deleteVisitPatient(Patient patient) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            visitRoomDAO.deleteVisitsByPatientId(patient.getId());
-            encounterDAO.deleteEncounterByPatientUUID(patient.getUuid());
-            return true;
-        });
     }
 
     public Observable<Boolean> deleteVisitByUuid(String visitUuid) {

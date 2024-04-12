@@ -2,7 +2,9 @@ package edu.upc.sdk.library.api.repository
 
 import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
+import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.api.ObservationConcept
+import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterProviderCreate
 import edu.upc.sdk.library.models.EncounterType
@@ -27,12 +29,12 @@ import edu.upc.sdk.library.models.Result as OpenMRSResult
 
 @Singleton
 class TreatmentRepository @Inject constructor(
-    val visitRepository: VisitRepository,
+    private val restApi: RestApi,
     private val newVisitRepository: NewVisitRepository,
     private val encounterRepository: EncounterRepository,
     private val doctorRepository: DoctorRepository,
-) :
-    BaseRepository(null) {
+    private val crashlytics: CrashlyticsLogger
+) {
 
     suspend fun saveTreatment(treatment: Treatment) {
         withContext(Dispatchers.IO) {

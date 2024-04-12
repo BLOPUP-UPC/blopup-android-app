@@ -1,15 +1,13 @@
 package edu.upc.sdk.library.api.repository
 
-import androidx.work.WorkManager
 import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
-import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.blopup.model.VisitExample
+import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.api.RestApi
-import edu.upc.sdk.library.api.RestServiceBuilder
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
-import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Encountercreate
@@ -20,12 +18,13 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import io.mockk.mockkConstructor
-import io.mockk.mockkStatic
 import io.mockk.slot
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -38,40 +37,36 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Retrofit
 import rx.Observable
 import java.time.LocalDateTime
 import java.util.UUID
 
 class TreatmentRepositoryTest {
 
-    private lateinit var treatmentRepository: TreatmentRepository
-
+    @MockK
     private lateinit var restApi: RestApi
 
+    @MockK
     private lateinit var visitRepository: VisitRepository
 
+    @MockK
     private lateinit var newVisitRepository: NewVisitRepository
 
+    @MockK
     private lateinit var encounterRepository: EncounterRepository
 
+    @MockK
     private lateinit var doctorRepository: DoctorRepository
+
+    @MockK(relaxed = true)
+    private lateinit var crashlyticsLogger: CrashlyticsLogger
+
+    @InjectMockKs
+    private lateinit var treatmentRepository: TreatmentRepository
 
     @Before
     fun setUp() {
-        restApi = mockk()
-        visitRepository = mockk(relaxed = true)
-        newVisitRepository = mockk(relaxed = true)
-        encounterRepository = mockk(relaxed = true)
-        doctorRepository = mockk(relaxed = true)
-
-        mockStaticMethodsNeededToInstantiateBaseRepository()
-        treatmentRepository = TreatmentRepository(
-            visitRepository,
-            newVisitRepository,
-            encounterRepository,
-            doctorRepository
-        )
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -376,21 +371,20 @@ class TreatmentRepositoryTest {
             "hello",
             visitUuid = treatmentToEdit.visitUuid
         )
+        val visit = VisitExample.random(
+            id = UUID.fromString(treatmentToEdit.visitUuid),
+        )
 
         coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns Result.success(
             true
         )
-
-        coEvery { visitRepository.getVisitByUuid(treatmentToEdit.visitUuid) } returns Visit().apply {
-            uuid = treatmentToEdit.visitUuid
-            patient = Patient().apply { uuid = "18y3774283999cs" }
-        }
 
         coEvery { restApi.createEncounter(any()) } returns call
         coEvery { call.execute() } returns Response.success(Encounter().apply {
             uuid = "encounterUuid"
             patient = Patient().apply { uuid = "18y3774283999cs" }
         })
+        coEvery { newVisitRepository.getVisitByUuid(UUID.fromString(treatmentToEdit.visitUuid)) } returns visit
 
         runBlocking {
             val result = treatmentRepository.updateTreatment(treatmentToEdit, treatmentUpdated)
@@ -411,19 +405,6 @@ class TreatmentRepositoryTest {
 
             }
         }
-    }
-
-    private fun mockStaticMethodsNeededToInstantiateBaseRepository() {
-        mockkStatic(OpenmrsAndroid::class)
-        every { OpenmrsAndroid.getServerUrl() } returns "http://localhost:8080/openmrs"
-        mockkConstructor(Retrofit.Builder::class)
-        mockkStatic(RestServiceBuilder::class)
-        mockkConstructor(RestServiceBuilder::class)
-        every { RestServiceBuilder.createService() } returns restApi
-        mockkStatic(AppDatabase::class)
-        every { AppDatabase.getDatabase(any()) } returns mockk(relaxed = true)
-        mockkStatic(WorkManager::class)
-        every { WorkManager.getInstance(any()) } returns mockk(relaxed = true)
     }
 
     private inline fun <reified T> createCall(response: Response<T>): Call<T> = object : Call<T> {
