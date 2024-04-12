@@ -35,7 +35,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import retrofit2.Call
 import retrofit2.Response
-import rx.Observable
 import java.io.IOException
 import java.time.Instant
 import java.time.LocalDateTime
@@ -196,10 +195,6 @@ class NewVisitRepositoryTest {
         coEvery { restApi.endVisitByUUID(visitUuid.toString(), any()) } returns call
         coEvery { call.execute() } returns response
 
-        coEvery { visitDAO.getVisitsIDByUUID(visitUuid.toString()) } returns Observable.just(visitId)
-        coEvery { visitDAO.getVisitByID(visitId) } returns Observable.just(openMRSVisit)
-        coEvery { visitDAO.saveOrUpdate(openMRSVisit, patientId) } returns Observable.just(visitId)
-
         runBlocking {
             val result = visitRepository.endVisit(visitUuid)
 
@@ -219,8 +214,6 @@ class NewVisitRepositoryTest {
 
         runBlocking {
             visitRepository.endVisit(visitUuid)
-
-
         }
     }
 
@@ -244,8 +237,6 @@ class NewVisitRepositoryTest {
         val call = mockk<Call<OpenMRSVisit>>(relaxed = true)
         coEvery { restApi.endVisitByUUID(visitUuid.toString(), any()) } returns call
         coEvery { call.execute() } returns response
-
-        coEvery { visitDAO.getVisitsIDByUUID(visitUuid.toString()) } throws Exception()
 
         runBlocking {
             val result = visitRepository.endVisit(visitUuid)

@@ -74,9 +74,6 @@ public class VisitDAO {
     public Observable<Long> saveOrUpdate(Visit visit, long patientId) {
         return AppDatabaseHelper.createObservableIO(() -> {
             Long visitId = visit.getId();
-            if (visitId == null) {
-                visitId = getVisitsIDByUUID(visit.getUuid()).toBlocking().first();
-            }
             if (visitId > 0) {
                 updateVisit(visit, visitId, patientId);
             } else {
@@ -131,33 +128,6 @@ public class VisitDAO {
             }
         }
         return visitRoomDAO.updateVisit(AppDatabaseHelper.convert(visit)) > 0;
-    }
-
-    /**
-     * Gets visit by id.
-     *
-     * @param visitID the visit id
-     * @return the visit by id
-     */
-    public Observable<Visit> getVisitByID(final Long visitID) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            try {
-                VisitEntity visitEntity = visitRoomDAO.getVisitByID(visitID).blockingGet();
-                return AppDatabaseHelper.convert(visitEntity);
-            } catch (Exception e) {
-                return null;
-            }
-        });
-    }
-
-    /**
-     * Gets visits id by uuid.
-     *
-     * @param visitUUID the visit uuid
-     * @return the visits id by uuid
-     */
-    public Observable<Long> getVisitsIDByUUID(final String visitUUID) {
-        return AppDatabaseHelper.createObservableIO(() -> visitRoomDAO.getVisitsIDByUUID(visitUUID));
     }
 
     /**

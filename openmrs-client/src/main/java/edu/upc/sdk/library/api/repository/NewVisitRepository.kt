@@ -61,17 +61,6 @@ class NewVisitRepository @Inject constructor(
         val response = call.execute()
 
         if (response.isSuccessful) {
-            try {
-                val localVisitId =
-                    visitDAO.getVisitsIDByUUID(visitId.toString()).single().toBlocking().first()
-                val localVisit = visitDAO.getVisitByID(localVisitId).single().toBlocking().first()
-                localVisit.patient.id?.let {
-                    localVisit.stopDatetime = endVisitDateTime
-                    visitDAO.saveOrUpdate(localVisit, it).single().toBlocking().first()
-                }
-            } catch (e: Exception) {
-                logger.e("Error updating visit end date in local database: ${e.javaClass.simpleName}: ${e.message}")
-            }
             true
         } else {
             throw Exception("endVisitByUuid error: " + response.message())
