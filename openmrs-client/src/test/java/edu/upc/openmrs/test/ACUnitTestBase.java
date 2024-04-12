@@ -43,7 +43,7 @@ import edu.upc.sdk.library.models.PersonAttributeType;
 import edu.upc.sdk.library.models.PersonName;
 import edu.upc.sdk.library.models.Resource;
 import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.library.models.Visit;
+import edu.upc.sdk.library.models.OpenMRSVisit;
 import edu.upc.sdk.library.models.VisitType;
 import okhttp3.Headers;
 import retrofit2.Call;
@@ -119,15 +119,15 @@ public abstract class ACUnitTestBase {
         return patient;
     }
 
-    protected List<Visit> createVisitList() {
-        ArrayList<Visit> visits = new ArrayList();
+    protected List<OpenMRSVisit> createVisitList() {
+        ArrayList<OpenMRSVisit> visits = new ArrayList();
         visits.add(createVisit("visit1", 1L));
         visits.add(createVisit("visit2", 2L));
         return visits;
     }
 
-    protected Visit createVisit(String display, long patientId) {
-        Visit visit = new Visit();
+    protected OpenMRSVisit createVisit(String display, long patientId) {
+        OpenMRSVisit visit = new OpenMRSVisit();
         visit.setStartDatetime("2019-01-01T00:00:00.000+0000");
         visit.setLocation(new LocationEntity(display));
         visit.visitType = new VisitType(display);

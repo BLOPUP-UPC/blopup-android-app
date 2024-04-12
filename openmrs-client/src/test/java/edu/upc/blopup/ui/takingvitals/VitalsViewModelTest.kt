@@ -12,7 +12,7 @@ import edu.upc.blopup.ui.takingvitals.components.LatestHeightResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
 import edu.upc.sdk.library.api.repository.BluetoothConnectionException
 import edu.upc.sdk.library.api.repository.Measurement
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
@@ -65,7 +65,7 @@ class VitalsViewModelTest {
     private lateinit var treatmentRepository: TreatmentRepository
 
     @MockK
-    private lateinit var newVisitRepository: NewVisitRepository
+    private lateinit var visitRepository: VisitRepository
 
     @MockK
     private lateinit var patientDAO: PatientDAO
@@ -181,7 +181,7 @@ class VitalsViewModelTest {
         val height = 170
         val visit = VisitExample.random(heightCm = height)
 
-        coEvery { newVisitRepository.getLatestVisitWithHeight(patientUuid) } returns visit
+        coEvery { visitRepository.getLatestVisitWithHeight(patientUuid) } returns visit
 
         viewModel.getLastHeightFromVisits()
 
@@ -190,7 +190,7 @@ class VitalsViewModelTest {
 
     @Test
     fun `should get empty height data when visit has no height`() = runTest {
-        coEvery { newVisitRepository.getLatestVisitWithHeight(patientUuid) } returns null
+        coEvery { visitRepository.getLatestVisitWithHeight(patientUuid) } returns null
 
         viewModel.getLastHeightFromVisits()
 
@@ -204,7 +204,7 @@ class VitalsViewModelTest {
 
         every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
         coEvery {
-            newVisitRepository.startVisit(testPatient, ofType(BloodPressure::class), visit.heightCm, ofType(Float::class))
+            visitRepository.startVisit(testPatient, ofType(BloodPressure::class), visit.heightCm, ofType(Float::class))
         } returns Result.Success(visit)
 
         every { BuildConfigWrapper.hardcodeBluetoothDataToggle } returns true
@@ -216,7 +216,7 @@ class VitalsViewModelTest {
         viewModel.createVisit()
 
         coVerify {
-            newVisitRepository.startVisit(
+            visitRepository.startVisit(
                 testPatient,
                 any(BloodPressure::class),
                 visit.heightCm,

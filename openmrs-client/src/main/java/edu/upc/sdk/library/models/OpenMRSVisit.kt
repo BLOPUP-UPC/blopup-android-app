@@ -25,7 +25,7 @@ import edu.upc.sdk.library.databases.entities.LocationEntity
  * @constructor Create empty Visit
  */
 @Entity
-class Visit : Resource() {
+class OpenMRSVisit : Resource() {
 
     override var id: Long? = null
 

@@ -33,7 +33,7 @@ import edu.upc.sdk.library.models.Provider;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Session;
 import edu.upc.sdk.library.models.User;
-import edu.upc.sdk.library.models.Visit;
+import edu.upc.sdk.library.models.OpenMRSVisit;
 import edu.upc.sdk.library.models.VisitType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -217,7 +217,7 @@ public interface RestApi {
      * @return the call
      */
     @POST("visit/{uuid}")
-    Call<Visit> endVisitByUUID(@Path("uuid") String uuid, @Body Visit visitWithStopDate);
+    Call<OpenMRSVisit> endVisitByUUID(@Path("uuid") String uuid, @Body OpenMRSVisit visitWithStopDate);
 
     /**
      * Start visit call.
@@ -226,7 +226,7 @@ public interface RestApi {
      * @return the call
      */
     @POST("visit")
-    Call<Visit> startVisit(@Body Visit visit);
+    Call<OpenMRSVisit> startVisit(@Body OpenMRSVisit visit);
 
     /**
      * Find visits by patient uuid call.
@@ -236,8 +236,8 @@ public interface RestApi {
      * @return the call
      */
     @GET("visit")
-    Call<Results<Visit>> findVisitsByPatientUUID(@Query("patient") String patientUUID,
-                                                 @Query("v") String representation);
+    Call<Results<OpenMRSVisit>> findVisitsByPatientUUID(@Query("patient") String patientUUID,
+                                                        @Query("v") String representation);
 
     /**
      * Find active visits.
@@ -246,7 +246,7 @@ public interface RestApi {
      * @return the call
      */
     @GET("visit?v=full&includeInactive=false")
-    Call<Results<Visit>> findActiveVisitsByPatientUUID(@Query("patient") String patientUUID);
+    Call<Results<OpenMRSVisit>> findActiveVisitsByPatientUUID(@Query("patient") String patientUUID);
 
     /**
      * Gets visit type.
@@ -264,7 +264,7 @@ public interface RestApi {
      * @return a visit
      */
     @GET("visit/{uuid}?v=full")
-    Call<Visit> getVisitByUuid(@Path("uuid") String uuid);
+    Call<OpenMRSVisit> getVisitByUuid(@Path("uuid") String uuid);
 
     /**
      * Delete provider call.

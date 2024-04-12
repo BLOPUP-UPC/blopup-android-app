@@ -6,7 +6,7 @@ import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.utilities.DateUtils
 import java.time.LocalDateTime
 import java.util.UUID
-import edu.upc.sdk.library.models.Visit as OpenMRSVisit
+import edu.upc.sdk.library.models.OpenMRSVisit as OpenMRSVisit
 
 object VisitConverter {
 

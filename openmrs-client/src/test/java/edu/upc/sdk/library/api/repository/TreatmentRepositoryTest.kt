@@ -17,7 +17,7 @@ import edu.upc.sdk.library.models.OpenMrsVisitExample
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.TreatmentExample
-import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.library.models.OpenMRSVisit
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -46,7 +46,7 @@ class TreatmentRepositoryTest {
     private lateinit var restApi: RestApi
 
     @MockK
-    private lateinit var visitRepository: NewVisitRepository
+    private lateinit var visitRepository: VisitRepository
 
     @MockK
     private lateinit var encounterRepository: EncounterRepository
@@ -78,9 +78,9 @@ class TreatmentRepositoryTest {
 
         val visitList = listOf(visitWithActiveTreatment, visitWithInactiveTreatment)
 
-        val call = mockk<Call<Results<Visit>>>(relaxed = true)
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
         coEvery { restApi.findVisitsByPatientUUID(patientUuid.toString(), "custom:(uuid,visitType:ref,encounters:full)") } returns call
-        coEvery { call.execute() } returns Response.success(Results<Visit>().apply {
+        coEvery { call.execute() } returns Response.success(Results<OpenMRSVisit>().apply {
             results = visitList
         })
 
@@ -102,9 +102,9 @@ class TreatmentRepositoryTest {
 
         val visitList = listOf(visitWithActiveTreatment, visitWithInactiveTreatment)
 
-        val call = mockk<Call<Results<Visit>>>(relaxed = true)
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
         coEvery { restApi.findVisitsByPatientUUID(patient.uuid, "custom:(uuid,visitType:ref,encounters:full)") } returns call
-        coEvery { call.execute() } returns Response.success(Results<Visit>().apply {
+        coEvery { call.execute() } returns Response.success(Results<OpenMRSVisit>().apply {
             results = visitList
         })
 
@@ -141,9 +141,9 @@ class TreatmentRepositoryTest {
             visitWithPreviousAndInactiveTreatment
         )
 
-        val call = mockk<Call<Results<Visit>>>(relaxed = true)
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
         coEvery { restApi.findVisitsByPatientUUID(patient.uuid, "custom:(uuid,visitType:ref,encounters:full)") } returns call
-        coEvery { call.execute() } returns Response.success(Results<Visit>().apply {
+        coEvery { call.execute() } returns Response.success(Results<OpenMRSVisit>().apply {
             results = visitList
         })
 

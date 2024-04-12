@@ -18,11 +18,11 @@ object OpenMrsVisitExample {
     fun random(
         treatment: Treatment = TreatmentExample.activeTreatment(),
         startDate: Instant = Instant.now()
-    ): Visit {
+    ): OpenMRSVisit {
 
         val activeText = if (treatment.isActive) " 1.0" else " 0.0"
 
-        return Visit().apply {
+        return OpenMRSVisit().apply {
             patient = Patient().apply {
                 uuid = UUID.randomUUID().toString()
             }
@@ -31,7 +31,7 @@ object OpenMrsVisitExample {
             encounters = listOf(
                 Encounter().apply {
                     uuid = treatment.treatmentUuid
-                    visit = Visit().apply {
+                    visit = OpenMRSVisit().apply {
                         uuid = treatment.visitUuid
                     }
                     encounterDate = treatment.creationDate.formatToOpenmrsDate()
@@ -110,8 +110,8 @@ object OpenMrsVisitExample {
         pulse: Int = 70,
         weight: Float? = null,
         height: Int? = null
-    ): Visit {
-        return Visit().apply {
+    ): OpenMRSVisit {
+        return OpenMRSVisit().apply {
             patient = Patient().apply {
                 uuid = patientUuid
             }

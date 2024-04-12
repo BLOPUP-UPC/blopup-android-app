@@ -5,9 +5,8 @@ import edu.upc.blopup.model.VisitExample
 import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardMainViewModel
 import edu.upc.sdk.library.OpenMRSLogger
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Visit
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
@@ -35,7 +34,7 @@ class PatientDashboardMainViewModelTest() {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    lateinit var newVisitRepository: NewVisitRepository
+    lateinit var visitRepository: VisitRepository
 
     @MockK(relaxed = true)
     lateinit var logger: OpenMRSLogger
@@ -56,7 +55,7 @@ class PatientDashboardMainViewModelTest() {
     @Test
     fun `fetch visit sets not found without active visit`() = runTest {
         val visitId = UUID.randomUUID()
-        coEvery { newVisitRepository.getActiveVisit(visitId) } returns null
+        coEvery { visitRepository.getActiveVisit(visitId) } returns null
 
         viewModel.fetchActiveVisit(visitId)
 
@@ -67,7 +66,7 @@ class PatientDashboardMainViewModelTest() {
     fun `fetch visit sets the active visit`() = runTest {
         val visit = VisitExample.random()
 
-        coEvery { newVisitRepository.getActiveVisit(visit.id) } returns visit
+        coEvery { visitRepository.getActiveVisit(visit.id) } returns visit
 
         viewModel.fetchActiveVisit(visit.id)
 
@@ -77,7 +76,7 @@ class PatientDashboardMainViewModelTest() {
     @Test
     fun `fetch visit sets error if network fails`() = runTest {
         val visitId = UUID.randomUUID()
-        coEvery { newVisitRepository.getActiveVisit(visitId) } throws IOException()
+        coEvery { visitRepository.getActiveVisit(visitId) } throws IOException()
 
         runBlocking {
             viewModel.fetchActiveVisit(visitId)
@@ -87,17 +86,12 @@ class PatientDashboardMainViewModelTest() {
 
     @Test
     fun activeVisitEndsSuccessfully() {
-        val visit = Visit().apply {
-            startDatetime = "2023-08-31T10:44:10.000+0000"
-            id = 5
-            stopDatetime = null
-            uuid = "e4cc001c-884e-4cc1-b55d-30c49a48dcc5"
-        }
+        val visit = VisitExample.random()
 
-        coEvery { newVisitRepository.endVisit(UUID.fromString(visit.uuid)) } returns true
+        coEvery { visitRepository.endVisit(visit.id) } returns true
 
         runBlocking {
-            val actual = viewModel.endActiveVisit(UUID.fromString(visit.uuid))
+            val actual = viewModel.endActiveVisit(visit.id)
             assertEquals(true, actual.value)
         }
 

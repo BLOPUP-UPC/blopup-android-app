@@ -39,11 +39,11 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit.SECONDS
 import java.util.UUID
 import edu.upc.sdk.library.models.OpenMrsVisitExample as OpenMRSVisitExample
-import edu.upc.sdk.library.models.Visit as OpenMRSVisit
+import edu.upc.sdk.library.models.OpenMRSVisit as OpenMRSVisit
 
 
 @RunWith(AndroidJUnit4::class)
-class NewVisitRepositoryTest {
+class VisitRepositoryTest {
 
     @MockK
     private lateinit var restApi: RestApi
@@ -55,7 +55,7 @@ class NewVisitRepositoryTest {
     private lateinit var logger: OpenMRSLogger
 
     @InjectMockKs
-    private lateinit var visitRepository: NewVisitRepository
+    private lateinit var visitRepository: VisitRepository
 
     @Before
     fun setUp() {
@@ -361,7 +361,7 @@ class NewVisitRepositoryTest {
         val callStartVisit = mockk<Call<OpenMRSVisit>>(relaxed = true)
         every { restApi.startVisit(any()) } returns callStartVisit
         every { callStartVisit.execute() } returns
-                Response.success(edu.upc.sdk.library.models.Visit().apply {
+                Response.success(edu.upc.sdk.library.models.OpenMRSVisit().apply {
                     uuid = visit.id.toString()
                     startDatetime = visit.startDate.formatAsOpenMrsDate()
                 })

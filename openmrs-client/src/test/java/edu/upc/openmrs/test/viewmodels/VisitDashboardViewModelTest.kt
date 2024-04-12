@@ -6,7 +6,7 @@ import edu.upc.blopup.ui.ResultUiState
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardViewModel
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
@@ -43,7 +43,7 @@ class VisitDashboardViewModelTest {
     private lateinit var patientDAO: PatientDAO
 
     @MockK
-    private lateinit var visitRepository: NewVisitRepository
+    private lateinit var visitRepository: VisitRepository
 
     @MockK
     private lateinit var doctorRepository: DoctorRepository

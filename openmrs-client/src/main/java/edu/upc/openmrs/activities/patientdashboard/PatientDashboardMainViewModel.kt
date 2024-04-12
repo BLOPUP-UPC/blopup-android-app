@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
 import edu.upc.sdk.library.OpenMRSLogger
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.UUID
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardMainViewModel @Inject constructor(
-    private val newVisitRepository: NewVisitRepository,
+    private val visitRepository: VisitRepository,
     private val openMRSLogger: OpenMRSLogger
 ) : ViewModel() {
     private val _activeVisit = MutableLiveData<ActiveVisitResultUiState>()
@@ -25,7 +25,7 @@ class PatientDashboardMainViewModel @Inject constructor(
         _activeVisit.value = ActiveVisitResultUiState.Loading
         viewModelScope.launch {
             try {
-                val result = newVisitRepository.getActiveVisit(patientUuid)
+                val result = visitRepository.getActiveVisit(patientUuid)
                 if (result == null) {
                     _activeVisit.value = ActiveVisitResultUiState.NotFound
                 } else {
@@ -41,7 +41,7 @@ class PatientDashboardMainViewModel @Inject constructor(
     suspend fun endActiveVisit(visitUUID: UUID): LiveData<Boolean> {
         val endVisitResult: MutableLiveData<Boolean> = MutableLiveData(false)
 
-        endVisitResult.value = newVisitRepository.endVisit(visitUUID)
+        endVisitResult.value = visitRepository.endVisit(visitUUID)
 
         return endVisitResult
     }

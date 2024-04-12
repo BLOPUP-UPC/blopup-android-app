@@ -12,7 +12,7 @@ import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.Visit
+import edu.upc.sdk.library.models.OpenMRSVisit
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +30,7 @@ import edu.upc.sdk.library.models.Result as OpenMRSResult
 @Singleton
 class TreatmentRepository @Inject constructor(
     private val restApi: RestApi,
-    private val visitRepository: NewVisitRepository,
+    private val visitRepository: VisitRepository,
     private val encounterRepository: EncounterRepository,
     private val doctorRepository: DoctorRepository,
     private val crashlytics: CrashlyticsLogger
@@ -109,7 +109,7 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun fetchActiveTreatmentsAtAGivenTime(
         patient: Patient,
-        visit: Visit? = null,
+        visit: OpenMRSVisit? = null,
         newVisit: edu.upc.blopup.model.Visit? = null
     ): OpenMRSResult<List<Treatment>> {
         if (visit == null && newVisit == null) {

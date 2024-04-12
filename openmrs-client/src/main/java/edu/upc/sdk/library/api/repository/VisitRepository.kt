@@ -24,10 +24,10 @@ import java.time.Instant
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import edu.upc.sdk.library.models.Visit as OpenMRSVisit
+import edu.upc.sdk.library.models.OpenMRSVisit as OpenMRSVisit
 
 @Singleton
-class NewVisitRepository @Inject constructor(
+class VisitRepository @Inject constructor(
     val restApi: RestApi,
     private val locationDAO: LocationDAO,
     private val logger: OpenMRSLogger

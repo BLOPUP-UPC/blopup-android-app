@@ -3,7 +3,7 @@ package edu.upc.openmrs.activities.patientdashboard.charts
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.blopup.model.VisitExample
 import edu.upc.blopup.ui.ResultUiState
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
@@ -39,7 +39,7 @@ class ChartsViewViewModelTest {
     lateinit var patientDAO: PatientDAO
 
     @MockK
-    lateinit var visitRepository: NewVisitRepository
+    lateinit var visitRepository: VisitRepository
 
     @MockK
     lateinit var treatmentRepository: TreatmentRepository

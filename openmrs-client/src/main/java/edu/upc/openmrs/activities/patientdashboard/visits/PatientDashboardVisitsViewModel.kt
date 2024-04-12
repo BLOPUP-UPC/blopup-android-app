@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.model.Visit
 import edu.upc.openmrs.activities.BaseViewModel
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.UUID
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PatientDashboardVisitsViewModel @Inject constructor(
-    private val visitRepository: NewVisitRepository
+    private val visitRepository: VisitRepository
 ) : BaseViewModel<List<Visit>>() {
 
     fun fetchVisitsData(patientId: UUID) {

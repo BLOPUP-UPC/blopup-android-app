@@ -68,7 +68,7 @@ class Encounter() : Resource(), Serializable {
 
     @SerializedName("visit")
     @Expose
-    var visit: Visit? = null
+    var visit: OpenMRSVisit? = null
 
     @SerializedName("encounterProviders")
     @Expose

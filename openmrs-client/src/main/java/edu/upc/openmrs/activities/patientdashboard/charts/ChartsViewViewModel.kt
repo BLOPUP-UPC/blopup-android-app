@@ -11,7 +11,7 @@ import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.model.Visit
 import edu.upc.blopup.ui.ResultUiState
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
@@ -25,7 +25,7 @@ import javax.inject.Inject
 class ChartsViewViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val treatmentRepository: TreatmentRepository,
-    private val visitRepository: NewVisitRepository
+    private val visitRepository: VisitRepository
 ) :
     ViewModel() {
     private val _visitsWithTreatments = MutableLiveData<ResultUiState<List<VisitWithAdherence>>>()

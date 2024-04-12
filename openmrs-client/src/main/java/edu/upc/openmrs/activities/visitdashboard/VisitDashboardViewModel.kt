@@ -12,7 +12,7 @@ import edu.upc.blopup.model.Visit
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.EncounterRepository
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class VisitDashboardViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
-    private val visitRepository: NewVisitRepository,
+    private val visitRepository: VisitRepository,
     private val treatmentRepository: TreatmentRepository,
     private val encounterRepository: EncounterRepository,
     private val doctorRepository: DoctorRepository,

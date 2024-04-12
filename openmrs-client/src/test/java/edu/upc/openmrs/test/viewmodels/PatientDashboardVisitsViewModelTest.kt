@@ -3,7 +3,7 @@ package edu.upc.openmrs.test.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.blopup.model.VisitExample
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientDashboardVisitsViewModel
-import edu.upc.sdk.library.api.repository.NewVisitRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import io.mockk.MockKAnnotations
@@ -32,7 +32,7 @@ class PatientDashboardVisitsViewModelTest() {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    lateinit var visitRepository: NewVisitRepository
+    lateinit var visitRepository: VisitRepository
 
     @InjectMockKs
     private lateinit var viewModel: PatientDashboardVisitsViewModel
