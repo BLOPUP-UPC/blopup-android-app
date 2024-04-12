@@ -27,10 +27,8 @@ import edu.upc.BuildConfig;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
-import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
 import edu.upc.sdk.library.dao.PatientDAO;
 import edu.upc.sdk.library.databases.AppDatabaseHelper;
-import edu.upc.sdk.library.models.Encountercreate;
 import edu.upc.sdk.library.models.IdGenPatientIdentifiers;
 import edu.upc.sdk.library.models.IdentifierType;
 import edu.upc.sdk.library.models.Patient;
@@ -87,10 +85,6 @@ public class PatientRepository extends BaseRepository {
                 PatientDto returnedPatientDto = response.body();
 
                 patient.setUuid(returnedPatientDto.getUuid());
-
-                if (!patient.getEncounters().isEmpty()) {
-                    addEncounters(patient);
-                }
 
                 return patient;
             } else {
@@ -196,25 +190,6 @@ public class PatientRepository extends BaseRepository {
                 throw new IOException("Error with downloading patient: " + response.message());
             }
         });
-    }
-
-    /**
-     * Add encounters.
-     *
-     * @param patient the patient
-     */
-    public void addEncounters(Patient patient) {
-        EncounterCreateRoomDAO dao = db.encounterCreateRoomDAO();
-        String enc = patient.getEncounters();
-        List<Long> list = new ArrayList<>();
-        for (String s : enc.split(","))
-            list.add(Long.parseLong(s));
-
-        for (long id : list) {
-            Encountercreate encountercreate = dao.getCreatedEncountersByID(id);
-            encountercreate.setPatient(patient.getUuid());
-            dao.updateExistingEncounter(encountercreate);
-        }
     }
 
     /**

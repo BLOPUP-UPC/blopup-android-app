@@ -17,10 +17,7 @@ package edu.upc.openmrs.test.presenters;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
-import android.content.Context;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,7 +32,6 @@ import java.util.Collections;
 
 import edu.upc.R;
 import edu.upc.openmrs.activities.login.LoginContract;
-import edu.upc.openmrs.activities.login.LoginFragment;
 import edu.upc.openmrs.activities.login.LoginPresenter;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.net.AuthorizationManager;
@@ -195,7 +191,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
             .thenReturn(mockSuccessCall(Collections.singletonList(new LocationEntity(""))));
         presenter.loadLocations("someUrl");
         verify(view).initLoginForm(any(), any());
-        verify(view).startFormListService();
         verify(view).setLocationErrorOccurred(false);
         verify(view).hideUrlLoadingAnimation();
     }
@@ -221,20 +216,6 @@ public class LoginPresenterTest extends ACUnitTestBaseRx {
         verify(view).setLocationErrorOccurred(true);
         verify(view).showInvalidURLSnackbar(Mockito.any());
         verify(view).hideUrlLoadingAnimation();
-    }
-
-    @Test
-    public void shouldStartFormListServiceWhenAuthenticated() {
-        Context context = Mockito.mock(Context.class);
-        Mockito.when(OpenMRS.getInstance()).thenReturn(openMRS);
-        Mockito.when(openMRS.getApplicationContext()).thenReturn(context);
-        LoginFragment loginFragment = LoginFragment.newInstance();
-        try {
-            loginFragment.userAuthenticated();
-        } catch (NullPointerException ignored) {
-        }
-
-        verify(openMRS.getApplicationContext(), times(1)).startService(any());
     }
 
     private void mockNonEmptyCredentials(boolean isNonEmpty) {

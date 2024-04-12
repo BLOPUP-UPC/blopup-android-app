@@ -27,7 +27,6 @@ class EncounterType : Resource {
     companion object {
 
         const val VITALS = "Vitals"
-        const val VISIT_NOTE = "Visit Note"
         const val TREATMENT = "Treatment"
     }
 }

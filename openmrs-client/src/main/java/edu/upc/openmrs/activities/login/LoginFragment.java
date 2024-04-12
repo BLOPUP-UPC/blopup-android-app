@@ -44,7 +44,6 @@ import edu.upc.openmrs.activities.dialog.CustomFragmentDialog;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;
 import edu.upc.openmrs.listeners.watcher.LoginValidatorWatcher;
-import edu.upc.openmrs.services.FormListService;
 import edu.upc.openmrs.utilities.URLValidator;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
@@ -236,17 +235,7 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
         Intent intent = new Intent(mOpenMRS.getApplicationContext(), DashboardActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mOpenMRS.getApplicationContext().startActivity(intent);
-        Intent formListServiceIntent = new Intent(mOpenMRS.getApplicationContext(), FormListService.class);
-        mOpenMRS.getApplicationContext().startService(formListServiceIntent);
         mPresenter.saveLocationsToDatabase(mLocationsList, binding.locationSpinner.getSelectedItem().toString());
-    }
-
-    @Override
-    public void startFormListService() {
-        if (isActivityNotNull()) {
-            Intent i = new Intent(getContext(), FormListService.class);
-            getActivity().startService(i);
-        }
     }
 
     @Override

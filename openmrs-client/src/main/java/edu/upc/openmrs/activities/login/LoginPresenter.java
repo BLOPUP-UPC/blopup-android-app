@@ -192,7 +192,6 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
                     RestServiceBuilder.changeBaseUrl(url.trim());
                     OpenmrsAndroid.setServerUrl(url);
                     loginView.initLoginForm(response.body().getResults(), url);
-                    loginView.startFormListService();
                     loginView.setLocationErrorOccurred(false);
                 } else {
                     loginView.showInvalidURLSnackbar(R.string.snackbar_server_error);

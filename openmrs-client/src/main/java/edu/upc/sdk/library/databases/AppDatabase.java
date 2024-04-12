@@ -20,37 +20,31 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import edu.upc.sdk.library.dao.EncounterCreateRoomDAO;
-import edu.upc.sdk.library.dao.EncounterTypeRoomDAO;
 import edu.upc.sdk.library.dao.FormResourceDAO;
 import edu.upc.sdk.library.dao.LocationRoomDAO;
-import edu.upc.sdk.library.dao.ObservationRoomDAO;
 import edu.upc.sdk.library.dao.PatientRoomDAO;
 import edu.upc.sdk.library.dao.ProviderRoomDAO;
 import edu.upc.sdk.library.databases.entities.ConceptEntity;
 import edu.upc.sdk.library.databases.entities.DiagnosisEntity;
 import edu.upc.sdk.library.databases.entities.FormResourceEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.databases.entities.ObservationEntity;
 import edu.upc.sdk.library.databases.entities.PatientEntity;
-import edu.upc.sdk.library.models.EncounterType;
-import edu.upc.sdk.library.models.Encountercreate;
 import edu.upc.sdk.library.models.Provider;
 import edu.upc.sdk.utilities.ApplicationConstants;
 
 /**
  * The type App database.
  */
-@Database(entities = {ConceptEntity.class,
-        LocationEntity.class,
-        ObservationEntity.class,
-        PatientEntity.class,
-        DiagnosisEntity.class,
-        Provider.class,
-        FormResourceEntity.class,
-        EncounterType.class,
-        Encountercreate.class},
-        version = 9)
+@Database(entities = {
+            ConceptEntity.class,
+            LocationEntity.class,
+            PatientEntity.class,
+            DiagnosisEntity.class,
+            Provider.class,
+            FormResourceEntity.class
+        },
+        version = 10
+)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -93,13 +87,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PatientRoomDAO patientRoomDAO();
 
     /**
-     * Observation room dao observation room dao.
-     *
-     * @return the observation room dao
-     */
-    public abstract ObservationRoomDAO observationRoomDAO();
-
-    /**
      * Provider room dao provider room dao.
      *
      * @return the provider room dao
@@ -112,19 +99,4 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return the form resource dao
      */
     public abstract FormResourceDAO formResourceDAO();
-
-    /**
-     * Encounter type room dao encounter type room dao.
-     *
-     * @return the encounter type room dao
-     */
-    public abstract EncounterTypeRoomDAO encounterTypeRoomDAO();
-
-    /**
-     * Encounter create room dao encounter create room dao.
-     *
-     * @return the encounter create room dao
-     */
-    public abstract EncounterCreateRoomDAO encounterCreateRoomDAO();
-
 }

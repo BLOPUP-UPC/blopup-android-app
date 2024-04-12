@@ -136,9 +136,6 @@
         </activity>
 
         <service
-            android:name=".openmrs.services.FormListService"
-            android:enabled="true" />
-        <service
             android:name=".openmrs.services.AuthenticateCheckService"
             android:enabled="true" />
         <service

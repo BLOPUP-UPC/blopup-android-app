@@ -26,7 +26,6 @@ import java.io.File;
 import dagger.hilt.android.HiltAndroidApp;
 import edu.upc.blopup.hilt.CurrentActivityProvider;
 import edu.upc.openmrs.services.AuthenticateCheckService;
-import edu.upc.openmrs.services.FormListService;
 import edu.upc.sdk.library.OpenMRSLogger;
 import edu.upc.sdk.library.OpenmrsAndroid;
 
@@ -56,8 +55,6 @@ public class OpenMRS extends MultiDexApplication {
             mExternalDirectoryPath = this.getExternalFilesDir(null).toString();
         }
         mLogger = new OpenMRSLogger();
-        Intent i = new Intent(this, FormListService.class);
-        startService(i);
         Intent intent = new Intent(this, AuthenticateCheckService.class);
         startService(intent);
     }

@@ -13,12 +13,7 @@
  */
 package edu.upc.sdk.library.databases
 
-import edu.upc.sdk.library.databases.entities.ConceptEntity
-import edu.upc.sdk.library.databases.entities.DiagnosisEntity
-import edu.upc.sdk.library.databases.entities.ObservationEntity
 import edu.upc.sdk.library.databases.entities.PatientEntity
-import edu.upc.sdk.library.models.Diagnosis
-import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientIdentifier
 import edu.upc.sdk.library.models.PersonAddress
@@ -29,49 +24,6 @@ import rx.schedulers.Schedulers
 import java.util.concurrent.Callable
 
 object AppDatabaseHelper {
-    @JvmStatic
-    fun convert(obs: Observation, encounterID: Long): ObservationEntity {
-        val observationEntity =
-            ObservationEntity()
-        observationEntity.id = obs.id
-        observationEntity.uuid = obs.uuid
-        observationEntity.display = obs.display
-        observationEntity.encounterKeyID = encounterID
-        observationEntity.displayValue = obs.displayValue
-        observationEntity.diagnosisOrder = obs.diagnosisOrder
-        observationEntity.diagnosisList = obs.diagnosisList
-        observationEntity.diagnosisCertainty = obs.diagnosisCertainty
-        observationEntity.diagnosisNote = obs.diagnosisNote
-        if (obs.concept != null) {
-            observationEntity.conceptuuid = obs.concept!!.uuid
-        } else {
-            observationEntity.conceptuuid = null
-        }
-        return observationEntity
-    }
-
-    @JvmStatic
-    fun convert(observationEntityList: List<ObservationEntity>): List<Observation> {
-        val observationList: MutableList<Observation> = ArrayList()
-        for (entity in observationEntityList) {
-            val obs = Observation()
-            obs.id = entity.id
-            obs.encounterID = entity.encounterKeyID
-            obs.uuid = entity.uuid
-            obs.display = entity.display
-            obs.displayValue = entity.displayValue
-            obs.diagnosisOrder = entity.diagnosisOrder
-            obs.diagnosisList = entity.diagnosisList
-            obs.setDiagnosisCertanity(entity.diagnosisCertainty)
-            obs.diagnosisNote = entity.diagnosisNote
-            val concept = ConceptEntity()
-            concept.uuid = entity.conceptuuid
-            obs.concept = concept
-            observationList.add(obs)
-        }
-        return observationList
-    }
-
     @JvmStatic
     fun convert(patientEntity: PatientEntity): Patient {
         val patient = Patient(
@@ -178,16 +130,5 @@ object AppDatabaseHelper {
     fun <T> createObservableIO(func: Callable<T>?): Observable<T> {
         return Observable.fromCallable(func)
             .subscribeOn(Schedulers.io())
-    }
-
-    @JvmStatic
-    fun convert(diagnosis: Diagnosis, encounterID: Long): DiagnosisEntity {
-        val diagnosisEntity = DiagnosisEntity()
-        diagnosisEntity.uuid = diagnosis.uuid
-        diagnosisEntity.display = diagnosis.display
-        diagnosisEntity.links = diagnosis.links
-        diagnosisEntity.encounterId = encounterID
-
-        return diagnosisEntity
     }
 }

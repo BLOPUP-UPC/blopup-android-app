@@ -16,13 +16,12 @@ package edu.upc.openmrs.activities.login;
 
 import androidx.annotation.NonNull;
 
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.utilities.ToastUtil;
-
 import java.util.List;
 
 import edu.upc.openmrs.activities.BasePresenterContract;
 import edu.upc.openmrs.activities.BaseView;
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.utilities.ToastUtil;
 
 public interface LoginContract {
     interface View extends BaseView<Presenter> {
@@ -57,8 +56,6 @@ public interface LoginContract {
         void initLoginForm(List<LocationEntity> locationList, String url);
 
         void userAuthenticated();
-
-        void startFormListService();
     }
 
     interface Presenter extends BasePresenterContract {
