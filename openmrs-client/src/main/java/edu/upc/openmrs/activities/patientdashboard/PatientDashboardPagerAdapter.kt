@@ -38,7 +38,7 @@ class PatientDashboardPagerAdapter(private val fm: FragmentManager,
 
     override fun getItem(i: Int): Fragment {
         return when (i) {
-            DETAILS_TAB_POS -> PatientDetailsFragment.newInstance(mPatientId.toString())
+            DETAILS_TAB_POS -> PatientDetailsFragment.newInstance(mPatientId.toString(), mPatientUuid)
             VISITS_TAB_POS -> PatientVisitsFragment.newInstance(mPatientId, mPatientUuid)
             CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId.toString(), mPatientUuid)
             else -> throw IllegalStateException()

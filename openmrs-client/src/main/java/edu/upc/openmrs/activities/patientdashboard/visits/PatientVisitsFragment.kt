@@ -131,10 +131,6 @@ class PatientVisitsFragment : BaseFragment() {
         error(getString(R.string.get_patient_from_database_error))
     }
 
-    private fun showStartVisitProgressDialog() {
-        patientDashboardActivity.showProgressDialog(R.string.action_starting_visit)
-    }
-
     private fun dismissCurrentDialog() {
         patientDashboardActivity.dismissCustomFragmentDialog()
     }

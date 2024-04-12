@@ -36,6 +36,7 @@ import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils.convertTime
 import edu.upc.sdk.utilities.ToastUtil.error
 import kotlinx.coroutines.launch
@@ -195,9 +196,12 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     companion object {
-        fun newInstance(patientId: String): PatientDetailsFragment {
+        fun newInstance(patientId: String, patientUuid: String): PatientDetailsFragment {
             val fragment = PatientDetailsFragment()
-            fragment.arguments = bundleOf(Pair(PATIENT_ID_BUNDLE, patientId))
+            fragment.arguments = bundleOf(
+                Pair(PATIENT_ID_BUNDLE, patientId),
+                Pair(PATIENT_UUID_BUNDLE, patientUuid)
+            )
             return fragment
         }
     }

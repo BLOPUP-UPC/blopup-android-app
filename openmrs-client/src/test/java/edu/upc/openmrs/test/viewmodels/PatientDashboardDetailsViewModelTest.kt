@@ -4,54 +4,78 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.model.Treatment
 import edu.upc.openmrs.activities.patientdashboard.details.PatientDashboardDetailsViewModel
-import edu.upc.openmrs.test.ACUnitTestBaseRx
+import edu.upc.sdk.library.OpenMRSLogger
+import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
+import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.mockk
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mock
-import org.mockito.Mockito
+import java.util.UUID
 
 @RunWith(JUnit4::class)
-class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
+class PatientDashboardDetailsViewModelTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Mock
+    @MockK(relaxed = true)
     lateinit var patientDAO: PatientDAO
+
+    @MockK
+    lateinit var patientRepositoryCoroutines: PatientRepositoryCoroutines
+
+    @MockK(relaxed = true)
+    lateinit var logger: OpenMRSLogger
 
     private lateinit var savedStateHandle: SavedStateHandle
 
     private lateinit var viewModel: PatientDashboardDetailsViewModel
 
+    @MockK
     private lateinit var treatmentRepository: TreatmentRepository
 
     lateinit var patient: Patient
 
+    val patientUuid = UUID.randomUUID()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
-    override fun setUp() {
-        super.setUp()
-        treatmentRepository = mockk()
-        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, ID) }
-        viewModel = PatientDashboardDetailsViewModel(patientDAO, treatmentRepository, savedStateHandle)
-        patient = createPatient(ID.toLong())
+    fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        MockKAnnotations.init(this)
+        savedStateHandle = SavedStateHandle().apply {
+            set(PATIENT_ID_BUNDLE, PATIENT_ID)
+            set(PATIENT_UUID_BUNDLE, patientUuid.toString())
+        }
+        viewModel = PatientDashboardDetailsViewModel(patientDAO, treatmentRepository, patientRepositoryCoroutines, logger, savedStateHandle)
+        patient = Patient().apply {
+            id = PATIENT_ID.toLong()
+            uuid = patientUuid.toString()
+        }
     }
 
     @Test
-    fun fetchPatientData_success() {
-        Mockito.`when`(patientDAO.findPatientByID(ID)).thenReturn(patient)
+    fun fetchPatientData_success() = runTest {
+        every { patientDAO.findPatientByID(PATIENT_ID) } returns patient
 
         viewModel.fetchPatientData()
 
@@ -59,8 +83,8 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    fun fetchPatientData_error() {
-        Mockito.`when`(patientDAO.findPatientByID(ID)).thenReturn(null)
+    fun fetchPatientData_error() = runTest {
+        every { patientDAO.findPatientByID(PATIENT_ID) } returns null
 
         viewModel.fetchPatientData()
 
@@ -82,20 +106,18 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    fun `should refresh treatments with previous patient`() {
+    fun `should refresh treatments with previous patient`() = runTest {
         val patient = Patient()
         val treatmentList = listOf<Treatment>()
 
-        Mockito.`when`(patientDAO.findPatientByID(ID)).thenReturn(patient)
+        every { patientDAO.findPatientByID(PATIENT_ID) } returns patient
         coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
 
-        runBlocking {
-            viewModel.fetchPatientData()
-            viewModel.refreshActiveTreatments()
+        viewModel.fetchPatientData()
+        viewModel.refreshActiveTreatments()
 
-            coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
-            assertEquals(viewModel.activeTreatments.value, Result.Success(treatmentList))
-        }
+        coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
+        assertEquals(viewModel.activeTreatments.value, Result.Success(treatmentList))
     }
 
     @Test
@@ -108,6 +130,6 @@ class PatientDashboardDetailsViewModelTest : ACUnitTestBaseRx() {
     }
 
     companion object {
-        const val ID = "1"
+        const val PATIENT_ID = "1"
     }
 }
