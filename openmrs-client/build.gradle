@@ -307,7 +307,7 @@ dependencies {
     // Kotlin arrow
     implementation "io.arrow-kt:arrow-core:1.0.1"
 
-    implementation platform('com.google.firebase:firebase-bom:32.8.0')
+    implementation platform('com.google.firebase:firebase-bom:32.8.1')
 
     // Test Implementations
     androidTestImplementation(
