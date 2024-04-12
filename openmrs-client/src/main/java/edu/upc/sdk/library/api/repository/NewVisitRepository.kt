@@ -209,6 +209,12 @@ class NewVisitRepository @Inject constructor(
         throw IOException("Error getting active visits by patient uuid: ${result.message()}")
     }
 
+    suspend fun getLatestVisitWithHeight(patientId: UUID): Visit? {
+        getVisitsByPatientUuid(patientId).let { visits ->
+            return visits.filter { it.heightCm != null }.maxByOrNull { it.startDate }
+        }
+    }
+
     object VitalsConceptType {
         const val SYSTOLIC_FIELD_CONCEPT = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         const val DIASTOLIC_FIELD_CONCEPT = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

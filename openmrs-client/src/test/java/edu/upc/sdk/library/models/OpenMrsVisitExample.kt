@@ -15,7 +15,10 @@ import java.util.UUID
 
 object OpenMrsVisitExample {
 
-    fun random(treatment: Treatment = TreatmentExample.activeTreatment(), startDate: Instant = Instant.now()): Visit {
+    fun random(
+        treatment: Treatment = TreatmentExample.activeTreatment(),
+        startDate: Instant = Instant.now()
+    ): Visit {
 
         val activeText = if (treatment.isActive) " 1.0" else " 0.0"
 
@@ -97,7 +100,17 @@ object OpenMrsVisitExample {
         }
     }
 
-    fun withVitals(visitUuid: String, patientUuid: String, visitStartDate: LocalDateTime, visitLocation:String, systolic: Int, diastolic: Int, pulse: Int, weight: Float?, height: Int?): Visit {
+    fun withVitals(
+        visitUuid: String = UUID.randomUUID().toString(),
+        patientUuid: String = UUID.randomUUID().toString(),
+        visitStartDate: LocalDateTime = LocalDateTime.now(),
+        visitLocation: String = "Location",
+        systolic: Int = 120,
+        diastolic: Int = 80,
+        pulse: Int = 70,
+        weight: Float? = null,
+        height: Int? = null
+    ): Visit {
         return Visit().apply {
             patient = Patient().apply {
                 uuid = patientUuid

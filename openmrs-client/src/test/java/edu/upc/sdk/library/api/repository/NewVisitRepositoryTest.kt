@@ -506,4 +506,61 @@ class NewVisitRepositoryTest {
 
         assertEquals(activeVisit, result)
     }
+
+    @Test
+    fun `latest visit with height should return null if no visit exists`() = runTest {
+        val patientId = UUID.randomUUID()
+        val response = Response.success(Results<OpenMRSVisit>().apply{
+            results = listOf()
+        })
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { call.execute() } returns response
+
+        assertNull(visitRepository.getLatestVisitWithHeight(patientId))
+    }
+
+    @Test
+    fun `latest visit with height should return null if no visit exist with height`() = runTest {
+        val openMRSVisit1 = OpenMRSVisitExample.withVitals(
+            height = null
+        )
+        val openMRSVisit2 = OpenMRSVisitExample.withVitals(
+            patientUuid = openMRSVisit1.patient.uuid!!,
+            height = null
+        )
+        val response = Response.success(Results<OpenMRSVisit>().apply{
+            results = listOf(openMRSVisit1, openMRSVisit2)
+        })
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(openMRSVisit1.patient.uuid, "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { call.execute() } returns response
+
+        assertNull(visitRepository.getLatestVisitWithHeight(UUID.fromString(openMRSVisit1.patient.uuid)))
+    }
+
+    @Test
+    fun `latest visit with height should return the latest visit with height`() = runTest {
+        val openMRSVisit1 = OpenMRSVisitExample.withVitals(
+            height = 180,
+            visitStartDate = LocalDateTime.now().minusDays(2)
+        )
+        val openMRSVisit2 = OpenMRSVisitExample.withVitals(
+            patientUuid = openMRSVisit1.patient.uuid!!,
+            height = 190,
+            visitStartDate = LocalDateTime.now()
+        )
+        val response = Response.success(Results<OpenMRSVisit>().apply{
+            results = listOf(openMRSVisit1, openMRSVisit2)
+        })
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(openMRSVisit1.patient.uuid, "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { call.execute() } returns response
+
+        val visit = visitRepository.getLatestVisitWithHeight(UUID.fromString(openMRSVisit1.patient.uuid))
+        assertEquals(visit?.heightCm, 190)
+    }
 }
