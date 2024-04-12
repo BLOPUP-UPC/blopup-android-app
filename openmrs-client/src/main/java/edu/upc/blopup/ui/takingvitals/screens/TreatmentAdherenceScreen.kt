@@ -47,15 +47,15 @@ import edu.upc.blopup.ui.shared.components.SubmitButton
 
 @Composable
 fun TreatmentAdherenceScreen(
-    setResultAndFinish: (Int) -> Unit,
+    setResultAndFinish: (Int, String?) -> Unit,
     createVisit: () -> Unit,
-    createVisitResultUiState: ResultUiState<Unit>?,
+    createVisitResultUiState: CreateVisitResultUiState,
     treatmentsResultUiState: ResultUiState<List<Treatment>>,
     treatmentAdherence: (List<CheckTreatment>) -> Unit,
     getActiveTreatments: () -> Unit
 ) {
     when (createVisitResultUiState) {
-        ResultUiState.Loading -> {
+        CreateVisitResultUiState.Loading -> {
             LoadingSpinner(
                 Modifier
                     .width(70.dp)
@@ -63,20 +63,20 @@ fun TreatmentAdherenceScreen(
             )
         }
 
-        ResultUiState.Error -> {
+        CreateVisitResultUiState.Error -> {
             ErrorDialog(
-                show = createVisitResultUiState is ResultUiState.Error,
-                onDismiss = { setResultAndFinish(Activity.RESULT_CANCELED) },
+                show = true,
+                onDismiss = { setResultAndFinish(Activity.RESULT_CANCELED, null) },
                 onConfirm = { createVisit() },
                 title = R.string.visit_start_error
             )
         }
 
-        is ResultUiState.Success -> {
-            setResultAndFinish(Activity.RESULT_OK)
+        is CreateVisitResultUiState.Success -> {
+            setResultAndFinish(Activity.RESULT_OK, createVisitResultUiState.visit.id.toString())
         }
 
-        else -> {}
+        CreateVisitResultUiState.NotStarted -> {}
     }
 
 

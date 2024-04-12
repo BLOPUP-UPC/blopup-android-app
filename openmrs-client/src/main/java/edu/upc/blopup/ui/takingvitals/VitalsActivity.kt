@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.takingvitals
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -36,6 +37,7 @@ import edu.upc.blopup.ui.takingvitals.screens.TreatmentAdherenceScreen
 import edu.upc.blopup.ui.takingvitals.screens.WeightDataScreen
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -163,7 +165,7 @@ class VitalsActivity : ACBaseActivity() {
                             val treatmentsResultUiState by viewModel.treatmentsResultUiState.collectAsState()
 
                             TreatmentAdherenceScreen(
-                                { setResultAndFinish(it) },
+                                { result, visitUuid -> setResultAndFinish(result, visitUuid) },
                                 viewModel::createVisit,
                                 createVisitResultUiState,
                                 treatmentsResultUiState,
@@ -207,7 +209,16 @@ class VitalsActivity : ACBaseActivity() {
         }
     }
 
-    private fun setResultAndFinish(result: Int) {
+    private fun setResultAndFinish(result: Int, visitUuid: String? = null) {
+        if (visitUuid !== null) {
+            val intent = Intent()
+            intent.putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, visitUuid)
+            setResult(result, intent)
+            finish()
+
+            return
+        }
+
         setResult(result)
         finish()
     }

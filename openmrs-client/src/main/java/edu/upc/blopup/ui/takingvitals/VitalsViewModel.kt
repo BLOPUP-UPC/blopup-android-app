@@ -11,6 +11,7 @@ import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.takingvitals.components.LatestHeightResultUiState
+import edu.upc.blopup.ui.takingvitals.screens.CreateVisitResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
@@ -59,8 +60,8 @@ open class VitalsViewModel @Inject constructor(
 
     val patient: Patient = patientDAO.findPatientByID(patientId.toString())
 
-    private val _createVisitResultUiState: MutableStateFlow<ResultUiState<Unit>?> = MutableStateFlow(null)
-    val createVisitResultUiState: StateFlow<ResultUiState<Unit>?> =
+    private val _createVisitResultUiState: MutableStateFlow<CreateVisitResultUiState> = MutableStateFlow(CreateVisitResultUiState.NotStarted)
+    val createVisitResultUiState: StateFlow<CreateVisitResultUiState> =
         _createVisitResultUiState.asStateFlow()
 
     private val _treatmentsResultUiState: MutableStateFlow<ResultUiState<List<Treatment>>> =
@@ -159,7 +160,7 @@ open class VitalsViewModel @Inject constructor(
     }
 
     fun createVisit() {
-        _createVisitResultUiState.value = ResultUiState.Loading
+        _createVisitResultUiState.value = CreateVisitResultUiState.Loading
 
         val bloodPressure = _bloodPressureUiState.value.let {
             when (it) {
@@ -176,15 +177,15 @@ open class VitalsViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            when (newVisitRepository.startVisit(
+            when (val result = newVisitRepository.startVisit(
                 patient,
                 bloodPressure,
                 _heightUiState.value?.toInt(),
                 weight,
             )) {
-                is Result.Success -> _createVisitResultUiState.value = ResultUiState.Success(Unit)
-                is Result.Error -> _createVisitResultUiState.value = ResultUiState.Error
-                is Result.Loading -> _createVisitResultUiState.value = ResultUiState.Loading
+                is Result.Success -> _createVisitResultUiState.value = CreateVisitResultUiState.Success(result.data)
+                is Result.Error -> _createVisitResultUiState.value = CreateVisitResultUiState.Error
+                is Result.Loading -> _createVisitResultUiState.value = CreateVisitResultUiState.Loading
             }
         }
     }

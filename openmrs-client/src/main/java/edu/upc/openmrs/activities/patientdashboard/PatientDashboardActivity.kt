@@ -28,10 +28,8 @@ import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
 import edu.upc.blopup.ui.takingvitals.VitalsActivity
 import edu.upc.databinding.ActivityPatientDashboardBinding
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
-import edu.upc.sdk.library.dao.VisitDAO
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
-import edu.upc.sdk.utilities.execute
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -144,10 +142,9 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
-            val activeVisit = VisitDAO().getActiveVisitByPatientId(patientId).execute()
             startActivity(
                 Intent(this, VisitDashboardActivity::class.java)
-                    .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, activeVisit.uuid)
+                    .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, result.data?.getStringExtra(ApplicationConstants.BundleKeys.VISIT_UUID))
                     .putExtra(ApplicationConstants.BundleKeys.IS_NEW_VITALS, true)
             )
 

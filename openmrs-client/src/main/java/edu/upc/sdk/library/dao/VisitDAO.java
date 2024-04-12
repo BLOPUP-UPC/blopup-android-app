@@ -134,23 +134,6 @@ public class VisitDAO {
     }
 
     /**
-     * Gets active visit by patient id.
-     *
-     * @param patientId the patient id
-     * @return the active visit by patient id
-     */
-    public Observable<Visit> getActiveVisitByPatientId(Long patientId) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            try {
-                VisitEntity visitEntity = visitRoomDAO.getActiveVisitByPatientId(patientId).blockingGet();
-                return AppDatabaseHelper.convert(visitEntity);
-            } catch (Exception e) {
-                return null;
-            }
-        });
-    }
-
-    /**
      * Gets visit by id.
      *
      * @param visitID the visit id
