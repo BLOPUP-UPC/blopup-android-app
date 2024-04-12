@@ -20,10 +20,10 @@ import edu.upc.sdk.library.api.repository.WeightMeasurement
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Observation
+import edu.upc.sdk.library.models.OpenMrsVisitExample
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
-import edu.upc.sdk.library.models.VisitExample
 import edu.upc.sdk.utilities.ApplicationConstants
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -180,7 +180,7 @@ class VitalsViewModelTest {
     @Test
     fun `should get latest height data when present`() = runTest {
         val height = "170"
-        val visit = VisitExample.random().apply {
+        val visit = OpenMrsVisitExample.random().apply {
             encounters = listOf(
                 Encounter().apply {
                     observations = listOf(
@@ -204,7 +204,7 @@ class VitalsViewModelTest {
 
     @Test
     fun `should get empty height data when visit has no height`() = runTest {
-        val visit = VisitExample.random()
+        val visit = OpenMrsVisitExample.random()
 
         every {
             visitRepository.getLatestVisitWithHeight(patientId)

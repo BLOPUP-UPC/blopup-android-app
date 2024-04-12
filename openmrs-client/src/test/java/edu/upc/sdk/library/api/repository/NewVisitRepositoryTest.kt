@@ -41,8 +41,8 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit.SECONDS
 import java.util.UUID
+import edu.upc.sdk.library.models.OpenMrsVisitExample as OpenMRSVisitExample
 import edu.upc.sdk.library.models.Visit as OpenMRSVisit
-import edu.upc.sdk.library.models.VisitExample as OpenMRSVisitExample
 
 
 @RunWith(AndroidJUnit4::class)

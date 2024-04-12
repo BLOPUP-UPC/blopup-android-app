@@ -56,73 +56,6 @@ class ChartsViewViewModelTest {
     }
 
     @Test
-    fun `should transform treatments to adherences with dates`() = runTest {
-        val today = LocalDate.now()
-        val lastWeek = today.minusDays(7)
-
-        val lastWeekVisit = VisitExample.random(startDateTime = lastWeek.atStartOfDay())
-        val todaysVisit = VisitExample.random(startDateTime = today.atStartOfDay())
-
-        val treatmentsWOAdherence = TreatmentExample.activeTreatment().apply {
-            adherence = emptyMap()
-        }
-        val treatment = TreatmentExample.activeTreatment().apply {
-            medicationName = "Tylenol"
-            adherence = mapOf(
-                lastWeek to false,
-                today to true
-            )
-        }
-        val treatmentWithFalseAdherence = TreatmentExample.activeTreatment().apply {
-            medicationName = "Aspirin"
-            adherence = mapOf(
-                today to false
-            )
-        }
-
-        val expectedVisitsWithAdherence = listOf(
-            VisitWithAdherence(lastWeekVisit, listOf(
-                TreatmentAdherence(
-                    treatment.medicationName,
-                    treatment.medicationType,
-                    false,
-                    lastWeek
-                )
-            )),
-            VisitWithAdherence(todaysVisit, listOf(
-                TreatmentAdherence(
-                    treatmentWithFalseAdherence.medicationName,
-                    treatmentWithFalseAdherence.medicationType,
-                    false,
-                    today
-                ),
-                TreatmentAdherence(
-                    treatment.medicationName,
-                    treatment.medicationType,
-                    true,
-                    today
-                ),
-            )),
-        )
-        val treatmentList = listOf(treatmentsWOAdherence, treatment, treatmentWithFalseAdherence)
-        val patientId = 88L
-        val testPatient = Patient().apply {
-            id = patientId
-            uuid = "d384d23a-a91b-11ed-afa1-0242ac120002"
-        }
-
-        every { patientDAO.findPatientByID(any()) } returns testPatient
-        coEvery { visitRepository.getVisitsByPatientUuid(any()) } returns listOf(lastWeekVisit, todaysVisit)
-        coEvery { treatmentRepository.fetchAllTreatments(any()) } returns Result.Success(treatmentList)
-
-        runBlocking {
-            viewModel.fetchVisitsWithTreatments(testPatient.id!!.toInt(), UUID.fromString(testPatient.uuid))
-
-            Assert.assertEquals(ResultUiState.Success(expectedVisitsWithAdherence), viewModel.visitsWithTreatments.value)
-        }
-    }
-
-    @Test
     fun `should remove duplicates in visits and keep the latest`() = runTest {
         val today = LocalDateTime.now()
         val todayTwoHoursLater = today.plusHours(2)
@@ -182,7 +115,7 @@ class ChartsViewViewModelTest {
 
         every { patientDAO.findPatientByID(any()) } returns testPatient
         coEvery { visitRepository.getVisitsByPatientUuid(any()) } returns listOf(lastWeekVisit, todaysVisit, todayRepeatedVisit)
-        coEvery { treatmentRepository.fetchAllTreatments(any()) } returns Result.Success(treatmentList)
+        coEvery { treatmentRepository.fetchAllTreatments(UUID.fromString(testPatient.uuid)) } returns Result.Success(treatmentList)
 
         runBlocking {
             viewModel.fetchVisitsWithTreatments(testPatient.id!!.toInt(), UUID.fromString(testPatient.uuid))

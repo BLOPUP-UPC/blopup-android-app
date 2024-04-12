@@ -77,16 +77,16 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun updateTreatment(
         treatmentToEdit: Treatment,
-        treatmentToUpdate: Treatment
+        treatmentUpdated: Treatment
     ): Result<Boolean> {
-        val needsChanges = diffValues(treatmentToEdit, treatmentToUpdate)
+        val needsChanges = diffValues(treatmentToEdit, treatmentUpdated)
 
         if (!needsChanges) return Result.success(true)
 
         val response = encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid)
 
         return if (response.isSuccess) {
-            saveTreatment(treatmentToUpdate)
+            saveTreatment(treatmentUpdated)
             Result.success(true)
         } else {
             Result.failure(Exception("Failed to remove encounter"))
@@ -95,7 +95,7 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun fetchAllActiveTreatments(patient: Patient): OpenMRSResult<List<Treatment>> {
 
-        val result = fetchAllTreatments(patient)
+        val result = fetchAllTreatments(UUID.fromString(patient.uuid))
 
 
         if (result is  OpenMRSResult.Success) {
@@ -122,7 +122,7 @@ class TreatmentRepository @Inject constructor(
             Instant.ofEpochMilli(newVisit!!.startDate.toInstant(ZoneOffset.UTC).toEpochMilli())
         }
 
-        val result = fetchAllTreatments(patient)
+        val result = fetchAllTreatments(UUID.fromString(patient.uuid))
 
         if (result is OpenMRSResult.Success) {
             return OpenMRSResult.Success(result.data.filter { treatment ->
@@ -134,11 +134,12 @@ class TreatmentRepository @Inject constructor(
         return result
     }
 
-    suspend fun fetchAllTreatments(patient: Patient): OpenMRSResult<List<Treatment>> =
+    suspend fun fetchAllTreatments(patientId: UUID): OpenMRSResult<List<Treatment>> = withContext(Dispatchers.IO) {
         try {
-            withContext(Dispatchers.IO) {
-                val visits = visitRepository.getAllVisitsForPatient(patient).toBlocking().first()
-                val treatments = visits.flatMap { visit ->
+            val result = restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,visitType:ref,encounters:full)").execute()
+
+            if (result.isSuccessful) {
+                val treatments = result.body()?.results!!.flatMap { visit ->
                     visit.encounters.map {
                         it.apply {
                             visitID = visit.id
@@ -153,10 +154,13 @@ class TreatmentRepository @Inject constructor(
                         }
                 }
                 OpenMRSResult.Success(treatments)
+            } else {
+                OpenMRSResult.Error(Exception("Failed to fetch treatments"))
             }
         } catch (e: Exception) {
             OpenMRSResult.Error(e)
         }
+    }
 
     private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
         val visitUuid = encounter.visit?.uuid

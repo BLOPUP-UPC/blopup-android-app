@@ -37,7 +37,7 @@ class ChartsViewViewModel @Inject constructor(
 
             val patient: Patient = patientDAO.findPatientByID(patientId.toString())
             val visits = visitRepository.getVisitsByPatientUuid(patientUuiid)
-            when(val treatments = treatmentRepository.fetchAllTreatments(patient)) {
+            when(val treatments = treatmentRepository.fetchAllTreatments(UUID.fromString(patient.uuid))) {
                 is Result.Success -> {
                     val adherenceByVisitId = adherenceByDate(treatments.data)
                     val visitsWithAdherence = visits

@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 
-object VisitExample {
+object OpenMrsVisitExample {
 
     fun random(treatment: Treatment = TreatmentExample.activeTreatment(), startDate: Instant = Instant.now()): Visit {
 

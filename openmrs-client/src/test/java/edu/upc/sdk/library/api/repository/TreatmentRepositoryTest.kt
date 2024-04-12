@@ -15,10 +15,11 @@ import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
+import edu.upc.sdk.library.models.OpenMrsVisitExample
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.TreatmentExample
 import edu.upc.sdk.library.models.Visit
-import edu.upc.sdk.library.models.VisitExample
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -27,6 +28,7 @@ import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
 import io.mockk.slot
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.Request
 import org.joda.time.Instant
 import org.junit.Before
@@ -57,7 +59,7 @@ class TreatmentRepositoryTest {
 
     @Before
     fun setUp() {
-        restApi = mockk(relaxed = true)
+        restApi = mockk()
         visitRepository = mockk(relaxed = true)
         newVisitRepository = mockk(relaxed = true)
         encounterRepository = mockk(relaxed = true)
@@ -73,6 +75,29 @@ class TreatmentRepositoryTest {
     }
 
     @Test
+    fun `should get all treatments`() = runTest {
+        val patientUuid = UUID.randomUUID()
+
+        val now = Instant.now().withMillis(0)
+        val activeTreatment = TreatmentExample.activeTreatment(now)
+        val inactiveTreatment = TreatmentExample.inactiveTreatment()
+
+        val visitWithActiveTreatment = OpenMrsVisitExample.random(activeTreatment)
+        val visitWithInactiveTreatment = OpenMrsVisitExample.random(inactiveTreatment)
+
+        val visitList = listOf(visitWithActiveTreatment, visitWithInactiveTreatment)
+
+        val call = mockk<Call<Results<Visit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(patientUuid.toString(), "custom:(uuid,visitType:ref,encounters:full)") } returns call
+        coEvery { call.execute() } returns Response.success(Results<Visit>().apply {
+            results = visitList
+        })
+
+        val result = treatmentRepository.fetchAllTreatments(patientUuid)
+        assertEquals(edu.upc.sdk.library.models.Result.Success(listOf(activeTreatment, inactiveTreatment)), result)
+    }
+
+    @Test
     fun `should get all active treatments`() {
 
         val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
@@ -81,14 +106,16 @@ class TreatmentRepositoryTest {
         val activeTreatment = TreatmentExample.activeTreatment(now)
         val inactiveTreatment = TreatmentExample.inactiveTreatment()
 
-        val visitWithActiveTreatment = VisitExample.random(activeTreatment)
-        val visitWithInactiveTreatment = VisitExample.random(inactiveTreatment)
+        val visitWithActiveTreatment = OpenMrsVisitExample.random(activeTreatment)
+        val visitWithInactiveTreatment = OpenMrsVisitExample.random(inactiveTreatment)
 
         val visitList = listOf(visitWithActiveTreatment, visitWithInactiveTreatment)
 
-        coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(
-            visitList
-        )
+        val call = mockk<Call<Results<Visit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(patient.uuid, "custom:(uuid,visitType:ref,encounters:full)") } returns call
+        coEvery { call.execute() } returns Response.success(Results<Visit>().apply {
+            results = visitList
+        })
 
         runBlocking {
             val result = treatmentRepository.fetchAllActiveTreatments(patient)
@@ -110,11 +137,11 @@ class TreatmentRepositoryTest {
         val futureDateTreatment = TreatmentExample.activeTreatment(afterVisit)
         val previousAndInactiveTreatment = TreatmentExample.inactiveTreatment(beforeVisit)
 
-        val visitWithPreviousTreatment = VisitExample.random(previousTreatment, beforeVisit)
-        val visitWithTreatment = VisitExample.random(actualVisitTreatment, visitDate)
-        val visitWithFutureTreatment = VisitExample.random(futureDateTreatment, afterVisit)
+        val visitWithPreviousTreatment = OpenMrsVisitExample.random(previousTreatment, beforeVisit)
+        val visitWithTreatment = OpenMrsVisitExample.random(actualVisitTreatment, visitDate)
+        val visitWithFutureTreatment = OpenMrsVisitExample.random(futureDateTreatment, afterVisit)
         val visitWithPreviousAndInactiveTreatment =
-            VisitExample.random(previousAndInactiveTreatment, beforeVisit)
+            OpenMrsVisitExample.random(previousAndInactiveTreatment, beforeVisit)
 
         val visitList = listOf(
             visitWithPreviousTreatment,
@@ -123,9 +150,11 @@ class TreatmentRepositoryTest {
             visitWithPreviousAndInactiveTreatment
         )
 
-        coEvery { visitRepository.getAllVisitsForPatient(patient) } returns Observable.just(
-            visitList
-        )
+        val call = mockk<Call<Results<Visit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(patient.uuid, "custom:(uuid,visitType:ref,encounters:full)") } returns call
+        coEvery { call.execute() } returns Response.success(Results<Visit>().apply {
+            results = visitList
+        })
 
         every { doctorRepository.getDoctorRegistrationNumber(org.mockito.kotlin.any()) } returns "123456"
 
