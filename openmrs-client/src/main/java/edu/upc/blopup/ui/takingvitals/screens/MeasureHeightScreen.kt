@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,10 +28,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.upc.R
+import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.SubmitButton
+import edu.upc.blopup.ui.takingvitals.components.LatestHeightResultUiState
 
 @Composable
-fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) {
+fun MeasureHeightScreen(
+    onClickNext: (String) -> Unit,
+    receiveLatestHeight: () -> Unit,
+    latestHeight: LatestHeightResultUiState
+) {
+    LaunchedEffect(Unit) {
+        receiveLatestHeight()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,7 +52,13 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) 
             ),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        var text by remember { mutableStateOf(TextFieldValue(startingHeight.trim())) }
+        var latestHeightSet by remember { mutableStateOf(false) }
+        var text by remember { mutableStateOf(TextFieldValue("")) }
+        
+        if (!latestHeightSet && latestHeight is LatestHeightResultUiState.Success) {
+            text = TextFieldValue(latestHeight.height.toString())
+            latestHeightSet = true
+        }
 
         HeightInstructions(Modifier.weight(1f))
         HeightInput(text, onValueChange = { text = it })
@@ -53,10 +70,13 @@ fun MeasureHeightScreen(onClickNext: (String) -> Unit, startingHeight : String) 
 
 @Composable
 fun HeightInput(text: TextFieldValue, onValueChange: (TextFieldValue) -> Unit) {
-    OutlinedTextField(value = text,
+    OutlinedTextField(
+        value = text,
         onValueChange = onValueChange,
-        label = { Text(stringResource(R.string.height_value_label))},
-        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+        label = { Text(stringResource(R.string.height_value_label)) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
         suffix = {
             Text(
                 text = stringResource(id = R.string.height_unit)
@@ -70,7 +90,7 @@ fun HeightInput(text: TextFieldValue, onValueChange: (TextFieldValue) -> Unit) {
             focusedContainerColor = Color.Transparent,
             focusedLabelColor = Color.Black,
             errorContainerColor = Color.Transparent
-            )
+        )
 
     )
 }
@@ -105,10 +125,17 @@ fun HeightInstructions(modifier: Modifier) {
             text = stringResource(R.string.height_instructions),
             fontSize = 16.sp,
         )
-    }}
+    }
+}
 
 @Preview(showSystemUi = true)
 @Composable
 fun HeightDataPreview() {
-    MeasureHeightScreen({}, "156")
+    MeasureHeightScreen({}, {}, LatestHeightResultUiState.Success(156))
+}
+
+@Preview
+@Composable
+fun HeightNoDataPreview() {
+    MeasureHeightScreen({}, {}, LatestHeightResultUiState.NotFound)
 }

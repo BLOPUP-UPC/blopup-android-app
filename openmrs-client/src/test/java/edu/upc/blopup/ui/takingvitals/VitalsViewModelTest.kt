@@ -5,8 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.CheckTreatment
 import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.MedicationType
+import edu.upc.blopup.model.VisitExample
 import edu.upc.blopup.toggles.BuildConfigWrapper
 import edu.upc.blopup.ui.ResultUiState
+import edu.upc.blopup.ui.takingvitals.components.LatestHeightResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
 import edu.upc.sdk.library.api.repository.BluetoothConnectionException
 import edu.upc.sdk.library.api.repository.Measurement
@@ -18,9 +20,6 @@ import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.WeightMeasurement
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.Encounter
-import edu.upc.sdk.library.models.Observation
-import edu.upc.sdk.library.models.OpenMrsVisitExample
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
@@ -49,7 +48,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.Optional
+import java.util.UUID
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
 class VitalsViewModelTest {
@@ -76,10 +75,14 @@ class VitalsViewModelTest {
     private lateinit var patientDAO: PatientDAO
 
     private val patientId = 1L
+    private val patientUuid = UUID.randomUUID()
 
     private var savedStateHandle: SavedStateHandle = SavedStateHandle().apply {
         set(
             ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patientId
+        )
+        set(
+            ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE, patientUuid.toString()
         )
     }
 
@@ -179,57 +182,29 @@ class VitalsViewModelTest {
 
     @Test
     fun `should get latest height data when present`() = runTest {
-        val height = "170"
-        val visit = OpenMrsVisitExample.random().apply {
-            encounters = listOf(
-                Encounter().apply {
-                    observations = listOf(
-                        Observation().apply {
-                            display = "Height: $height"
-                            displayValue = "$height.0"
-                        }
-                    )
-                }
-            )
-        }
+        val height = 170
+        val visit = VisitExample.random(heightCm = height)
 
-        every {
-            visitRepository.getLatestVisitWithHeight(patientId)
-        } returns Optional.of(visit)
+        coEvery { newVisitRepository.getLatestVisitWithHeight(patientUuid) } returns visit
 
-        val result = viewModel.getLastHeightFromVisits()
+        viewModel.getLastHeightFromVisits()
 
-        assertEquals(height, result)
+        assertEquals(LatestHeightResultUiState.Success(height), viewModel.latestHeightUiState.value)
     }
 
     @Test
     fun `should get empty height data when visit has no height`() = runTest {
-        val visit = OpenMrsVisitExample.random()
+        coEvery { newVisitRepository.getLatestVisitWithHeight(patientUuid) } returns null
 
-        every {
-            visitRepository.getLatestVisitWithHeight(patientId)
-        } returns Optional.of(visit)
+        viewModel.getLastHeightFromVisits()
 
-        val result = viewModel.getLastHeightFromVisits()
-
-        assertEquals("", result)
-    }
-
-    @Test
-    fun `should get empty height data without visit`() = runTest {
-        every {
-            visitRepository.getLatestVisitWithHeight(patientId)
-        } returns Optional.empty()
-
-        val result = viewModel.getLastHeightFromVisits()
-
-        assertEquals("", result)
+        assertEquals(LatestHeightResultUiState.NotFound, viewModel.latestHeightUiState.value)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `should create new visit and add vitals information`() = runTest {
-        val visit = edu.upc.blopup.model.VisitExample.random(heightCm = 170)
+        val visit = VisitExample.random(heightCm = 170)
 
         every { patientDAO.findPatientByID(patientId.toString()) } returns testPatient
         coEvery {

@@ -133,6 +133,10 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
                     ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
                     patientId
                 )
+                .putExtra(
+                    ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE,
+                    patientUuid.toString()
+                )
         )
     }
 

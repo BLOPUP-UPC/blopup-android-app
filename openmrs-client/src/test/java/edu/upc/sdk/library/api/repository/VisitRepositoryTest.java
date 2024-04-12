@@ -1,6 +1,5 @@
 package edu.upc.sdk.library.api.repository;
 
-import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
@@ -12,8 +11,6 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.work.testing.WorkManagerTestInitHelper;
 
-import com.google.common.collect.ImmutableList;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,18 +21,12 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.dao.LocationDAO;
 import edu.upc.sdk.library.dao.VisitDAO;
-import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.Observation;
 import edu.upc.sdk.library.models.Visit;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -80,40 +71,6 @@ public class VisitRepositoryTest {
     @After
     public void tearDown() {
         WorkManagerTestInitHelper.closeWorkDatabase();
-    }
-
-    @Test
-    public void shouldReturnEmptyOptionalWhenNoVisitsExist() {
-        List<Visit> emptyList = new ArrayList<>();
-
-        when(visitDAO.getVisitsByPatientID(patientID)).thenReturn(Observable.just(emptyList));
-
-        Optional<Visit> result = visitRepository.getLatestVisitWithHeight(patientID);
-
-        assertFalse(result.isPresent());
-    }
-
-    @Test
-    public void shouldReturnOnlyVisitsWithHeightData() {
-        Visit mostRecentVisitWithoutHeight = new Visit();
-        mostRecentVisitWithoutHeight.startDatetime = "2020-01-04";
-        Visit oldVisitWithHeight = new Visit();
-        oldVisitWithHeight.startDatetime = "2020-01-02";
-        Encounter encounter = new Encounter();
-        Observation observation = new Observation();
-        observation.setDisplay("Height");
-        encounter.setObservations(ImmutableList.of(observation));
-        oldVisitWithHeight.setEncounters(ImmutableList.of(encounter));
-        Visit latestVisitWithHeight = new Visit();
-        latestVisitWithHeight.startDatetime = "2020-01-03";
-        latestVisitWithHeight.setEncounters(ImmutableList.of(encounter));
-        List<Visit> visits = Arrays.asList(mostRecentVisitWithoutHeight, oldVisitWithHeight, latestVisitWithHeight);
-
-        when(visitDAO.getVisitsByPatientID(patientID)).thenReturn(Observable.just(visits));
-
-        Optional<Visit> result = visitRepository.getLatestVisitWithHeight(patientID);
-
-        assert (result.get().equals(latestVisitWithHeight));
     }
 
     @Test

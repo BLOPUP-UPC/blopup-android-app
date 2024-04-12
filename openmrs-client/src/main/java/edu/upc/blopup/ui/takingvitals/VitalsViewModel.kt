@@ -10,6 +10,7 @@ import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.toggles.check
 import edu.upc.blopup.toggles.hardcodeBluetoothDataToggle
 import edu.upc.blopup.ui.ResultUiState
+import edu.upc.blopup.ui.takingvitals.components.LatestHeightResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
 import edu.upc.sdk.library.api.repository.NewVisitRepository
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
@@ -26,8 +27,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
-import kotlin.jvm.optionals.getOrNull
 
 @HiltViewModel
 open class VitalsViewModel @Inject constructor(
@@ -42,12 +43,17 @@ open class VitalsViewModel @Inject constructor(
 
     private val patientId: Long =
         savedStateHandle[ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE]!!
+    private val patientUuid: String =
+        savedStateHandle[ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE]!!
 
     private val _bloodPressureUiState = MutableStateFlow<ResultUiState<BloodPressure>>(ResultUiState.Loading)
     val bloodPressureUiState: StateFlow<ResultUiState<BloodPressure>> = _bloodPressureUiState.asStateFlow()
 
     private val _weightUiState = MutableStateFlow<ResultUiState<String>>(ResultUiState.Loading)
     val weightUiState: StateFlow<ResultUiState<String>> = _weightUiState.asStateFlow()
+
+    private val _latestHeightUiState = MutableStateFlow<LatestHeightResultUiState>(LatestHeightResultUiState.Loading)
+    val latestHeightUiState: StateFlow<LatestHeightResultUiState> = _latestHeightUiState.asStateFlow()
 
     private val _heightUiState = MutableStateFlow<String?>(null)
 
@@ -141,9 +147,16 @@ open class VitalsViewModel @Inject constructor(
         _heightUiState.value = height
     }
 
-    fun getLastHeightFromVisits() =
-        visitRepository.getLatestVisitWithHeight(patientId).getOrNull()
-            ?.getLatestHeight() ?: ""
+    fun getLastHeightFromVisits() = viewModelScope.launch {
+        newVisitRepository.getLatestVisitWithHeight(UUID.fromString(patientUuid)).let {
+            if (it == null) {
+                _latestHeightUiState.value = LatestHeightResultUiState.NotFound
+                return@let
+            } else {
+                _latestHeightUiState.value = LatestHeightResultUiState.Success(it.heightCm!!)
+            }
+        }
+    }
 
     fun createVisit() {
         _createVisitResultUiState.value = ResultUiState.Loading

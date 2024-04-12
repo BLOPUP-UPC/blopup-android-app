@@ -16,7 +16,6 @@ package edu.upc.sdk.library.dao;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -132,28 +131,6 @@ public class VisitDAO {
             }
         }
         return visitRoomDAO.updateVisit(AppDatabaseHelper.convert(visit)) > 0;
-    }
-
-    /**
-     * Gets visits by patient id.
-     *
-     * @param patientID the patient id
-     * @return the visits by patient id
-     */
-    public Observable<List<Visit>> getVisitsByPatientID(final Long patientID) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            List<Visit> visits = new ArrayList<>();
-            List<VisitEntity> visitEntities;
-            try {
-                visitEntities = visitRoomDAO.getVisitsByPatientID(patientID).blockingGet();
-                for (VisitEntity entity : visitEntities) {
-                    visits.add(AppDatabaseHelper.convert(entity));
-                }
-                return visits;
-            } catch (Exception e) {
-                return visits;
-            }
-        });
     }
 
     /**

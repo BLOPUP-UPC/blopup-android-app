@@ -146,11 +146,16 @@ class VitalsActivity : ACBaseActivity() {
                         composable(Routes.MeasureHeightScreen.id) {
                             topBarTitle = R.string.height_data
                             isDataScreen = false
+                            val latestHeight by viewModel.latestHeightUiState.collectAsState()
 
-                            MeasureHeightScreen({
-                                viewModel.saveHeight(it)
-                                navigationController.navigate(Routes.TreatmentAdherenceScreen.id)
-                            }, viewModel.getLastHeightFromVisits())
+                            MeasureHeightScreen(
+                                {
+                                    viewModel.saveHeight(it)
+                                    navigationController.navigate(Routes.TreatmentAdherenceScreen.id)
+                                },
+                                viewModel::getLastHeightFromVisits,
+                                latestHeight
+                            )
                         }
                         composable(Routes.TreatmentAdherenceScreen.id) {
                             topBarTitle = R.string.adherence_data

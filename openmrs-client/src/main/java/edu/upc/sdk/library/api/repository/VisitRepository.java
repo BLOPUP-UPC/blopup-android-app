@@ -17,11 +17,8 @@ package edu.upc.sdk.library.api.repository;
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -132,21 +129,6 @@ public class VisitRepository extends BaseRepository {
                 throw new IOException("Error with fetching last vitals: " + response.message());
             }
         });
-    }
-
-    public Optional<Visit> getLatestVisitWithHeight(long patientId) {
-        List<Visit> visits = visitDAO.getVisitsByPatientID(patientId)
-                .toBlocking().first().stream()
-                .filter(visit -> visit.encounters != null &&
-                        visit.encounters.stream()
-                                .anyMatch(encounter -> encounter.getObservations().stream()
-                                        .anyMatch(observation -> observation.getDisplay().contains("Height"))))
-                .sorted(Comparator.comparing(Visit::getStartDatetime, Comparator.reverseOrder()))
-                .collect(Collectors.toList());
-        if (visits.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(visits.get(0));
     }
 
     public void deleteVisitByUuid(String visitUuid) throws IOException {
