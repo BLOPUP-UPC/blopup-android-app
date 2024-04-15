@@ -1,8 +1,6 @@
 package edu.upc.blopup.ui.addeditpatient
 
 import android.app.Activity
-import android.content.Context
-import android.content.res.Configuration
 import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,14 +53,16 @@ fun LegalConsentDialog(
     languageSelected: String,
     onCloseDialog: () -> Unit,
     onSaveLegalConsent: (String) -> Unit,
-    legalConsentFile: String
+    legalConsentFile: String,
+    getStringByResourceId: (Int) -> String,
+    getTextInLanguageSelected: (String, Int) -> String
 ) {
 
     val context = LocalContext.current
 
     var isRecordingInProcess by remember { mutableStateOf(false) }
     var isAudioBeingPlayed by remember { mutableStateOf(false) }
-    val languageCode = getLanguageCode(languageSelected, context)
+    val languageCode = getLanguageCode(languageSelected, getStringByResourceId)
     lateinit var fileName: String
     var isResumed by remember { mutableStateOf(true) }
 
@@ -78,6 +78,7 @@ fun LegalConsentDialog(
                 LegalConsentDialogFragment.TAG,
                 languageCode
             )
+
     val audioRecorder = remember {
         AudioRecorder(
             fileName,
@@ -106,7 +107,7 @@ fun LegalConsentDialog(
         ) {
             if (isRecordingInProcess) { ShowRecordingInProgress() }
 
-            LegalConsentWording(languageCode, context, Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 20.dp).weight(1f))
+            LegalConsentWording(languageCode, Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 20.dp).weight(1f), getTextInLanguageSelected)
 
             if (!isRecordingInProcess) {
                 Column(Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
@@ -187,19 +188,23 @@ fun ShowRecordingInProgress() {
     }}
 
 @Composable
-fun LegalConsentWording(languageCode: String?, context: Activity, modifier: Modifier) {
+fun LegalConsentWording(
+    languageCode: String?,
+    modifier: Modifier,
+    getTextInLanguageSelected: (String, Int) -> String
+) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween, modifier = modifier
     ) {
         Text(text = stringResource(R.string.legal_consent_intro_first), modifier = Modifier.padding(bottom = 15.dp))
         Text(text = legalConsentFormattedText())
         Text(text = legalConsentFormattedTextSecond(), modifier = Modifier.padding(bottom = 15.dp))
-        Text(text = getTextInLanguageSelected(languageCode!!, R.string.legal_consent, context))
-        BulletPointText(text = R.string.first_bullet_point, languageCode, context)
-        BulletPointText(text = R.string.second_bullet_point, languageCode = languageCode, context = context)
-        BulletPointText(text = R.string.third_bullet_point, languageCode = languageCode, context = context)
-        BulletPointText(text = R.string.fourth_bullet_point, languageCode = languageCode, context = context)
-        Text(text = getTextInLanguageSelected(languageCode, R.string.bottom_text, context))
+        Text(text = getTextInLanguageSelected(languageCode!!, R.string.legal_consent))
+        BulletPointText(R.string.first_bullet_point, languageCode, getTextInLanguageSelected)
+        BulletPointText(R.string.second_bullet_point, languageCode, getTextInLanguageSelected)
+        BulletPointText(R.string.third_bullet_point, languageCode, getTextInLanguageSelected)
+        BulletPointText(R.string.fourth_bullet_point, languageCode, getTextInLanguageSelected)
+        Text(text = getTextInLanguageSelected(languageCode, R.string.bottom_text))
     }
 }
 
@@ -237,7 +242,11 @@ private fun legalConsentFormattedTextSecond() = buildAnnotatedString {
 
 
 @Composable
-fun BulletPointText(text: Int, languageCode: String, context: Context) {
+fun BulletPointText(
+    text: Int,
+    languageCode: String,
+    getTextInLanguageSelected: (String, Int) -> String
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(bottom = 10.dp)
@@ -247,35 +256,26 @@ fun BulletPointText(text: Int, languageCode: String, context: Context) {
                 setImageResource(R.drawable.circle)
             }
         }, modifier = Modifier.padding(end = 15.dp))
-        Text(text = getTextInLanguageSelected(languageCode, text, context))
+        Text(text = getTextInLanguageSelected(languageCode, text))
     }
 }
 
-private fun getTextInLanguageSelected(
-    selectedLanguage: String,
-    resourceId: Int,
-    context: Context
-): String {
-    val requestedLocale = Locale(selectedLanguage)
-    val config =
-        Configuration(context.resources.configuration).apply { setLocale(requestedLocale) }
-
-    return context.createConfigurationContext(config).getText(resourceId).toString()
-}
-
-private fun getLanguageCode(language: String?, context: Context): String? {
+private fun getLanguageCode(
+    language: String?,
+    getStringByResourceId: (Int) -> String
+): String? {
     val currentLocale = Locale.getDefault()
     val languageMap = mapOf(
-        context.getString(R.string.english) to "en",
-        context.getString(R.string.spanish) to "es",
-        context.getString(R.string.catalan) to "ca",
-        context.getString(R.string.italian) to "it",
-        context.getString(R.string.portuguese) to "pt",
-        context.getString(R.string.german) to "de",
-        context.getString(R.string.french) to "fr",
-        context.getString(R.string.moroccan) to "ar",
-        context.getString(R.string.russian) to "ru",
-        context.getString(R.string.ukrainian) to "uk",
+        getStringByResourceId(R.string.english) to "en",
+        getStringByResourceId(R.string.spanish) to "es",
+        getStringByResourceId(R.string.catalan) to "ca",
+        getStringByResourceId(R.string.italian) to "it",
+        getStringByResourceId(R.string.portuguese) to "pt",
+        getStringByResourceId(R.string.german) to "de",
+        getStringByResourceId(R.string.french) to "fr",
+        getStringByResourceId(R.string.moroccan) to "ar",
+        getStringByResourceId(R.string.russian) to "ru",
+        getStringByResourceId(R.string.ukrainian) to "uk",
     )
     return languageMap[language ?: "English"]?.lowercase(currentLocale)
 }
@@ -283,5 +283,5 @@ private fun getLanguageCode(language: String?, context: Context): String? {
 @Preview
 @Composable
 fun LegalConsentDialogPreview() {
-    LegalConsentDialog("en", {}, {}, "")
+    LegalConsentDialog("en", {}, {}, "", { _ -> ""}, { _, _ -> "" })
 }

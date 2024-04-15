@@ -1,8 +1,10 @@
 package edu.upc.blopup.ui.dashboard
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -29,10 +31,12 @@ import edu.upc.blopup.ui.addeditpatient.CreatePatientScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @AndroidEntryPoint
 class DashboardActivity : ACBaseActivity() {
@@ -96,9 +100,12 @@ class DashboardActivity : ACBaseActivity() {
                                 },
                                 { isCreatePatientWithSomeInput = true },
                                 { askPermissionsForLegalConsent() },
-                                { getString(it) }
+                                { getString(it) },
+                                { country: Country -> country.getLabel(this@DashboardActivity) },
+                                { selectedLanguage: String, resourceId: Int -> getTextInLanguageSelected(selectedLanguage, resourceId, this@DashboardActivity) }
                             )
                         }
+
                         composable(
                             Routes.PatientDashboardScreen.id, arguments = listOf(
                                 navArgument(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE) {
@@ -166,5 +173,17 @@ fun PatientDashboardScreen(startPatientDashboardActivity: (patientId: Long, pati
 @Composable
 fun SearchPatientScreen(){
     Text("Search Patient Screen")
+}
+
+private fun getTextInLanguageSelected(
+    selectedLanguage: String,
+    resourceId: Int,
+    context: Context
+): String {
+    val requestedLocale = Locale(selectedLanguage)
+    val config =
+        Configuration(context.resources.configuration).apply { setLocale(requestedLocale) }
+
+    return context.createConfigurationContext(config).getText(resourceId).toString()
 }
 

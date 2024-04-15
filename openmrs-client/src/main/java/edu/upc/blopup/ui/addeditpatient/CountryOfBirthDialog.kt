@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.addeditpatient
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,8 +33,11 @@ import edu.upc.R
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 
 @Composable
-fun CountryOfBirthDialog(onCloseDialog: () -> Unit, onCountrySelected: (Country) -> Unit) {
-    val context = LocalContext.current
+fun CountryOfBirthDialog(
+    onCloseDialog: () -> Unit,
+    onCountrySelected: (Country) -> Unit,
+    getCountryLabel: (Country) -> String
+) {
 
     var searchInput by remember { mutableStateOf("") }
 
@@ -72,9 +73,9 @@ fun CountryOfBirthDialog(onCloseDialog: () -> Unit, onCountrySelected: (Country)
                 )
             )
             LazyColumn {
-                val countryList = Country.entries.sortedBy { it.getLabel(context) }
-                items(countryList.filter { it.getLabel(context).contains(searchInput, true)}) {
-                    ListItem(it, context, onItemSelected = { onCountrySelected(it); onCloseDialog() })
+                val countryList = Country.entries.sortedBy { getCountryLabel(it) }
+                items(countryList.filter { getCountryLabel(it).contains(searchInput, true)}) {
+                    ListItem(it, getCountryLabel(it), onItemSelected = { onCountrySelected(it); onCloseDialog() })
                 }
             }
         }
@@ -84,7 +85,7 @@ fun CountryOfBirthDialog(onCloseDialog: () -> Unit, onCountrySelected: (Country)
 }
 
 @Composable
-fun ListItem(country: Country, context: Context, onItemSelected: () -> Unit) {
+fun ListItem(country: Country, countryLabel: String, onItemSelected: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -96,18 +97,18 @@ fun ListItem(country: Country, context: Context, onItemSelected: () -> Unit) {
             contentDescription = "country flag",
             modifier = Modifier.padding(end = 10.dp)
         )
-        Text(text = country.getLabel(context), color = Color.Gray, fontSize = 16.sp)
+        Text(text = countryLabel, color = Color.Gray, fontSize = 16.sp)
     }
 }
 
 @Preview
 @Composable
 fun CountryOfBirthDialogPreview() {
-    CountryOfBirthDialog({}, {})
+    CountryOfBirthDialog({}, {}, { it.name })
 }
 
 @Preview
 @Composable
 fun ListItemPreview() {
-    ListItem(Country.ARGENTINA, LocalContext.current) {}
+    ListItem(Country.ARGENTINA, "") {}
 }

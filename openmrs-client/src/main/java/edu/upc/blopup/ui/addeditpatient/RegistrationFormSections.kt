@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.addeditpatient
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -52,6 +51,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.upc.R
+import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import java.time.Instant
 import java.time.ZoneId
 
@@ -203,7 +203,7 @@ fun DateOfBirthSection(
 fun CountryOfBirthSection(
     countryOfBirth: String,
     setCountryOfBirth: (String) -> Unit,
-    context: Context
+    getCountryLabel: (Country) -> String
 ) {
     var showCountryOfBirthDialog by remember { mutableStateOf(false) }
 
@@ -216,8 +216,8 @@ fun CountryOfBirthSection(
             CountryOfBirthDialog(
                 onCloseDialog = { showCountryOfBirthDialog = false },
                 onCountrySelected = { selectedCountry ->
-                    setCountryOfBirth(selectedCountry.getLabel(context))
-                })
+                    setCountryOfBirth(getCountryLabel(selectedCountry))
+                }, getCountryLabel)
         }
     }
 }
@@ -227,6 +227,7 @@ fun LegalConsentSection(
     setLegalConsentFile: (String) -> Unit,
     legalConsentFile: String,
     getStringByResourceId: (Int) -> String,
+    getTextInLanguageSelected: (String, Int) -> String,
     ) {
     var showLanguagesDropDownList by remember { mutableStateOf(false) }
     var showLegalConsentDialog by remember { mutableStateOf(false) }
@@ -307,7 +308,9 @@ fun LegalConsentSection(
                 languageSelected,
                 { showLegalConsentDialog = false },
                 { setLegalConsentFile(it) },
-                legalConsentFile
+                legalConsentFile,
+                getStringByResourceId,
+                getTextInLanguageSelected
             )
         }
     }

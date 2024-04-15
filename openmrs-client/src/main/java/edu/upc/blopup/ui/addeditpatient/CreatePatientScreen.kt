@@ -15,13 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
+import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import edu.upc.sdk.utilities.ToastUtil
 
 @Composable
@@ -30,6 +30,8 @@ fun CreatePatientScreen(
     isFormWithSomeInput: () -> Unit,
     askLegalConsentPermission: () -> Unit,
     getStringByResourceId: (Int) -> String,
+    getCountryLabel : (Country) -> String,
+    getTextInLanguageSelected: (String, Int) -> String,
     viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
     val createPatientUiState = viewModel.createPatientUiState.collectAsState()
@@ -45,7 +47,9 @@ fun CreatePatientScreen(
         navigateToPatientDashboard,
         viewModel::isInvalidBirthDate,
         isFormWithSomeInput,
-        getStringByResourceId
+        getStringByResourceId,
+        getCountryLabel,
+        getTextInLanguageSelected
     )
 
 }
@@ -59,8 +63,10 @@ fun CreatePatientForm(
     isBirthDateValidRange: (String) -> Boolean,
     isFormWithSomeInput: () -> Unit,
     getStringByResourceId: (Int) -> String,
+    getCountryLabel: (Country) -> String,
+    getTextInLanguageSelected: (String, Int) -> String,
 ) {
-    val context = LocalContext.current
+
     var name by remember { mutableStateOf("") }
     var familyName by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
@@ -124,9 +130,9 @@ fun CreatePatientForm(
         )
 
 
-        CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, context)
+        CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, getCountryLabel)
 
-        LegalConsentSection({ legalConsentFile = it }, legalConsentFile, getStringByResourceId)
+        LegalConsentSection({ legalConsentFile = it }, legalConsentFile, getStringByResourceId, getTextInLanguageSelected)
 
         Column {
             when (createPatientUiState) {
@@ -194,6 +200,8 @@ fun CreatePatientPreview() {
         { true },
         {},
         {_ -> ""},
+        {_ -> ""},
+        { _,_ -> ""}
     )
 }
 
@@ -208,5 +216,7 @@ fun CreatePatientLoadingPreview() {
         { true },
         { },
         {_ -> ""},
+        { _ -> ""},
+        { _,_ -> ""}
     )
 }
