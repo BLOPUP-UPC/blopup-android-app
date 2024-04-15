@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -223,13 +224,13 @@ fun CountryOfBirthSection(
 
 @Composable
 fun LegalConsentSection(
-    context: Context,
     setLegalConsentFile: (String) -> Unit,
     legalConsentFile: String,
-) {
+    getStringByResourceId: (Int) -> String,
+    ) {
     var showLanguagesDropDownList by remember { mutableStateOf(false) }
     var showLegalConsentDialog by remember { mutableStateOf(false) }
-    var languageSelected by remember { mutableStateOf(context.getString(R.string.select_language)) }
+    var languageSelected by remember { mutableStateOf(getStringByResourceId(R.string.select_language)) }
 
 
     Column(Modifier.padding(vertical = 15.dp)) {
@@ -240,7 +241,7 @@ fun LegalConsentSection(
                     .clickable { showLanguagesDropDownList = true }
                     .border(
                         width = 1.dp,
-                        color = if (languageSelected == context.getString(R.string.select_language)) MaterialTheme.colorScheme.error else Color.Gray,
+                        color = if (languageSelected == getStringByResourceId(R.string.select_language)) MaterialTheme.colorScheme.error else Color.Gray,
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(15.dp)
@@ -257,7 +258,7 @@ fun LegalConsentSection(
                         Text(
                             text = languageSelected,
                             fontSize = 16.sp,
-                            color = if (languageSelected == context.getString(R.string.select_language)) MaterialTheme.colorScheme.error else Color.Black,
+                            color = if (languageSelected == getStringByResourceId(R.string.select_language)) MaterialTheme.colorScheme.error else Color.Black,
                         )
                     }
                     Icon(
@@ -267,7 +268,6 @@ fun LegalConsentSection(
                     )
                 }
                 ShowLanguagesDropDownList(
-                    context,
                     showLanguagesDropDownList,
                     { showLanguagesDropDownList = false },
                     { language -> languageSelected = language })
@@ -294,11 +294,11 @@ fun LegalConsentSection(
             modifier = Modifier
                 .padding(vertical = 10.dp)
                 .clickable {
-                    if (languageSelected != context.getString(R.string.select_language)) {
+                    if (languageSelected != getStringByResourceId(R.string.select_language)) {
                         showLegalConsentDialog = true
                     }
                 },
-            color = if (languageSelected == context.getString(R.string.select_language)) Color.Gray else colorResource(
+            color = if (languageSelected == getStringByResourceId(R.string.select_language)) Color.Gray else colorResource(
                 R.color.allergy_orange
             )
         )
@@ -306,7 +306,6 @@ fun LegalConsentSection(
             LegalConsentDialog(
                 languageSelected,
                 { showLegalConsentDialog = false },
-                context,
                 { setLegalConsentFile(it) },
                 legalConsentFile
             )
@@ -316,11 +315,11 @@ fun LegalConsentSection(
 
 @Composable
 fun ShowLanguagesDropDownList(
-    context: Context,
     showLanguagesDialog: Boolean,
     closeDropDown: () -> Unit,
     onLanguageSelected: (String) -> Unit,
 ) {
+    val context = LocalContext.current
     val languagesList = context.resources.getStringArray(R.array.languages)
     DropdownMenu(
         expanded = showLanguagesDialog,

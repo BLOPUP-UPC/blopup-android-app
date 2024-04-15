@@ -54,10 +54,11 @@ import java.util.Locale
 fun LegalConsentDialog(
     languageSelected: String,
     onCloseDialog: () -> Unit,
-    context: Context,
     onSaveLegalConsent: (String) -> Unit,
     legalConsentFile: String
 ) {
+
+    val context = LocalContext.current
 
     var isRecordingInProcess by remember { mutableStateOf(false) }
     var isAudioBeingPlayed by remember { mutableStateOf(false) }
@@ -282,5 +283,5 @@ private fun getLanguageCode(language: String?, context: Context): String? {
 @Preview
 @Composable
 fun LegalConsentDialogPreview() {
-    LegalConsentDialog("en", {}, LocalContext.current, {}, "")
+    LegalConsentDialog("en", {}, {}, "")
 }

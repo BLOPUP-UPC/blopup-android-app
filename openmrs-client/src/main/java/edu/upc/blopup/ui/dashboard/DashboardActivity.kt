@@ -24,7 +24,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.R
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.addeditpatient.CreatePatientScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
@@ -97,7 +96,7 @@ class DashboardActivity : ACBaseActivity() {
                                 },
                                 { isCreatePatientWithSomeInput = true },
                                 { askPermissionsForLegalConsent() },
-                                getString(R.string.register_patient_error),
+                                { getString(it) }
                             )
                         }
                         composable(

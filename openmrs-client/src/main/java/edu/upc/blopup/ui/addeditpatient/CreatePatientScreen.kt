@@ -29,7 +29,7 @@ fun CreatePatientScreen(
     navigateToPatientDashboard: (Long, String) -> Unit,
     isFormWithSomeInput: () -> Unit,
     askLegalConsentPermission: () -> Unit,
-    toastErrorMessage: String,
+    getStringByResourceId: (Int) -> String,
     viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
     val createPatientUiState = viewModel.createPatientUiState.collectAsState()
@@ -45,7 +45,7 @@ fun CreatePatientScreen(
         navigateToPatientDashboard,
         viewModel::isInvalidBirthDate,
         isFormWithSomeInput,
-        toastErrorMessage
+        getStringByResourceId
     )
 
 }
@@ -58,7 +58,7 @@ fun CreatePatientForm(
     navigateToPatientDashboard: (Long, String) -> Unit,
     isBirthDateValidRange: (String) -> Boolean,
     isFormWithSomeInput: () -> Unit,
-    errorToastMessage: String,
+    getStringByResourceId: (Int) -> String,
 ) {
     val context = LocalContext.current
     var name by remember { mutableStateOf("") }
@@ -126,7 +126,7 @@ fun CreatePatientForm(
 
         CountryOfBirthSection(countryOfBirth, { countryOfBirth = it }, context)
 
-        LegalConsentSection(context, { legalConsentFile = it }, legalConsentFile)
+        LegalConsentSection({ legalConsentFile = it }, legalConsentFile, getStringByResourceId)
 
         Column {
             when (createPatientUiState) {
@@ -164,7 +164,7 @@ fun CreatePatientForm(
                         },
                         enabled = isSubmitEnabled
                     )
-                    ToastUtil.error(errorToastMessage)
+                    ToastUtil.error(getStringByResourceId(R.string.register_patient_error))
                 }
 
                 CreatePatientResultUiState.Loading -> {
@@ -193,7 +193,7 @@ fun CreatePatientPreview() {
         {_, _ -> },
         { true },
         {},
-        "Something went wrong and the patient has not been created",
+        {_ -> ""},
     )
 }
 
@@ -207,6 +207,6 @@ fun CreatePatientLoadingPreview() {
         {_, _ -> },
         { true },
         { },
-        "Something went wrong and the patient has not been created",
+        {_ -> ""},
     )
 }
