@@ -1,5 +1,7 @@
 package edu.upc.blopup.ui.dashboard
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -10,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,6 +31,7 @@ class DashboardActivity : ACBaseActivity() {
 
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
@@ -68,12 +72,33 @@ class DashboardActivity : ACBaseActivity() {
                             showBackButtonInMenu = true
                             CreatePatientScreen(
                                 { navigationController.navigate(Routes.DashboardScreen.id)},
-                                { isCreatePatientWithSomeInput = true }
+                                { isCreatePatientWithSomeInput = true },
+                                { askPermissionsForLegalConsent() }
                             )
                         }
                     }
                 }
             }
+        }
+    }
+
+    private fun askPermissionsForLegalConsent() {
+        if (ActivityCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            != PackageManager.PERMISSION_GRANTED
+            ||
+            ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.RECORD_AUDIO
+                ), 200
+            )
         }
     }
 }

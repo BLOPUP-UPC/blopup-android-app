@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,9 +34,14 @@ import edu.upc.sdk.utilities.ToastUtil
 fun CreatePatientScreen(
     goBackToDashboard: () -> Unit,
     isFormWithSomeInput: () -> Unit,
+    askLegalConsentPermission: () -> Unit,
     viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
     val createPatientUiState = viewModel.createPatientUiState.collectAsState()
+
+    LaunchedEffect(true) {
+        askLegalConsentPermission()
+    }
 
     CreatePatientForm(
         viewModel::isNameOrSurnameInvalidFormat,
@@ -43,8 +49,9 @@ fun CreatePatientScreen(
         createPatientUiState.value,
         goBackToDashboard,
         viewModel::isValidBirthDate,
-        isFormWithSomeInput
+        isFormWithSomeInput,
     )
+
 }
 
 @Composable
@@ -87,7 +94,7 @@ fun CreatePatientForm(
         legalConsentFile
     ) {
         isSubmitEnabled = checkAllFieldsFilled()
-        if(name.isNotEmpty() || familyName.isNotEmpty() || dateOfBirth.isNotEmpty() || estimatedYears.isNotEmpty() || countryOfBirth.isNotEmpty() || legalConsentFile.isNotEmpty()) {
+        if (name.isNotEmpty() || familyName.isNotEmpty() || dateOfBirth.isNotEmpty() || estimatedYears.isNotEmpty() || countryOfBirth.isNotEmpty() || legalConsentFile.isNotEmpty()) {
             isFormWithSomeInput()
         }
         onDispose { }
@@ -143,6 +150,7 @@ fun CreatePatientForm(
                         enabled = isSubmitEnabled
                     )
                 }
+
                 CreatePatientResultUiState.Error -> {
                     SubmitButton(
                         title = R.string.action_submit,
@@ -163,7 +171,10 @@ fun CreatePatientForm(
                 }
 
                 CreatePatientResultUiState.Loading -> {
-                    LoadingSpinner(modifier = Modifier.padding(5.dp), color = R.color.allergy_orange)
+                    LoadingSpinner(
+                        modifier = Modifier.padding(5.dp),
+                        color = R.color.allergy_orange
+                    )
                 }
 
                 is CreatePatientResultUiState.Success -> {
@@ -192,8 +203,8 @@ fun CreatePatientPreview() {
         { _, _, _, _, _, _, _ -> },
         CreatePatientResultUiState.NotCreated,
         {},
-        {true},
-        {}
+        { true },
+        {},
     )
 }
 
@@ -202,10 +213,10 @@ fun CreatePatientPreview() {
 fun CreatePatientLoadingPreview() {
     CreatePatientForm(
         { false },
-        { _, _, _, _, _, _,_ -> },
+        { _, _, _, _, _, _, _ -> },
         CreatePatientResultUiState.Loading,
         {},
         { true },
-        { }
+        { },
     )
 }
