@@ -1,7 +1,5 @@
 package edu.upc.blopup.ui.addeditpatient
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,19 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
-import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 
 @Composable
 fun CreatePatientScreen(
-    goBackToDashboard: () -> Unit,
+    navigateToPatientDashboard: (Long, String) -> Unit,
     isFormWithSomeInput: () -> Unit,
     askLegalConsentPermission: () -> Unit,
     viewModel: CreatePatientViewModel = hiltViewModel()
@@ -47,7 +41,7 @@ fun CreatePatientScreen(
         viewModel::isNameOrSurnameInvalidFormat,
         viewModel::createPatient,
         createPatientUiState.value,
-        goBackToDashboard,
+        navigateToPatientDashboard,
         viewModel::isValidBirthDate,
         isFormWithSomeInput,
     )
@@ -59,7 +53,7 @@ fun CreatePatientForm(
     isNameOrSurnameInvalidFormat: (String) -> Boolean,
     createPatient: (String, String, String, String, String, String, String) -> Unit,
     createPatientUiState: CreatePatientResultUiState,
-    goBackToDashboard: () -> Unit,
+    navigateToPatientDashboard: (Long, String) -> Unit,
     isBirthDateValidRange: (String) -> Boolean,
     isFormWithSomeInput: () -> Unit,
 ) {
@@ -178,20 +172,11 @@ fun CreatePatientForm(
                 }
 
                 is CreatePatientResultUiState.Success -> {
-                    goBackToDashboard()
-                    startPatientDashboardActivity(context, createPatientUiState.data)
+                    navigateToPatientDashboard(createPatientUiState.data.id!!, createPatientUiState.data.uuid!!)
                 }
 
             }
         }
-    }
-}
-
-private fun startPatientDashboardActivity(context: Context, patient: Patient) {
-    Intent(context, PatientDashboardActivity::class.java).apply {
-        putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, patient.id)
-        putExtra(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE, patient.uuid)
-        startActivity(context, this, null)
     }
 }
 
@@ -202,10 +187,9 @@ fun CreatePatientPreview() {
         { false },
         { _, _, _, _, _, _, _ -> },
         CreatePatientResultUiState.NotCreated,
-        {},
+        {_, _ -> },
         { true },
-        {},
-    )
+    ) {}
 }
 
 @Preview
@@ -215,8 +199,7 @@ fun CreatePatientLoadingPreview() {
         { false },
         { _, _, _, _, _, _, _ -> },
         CreatePatientResultUiState.Loading,
-        {},
+        {_, _ -> },
         { true },
-        { },
-    )
+    ) { }
 }

@@ -1,5 +1,6 @@
 package edu.upc.blopup.ui.addeditpatient
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -85,6 +86,7 @@ class CreatePatientViewModel @Inject constructor(
                     _createPatientUiState.value = CreatePatientResultUiState.Error
                 }
             } catch (e: Exception) {
+                Log.e("CreatePatientViewModel", e.toString())
                 _createPatientUiState.value = CreatePatientResultUiState.Error
             }
         }
