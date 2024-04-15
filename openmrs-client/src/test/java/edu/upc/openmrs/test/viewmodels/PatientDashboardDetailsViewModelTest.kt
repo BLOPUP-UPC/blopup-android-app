@@ -93,40 +93,27 @@ class PatientDashboardDetailsViewModelTest {
 
     @Test
     fun `should get all active treatments`() {
-        val patient = Patient()
         val treatmentList = listOf<Treatment>()
 
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patientUuid) } returns Result.Success(treatmentList)
 
         runBlocking {
-            viewModel.fetchActiveTreatments(patient)
-            coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
+            viewModel.fetchActiveTreatments()
+            coVerify { treatmentRepository.fetchAllActiveTreatments(patientUuid) }
             assertEquals(viewModel.activeTreatments.value, Result.Success(treatmentList))
         }
     }
 
     @Test
     fun `should refresh treatments with previous patient`() = runTest {
-        val patient = Patient()
         val treatmentList = listOf<Treatment>()
 
-        every { patientDAO.findPatientByID(PATIENT_ID) } returns patient
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(treatmentList)
+        coEvery { treatmentRepository.fetchAllActiveTreatments(patientUuid) } returns Result.Success(treatmentList)
 
-        viewModel.fetchPatientData()
         viewModel.refreshActiveTreatments()
 
-        coVerify { treatmentRepository.fetchAllActiveTreatments(patient) }
+        coVerify { treatmentRepository.fetchAllActiveTreatments(patientUuid) }
         assertEquals(viewModel.activeTreatments.value, Result.Success(treatmentList))
-    }
-
-    @Test
-    fun `should not refresh treatments without previous patient`() {
-        runBlocking {
-            viewModel.refreshActiveTreatments()
-
-            coVerify(inverse = true) { treatmentRepository.fetchAllActiveTreatments(patient) }
-        }
     }
 
     companion object {

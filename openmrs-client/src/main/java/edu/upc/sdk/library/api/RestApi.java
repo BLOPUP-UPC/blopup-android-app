@@ -15,17 +15,15 @@ import androidx.annotation.Keep;
 import java.util.Map;
 
 import edu.upc.sdk.library.api.repository.DoctorRepository.ContactDoctorRequest;
-import edu.upc.sdk.library.databases.entities.FormResourceEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.library.models.Encounter;
-import edu.upc.sdk.library.models.EncounterType;
 import edu.upc.sdk.library.models.Encountercreate;
 import edu.upc.sdk.library.models.IdGenPatientIdentifiers;
 import edu.upc.sdk.library.models.IdentifierType;
 import edu.upc.sdk.library.models.LegalConsentRequest;
-import edu.upc.sdk.library.models.Module;
 import edu.upc.sdk.library.models.Obscreate;
 import edu.upc.sdk.library.models.Observation;
+import edu.upc.sdk.library.models.OpenMRSVisit;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientDtoUpdate;
@@ -33,7 +31,6 @@ import edu.upc.sdk.library.models.Provider;
 import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.Session;
 import edu.upc.sdk.library.models.User;
-import edu.upc.sdk.library.models.OpenMRSVisit;
 import edu.upc.sdk.library.models.VisitType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -50,13 +47,6 @@ import retrofit2.http.Url;
  */
 @Keep
 public interface RestApi {
-    /**
-     * Gets forms.
-     *
-     * @return the forms
-     */
-    @GET("form?v=custom:(uuid,name,resources)")
-    Call<Results<FormResourceEntity>> getForms();
 
     /**
      * Gets locations.
@@ -184,14 +174,6 @@ public interface RestApi {
     Call<Encounter> createEncounter(@Body Encountercreate encountercreate);
 
     /**
-     * Gets encounter types.
-     *
-     * @return the encounter types
-     */
-    @GET("encountertype")
-    Call<Results<EncounterType>> getEncounterTypes();
-
-    /**
      * Gets session.
      *
      * @return the session
@@ -277,23 +259,6 @@ public interface RestApi {
 
 
     /**
-     * Gets last vitals.
-     *
-     * @param patientUUID    the patient uuid
-     * @param encounterType  the encounter type
-     * @param representation the representation
-     * @param limit          the limit
-     * @param order          the order
-     * @return the last vitals
-     */
-    @GET("encounter")
-    Call<Results<Encounter>> getLastVitals(@Query("patient") String patientUUID,
-                                           @Query("encounterType") String encounterType,
-                                           @Query("v") String representation,
-                                           @Query("limit") int limit,
-                                           @Query("order") String order);
-
-    /**
      * Update patient call.
      *
      * @param patientDto     the patient dto
@@ -304,15 +269,6 @@ public interface RestApi {
     @POST("patient/{uuid}")
     Call<PatientDto> updatePatient(@Body PatientDtoUpdate patientDto, @Path("uuid") String uuid,
                                    @Query("v") String representation);
-
-    /**
-     * Gets modules.
-     *
-     * @param representation the representation
-     * @return the modules
-     */
-    @GET("module")
-    Call<Results<Module>> getModules(@Query("v") String representation);
 
     /**
      * Gets user info.

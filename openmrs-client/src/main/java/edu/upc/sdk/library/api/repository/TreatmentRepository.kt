@@ -107,10 +107,8 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchAllActiveTreatments(patient: Patient): OpenMRSResult<List<Treatment>> {
-
-        val result = fetchAllTreatments(UUID.fromString(patient.uuid))
-
+    suspend fun fetchAllActiveTreatments(patientId: UUID): OpenMRSResult<List<Treatment>> {
+        val result = fetchAllTreatments(patientId)
 
         if (result is  OpenMRSResult.Success) {
             return OpenMRSResult.Success(result.data.filter { treatment -> treatment.isActive })

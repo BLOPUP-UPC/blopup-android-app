@@ -78,7 +78,6 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
                     when (result.operationType) {
                         PatientFetching -> {
                             showPatientDetails(result.data)
-                            lifecycleScope.launch { viewModel.fetchActiveTreatments(result.data) }
                         }
 
                         else -> {}
@@ -128,6 +127,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private fun fetchPatientDetails() {
         viewModel.fetchPatientData()
+        viewModel.fetchActiveTreatments()
     }
 
     private fun showPatientDetails(patient: Patient) {

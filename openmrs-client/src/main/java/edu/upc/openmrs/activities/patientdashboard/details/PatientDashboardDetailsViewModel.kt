@@ -15,6 +15,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,13 +51,16 @@ class PatientDashboardDetailsViewModel @Inject constructor(
         }
     }
 
-    suspend fun fetchActiveTreatments(patient: Patient) {
-        activeTreatments.value = treatmentRepository.fetchAllActiveTreatments(patient)
+    fun fetchActiveTreatments() {
+        viewModelScope.launch {
+            activeTreatments.value = treatmentRepository.fetchAllActiveTreatments(UUID.fromString(patientUuid))
+        }
     }
 
-    suspend fun refreshActiveTreatments() {
-        if (result.value is Result.Success) {
-            activeTreatments.value = treatmentRepository.fetchAllActiveTreatments(((result.value as Result.Success<Patient>).data))
+    fun refreshActiveTreatments() {
+        viewModelScope.launch {
+            activeTreatments.value =
+                treatmentRepository.fetchAllActiveTreatments(UUID.fromString(patientUuid))
         }
     }
 }

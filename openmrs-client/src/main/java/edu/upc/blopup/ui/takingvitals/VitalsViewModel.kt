@@ -13,11 +13,11 @@ import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.takingvitals.components.LatestHeightResultUiState
 import edu.upc.blopup.ui.takingvitals.screens.CreateVisitResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
 import edu.upc.sdk.library.api.repository.TreatmentRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -76,7 +76,7 @@ open class VitalsViewModel @Inject constructor(
     suspend fun fetchActiveTreatment() {
         _treatmentsResultUiState.value = ResultUiState.Loading
 
-        val response = treatmentRepository.fetchAllActiveTreatments(patient)
+        val response = treatmentRepository.fetchAllActiveTreatments(UUID.fromString(patientUuid))
 
         _treatmentsResultUiState.value =
             when (response) {
