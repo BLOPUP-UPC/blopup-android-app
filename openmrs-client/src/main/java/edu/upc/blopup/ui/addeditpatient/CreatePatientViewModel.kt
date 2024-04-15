@@ -96,7 +96,7 @@ class CreatePatientViewModel @Inject constructor(
         return !StringUtils.validateText(input, StringUtils.ILLEGAL_CHARACTERS)
     }
 
-    fun isValidBirthDate(input: String): Boolean {
+    fun isInvalidBirthDate(input: String): Boolean {
         return input.toInt() > ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
     }
 

@@ -29,6 +29,7 @@ fun CreatePatientScreen(
     navigateToPatientDashboard: (Long, String) -> Unit,
     isFormWithSomeInput: () -> Unit,
     askLegalConsentPermission: () -> Unit,
+    toastErrorMessage: String,
     viewModel: CreatePatientViewModel = hiltViewModel()
 ) {
     val createPatientUiState = viewModel.createPatientUiState.collectAsState()
@@ -42,8 +43,9 @@ fun CreatePatientScreen(
         viewModel::createPatient,
         createPatientUiState.value,
         navigateToPatientDashboard,
-        viewModel::isValidBirthDate,
+        viewModel::isInvalidBirthDate,
         isFormWithSomeInput,
+        toastErrorMessage
     )
 
 }
@@ -56,6 +58,7 @@ fun CreatePatientForm(
     navigateToPatientDashboard: (Long, String) -> Unit,
     isBirthDateValidRange: (String) -> Boolean,
     isFormWithSomeInput: () -> Unit,
+    errorToastMessage: String,
 ) {
     val context = LocalContext.current
     var name by remember { mutableStateOf("") }
@@ -161,7 +164,7 @@ fun CreatePatientForm(
                         },
                         enabled = isSubmitEnabled
                     )
-                    ToastUtil.error(context.getString(R.string.register_patient_error))
+                    ToastUtil.error(errorToastMessage)
                 }
 
                 CreatePatientResultUiState.Loading -> {
@@ -189,7 +192,9 @@ fun CreatePatientPreview() {
         CreatePatientResultUiState.NotCreated,
         {_, _ -> },
         { true },
-    ) {}
+        {},
+        "Something went wrong and the patient has not been created",
+    )
 }
 
 @Preview
@@ -201,5 +206,7 @@ fun CreatePatientLoadingPreview() {
         CreatePatientResultUiState.Loading,
         {_, _ -> },
         { true },
-    ) { }
+        { },
+        "Something went wrong and the patient has not been created",
+    )
 }

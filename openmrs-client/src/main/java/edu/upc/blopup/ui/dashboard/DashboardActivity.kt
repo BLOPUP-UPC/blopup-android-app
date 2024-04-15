@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.R
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.addeditpatient.CreatePatientScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
@@ -75,7 +76,7 @@ class DashboardActivity : ACBaseActivity() {
                     ) {
                         composable(Routes.DashboardScreen.id) {
                             showBackButtonInMenu = false
-                            DashboardScreen ()
+                            DashboardScreen()
                         }
                         composable(Routes.CreatePatientScreen.id) {
                             showBackButtonInMenu = true
@@ -91,7 +92,8 @@ class DashboardActivity : ACBaseActivity() {
                                     }
                                 },
                                 { isCreatePatientWithSomeInput = true },
-                                { askPermissionsForLegalConsent() }
+                                { askPermissionsForLegalConsent() },
+                                getString(R.string.register_patient_error),
                             )
                         }
                         composable(

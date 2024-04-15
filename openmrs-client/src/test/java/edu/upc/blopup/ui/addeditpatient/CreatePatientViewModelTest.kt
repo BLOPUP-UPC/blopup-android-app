@@ -22,6 +22,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.joda.time.format.DateTimeFormat
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -133,5 +134,39 @@ class CreatePatientViewModelTest {
 
         assertEquals(CreatePatientResultUiState.Error, result)
 
+    }
+
+    @Test
+    fun `when name has invalid characters, should return true`() {
+
+        val result  = viewModel.isNameOrSurnameInvalidFormat("Sof*/")
+
+        assert(result)
+    }
+
+
+    @Test
+    fun `when name is valid, should return false`() {
+
+        val result  = viewModel.isNameOrSurnameInvalidFormat("Sofia")
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun `when date of birth is valid, should return false`() {
+
+        val result  = viewModel.isInvalidBirthDate("80")
+
+        assertFalse(result)
+    }
+
+
+    @Test
+    fun `when date of birth is more than the limit, should return true`() {
+
+        val result  = viewModel.isInvalidBirthDate("154")
+
+        assert(result)
     }
 }
