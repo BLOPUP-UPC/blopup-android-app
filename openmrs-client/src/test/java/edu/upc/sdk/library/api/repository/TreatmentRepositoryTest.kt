@@ -149,7 +149,7 @@ class TreatmentRepositoryTest {
 
         runBlocking {
             val result =
-                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, visitWithTreatment)
+                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(UUID.fromString(patient.uuid), visitWithTreatment)
             assertEquals(
                 edu.upc.sdk.library.models.Result.Success(
                     listOf(

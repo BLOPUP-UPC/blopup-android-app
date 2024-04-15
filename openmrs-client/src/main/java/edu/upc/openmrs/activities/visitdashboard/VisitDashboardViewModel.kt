@@ -57,10 +57,9 @@ class VisitDashboardViewModel @Inject constructor(
             _visit.value = ResultUiState.Loading
             try {
                 val visit = visitRepository.getVisitByUuid(visitId)
-                val patient = patientDAO.findPatientByUUID(visit.patientId.toString())
                 _patient.value = patientDAO.findPatientByUUID(visit.patientId.toString())
 
-                fetchActiveTreatments(patient, visit)
+                fetchActiveTreatments(visit.patientId, visit)
                 _visit.value = ResultUiState.Success(visit)
             } catch (exception: Exception) {
                 Log.i("VisitDashboardViewModel", "Error fetching visit", exception)
@@ -70,8 +69,8 @@ class VisitDashboardViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchActiveTreatments(patient: Patient, visit: Visit) {
-        when (val result = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, visit)) {
+    private suspend fun fetchActiveTreatments(patientId: UUID, visit: Visit) {
+        when (val result = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patientId, null, visit)) {
             is Result.Success -> {
                 _treatments.value = ResultUiState.Success(result.data)
             }
@@ -124,8 +123,7 @@ class VisitDashboardViewModel @Inject constructor(
         visit.let {
             if (it.value is ResultUiState.Success) {
                 val visit = (it.value as ResultUiState.Success<Visit>).data
-                val patient = patientDAO.findPatientByUUID(visit.patientId.toString())
-                fetchActiveTreatments(patient, visit)
+                fetchActiveTreatments(visit.patientId, visit)
             }
         }
     }

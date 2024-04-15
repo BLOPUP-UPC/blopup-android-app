@@ -12,7 +12,6 @@ import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.library.models.OpenMRSVisit
-import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
@@ -118,7 +117,7 @@ class TreatmentRepository @Inject constructor(
     }
 
     suspend fun fetchActiveTreatmentsAtAGivenTime(
-        patient: Patient,
+        patientId: UUID,
         visit: OpenMRSVisit? = null,
         newVisit: Visit? = null
     ): OpenMRSResult<List<Treatment>> {
@@ -134,7 +133,7 @@ class TreatmentRepository @Inject constructor(
             Instant.ofEpochMilli(newVisit!!.startDate.toInstant(ZoneOffset.UTC).toEpochMilli())
         }
 
-        val result = fetchAllTreatments(UUID.fromString(patient.uuid))
+        val result = fetchAllTreatments(patientId)
 
         if (result is OpenMRSResult.Success) {
             return OpenMRSResult.Success(result.data.filter { treatment ->

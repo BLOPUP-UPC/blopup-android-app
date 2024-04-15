@@ -88,7 +88,7 @@ class VisitDashboardViewModelTest {
         val visit = VisitExample.random()
         coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
         every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
-        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, visit) } returns Result.Error(IOException())
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(visit.patientId, null, visit) } returns Result.Error(IOException())
 
         viewModel.fetchCurrentVisit(visit.id)
 
@@ -109,7 +109,7 @@ class VisitDashboardViewModelTest {
         val treatment = TreatmentExample.activeTreatment()
         coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
         every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
-        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, visit) } returns Result.Success(
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(visit.patientId, null, visit) } returns Result.Success(
             listOf(treatment)
         )
 
@@ -175,7 +175,7 @@ class VisitDashboardViewModelTest {
 
         coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
         every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
-        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, visit) } returns Result.Success(
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(visit.patientId, null, visit) } returns Result.Success(
             listOf(treatment)
         )
 
@@ -200,7 +200,7 @@ class VisitDashboardViewModelTest {
 
         coEvery { visitRepository.getVisitByUuid(UUID.fromString(treatmentOne.visitUuid)) } returns visit
         every { patientDAO.findPatientByUUID(any()) } returns patient
-        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, any()) } returns Result.Success(
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(visit.patientId, null, any()) } returns Result.Success(
             listOf(treatmentOne, treatmentTwo)
         )
         coEvery { treatmentRepository.deleteTreatment(treatmentOne.treatmentUuid!!) } returns kotlin.Result.success(
@@ -219,17 +219,18 @@ class VisitDashboardViewModelTest {
     }
 
     @Test
-    fun `should refresh the treatments for the current visit`() {
+    fun `should refresh the treatments for the current visit`() = runTest {
         val visit = VisitExample.random()
         val patient = Patient().apply {
             id = 2L
+            uuid = visit.patientId.toString()
         }
 
         coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
         every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
         coEvery {
             treatmentRepository.fetchActiveTreatmentsAtAGivenTime(
-                patient,
+                visit.patientId,
                 null,
                 visit
             )
@@ -237,12 +238,10 @@ class VisitDashboardViewModelTest {
             listOf()
         )
 
-        runBlocking {
-            viewModel.fetchCurrentVisit(visit.id)
-            viewModel.refreshTreatments()
-            coVerify(exactly = 2) {
-                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(any(), any(), any())
-            }
+        viewModel.fetchCurrentVisit(visit.id)
+        viewModel.refreshTreatments()
+        coVerify(exactly = 2) {
+            treatmentRepository.fetchActiveTreatmentsAtAGivenTime(any(), any(), any())
         }
     }
 }
