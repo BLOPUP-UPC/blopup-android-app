@@ -78,6 +78,10 @@ class DashboardActivity : ACBaseActivity() {
                             showBackButtonInMenu = false
                             DashboardScreen()
                         }
+                        composable(Routes.SearchPatientScreen.id) {
+                            showBackButtonInMenu = true
+                            SearchPatientScreen()
+                        }
                         composable(Routes.CreatePatientScreen.id) {
                             showBackButtonInMenu = true
                             CreatePatientScreen(
@@ -159,3 +163,9 @@ fun PatientDashboardScreen(startPatientDashboardActivity: (patientId: Long, pati
         startPatientDashboardActivity(patientId, patientUuid)
     }
 }
+
+@Composable
+fun SearchPatientScreen(){
+    Text("Search Patient Screen")
+}
+

@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.shared.components
 
-import android.content.Intent
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -23,12 +22,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import edu.upc.R
 import edu.upc.blopup.ui.Routes
 
 @Composable
 fun AppBottomNavigationBar(navController: NavController) {
-    val context = LocalContext.current
+
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
 
     val menuItems = listOf(
         ItemsBottomNav.Home,
@@ -39,16 +41,11 @@ fun AppBottomNavigationBar(navController: NavController) {
     BottomAppBar(containerColor = colorResource(R.color.primary)) {
         NavigationBar(containerColor = colorResource(R.color.primary)) {
             menuItems.forEach {
-                val selected =  it.route == ItemsBottomNav.Home.route
+                val selected =  currentRoute == it.route
                 NavigationBarItem(
                     selected = selected,
                     onClick = {
-                        if(it.route == ItemsBottomNav.Home.route) {
-                            navController.navigate(Routes.DashboardScreen.id)
-
-                        } else {
-                            context.startActivity(Intent(context, Class.forName(it.route)))
-                        }
+                            navController.navigate(it.route)
                     },
                     icon = {
                         Icon(
@@ -75,9 +72,9 @@ fun AppBottomNavigationBar(navController: NavController) {
 }
 
 sealed class ItemsBottomNav(val icon: ImageVector, val label: Int, val description:String,  val route: String) {
-    data object Home : ItemsBottomNav(Icons.Outlined.Home, R.string.bottom_navigation_option_home, "Menu icon","edu.upc.blopup.ui.dashboard.DashboardActivity")
-    data object Search : ItemsBottomNav(Icons.Default.Search, R.string.bottom_navigation_option_search, "Search icon", "edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity")
-    data object Register : ItemsBottomNav(Icons.Outlined.AccountCircle, R.string.bottom_navigation_option_register, "Person icon", "edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity")
+    data object Home : ItemsBottomNav(Icons.Outlined.Home, R.string.bottom_navigation_option_home, "Menu icon", Routes.DashboardScreen.id)
+    data object Search : ItemsBottomNav(Icons.Default.Search, R.string.bottom_navigation_option_search, "Search icon", Routes.SearchPatientScreen.id)
+    data object Register : ItemsBottomNav(Icons.Outlined.AccountCircle, R.string.bottom_navigation_option_register, "Person icon", Routes.CreatePatientScreen.id)
 }
 
 @Preview
