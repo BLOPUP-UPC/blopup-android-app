@@ -1,6 +1,6 @@
 package edu.upc.blopup.model
 
-import edu.upc.sdk.library.models.BloodPressureType
+import edu.upc.R
 
 data class BloodPressure(val systolic: Int, val diastolic: Int, val pulse: Int) {
     fun bloodPressureType(): BloodPressureType {
@@ -14,3 +14,38 @@ data class BloodPressure(val systolic: Int, val diastolic: Int, val pulse: Int) 
     }
 }
 
+enum class BloodPressureType {
+    NORMAL {
+        override fun relatedColor() = R.color.bp_normal
+        override fun relatedText() = R.string.bp_normal
+        override fun relatedRecommendation() = R.string.bp_normal_recommendation
+    },
+    STAGE_I {
+        override fun relatedColor() = R.color.bp_ht_stage_I
+        override fun relatedText() = R.string.bp_ht_stage_I
+        override fun relatedRecommendation() = R.string.bp_ht_stage_I_recommendation
+
+    },
+    STAGE_II_A
+    {
+        override fun relatedColor() = R.color.bp_ht_stage_II_A
+        override fun relatedText() = R.string.bp_ht_stage_II_A
+        override fun relatedRecommendation() = R.string.bp_ht_stage_II_A_recommendation
+    },
+    STAGE_II_B
+    {
+        override fun relatedColor() = R.color.bp_ht_stage_II_B
+        override fun relatedText() = R.string.bp_ht_stage_II_B
+        override fun relatedRecommendation() = R.string.bp_ht_stage_II_B_recommendation
+    },
+    STAGE_II_C
+    {
+        override fun relatedColor() = R.color.bp_ht_stage_II_C
+        override fun relatedText() = R.string.bp_ht_stage_II_C
+        override fun relatedRecommendation() = R.string.bp_ht_stage_II_C_recommendation
+    };
+
+    abstract fun relatedColor(): Int
+    abstract fun relatedText(): Int
+    abstract fun relatedRecommendation(): Int
+}

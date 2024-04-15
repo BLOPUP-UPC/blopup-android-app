@@ -13,11 +13,11 @@ import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
+import edu.upc.sdk.library.models.OpenMRSVisit
 import edu.upc.sdk.library.models.OpenMrsVisitExample
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.TreatmentExample
-import edu.upc.sdk.library.models.OpenMRSVisit
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -73,8 +73,8 @@ class TreatmentRepositoryTest {
         val activeTreatment = TreatmentExample.activeTreatment(now)
         val inactiveTreatment = TreatmentExample.inactiveTreatment()
 
-        val visitWithActiveTreatment = OpenMrsVisitExample.random(activeTreatment)
-        val visitWithInactiveTreatment = OpenMrsVisitExample.random(inactiveTreatment)
+        val visitWithActiveTreatment = OpenMrsVisitExample.withTreatment(activeTreatment)
+        val visitWithInactiveTreatment = OpenMrsVisitExample.withTreatment(inactiveTreatment)
 
         val visitList = listOf(visitWithActiveTreatment, visitWithInactiveTreatment)
 
@@ -97,8 +97,8 @@ class TreatmentRepositoryTest {
         val activeTreatment = TreatmentExample.activeTreatment(now)
         val inactiveTreatment = TreatmentExample.inactiveTreatment()
 
-        val visitWithActiveTreatment = OpenMrsVisitExample.random(activeTreatment)
-        val visitWithInactiveTreatment = OpenMrsVisitExample.random(inactiveTreatment)
+        val visitWithActiveTreatment = OpenMrsVisitExample.withTreatment(activeTreatment)
+        val visitWithInactiveTreatment = OpenMrsVisitExample.withTreatment(inactiveTreatment)
 
         val visitList = listOf(visitWithActiveTreatment, visitWithInactiveTreatment)
 
@@ -128,11 +128,11 @@ class TreatmentRepositoryTest {
         val futureDateTreatment = TreatmentExample.activeTreatment(afterVisit)
         val previousAndInactiveTreatment = TreatmentExample.inactiveTreatment(beforeVisit)
 
-        val visitWithPreviousTreatment = OpenMrsVisitExample.random(previousTreatment, beforeVisit)
-        val visitWithTreatment = OpenMrsVisitExample.random(actualVisitTreatment, visitDate)
-        val visitWithFutureTreatment = OpenMrsVisitExample.random(futureDateTreatment, afterVisit)
+        val visitWithPreviousTreatment = OpenMrsVisitExample.withTreatment(previousTreatment, beforeVisit)
+        val visitWithTreatment = OpenMrsVisitExample.withTreatment(actualVisitTreatment, visitDate)
+        val visitWithFutureTreatment = OpenMrsVisitExample.withTreatment(futureDateTreatment, afterVisit)
         val visitWithPreviousAndInactiveTreatment =
-            OpenMrsVisitExample.random(previousAndInactiveTreatment, beforeVisit)
+            OpenMrsVisitExample.withTreatment(previousAndInactiveTreatment, beforeVisit)
 
         val visitList = listOf(
             visitWithPreviousTreatment,

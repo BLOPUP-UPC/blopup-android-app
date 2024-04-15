@@ -1,9 +1,7 @@
 package edu.upc.blopup.model
 
-import edu.upc.sdk.library.models.BloodPressureType
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.jupiter.params.ParameterizedTest
 
 
 class VisitTest {

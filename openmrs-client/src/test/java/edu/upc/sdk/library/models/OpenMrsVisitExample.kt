@@ -2,6 +2,8 @@ package edu.upc.sdk.library.models
 
 import edu.upc.blopup.model.Treatment
 import edu.upc.sdk.library.api.ObservationConcept
+import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
+import edu.upc.sdk.library.api.repository.VisitRepository.Companion.VITALS_ENCOUNTER_TYPE
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
@@ -15,7 +17,7 @@ import java.util.UUID
 
 object OpenMrsVisitExample {
 
-    fun random(
+    fun withTreatment(
         treatment: Treatment = TreatmentExample.activeTreatment(),
         startDate: Instant = Instant.now()
     ): OpenMRSVisit {
@@ -35,7 +37,7 @@ object OpenMrsVisitExample {
                         uuid = treatment.visitUuid
                     }
                     encounterDate = treatment.creationDate.formatToOpenmrsDate()
-                    encounterType = EncounterType(EncounterType.TREATMENT)
+                    encounterType = EncounterType(TREATMENT_ENCOUNTER_TYPE)
                     observations = listOf(
                         Observation().apply {
                             concept = ConceptEntity().apply {
@@ -121,7 +123,7 @@ object OpenMrsVisitExample {
             visitType = VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID)
             encounters = listOf(
                 Encounter().apply {
-                    encounterType = EncounterType(EncounterType.VITALS)
+                    encounterType = EncounterType(VITALS_ENCOUNTER_TYPE)
                     observations = listOf(
                         Observation().apply {
                             display = "Systolic blood pressure: $systolic"

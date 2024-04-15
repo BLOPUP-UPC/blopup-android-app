@@ -2,17 +2,17 @@ package edu.upc.sdk.library.models.typeConverters
 
 import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.Visit
-import edu.upc.sdk.library.models.EncounterType
+import edu.upc.sdk.library.api.repository.VisitRepository.Companion.VITALS_ENCOUNTER_TYPE
+import edu.upc.sdk.library.models.OpenMRSVisit
 import edu.upc.sdk.utilities.DateUtils
 import java.time.LocalDateTime
 import java.util.UUID
-import edu.upc.sdk.library.models.OpenMRSVisit as OpenMRSVisit
 
 object VisitConverter {
 
     fun createVisitFromOpenMRSVisit(openMRSVisit: OpenMRSVisit?): Visit {
         val vitalsObservations =
-            openMRSVisit?.encounters?.find { it.encounterType?.display == EncounterType.VITALS }?.observations
+            openMRSVisit?.encounters?.find { it.encounterType?.display == VITALS_ENCOUNTER_TYPE }?.observations
 
         val bloodPressure = vitalsObservations.let { vitals ->
             val systolic =

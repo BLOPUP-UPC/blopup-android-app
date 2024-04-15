@@ -6,9 +6,9 @@ import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.LocationDAO
-import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
+import edu.upc.sdk.library.models.OpenMRSVisit
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.VisitType
@@ -24,7 +24,6 @@ import java.time.Instant
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import edu.upc.sdk.library.models.OpenMRSVisit as OpenMRSVisit
 
 @Singleton
 class VisitRepository @Inject constructor(
@@ -100,7 +99,7 @@ class VisitRepository @Inject constructor(
         val encounterCreate = Encountercreate().apply {
             this.visit = visit.id.toString()
             this.patient = visit.patientId.toString()
-            encounterType = EncounterType.VITALS
+            encounterType = VITALS_ENCOUNTER_TYPE
             observations = listOfNotNull(
                 Obscreate().apply {
                     concept = VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
@@ -200,12 +199,7 @@ class VisitRepository @Inject constructor(
         const val HEIGHT_FIELD_CONCEPT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     }
 
-    object EncounterTypes {
-        const val VITALS = "67a71486-1a54-468f-ac3e-7091a9a79584"
-
-        @JvmField
-        var ENCOUNTER_TYPES_DISPLAYS = arrayOf(
-            EncounterType.VITALS
-        )
+    companion object {
+        const val VITALS_ENCOUNTER_TYPE = "Vitals"
     }
 }

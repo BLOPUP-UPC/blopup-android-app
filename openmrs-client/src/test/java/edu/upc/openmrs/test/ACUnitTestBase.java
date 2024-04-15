@@ -14,6 +14,8 @@
 
 package edu.upc.openmrs.test;
 
+import static edu.upc.sdk.library.api.repository.VisitRepository.VITALS_ENCOUNTER_TYPE;
+
 import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -35,6 +37,7 @@ import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.EncounterType;
 import edu.upc.sdk.library.models.Observation;
+import edu.upc.sdk.library.models.OpenMRSVisit;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientIdentifier;
 import edu.upc.sdk.library.models.PersonAddress;
@@ -43,7 +46,6 @@ import edu.upc.sdk.library.models.PersonAttributeType;
 import edu.upc.sdk.library.models.PersonName;
 import edu.upc.sdk.library.models.Resource;
 import edu.upc.sdk.library.models.Results;
-import edu.upc.sdk.library.models.OpenMRSVisit;
 import edu.upc.sdk.library.models.VisitType;
 import okhttp3.Headers;
 import retrofit2.Call;
@@ -136,7 +138,7 @@ public abstract class ACUnitTestBase {
         ArrayList<Observation> observations = getObservations();
         visit.encounters = new ArrayList<>();
         Encounter encounter = new Encounter();
-        encounter.setEncounterType(new EncounterType(EncounterType.VITALS));
+        encounter.setEncounterType(new EncounterType(VITALS_ENCOUNTER_TYPE));
         encounter.setObservations(observations);
         visit.encounters.add(encounter);
         return visit;

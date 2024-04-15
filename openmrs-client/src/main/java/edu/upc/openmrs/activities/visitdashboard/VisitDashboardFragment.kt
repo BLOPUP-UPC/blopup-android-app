@@ -30,6 +30,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.model.BloodPressureType
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.model.Visit
 import edu.upc.blopup.ui.ResultUiState
@@ -38,7 +39,6 @@ import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.OpenmrsAndroid
-import edu.upc.sdk.library.models.BloodPressureType
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants

@@ -1,6 +1,5 @@
 package edu.upc.blopup.model
 
-import edu.upc.sdk.library.models.BloodPressureType
 import java.time.LocalDateTime
 import java.util.UUID
 

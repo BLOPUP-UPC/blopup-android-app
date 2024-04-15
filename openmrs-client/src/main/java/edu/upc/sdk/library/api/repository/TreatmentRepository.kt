@@ -7,12 +7,11 @@ import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.models.Encounter
 import edu.upc.sdk.library.models.EncounterProviderCreate
-import edu.upc.sdk.library.models.EncounterType
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
-import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.OpenMRSVisit
+import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
@@ -149,7 +148,7 @@ class TreatmentRepository @Inject constructor(
                         }
                     }
                         .filter { encounter ->
-                            encounter.encounterType?.display == EncounterType.TREATMENT
+                            encounter.encounterType?.display == TREATMENT_ENCOUNTER_TYPE
                         }
                         .map { encounter ->
                             getTreatmentFromEncounter(encounter)

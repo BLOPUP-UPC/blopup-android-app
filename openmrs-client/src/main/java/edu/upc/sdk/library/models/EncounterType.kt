@@ -23,10 +23,4 @@ class EncounterType : Resource {
     constructor(display: String?) {
         this.display = display
     }
-
-    companion object {
-
-        const val VITALS = "Vitals"
-        const val TREATMENT = "Treatment"
-    }
 }
