@@ -5,9 +5,8 @@ import edu.upc.blopup.model.VisitExample
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.openmrs.activities.visitdashboard.VisitDashboardViewModel
 import edu.upc.sdk.library.api.repository.DoctorRepository
-import edu.upc.sdk.library.api.repository.EncounterRepository
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -35,6 +34,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import java.io.IOException
+import java.util.UUID
 
 @RunWith(JUnit4::class)
 class VisitDashboardViewModelTest {
@@ -50,9 +50,6 @@ class VisitDashboardViewModelTest {
 
     @MockK
     private lateinit var treatmentRepository: TreatmentRepository
-
-    @MockK
-    private lateinit var encounterRepository: EncounterRepository
 
     @InjectMockKs
     private lateinit var viewModel: VisitDashboardViewModel
@@ -166,50 +163,59 @@ class VisitDashboardViewModelTest {
     }
 
     @Test
-    fun `should mark a treatment as inactive and return the treatments list with the update`() {
+    fun `should mark a treatment as inactive and return the treatments list with the update`() = runTest {
         val patient = Patient()
         val treatment = TreatmentExample.activeTreatment()
+        val visit = VisitExample.random(id = UUID.fromString(treatment.visitUuid))
         val treatmentUpdated = treatment.apply {
             isActive = false
             inactiveDate = Instant.now()
         }
         val treatmentList = listOf(treatmentUpdated)
 
-        coEvery { treatmentRepository.finalise(treatment) } returns kotlin.Result.success(true)
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(
-            treatmentList
+        coEvery { visitRepository.getVisitByUuid(visit.id) } returns visit
+        every { patientDAO.findPatientByUUID(visit.patientId.toString()) } returns patient
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, visit) } returns Result.Success(
+            listOf(treatment)
         )
 
-        runBlocking {
-            viewModel.finaliseTreatment(treatment)
-            coVerify { treatmentRepository.finalise(treatment) }
-            // I wanted to check the value of the treatments list but I cannot set the visit mock because it is a val. I tried to use a spy but it didn't work
-//            assertEquals(treatmentList, viewModel.treatments.value)
-        }
+        coEvery { treatmentRepository.finalise(treatment) } returns kotlin.Result.success(true)
+
+        viewModel.fetchCurrentVisit(UUID.fromString(treatment.visitUuid))
+        viewModel.finaliseTreatment(treatment)
+
+        coVerify { treatmentRepository.finalise(treatment) }
+
+        val pair = viewModel.treatments.first()
+        assertEquals(ResultUiState.Success(treatmentList), pair.second)
     }
 
     @Test
-    fun `should remove a treatment and return the treatments list without it`() {
+    fun `should remove a treatment and return the treatments list without it`() = runTest {
         val patient = Patient()
         val treatmentOne = TreatmentExample.activeTreatment()
         val treatmentTwo = TreatmentExample.activeTreatment()
         val treatmentList = listOf(treatmentTwo)
+        val visit = VisitExample.random(id = UUID.fromString(treatmentOne.visitUuid))
 
-        coEvery { encounterRepository.removeEncounter(treatmentOne.treatmentUuid) } returns kotlin.Result.success(
+        coEvery { visitRepository.getVisitByUuid(UUID.fromString(treatmentOne.visitUuid)) } returns visit
+        every { patientDAO.findPatientByUUID(any()) } returns patient
+        coEvery { treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patient, null, any()) } returns Result.Success(
+            listOf(treatmentOne, treatmentTwo)
+        )
+        coEvery { treatmentRepository.deleteTreatment(treatmentOne.treatmentUuid!!) } returns kotlin.Result.success(
             true
         )
-        coEvery { treatmentRepository.fetchAllActiveTreatments(patient) } returns Result.Success(
-            treatmentList
-        )
 
-        runBlocking {
-            viewModel.removeTreatment(treatmentOne)
-            coVerify {
-                encounterRepository.removeEncounter(treatmentOne.treatmentUuid)
-            }
-            // I wanted to check the value of the treatments list but I cannot set the visit mock because it is a val. I tried to use a spy but it didn't work
-//            assertEquals(treatmentList, viewModel.treatments.value)
+        viewModel.fetchCurrentVisit(UUID.fromString(treatmentOne.visitUuid))
+        viewModel.removeTreatment(treatmentOne)
+
+        coVerify {
+            treatmentRepository.deleteTreatment(treatmentOne.treatmentUuid!!)
         }
+
+        val pair = viewModel.treatments.first()
+        assertEquals(ResultUiState.Success(treatmentList), pair.second)
     }
 
     @Test

@@ -2,6 +2,7 @@ package edu.upc.sdk.library.api.repository
 
 import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
+import edu.upc.blopup.model.Visit
 import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.api.RestApi
@@ -30,29 +31,37 @@ import edu.upc.sdk.library.models.Result as OpenMRSResult
 class TreatmentRepository @Inject constructor(
     private val restApi: RestApi,
     private val visitRepository: VisitRepository,
-    private val encounterRepository: EncounterRepository,
     private val doctorRepository: DoctorRepository,
     private val crashlytics: CrashlyticsLogger
 ) {
 
-    suspend fun saveTreatment(treatment: Treatment) {
-        withContext(Dispatchers.IO) {
-            val currentVisit = visitRepository.getVisitByUuid(UUID.fromString(treatment.visitUuid))
+    suspend fun saveTreatment(treatment: Treatment) = withContext(Dispatchers.IO) {
+        val currentVisit = visitRepository.getVisitByUuid(UUID.fromString(treatment.visitUuid))
+        val encounter = createEncounterFromTreatment(currentVisit, treatment)
 
-            val encounter = createEncounterFromTreatment(currentVisit, treatment)
-
-            withContext(Dispatchers.IO) {
-                try {
-                    val response = restApi.createEncounter(encounter).execute()
-                    if (response.isSuccessful) {
-                        return@withContext response.body()
-                    } else {
-                        throw Exception("Failed to create encounter: ${response.code()} - ${response.message()}")
-                    }
-                } catch (e: Exception) {
-                    throw Exception("Failed to create encounter: ${e.message}", e)
-                }
+        try {
+            val response = restApi.createEncounter(encounter).execute()
+            if (response.isSuccessful) {
+                return@withContext
+            } else {
+                throw Exception("Failed to create encounter: ${response.code()} - ${response.message()}")
             }
+        } catch (e: Exception) {
+            throw Exception("Failed to create encounter: ${e.message}", e)
+        }
+    }
+
+    suspend fun deleteTreatment(treatmentUuid: String): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            val response = restApi.deleteEncounter(treatmentUuid).execute()
+
+            if (response.isSuccessful) {
+                Result.success(true)
+            } else {
+                Result.failure(Exception("Remove treatment error: ${response.code()} - ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Remove encounter error: ${e.message}"))
         }
     }
 
@@ -84,7 +93,11 @@ class TreatmentRepository @Inject constructor(
 
         if (!needsChanges) return Result.success(true)
 
-        val response = encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid)
+        if (treatmentToEdit.treatmentUuid == null) {
+            throw IllegalArgumentException("Treatment UUID must be provided")
+        }
+
+        val response = deleteTreatment(treatmentToEdit.treatmentUuid!!)
 
         return if (response.isSuccess) {
             saveTreatment(treatmentUpdated)
@@ -109,7 +122,7 @@ class TreatmentRepository @Inject constructor(
     suspend fun fetchActiveTreatmentsAtAGivenTime(
         patient: Patient,
         visit: OpenMRSVisit? = null,
-        newVisit: edu.upc.blopup.model.Visit? = null
+        newVisit: Visit? = null
     ): OpenMRSResult<List<Treatment>> {
         if (visit == null && newVisit == null) {
             throw IllegalArgumentException("Visit or newVisit must be provided")
@@ -118,7 +131,7 @@ class TreatmentRepository @Inject constructor(
         val visitId = visit?.uuid ?: newVisit?.id.toString()
 
         val visitDate = if (visit !== null) {
-            parseFromOpenmrsDate(visit!!.startDatetime)
+            parseFromOpenmrsDate(visit.startDatetime)
         } else {
             Instant.ofEpochMilli(newVisit!!.startDate.toInstant(ZoneOffset.UTC).toEpochMilli())
         }
@@ -234,7 +247,7 @@ class TreatmentRepository @Inject constructor(
     }
 
     private fun createEncounterFromTreatment(
-        currentVisit: edu.upc.blopup.model.Visit ,
+        currentVisit: Visit,
         treatment: Treatment,
     ) : Encountercreate {
 

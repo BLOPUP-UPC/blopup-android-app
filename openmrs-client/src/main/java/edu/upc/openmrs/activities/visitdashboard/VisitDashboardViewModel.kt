@@ -11,9 +11,8 @@ import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.model.Visit
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.api.repository.DoctorRepository
-import edu.upc.sdk.library.api.repository.EncounterRepository
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -29,7 +28,6 @@ class VisitDashboardViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val visitRepository: VisitRepository,
     private val treatmentRepository: TreatmentRepository,
-    private val encounterRepository: EncounterRepository,
     private val doctorRepository: DoctorRepository,
 ) : ViewModel() {
     private val _visit = MutableLiveData<ResultUiState<Visit>>()
@@ -109,7 +107,7 @@ class VisitDashboardViewModel @Inject constructor(
     }
 
     suspend fun removeTreatment(treatment: Treatment) {
-        val response = encounterRepository.removeEncounter(treatment.treatmentUuid)
+        val response = treatmentRepository.deleteTreatment(treatment.treatmentUuid!!)
 
         if (response.isSuccess && _treatments.value is ResultUiState.Success) {
             _treatments.value =

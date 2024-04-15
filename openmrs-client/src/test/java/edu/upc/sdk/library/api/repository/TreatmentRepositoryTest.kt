@@ -29,12 +29,13 @@ import io.mockk.slot
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import okhttp3.Request
+import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.joda.time.Instant
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.any
 import retrofit2.Call
 import retrofit2.Response
 import java.time.LocalDateTime
@@ -47,9 +48,6 @@ class TreatmentRepositoryTest {
 
     @MockK
     private lateinit var visitRepository: VisitRepository
-
-    @MockK
-    private lateinit var encounterRepository: EncounterRepository
 
     @MockK
     private lateinit var doctorRepository: DoctorRepository
@@ -348,7 +346,6 @@ class TreatmentRepositoryTest {
 
     @Test
     fun `should return result success when treatment is updated`() {
-        val call = mockk<Call<Encounter>>(relaxed = true)
 
         val treatmentToEdit = TreatmentExample.activeTreatment()
 
@@ -365,10 +362,11 @@ class TreatmentRepositoryTest {
             id = UUID.fromString(treatmentToEdit.visitUuid),
         )
 
-        coEvery { encounterRepository.removeEncounter(treatmentToEdit.treatmentUuid) } returns Result.success(
-            true
-        )
+        val callDelete = mockk<Call<ResponseBody>>(relaxed = true)
+        coEvery { restApi.deleteEncounter(any()) } returns callDelete
+        coEvery { callDelete.execute() } returns Response.success("".toResponseBody())
 
+        val call = mockk<Call<Encounter>>(relaxed = true)
         coEvery { restApi.createEncounter(any()) } returns call
         coEvery { call.execute() } returns Response.success(Encounter().apply {
             uuid = "encounterUuid"
@@ -383,18 +381,11 @@ class TreatmentRepositoryTest {
     }
 
     @Test
-    fun `should set error if no value changed to update a treatment`() {
-        val exceptionMessage = "No changes detected"
+    fun `should returns true if no value changed to update a treatment`() = runTest {
+        val treatmentToEdit = TreatmentExample.activeTreatment()
+        val result = treatmentRepository.updateTreatment(treatmentToEdit, treatmentToEdit)
 
-        runBlocking {
-            runCatching {
-                val result = treatmentRepository.updateTreatment(any(), any())
-
-                assert(result.isFailure)
-                assertEquals(exceptionMessage, result.exceptionOrNull()?.message)
-
-            }
-        }
+        assertEquals(Result.success(true), result)
     }
 
     private inline fun <reified T> createCall(response: Response<T>): Call<T> = object : Call<T> {
