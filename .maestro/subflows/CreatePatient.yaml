@@ -15,15 +15,14 @@ appId: ${APP_ID}
     centerElement: true
     element: "Or"
     visibilityPercentage: 100
-- tapOn: "Date of birth (dd/mm/yyyy)"
-- inputText: "20/01/1980"
+- tapOn: "Estimated years"
+- inputText: "85"
 - scrollUntilVisible:
     centerElement: true
-    element:
-      id: "${APP_ID}:id/country_of_birth"
+    element: "Select country of birth"
 - hideKeyboard
 - tapOn: "Select country of birth"
-- tapOn: "Aruba"
+- tapOn: "Argentina"
 - scrollUntilVisible:
     centerElement: true
     element: "Select language"
@@ -45,7 +44,5 @@ appId: ${APP_ID}
 - tapOn: "Stop and save recording"
 - scrollUntilVisible:
     centerElement: true
-    element:
-      id: "${APP_ID}:id/submitButton"
-- tapOn:
-    id: "${APP_ID}:id/submitButton"
+    element: "Register"
+- tapOn: "Register"

@@ -1,5 +1,6 @@
 package edu.upc.blopup.ui.createpatient
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -242,7 +243,7 @@ fun GenderSection(gender: String, setGender: (String) -> Unit) {
                     onClick = { setGender(it.value()) },
                     colors = RadioButtonDefaults.colors(colorResource(R.color.allergy_orange))
                 )
-                Text(text = stringResource(it.relatedText()), fontSize = 16.sp)
+                Text(text = stringResource(it.relatedText()), fontSize = 16.sp, modifier = Modifier.clickable { setGender(it.value()) })
             }
         }
     }
