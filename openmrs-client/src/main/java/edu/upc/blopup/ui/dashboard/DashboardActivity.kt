@@ -14,10 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
@@ -26,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
+import edu.upc.R
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.createpatient.CreatePatientScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
@@ -51,11 +54,12 @@ class DashboardActivity : ACBaseActivity() {
                 val navigationController = rememberNavController()
                 var showBackButtonInMenu by remember { mutableStateOf(false) }
                 var isCreatePatientWithSomeInput by remember { mutableStateOf(false) }
+                var topBarTitle by remember { mutableIntStateOf(R.string.organization_name) }
 
                 Scaffold(
                     topBar = {
                         AppToolBarWithMenu(
-                            "BLOPUP",
+                            stringResource(topBarTitle),
                             onBackAction = {
                                 if (!navigationController.popBackStack()) {
                                     finish()
@@ -78,14 +82,17 @@ class DashboardActivity : ACBaseActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(Routes.DashboardScreen.id) {
+                            topBarTitle = R.string.organization_name
                             showBackButtonInMenu = false
                             DashboardScreen()
                         }
                         composable(Routes.SearchPatientScreen.id) {
+                            topBarTitle = R.string.action_synced_patients
                             showBackButtonInMenu = true
                             SearchPatientScreen()
                         }
                         composable(Routes.CreatePatientScreen.id) {
+                            topBarTitle = R.string.action_register_patient
                             showBackButtonInMenu = true
                             CreatePatientScreen(
                                 { patientId, patientUuid ->
