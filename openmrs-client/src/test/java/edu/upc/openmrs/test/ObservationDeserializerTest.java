@@ -38,24 +38,8 @@ import edu.upc.sdk.utilities.ObservationDeserializer;
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ObservationDeserializerTest {
 
-    private static final String DIAGNOSIS_LIST = "Chronic intractable pain";
-    private static final String DIAGNOSIS_CERTAINTY = "Presumed diagnosis";
-    private static final String DIAGNOSIS_ORDER = "Primary";
-
     @Mock
     private JsonDeserializationContext context;
-
-    @Test
-    public void shouldDeserializeObservationWithDiagnosisData() throws IOException {
-        File jsonResponseFile = new File("src/test/java/edu/upc/openmrs/test/retrofitMocks/", "obsWithDiagnosisDataExampleResponse.json");
-        String response = getMockResponseFromFile(jsonResponseFile);
-        JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
-
-        Observation observation = new ObservationDeserializer().deserialize(jsonObject, Observation.class, context);
-        assertThat(observation.getDiagnosisList(), is(equalTo(DIAGNOSIS_LIST)));
-        assertThat(observation.getDiagnosisCertainty(), is(equalTo(DIAGNOSIS_CERTAINTY)));
-        assertThat(observation.getDiagnosisOrder(), is(equalTo(DIAGNOSIS_ORDER)));
-    }
 
     @Test
     public void shouldDeserializeMedicationTypeObservationGroupMembers() throws IOException {

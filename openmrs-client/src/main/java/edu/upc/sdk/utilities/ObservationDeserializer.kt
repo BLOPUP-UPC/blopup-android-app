@@ -40,31 +40,6 @@ class ObservationDeserializer : JsonDeserializer<Observation> {
         if(conceptJson != null && jsonObject.has("obsDatetime") && jsonObject["obsDatetime"].asString != null) {
             observation.dateCreated = jsonObject["obsDatetime"].asString
         }
-        if (conceptJson != null && "Visit Diagnoses" == conceptJson.asJsonObject[DISPLAY_KEY].asString) {
-            val diagnosisDetailJSONArray = jsonObject["groupMembers"].asJsonArray
-            for (i in 0 until diagnosisDetailJSONArray.size()) {
-                val diagnosisDetails = diagnosisDetailJSONArray[i].asJsonObject
-                val diagnosisDetail = diagnosisDetails["concept"].asJsonObject[DISPLAY_KEY].asString
-                if ("Diagnosis order" == diagnosisDetail) {
-                    observation.diagnosisOrder =
-                        diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString
-                } else if ("Diagnosis certainty" == diagnosisDetail) {
-                    observation.setDiagnosisCertanity(
-                        diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString
-                    )
-                } else {
-                    try {
-                        observation.diagnosisList =
-                            diagnosisDetails.asJsonObject[VALUE_KEY].asJsonObject[DISPLAY_KEY].asString
-                    } catch (e: IllegalStateException) {
-                        observation.diagnosisList =
-                            diagnosisDetails.asJsonObject[VALUE_KEY].asString
-                    }
-                }
-            }
-        } else if (conceptJson != null && "Text of encounter note" == conceptJson.asJsonObject[DISPLAY_KEY].asString) {
-            observation.diagnosisNote = jsonObject.asJsonObject[VALUE_KEY].asString
-        }
         if (conceptJson != null) {
             val concept = ConceptEntity()
             concept.uuid = conceptJson.asJsonObject[UUID_KEY].asString

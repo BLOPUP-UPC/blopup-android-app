@@ -115,14 +115,11 @@ class TreatmentRepository @Inject constructor(
         return result
     }
 
-    suspend fun fetchActiveTreatmentsAtAGivenTime(
-        patientId: UUID,
-        visit: Visit
-    ): OpenMRSResult<List<Treatment>> {
+    suspend fun fetchActiveTreatmentsAtAGivenTime(visit: Visit): OpenMRSResult<List<Treatment>> {
         val visitId = visit.id.toString()
         val visitDate = Instant.ofEpochMilli(visit.startDate.toInstant(ZoneOffset.UTC).toEpochMilli())
 
-        val result = fetchAllTreatments(patientId)
+        val result = fetchAllTreatments(visit.patientId)
 
         if (result is OpenMRSResult.Success) {
             return OpenMRSResult.Success(result.data.filter { treatment ->
@@ -136,7 +133,7 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun fetchAllTreatments(patientId: UUID): OpenMRSResult<List<Treatment>> = withContext(Dispatchers.IO) {
         try {
-            val result = restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,visitType:ref,encounters:full)").execute()
+            val result = restApi.findVisitsByPatientUUID(patientId.toString(), apiTreatmentRepresentation).execute()
 
             if (result.isSuccessful) {
                 val treatments = result.body()?.results!!.flatMap { visit ->
@@ -362,5 +359,26 @@ class TreatmentRepository @Inject constructor(
         const val TREATMENT_ENCOUNTER_TYPE = "Treatment"
         const val DOCTOR = "registered doctor"
         const val ENCOUNTER_ROLE_UUID = "b09b056d-9eaf-41c9-a420-e2303e8f1c96"
+
+        // This is exactly the info we need to avoid fetching encounters:full
+        // Doing encounters:full will bring all the obs that takes a lot of time and size
+        const val apiTreatmentRepresentation = "custom:(" +
+                "uuid," +
+                "visitType:custom:(uuid,display)," +
+                "encounters:custom:(" +
+                "uuid," +
+                "encounterType:custom:(display)," +
+                "encounterDatetime," +
+                "encounterProviders:ref," +
+                "obs:custom:(" +
+                "uuid," +
+                "concept:custom:(uuid)," +
+                "display," +
+                "value," +
+                "obsDatetime," +
+                "dateCreated," +
+                "groupMembers:custom:(" +
+                "concept:custom:(display)," +
+                "value:custom:(uuid)))))"
     }
 }
