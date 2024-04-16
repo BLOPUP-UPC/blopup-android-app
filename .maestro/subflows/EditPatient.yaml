@@ -12,6 +12,7 @@ appId: ${APP_ID}
     element:
       id: "${APP_ID}:id/dobEditText"
     visibilityPercentage: 100
+- hideKeyboard
 - tapOn: "Date of birth (dd/mm/yyyy)"
 - inputText: "20/12/1982"
 - hideKeyboard

@@ -137,17 +137,12 @@ class TreatmentRepository @Inject constructor(
 
             if (result.isSuccessful) {
                 val treatments = result.body()?.results!!.flatMap { visit ->
-                    visit.encounters.map {
-                        it.apply {
-                            visitID = visit.id
-                            visitUuid = visit.uuid
-                        }
-                    }
+                    visit.encounters
                         .filter { encounter ->
                             encounter.encounterType?.display == TREATMENT_ENCOUNTER_TYPE
                         }
                         .map { encounter ->
-                            getTreatmentFromEncounter(encounter)
+                            getTreatmentFromEncounter(visit.uuid!!, encounter)
                         }
                 }
                 OpenMRSResult.Success(treatments)
@@ -159,8 +154,7 @@ class TreatmentRepository @Inject constructor(
         }
     }
 
-    private fun getTreatmentFromEncounter(encounter: Encounter): Treatment {
-        val visitUuid = encounter.visit?.uuid
+    private fun getTreatmentFromEncounter(visitUuid: String, encounter: Encounter): Treatment {
         val treatmentUuid = encounter.uuid
         val creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
         val doctor = encounter.encounterProviders.firstOrNull()?.provider?.display?.substringAfter("-")?.trim()
