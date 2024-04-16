@@ -27,7 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.blopup.ui.Routes
-import edu.upc.blopup.ui.addeditpatient.CreatePatientScreen
+import edu.upc.blopup.ui.createpatient.CreatePatientScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.openmrs.activities.ACBaseActivity
@@ -98,7 +98,7 @@ class DashboardActivity : ACBaseActivity() {
                                         popUpTo(Routes.DashboardScreen.id)
                                     }
                                 },
-                                { isCreatePatientWithSomeInput = true },
+                                { isCreatePatientWithSomeInput = it },
                                 { askPermissionsForLegalConsent() },
                                 { getString(it) },
                                 { country: Country -> country.getLabel(this@DashboardActivity) },

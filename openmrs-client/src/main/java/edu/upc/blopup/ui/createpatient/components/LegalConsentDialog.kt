@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.addeditpatient
+package edu.upc.blopup.ui.createpatient.components
 
 import android.app.Activity
 import android.widget.ImageView

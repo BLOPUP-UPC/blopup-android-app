@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.BuildConfig
 import edu.upc.blopup.RecordingHelper
+import edu.upc.blopup.ui.createpatient.CreatePatientResultUiState
+import edu.upc.blopup.ui.createpatient.CreatePatientViewModel
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAttribute

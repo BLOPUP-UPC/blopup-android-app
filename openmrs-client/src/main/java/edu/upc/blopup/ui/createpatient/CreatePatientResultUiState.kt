@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.addeditpatient
+package edu.upc.blopup.ui.createpatient
 
 import edu.upc.sdk.library.models.Patient
 

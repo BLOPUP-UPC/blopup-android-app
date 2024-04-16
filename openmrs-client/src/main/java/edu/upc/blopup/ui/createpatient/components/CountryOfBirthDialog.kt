@@ -1,17 +1,22 @@
-package edu.upc.blopup.ui.addeditpatient
+package edu.upc.blopup.ui.createpatient.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -20,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -52,7 +58,7 @@ fun CountryOfBirthDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 5.dp),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
             ) {
                 Text(text = stringResource(R.string.country_of_birth_default))
@@ -90,7 +96,7 @@ fun ListItem(country: Country, countryLabel: String, onItemSelected: () -> Unit)
         Modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp).clickable { onItemSelected() },
-        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(country.flag),
@@ -98,6 +104,35 @@ fun ListItem(country: Country, countryLabel: String, onItemSelected: () -> Unit)
             modifier = Modifier.padding(end = 10.dp)
         )
         Text(text = countryLabel, color = Color.Gray, fontSize = 16.sp)
+    }
+}
+
+@Composable
+fun CountryOfBirthField(countryOfBirth: String, onShowCountryOfBirthDialog: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onShowCountryOfBirthDialog() }
+            .border(
+                width = 1.dp,
+                color = if (countryOfBirth.isEmpty()) MaterialTheme.colorScheme.error else Color.Gray,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 15.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = countryOfBirth.ifEmpty { stringResource(R.string.country_of_birth_default) },
+                fontSize = 16.sp,
+                color = if (countryOfBirth.isEmpty()) MaterialTheme.colorScheme.error else Color.Black,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                Icons.Filled.ArrowDropDown,
+                tint = Color.Gray,
+                contentDescription = null
+            )
+        }
     }
 }
 
