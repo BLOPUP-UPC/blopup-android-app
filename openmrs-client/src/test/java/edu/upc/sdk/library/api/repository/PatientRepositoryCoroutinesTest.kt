@@ -5,10 +5,11 @@ import edu.upc.openmrs.MockCrashlyticsLogger
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.api.RestServiceBuilder
+import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientDto
-import edu.upc.sdk.library.models.Person
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Results
 import io.mockk.coEvery
 import io.mockk.every
@@ -16,24 +17,31 @@ import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
+import rx.Observable
 
 class PatientRepositoryCoroutinesTest {
 
     private lateinit var patientRepositoryCoroutines: PatientRepositoryCoroutines
+
+    private lateinit var patientDAOMock: PatientDAO
 
     private lateinit var restApi: RestApi
 
     @Before
     fun setUp() {
         restApi = mockk(relaxed = true)
+        patientDAOMock = mockk(relaxed = true)
         mockStaticMethodsNeededToInstantiateBaseRepository()
-        patientRepositoryCoroutines = PatientRepositoryCoroutines(MockCrashlyticsLogger())
+        patientRepositoryCoroutines = PatientRepositoryCoroutines(MockCrashlyticsLogger()).apply {
+            this.patientDAO = patientDAOMock
+        }
     }
 
     @Test
@@ -113,6 +121,34 @@ class PatientRepositoryCoroutinesTest {
 
             assert(result.isLeft())
             assert(expected.message == result.fold({ it.message }, { }))
+        }
+    }
+
+    @Test
+    fun `should return all patients locally`() {
+
+        val patientList = listOf(Patient())
+
+        coEvery {patientDAOMock.allPatients  } returns Observable.just(patientList)
+
+
+        runBlocking {
+            val result = patientRepositoryCoroutines.getAllPatientsLocally()
+
+            assertEquals(Result.Success(patientList), result)
+        }
+    }
+
+    @Test
+    fun `should return Error when get all patients locally fails`() {
+
+        coEvery {patientDAOMock.allPatients  } returns Observable.just(emptyList())
+
+
+        runBlocking {
+            val result = patientRepositoryCoroutines.getAllPatientsLocally()
+
+            assertTrue(result is Result.Error)
         }
     }
 

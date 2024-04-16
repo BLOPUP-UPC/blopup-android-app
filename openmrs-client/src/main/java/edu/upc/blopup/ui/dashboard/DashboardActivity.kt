@@ -31,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.createpatient.CreatePatientScreen
+import edu.upc.blopup.ui.searchpatient.SearchPatientScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.openmrs.activities.ACBaseActivity
@@ -175,11 +176,6 @@ fun PatientDashboardScreen(startPatientDashboardActivity: (patientId: Long, pati
     LaunchedEffect(true) {
         startPatientDashboardActivity(patientId, patientUuid)
     }
-}
-
-@Composable
-fun SearchPatientScreen(){
-    Text("Search Patient Screen")
 }
 
 private fun getTextInLanguageSelected(

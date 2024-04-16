@@ -4,17 +4,21 @@ import arrow.core.Either
 import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.execute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
+
 @Singleton
 class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
 
     @Inject
     lateinit var patientDAO: PatientDAO
+
     /**
      * Find patients.
      *
@@ -24,6 +28,21 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
 
     constructor(crashlyticsLogger: CrashlyticsLogger? = null) : this() {
         this.crashlytics = crashlyticsLogger
+    }
+
+    suspend fun getAllPatientsLocally(): Result<List<Patient>> = withContext(Dispatchers.IO) {
+        try {
+            val patientList = patientDAO.allPatients.execute()
+
+            if (patientList.isEmpty()) {
+                Result.Error(Exception("No patients found"))
+            } else {
+                Result.Success(patientList)
+            }
+
+        } catch (e: Exception) {
+            Result.Error(Exception(e.message))
+        }
     }
 
     suspend fun findPatients(query: String?): Either<Error, List<Patient>> =
@@ -66,9 +85,9 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
         patientDAO.deletePatient(patientId)
     }
 
-    suspend fun savePatientLocally(patient: Patient) : Patient =
+    suspend fun savePatientLocally(patient: Patient): Patient =
         withContext(Dispatchers.IO) {
-            try{
+            try {
                 val id = patientDAO.savePatient(patient)
                     .single()
                     .toBlocking()
@@ -79,7 +98,7 @@ class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
                 crashlytics.reportException(e, "Failed to save patient locally")
                 throw IOException("Error with saving patient locally: " + e.message)
             }
-    }
+        }
 
     fun findPatientByUUID(patientUuid: String): Patient? = patientDAO.findPatientByUUID(patientUuid)
 }
