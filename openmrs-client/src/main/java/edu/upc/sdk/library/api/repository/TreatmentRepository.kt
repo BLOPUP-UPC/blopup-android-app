@@ -133,7 +133,7 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun fetchAllTreatments(patientId: UUID): OpenMRSResult<List<Treatment>> = withContext(Dispatchers.IO) {
         try {
-            val result = restApi.findVisitsByPatientUUID(patientId.toString(), apiTreatmentRepresentation).execute()
+            val result = restApi.findVisitsByPatientUUID(patientId.toString(), API_TREATMENT_REPRESENTATION).execute()
 
             if (result.isSuccessful) {
                 val treatments = result.body()?.results!!.flatMap { visit ->
@@ -356,7 +356,7 @@ class TreatmentRepository @Inject constructor(
 
         // This is exactly the info we need to avoid fetching encounters:full
         // Doing encounters:full will bring all the obs that takes a lot of time and size
-        const val apiTreatmentRepresentation = "custom:(" +
+        const val API_TREATMENT_REPRESENTATION = "custom:(" +
                 "uuid," +
                 "visitType:custom:(uuid,display)," +
                 "encounters:custom:(" +
