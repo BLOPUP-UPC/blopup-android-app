@@ -70,7 +70,7 @@ class VisitDashboardViewModel @Inject constructor(
     }
 
     private suspend fun fetchActiveTreatments(patientId: UUID, visit: Visit) {
-        when (val result = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patientId, null, visit)) {
+        when (val result = treatmentRepository.fetchActiveTreatmentsAtAGivenTime(patientId, visit)) {
             is Result.Success -> {
                 _treatments.value = ResultUiState.Success(result.data)
             }

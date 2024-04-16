@@ -11,7 +11,6 @@ import edu.upc.sdk.library.models.EncounterProviderCreate
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
-import edu.upc.sdk.library.models.OpenMRSVisit
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
@@ -118,20 +117,10 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun fetchActiveTreatmentsAtAGivenTime(
         patientId: UUID,
-        visit: OpenMRSVisit? = null,
-        newVisit: Visit? = null
+        visit: Visit
     ): OpenMRSResult<List<Treatment>> {
-        if (visit == null && newVisit == null) {
-            throw IllegalArgumentException("Visit or newVisit must be provided")
-        }
-
-        val visitId = visit?.uuid ?: newVisit?.id.toString()
-
-        val visitDate = if (visit !== null) {
-            parseFromOpenmrsDate(visit.startDatetime)
-        } else {
-            Instant.ofEpochMilli(newVisit!!.startDate.toInstant(ZoneOffset.UTC).toEpochMilli())
-        }
+        val visitId = visit.id.toString()
+        val visitDate = Instant.ofEpochMilli(visit.startDate.toInstant(ZoneOffset.UTC).toEpochMilli())
 
         val result = fetchAllTreatments(patientId)
 

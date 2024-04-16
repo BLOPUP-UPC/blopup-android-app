@@ -291,4 +291,12 @@ object DateUtils {
     fun java.time.Instant.formatAsOpenMrsDate(): String {
         return java.time.format.DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT).format(this.atOffset(java.time.ZoneOffset.UTC))
     }
+
+    fun java.time.Instant.toJodaInstant(): Instant {
+        return Instant(this.toEpochMilli())
+    }
+
+    fun Instant.toJavaInstant(): java.time.Instant {
+        return java.time.Instant.ofEpochMilli(this.millis)
+    }
 }

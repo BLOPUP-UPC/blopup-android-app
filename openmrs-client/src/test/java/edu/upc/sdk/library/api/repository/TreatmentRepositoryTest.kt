@@ -18,6 +18,7 @@ import edu.upc.sdk.library.models.OpenMrsVisitExample
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.TreatmentExample
+import edu.upc.sdk.utilities.DateUtils.toJavaInstant
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -39,6 +40,7 @@ import org.junit.jupiter.api.assertThrows
 import retrofit2.Call
 import retrofit2.Response
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.UUID
 
 class TreatmentRepositoryTest {
@@ -138,6 +140,11 @@ class TreatmentRepositoryTest {
             visitWithFutureTreatment,
             visitWithPreviousAndInactiveTreatment
         )
+        val visit = VisitExample.random(
+            id = UUID.fromString(visitWithTreatment.uuid),
+            patientId = UUID.fromString(patient.uuid),
+            startDateTime = LocalDateTime.ofInstant(visitDate.toJavaInstant(), (ZoneId.of("UTC"))),
+        )
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
         coEvery { restApi.findVisitsByPatientUUID(patient.uuid, "custom:(uuid,visitType:ref,encounters:full)") } returns call
@@ -149,7 +156,7 @@ class TreatmentRepositoryTest {
 
         runBlocking {
             val result =
-                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(UUID.fromString(patient.uuid), visitWithTreatment)
+                treatmentRepository.fetchActiveTreatmentsAtAGivenTime(UUID.fromString(patient.uuid), visit)
             assertEquals(
                 edu.upc.sdk.library.models.Result.Success(
                     listOf(
