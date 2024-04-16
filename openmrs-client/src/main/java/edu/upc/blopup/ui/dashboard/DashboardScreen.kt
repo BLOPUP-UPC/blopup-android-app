@@ -26,11 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(navigateToCreatePatientScreen: () -> Unit) {
     val context = LocalContext.current
 
     Column(
@@ -55,9 +54,7 @@ fun DashboardScreen() {
             DashboardCard(
                 Modifier
                     .weight(1f)
-                    .clickable(onClick = {
-                        context.startActivity(Intent(context, AddEditPatientActivity::class.java))
-                    }),
+                    .clickable(onClick = { navigateToCreatePatientScreen() }),
                 R.mipmap.ico_add_patient,
                 R.string.action_register_patient,
             )
@@ -91,5 +88,5 @@ fun DashboardCard(modifier: Modifier, icon: Int, label: Int ) {
 @Preview
 @Composable
 fun DashboardPreview() {
-    DashboardScreen()
+    DashboardScreen {}
 }

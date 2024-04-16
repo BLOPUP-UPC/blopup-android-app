@@ -84,7 +84,7 @@ class DashboardActivity : ACBaseActivity() {
                         composable(Routes.DashboardScreen.id) {
                             topBarTitle = R.string.organization_name
                             showBackButtonInMenu = false
-                            DashboardScreen()
+                            DashboardScreen{navigationController.navigate(Routes.CreatePatientScreen.id)}
                         }
                         composable(Routes.SearchPatientScreen.id) {
                             topBarTitle = R.string.action_synced_patients
@@ -112,7 +112,6 @@ class DashboardActivity : ACBaseActivity() {
                                 { selectedLanguage: String, resourceId: Int -> getTextInLanguageSelected(selectedLanguage, resourceId, this@DashboardActivity) }
                             )
                         }
-
                         composable(
                             Routes.PatientDashboardScreen.id, arguments = listOf(
                                 navArgument(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE) {
@@ -123,6 +122,7 @@ class DashboardActivity : ACBaseActivity() {
                                 },
                             )
                         ) {
+                            isCreatePatientWithSomeInput = false
                             showBackButtonInMenu = true
                             PatientDashboardScreen ({ patientId, patientUuid ->
                                 startActivity(
