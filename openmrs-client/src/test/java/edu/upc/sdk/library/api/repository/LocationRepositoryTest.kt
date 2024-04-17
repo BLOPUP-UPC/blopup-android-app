@@ -1,37 +1,35 @@
 package edu.upc.sdk.library.api.repository
 
-import androidx.work.WorkManager
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
-import edu.upc.sdk.library.api.RestServiceBuilder
-import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.models.Results
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Retrofit
 import edu.upc.sdk.library.models.Result as OpenMRSResult
 
 class LocationRepositoryTest{
 
+    @InjectMockKs
     private lateinit var locationRepository: LocationRepository
 
+    @MockK
     private lateinit var restApi: RestApi
 
     @Before
     fun setUp() {
-        restApi = mockk(relaxed = true)
-
         mockStaticMethodsNeededToInstantiateBaseRepository()
-        locationRepository = LocationRepository()
+        MockKAnnotations.init(this)
     }
 
 
@@ -125,12 +123,5 @@ class LocationRepositoryTest{
     private fun mockStaticMethodsNeededToInstantiateBaseRepository() {
         mockkStatic(OpenmrsAndroid::class)
         every { OpenmrsAndroid.getServerUrl() } returns "http://localhost:8080/openmrs"
-        mockkConstructor(Retrofit.Builder::class)
-        mockkStatic(RestServiceBuilder::class)
-        every { RestServiceBuilder.createService() } returns restApi
-        mockkStatic(AppDatabase::class)
-        every { AppDatabase.getDatabase(any()) } returns mockk(relaxed = true)
-        mockkStatic(WorkManager::class)
-        every { WorkManager.getInstance(any()) } returns mockk(relaxed = true)
     }
 }

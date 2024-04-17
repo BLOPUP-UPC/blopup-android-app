@@ -14,8 +14,6 @@
 
 package edu.upc.sdk.library.api.repository;
 
-import androidx.annotation.NonNull;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,18 +46,20 @@ import rx.Observable;
  * The type Patient repository.
  */
 @Singleton
-public class PatientRepository extends BaseRepository {
+@Deprecated // Use PatientRepositoryCoroutines instead
+public class PatientRepository {
+    private final RestApi restApi;
     private final PatientDAO patientDAO;
     private final LocationRepository locationRepository;
 
-    /**
-     * Instantiates a new Patient repository.
-     */
     @Inject
-    public PatientRepository() {
-        super(null);
-        this.patientDAO = new PatientDAO();
-        this.locationRepository = new LocationRepository();
+    public PatientRepository(
+            RestApi restApi,
+            PatientDAO patientDAO,
+            LocationRepository locationRepository) {
+        this.restApi = restApi;
+        this.patientDAO = patientDAO;
+        this.locationRepository = locationRepository;
     }
 
     /**
@@ -173,26 +173,6 @@ public class PatientRepository extends BaseRepository {
     }
 
     /**
-     * Download patient by uuid.
-     *
-     * @param uuid patient uuid
-     * @return Patient observable
-     */
-    public Observable<Patient> downloadPatientByUuid(@NonNull final String uuid) {
-        return AppDatabaseHelper.createObservableIO(() -> {
-            Call<PatientDto> call = restApi.getPatientByUUID(uuid, "full");
-            Response<PatientDto> response = call.execute();
-            if (response.isSuccessful()) {
-                final PatientDto newPatientDto = response.body();
-
-                return newPatientDto.getPatient();
-            } else {
-                throw new IOException("Error with downloading patient: " + response.message());
-            }
-        });
-    }
-
-    /**
      * Gets id gen patient identifier.
      *
      * @return the id gen patient identifier
@@ -200,8 +180,8 @@ public class PatientRepository extends BaseRepository {
     public String getIdGenPatientIdentifier() throws IOException {
         IdGenPatientIdentifiers idList = null;
 
-        RestApi patientIdentifierService = RestServiceBuilder.createServiceForPatientIdentifier(RestApi.class);
-        Call<IdGenPatientIdentifiers> call = patientIdentifierService.getPatientIdentifiers(OpenmrsAndroid.getUsername(), OpenmrsAndroid.getPassword());
+        RestApi restApi = RestServiceBuilder.createServiceForPatientIdentifier();
+        Call<IdGenPatientIdentifiers> call = restApi.getPatientIdentifiers(OpenmrsAndroid.getUsername(), OpenmrsAndroid.getPassword());
 
         Response<IdGenPatientIdentifiers> response = call.execute();
         if (response.isSuccessful()) {

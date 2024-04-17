@@ -62,7 +62,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
         this.loginView.setPresenter(this);
         this.authorizationManager = new AuthorizationManager();
         this.locationDAO = new LocationDAO();
-        this.restApi = RestServiceBuilder.createService(RestApi.class);
+        this.restApi = RestServiceBuilder.createService();
         this.userService = new UserService();
     }
 
@@ -111,7 +111,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
         loginView.showLoadingAnimation();
         mWipeRequired = wipeDatabase;
 
-        RestApi restApi = RestServiceBuilder.createService(RestApi.class, username, password);
+        RestApi restApi = RestServiceBuilder.createService(username, password);
         Call<Session> call = restApi.getSession();
         call.enqueue(new Callback<Session>() {
             @Override

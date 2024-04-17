@@ -16,6 +16,10 @@ package edu.upc.openmrs.services;
 
 import androidx.annotation.NonNull;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -23,18 +27,13 @@ import edu.upc.sdk.library.models.Results;
 import edu.upc.sdk.library.models.User;
 import edu.upc.sdk.utilities.ApplicationConstants;
 import edu.upc.sdk.utilities.ToastUtil;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserService {
     public void updateUserInformation(final String username) {
-        RestApi restApi = RestServiceBuilder.createService(RestApi.class);
+        RestApi restApi = RestServiceBuilder.createService();
         Call<Results<User>> call = restApi.getUserInfo(username);
         call.enqueue(new Callback<Results<User>>() {
             @Override
@@ -67,7 +66,7 @@ public class UserService {
     }
 
     private void fetchFullUserInformation(String uuid) {
-        RestApi restApi = RestServiceBuilder.createService(RestApi.class);
+        RestApi restApi = RestServiceBuilder.createService();
         Call<User> call = restApi.getFullUserInfo(uuid);
         call.enqueue(new Callback<User>() {
             @Override

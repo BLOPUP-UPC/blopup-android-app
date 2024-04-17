@@ -86,7 +86,7 @@ public class AuthenticateCheckService extends Service {
     }
 
     private void authenticateCheck(String username, String password) {
-        RestApi restApi = RestServiceBuilder.createService(RestApi.class, username, password);
+        RestApi restApi = RestServiceBuilder.createService(username, password);
         Call<Session> call = restApi.getSession();
         call.enqueue(new Callback<Session>() {
             @Override

@@ -42,16 +42,7 @@ public class RestServiceBuilder {
                         .client((httpClient).build());
     }
 
-    /**
-     * Create service s.
-     *
-     * @param <S>          the type parameter
-     * @param serviceClass the service class
-     * @param username     the username
-     * @param password     the password
-     * @return the s
-     */
-    public static <S> S createService(Class<S> serviceClass, String username, String password) {
+    public static RestApi createService(String username, String password) {
         if (username != null && password != null) {
             String credentials = username + ":" + password;
             final String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
@@ -71,26 +62,21 @@ public class RestServiceBuilder {
         }
         OkHttpClient client = httpClient.build();
         Retrofit retrofit = builder.client(client).build();
-        return retrofit.create(serviceClass);
-    }
-
-    /**
-     * Create service s.
-     *
-     * @param <S>          the type parameter
-     * @param serviceClass the service class
-     * @return the s
-     */
-    public static <S> S createService(Class<S> serviceClass) {
-        String username = OpenmrsAndroid.getUsername();
-        String password = OpenmrsAndroid.getPassword();
-        return createService(serviceClass, username, password);
+        return retrofit.create(RestApi.class);
     }
 
     public static RestApi createService() {
         String username = OpenmrsAndroid.getUsername();
         String password = OpenmrsAndroid.getPassword();
-        return createService(RestApi.class, username, password);
+        return createService(username, password);
+    }
+
+    public static RestApi createServiceForPatientIdentifier() {
+        return new Retrofit.Builder()
+                .baseUrl(OpenmrsAndroid.getServerUrl() + '/')
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(RestApi.class);
     }
 
     private static GsonConverterFactory buildGsonConverter() {
@@ -103,21 +89,6 @@ public class RestServiceBuilder {
                 .create();
 
         return GsonConverterFactory.create(myGson);
-    }
-
-    /**
-     * Create service for patient identifier s.
-     *
-     * @param <S>   the type parameter
-     * @param clazz the clazz
-     * @return the s
-     */
-    public static <S> S createServiceForPatientIdentifier(Class<S> clazz) {
-        return new Retrofit.Builder()
-                .baseUrl(OpenmrsAndroid.getServerUrl() + '/')
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(clazz);
     }
 
     /**

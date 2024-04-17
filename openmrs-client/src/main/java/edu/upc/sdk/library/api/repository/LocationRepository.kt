@@ -14,6 +14,7 @@
 package edu.upc.sdk.library.api.repository
 
 import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.models.Result
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +27,9 @@ import javax.inject.Singleton
  * The type Location repository.
  */
 @Singleton
-class LocationRepository @Inject constructor() : BaseRepository(null) {
+class LocationRepository @Inject constructor(
+    private val restApi: RestApi
+) {
     /**
      * Gets location (only has uuid).
      *
@@ -62,7 +65,7 @@ class LocationRepository @Inject constructor() : BaseRepository(null) {
 
     fun setLocation(location: String): Result<Boolean> {
         return try {
-            val response = OpenmrsAndroid.setLocation(location)
+            OpenmrsAndroid.setLocation(location)
             Result.Success(true)
         } catch (e: Exception) {
             Result.Error(e)

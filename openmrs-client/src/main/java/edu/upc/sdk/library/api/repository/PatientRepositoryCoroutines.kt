@@ -2,6 +2,7 @@ package edu.upc.sdk.library.api.repository
 
 import arrow.core.Either
 import edu.upc.sdk.library.CrashlyticsLogger
+import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
@@ -14,22 +15,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PatientRepositoryCoroutines @Inject constructor() : BaseRepository(null) {
+class PatientRepositoryCoroutines @Inject constructor(
+    private val restApi: RestApi,
+    private val patientDAO: PatientDAO,
+    private var crashlytics: CrashlyticsLogger
 
-    @Inject
-    lateinit var patientDAO: PatientDAO
-
-    /**
-     * Find patients.
-     *
-     * @param query patient query string
-     * @return observable list of patients with matching query
-     */
-
-    constructor(crashlyticsLogger: CrashlyticsLogger? = null) : this() {
-        this.crashlytics = crashlyticsLogger
-    }
-
+) {
     suspend fun getAllPatientsLocally(): Result<List<Patient>> = withContext(Dispatchers.IO) {
         try {
             val patientList = patientDAO.allPatients.execute()

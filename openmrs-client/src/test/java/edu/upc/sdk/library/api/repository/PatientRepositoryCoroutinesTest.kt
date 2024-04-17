@@ -1,21 +1,18 @@
 package edu.upc.sdk.library.api.repository
 
-import androidx.work.WorkManager
-import edu.upc.openmrs.MockCrashlyticsLogger
-import edu.upc.sdk.library.OpenmrsAndroid
+import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.api.RestApi
-import edu.upc.sdk.library.api.RestServiceBuilder
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientDto
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Results
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import io.mockk.mockkConstructor
-import io.mockk.mockkStatic
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -23,25 +20,25 @@ import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Retrofit
 import rx.Observable
 
 class PatientRepositoryCoroutinesTest {
 
-    private lateinit var patientRepositoryCoroutines: PatientRepositoryCoroutines
-
+    @MockK
     private lateinit var patientDAOMock: PatientDAO
 
+    @MockK
     private lateinit var restApi: RestApi
+
+    @MockK(relaxed = true)
+    private lateinit var crashlytics: CrashlyticsLogger
+
+    @InjectMockKs
+    private lateinit var patientRepositoryCoroutines: PatientRepositoryCoroutines
 
     @Before
     fun setUp() {
-        restApi = mockk(relaxed = true)
-        patientDAOMock = mockk(relaxed = true)
-        mockStaticMethodsNeededToInstantiateBaseRepository()
-        patientRepositoryCoroutines = PatientRepositoryCoroutines(MockCrashlyticsLogger()).apply {
-            this.patientDAO = patientDAOMock
-        }
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -150,17 +147,5 @@ class PatientRepositoryCoroutinesTest {
 
             assertTrue(result is Result.Error)
         }
-    }
-
-    private fun mockStaticMethodsNeededToInstantiateBaseRepository() {
-        mockkStatic(OpenmrsAndroid::class)
-        every { OpenmrsAndroid.getServerUrl() } returns "http://localhost:8080/openmrs"
-        mockkConstructor(Retrofit.Builder::class)
-        mockkStatic(RestServiceBuilder::class)
-        every { RestServiceBuilder.createService() } returns restApi
-        mockkStatic(AppDatabase::class)
-        every { AppDatabase.getDatabase(any()) } returns mockk(relaxed = true)
-        mockkStatic(WorkManager::class)
-        every { WorkManager.getInstance(any()) } returns mockk(relaxed = true)
     }
 }
