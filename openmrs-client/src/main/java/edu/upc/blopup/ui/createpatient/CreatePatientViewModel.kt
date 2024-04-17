@@ -97,7 +97,11 @@ class CreatePatientViewModel @Inject constructor(
     }
 
     fun isInvalidBirthDate(input: String): Boolean {
-        return input.toInt() > ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
+        try {
+            return input.toInt() > ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
+        } catch (e: NumberFormatException) {
+            return true
+        }
     }
 
 }

@@ -23,6 +23,7 @@ import kotlinx.coroutines.test.setMain
 import org.joda.time.format.DateTimeFormat
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -159,6 +160,14 @@ class CreatePatientViewModelTest {
         val result  = viewModel.isInvalidBirthDate("80")
 
         assertFalse(result)
+    }
+
+    @Test
+    fun `when date of birth is empty, should return true`() {
+
+        val result  = viewModel.isInvalidBirthDate("")
+
+        assertTrue(result)
     }
 
 
