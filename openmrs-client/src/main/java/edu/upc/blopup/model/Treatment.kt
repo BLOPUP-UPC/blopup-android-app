@@ -8,8 +8,6 @@ import java.time.LocalDate
 @Parcelize
 data class Treatment(
     var recommendedBy: String,
-    var doctorUuid: String? = null,
-    var doctorRegistrationNumber: String? = null,
     var medicationName: String,
     var medicationType: Set<MedicationType>,
     var notes: String? = null,
@@ -20,7 +18,7 @@ data class Treatment(
     var creationDate: Instant = Instant.now(),
     var inactiveDate: Instant? = null,
     var adherence: Map<LocalDate, Boolean> = emptyMap(),
-    var doctorName: String? = null,
+    var doctor: Doctor? = null
 ) : Parcelable {
 
     companion object {

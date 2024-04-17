@@ -40,7 +40,7 @@ object OpenMrsVisitExample {
                     }
                     encounterDate = treatment.creationDate.formatToOpenmrsDate()
                     encounterType = EncounterType(TREATMENT_ENCOUNTER_TYPE)
-                    treatment.doctorUuid?.let {
+                    treatment.doctor?.let {
                         encounterProviders =
                             listOf(
                                 EncounterProvider().apply {
@@ -48,16 +48,16 @@ object OpenMrsVisitExample {
                                         uuid = ENCOUNTER_DOCTOR_ROLE_UUID
                                     }
                                     provider = Provider().apply {
-                                        uuid = treatment.doctorUuid
+                                        uuid = it.uuid
                                         person = Person().apply {
-                                            display = treatment.doctorName
+                                            display = it.name
                                         }
                                         attributes = listOf(
                                             ProviderAttribute().apply {
                                                 attributeType = ProviderAttributeType().apply {
                                                     uuid = REGISTRATION_NUMBER_UUID
                                                 }
-                                                value = treatment.doctorRegistrationNumber
+                                                value = it.registrationNumber
                                             }
                                         )
                                     }

@@ -128,9 +128,9 @@ class TreatmentRepositoryTest {
         })
 
         val result = treatmentRepository.fetchAllTreatments(patientUuid) as edu.upc.sdk.library.models.Result.Success<List<Treatment>>
-        assertEquals(activeTreatment.doctorRegistrationNumber, result.data[0].doctorRegistrationNumber)
-        assertEquals(activeTreatment.doctorUuid, result.data[0].doctorUuid)
-        assertEquals(activeTreatment.doctorName, result.data[0].doctorName)
+        assertEquals(activeTreatment.doctor!!.registrationNumber, result.data[0].doctor!!.registrationNumber)
+        assertEquals(activeTreatment.doctor!!.uuid, result.data[0].doctor!!.uuid)
+        assertEquals(activeTreatment.doctor!!.name, result.data[0].doctor!!.name)
     }
 
     @Test
@@ -219,8 +219,6 @@ class TreatmentRepositoryTest {
 
         val treatment = Treatment(
             "Other",
-            null,
-            "9829303",
             "hidroclorotiazida",
             setOf(MedicationType.DIURETIC),
             "25mg/dia",
@@ -401,8 +399,6 @@ class TreatmentRepositoryTest {
 
         val treatmentUpdated = Treatment(
             "Other",
-            null,
-            "9829303",
             "Paracetamol",
             treatmentToEdit.medicationType,
             "hello",

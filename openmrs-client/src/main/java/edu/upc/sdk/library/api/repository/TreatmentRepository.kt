@@ -1,5 +1,6 @@
 package edu.upc.sdk.library.api.repository
 
+import edu.upc.blopup.model.Doctor
 import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.model.Visit
@@ -156,10 +157,15 @@ class TreatmentRepository @Inject constructor(
     private fun getTreatmentFromEncounter(visitUuid: String, encounter: Encounter): Treatment {
         val treatmentUuid = encounter.uuid
         val creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
-        val provider = encounter.encounterProviders.find { it.encounterRole?.uuid == ENCOUNTER_DOCTOR_ROLE_UUID }?.provider
-        val doctorUuid = provider?.uuid
-        val doctorName = provider?.person?.display
-        val doctorRegistrationNumber = provider?.attributes?.find { it.attributeType?.uuid == DoctorRepository.REGISTRATION_NUMBER_UUID }?.value
+        val doctor = encounter.encounterProviders.find { it.encounterRole?.uuid == ENCOUNTER_DOCTOR_ROLE_UUID }?.provider.let {
+            it?.uuid?.let { doctorUuid ->
+                it.person?.display?.let { doctorName ->
+                    it.attributes?.find { it.attributeType?.uuid == DoctorRepository.REGISTRATION_NUMBER_UUID }?.value?.let { doctorRegistrationNumber ->
+                        Doctor(doctorUuid, doctorName, doctorRegistrationNumber)
+                    }
+                }
+            }
+        }
 
         var recommendedBy = ""
         var medicationName = ""
@@ -200,8 +206,6 @@ class TreatmentRepository @Inject constructor(
         }
         return Treatment(
             recommendedBy = recommendedBy,
-            doctorUuid = doctorUuid,
-            doctorRegistrationNumber = doctorRegistrationNumber,
             medicationName = medicationName,
             medicationType = medicationType,
             notes = notes,
@@ -209,10 +213,10 @@ class TreatmentRepository @Inject constructor(
             visitUuid = visitUuid,
             treatmentUuid = treatmentUuid,
             observationStatusUuid = observationStatusUuid,
-            inactiveDate = inactiveDate,
             creationDate = creationDate,
+            inactiveDate = inactiveDate,
             adherence = adherenceMap,
-            doctorName = doctorName
+            doctor = doctor
         )
     }
 
@@ -230,7 +234,7 @@ class TreatmentRepository @Inject constructor(
     ) : Encountercreate {
 
         var provider: EncounterProviderCreate? = null
-        treatment.doctorUuid?.let { provider = EncounterProviderCreate(it, ENCOUNTER_DOCTOR_ROLE_UUID) }
+        treatment.doctor?.let { provider = EncounterProviderCreate(it.uuid, ENCOUNTER_DOCTOR_ROLE_UUID) }
 
         return Encountercreate().apply {
             encounterType = TREATMENT_ENCOUNTER_TYPE

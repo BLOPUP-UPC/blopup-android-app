@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.upc.R
 import edu.upc.blopup.CheckTreatment
+import edu.upc.blopup.model.Doctor
 import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.ui.ResultUiState
@@ -246,11 +247,9 @@ fun TreatmentAdherencePreviewSuccess() {
             listOf(
                 Treatment(
                     "uuid",
-                    "uuid",
-                    "098762123",
                     "Medication Name",
                     setOf(MedicationType.DIURETIC),
-                    treatmentUuid = "uuidTreatment"
+                    treatmentUuid = "uuidTreatment",
                 )
             )
         ),

@@ -43,6 +43,8 @@ class TreatmentActivity : ACBaseActivity() {
 
     private lateinit var treatmentToEdit: Treatment
 
+    private lateinit var doctors: List<Doctor>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = TreatmentFormBinding.inflate(layoutInflater)
@@ -86,15 +88,17 @@ class TreatmentActivity : ACBaseActivity() {
         dropDownWithDoctorsNames.setAdapter(adapter)
 
         viewModel.doctors.observe(this) { doctors ->
+            this.doctors = doctors
             adapter.clear()
             adapter.addAll(doctors)
 
-            val doctorInfo = if(treatmentToEdit.doctorUuid?.isNotEmpty() == true) {
-                getString(R.string.doctor_info, treatmentToEdit.doctorName, treatmentToEdit.doctorRegistrationNumber)
-            } else {
+            val doctorInfo = treatmentToEdit.doctor?.let {
+                getString(R.string.doctor_info, it.name, it.registrationNumber)
+            } ?: run {
                 val doctor = doctors.firstOrNull()
                 getString(R.string.doctor_info, doctor?.name, doctor?.registrationNumber)
             }
+
             dropDownWithDoctorsNames.setText(doctorInfo, false)
             dropDownWithDoctorsNames.tag = doctors.firstOrNull()?.uuid
         }
@@ -307,8 +311,8 @@ class TreatmentActivity : ACBaseActivity() {
                 }
                 .toSet()
             if(viewModel.treatment.value?.recommendedBy == RECOMMENDED_BY_BLOPUP) {
-
-                viewModel.treatment.value?.doctorUuid = doctorsNameDropdown.tag as String?
+                val selectedDoctor = doctors.find { it.uuid == doctorsNameDropdown.tag }
+                viewModel.treatment.value?.doctor = selectedDoctor
             }
         }
     }
