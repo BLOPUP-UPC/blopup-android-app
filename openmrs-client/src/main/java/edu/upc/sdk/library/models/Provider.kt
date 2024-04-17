@@ -57,4 +57,11 @@ class Provider : Resource() {
     @Expose
     var resourceVersion: String? = null
 
+    var value: String? = null
+        get() {
+            if (field == null && display?.contains(":") == true) {
+                value = display!!.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].trim()
+            }
+            return field
+        }
 }

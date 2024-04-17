@@ -23,8 +23,8 @@ class TreatmentRecyclerViewAdapter(
 
     private var treatmentList: List<Treatment> = emptyList()
 
-    fun updateData(newTreatmentList: List<Treatment>) {
-        treatmentList = newTreatmentList
+    fun updateData(treatmentList: List<Treatment>) {
+        this.treatmentList = treatmentList
         notifyDataSetChanged()
     }
 
@@ -35,23 +35,23 @@ class TreatmentRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (_, doctor, doctorRegistrationNumber, medicationName, medicationType, notes, isActive, visitUuid) = treatmentList[position]
+        val treatment = treatmentList[position]
 
-        if (doctor?.isNotEmpty() == true) {
-            val doctorInfo = context.getString(R.string.doctor_info, doctor, doctorRegistrationNumber)
+        if (treatment.doctorName?.isNotEmpty() == true) {
+            val doctorInfo = context.getString(R.string.doctor_info, treatment.doctorName, treatment.doctorRegistrationNumber)
             holder.whoRecommended.visibility = View.VISIBLE
             holder.whoRecommended.text = doctorInfo
         }
-        holder.medicationNameTextView.text = medicationName
+        holder.medicationNameTextView.text = treatment.medicationName
         holder.medicationTypeTextView.text =
-            medicationType.map { it.getLabel(context) }.toString()
+            treatment.medicationType.map { it.getLabel(context) }.toString()
                 .replace("[", "")
                 .replace("]", "")
                 .replace(",", "  • ")
-        holder.notesTextView.text = notes
+        holder.notesTextView.text = treatment.notes
 
         if (isCurrentVisitActive) {
-            when (visitUuid) {
+            when (treatment.visitUuid) {
                 currentVisitUuid -> {
                     holder.treatmentCardLayout.setOnClickListener {
                         showPopupMenu(
@@ -63,7 +63,7 @@ class TreatmentRecyclerViewAdapter(
                 }
 
                 else -> {
-                    if (!isActive) {
+                    if (!treatment.isActive) {
                         //if treatment is marked as finalise then show the background with opacity
                         holder.treatmentCardLayout.alpha = 0.5f
                         holder.ellipsisTextView.visibility = View.GONE

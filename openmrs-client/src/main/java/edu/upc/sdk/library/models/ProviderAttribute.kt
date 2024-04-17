@@ -25,7 +25,7 @@ import java.io.Serializable
  * <p> More about Provider Subresources https://rest.openmrs.org/#providers </p>
  * @constructor Create empty Provider attribute
  */
-class ProviderAttribute : Serializable {
+class ProviderAttribute : Resource(), Serializable {
 
     @SerializedName("attributeType")
     @Expose
@@ -34,5 +34,10 @@ class ProviderAttribute : Serializable {
     @SerializedName("value")
     @Expose
     var value: String? = null
-
+        get() {
+            if (field == null && display?.contains(":") == true) {
+                value = display!!.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].trim()
+            }
+            return field
+        }
 }

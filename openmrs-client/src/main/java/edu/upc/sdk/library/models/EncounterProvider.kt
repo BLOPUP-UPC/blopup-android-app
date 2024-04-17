@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName
 class EncounterProvider : Resource() {
     @SerializedName("provider")
     @Expose
-    var provider: Resource? = null
+    var provider: Provider? = null
     @SerializedName("encounterRole")
     @Expose
     var encounterRole: Resource? = null

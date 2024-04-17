@@ -22,7 +22,6 @@ import edu.upc.sdk.utilities.DateUtils.toJavaInstant
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
@@ -60,14 +59,19 @@ class TreatmentRepositoryTest {
     @InjectMockKs
     private lateinit var treatmentRepository: TreatmentRepository
 
-    val treatmentsApiRepresentation = "custom:(" +
+    private val treatmentsApiRepresentation = "custom:(" +
             "uuid," +
             "visitType:custom:(uuid,display)," +
             "encounters:custom:(" +
             "uuid," +
             "encounterType:custom:(display)," +
             "encounterDatetime," +
-            "encounterProviders:ref," +
+            "encounterProviders:custom:(" +
+            "encounterRole:ref," +
+            "provider:custom:(" +
+            "uuid," +
+            "person:custom:(display)," +
+            "attributes:custom:(attributeType:custom:(uuid),display)))," +
             "obs:custom:(" +
             "uuid," +
             "concept:custom:(uuid)," +
@@ -105,6 +109,28 @@ class TreatmentRepositoryTest {
 
         val result = treatmentRepository.fetchAllTreatments(patientUuid)
         assertEquals(edu.upc.sdk.library.models.Result.Success(listOf(activeTreatment, inactiveTreatment)), result)
+    }
+
+    @Test
+    fun `should get all treatments including doctor registration number`() = runTest {
+        val patientUuid = UUID.randomUUID()
+
+        val now = Instant.now().withMillis(0)
+        val activeTreatment = TreatmentExample.activeTreatment(now)
+
+        val visitWithActiveTreatment = OpenMrsVisitExample.withTreatment(activeTreatment)
+        val visitList = listOf(visitWithActiveTreatment)
+
+        val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
+        coEvery { restApi.findVisitsByPatientUUID(patientUuid.toString(), treatmentsApiRepresentation) } returns call
+        coEvery { call.execute() } returns Response.success(Results<OpenMRSVisit>().apply {
+            results = visitList
+        })
+
+        val result = treatmentRepository.fetchAllTreatments(patientUuid) as edu.upc.sdk.library.models.Result.Success<List<Treatment>>
+        assertEquals(activeTreatment.doctorRegistrationNumber, result.data[0].doctorRegistrationNumber)
+        assertEquals(activeTreatment.doctorUuid, result.data[0].doctorUuid)
+        assertEquals(activeTreatment.doctorName, result.data[0].doctorName)
     }
 
     @Test
@@ -170,8 +196,6 @@ class TreatmentRepositoryTest {
         coEvery { call.execute() } returns Response.success(Results<OpenMRSVisit>().apply {
             results = visitList
         })
-
-        every { doctorRepository.getDoctorRegistrationNumber(org.mockito.kotlin.any()) } returns "123456"
 
         runBlocking {
             val result =

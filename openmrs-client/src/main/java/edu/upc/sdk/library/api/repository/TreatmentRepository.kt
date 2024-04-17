@@ -29,7 +29,6 @@ import edu.upc.sdk.library.models.Result as OpenMRSResult
 class TreatmentRepository @Inject constructor(
     private val restApi: RestApi,
     private val visitRepository: VisitRepository,
-    private val doctorRepository: DoctorRepository,
     private val crashlytics: CrashlyticsLogger
 ) {
 
@@ -157,9 +156,10 @@ class TreatmentRepository @Inject constructor(
     private fun getTreatmentFromEncounter(visitUuid: String, encounter: Encounter): Treatment {
         val treatmentUuid = encounter.uuid
         val creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
-        val doctor = encounter.encounterProviders.firstOrNull()?.provider?.display?.substringAfter("-")?.trim()
-
-        val doctorRegisteredNumber = doctor?.let { doctorRepository.getDoctorRegistrationNumber(encounter.encounterProviders.firstOrNull()?.provider?.uuid) } ?: ""
+        val provider = encounter.encounterProviders.find { it.encounterRole?.uuid == ENCOUNTER_DOCTOR_ROLE_UUID }?.provider
+        val doctorUuid = provider?.uuid
+        val doctorName = provider?.person?.display
+        val doctorRegistrationNumber = provider?.attributes?.find { it.attributeType?.uuid == DoctorRepository.REGISTRATION_NUMBER_UUID }?.value
 
         var recommendedBy = ""
         var medicationName = ""
@@ -200,8 +200,8 @@ class TreatmentRepository @Inject constructor(
         }
         return Treatment(
             recommendedBy = recommendedBy,
-            doctorUuid = doctor,
-            doctorRegistrationNumber = doctorRegisteredNumber,
+            doctorUuid = doctorUuid,
+            doctorRegistrationNumber = doctorRegistrationNumber,
             medicationName = medicationName,
             medicationType = medicationType,
             notes = notes,
@@ -211,7 +211,8 @@ class TreatmentRepository @Inject constructor(
             observationStatusUuid = observationStatusUuid,
             inactiveDate = inactiveDate,
             creationDate = creationDate,
-            adherence = adherenceMap
+            adherence = adherenceMap,
+            doctorName = doctorName
         )
     }
 
@@ -229,7 +230,7 @@ class TreatmentRepository @Inject constructor(
     ) : Encountercreate {
 
         var provider: EncounterProviderCreate? = null
-        treatment.doctorUuid?.let { provider = EncounterProviderCreate(it, ENCOUNTER_ROLE_UUID) }
+        treatment.doctorUuid?.let { provider = EncounterProviderCreate(it, ENCOUNTER_DOCTOR_ROLE_UUID) }
 
         return Encountercreate().apply {
             encounterType = TREATMENT_ENCOUNTER_TYPE
@@ -352,7 +353,7 @@ class TreatmentRepository @Inject constructor(
     companion object {
         const val TREATMENT_ENCOUNTER_TYPE = "Treatment"
         const val DOCTOR = "registered doctor"
-        const val ENCOUNTER_ROLE_UUID = "b09b056d-9eaf-41c9-a420-e2303e8f1c96"
+        const val ENCOUNTER_DOCTOR_ROLE_UUID = "b09b056d-9eaf-41c9-a420-e2303e8f1c96"
 
         // This is exactly the info we need to avoid fetching encounters:full
         // Doing encounters:full will bring all the obs that takes a lot of time and size
@@ -360,19 +361,24 @@ class TreatmentRepository @Inject constructor(
                 "uuid," +
                 "visitType:custom:(uuid,display)," +
                 "encounters:custom:(" +
-                "uuid," +
-                "encounterType:custom:(display)," +
-                "encounterDatetime," +
-                "encounterProviders:ref," +
-                "obs:custom:(" +
-                "uuid," +
-                "concept:custom:(uuid)," +
-                "display," +
-                "value," +
-                "obsDatetime," +
-                "dateCreated," +
-                "groupMembers:custom:(" +
-                "concept:custom:(display)," +
-                "value:custom:(uuid)))))"
+                    "uuid," +
+                    "encounterType:custom:(display)," +
+                    "encounterDatetime," +
+                    "encounterProviders:custom:(" +
+                        "encounterRole:ref," +
+                        "provider:custom:(" +
+                            "uuid," +
+                            "person:custom:(display)," +
+                            "attributes:custom:(attributeType:custom:(uuid),display)))," +
+                    "obs:custom:(" +
+                        "uuid," +
+                        "concept:custom:(uuid)," +
+                        "display," +
+                        "value," +
+                        "obsDatetime," +
+                        "dateCreated," +
+                        "groupMembers:custom:(" +
+                            "concept:custom:(display)," +
+                            "value:custom:(uuid)))))"
     }
 }

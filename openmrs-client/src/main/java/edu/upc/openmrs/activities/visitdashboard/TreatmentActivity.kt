@@ -90,7 +90,7 @@ class TreatmentActivity : ACBaseActivity() {
             adapter.addAll(doctors)
 
             val doctorInfo = if(treatmentToEdit.doctorUuid?.isNotEmpty() == true) {
-                getString(R.string.doctor_info, treatmentToEdit.doctorUuid, treatmentToEdit.doctorRegistrationNumber)
+                getString(R.string.doctor_info, treatmentToEdit.doctorName, treatmentToEdit.doctorRegistrationNumber)
             } else {
                 val doctor = doctors.firstOrNull()
                 getString(R.string.doctor_info, doctor?.name, doctor?.registrationNumber)

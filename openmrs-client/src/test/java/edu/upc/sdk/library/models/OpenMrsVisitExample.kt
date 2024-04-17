@@ -2,6 +2,8 @@ package edu.upc.sdk.library.models
 
 import edu.upc.blopup.model.Treatment
 import edu.upc.sdk.library.api.ObservationConcept
+import edu.upc.sdk.library.api.repository.DoctorRepository.Companion.REGISTRATION_NUMBER_UUID
+import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.ENCOUNTER_DOCTOR_ROLE_UUID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
 import edu.upc.sdk.library.api.repository.VisitRepository.Companion.VITALS_ENCOUNTER_TYPE
 import edu.upc.sdk.library.databases.entities.ConceptEntity
@@ -38,6 +40,30 @@ object OpenMrsVisitExample {
                     }
                     encounterDate = treatment.creationDate.formatToOpenmrsDate()
                     encounterType = EncounterType(TREATMENT_ENCOUNTER_TYPE)
+                    treatment.doctorUuid?.let {
+                        encounterProviders =
+                            listOf(
+                                EncounterProvider().apply {
+                                    encounterRole = Resource().apply {
+                                        uuid = ENCOUNTER_DOCTOR_ROLE_UUID
+                                    }
+                                    provider = Provider().apply {
+                                        uuid = treatment.doctorUuid
+                                        person = Person().apply {
+                                            display = treatment.doctorName
+                                        }
+                                        attributes = listOf(
+                                            ProviderAttribute().apply {
+                                                attributeType = ProviderAttributeType().apply {
+                                                    uuid = REGISTRATION_NUMBER_UUID
+                                                }
+                                                value = treatment.doctorRegistrationNumber
+                                            }
+                                        )
+                                    }
+                                }
+                            )
+                    }
                     observations = listOf(
                         Observation().apply {
                             concept = ConceptEntity().apply {

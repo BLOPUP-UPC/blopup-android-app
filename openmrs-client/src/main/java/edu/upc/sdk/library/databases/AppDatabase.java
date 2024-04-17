@@ -43,7 +43,7 @@ import edu.upc.sdk.utilities.ApplicationConstants;
             Provider.class,
             FormResourceEntity.class
         },
-        version = 10
+        version = 11
 )
 
 public abstract class AppDatabase extends RoomDatabase {

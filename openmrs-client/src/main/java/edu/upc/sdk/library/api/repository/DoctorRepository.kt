@@ -3,7 +3,8 @@ package edu.upc.sdk.library.api.repository
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import edu.upc.blopup.model.Doctor
-import edu.upc.sdk.library.CrashlyticsLoggerImpl
+import edu.upc.sdk.library.CrashlyticsLogger
+import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.models.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -11,7 +12,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerImpl()) {
+class DoctorRepository @Inject constructor(
+    private val restApi: RestApi,
+    private val crashlytics: CrashlyticsLogger
+) {
     suspend fun sendMessageToDoctor(message: String): Result<Boolean> =
         withContext(Dispatchers.IO) {
             val contactRequest = ContactDoctorRequest(DOCTOR_PROVIDER_UUID, message)
@@ -69,23 +73,10 @@ class DoctorRepository @Inject constructor() : BaseRepository(CrashlyticsLoggerI
         }
     }
 
-    fun getDoctorRegistrationNumber(providerUuid: String?): String {
-        val response = restApi.getProviderAttributes(providerUuid).execute().body()
-
-        return if (response != null && response.results.isNotEmpty()) {
-            response.results.find {
-                it.display!!.contains(REGISTRATION_NUMBER_DISPLAY)
-            }?.display?.substringAfter(":")!!.trim()
-        } else {
-            ""
-        }
-    }
-
     companion object {
         const val DOCTOR_PROVIDER_UUID = "2775ad68-1a28-450f-a270-6ac5d0120636"
         private const val FAILED_MESSAGE_DOCTOR = "Failed to message doctor"
-        private const val REGISTRATION_NUMBER_UUID = "f4778183-b518-4842-946a-794fbff0e2e1"
-        private const val REGISTRATION_NUMBER_DISPLAY = "Registration Number"
+        const val REGISTRATION_NUMBER_UUID = "f4778183-b518-4842-946a-794fbff0e2e1"
     }
 
     data class ContactDoctorRequest(
