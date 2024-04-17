@@ -20,30 +20,20 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import edu.upc.sdk.library.dao.FormResourceDAO;
 import edu.upc.sdk.library.dao.LocationRoomDAO;
 import edu.upc.sdk.library.dao.PatientRoomDAO;
-import edu.upc.sdk.library.dao.ProviderRoomDAO;
-import edu.upc.sdk.library.databases.entities.ConceptEntity;
-import edu.upc.sdk.library.databases.entities.DiagnosisEntity;
-import edu.upc.sdk.library.databases.entities.FormResourceEntity;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.library.databases.entities.PatientEntity;
-import edu.upc.sdk.library.models.Provider;
 import edu.upc.sdk.utilities.ApplicationConstants;
 
 /**
  * The type App database.
  */
 @Database(entities = {
-            ConceptEntity.class,
             LocationEntity.class,
-            PatientEntity.class,
-            DiagnosisEntity.class,
-            Provider.class,
-            FormResourceEntity.class
+            PatientEntity.class
         },
-        version = 11
+        version = 14
 )
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -85,18 +75,4 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return the patient room dao
      */
     public abstract PatientRoomDAO patientRoomDAO();
-
-    /**
-     * Provider room dao provider room dao.
-     *
-     * @return the provider room dao
-     */
-    public abstract ProviderRoomDAO providerRoomDAO();
-
-    /**
-     * Form resource dao form resource dao.
-     *
-     * @return the form resource dao
-     */
-    public abstract FormResourceDAO formResourceDAO();
 }

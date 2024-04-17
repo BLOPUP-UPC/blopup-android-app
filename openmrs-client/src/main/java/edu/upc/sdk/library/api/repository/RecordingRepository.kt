@@ -15,6 +15,7 @@ package edu.upc.sdk.library.api.repository
 
 import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.sdk.library.OpenMRSLogger
+import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.databases.AppDatabaseHelper.createObservableIO
 import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.models.LegalConsentRequest
@@ -24,8 +25,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RecordingRepository @Inject constructor() :
-    BaseRepository(null) {
+class RecordingRepository @Inject constructor(
+    private val restApi: RestApi,
+    private val logger: OpenMRSLogger
+) {
 
     fun saveRecording(legalConsent: LegalConsent): Observable<ResultType> {
 
@@ -45,7 +48,7 @@ class RecordingRepository @Inject constructor() :
                     return@createObservableIO ResultType.RecordingError
                 }
             } catch (exception: Exception) {
-                OpenMRSLogger().e("${javaClass.name}:  ${exception.message}", exception)
+                logger.e("${javaClass.name}:  ${exception.message}", exception)
                 throw exception
             }
         }

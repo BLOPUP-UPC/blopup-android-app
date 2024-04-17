@@ -23,11 +23,6 @@ import java.io.Serializable
  * @constructor Create empty Encounter
  */
 class Encounter() : Resource(), Serializable {
-
-    constructor(diagnoses: List<Diagnosis>): this() {
-        this.diagnoses = diagnoses
-    }
-
     override var id: Long? = null
 
     @SerializedName("encounterDatetime")
@@ -57,10 +52,6 @@ class Encounter() : Resource(), Serializable {
     @SerializedName("orders")
     @Expose
     var orders: List<Any> = ArrayList()
-
-    @SerializedName("diagnoses")
-    @Expose
-    var diagnoses: List<Diagnosis> = ArrayList()
 
     @SerializedName("voided")
     @Expose
