@@ -175,6 +175,7 @@
     <string name="record_legal_consent">Grabar consentimiento</string>
     <string name="recording_has_been_saved">La grabación se ha guardado</string>
     <string name="height_range">La altura debe ser entre 50–280 cm</string>
+    <string name="weight_range">El peso debe estar entre 30–280 kg</string>
     <string name="pause">Pausar</string>
     <string name="stop_save">Detener y guardar grabación</string>
     <string name="resume">Continuar</string>

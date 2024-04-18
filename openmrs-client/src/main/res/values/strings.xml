@@ -279,6 +279,7 @@
     <string name="record_legal_consent" tools:ignore="MissingTranslation">Record legal consent</string>
     <string name="recording_has_been_saved" tools:ignore="MissingTranslation">recording has been saved</string>
     <string name="height_range" tools:ignore="MissingTranslation">Height should be between 50–280 cm</string>
+    <string name="weight_range" tools:ignore="MissingTranslation">Weight should be between 30–280 kg</string>
     <string name="pause" tools:ignore="MissingTranslation">Pause</string>
     <string name="stop_save" tools:ignore="MissingTranslation">Stop and save recording</string>
     <string name="resume" tools:ignore="MissingTranslation">Continue</string>

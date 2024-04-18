@@ -66,6 +66,8 @@ open class VitalsViewModel @Inject constructor(
         MutableStateFlow(ResultUiState.Loading)
     var treatmentsResultUiState: StateFlow<ResultUiState<List<Treatment>>> = _treatmentsResultUiState.asStateFlow()
 
+    fun isScaleAvailable() = readScaleRepository.isBluetoothAvailable()
+
     suspend fun addTreatmentAdherence(checkTreatmentList: List<CheckTreatment>) {
         val treatmentAdherenceInfo = checkTreatmentList.map {
             return@map Pair<String, Boolean>(it.treatmentId, it.selected)
@@ -144,6 +146,10 @@ open class VitalsViewModel @Inject constructor(
 
     fun saveHeight(height: String) {
         _heightUiState.value = height
+    }
+
+    fun saveWeight(weight: String) {
+        _weightUiState.value = ResultUiState.Success(weight)
     }
 
     fun getLastHeightFromVisits() = viewModelScope.launch {

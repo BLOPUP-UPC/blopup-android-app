@@ -12,11 +12,11 @@ import edu.upc.blopup.ui.takingvitals.components.LatestHeightResultUiState
 import edu.upc.sdk.library.api.repository.BloodPressureViewState
 import edu.upc.sdk.library.api.repository.BluetoothConnectionException
 import edu.upc.sdk.library.api.repository.Measurement
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.ReadBloodPressureRepository
 import edu.upc.sdk.library.api.repository.ReadScaleRepository
 import edu.upc.sdk.library.api.repository.ScaleViewState
 import edu.upc.sdk.library.api.repository.TreatmentRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.WeightMeasurement
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
@@ -43,6 +43,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -326,5 +327,22 @@ class VitalsViewModelTest {
         viewModel.receiveWeightData()
 
         assertEquals(ResultUiState.Error, viewModel.weightUiState.value)
+    }
+
+    @Test
+    fun `should set the wweight manually`() {
+        viewModel.saveWeight("133")
+
+        assertEquals(
+            ResultUiState.Success("133"),
+            viewModel.weightUiState.value
+        )
+    }
+
+    @Test
+    fun `should returns if the scale is available`() {
+        every { readScaleRepository.isBluetoothAvailable() } returns true
+
+        assertTrue(viewModel.isScaleAvailable())
     }
 }

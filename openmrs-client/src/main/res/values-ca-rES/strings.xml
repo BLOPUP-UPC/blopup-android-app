@@ -176,6 +176,7 @@
     <string name="record_legal_consent">Gravar consentiment</string>
     <string name="recording_has_been_saved">La gravació s\'ha desat</string>
     <string name="height_range">L\'alçada ha de ser entre 50–280 cm</string>
+    <string name="weight_range">El pes ha de ser entre 30–280 kg</string>
     <string name="pause">Pausa</string>
     <string name="stop_save">Atura i guarda la gravació</string>
     <string name="resume">Continua</string>

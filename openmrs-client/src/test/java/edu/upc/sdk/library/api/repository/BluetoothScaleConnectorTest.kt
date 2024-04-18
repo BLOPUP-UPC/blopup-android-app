@@ -33,7 +33,7 @@ class BluetoothScaleConnectorTest {
 
         subjectUnderTest = BluetoothScaleConnector(
             eBodyProtocolFactory
-        )
+        ).init()
         subjectUnderTest.connect(updateMeasurementState)
     }
 

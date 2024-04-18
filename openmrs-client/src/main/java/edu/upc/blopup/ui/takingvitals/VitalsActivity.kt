@@ -30,6 +30,7 @@ import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.blopup.ui.takingvitals.screens.BloodPressureDataScreen
 import edu.upc.blopup.ui.takingvitals.screens.HowToActivateBPDeviceScreen
+import edu.upc.blopup.ui.takingvitals.screens.ManualMeasureWeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureBloodPressureScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureHeightScreen
 import edu.upc.blopup.ui.takingvitals.screens.MeasureWeightScreen
@@ -118,7 +119,13 @@ class VitalsActivity : ACBaseActivity() {
                             val bloodPressureState by viewModel.bloodPressureUiState.collectAsState()
 
                             BloodPressureDataScreen(
-                                { navigationController.navigate(Routes.MeasureWeightScreen.id) },
+                                {
+                                    if (viewModel.isScaleAvailable()) {
+                                        navigationController.navigate(Routes.MeasureWeightScreen.id)
+                                    } else {
+                                        navigationController.navigate(Routes.ManualMeasureWeightScreen.id)
+                                    }
+                                },
                                 navigationController::popBackStack,
                                 bloodPressureState,
                                 viewModel::receiveBloodPressureData
@@ -144,6 +151,15 @@ class VitalsActivity : ACBaseActivity() {
                                 navigationController::popBackStack,
                                 viewModel::receiveWeightData
                             )
+                        }
+                        composable(Routes.ManualMeasureWeightScreen.id) {
+                            topBarTitle = R.string.weight_data
+                            isDataScreen = false
+
+                            ManualMeasureWeightScreen {
+                                viewModel.saveWeight(it)
+                                navigationController.navigate(Routes.MeasureHeightScreen.id)
+                            }
                         }
                         composable(Routes.MeasureHeightScreen.id) {
                             topBarTitle = R.string.height_data

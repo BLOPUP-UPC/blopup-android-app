@@ -8,6 +8,9 @@ import javax.inject.Inject
 class ReadScaleRepository @Inject constructor(
     private val connector: BluetoothScaleConnectorInterface
 ) {
+    fun isBluetoothAvailable(): Boolean {
+        return connector.isBluetoothAvailable()
+    }
 
     fun start(
         updateMeasurementStateCallback: (ScaleViewState) -> Unit

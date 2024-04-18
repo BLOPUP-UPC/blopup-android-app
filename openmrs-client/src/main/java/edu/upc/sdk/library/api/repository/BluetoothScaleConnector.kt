@@ -1,6 +1,7 @@
 package edu.upc.sdk.library.api.repository
 
 import android.bluetooth.BluetoothDevice
+import android.os.Build
 import com.ideabus.model.data.EBodyMeasureData
 import com.ideabus.model.protocol.EBodyProtocol
 import com.ideabus.model.protocol.EBodyProtocol.ConnectState
@@ -13,19 +14,23 @@ import javax.inject.Inject
 
 
 class BluetoothScaleConnector @Inject constructor(
-    eBodyProtocolFactory: EBodyProtocolFactory
+    private val eBodyProtocolFactory: EBodyProtocolFactory
 ) : BluetoothScaleConnectorInterface,
     EBodyProtocolListener {
 
-    private val eBodyProtocol: EBodyProtocol
+    private lateinit var eBodyProtocol: EBodyProtocol
 
     private lateinit var updateMeasurementStateCallback: (ScaleViewState) -> Unit
 
-    init {
+    override fun init() : BluetoothScaleConnector {
         eBodyProtocol = eBodyProtocolFactory.getEBodyProtocol()
         eBodyProtocol.setOnDataResponseListener(this)
         eBodyProtocol.setOnConnectStateListener(this)
+
+        return this
     }
+
+    override fun isBluetoothAvailable() = true
 
     override fun connect(
         updateMeasurementState: (ScaleViewState) -> Unit
@@ -89,6 +94,10 @@ class EBodyProtocolFactory @Inject constructor(private val activityProvider: Cur
 }
 
 interface BluetoothScaleConnectorInterface {
+    fun init() : BluetoothScaleConnectorInterface
+
+    fun isBluetoothAvailable(): Boolean
+
     fun connect(
         updateMeasurementState: (ScaleViewState) -> Unit
     )
@@ -102,9 +111,28 @@ object BluetoothScaleConnectorModule {
 
     @Provides
     fun providesBluetoothConnector(connector: BluetoothScaleConnector): BluetoothScaleConnectorInterface {
-        return connector
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            return NonAvailableScaleConnector()
+        }
+        return connector.init()
     }
 }
 
 interface EBodyProtocolListener : EBodyProtocol.OnConnectStateListener,
     EBodyProtocol.OnDataResponseListener
+
+class NonAvailableScaleConnector : BluetoothScaleConnectorInterface {
+    override fun init() : BluetoothScaleConnectorInterface {
+        return this
+    }
+
+    override fun isBluetoothAvailable() = false
+
+    override fun connect(
+        updateMeasurementState: (ScaleViewState) -> Unit
+    ) {
+    }
+
+    override fun disconnect() {
+    }
+}
