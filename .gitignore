@@ -16,7 +16,6 @@ tests/out/*
 /openmrs-client/build
 /openmrs-client/release
 /openmrs-client/keystore/
-/openmrs-client/src/main/res/values/secrets.xml
 /odkcollect/build
 
 *.DS_Store
