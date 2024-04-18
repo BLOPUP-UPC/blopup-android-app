@@ -16,9 +16,9 @@ jobs:
         with:
           fileName: 'release_keystore.jks'
           encodedString: ${{ secrets.KEYSTORE }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'temurin'
@@ -44,7 +44,7 @@ jobs:
           KEYSTORE_ALIAS_NAME: ${{ secrets.KEYSTORE_ALIAS_NAME }}
           KEYSTORE_ALIAS_PASS: ${{ secrets.KEYSTORE_ALIAS_PASS }}
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: BlopUp Client Bundle
           path: openmrs-client/build/outputs/bundle/release/openmrs-client-release.aab
@@ -66,9 +66,9 @@ jobs:
         with:
           fileName: 'release_keystore.jks'
           encodedString: ${{ secrets.KEYSTORE }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'temurin'
