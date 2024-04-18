@@ -244,6 +244,7 @@
     <string name="error_loading_treatments">No s\'han pogut carregar els tractaments.</string>
     <string name="error_loading_treatments_try_again"><u>Siusplau, torni-ho a intentar.</u></string>
     <string name="doctors_name">Nom del doctor</string>
+    <string name="message_call_permission_denied">L\'App necessita permisos per poder trucar al doctor.</string>
     <string name="message_doctor_error">Hi ha hagut un error enviant el missatge. Siusplau contacti al metge directament.</string>
     <string name="bp_image_description">Il·lustració d\'un home negre vestint un polo beix, pantalons blaus i sabates marrons. Està assegut en una cadira amb braçalet blau al voltant del seu braç.</string>
     <string name="weight_image_description">Il·lustració d\'una bàscula violeta.</string>

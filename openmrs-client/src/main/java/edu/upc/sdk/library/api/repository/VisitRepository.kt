@@ -27,7 +27,7 @@ import javax.inject.Singleton
 
 @Singleton
 class VisitRepository @Inject constructor(
-    val restApi: RestApi,
+    private val restApi: RestApi,
     private val locationDAO: LocationDAO,
     private val logger: OpenMRSLogger
 ) {

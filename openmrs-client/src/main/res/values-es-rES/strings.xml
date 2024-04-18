@@ -242,6 +242,7 @@
     <string name="error_loading_treatments">No se han podido cargar los tratamientos.</string>
     <string name="error_loading_treatments_try_again"><u>Por favor, inténtelo de nuevo</u></string>
     <string name="doctors_name">Nombre del doctor</string>
+    <string name="message_call_permission_denied">La App necesita permisos para poder llamar al doctor.</string>
     <string name="message_doctor_error">Ha habido un error mandando el mensaje. Por favor contacte directamente al personal médico.</string>
     <string name="bp_image_description">Ilustración de un hombre negro vistiendo una polo beige, pantalones azules y zapatos marrones. Está sentado en una silla con brazalete azul alrededor de su brazo.</string>
     <string name="weight_image_description">Ilustración de una báscula violeta.</string>

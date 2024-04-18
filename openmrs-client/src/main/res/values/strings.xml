@@ -364,6 +364,7 @@
     <string name="error_loading_treatments" tools:ignore="MissingTranslation">Treatments could not be loaded.</string>
     <string name="error_loading_treatments_try_again" tools:ignore="MissingTranslation"><u>Try again</u></string>
     <string name="doctors_name" tools:ignore="MissingTranslation">Doctor\'s name</string>
+    <string name="message_call_permission_denied" tools:ignore="MissingTranslation">The app needs call permissions to call to the doctor.</string>
     <string name="message_doctor_error" tools:ignore="MissingTranslation">Error sending message to Doctor. Please contact them directly.</string>
     <string name="dismiss_dialog_accessibility" translatable="false">Dismiss dialog</string>
     <string name="country_flag_accessibility_label" translatable="false">Country flag</string>
