@@ -64,7 +64,8 @@ class VisitRepository @Inject constructor(
     }
 
     suspend fun startVisit(patient: Patient, bloodPressure: BloodPressure, heightCm: Int?, weightKg: Float?): Result<Visit> = withContext(Dispatchers.IO) {
-        val now = Instant.now()
+        // Visit start time should be a bit before the encounter creation ¯\_(ツ)_/¯
+        val now = Instant.now().minusSeconds(50)
         val location = OpenmrsAndroid.getLocation()
         val openMRSVisit = OpenMRSVisit().apply {
             startDatetime = now.formatAsOpenMrsDate()
@@ -96,6 +97,7 @@ class VisitRepository @Inject constructor(
     }
 
     private suspend fun addVisitEncounter(visit: Visit): Result<Visit> {
+        val now = Instant.now()
         val encounterCreate = Encountercreate().apply {
             this.visit = visit.id.toString()
             this.patient = visit.patientId.toString()
@@ -104,20 +106,20 @@ class VisitRepository @Inject constructor(
                 Obscreate().apply {
                     concept = VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
                     value = visit.bloodPressure.systolic.toString()
-                    obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                    obsDatetime = now.formatAsOpenMrsDate()
                     person = visit.patientId.toString()
                 },
                 Obscreate().apply {
                     concept = VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
                     value = visit.bloodPressure.diastolic.toString()
-                    obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                    obsDatetime = now.formatAsOpenMrsDate()
                     person = visit.patientId.toString()
                 },
                 Obscreate().apply {
                     concept =
                         VitalsConceptType.HEART_RATE_FIELD_CONCEPT
                     value = visit.bloodPressure.pulse.toString()
-                    obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                    obsDatetime = now.formatAsOpenMrsDate()
                     person = visit.patientId.toString()
                 },
                 visit.heightCm?.let {
@@ -125,7 +127,7 @@ class VisitRepository @Inject constructor(
                         concept =
                             VitalsConceptType.HEIGHT_FIELD_CONCEPT
                         value = it.toString()
-                        obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                        obsDatetime = now.formatAsOpenMrsDate()
                         person = visit.patientId.toString()
                     }
                 },
@@ -134,7 +136,7 @@ class VisitRepository @Inject constructor(
                         concept =
                             VitalsConceptType.WEIGHT_FIELD_CONCEPT
                         value = it.toString()
-                        obsDatetime = visit.startDate.formatAsOpenMrsDate()
+                        obsDatetime = now.formatAsOpenMrsDate()
                         person = visit.patientId.toString()
                     }
                 }
@@ -143,7 +145,7 @@ class VisitRepository @Inject constructor(
 
         restApi.createEncounter(encounterCreate).execute().run {
             if (!isSuccessful) {
-                logger.e("Error createing the encounter: ${message()}")
+                logger.e("Error creating the encounter: ${message()}")
                 deleteVisit(visit.id)
                 return Result.Error(IOException("Error creating encounter ${message()}"))
             }
