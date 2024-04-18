@@ -8,6 +8,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: release
     steps:
       - name: Decode Keystore
         id: decode_keystore
@@ -24,6 +25,17 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Substitute Secrets
+        uses: Lambdaspire/action-substitute-secrets-in-file@v1.0.0
+        with:
+          # The (single) file to target.
+          file: openmrs-client/src/main/res/values/secrets.xml
+          tokenPattern: ${TOKEN}
+          # Passes GitHub Secrets as a JSON string to the action.
+          # This MUST be supplied.
+          # It MUST be exactly "${{ toJSON(secrets) }}".
+          secretsJson: ${{ toJSON(secrets) }}
+
       - name: build prod
         run: ./gradlew openmrs-client:bundleRelease
         env:
@@ -63,6 +75,16 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Substitute Secrets
+        uses: Lambdaspire/action-substitute-secrets-in-file@v1.0.0
+        with:
+          # The (single) file to target.
+          file: openmrs-client/src/main/res/values/secrets.xml
+          tokenPattern: ${TOKEN}
+          # Passes GitHub Secrets as a JSON string to the action.
+          # This MUST be supplied.
+          # It MUST be exactly "${{ toJSON(secrets) }}".
+          secretsJson: ${{ toJSON(secrets) }}
       - name: build prod
         run: ./gradlew openmrs-client:assembleRelease
         env:
