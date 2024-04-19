@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,7 +47,8 @@ fun AppToolBarWithMenu(
     username: String,
     showGoBackButton: Boolean = true,
     isDataScreen: Boolean = false,
-    isCreatePatientWithSomeInput : Boolean =  false
+    isCreatePatientWithSomeInput : Boolean =  false,
+    isSearchPatientScreen : Boolean =  false
 ) {
     var showLoseDataDialog by remember { mutableStateOf(false) }
     TopAppBar(
@@ -76,6 +78,15 @@ fun AppToolBarWithMenu(
                 )
             }
         }, actions = {
+            if(isSearchPatientScreen) {
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Search,
+                        contentDescription = "Search",
+                        tint = colorResource(R.color.white)
+                    )
+            }
+            }
             OptionsMenu(onLogout, username)
         }
     )

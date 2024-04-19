@@ -55,6 +55,7 @@ class DashboardActivity : ACBaseActivity() {
                 val navigationController = rememberNavController()
                 var showBackButtonInMenu by remember { mutableStateOf(false) }
                 var isCreatePatientWithSomeInput by remember { mutableStateOf(false) }
+                var isSearchPatientScreen by remember { mutableStateOf(false) }
                 var topBarTitle by remember { mutableIntStateOf(R.string.organization_name) }
 
                 Scaffold(
@@ -69,7 +70,8 @@ class DashboardActivity : ACBaseActivity() {
                             this@DashboardActivity::logout,
                             OpenmrsAndroid.getUsername(),
                             showBackButtonInMenu,
-                            isCreatePatientWithSomeInput = isCreatePatientWithSomeInput
+                            isCreatePatientWithSomeInput = isCreatePatientWithSomeInput,
+                            isSearchPatientScreen = isSearchPatientScreen
                         )
                     },
                     bottomBar = {
@@ -84,11 +86,13 @@ class DashboardActivity : ACBaseActivity() {
                     ) {
                         composable(Routes.DashboardScreen.id) {
                             topBarTitle = R.string.organization_name
+                            isSearchPatientScreen = false
                             showBackButtonInMenu = false
                             DashboardScreen { navigationController.navigate(Routes.CreatePatientScreen.id) }
                         }
                         composable(Routes.SearchPatientScreen.id) {
                             topBarTitle = R.string.action_synced_patients
+                            isSearchPatientScreen = true
                             showBackButtonInMenu = true
                             SearchPatientScreen(
                                 { patientId, patientUuid ->
@@ -112,6 +116,7 @@ class DashboardActivity : ACBaseActivity() {
                         }
                         composable(Routes.CreatePatientScreen.id) {
                             topBarTitle = R.string.action_register_patient
+                            isSearchPatientScreen = false
                             showBackButtonInMenu = true
                             CreatePatientScreen(
                                 { patientId, patientUuid ->
@@ -151,6 +156,7 @@ class DashboardActivity : ACBaseActivity() {
                             )
                         ) {
                             isCreatePatientWithSomeInput = false
+                            isSearchPatientScreen = false
                             showBackButtonInMenu = true
                             PatientDashboardScreen(
                                 { patientId, patientUuid ->
