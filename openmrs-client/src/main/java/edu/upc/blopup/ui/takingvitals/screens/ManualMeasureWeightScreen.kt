@@ -113,9 +113,3 @@ fun ManualWeightInstructions(modifier: Modifier) {
 fun ManualMeasureWeightScreenDataPreview() {
     ManualMeasureWeightScreen({})
 }
-
-@Preview
-@Composable
-fun ManualMeasureWeightScreenNoDataPreview() {
-    ManualMeasureWeightScreen({})
-}
