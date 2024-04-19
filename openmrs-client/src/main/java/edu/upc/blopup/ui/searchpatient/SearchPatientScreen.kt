@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.searchpatient
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,7 @@ import edu.upc.sdk.utilities.DateUtils.convertTime
 
 @Composable
 fun SearchPatientScreen(
+    startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit,
     viewModel: SearchPatientViewModel = hiltViewModel()
 ) {
 
@@ -40,18 +42,21 @@ fun SearchPatientScreen(
         viewModel.getAllPatientsLocally()
     }
 
-    SyncedPatients(patientList)
+    SyncedPatients(patientList, startPatientDashboardActivity)
 }
 
 @Composable
-fun SyncedPatients(patientList: ResultUiState<List<Patient>>) {
+fun SyncedPatients(
+    patientList: ResultUiState<List<Patient>>,
+    startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit
+) {
     Column(Modifier.fillMaxSize()) {
         when (patientList) {
             is ResultUiState.Success -> {
                 LazyColumn {
                     val patients = patientList.data
                     items(patients) { patient ->
-                        PatientCard(patient)
+                        PatientCard(patient, startPatientDashboardActivity)
                     }
                 }
             }
@@ -66,9 +71,14 @@ fun SyncedPatients(patientList: ResultUiState<List<Patient>>) {
     }}
 
 @Composable
-fun PatientCard(patient: Patient) {
+fun PatientCard(
+    patient: Patient,
+    startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit
+) {
     Card(
-        modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp),
+        modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp).clickable {
+            startPatientDashboardActivity(patient.id!!, patient.uuid!!)
+        },
         shape = MaterialTheme.shapes.extraSmall,
         border = BorderStroke(0.dp, Color.LightGray),
         colors = CardColors(
@@ -112,5 +122,5 @@ fun PreviewSearchPatientScreen() {
         })
         birthdate = "1980-01-20T00:00:00.000+0000"
         birthdateEstimated = false
-    })))
+    }))) { _, _ -> }
 }

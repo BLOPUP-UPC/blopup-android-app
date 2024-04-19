@@ -85,12 +85,30 @@ class DashboardActivity : ACBaseActivity() {
                         composable(Routes.DashboardScreen.id) {
                             topBarTitle = R.string.organization_name
                             showBackButtonInMenu = false
-                            DashboardScreen{navigationController.navigate(Routes.CreatePatientScreen.id)}
+                            DashboardScreen { navigationController.navigate(Routes.CreatePatientScreen.id) }
                         }
                         composable(Routes.SearchPatientScreen.id) {
                             topBarTitle = R.string.action_synced_patients
                             showBackButtonInMenu = true
-                            SearchPatientScreen()
+                            SearchPatientScreen(
+                                { patientId, patientUuid ->
+                                    startActivity(
+                                        Intent(
+                                            this@DashboardActivity,
+                                            PatientDashboardActivity::class.java
+                                        ).apply {
+                                            putExtra(
+                                                ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                                                patientId
+                                            )
+                                            putExtra(
+                                                ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE,
+                                                patientUuid
+                                            )
+                                        })
+                                }
+
+                            )
                         }
                         composable(Routes.CreatePatientScreen.id) {
                             topBarTitle = R.string.action_register_patient
@@ -101,7 +119,10 @@ class DashboardActivity : ACBaseActivity() {
                                         Routes.PatientDashboardScreen.id.replace(
                                             "{${ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE}}",
                                             patientId.toString()
-                                        ).replace("{${ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE}}", patientUuid)
+                                        ).replace(
+                                            "{${ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE}}",
+                                            patientUuid
+                                        )
                                     ) {
                                         popUpTo(Routes.DashboardScreen.id)
                                     }
@@ -110,7 +131,13 @@ class DashboardActivity : ACBaseActivity() {
                                 { askPermissionsForLegalConsent() },
                                 { getString(it) },
                                 { country: Country -> country.getLabel(this@DashboardActivity) },
-                                { selectedLanguage: String, resourceId: Int -> getTextInLanguageSelected(selectedLanguage, resourceId, this@DashboardActivity) }
+                                { selectedLanguage: String, resourceId: Int ->
+                                    getTextInLanguageSelected(
+                                        selectedLanguage,
+                                        resourceId,
+                                        this@DashboardActivity
+                                    )
+                                }
                             )
                         }
                         composable(
@@ -125,23 +152,28 @@ class DashboardActivity : ACBaseActivity() {
                         ) {
                             isCreatePatientWithSomeInput = false
                             showBackButtonInMenu = true
-                            PatientDashboardScreen ({ patientId, patientUuid ->
-                                startActivity(
-                                    Intent(
-                                        this@DashboardActivity,
-                                        PatientDashboardActivity::class.java
-                                    ).apply {
-                                        putExtra(
-                                            ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
-                                            patientId
-                                        )
-                                        putExtra(
-                                            ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE,
-                                            patientUuid
-                                        )
-                                    })
-                            }, it.arguments?.getLong(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE) ?: 0,
-                                it.arguments?.getString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE) ?: "")
+                            PatientDashboardScreen(
+                                { patientId, patientUuid ->
+                                    startActivity(
+                                        Intent(
+                                            this@DashboardActivity,
+                                            PatientDashboardActivity::class.java
+                                        ).apply {
+                                            putExtra(
+                                                ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
+                                                patientId
+                                            )
+                                            putExtra(
+                                                ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE,
+                                                patientUuid
+                                            )
+                                        })
+                                },
+                                it.arguments?.getLong(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE)
+                                    ?: 0,
+                                it.arguments?.getString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE)
+                                    ?: ""
+                            )
                         }
                     }
                 }
@@ -171,7 +203,11 @@ class DashboardActivity : ACBaseActivity() {
 }
 
 @Composable
-fun PatientDashboardScreen(startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit, patientId: Long, patientUuid: String) {
+fun PatientDashboardScreen(
+    startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit,
+    patientId: Long,
+    patientUuid: String
+) {
     Text("Patient $patientId $patientUuid")
     LaunchedEffect(true) {
         startPatientDashboardActivity(patientId, patientUuid)
