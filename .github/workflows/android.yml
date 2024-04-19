@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Substitute Secrets
         uses: Lambdaspire/action-substitute-secrets-in-file@v1.0.0

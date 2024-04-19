@@ -251,9 +251,6 @@ dependencies {
     //no inspection
     ksp "androidx.room:room-compiler:${versions.roomCompiler}"
 
-    // Noinspection GradleDependency
-    annotationProcessor "androidx.room:room-compiler:${versions.roomCompiler}"
-
     // Work Manager
     implementation "androidx.work:work-runtime:${versions.workManager}"
 
