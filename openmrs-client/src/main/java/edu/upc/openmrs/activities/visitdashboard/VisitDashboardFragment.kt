@@ -88,12 +88,9 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         setupVisitObserver()
         setUpTreatmentsObserver()
 
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.fetchCurrentVisit(visitUuid)
+
+        return binding.root
     }
 
     private fun setupVisitObserver() {
