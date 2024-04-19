@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.location.LocationDialogScreen
+import edu.upc.blopup.ui.searchpatient.SearchInput
+import edu.upc.blopup.ui.searchpatient.SearchOptionIcon
 import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.activities.settings.SettingsActivity
 import edu.upc.sdk.library.OpenmrsAndroid
@@ -47,20 +48,27 @@ fun AppToolBarWithMenu(
     username: String,
     showGoBackButton: Boolean = true,
     isDataScreen: Boolean = false,
-    isCreatePatientWithSomeInput : Boolean =  false,
-    isSearchPatientScreen : Boolean =  false
+    isCreatePatientWithSomeInput: Boolean = false,
+    isSearchPatientScreen: Boolean = false
 ) {
     var showLoseDataDialog by remember { mutableStateOf(false) }
+    var searchInput by remember { mutableStateOf("") }
+    var isSearchInput by remember { mutableStateOf(false) }
+
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorResource(R.color.dark_teal),
             titleContentColor = colorResource(R.color.white),
         ),
         title = {
-            Text(title)
+            if(isSearchInput && isSearchPatientScreen) {
+                SearchInput(searchInput) { searchInput = it }
+            } else {
+                Text(title)
+            }
         },
         navigationIcon = {
-            if(showGoBackButton){
+            if (showGoBackButton) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_back),
                     contentDescription = "Back",
@@ -78,20 +86,14 @@ fun AppToolBarWithMenu(
                 )
             }
         }, actions = {
-            if(isSearchPatientScreen) {
-                IconButton(onClick = { }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = "Search",
-                        tint = colorResource(R.color.white)
-                    )
-            }
+            if (isSearchPatientScreen) {
+                SearchOptionIcon ({ isSearchInput = true }, isSearchInput) { isSearchInput = false }
             }
             OptionsMenu(onLogout, username)
         }
     )
 
-    if(isCreatePatientWithSomeInput || isDataScreen){
+    if (isCreatePatientWithSomeInput || isDataScreen) {
         BackHandler {
             showLoseDataDialog = true
         }

@@ -9,20 +9,30 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.sdk.library.models.Patient
@@ -105,6 +115,50 @@ fun PatientCard(
 
         }
 
+    }
+}
+
+@Composable
+fun SearchInput(searchInput: String, onSearchInput: (String) -> Unit) {
+    TextField(
+        value = searchInput, onValueChange = {onSearchInput(it)},
+        colors = TextFieldDefaults.colors(
+            focusedPlaceholderColor = Color.LightGray,
+            unfocusedPlaceholderColor = Color.LightGray,
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedContainerColor = colorResource(R.color.dark_teal),
+            unfocusedContainerColor = colorResource(R.color.dark_teal),
+        ),
+        placeholder = { Text(stringResource(R.string.search_hint_text)) }
+    )
+}
+
+
+@Composable
+fun SearchOptionIcon(onSearchOption: () -> Unit, isSearchInput: Boolean, onSearchClose: () -> Unit) {
+    when{
+        isSearchInput -> {
+            IconButton(onClick = { onSearchClose() }) {
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = "Close",
+                    tint = Color.LightGray
+                )
+            }
+        }
+        else ->{
+            IconButton(onClick = { onSearchOption() }) {
+                Icon(
+                    imageVector = Icons.Outlined.Search,
+                    contentDescription = "Search",
+                    tint = colorResource(R.color.white)
+                )
+            }
+
+        }
     }
 }
 
