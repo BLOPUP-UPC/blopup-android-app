@@ -15,21 +15,12 @@ package edu.upc.openmrs.activities.introduction
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.view.WindowManager
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import android.view.animation.AnimationUtils
-import edu.upc.R
+import androidx.lifecycle.lifecycleScope
 import edu.upc.databinding.ActivitySplashBinding
-import edu.upc.sdk.utilities.ApplicationConstants
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
-
-    private val mHandler = Handler()
-    private lateinit var mRunnable: Runnable
     private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,25 +28,16 @@ class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        val move = AnimationUtils.loadAnimation(applicationContext, R.anim.splash_screen_logo_anim)
-        val set = AnimationSet(true)
-        val fadeIn: Animation = AlphaAnimation(0f, 1f)
-        fadeIn.interpolator = AccelerateInterpolator()
-        fadeIn.duration = 1000
-        set.addAnimation(fadeIn)
-        set.addAnimation(move)
-        binding.logo.startAnimation(set)
-        mRunnable = Runnable {
+        lifecycleScope.launch {
+            delay(SPLASH_TIMER)
+
             val intent = Intent(this@SplashActivity, IntroActivity::class.java)
             startActivity(intent)
             finish()
         }
-        mHandler.postDelayed(mRunnable, ApplicationConstants.SPLASH_TIMER.toLong())
     }
 
-    override fun onDestroy() {
-        mHandler.removeCallbacks(mRunnable)
-        super.onDestroy()
+    companion object {
+        const val SPLASH_TIMER = 2500L
     }
 }

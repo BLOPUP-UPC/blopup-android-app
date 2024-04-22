@@ -25,7 +25,6 @@ object ApplicationConstants {
     const val DB_NAME = "openmrs.db"
     const val FACILITY_VISIT_TYPE_UUID = "7b0f5697-27e3-40c4-8bae-f4049abfb4ed"
     const val DEFAULT_BCRYPT_ROUND = 8
-    const val SPLASH_TIMER = 3500
     const val PACKAGE_NAME = "edu.upc"
     const val USER_GUIDE = "https://blopup-upc.github.io/blopup-android-user-guide/"
     const val BUNDLE = "bundle"
