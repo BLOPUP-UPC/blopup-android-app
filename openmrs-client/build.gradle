@@ -85,7 +85,6 @@ android {
         applicationId "edu.upc"
         versionName "1.9.12"
         versionCode 1912
-        multiDexEnabled true
 
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
@@ -127,7 +126,6 @@ android {
             minifyEnabled true
             // Enables resource shrinking, which is performed by the
             // Android Gradle plugin.
-            multiDexEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
@@ -257,7 +255,6 @@ dependencies {
     // Third Party UI Libraries
     implementation "com.github.PhilJay:MPAndroidChart:${versions.MPAndroidChart}"
     implementation "org.mindrot:jbcrypt:${versions.jbcrypt}"
-    implementation "androidx.multidex:multidex:${versions.multidex}"
     implementation "joda-time:joda-time:${versions.jodaTime}"
     implementation "commons-codec:commons-codec:${versions.codec}"
     implementation "org.jdeferred:jdeferred-android-aar:${versions.jdeferred}"
