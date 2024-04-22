@@ -2,11 +2,9 @@ package edu.upc.blopup.ui.createpatient
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import edu.upc.BuildConfig
 import edu.upc.blopup.RecordingHelper
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.models.Patient
-import edu.upc.sdk.library.models.PersonAttribute
 import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.utilities.DateUtils
 import io.mockk.MockKAnnotations
@@ -77,10 +75,6 @@ class CreatePatientViewModelTest {
             this.birthdate = birthdate
             birthdateEstimated = true
             this.gender = gender
-            attributes = listOf(PersonAttribute().apply {
-                uuid = BuildConfig.LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID
-                value = countryOfBirth
-            })
         }
 
         coEvery {
