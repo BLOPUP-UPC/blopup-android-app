@@ -42,8 +42,8 @@
             android:label="@string/title_activity_vitals"
             android:theme="@style/AppTheme" />
         <activity
-        android:name=".blopup.ui.dashboard.DashboardActivity"
-        android:theme="@style/AppTheme" />
+            android:name=".blopup.ui.dashboard.DashboardActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".openmrs.activities.introduction.SplashActivity"
             android:exported="true"
@@ -63,9 +63,6 @@
             android:name=".openmrs.activities.visitdashboard.TreatmentActivity"
             android:label="TreatmentActivity"
             android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".openmrs.activities.visitdashboard.VisitDashboardActivity" />
         </activity>
         <activity
             android:name=".openmrs.activities.login.LoginActivity"
@@ -78,18 +75,14 @@
             android:configChanges="locale|orientation"
             android:label="@string/action_settings"
             android:launchMode="singleTop"
-            android:parentActivityName=".blopup.ui.dashboard.DashboardActivity"
-            android:theme="@style/AppThemeOrig" />
+            android:parentActivityName=".blopup.ui.dashboard.DashboardActivity">
+        </activity>
         <activity
             android:name=".openmrs.activities.patientdashboard.PatientDashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
+            android:parentActivityName=".blopup.ui.dashboard.DashboardActivity"
             android:theme="@style/AppThemeOrig">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".blopup.ui.dashboard.DashboardActivity" />
         </activity>
         <activity
             android:name=".openmrs.activities.visitdashboard.VisitDashboardActivity"
@@ -103,11 +96,6 @@
             android:parentActivityName=".openmrs.activities.addeditpatient.AddEditPatientActivity"
             android:theme="@style/AppThemeOrig"
             android:windowSoftInputMode="adjustPan">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity" />
         </activity>
 
         <service
