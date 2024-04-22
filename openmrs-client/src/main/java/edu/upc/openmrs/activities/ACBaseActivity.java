@@ -236,25 +236,11 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
-    public void showProgressDialog(int dialogMessageId) {
-        showProgressDialog(getString(dialogMessageId));
-    }
-
     public void dismissCustomFragmentDialog() {
         if (mCustomFragmentDialog != null) {
             mCustomFragmentDialog.dismiss();
             mCustomFragmentDialog = null;
         }
-    }
-
-    protected void showProgressDialog(String dialogMessage) {
-        CustomDialogBundle bundle = new CustomDialogBundle();
-        bundle.setProgressDialog(true);
-        bundle.setTitleViewMessage(dialogMessage);
-        mCustomFragmentDialog = CustomFragmentDialog.newInstance(bundle);
-        mCustomFragmentDialog.setCancelable(false);
-        mCustomFragmentDialog.setRetainInstance(true);
-        mCustomFragmentDialog.show(mFragmentManager, dialogMessage);
     }
 
     public void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
