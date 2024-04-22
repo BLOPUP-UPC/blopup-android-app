@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.RecordingHelper
 import edu.upc.openmrs.activities.BaseViewModel
@@ -14,6 +13,7 @@ import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAttribute
+import edu.upc.sdk.library.models.PersonAttribute.Companion.NATIONALITY_ATTRIBUTE_UUID
 import edu.upc.sdk.library.models.PersonAttributeType
 import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.library.models.ResultType
@@ -130,7 +130,7 @@ class AddEditPatientViewModel @Inject constructor(
                 PersonAttribute().apply
                 {
                     attributeType = PersonAttributeType().apply {
-                        uuid = BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID
+                        uuid = NATIONALITY_ATTRIBUTE_UUID
                         value = country
                     }
                 })

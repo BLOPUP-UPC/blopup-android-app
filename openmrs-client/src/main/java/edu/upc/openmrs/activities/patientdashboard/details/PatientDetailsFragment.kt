@@ -23,7 +23,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
@@ -34,6 +33,7 @@ import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.OperationType.PatientFetching
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonAttribute
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
@@ -160,7 +160,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
             }
             patient.attributes?.forEach { attribute ->
                 val countryOfBirthValue = attribute.value?.uppercase()
-                if (attribute.attributeType?.uuid == BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID) {
+                if (attribute.attributeType?.uuid == PersonAttribute.NATIONALITY_ATTRIBUTE_UUID) {
                     val country = countryOfBirthValue?.let { Country.valueOf(it) }
                     if (country != null) {
                         patientDetailsCountryOfBirth.text = country.getLabel(requireContext())

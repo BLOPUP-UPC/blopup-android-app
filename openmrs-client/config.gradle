@@ -1,7 +1,6 @@
 android{
     buildTypes {
         release {
-            buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"8ab9b8af-7c6c-40fb-96cf-c638f5c920b9\""
             buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"89383989-15d6-4afc-8edd-778b20e6e24f\""
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup.upc.edu/openmrs\""
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "false"
@@ -10,7 +9,6 @@ android{
             // Feature toggles
         }
         debug {
-            buildConfigField "String", "COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID", "\"6aba6deb-b260-4117-9a50-37c8e1a76a45\""
             buildConfigField "String", "LEGAL_CONSENT_ATTRIBUTE_TYPE_UUID", "\"b8cb9abe-f0cd-4b09-b6db-69cd54ba22d7\""
             buildConfigField "String", "OPEN_MRS_URL", "\"https://blopup-dev.upc.edu/openmrs\""
             buildConfigField "Boolean", "SHOW_SERVER_URL_TOGGLE", "true"

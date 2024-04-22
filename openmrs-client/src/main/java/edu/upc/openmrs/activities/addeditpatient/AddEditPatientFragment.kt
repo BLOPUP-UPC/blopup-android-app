@@ -44,7 +44,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.BaseFragment
@@ -60,6 +59,7 @@ import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
 import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonAttribute.Companion.NATIONALITY_ATTRIBUTE_UUID
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -319,7 +319,7 @@ class AddEditPatientFragment : BaseFragment() {
             }
 
             val countryOfBirthLabel = attributes
-                .firstOrNull { it.attributeType?.uuid == BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID }
+                .firstOrNull { it.attributeType?.uuid == NATIONALITY_ATTRIBUTE_UUID }
                 ?.value
                 ?.uppercase()
 

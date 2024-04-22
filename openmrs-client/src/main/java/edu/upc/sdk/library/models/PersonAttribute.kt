@@ -36,4 +36,7 @@ class PersonAttribute : Serializable {
     @Expose
     var value: String? = null
 
+    companion object {
+        const val NATIONALITY_ATTRIBUTE_UUID = "8ab9b8af-7c6c-40fb-96cf-c638f5c920b9"
+    }
 }

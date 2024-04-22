@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import edu.upc.BuildConfig;
 import edu.upc.sdk.library.databases.entities.LocationEntity;
 import edu.upc.sdk.library.models.Encounter;
 import edu.upc.sdk.library.models.EncounterType;
@@ -88,7 +87,7 @@ public abstract class ACUnitTestBase {
 
     private List<PersonAttribute> createCountryOfBirthAttribute() {
         PersonAttributeType attributeType = new PersonAttributeType();
-        attributeType.setUuid(BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID);
+        attributeType.setUuid(PersonAttribute.NATIONALITY_ATTRIBUTE_UUID);
         PersonAttribute personAttribute = new PersonAttribute();
         personAttribute.setAttributeType(attributeType);
         return Collections.singletonList(personAttribute);

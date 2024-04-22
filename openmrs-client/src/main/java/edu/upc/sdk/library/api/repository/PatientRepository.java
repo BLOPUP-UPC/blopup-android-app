@@ -21,7 +21,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import edu.upc.BuildConfig;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -127,7 +126,7 @@ public class PatientRepository {
         patient.setGender(gender);
 
         PersonAttributeType personAttributeType = new PersonAttributeType();
-        personAttributeType.setUuid(BuildConfig.COUNTRY_OF_BIRTH_ATTRIBUTE_TYPE_UUID);
+        personAttributeType.setUuid(PersonAttribute.NATIONALITY_ATTRIBUTE_UUID);
 
         PersonAttribute personAttribute = new PersonAttribute();
         personAttribute.setAttributeType(personAttributeType);
