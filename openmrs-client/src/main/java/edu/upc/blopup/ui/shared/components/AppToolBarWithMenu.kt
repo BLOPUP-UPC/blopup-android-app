@@ -35,9 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.location.LocationDialogScreen
-import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.activities.settings.SettingsActivity
-import edu.upc.sdk.library.OpenmrsAndroid
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,18 +141,6 @@ fun OptionsMenu(onLogout: () -> Unit, username: String) {
             text = {
                 Text(
                     text = stringResource(R.string.action_settings),
-                    style = TextStyle(fontWeight = FontWeight.Normal)
-                )
-            })
-        DropdownMenuItem(
-            onClick = {
-                context.startActivity(Intent(context, IntroActivity::class.java))
-                OpenmrsAndroid.setUserFirstTime(true)
-                showMenu = false
-            },
-            text = {
-                Text(
-                    text = stringResource(R.string.app_tutorial),
                     style = TextStyle(fontWeight = FontWeight.Normal)
                 )
             })

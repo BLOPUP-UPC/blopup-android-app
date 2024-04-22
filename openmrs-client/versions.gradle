@@ -29,7 +29,6 @@ versions.workManager = '2.9.0'
 versions.MPAndroidChart = 'v3.1.0'
 versions.jbcrypt = '0.4'
 versions.countryCodePicker = '2.4.0'
-versions.AppIntro = '6.0.0'
 
 versions.codec = '1.16.0'
 versions.jdeferred = '1.2.6'

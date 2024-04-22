@@ -45,7 +45,6 @@ object ApplicationConstants {
         const val USER_PERSON_NAME = "userDisplay"
         const val USER_UUID = "userUUID"
         const val LOGIN = "login"
-        const val FIRST_TIME = "firstTime"
     }
 
     object DialogTAG {

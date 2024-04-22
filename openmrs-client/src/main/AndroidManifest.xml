@@ -60,10 +60,6 @@
             android:name="buildVersion"
             android:value="0" />
         <activity
-            android:name=".openmrs.activities.introduction.IntroActivity"
-            android:label="Introduction"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".openmrs.activities.visitdashboard.TreatmentActivity"
             android:label="TreatmentActivity"
             android:theme="@style/AppTheme">

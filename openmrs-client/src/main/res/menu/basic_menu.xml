@@ -28,11 +28,6 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/actionTutorial"
-        android:orderInCategory="100"
-        android:title="@string/app_tutorial"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/actionLogout"
         android:orderInCategory="100"
         android:title="@string/action_logout"

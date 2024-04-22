@@ -38,7 +38,6 @@ import java.util.UUID;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.upc.R;
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog;
-import edu.upc.openmrs.activities.introduction.IntroActivity;
 import edu.upc.openmrs.activities.introduction.SplashActivity;
 import edu.upc.openmrs.activities.login.LoginActivity;
 import edu.upc.openmrs.activities.settings.SettingsActivity;
@@ -133,10 +132,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
         switch (id) {
             case R.id.actionSettings:
                 startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-            case R.id.actionTutorial:
-                startActivity(new Intent(this, IntroActivity.class));
-                OpenmrsAndroid.setUserFirstTime(true);
                 return true;
             case R.id.actionSearchLocal:
                 return true;

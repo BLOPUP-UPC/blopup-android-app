@@ -106,27 +106,6 @@ public class OpenmrsAndroid {
     }
 
     /**
-     * Gets first time.
-     *
-     * @return the first time
-     */
-    public static Boolean getFirstTime() {
-        SharedPreferences prefs = getOpenMRSSharedPreferences();
-        return prefs.getBoolean(ApplicationConstants.UserKeys.FIRST_TIME, ApplicationConstants.FIRST);
-    }
-
-    /**
-     * Sets user first time.
-     *
-     * @param firstLogin the first login
-     */
-    public static void setUserFirstTime(boolean firstLogin) {
-        SharedPreferences.Editor editor = OpenmrsAndroid.getOpenMRSSharedPreferences().edit();
-        editor.putBoolean(ApplicationConstants.UserKeys.FIRST_TIME, firstLogin);
-        editor.apply();
-    }
-
-    /**
      * Gets password.
      *
      * @return the password
