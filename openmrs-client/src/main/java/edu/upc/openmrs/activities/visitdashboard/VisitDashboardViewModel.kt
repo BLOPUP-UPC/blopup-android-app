@@ -128,6 +128,6 @@ class VisitDashboardViewModel @Inject constructor(
         }
     }
 
-    suspend fun sendMessageToDoctor(message: String): kotlin.Result<Boolean> =
+    suspend fun sendMessageToDoctor(message: String): Result<Boolean> =
         doctorRepository.sendMessageToDoctor(message)
 }

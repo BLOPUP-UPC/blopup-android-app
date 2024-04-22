@@ -6,6 +6,7 @@ import edu.upc.blopup.model.Doctor
 import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.models.Provider
+import edu.upc.sdk.library.models.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,7 +25,7 @@ class DoctorRepository @Inject constructor(
                 val response = restApi.contactDoctor(contactRequest).execute()
                 if (!response.isSuccessful) {
                     crashlytics.reportUnsuccessfulResponse(response, FAILED_MESSAGE_DOCTOR)
-                    return@withContext Result.failure(
+                    return@withContext Result.Error(
                         Exception(
                             "$FAILED_MESSAGE_DOCTOR: ${
                                 response.errorBody()?.string()
@@ -32,10 +33,10 @@ class DoctorRepository @Inject constructor(
                         )
                     )
                 }
-                return@withContext Result.success(true)
+                return@withContext Result.Success(true)
             } catch (e: Exception) {
                 crashlytics.reportException(e, FAILED_MESSAGE_DOCTOR)
-                return@withContext Result.failure(
+                return@withContext Result.Error(
                     Exception(
                         "$FAILED_MESSAGE_DOCTOR: ${e.message}",
                         e
@@ -63,12 +64,12 @@ class DoctorRepository @Inject constructor(
                                     registrationNumber
                                 )
                             } ?: emptyList()
-                    Result.success(result)
+                    Result.Success(result)
                 } else {
-                    Result.failure(Exception("Failed to get providers: ${response.code()} - ${response.message()}"))
+                    Result.Error(Exception("Failed to get providers: ${response.code()} - ${response.message()}"))
                 }
             } catch (e: Exception) {
-                Result.failure(Exception("Failed to get providers: ${e.message}", e))
+                Result.Error(e)
             }
         }
     }

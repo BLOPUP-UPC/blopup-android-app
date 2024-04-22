@@ -316,10 +316,10 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         }
     }
 
-    private fun handleContactDoctorResult(result: kotlin.Result<Boolean>) {
+    private fun handleContactDoctorResult(result: Result<Boolean>) {
         viewModel.doctorHasBeenContacted(true)
-        if (result.isFailure) {
-            if (result.exceptionOrNull()?.cause is UnknownHostException) {
+        if (result is Result.Error) {
+            if (result.throwable().cause is UnknownHostException) {
                 ToastUtil.error(getString(R.string.no_internet_connection))
             } else {
                 ToastUtil.error(getString(R.string.message_doctor_error))

@@ -1,16 +1,13 @@
 package edu.upc.sdk.library.api.repository
 
-import androidx.work.WorkManager
 import edu.upc.blopup.model.Doctor
 import edu.upc.sdk.library.CrashlyticsLogger
-import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.library.api.RestApi
-import edu.upc.sdk.library.api.RestServiceBuilder
 import edu.upc.sdk.library.api.repository.DoctorRepository.Companion.DOCTOR_PROVIDER_UUID
 import edu.upc.sdk.library.api.repository.DoctorRepository.ContactDoctorRequest
-import edu.upc.sdk.library.databases.AppDatabase
 import edu.upc.sdk.library.models.Person
 import edu.upc.sdk.library.models.Provider
+import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Results
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -18,19 +15,17 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import io.mockk.mockkConstructor
-import io.mockk.mockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Retrofit
 import java.net.UnknownHostException
 
 class DoctorRepositoryTest {
@@ -60,13 +55,14 @@ class DoctorRepositoryTest {
             val result = doctorRepository.sendMessageToDoctor("message")
 
             verify { restApi.contactDoctor(any()) }
-            assertTrue(result.isSuccess)
+            assertTrue(result is Result.Success)
         }
     }
 
     @Test
     fun `should return failure when sending message response is error`() {
         val call = mockk<Call<ResponseBody>>()
+        val exception = Exception("Bad request")
 
         every { restApi.contactDoctor(any()) } returns call
         every { call.execute() } returns Response.error(
@@ -75,24 +71,25 @@ class DoctorRepositoryTest {
         )
 
         runBlocking {
-            val result = doctorRepository.sendMessageToDoctor("message")
+            val result = doctorRepository.sendMessageToDoctor("message") as Result.Error
+            result.throwable
 
-            assertTrue(result.isFailure)
+            assertEquals("Failed to message doctor: ${exception.message}", result.throwable.message)
         }
     }
 
     @Test
     fun `should return failure when sending message fails`() {
         val call = mockk<Call<ResponseBody>>()
+        val exception = UnknownHostException("No internet connection")
 
         every { restApi.contactDoctor(any()) } returns call
-        every { call.execute() } throws UnknownHostException("No internet connection")
+        every { call.execute() } throws exception
 
         runBlocking {
-            val result = doctorRepository.sendMessageToDoctor("message")
+            val result = doctorRepository.sendMessageToDoctor("message") as Result.Error
 
-            assertTrue(result.isFailure)
-            assertTrue(result.exceptionOrNull()?.cause is UnknownHostException)
+            assertEquals("Failed to message doctor: No internet connection", result.throwable.message)
         }
     }
 
@@ -134,23 +131,23 @@ class DoctorRepositoryTest {
 
         runBlocking {
             val result = doctorRepository.getAllDoctors()
-            assert(Result.success(listOf(doctor)) == result)
+            assertEquals(result, Result.Success(listOf(doctor)))
         }
     }
 
     @Test
     fun `should return failure when get all doctors fails`() {
         val call = mockk<Call<Results<Provider>>>()
+        val exception = UnknownHostException("No internet connection")
 
         every { restApi.providerList } returns call
-        every { call.execute() } throws UnknownHostException("No internet connection")
+        every { call.execute() } throws exception
 
 
         runBlocking {
             val result = doctorRepository.getAllDoctors()
 
-            assertTrue(result.isFailure)
-            assertTrue(result.exceptionOrNull()?.cause is UnknownHostException)
+            assertEquals(edu.upc.sdk.library.models.Result.Error(exception), result)
         }
     }
 }

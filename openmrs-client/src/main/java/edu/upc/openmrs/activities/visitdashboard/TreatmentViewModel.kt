@@ -10,6 +10,7 @@ import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.DoctorRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
 import edu.upc.sdk.library.models.OperationType
+import edu.upc.sdk.library.models.Result
 import javax.inject.Inject
 
 @HiltViewModel
@@ -76,11 +77,10 @@ class TreatmentViewModel @Inject constructor(
     }
 
     suspend fun getAllDoctors() {
-        try {
-            val result = doctorRepository.getAllDoctors()
-            _doctors.value = result.getOrNull()
-        } catch (e: Exception) {
-            setError(e)
+        when (val result = doctorRepository.getAllDoctors()) {
+            is Result.Success -> _doctors.value = result.data
+            is Result.Error -> setError(result.throwable)
+            is Result.Loading -> { }
         }
     }
 

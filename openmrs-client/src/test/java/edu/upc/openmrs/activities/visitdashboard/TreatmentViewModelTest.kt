@@ -121,7 +121,7 @@ class TreatmentViewModelTest {
             Doctor("providerUuid3","Rosa de las Huertas"),
             Doctor("providerUuid4","Carolina de las Huertas"))
 
-        coEvery { mockDoctorRepo.getAllDoctors() } returns kotlin.Result.success(doctors)
+        coEvery { mockDoctorRepo.getAllDoctors() } returns Result.Success(doctors)
 
         runBlocking {
                 treatmentViewModel.getAllDoctors()

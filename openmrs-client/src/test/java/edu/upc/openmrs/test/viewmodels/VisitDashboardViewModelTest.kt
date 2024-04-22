@@ -129,7 +129,7 @@ class VisitDashboardViewModelTest {
     fun `should send a message to the doctor`() {
         val message = "Message"
 
-        coEvery { doctorRepository.sendMessageToDoctor(message) } returns kotlin.Result.success(true)
+        coEvery { doctorRepository.sendMessageToDoctor(message) } returns Result.Success(true)
 
         runBlocking { viewModel.sendMessageToDoctor(message) }
 
