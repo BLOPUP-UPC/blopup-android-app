@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import edu.upc.sdk.library.models.Patient
+import edu.upc.sdk.library.models.PersonName
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.InjectMockKs
@@ -60,6 +61,41 @@ class SearchPatientViewModelTest{
 
 
             assertEquals(ResultUiState.Error, viewModel.patientListResultUiState.value)
+        }
+    }
+
+    @Test
+    fun `when patient doesn't exist then return null`() {
+        val patient = Patient().apply {
+            uuid = "def218bb-a25a-4b40-9b77-b7c26628f0c9"
+            names = emptyList()
+        }
+        coEvery { patient.uuid?.let { patientRepositoryCoroutines.downloadPatientByUuid(it) } } returns patient
+
+        runBlocking {
+            viewModel.retrieveOrDownloadPatient(patient.uuid)
+            assertEquals(ResultUiState.Success(null), viewModel.retrievePatientResult.value)
+        }
+    }
+
+    @Test
+    fun `when patient exists in remote and in local database then return the local patient`() {
+        val patient = Patient().apply {
+            id = 1L
+            uuid = "def218bb-a25a-4b40-9b77-b7c26628f0c6"
+            names = PersonName().let {
+                it.givenName = "Cristina"
+                it.familyName = "Aguilera"
+                listOf(it)
+            }
+        }
+
+        coEvery { patientRepositoryCoroutines.downloadPatientByUuid(patient.uuid!!) } returns patient
+        coEvery { patient.uuid?.let { patientRepositoryCoroutines.findPatientByUUID(it) } } returns patient
+
+        runBlocking {
+            viewModel.retrieveOrDownloadPatient(patient.uuid)
+            assertEquals(ResultUiState.Success(patient), viewModel.retrievePatientResult.value)
         }
     }
 }

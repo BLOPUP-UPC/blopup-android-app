@@ -86,7 +86,7 @@ fun AppToolBarWithMenu(
             }
         }, actions = {
             if (isSearchPatientScreen) {
-                SearchOptionIcon ({ isSearchInput = true }, isSearchInput) { isSearchInput = false }
+                SearchOptionIcon ({ isSearchInput = true }, isSearchInput) { isSearchInput = false; onSearchQueryChange("") }
             }
             OptionsMenu(onLogout, username)
         }

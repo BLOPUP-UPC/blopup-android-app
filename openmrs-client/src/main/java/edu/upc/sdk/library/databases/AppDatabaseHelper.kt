@@ -71,7 +71,7 @@ object AppDatabaseHelper {
     fun convert(patient: Patient): PatientEntity {
         val patientEntity =
             PatientEntity()
-        patientEntity.display = patient.person.display
+        patientEntity.display = patient.display
         patientEntity.uuid = patient.uuid
 
         patientEntity.isSynced = patient.isSynced

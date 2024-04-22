@@ -39,9 +39,10 @@ fun SearchPatientScreen(
 
     val localPatientList by viewModel.patientListResultUiState.collectAsState()
     val remotePatientList by viewModel.remotePatientListResultUiState.collectAsState()
+    val retrieveOrDownloadPatient by viewModel.retrievePatientResult.collectAsState()
 
 
-    LaunchedEffect(true) {
+    LaunchedEffect(searchQuery.isEmpty()) {
         viewModel.getAllPatientsLocally()
     }
 
@@ -49,23 +50,34 @@ fun SearchPatientScreen(
         viewModel.getAllPatientsRemotely(searchQuery)
     }
 
+    LaunchedEffect(retrieveOrDownloadPatient) {
+        when(val result = retrieveOrDownloadPatient)
+        {
+            is ResultUiState.Success -> startPatientDashboardActivity(result.data?.id!!, result.data.uuid!!)
+            else -> {}
+        }
+    }
+
     SyncedPatients(
         patientList = if (searchQuery.isEmpty()) localPatientList else remotePatientList,
-        startPatientDashboardActivity = startPatientDashboardActivity,
+        viewModel::retrieveOrDownloadPatient,
     )
 }
 
 @Composable
 fun SyncedPatients(
     patientList: ResultUiState<List<Patient>>,
-    startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit,
+    retrieveOrDownloadPatient: (String?) -> Unit,
 ) {
     Column(Modifier.fillMaxSize()) {
         when (patientList) {
             is ResultUiState.Success -> {
                 LazyColumn {
                     items(patientList.data) { patient ->
-                        PatientCard(patient, startPatientDashboardActivity)
+                        PatientCard(
+                            patient,
+                            retrieveOrDownloadPatient,
+                        )
                     }
                 }
             }
@@ -83,13 +95,13 @@ fun SyncedPatients(
 @Composable
 fun PatientCard(
     patient: Patient,
-    startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit
+    retrieveOrDownloadPatient: (String?) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .padding(horizontal = 5.dp, vertical = 2.dp)
             .clickable {
-                startPatientDashboardActivity(patient.id!!, patient.uuid!!)
+                retrieveOrDownloadPatient(patient.uuid)
             },
         shape = MaterialTheme.shapes.extraSmall,
         border = BorderStroke(0.dp, Color.LightGray),
@@ -139,5 +151,5 @@ fun PreviewSearchPatientScreen() {
         })
         birthdate = "1980-01-20T00:00:00.000+0000"
         birthdateEstimated = false
-    }))) { _, _ -> }
+    }))) {}
 }

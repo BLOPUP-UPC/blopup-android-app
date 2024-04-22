@@ -1,6 +1,7 @@
 package edu.upc.blopup.ui.searchpatient
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
@@ -9,6 +10,7 @@ import edu.upc.sdk.library.models.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +27,11 @@ class SearchPatientViewModel @Inject constructor(
         MutableStateFlow(ResultUiState.Loading)
     var remotePatientListResultUiState: StateFlow<ResultUiState<List<Patient>>> =
         _remotePatientListResultUiState.asStateFlow()
+
+    private var _retrievePatientResult: MutableStateFlow<ResultUiState<Patient?>> =
+        MutableStateFlow(ResultUiState.Loading)
+    val retrievePatientResult: StateFlow<ResultUiState<Patient?>> =
+        _retrievePatientResult.asStateFlow()
 
 
     suspend fun getAllPatientsLocally() {
@@ -45,21 +52,23 @@ class SearchPatientViewModel @Inject constructor(
         }
     }
 
-    suspend fun retrieveOrDownloadPatient(patientUuid: String?): kotlin.Result<Patient?> {
-        return try {
-            val patient = patientRepositoryCoroutines.downloadPatientByUuid(patientUuid!!)
+    fun retrieveOrDownloadPatient(patientUuid: String?) {
+        viewModelScope.launch {
+            try {
+                val patient = patientRepositoryCoroutines.downloadPatientByUuid(patientUuid!!)
 
-            if (patient.names.isEmpty()) {
-                kotlin.Result.success(null)
-            } else {
-                var localDBPatient = patientRepositoryCoroutines.findPatientByUUID(patientUuid)
-                if (localDBPatient == null) {
-                    localDBPatient = patientRepositoryCoroutines.savePatientLocally(patient)
+                if (patient.names.isEmpty()) {
+                    _retrievePatientResult.value = ResultUiState.Success(null)
+                } else {
+                    var localDBPatient = patientRepositoryCoroutines.findPatientByUUID(patientUuid)
+                    if (localDBPatient == null) {
+                        localDBPatient = patientRepositoryCoroutines.savePatientLocally(patient)
+                    }
+                    _retrievePatientResult.value = ResultUiState.Success(localDBPatient)
                 }
-                kotlin.Result.success(localDBPatient)
+            } catch (e: Exception) {
+                _retrievePatientResult.value = ResultUiState.Error
             }
-        } catch (e: Exception) {
-            kotlin.Result.failure(e)
         }
     }
 
