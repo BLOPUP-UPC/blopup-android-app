@@ -9,30 +9,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.sdk.library.models.Patient
@@ -43,29 +33,38 @@ import edu.upc.sdk.utilities.DateUtils.convertTime
 @Composable
 fun SearchPatientScreen(
     startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit,
+    searchQuery: String,
     viewModel: SearchPatientViewModel = hiltViewModel()
 ) {
 
-    val patientList by viewModel.patientListResultUiState.collectAsState()
+    val localPatientList by viewModel.patientListResultUiState.collectAsState()
+    val remotePatientList by viewModel.remotePatientListResultUiState.collectAsState()
+
 
     LaunchedEffect(true) {
         viewModel.getAllPatientsLocally()
     }
 
-    SyncedPatients(patientList, startPatientDashboardActivity)
+    LaunchedEffect(searchQuery) {
+        viewModel.getAllPatientsRemotely(searchQuery)
+    }
+
+    SyncedPatients(
+        patientList = if (searchQuery.isEmpty()) localPatientList else remotePatientList,
+        startPatientDashboardActivity = startPatientDashboardActivity,
+    )
 }
 
 @Composable
 fun SyncedPatients(
     patientList: ResultUiState<List<Patient>>,
-    startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit
+    startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit,
 ) {
     Column(Modifier.fillMaxSize()) {
         when (patientList) {
             is ResultUiState.Success -> {
                 LazyColumn {
-                    val patients = patientList.data
-                    items(patients) { patient ->
+                    items(patientList.data) { patient ->
                         PatientCard(patient, startPatientDashboardActivity)
                     }
                 }
@@ -78,7 +77,8 @@ fun SyncedPatients(
             is ResultUiState.Error -> {
             }
         }
-    }}
+    }
+}
 
 @Composable
 fun PatientCard(
@@ -86,9 +86,11 @@ fun PatientCard(
     startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit
 ) {
     Card(
-        modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp).clickable {
-            startPatientDashboardActivity(patient.id!!, patient.uuid!!)
-        },
+        modifier = Modifier
+            .padding(horizontal = 5.dp, vertical = 2.dp)
+            .clickable {
+                startPatientDashboardActivity(patient.id!!, patient.uuid!!)
+            },
         shape = MaterialTheme.shapes.extraSmall,
         border = BorderStroke(0.dp, Color.LightGray),
         colors = CardColors(
@@ -97,68 +99,29 @@ fun PatientCard(
             contentColor = Color.Black,
             disabledContentColor = Color.Black
         )
-        ) {
+    ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(15.dp)) {
+                .padding(15.dp)
+        ) {
             Text(
-                text = patient.contactNames[0].givenName + " " + (patient.contactNames[0].familyName
-                    ?: ""),
+                text = patient.display.toString(),
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 5.dp)
             )
             Row {
-                Text(text = ("# " + patient.identifiers[0].identifier), color = Color.Gray, modifier = Modifier.padding(end = 10.dp), fontWeight = FontWeight.SemiBold)
+                Text(
+                    text = ("# " + patient.identifiers[0].identifier),
+                    color = Color.Gray,
+                    modifier = Modifier.padding(end = 10.dp),
+                    fontWeight = FontWeight.SemiBold
+                )
                 Text(text = convertTime(convertTime(patient.birthdate) ?: 0L), color = Color.Gray)
             }
 
         }
 
-    }
-}
-
-@Composable
-fun SearchInput(searchInput: String, onSearchInput: (String) -> Unit) {
-    TextField(
-        value = searchInput, onValueChange = {onSearchInput(it)},
-        colors = TextFieldDefaults.colors(
-            focusedPlaceholderColor = Color.LightGray,
-            unfocusedPlaceholderColor = Color.LightGray,
-            focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedContainerColor = colorResource(R.color.dark_teal),
-            unfocusedContainerColor = colorResource(R.color.dark_teal),
-        ),
-        placeholder = { Text(stringResource(R.string.search_hint_text)) }
-    )
-}
-
-
-@Composable
-fun SearchOptionIcon(onSearchOption: () -> Unit, isSearchInput: Boolean, onSearchClose: () -> Unit) {
-    when{
-        isSearchInput -> {
-            IconButton(onClick = { onSearchClose() }) {
-                Icon(
-                    imageVector = Icons.Outlined.Close,
-                    contentDescription = "Close",
-                    tint = Color.LightGray
-                )
-            }
-        }
-        else ->{
-            IconButton(onClick = { onSearchOption() }) {
-                Icon(
-                    imageVector = Icons.Outlined.Search,
-                    contentDescription = "Search",
-                    tint = colorResource(R.color.white)
-                )
-            }
-
-        }
     }
 }
 

@@ -62,6 +62,7 @@ open class PatientDto {
             )
             patient.uuid = uuid.toString()
             patient.identifiers = identifiers
+            patient.display = person.display
 
             return patient
         }

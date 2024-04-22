@@ -57,6 +57,7 @@ class DashboardActivity : ACBaseActivity() {
                 var isCreatePatientWithSomeInput by remember { mutableStateOf(false) }
                 var isSearchPatientScreen by remember { mutableStateOf(false) }
                 var topBarTitle by remember { mutableIntStateOf(R.string.organization_name) }
+                var searchQuery by remember { mutableStateOf("") }
 
                 Scaffold(
                     topBar = {
@@ -71,7 +72,9 @@ class DashboardActivity : ACBaseActivity() {
                             OpenmrsAndroid.getUsername(),
                             showBackButtonInMenu,
                             isCreatePatientWithSomeInput = isCreatePatientWithSomeInput,
-                            isSearchPatientScreen = isSearchPatientScreen
+                            isSearchPatientScreen = isSearchPatientScreen,
+                            searchQuery = searchQuery,
+                            onSearchQueryChange = { searchQuery = it }
                         )
                     },
                     bottomBar = {
@@ -110,8 +113,8 @@ class DashboardActivity : ACBaseActivity() {
                                                 patientUuid
                                             )
                                         })
-                                }
-
+                                },
+                                searchQuery
                             )
                         }
                         composable(Routes.CreatePatientScreen.id) {

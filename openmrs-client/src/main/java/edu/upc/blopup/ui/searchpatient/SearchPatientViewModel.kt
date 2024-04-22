@@ -21,15 +21,45 @@ class SearchPatientViewModel @Inject constructor(
     var patientListResultUiState: StateFlow<ResultUiState<List<Patient>>> =
         _patientListResultUiState.asStateFlow()
 
+    private val _remotePatientListResultUiState: MutableStateFlow<ResultUiState<List<Patient>>> =
+        MutableStateFlow(ResultUiState.Loading)
+    var remotePatientListResultUiState: StateFlow<ResultUiState<List<Patient>>> =
+        _remotePatientListResultUiState.asStateFlow()
+
 
     suspend fun getAllPatientsLocally() {
-        try {
-            when (val response = patientRepositoryCoroutines.getAllPatientsLocally()) {
-                is Result.Success -> _patientListResultUiState.value = ResultUiState.Success(response.data)
-                else -> _patientListResultUiState.value = ResultUiState.Error
+        when (val response = patientRepositoryCoroutines.getAllPatientsLocally()) {
+            is Result.Success -> _patientListResultUiState.value =
+                ResultUiState.Success(response.data)
+
+            else -> _patientListResultUiState.value = ResultUiState.Error
+        }
+    }
+
+    suspend fun getAllPatientsRemotely(query: String) {
+        when (val response = patientRepositoryCoroutines.newFindPatients(query)) {
+            is Result.Success -> _remotePatientListResultUiState.value =
+                ResultUiState.Success(response.data)
+
+            else -> _remotePatientListResultUiState.value = ResultUiState.Error
+        }
+    }
+
+    suspend fun retrieveOrDownloadPatient(patientUuid: String?): kotlin.Result<Patient?> {
+        return try {
+            val patient = patientRepositoryCoroutines.downloadPatientByUuid(patientUuid!!)
+
+            if (patient.names.isEmpty()) {
+                kotlin.Result.success(null)
+            } else {
+                var localDBPatient = patientRepositoryCoroutines.findPatientByUUID(patientUuid)
+                if (localDBPatient == null) {
+                    localDBPatient = patientRepositoryCoroutines.savePatientLocally(patient)
+                }
+                kotlin.Result.success(localDBPatient)
             }
         } catch (e: Exception) {
-            _patientListResultUiState.value = ResultUiState.Error
+            kotlin.Result.failure(e)
         }
     }
 

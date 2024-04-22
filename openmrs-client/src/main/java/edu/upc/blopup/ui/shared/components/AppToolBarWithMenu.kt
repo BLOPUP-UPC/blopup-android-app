@@ -1,5 +1,7 @@
 package edu.upc.blopup.ui.shared.components
 
+import SearchInput
+import SearchOptionIcon
 import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -33,8 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.location.LocationDialogScreen
-import edu.upc.blopup.ui.searchpatient.SearchInput
-import edu.upc.blopup.ui.searchpatient.SearchOptionIcon
 import edu.upc.openmrs.activities.introduction.IntroActivity
 import edu.upc.openmrs.activities.settings.SettingsActivity
 import edu.upc.sdk.library.OpenmrsAndroid
@@ -49,10 +49,11 @@ fun AppToolBarWithMenu(
     showGoBackButton: Boolean = true,
     isDataScreen: Boolean = false,
     isCreatePatientWithSomeInput: Boolean = false,
-    isSearchPatientScreen: Boolean = false
+    isSearchPatientScreen: Boolean = false,
+    searchQuery: String = "",
+    onSearchQueryChange: (String) -> Unit = {}
 ) {
     var showLoseDataDialog by remember { mutableStateOf(false) }
-    var searchInput by remember { mutableStateOf("") }
     var isSearchInput by remember { mutableStateOf(false) }
 
     TopAppBar(
@@ -62,7 +63,7 @@ fun AppToolBarWithMenu(
         ),
         title = {
             if(isSearchInput && isSearchPatientScreen) {
-                SearchInput(searchInput) { searchInput = it }
+                SearchInput(searchQuery) { onSearchQueryChange(it) }
             } else {
                 Text(title)
             }

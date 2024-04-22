@@ -54,6 +54,24 @@ class PatientRepositoryCoroutines @Inject constructor(
             }
         }
 
+    suspend fun newFindPatients(query: String?): Result<List<Patient>> =
+        withContext(Dispatchers.IO) {
+            try {
+                val call = restApi.getPatientsDto(query, ApplicationConstants.API.FULL)
+                val response = call.execute()
+                if (response.isSuccessful) {
+                    val patientDtos = response.body()?.results.orEmpty()
+                    Result.Success(patientDtos.map { it.patient })
+                } else {
+                    crashlytics.reportUnsuccessfulResponse(response, "Failed to find patients")
+                    Result.Error(Exception("Failed to find patients: ${response.code()} - ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                crashlytics.reportException(e, "Failed to find patients")
+                Result.Error(Exception("Failed to find patients: ${e.message}", e))
+            }
+        }
+
     suspend fun downloadPatientByUuid(patientUuid: String): Patient =
         withContext(Dispatchers.IO) {
             try {

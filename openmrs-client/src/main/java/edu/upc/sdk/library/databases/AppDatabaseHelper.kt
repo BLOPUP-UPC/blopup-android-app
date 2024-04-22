@@ -34,14 +34,6 @@ object AppDatabaseHelper {
         patient.display = patientEntity.display
         patient.uuid = patientEntity.uuid
 
-        //#region -- Contact Details --
-        val contactNames = PersonName()
-        contactNames.givenName = patientEntity.givenName
-        contactNames.familyName = patientEntity.familyName
-        patient.contactNames.add(contactNames)
-        patient.contactPhoneNumber = patientEntity.contactPhoneNumber
-        //#endregion
-
         val patientIdentifier = PatientIdentifier()
         patientIdentifier.identifier = patientEntity.identifier
         if (patient.identifiers == null) {
@@ -79,16 +71,8 @@ object AppDatabaseHelper {
     fun convert(patient: Patient): PatientEntity {
         val patientEntity =
             PatientEntity()
-        patientEntity.display = patient.name?.nameString
+        patientEntity.display = patient.person.display
         patientEntity.uuid = patient.uuid
-
-        //#region -- Contact Details --
-        patientEntity.contactPhoneNumber = patient.contactPhoneNumber
-        if (patient.contact != null) {
-            patientEntity.contactFirstName = patient.contact.givenName
-            patientEntity.contactLastName = patient.contact.familyName
-        }
-        //#endregion
 
         patientEntity.isSynced = patient.isSynced
         if (patient.identifier != null) {
