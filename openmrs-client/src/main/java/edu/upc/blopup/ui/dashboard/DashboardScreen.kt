@@ -1,6 +1,5 @@
 package edu.upc.blopup.ui.dashboard
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,19 +18,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
-import edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity
 
 @Composable
-fun DashboardScreen(navigateToCreatePatientScreen: () -> Unit) {
-    val context = LocalContext.current
-
+fun DashboardScreen(navigateToSearchPatientScreen: () -> Unit, navigateToCreatePatientScreen: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,9 +39,7 @@ fun DashboardScreen(navigateToCreatePatientScreen: () -> Unit) {
             DashboardCard(
                 Modifier
                     .weight(1f)
-                    .clickable(onClick = {
-                        context.startActivity(Intent(context, SyncedPatientsActivity::class.java))
-                    }),
+                    .clickable(onClick = {navigateToSearchPatientScreen()}),
                 R.mipmap.ico_search_patients,
                 R.string.dashboard_search_icon_label,
             )
@@ -88,5 +81,5 @@ fun DashboardCard(modifier: Modifier, icon: Int, label: Int ) {
 @Preview
 @Composable
 fun DashboardPreview() {
-    DashboardScreen {}
+    DashboardScreen({}, {})
 }

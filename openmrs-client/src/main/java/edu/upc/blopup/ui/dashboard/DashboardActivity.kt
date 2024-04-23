@@ -92,7 +92,8 @@ class DashboardActivity : ACBaseActivity() {
                             topBarTitle = R.string.organization_name
                             isSearchPatientScreen = false
                             showBackButtonInMenu = false
-                            DashboardScreen { navigationController.navigate(Routes.CreatePatientScreen.id) }
+                            DashboardScreen({ navigationController.navigate(Routes.SearchPatientScreen.id) },
+                                { navigationController.navigate(Routes.CreatePatientScreen.id) })
                         }
                         composable(Routes.SearchPatientScreen.id) {
                             topBarTitle = R.string.action_synced_patients
