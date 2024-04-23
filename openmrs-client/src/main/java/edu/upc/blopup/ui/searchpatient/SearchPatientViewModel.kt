@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,9 +29,9 @@ class SearchPatientViewModel @Inject constructor(
     var remotePatientListResultUiState: StateFlow<ResultUiState<List<Patient>>> =
         _remotePatientListResultUiState.asStateFlow()
 
-    private var _retrievePatientResult: MutableStateFlow<ResultUiState<Patient?>> =
-        MutableStateFlow(ResultUiState.Loading)
-    val retrievePatientResult: StateFlow<ResultUiState<Patient?>> =
+    private var _retrievePatientResult: MutableStateFlow<DownloadPatientResultUiState> =
+        MutableStateFlow(DownloadPatientResultUiState.NotStarted)
+    val retrievePatientResult: StateFlow<DownloadPatientResultUiState> =
         _retrievePatientResult.asStateFlow()
 
 
@@ -52,23 +53,26 @@ class SearchPatientViewModel @Inject constructor(
         }
     }
 
-    fun retrieveOrDownloadPatient(patientUuid: String?) {
+    fun retrieveOrDownloadPatient(patientUuid: UUID) {
         viewModelScope.launch {
             try {
-                val patient = patientRepositoryCoroutines.downloadPatientByUuid(patientUuid!!)
+                val patient = patientRepositoryCoroutines.downloadPatientByUuid(patientUuid.toString())
 
-                if (patient.names.isEmpty()) {
-                    _retrievePatientResult.value = ResultUiState.Success(null)
-                } else {
-                    var localDBPatient = patientRepositoryCoroutines.findPatientByUUID(patientUuid)
-                    if (localDBPatient == null) {
-                        localDBPatient = patientRepositoryCoroutines.savePatientLocally(patient)
-                    }
-                    _retrievePatientResult.value = ResultUiState.Success(localDBPatient)
+                var localDBPatient = patientRepositoryCoroutines.findPatientByUUID(patientUuid.toString())
+                if (localDBPatient == null) {
+                    localDBPatient = patientRepositoryCoroutines.savePatientLocally(patient)
                 }
+                _retrievePatientResult.value = DownloadPatientResultUiState.Success(localDBPatient)
             } catch (e: Exception) {
-                _retrievePatientResult.value = ResultUiState.Error
+                _retrievePatientResult.value = DownloadPatientResultUiState.Error(patientUuid)
             }
+        }
+    }
+
+    fun deletePatientLocally(patientId: UUID) {
+        viewModelScope.launch {
+            patientRepositoryCoroutines.deletePatient(patientId)
+            getAllPatientsLocally()
         }
     }
 

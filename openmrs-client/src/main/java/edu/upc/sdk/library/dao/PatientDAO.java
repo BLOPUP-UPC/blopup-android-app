@@ -17,6 +17,7 @@ package edu.upc.sdk.library.dao;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -84,6 +85,10 @@ public class PatientDAO {
      */
     public void deletePatient(long id) {
         patientRoomDAO.deletePatient(id);
+    }
+
+    public void deletePatient(UUID uuid) {
+        patientRoomDAO.deletePatientByUuid(uuid.toString());
     }
 
     /**

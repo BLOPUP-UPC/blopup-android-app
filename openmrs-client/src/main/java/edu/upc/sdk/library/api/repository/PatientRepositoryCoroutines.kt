@@ -11,6 +11,7 @@ import edu.upc.sdk.utilities.execute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -91,6 +92,10 @@ class PatientRepositoryCoroutines @Inject constructor(
         }
 
     fun deletePatient(patientId: Long) {
+        patientDAO.deletePatient(patientId)
+    }
+
+    fun deletePatient(patientId: UUID) {
         patientDAO.deletePatient(patientId)
     }
 

@@ -39,6 +39,7 @@ import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
+import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -114,7 +115,8 @@ class DashboardActivity : ACBaseActivity() {
                                             )
                                         })
                                 },
-                                searchQuery
+                                searchQuery,
+                                { ToastUtil.error(getString(R.string.patient_has_been_removed)) }
                             )
                         }
                         composable(Routes.CreatePatientScreen.id) {
@@ -145,7 +147,7 @@ class DashboardActivity : ACBaseActivity() {
                                         resourceId,
                                         this@DashboardActivity
                                     )
-                                }
+                                },
                             )
                         }
                         composable(

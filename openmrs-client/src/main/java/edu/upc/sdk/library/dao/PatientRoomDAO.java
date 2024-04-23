@@ -46,6 +46,9 @@ public interface PatientRoomDAO {
     @Query("DELETE FROM patients WHERE _id = :id")
     void deletePatient(long id);
 
+    @Query("DELETE FROM patients WHERE uuid = :uuid")
+    void deletePatientByUuid(String uuid);
+
     /**
      * Update patient int.
      *

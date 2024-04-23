@@ -19,6 +19,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner::class)
 class SearchPatientViewModelTest{
@@ -73,8 +74,8 @@ class SearchPatientViewModelTest{
         coEvery { patient.uuid?.let { patientRepositoryCoroutines.downloadPatientByUuid(it) } } returns patient
 
         runBlocking {
-            viewModel.retrieveOrDownloadPatient(patient.uuid)
-            assertEquals(ResultUiState.Success(null), viewModel.retrievePatientResult.value)
+            viewModel.retrieveOrDownloadPatient(UUID.fromString(patient.uuid))
+            assertEquals(DownloadPatientResultUiState.Error(UUID.fromString(patient.uuid)), viewModel.retrievePatientResult.value)
         }
     }
 
@@ -94,8 +95,8 @@ class SearchPatientViewModelTest{
         coEvery { patient.uuid?.let { patientRepositoryCoroutines.findPatientByUUID(it) } } returns patient
 
         runBlocking {
-            viewModel.retrieveOrDownloadPatient(patient.uuid)
-            assertEquals(ResultUiState.Success(patient), viewModel.retrievePatientResult.value)
+            viewModel.retrieveOrDownloadPatient(UUID.fromString(patient.uuid))
+            assertEquals(DownloadPatientResultUiState.Success(patient), viewModel.retrievePatientResult.value)
         }
     }
 }

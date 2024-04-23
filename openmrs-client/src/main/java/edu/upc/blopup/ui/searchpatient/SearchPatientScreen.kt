@@ -29,18 +29,19 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientIdentifier
 import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.utilities.DateUtils.convertTime
+import java.util.UUID
 
 @Composable
 fun SearchPatientScreen(
     startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit,
     searchQuery: String,
+    errorDownloadingPatientToast: () -> Unit,
     viewModel: SearchPatientViewModel = hiltViewModel()
 ) {
 
     val localPatientList by viewModel.patientListResultUiState.collectAsState()
     val remotePatientList by viewModel.remotePatientListResultUiState.collectAsState()
     val retrieveOrDownloadPatient by viewModel.retrievePatientResult.collectAsState()
-
 
     LaunchedEffect(searchQuery.isEmpty()) {
         viewModel.getAllPatientsLocally()
@@ -53,8 +54,12 @@ fun SearchPatientScreen(
     LaunchedEffect(retrieveOrDownloadPatient) {
         when(val result = retrieveOrDownloadPatient)
         {
-            is ResultUiState.Success -> startPatientDashboardActivity(result.data?.id!!, result.data.uuid!!)
-            else -> {}
+            is DownloadPatientResultUiState.Success -> startPatientDashboardActivity(result.data.id!!, result.data.uuid!!)
+            is DownloadPatientResultUiState.Error -> {
+                viewModel.deletePatientLocally(result.patientId)
+                errorDownloadingPatientToast()
+            }
+            DownloadPatientResultUiState.NotStarted -> {}
         }
     }
 
@@ -67,7 +72,7 @@ fun SearchPatientScreen(
 @Composable
 fun SyncedPatients(
     patientList: ResultUiState<List<Patient>>,
-    retrieveOrDownloadPatient: (String?) -> Unit,
+    retrieveOrDownloadPatient: (UUID) -> Unit,
 ) {
     Column(Modifier.fillMaxSize()) {
         when (patientList) {
@@ -95,13 +100,13 @@ fun SyncedPatients(
 @Composable
 fun PatientCard(
     patient: Patient,
-    retrieveOrDownloadPatient: (String?) -> Unit,
+    retrieveOrDownloadPatient: (UUID) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .padding(horizontal = 5.dp, vertical = 2.dp)
             .clickable {
-                retrieveOrDownloadPatient(patient.uuid)
+                retrieveOrDownloadPatient(UUID.fromString(patient.uuid))
             },
         shape = MaterialTheme.shapes.extraSmall,
         border = BorderStroke(0.dp, Color.LightGray),
