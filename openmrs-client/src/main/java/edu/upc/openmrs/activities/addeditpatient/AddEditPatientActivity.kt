@@ -16,15 +16,14 @@ package edu.upc.openmrs.activities.addeditpatient
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.openmrs.activities.NavigationBarActivity
+import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment.Companion.newInstance
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @AndroidEntryPoint
-class AddEditPatientActivity : NavigationBarActivity() {
+class AddEditPatientActivity : ACBaseActivity() {
     private var addEditPatientFragment: AddEditPatientFragment? = null
     private var alertDialog: AlertDialog? = null
 
@@ -36,8 +35,6 @@ class AddEditPatientActivity : NavigationBarActivity() {
             elevation = 0f
             setTitle(R.string.action_register_patient)
         }
-
-        setBottomNavigationBar()
 
         // Get and send patient id to the fragment (in case of updating a patient)
         val patientBundle = savedInstanceState ?: intent.extras
@@ -56,24 +53,6 @@ class AddEditPatientActivity : NavigationBarActivity() {
             )
         }
     }
-
-    private fun setBottomNavigationBar() {
-        val bottomNavigationBar = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationBar.selectedItemId = R.id.register_patient
-        setBottomNavigationBar(bottomNavigationBar)
-    }
-
-    override fun setBottomNavigationBar(bottomNavigationView: BottomNavigationView) {
-        bottomNavigationView.setOnItemSelectedListener { item ->
-            if (addEditPatientFragment!!.isAnyFieldNotEmpty()) {
-                showInfoLostDialog()
-                false
-            } else {
-                launchSelectedActivity(item)
-            }
-        }
-    }
-
 
     override fun onBackPressed() {
         if (addEditPatientFragment!!.isAnyFieldNotEmpty()) showInfoLostDialog()
