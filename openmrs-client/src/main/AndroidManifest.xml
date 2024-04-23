@@ -78,7 +78,7 @@
             android:configChanges="locale|orientation"
             android:label="@string/action_settings"
             android:launchMode="singleTop"
-            android:parentActivityName=".openmrs.activities.dashboard.DashboardActivity"
+            android:parentActivityName=".blopup.ui.dashboard.DashboardActivity"
             android:theme="@style/AppThemeOrig" />
         <activity
             android:name=".openmrs.activities.patientdashboard.PatientDashboardActivity"
@@ -89,7 +89,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.upc.openmrs.activities.syncedpatients.SyncedPatientsActivity" />
+                android:value=".blopup.ui.dashboard.DashboardActivity" />
         </activity>
         <activity
             android:name=".openmrs.activities.visitdashboard.VisitDashboardActivity"
