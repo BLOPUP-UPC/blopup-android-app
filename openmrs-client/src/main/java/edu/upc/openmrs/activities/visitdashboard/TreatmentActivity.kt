@@ -334,7 +334,7 @@ class TreatmentActivity : ACBaseActivity() {
             }
 
             else -> {
-                ToastUtil.error(getString(R.string.treatment_operation_error))
+                ToastUtil.error(getString(R.string.operation_error))
             }
         }
         enableButton()

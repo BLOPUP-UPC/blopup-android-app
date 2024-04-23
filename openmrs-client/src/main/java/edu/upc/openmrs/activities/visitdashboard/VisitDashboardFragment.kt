@@ -196,7 +196,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 }
 
                 ResultType.FinalisedTreatmentError -> {
-                    ToastUtil.error(getString(R.string.treatment_operation_error))
+                    ToastUtil.error(getString(R.string.operation_error))
                 }
 
                 ResultType.RemoveTreatmentSuccess -> {
@@ -204,7 +204,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 }
 
                 ResultType.RemoveTreatmentError -> {
-                    ToastUtil.error(getString(R.string.treatment_operation_error))
+                    ToastUtil.error(getString(R.string.operation_error))
                 }
 
                 else -> throw IllegalStateException()

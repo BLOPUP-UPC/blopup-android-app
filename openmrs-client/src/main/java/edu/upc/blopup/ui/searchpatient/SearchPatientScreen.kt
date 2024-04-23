@@ -19,16 +19,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientIdentifier
-import edu.upc.sdk.library.models.PersonName
 import edu.upc.sdk.utilities.DateUtils.convertTime
 import java.util.UUID
 
@@ -93,6 +95,11 @@ fun SyncedPatients(
             }
 
             is ResultUiState.Error -> {
+                Text(
+                    text = stringResource(R.string.operation_error),
+                    modifier = Modifier.padding(16.dp),
+                    color = colorResource(R.color.allergy_orange)
+                )
             }
         }
     }
@@ -153,11 +160,14 @@ fun PreviewSearchPatientScreen() {
             id = 10007L
             identifier = "10007"
         })
-        names = listOf(PersonName().apply {
-            givenName = "Jane"
-            familyName = "Doe"
-        })
+        display = "John Doe"
         birthdate = "1980-01-20T00:00:00.000+0000"
         birthdateEstimated = false
-    }))) {}
+    }),)) {}
+}
+
+@Preview
+@Composable
+fun PreviewSearchPatientErrorScreen() {
+    SyncedPatients(ResultUiState.Error, {})
 }

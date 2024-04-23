@@ -237,7 +237,7 @@
     <string name="remove_treatment">Borrar</string>
     <string name="treatment_finalised_successfully">Tratamiento finalizado con éxito</string> />
     <string name="treatment_removed_successfully">Tratamiento borrado con éxito</string> />
-    <string name="treatment_operation_error">No se pudo realizar la operación. Intente más tarde.</string>
+    <string name="operation_error">No se pudo realizar la operación. Intente más tarde.</string>
     <string name="treatment_created_successfully">Tratamiento creado con éxito</string>
     <string name="treatment_updated_successfully">Tratamiento modificado con éxito</string>
     <string name="error_loading_treatments">No se han podido cargar los tratamientos.</string>
