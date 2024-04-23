@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
@@ -125,16 +126,18 @@ fun PatientCard(
             Text(
                 text = patient.display.toString(),
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(bottom = 5.dp)
+                modifier = Modifier.padding(bottom = 5.dp),
+                fontSize = 16.sp
             )
             Row {
                 Text(
                     text = ("# " + patient.identifiers[0].identifier),
                     color = Color.Gray,
                     modifier = Modifier.padding(end = 10.dp),
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp
                 )
-                Text(text = convertTime(convertTime(patient.birthdate) ?: 0L), color = Color.Gray)
+                Text(text = convertTime(convertTime(patient.birthdate) ?: 0L), color = Color.Gray, fontSize = 16.sp)
             }
 
         }
