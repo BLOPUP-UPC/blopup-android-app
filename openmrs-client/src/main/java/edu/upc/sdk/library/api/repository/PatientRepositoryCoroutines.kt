@@ -20,7 +20,6 @@ class PatientRepositoryCoroutines @Inject constructor(
     private val restApi: RestApi,
     private val patientDAO: PatientDAO,
     private var crashlytics: CrashlyticsLogger
-
 ) {
     suspend fun getAllPatientsLocally(): Result<List<Patient>> = withContext(Dispatchers.IO) {
         try {
@@ -80,7 +79,11 @@ class PatientRepositoryCoroutines @Inject constructor(
                 val response = call.execute()
                 if (response.isSuccessful) {
                     val newPatientDto = response.body()
-                    return@withContext newPatientDto!!.patient
+                    if(newPatientDto?.patient?.isVoided!!){
+                        throw IOException("Patient has been removed from remote database")
+                    } else {
+                        return@withContext newPatientDto.patient
+                    }
                 } else {
                     crashlytics.reportUnsuccessfulResponse(response, "Failed to download patient")
                     throw IOException("Error with downloading patient: " + response.message())
@@ -90,10 +93,6 @@ class PatientRepositoryCoroutines @Inject constructor(
                 throw IOException("Error with downloading patient: " + e.message, e)
             }
         }
-
-    fun deletePatient(patientId: Long) {
-        patientDAO.deletePatient(patientId)
-    }
 
     fun deletePatient(patientId: UUID) {
         patientDAO.deletePatient(patientId)
