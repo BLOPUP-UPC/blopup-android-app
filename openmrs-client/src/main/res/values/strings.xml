@@ -86,34 +86,21 @@
     <string name="dialog_button_select_location" tools:ignore="MissingTranslation">Select Location</string>
 
     <!-- FindPatients activity -->
-    <string name="action_find_patients" tools:ignore="MissingTranslation">Find Patients</string>
     <string name="action_synced_patients" tools:ignore="MissingTranslation">Synced Patients</string>
-    <string name="search_patient_hint" tools:ignore="MissingTranslation">Patient name</string>
-    <string name="search_patient_no_result_for_query" tools:ignore="MissingTranslation">No results found for query"</string>
 
     <!-- Dashboard Activity -->
     <string name="dashboard_search_icon_label" tools:ignore="MissingTranslation">Find Patients</string>
-    <string name="dashboard_registry_icon_label" tools:ignore="MissingTranslation">Register new patient</string>
-    <string name="dashboard_exit_toast_message" tools:ignore="MissingTranslation">Please press BACK again to exit</string>
 
     <!-- Patient Dashboard Activity -->
     <string name="action_update_patient_data" tools:ignore="MissingTranslation">Update Patient</string>
-    <string name="synchronize_patient_error" tools:ignore="MissingTranslation">Synchronizing patient data was unsuccessful</string>
     <string name="get_patient_from_database_error" tools:ignore="MissingTranslation">Failed to fetch patient from database</string>
     <string name="action_start_visit" tools:ignore="MissingTranslation">Start visit</string>
     <string name="patient_scroll_tab_details_label" tools:ignore="MissingTranslation">Details</string>
     <string name="patient_scroll_tab_visits_label" tools:ignore="MissingTranslation">Visits</string>
     <string name="patient_scroll_tab_charts_label" tools:ignore="MissingTranslation">Charts</string>
-    <string name="action_starting_visit" tools:ignore="MissingTranslation">"Starting Visit"</string>
     <string name="visit_start_error" tools:ignore="MissingTranslation">Failed to start a visit</string>
 
-
-    <!--SyncedPatient Activity-->
-    <string name="patient_update_successful" tools:ignore="MissingTranslation">Patient %1$s Updated</string>
-    <string name="patient_update_unsuccessful" tools:ignore="MissingTranslation">Patient %1$s cannot be updated due to server error will retry sync</string>
-
     <!-- fragment_patient_details layout -->
-    <string name="patient_identifier" translatable="false"># %1$s</string>
     <string name="patient_details_birth_date_label" tools:ignore="MissingTranslation">Birth date</string>
     <string name="date_picker_title" tools:ignore="MissingTranslation">Select date of birth</string>
 
@@ -121,9 +108,6 @@
     <string name="active_visit_label" tools:ignore="MissingTranslation">Active visit</string>
     <string name="past_visit_label" tools:ignore="MissingTranslation">Past visit</string>
     <string name="visit_in" tools:ignore="MissingTranslation">in %1$s</string>
-
-    <!-- fragment_patient_diagnosis layout -->
-    <string name="empty_diagnoses_list" tools:ignore="MissingTranslation">Patient has no diagnoses yet.</string>
 
     <!--fragment_patient_charts layout-->
     <string name="no_vitals_recorded" tools:ignore="MissingTranslation">No vitals recorded</string>
@@ -217,21 +201,9 @@
     <!--Login Fragment-->
     <string name="invalid_URL_message" tools:ignore="MissingTranslation">Invalid URL</string>
 
-    <!-- Contact Activity -->
-    <string name="contact_us" tools:ignore="MissingTranslation">Contact Us</string>
-    <string name="contact_us_text" tools:ignore="MissingTranslation">Contact us</string>
-    <string name="blopup_helpdesk" translatable="false">Blopup helpdesk</string>
-    <string name="contact_us_message_hint" tools:ignore="MissingTranslation">Write your message here</string>
-
-    <!-- Chart Activity -->
-    <string name="data_type_not_available_for_this_field" tools:ignore="MissingTranslation">Chart not available for this field</string>
-
     <string name="snackbar_server_error" tools:ignore="MissingTranslation">The entered server is currently down, please select a different one.</string>
     <string name="snackbar_choose" tools:ignore="MissingTranslation">Choose</string>
     <string name="url_server_list" translatable="false">https://wiki.openmrs.org/display/ISM/OpenMRS+environments</string>
-
-    <!--Admission Form -->
-    <string name="error_occurred" tools:ignore="MissingTranslation">An error Occurred, Try Again Later !!!</string>
 
     <!-- BLOPUP -->
     <string name="bluetooth_error_connection" tools:ignore="MissingTranslation">Error receiving data</string>
@@ -240,7 +212,6 @@
     <string name="bt_exception_connection_message" tools:ignore="MissingTranslation">Connection to the device failed</string>
     <string name="bt_exception_read_data_message" tools:ignore="MissingTranslation">Failed to read data from device</string>
     <string name="bt_exception_pairing_message" tools:ignore="MissingTranslation">Pairing with the device failed</string>
-    <string name="app_tutorial" tools:ignore="MissingTranslation">Tutorial</string>
 
     <string name="blood_pressure_button_label" tools:ignore="MissingTranslation">Receive blood pressure data</string>
     <string name="weight_button_label" tools:ignore="MissingTranslation">Receive weight data</string>
@@ -251,10 +222,6 @@
     <string name="weight_value" tools:ignore="MissingTranslation">Weight (kg)</string>
     <string name="height_value_label" tools:ignore="MissingTranslation">Height</string>
     <string name="height_value" tools:ignore="MissingTranslation">Height (cm)</string>
-    <string name="send_button_label" tools:ignore="MissingTranslation">Send</string>
-    <string name="send_email_success_toast_message" tools:ignore="MissingTranslation">Message sent</string>
-    <string name="send_email_fails_toast_message" tools:ignore="MissingTranslation">Error sending message</string>
-    <string name="subject_send_email" translatable="false">Blopup User Feedback</string>
     <string name="blood_pressure_instructions_title" tools:ignore="MissingTranslation">To measure blood pressure</string>
     <string name="weight_instructions_title" tools:ignore="MissingTranslation">To measure weight</string>
     <string name="height_instructions_title" tools:ignore="MissingTranslation">To measure height</string>

@@ -133,8 +133,6 @@ public abstract class ACBaseActivity extends AppCompatActivity {
             case R.id.actionSettings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
-            case R.id.actionSearchLocal:
-                return true;
             case R.id.actionLogout:
                 this.showLogoutDialog();
                 return true;
