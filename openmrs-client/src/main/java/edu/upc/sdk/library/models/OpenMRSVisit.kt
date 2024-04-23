@@ -46,21 +46,4 @@ class OpenMRSVisit : Resource() {
 
     @Expose
     lateinit var encounters: List<Encounter>
-
-    fun isActiveVisit() = stopDatetime.isNullOrEmpty()
-
-    fun getLatestHeight(): String {
-        val heightObservations =
-            this.encounters.flatMap { encounter ->
-                encounter.observations.filter { observation ->
-                    observation.display?.contains("Height", ignoreCase = true) == true
-                }.map { observation ->
-                    Pair(observation, encounter.encounterDatetime)
-                }
-            }
-
-        val sortedHeightObservations = heightObservations.sortedByDescending { it.second }
-
-        return sortedHeightObservations.firstOrNull()?.first?.displayValue?.substringBefore(".") ?: ""
-    }
 }

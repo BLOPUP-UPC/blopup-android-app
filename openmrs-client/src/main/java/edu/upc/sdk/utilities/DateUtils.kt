@@ -26,9 +26,11 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 import java.time.LocalDateTime as JavaLocalDateTime
 import java.time.format.DateTimeFormatter as JavaDateTimeFormatter
+
 
 object DateUtils {
     const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy"
@@ -39,15 +41,21 @@ object DateUtils {
     const val OPEN_MRS_REQUEST_PATIENT_FORMAT = "yyyy-MM-dd"
     private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger()
 
+    fun parseInstantFromOpenmrsDate(dateTime: String): java.time.Instant {
+        return JavaLocalDateTime.parse(dateTime, JavaDateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT)).toInstant(java.time.ZoneOffset.UTC)
+    }
+
+    fun java.time.Instant.formatUsingLocale(locale: Locale): String {
+        val df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale)
+        return df.format(Date.from(this))
+    }
+
     @Deprecated("Use java.time instead")
     fun parseFromOpenmrsDate(dateTime: String): Instant {
         return Instant.parse(dateTime, DateTimeFormat.forPattern(OPEN_MRS_RESPONSE_FORMAT).withZoneUTC())
     }
 
-    fun parseInstantFromOpenmrsDate(dateTime: String): java.time.Instant {
-        return parseLocalDateFromOpenmrsDate(dateTime).toInstant(java.time.ZoneOffset.UTC)
-    }
-
+    @Deprecated("Use java.time instead")
     fun parseLocalDateFromOpenmrsDate(dateTime: String): JavaLocalDateTime {
         return JavaLocalDateTime.parse(dateTime, JavaDateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
     }

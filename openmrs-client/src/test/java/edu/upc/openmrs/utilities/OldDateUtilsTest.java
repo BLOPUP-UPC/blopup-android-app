@@ -21,9 +21,6 @@
     import static org.junit.Assert.assertNull;
     import static org.mockito.Mockito.when;
 
-
-    import edu.upc.sdk.utilities.DateUtils;
-
     import org.joda.time.DateTime;
     import org.joda.time.DateTimeZone;
     import org.joda.time.format.DateTimeFormat;
@@ -42,8 +39,9 @@
     import java.util.TimeZone;
 
     import edu.upc.openmrs.application.OpenMRS;
+    import edu.upc.sdk.utilities.DateUtils;
 
-    public class DateUtilsTest {
+    public class OldDateUtilsTest {
         private static final String TEST_TIMEZONE;
         private static final String INITIAL_DATA_CUSTOM_TIMEZONE;
         private static final String INITIAL_DATA_CUSTOM_FORMAT;
