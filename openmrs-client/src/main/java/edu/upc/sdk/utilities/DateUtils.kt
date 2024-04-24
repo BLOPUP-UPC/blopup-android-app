@@ -23,6 +23,7 @@ import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 import java.time.format.DateTimeFormatterBuilder
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 object DateUtils {
     private const val DEFAULT_DATE_FORMAT = "d/M/yyyy"
@@ -51,8 +52,9 @@ object DateUtils {
     }
 
     @JvmStatic
-    fun Instant.formatUsingLocale(locale: Locale): String {
+    fun Instant.formatUsingLocale(locale: Locale, timeZone: TimeZone = TimeZone.getDefault()): String {
         val df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale)
+        df.timeZone = timeZone
         return df.format(Date.from(this))
     }
 

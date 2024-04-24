@@ -11,6 +11,7 @@ import org.junit.Test
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale
+import java.util.TimeZone
 
 class DateUtilsTest {
     @Test
@@ -54,7 +55,10 @@ class DateUtilsTest {
 
         assertEquals(
             "23/4/24, 9:25",
-            instant.formatUsingLocale(Locale("es", "ES"))
+            instant.formatUsingLocale(
+                Locale("es", "ES"),
+                TimeZone.getTimeZone(ZoneId.of("Europe/Madrid"))
+            )
         )
     }
 
@@ -65,7 +69,10 @@ class DateUtilsTest {
 
         assertEquals(
             "23/4/24, 9:25",
-            instant.formatUsingLocale(Locale("es", "ES"))
+            instant.formatUsingLocale(
+                Locale("es", "ES"),
+                TimeZone.getTimeZone(ZoneId.of("Europe/Madrid"))
+            )
         )
     }
 
