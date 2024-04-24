@@ -13,7 +13,6 @@ import edu.upc.sdk.library.models.OpenMRSVisit
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Results
-import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -361,9 +360,9 @@ class VisitRepositoryTest {
         val callStartVisit = mockk<Call<OpenMRSVisit>>(relaxed = true)
         every { restApi.startVisit(any()) } returns callStartVisit
         every { callStartVisit.execute() } returns
-                Response.success(edu.upc.sdk.library.models.OpenMRSVisit().apply {
+                Response.success(OpenMRSVisit().apply {
                     uuid = visit.id.toString()
-                    startDatetime = visit.startDate.formatAsOpenMrsDate()
+                    startDatetime = visit.startDate.toString()
                 })
 
         val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)

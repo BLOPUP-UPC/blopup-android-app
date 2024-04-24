@@ -9,8 +9,7 @@ import edu.upc.sdk.library.api.repository.VisitRepository.Companion.VITALS_ENCOU
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
-import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
-import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDateWithoutTime
+import edu.upc.sdk.utilities.DateUtils.formatToApiRequest
 import java.time.Instant
 import java.util.UUID
 
@@ -116,8 +115,8 @@ object OpenMrsVisitExample {
                                     }
                                 displayValue = if (value) "1.0" else "0.0"
                                 display = "Adherence: $displayValue"
-                                dateCreated = date.formatAsOpenMrsDateWithoutTime()
-                                obsDatetime = date.formatAsOpenMrsDateWithoutTime()
+                                dateCreated = date.formatToApiRequest()
+                                obsDatetime = date.formatToApiRequest()
                             }
                         }
                     )
@@ -143,7 +142,7 @@ object OpenMrsVisitExample {
             }
             uuid = visitUuid
             location = LocationEntity(visitLocation)
-            startDatetime = visitStartDate.formatAsOpenMrsDate()
+            startDatetime = visitStartDate.toString()
             visitType = VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID)
             encounters = listOf(
                 Encounter().apply {

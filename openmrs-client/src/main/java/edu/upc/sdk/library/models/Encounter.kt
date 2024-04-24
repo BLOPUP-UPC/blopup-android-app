@@ -13,7 +13,6 @@ package edu.upc.sdk.library.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import edu.upc.sdk.library.databases.entities.LocationEntity
-import edu.upc.sdk.utilities.DateUtils
 import java.io.Serializable
 
 /**
@@ -72,9 +71,6 @@ class Encounter() : Resource(), Serializable {
     var visitID: Long? = null
     var visitUuid: String? = null
     var patientUUID: String? = null
-
-    val encounterDatetime: Long?
-        get() = DateUtils.convertTime(encounterDate)
 
 
     val formUuid: String?

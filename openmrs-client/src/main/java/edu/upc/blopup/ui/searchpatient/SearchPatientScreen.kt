@@ -31,7 +31,8 @@ import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientIdentifier
-import edu.upc.sdk.utilities.DateUtils.convertTime
+import edu.upc.sdk.utilities.DateUtils.formatToDefaultFormat
+import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromOpenmrsDate
 import java.util.UUID
 
 @Composable
@@ -144,7 +145,7 @@ fun PatientCard(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
                 )
-                Text(text = convertTime(convertTime(patient.birthdate) ?: 0L), color = Color.Gray, fontSize = 16.sp)
+                Text(text = parseLocalDateFromOpenmrsDate(patient.birthdate).formatToDefaultFormat(), color = Color.Gray, fontSize = 16.sp)
             }
 
         }

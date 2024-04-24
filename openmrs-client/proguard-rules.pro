@@ -37,7 +37,6 @@
 -dontwarn javax.annotation.**
 -dontnote retrofit2.Platform
 -dontwarn retrofit2.Platform$Java8
--dontwarn org.joda.convert.*
 
 # Keep classes and methods from your app that are referenced by the Android framework
 -keep public class * extends android.app.Activity

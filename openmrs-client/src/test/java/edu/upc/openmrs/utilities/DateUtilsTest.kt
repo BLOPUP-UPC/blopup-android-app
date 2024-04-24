@@ -1,9 +1,11 @@
 package edu.upc.openmrs.utilities
 
+import edu.upc.sdk.utilities.DateUtils.formatToApiRequest
 import edu.upc.sdk.utilities.DateUtils.formatUsingLocale
 import edu.upc.sdk.utilities.DateUtils.getDateTimeFromDifference
 import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromDefaultFormat
+import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromOpenmrsDate
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.LocalDate
@@ -97,5 +99,24 @@ class DateUtilsTest {
             expectedLocalDate,
             parseLocalDateFromDefaultFormat(date)
         )
+    }
+
+    @Test
+    fun `format birthday as localdate without timezone`() {
+        val apiDate = "1988-04-07T22:00:00.000+0000"
+        val expectedLocalDate = LocalDate.of(1988, 4, 8)
+
+        assertEquals(
+            expectedLocalDate,
+            parseLocalDateFromOpenmrsDate(apiDate)
+        )
+    }
+
+    @Test
+    fun `format LocalDate to API format`() {
+        val date = LocalDate.of(2024, 4, 8)
+        val expectedApiDate = "2024-04-07T22:00:00.000+0000"
+
+        assertEquals(expectedApiDate, date.formatToApiRequest())
     }
 }

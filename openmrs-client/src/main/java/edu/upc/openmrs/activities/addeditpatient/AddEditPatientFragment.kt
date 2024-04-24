@@ -65,13 +65,10 @@ import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
-import edu.upc.sdk.utilities.DateUtils
-import edu.upc.sdk.utilities.DateUtils.convertTime
-import edu.upc.sdk.utilities.DateUtils.convertTimeString
+import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromOpenmrsDate
 import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil
-import org.joda.time.LocalDate
 import java.net.UnknownHostException
 import java.util.Calendar
 
@@ -295,16 +292,8 @@ class AddEditPatientFragment : BaseFragment() {
             binding.surname.setText(name.familyName)
 
             if (notNull(birthdate) || notEmpty(birthdate)) {
-                viewModel.dateHolder = convertTimeString(birthdate)
-                binding.dobEditText.setText(
-                    convertTime(
-                        convertTime(
-                            viewModel.dateHolder.toString(),
-                            DateUtils.OPEN_MRS_REQUEST_FORMAT
-                        )!!,
-                        DateUtils.DEFAULT_DATE_FORMAT
-                    )
-                )
+                viewModel.dateHolder = parseLocalDateFromOpenmrsDate(birthdate)
+                binding.dobEditText.setText(viewModel.dateHolder.toString())
             }
             when (gender) {
                 "M" -> {
@@ -490,13 +479,14 @@ class AddEditPatientFragment : BaseFragment() {
             val cYear: Int
             val cMonth: Int
             val cDay: Int
+
             if (viewModel.dateHolder == null) Calendar.getInstance().let {
                 cYear = it[Calendar.YEAR]
                 cMonth = it[Calendar.MONTH]
                 cDay = it[Calendar.DAY_OF_MONTH]
             } else viewModel.dateHolder!!.run {
                 cYear = year
-                cMonth = monthOfYear - 1
+                cMonth = monthValue - 1
                 cDay = dayOfMonth
             }
             estimatedYear.text.clear()
@@ -511,7 +501,7 @@ class AddEditPatientFragment : BaseFragment() {
                         ) + "/" + String.format("%02d", adjustedMonth) + "/" + selectedYear
                     )
                     viewModel.dateHolder =
-                        LocalDate(selectedYear, adjustedMonth, selectedDay).toDateTimeAtStartOfDay()
+                        java.time.LocalDate.of(selectedYear, adjustedMonth, selectedDay)
                 }
             DatePickerDialog(requireActivity(), dateSetListener, cYear, cMonth, cDay).apply {
                 datePicker.maxDate = System.currentTimeMillis()

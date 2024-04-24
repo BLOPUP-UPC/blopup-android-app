@@ -14,7 +14,6 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.VisitType
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
 import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
-import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -48,7 +47,7 @@ class VisitRepository @Inject constructor(
     }
 
     suspend fun endVisit(visitId: UUID): Boolean = withContext(Dispatchers.IO) {
-        val endVisitDateTime = Instant.now().formatAsOpenMrsDate()
+        val endVisitDateTime = Instant.now().toString()
         val visitWithEndDate = OpenMRSVisit().apply {
             stopDatetime = endVisitDateTime
         }
@@ -68,7 +67,7 @@ class VisitRepository @Inject constructor(
         val now = Instant.now().minusSeconds(50)
         val location = OpenmrsAndroid.getLocation()
         val openMRSVisit = OpenMRSVisit().apply {
-            startDatetime = now.formatAsOpenMrsDate()
+            startDatetime = now.toString()
             this.patient = patient
             this.location = locationDAO.findLocationByName(location)
             visitType = VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID)
@@ -97,7 +96,7 @@ class VisitRepository @Inject constructor(
     }
 
     private suspend fun addVisitEncounter(visit: Visit): Result<Visit> {
-        val now = Instant.now()
+        val now = Instant.now().toString()
         val encounterCreate = Encountercreate().apply {
             this.visit = visit.id.toString()
             this.patient = visit.patientId.toString()
@@ -106,20 +105,20 @@ class VisitRepository @Inject constructor(
                 Obscreate().apply {
                     concept = VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
                     value = visit.bloodPressure.systolic.toString()
-                    obsDatetime = now.formatAsOpenMrsDate()
+                    obsDatetime = now
                     person = visit.patientId.toString()
                 },
                 Obscreate().apply {
                     concept = VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
                     value = visit.bloodPressure.diastolic.toString()
-                    obsDatetime = now.formatAsOpenMrsDate()
+                    obsDatetime = now
                     person = visit.patientId.toString()
                 },
                 Obscreate().apply {
                     concept =
                         VitalsConceptType.HEART_RATE_FIELD_CONCEPT
                     value = visit.bloodPressure.pulse.toString()
-                    obsDatetime = now.formatAsOpenMrsDate()
+                    obsDatetime = now
                     person = visit.patientId.toString()
                 },
                 visit.heightCm?.let {
@@ -127,7 +126,7 @@ class VisitRepository @Inject constructor(
                         concept =
                             VitalsConceptType.HEIGHT_FIELD_CONCEPT
                         value = it.toString()
-                        obsDatetime = now.formatAsOpenMrsDate()
+                        obsDatetime = now
                         person = visit.patientId.toString()
                     }
                 },
@@ -136,7 +135,7 @@ class VisitRepository @Inject constructor(
                         concept =
                             VitalsConceptType.WEIGHT_FIELD_CONCEPT
                         value = it.toString()
-                        obsDatetime = now.formatAsOpenMrsDate()
+                        obsDatetime = now
                         person = visit.patientId.toString()
                     }
                 }

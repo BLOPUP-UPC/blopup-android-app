@@ -23,20 +23,21 @@ import static org.mockito.Mockito.when;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import edu.upc.sdk.library.databases.entities.LocationEntity;
-import edu.upc.sdk.library.models.IdentifierType;
-import edu.upc.sdk.library.models.Patient;
-import edu.upc.sdk.library.models.PatientIdentifier;
-import edu.upc.sdk.library.models.PersonName;
-import edu.upc.sdk.utilities.DateUtils;
-import edu.upc.sdk.utilities.ResourceSerializer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.Instant;
 import java.util.Arrays;
+
+import edu.upc.sdk.library.databases.entities.LocationEntity;
+import edu.upc.sdk.library.models.IdentifierType;
+import edu.upc.sdk.library.models.Patient;
+import edu.upc.sdk.library.models.PatientIdentifier;
+import edu.upc.sdk.library.models.PersonName;
+import edu.upc.sdk.utilities.ResourceSerializer;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ResourceSerializerTest {
@@ -80,7 +81,7 @@ public class ResourceSerializerTest {
     }
 
     private Patient updatePatientDetails(Patient patient) {
-        patient.setBirthdate(DateUtils.convertTime(System.currentTimeMillis()));
+        patient.setBirthdate(Instant.now().toString());
         PersonName personName = new PersonName();
         personName.setFamilyName("family");
         personName.setGivenName("given");

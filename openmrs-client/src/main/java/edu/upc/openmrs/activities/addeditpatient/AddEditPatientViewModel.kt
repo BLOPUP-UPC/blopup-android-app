@@ -21,9 +21,8 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.StringUtils
-import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
 import rx.android.schedulers.AndroidSchedulers
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,7 +66,7 @@ class AddEditPatientViewModel @Inject constructor(
         private set
     lateinit var patient: Patient
 
-    var dateHolder: DateTime? = null
+    var dateHolder: LocalDate? = null
     var legalConsentFileName: String? = null
 
     init {
@@ -113,15 +112,11 @@ class AddEditPatientViewModel @Inject constructor(
 
             if (estimatedYear.isNotEmpty()) {
                 birthdateEstimated = true
-                val approximateBirthdate =
-                    DateUtils.getDateTimeFromDifference(estimatedYear.toInt())
-                birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-                    .print(approximateBirthdate)
+                birthdate =
+                    DateUtils.getDateTimeFromDifference(estimatedYear.toInt(), LocalDate.now()).toString()
             } else {
                 birthdateEstimated = false
-                val parsedBirthdate = DateTime.parse(dobEditText, DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT))
-                birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-                    .print(parsedBirthdate)
+                birthdate = DateUtils.parseLocalDateFromDefaultFormat(dobEditText).toString()
             }
 
             this.gender = gender

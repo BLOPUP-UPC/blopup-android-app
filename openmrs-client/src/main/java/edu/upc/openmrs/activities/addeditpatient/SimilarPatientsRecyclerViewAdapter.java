@@ -36,7 +36,6 @@ import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
 import edu.upc.sdk.library.dao.PatientDAO;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.utilities.ApplicationConstants;
-import edu.upc.sdk.utilities.DateUtils;
 import edu.upc.sdk.utilities.StringUtils;
 
 public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<SimilarPatientsRecyclerViewAdapter.PatientViewHolder> {
@@ -117,7 +116,7 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
 
     private void setBirthdate(PatientViewHolder holder, Patient patient) {
         try {
-            holder.mBirthDate.setText(DateUtils.convertTime(DateUtils.convertTime(patient.getBirthdate())));
+            holder.mBirthDate.setText(patient.getBirthdate());
             if (Objects.equal(patient.getBirthdate(), newPatient.getBirthdate())) {
                 setStyleForMatchedPatientFields(holder.mBirthDate);
             }
