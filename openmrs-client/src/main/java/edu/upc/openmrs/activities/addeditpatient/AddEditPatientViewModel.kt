@@ -116,7 +116,7 @@ class AddEditPatientViewModel @Inject constructor(
                     DateUtils.getEstimatedBirthdate(estimatedYear.toInt(), LocalDate.now()).toString()
             } else {
                 birthdateEstimated = false
-                birthdate = DateUtils.parseLocalDateFromDefaultFormat(dobEditText).toString()
+                birthdate = dateHolder.toString()
             }
 
             this.gender = gender
