@@ -46,14 +46,14 @@ object DateUtils {
         return instant.atZone(ZoneId.of("Europe/Madrid")).toLocalDate()
     }
 
+    fun parseLocalDateFromDefaultFormat(date: String): LocalDate {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT))
+    }
+
     @JvmStatic
     fun Instant.formatUsingLocale(locale: Locale): String {
         val df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale)
         return df.format(Date.from(this))
-    }
-
-    fun parseLocalDateFromDefaultFormat(date: String): LocalDate {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT))
     }
 
     fun getEstimatedBirthdate(yearDiff: Int, today: LocalDate): LocalDate {

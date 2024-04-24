@@ -33,8 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.upc.R
 import edu.upc.blopup.ui.createpatient.StructureLabelText
+import edu.upc.sdk.utilities.DateUtils.formatToDefaultFormat
+import edu.upc.sdk.utilities.DateUtils.toLocalDate
 import java.time.Instant
-import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,11 +53,9 @@ fun DateOfBirthSection(
 
 
     Column(Modifier.padding(vertical = 15.dp)) {
-        val date = datePickerState.selectedDateMillis
+        val date = datePickerState .selectedDateMillis
         if (date != null) {
-            val localDate = Instant.ofEpochMilli(date).atZone(ZoneId.of("UTC")).toLocalDate()
-            formattedDateOfBirth =
-                "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
+            formattedDateOfBirth = Instant.ofEpochMilli(date).toLocalDate().formatToDefaultFormat()
         }
         StructureLabelText(R.string.reg_ques_dob)
         OutlinedTextField(
