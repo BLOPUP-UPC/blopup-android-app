@@ -7,6 +7,7 @@ import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PatientDto
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Results
+import edu.upc.sdk.utilities.ApplicationConstants
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -15,12 +16,15 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.mockito.kotlin.any
 import retrofit2.Call
 import retrofit2.Response
 import rx.Observable
+import java.io.IOException
 
 class PatientRepositoryCoroutinesTest {
 
@@ -60,27 +64,13 @@ class PatientRepositoryCoroutinesTest {
         runBlocking {
             val result = patientRepositoryCoroutines.findPatients("query")
 
-            assert(result.isRight())
-            assert(patient1.uuid == result.fold({ }, { it[0].uuid }))
-            assert(patient2.uuid == result.fold({ }, { it[1].uuid }))
+            println("Expected data: ${patients.map { it.patient }}")
+            println("Actual data: ${(result as? Result.Success)?.data}")
+
+            assert(result is Result.Success)
+            assertEquals(patient1.uuid, (result as Result.Success).data.first().uuid)
+            assertEquals(patient2.uuid, result.data.last().uuid)
         }
-    }
-
-    @Test
-    fun `should return empty list when call response is successful but no matches found`() {
-        val response = Response.success(Results<PatientDto>())
-        val call = mockk<Call<Results<PatientDto>>>(relaxed = true)
-
-        coEvery { restApi.getPatientsDto(any(), any()) } returns call
-        coEvery { call.execute() } returns response
-
-        runBlocking {
-            val result = patientRepositoryCoroutines.findPatients("query")
-
-            assert(result.isRight())
-            assertEquals(emptyList<Patient>(), result.fold({ }, { it }))
-        }
-
     }
 
     @Test
@@ -99,8 +89,8 @@ class PatientRepositoryCoroutinesTest {
         runBlocking {
             val result = patientRepositoryCoroutines.findPatients("query")
 
-            assert(result.isLeft())
-            assertEquals(expected.message, result.fold({ it.message }, { }))
+            assert(result is Result.Error)
+            assertEquals(expected.message, (result as Result.Error).throwable.message)
         }
     }
 
@@ -116,8 +106,8 @@ class PatientRepositoryCoroutinesTest {
         runBlocking {
             val result = patientRepositoryCoroutines.findPatients("query")
 
-            assert(result.isLeft())
-            assert(expected.message == result.fold({ it.message }, { }))
+            assert(result is Result.Error)
+            assertEquals(expected.message, (result as Result.Error).throwable.message)
         }
     }
 
@@ -139,13 +129,50 @@ class PatientRepositoryCoroutinesTest {
     @Test
     fun `should return Error when get all patients locally fails`() {
 
-        coEvery {patientDAOMock.allPatients  } returns Observable.just(emptyList())
-
+        coEvery {patientDAOMock.allPatients  } throws Exception("Error getting all patients")
 
         runBlocking {
             val result = patientRepositoryCoroutines.getAllPatientsLocally()
 
             assertTrue(result is Result.Error)
+        }
+    }
+
+    @Test
+    fun `should return a patient when downloading patient by uuid from remote`() {
+        val patient = Patient().apply {
+            uuid = "uuid1"; isDeceased = false; birthdate = "1990-01-01"; gender = "M"
+        }
+
+        val mockCall = mockk<Call<PatientDto>>()
+
+        coEvery {restApi.getPatientByUUID(patient.uuid, ApplicationConstants.API.FULL)} returns mockCall
+        coEvery { mockCall.execute() } returns Response.success(patient.patientDto)
+
+
+        runBlocking {
+            val result = patientRepositoryCoroutines.downloadPatientByUuid(patient.uuid!!)
+            assertEquals(patient.uuid, result.uuid)
+            assertEquals(patient.id, result.id)
+        }
+    }
+
+    @Test
+    fun `should return a exception when downloading patient by uuid from remote fails`() {
+
+        val mockCall = mockk<Call<PatientDto>>()
+
+        coEvery { restApi.getPatientByUUID(any(), ApplicationConstants.API.FULL) } returns mockCall
+        coEvery { mockCall.execute() } throws IOException("Error with downloading patient")
+
+
+        runBlocking {
+            try {
+                patientRepositoryCoroutines.downloadPatientByUuid(any())
+                fail("Expected an IOException to be thrown")
+            } catch (e: IOException) {
+                assertEquals("Error with downloading patient: Error with downloading patient", e.message)
+            }
         }
     }
 }

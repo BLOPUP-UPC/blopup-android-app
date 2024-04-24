@@ -1,6 +1,5 @@
 package edu.upc.sdk.library.api.repository
 
-import arrow.core.Either
 import edu.upc.sdk.library.CrashlyticsLogger
 import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.PatientDAO
@@ -24,37 +23,13 @@ class PatientRepositoryCoroutines @Inject constructor(
     suspend fun getAllPatientsLocally(): Result<List<Patient>> = withContext(Dispatchers.IO) {
         try {
             val patientList = patientDAO.allPatients.execute()
-
-            if (patientList.isEmpty()) {
-                Result.Error(Exception("No patients found"))
-            } else {
-                Result.Success(patientList)
-            }
-
+            Result.Success(patientList)
         } catch (e: Exception) {
             Result.Error(Exception(e.message))
         }
     }
 
-    suspend fun findPatients(query: String?): Either<Error, List<Patient>> =
-        withContext(Dispatchers.IO) {
-            try {
-                val call = restApi.getPatientsDto(query, ApplicationConstants.API.FULL)
-                val response = call.execute()
-                if (response.isSuccessful) {
-                    val patientDtos = response.body()?.results.orEmpty()
-                    Either.Right(patientDtos.map { it.patient })
-                } else {
-                    crashlytics.reportUnsuccessfulResponse(response, "Failed to find patients")
-                    Either.Left(Error("Failed to find patients: ${response.code()} - ${response.message()}"))
-                }
-            } catch (e: Exception) {
-                crashlytics.reportException(e, "Failed to find patients")
-                Either.Left(Error("Failed to find patients: ${e.message}", e))
-            }
-        }
-
-    suspend fun newFindPatients(query: String?): Result<List<Patient>> =
+    suspend fun findPatients(query: String?): Result<List<Patient>> =
         withContext(Dispatchers.IO) {
             try {
                 val call = restApi.getPatientsDto(query, ApplicationConstants.API.FULL)
@@ -79,7 +54,7 @@ class PatientRepositoryCoroutines @Inject constructor(
                 val response = call.execute()
                 if (response.isSuccessful) {
                     val newPatientDto = response.body()
-                    if(newPatientDto?.patient?.isVoided!!){
+                    if (newPatientDto?.patient?.isVoided!!) {
                         throw IOException("Patient has been removed from remote database")
                     } else {
                         return@withContext newPatientDto.patient

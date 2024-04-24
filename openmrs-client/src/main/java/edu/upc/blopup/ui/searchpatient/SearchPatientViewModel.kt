@@ -37,15 +37,13 @@ class SearchPatientViewModel @Inject constructor(
 
     suspend fun getAllPatientsLocally() {
         when (val response = patientRepositoryCoroutines.getAllPatientsLocally()) {
-            is Result.Success -> _patientListResultUiState.value =
-                ResultUiState.Success(response.data)
-
+            is Result.Success -> _patientListResultUiState.value = ResultUiState.Success(response.data)
             else -> _patientListResultUiState.value = ResultUiState.Error
         }
     }
 
     suspend fun getAllPatientsRemotely(query: String) {
-        when (val response = patientRepositoryCoroutines.newFindPatients(query)) {
+        when (val response = patientRepositoryCoroutines.findPatients(query)) {
             is Result.Success -> _remotePatientListResultUiState.value =
                 ResultUiState.Success(response.data)
 

@@ -81,16 +81,17 @@ fun SyncedPatients(
     Column(Modifier.fillMaxSize()) {
         when (patientList) {
             is ResultUiState.Success -> {
-                LazyColumn {
-                    items(patientList.data) { patient ->
-                        PatientCard(
-                            patient,
-                            retrieveOrDownloadPatient,
-                        )
+                if(patientList.data.isNotEmpty()) {
+                    LazyColumn {
+                        items(patientList.data) { patient ->
+                            PatientCard(
+                                patient,
+                                retrieveOrDownloadPatient,
+                            )
+                        }
                     }
                 }
             }
-
             is ResultUiState.Loading -> {
                 LoadingSpinner(Modifier.padding(16.dp))
             }
