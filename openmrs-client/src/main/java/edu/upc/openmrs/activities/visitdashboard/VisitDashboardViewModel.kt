@@ -19,7 +19,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import org.joda.time.Instant
+import java.time.Instant
 import java.util.UUID
 import javax.inject.Inject
 

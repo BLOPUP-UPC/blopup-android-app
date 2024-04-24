@@ -11,8 +11,7 @@ import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDateWithoutTime
-import edu.upc.sdk.utilities.DateUtils.formatToOpenmrsDate
-import org.joda.time.Instant
+import java.time.Instant
 import java.util.UUID
 
 
@@ -30,14 +29,14 @@ object OpenMrsVisitExample {
                 uuid = UUID.randomUUID().toString()
             }
             uuid = treatment.visitUuid
-            startDatetime = startDate.formatToOpenmrsDate()
+            startDatetime = startDate.toString()
             encounters = listOf(
                 Encounter().apply {
                     uuid = treatment.treatmentUuid
                     visit = OpenMRSVisit().apply {
                         uuid = treatment.visitUuid
                     }
-                    encounterDate = treatment.creationDate.formatToOpenmrsDate()
+                    encounterDate = treatment.creationDate.toString()
                     encounterType = EncounterType(TREATMENT_ENCOUNTER_TYPE)
                     treatment.doctor?.let {
                         encounterProviders =

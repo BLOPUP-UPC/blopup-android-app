@@ -2,7 +2,8 @@ package edu.upc.sdk.library.models
 
 import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
-import org.joda.time.Instant
+import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
+import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
 
@@ -34,7 +35,7 @@ object TreatmentExample {
             visitUuid = UUID.randomUUID().toString(),
             treatmentUuid = UUID.randomUUID().toString(),
             creationDate = creationDate,
-            inactiveDate = Instant("2023-12-22T10:10:10Z"),
+            inactiveDate = parseInstantFromOpenmrsDate("2023-12-22T10:10:10.000+0000"),
         )
     }
 }

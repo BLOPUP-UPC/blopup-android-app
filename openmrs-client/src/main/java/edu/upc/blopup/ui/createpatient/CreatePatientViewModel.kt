@@ -15,8 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,22 +41,15 @@ class CreatePatientViewModel @Inject constructor(
         _createPatientUiState.value = CreatePatientResultUiState.Loading
 
         val birthdateEstimated: Boolean
-        val birthdate: String
+        val birthdate: LocalDate
 
         if (estimatedYears.isNotEmpty()) {
             birthdateEstimated = true
-            val approximateBirthdate =
-                DateUtils.getDateTimeFromDifference(estimatedYears.toInt())
-            birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-                .print(approximateBirthdate)
+            birthdate =
+                DateUtils.getDateTimeFromDifference(estimatedYears.toInt(), LocalDate.now())
         } else {
             birthdateEstimated = false
-            val parsedBirthdate = DateTime.parse(
-                dateOfBirth,
-                DateTimeFormat.forPattern(DateUtils.DEFAULT_DATE_FORMAT)
-            )
-            birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-                .print(parsedBirthdate)
+            birthdate = DateUtils.parseLocalDateFromDefaultFormat(dateOfBirth)
         }
 
         viewModelScope.launch(Dispatchers.IO) {

@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.joda.time.format.DateTimeFormat
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -27,6 +26,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import rx.Observable
+import java.time.LocalDate
 
 @RunWith(AndroidJUnit4::class)
 class CreatePatientViewModelTest {
@@ -61,9 +61,8 @@ class CreatePatientViewModelTest {
         val countryOfBirth = "Spain"
 
         val approximateBirthdate =
-            DateUtils.getDateTimeFromDifference(estimatedYears.toInt())
-        val birthdate = DateTimeFormat.forPattern(DateUtils.OPEN_MRS_REQUEST_PATIENT_FORMAT)
-            .print(approximateBirthdate)
+            DateUtils.getDateTimeFromDifference(estimatedYears.toInt(), LocalDate.now())
+        val birthdate = approximateBirthdate.toString()
 
         val patient = Patient().apply {
             isDeceased = false
@@ -81,7 +80,7 @@ class CreatePatientViewModelTest {
             patientRepository.registerPatient(
                 name,
                 familyName,
-                birthdate,
+                approximateBirthdate,
                 true,
                 gender,
                 countryOfBirth)

@@ -15,6 +15,7 @@
 package edu.upc.sdk.library.api.repository;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +108,7 @@ public class PatientRepository {
         });
     }
 
-    public Observable<Patient> registerPatient(String name, String familyName, String dateOfBirth, Boolean isBirthdateEstimated, String gender, String countryOfBirth) {
+    public Observable<Patient> registerPatient(String name, String familyName, LocalDate dateOfBirth, Boolean isBirthdateEstimated, String gender, String countryOfBirth) {
 
         PersonName personName = new PersonName();
         personName.setGivenName(name);
@@ -120,7 +121,7 @@ public class PatientRepository {
         patient.setDeceased(false);
         patient.setNames(names);
 
-        patient.setBirthdate(dateOfBirth);
+        patient.setBirthdate(dateOfBirth.toString());
         patient.setBirthdateEstimated(isBirthdateEstimated);
 
         patient.setGender(gender);

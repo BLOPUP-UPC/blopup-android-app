@@ -18,7 +18,7 @@ import edu.upc.sdk.library.models.OpenMrsVisitExample
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.TreatmentExample
-import edu.upc.sdk.utilities.DateUtils.toJavaInstant
+import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -31,13 +31,14 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.joda.time.Instant
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
 import retrofit2.Call
 import retrofit2.Response
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.UUID
 
 class TreatmentRepositoryTest {
@@ -90,7 +91,7 @@ class TreatmentRepositoryTest {
     fun `should get all treatments`() = runTest {
         val patientUuid = UUID.randomUUID()
 
-        val now = Instant.now().withMillis(0)
+        val now = Instant.now().truncatedTo(ChronoUnit.SECONDS)
         val activeTreatment = TreatmentExample.activeTreatment(now)
         val inactiveTreatment = TreatmentExample.inactiveTreatment()
 
@@ -113,7 +114,7 @@ class TreatmentRepositoryTest {
     fun `should get all treatments including doctor registration number`() = runTest {
         val patientUuid = UUID.randomUUID()
 
-        val now = Instant.now().withMillis(0)
+        val now = Instant.now().truncatedTo(ChronoUnit.SECONDS)
         val activeTreatment = TreatmentExample.activeTreatment(now)
 
         val visitWithActiveTreatment = OpenMrsVisitExample.withTreatment(activeTreatment)
@@ -136,7 +137,7 @@ class TreatmentRepositoryTest {
 
         val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
 
-        val now = Instant.now().withMillis(0)
+        val now = Instant.now().truncatedTo(ChronoUnit.SECONDS)
         val activeTreatment = TreatmentExample.activeTreatment(now)
         val inactiveTreatment = TreatmentExample.inactiveTreatment()
 
@@ -162,9 +163,9 @@ class TreatmentRepositoryTest {
 
         val patient = Patient().apply { uuid = UUID.randomUUID().toString() }
 
-        val beforeVisit = Instant.parse("2023-12-20T10:10:10Z")
-        val visitDate = Instant.parse("2023-12-21T10:10:10Z")
-        val afterVisit = Instant.parse("2023-12-22T10:10:10Z")
+        val beforeVisit = parseInstantFromOpenmrsDate("2023-12-20T10:10:10.000+0000")
+        val visitDate = beforeVisit.plus(1, ChronoUnit.DAYS)
+        val afterVisit = beforeVisit.plus(2, ChronoUnit.DAYS)
 
         val previousTreatment = TreatmentExample.activeTreatment(beforeVisit)
         val actualVisitTreatment = TreatmentExample.activeTreatment(visitDate)
@@ -186,7 +187,7 @@ class TreatmentRepositoryTest {
         val visit = VisitExample.random(
             id = UUID.fromString(visitWithTreatment.uuid),
             patientId = UUID.fromString(patient.uuid),
-            startDateTime = visitDate.toJavaInstant(),
+            startDateTime = visitDate,
         )
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)

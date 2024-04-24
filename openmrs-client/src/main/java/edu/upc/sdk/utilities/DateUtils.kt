@@ -25,6 +25,8 @@ import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter.ISO_DATE_TIME
+import java.time.format.DateTimeFormatterBuilder
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -42,7 +44,11 @@ object DateUtils {
     private val openMRSLogger = OpenmrsAndroid.getOpenMRSLogger()
 
     fun parseInstantFromOpenmrsDate(dateTime: String): java.time.Instant {
-        return JavaLocalDateTime.parse(dateTime, JavaDateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT)).toInstant(java.time.ZoneOffset.UTC)
+        val formatter = DateTimeFormatterBuilder()
+            .appendOptional(JavaDateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
+            .appendOptional(ISO_DATE_TIME)
+            .toFormatter()
+        return JavaLocalDateTime.parse(dateTime, formatter).toInstant(java.time.ZoneOffset.UTC)
     }
 
     @JvmStatic
@@ -53,6 +59,10 @@ object DateUtils {
 
     fun java.time.Instant.toLocalDate(): java.time.LocalDate {
         return this.atZone(java.time.ZoneId.systemDefault()).toLocalDate()
+    }
+
+    fun parseLocalDateFromDefaultFormat(date: String): java.time.LocalDate {
+        return java.time.LocalDate.parse(date, java.time.format.DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT))
     }
 
     fun java.time.Instant.toJodaInstant(): Instant {
@@ -193,6 +203,10 @@ object DateUtils {
      */
     fun getDateTimeFromDifference(yearDiff: Int): DateTime {
         return LocalDate().toDateTimeAtStartOfDay().minusYears(yearDiff)
+    }
+
+    fun getDateTimeFromDifference(yearDiff: Int, today: java.time.LocalDate): java.time.LocalDate {
+        return today.minusYears(yearDiff.toLong())
     }
 
     /**

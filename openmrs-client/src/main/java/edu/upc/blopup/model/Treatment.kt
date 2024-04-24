@@ -2,7 +2,7 @@ package edu.upc.blopup.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import org.joda.time.Instant
+import java.time.Instant
 import java.time.LocalDate
 
 @Parcelize

@@ -13,11 +13,10 @@ import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.utilities.DateUtils
-import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
-import edu.upc.sdk.utilities.DateUtils.toJodaInstant
+import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.joda.time.Instant
+import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -116,16 +115,13 @@ class TreatmentRepository @Inject constructor(
     }
 
     suspend fun fetchActiveTreatmentsAtAGivenTime(visit: Visit): OpenMRSResult<List<Treatment>> {
-        val visitId = visit.id.toString()
-        val visitDate = visit.startDate.toJodaInstant()
-
         val result = fetchAllTreatments(visit.patientId)
 
         if (result is OpenMRSResult.Success) {
             return OpenMRSResult.Success(result.data.filter { treatment ->
-                (treatment.creationDate.isBefore(visitDate) || treatment.visitUuid == visitId)
+                (treatment.creationDate.isBefore(visit.startDate) || treatment.visitUuid == visit.id.toString())
                         && treatment.isActive
-                        || (!treatment.isActive && treatment.inactiveDate!!.isAfter(visitDate))
+                        || (!treatment.isActive && treatment.inactiveDate!!.isAfter(visit.startDate))
             })
         }
         return result
@@ -156,7 +152,7 @@ class TreatmentRepository @Inject constructor(
 
     private fun getTreatmentFromEncounter(visitUuid: String, encounter: Encounter): Treatment {
         val treatmentUuid = encounter.uuid
-        val creationDate = parseFromOpenmrsDate(encounter.encounterDate!!)
+        val creationDate = parseInstantFromOpenmrsDate(encounter.encounterDate!!)
         val doctor = encounter.encounterProviders.find { it.encounterRole?.uuid == ENCOUNTER_DOCTOR_ROLE_UUID }?.provider.let {
             it?.uuid?.let { doctorUuid ->
                 it.person?.display?.let { doctorName ->
@@ -193,7 +189,7 @@ class TreatmentRepository @Inject constructor(
                     observationStatusUuid = observation.uuid
                     isActive = observation.displayValue?.trim() == "1.0"
                     if (!isActive) {
-                        inactiveDate = parseFromOpenmrsDate(observation.obsDatetime!!)
+                        inactiveDate = parseInstantFromOpenmrsDate(observation.obsDatetime!!)
                     }
                 }
 
