@@ -4,8 +4,8 @@ import edu.upc.blopup.model.BloodPressure
 import edu.upc.blopup.model.Visit
 import edu.upc.sdk.library.api.repository.VisitRepository.Companion.VITALS_ENCOUNTER_TYPE
 import edu.upc.sdk.library.models.OpenMRSVisit
-import edu.upc.sdk.utilities.DateUtils
-import java.time.LocalDateTime
+import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
+import java.time.Instant
 import java.util.UUID
 
 object VisitConverter {
@@ -38,14 +38,14 @@ object VisitConverter {
             UUID.fromString(openMRSVisit?.uuid),
             UUID.fromString(openMRSVisit?.patient?.uuid),
             openMRSVisit?.location?.display ?: "el servei assistencial",
-            openMRSVisit?.startDatetime?.let { DateUtils.parseLocalDateFromOpenmrsDate(it) }
-                ?: LocalDateTime.now(),
+            openMRSVisit?.startDatetime?.let { parseInstantFromOpenmrsDate(it) }
+                ?: Instant.now(),
             bloodPressure,
             height,
             weight
         ).apply {
             endDate =
-                openMRSVisit?.stopDatetime?.let { DateUtils.parseLocalDateFromOpenmrsDate(it) }
+                openMRSVisit?.stopDatetime?.let { parseInstantFromOpenmrsDate(it) }
         }
     }
 }

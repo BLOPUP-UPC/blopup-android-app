@@ -1,13 +1,13 @@
 package edu.upc.blopup.model
 
-import java.time.LocalDateTime
+import java.time.Instant
 import java.util.UUID
 
 object VisitExample {
     fun random(
         heightCm: Int? = null,
         patientId: UUID = UUID.randomUUID(),
-        startDateTime: LocalDateTime = LocalDateTime.now(),
+        startDateTime: Instant = Instant.now(),
         bloodPressure: BloodPressure = BloodPressureExample.random(),
         weightKg : Float? = null,
         id: UUID = UUID.randomUUID()

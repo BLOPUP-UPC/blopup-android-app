@@ -20,6 +20,7 @@ import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
+import edu.upc.sdk.utilities.DateUtils.toLocalDate
 import edu.upc.sdk.utilities.ToastUtil
 import java.time.LocalDate
 import java.util.UUID

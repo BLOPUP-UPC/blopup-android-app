@@ -14,8 +14,8 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.VisitType
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
 import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
-import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
+import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -86,7 +86,7 @@ class VisitRepository @Inject constructor(
                 UUID.fromString(visitFromServer.uuid),
                 UUID.fromString(patient.uuid),
                 location,
-                visitFromServer.startDatetime.let { DateUtils.parseLocalDateFromOpenmrsDate(it) },
+                visitFromServer.startDatetime.let { parseInstantFromOpenmrsDate(it) },
                 bloodPressure,
                 heightCm,
                 weightKg

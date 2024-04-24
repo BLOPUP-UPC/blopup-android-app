@@ -9,6 +9,7 @@ import edu.upc.sdk.library.api.RestApi
 import edu.upc.sdk.library.dao.LocationDAO
 import edu.upc.sdk.library.databases.entities.LocationEntity
 import edu.upc.sdk.library.models.Encounter
+import edu.upc.sdk.library.models.OpenMRSVisit
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.Results
@@ -35,11 +36,10 @@ import retrofit2.Call
 import retrofit2.Response
 import java.io.IOException
 import java.time.Instant
-import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import java.time.temporal.ChronoUnit.SECONDS
 import java.util.UUID
 import edu.upc.sdk.library.models.OpenMrsVisitExample as OpenMRSVisitExample
-import edu.upc.sdk.library.models.OpenMRSVisit as OpenMRSVisit
 
 
 @RunWith(AndroidJUnit4::class)
@@ -70,7 +70,7 @@ class VisitRepositoryTest {
             visitUuid,
             patientUuid,
             "La casa de Ale",
-            LocalDateTime.now().truncatedTo(SECONDS),
+            Instant.now().truncatedTo(SECONDS),
             BloodPressure(120, 80, 70),
             177,
             70.0f
@@ -247,7 +247,7 @@ class VisitRepositoryTest {
             visitId,
             patientId,
             location,
-            LocalDateTime.now().truncatedTo(SECONDS),
+            Instant.now().truncatedTo(SECONDS),
             BloodPressure(120, 80, 70),
             177,
             70.0f
@@ -315,7 +315,7 @@ class VisitRepositoryTest {
             visitId,
             patientId,
             "",
-            LocalDateTime.now().truncatedTo(SECONDS),
+            Instant.now().truncatedTo(SECONDS),
             BloodPressure(120, 80, 70),
             177,
             70.0f
@@ -523,12 +523,12 @@ class VisitRepositoryTest {
     fun `latest visit with height should return the latest visit with height`() = runTest {
         val openMRSVisit1 = OpenMRSVisitExample.withVitals(
             height = 180,
-            visitStartDate = LocalDateTime.now().minusDays(2)
+            visitStartDate = Instant.now().minus(1, ChronoUnit.DAYS)
         )
         val openMRSVisit2 = OpenMRSVisitExample.withVitals(
             patientUuid = openMRSVisit1.patient.uuid!!,
             height = 190,
-            visitStartDate = LocalDateTime.now()
+            visitStartDate = Instant.now()
         )
         val response = Response.success(Results<OpenMRSVisit>().apply{
             results = listOf(openMRSVisit1, openMRSVisit2)

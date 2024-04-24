@@ -3,12 +3,14 @@ package edu.upc.openmrs.activities.patientdashboard.charts
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.blopup.model.VisitExample
 import edu.upc.blopup.ui.ResultUiState
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.TreatmentExample
+import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
+import edu.upc.sdk.utilities.DateUtils.toLocalDate
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -27,7 +29,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import java.util.UUID
 
 @RunWith(JUnit4::class)
@@ -57,9 +59,10 @@ class ChartsViewViewModelTest {
 
     @Test
     fun `should remove duplicates in visits and keep the latest`() = runTest {
-        val today = LocalDateTime.now()
-        val todayTwoHoursLater = today.plusHours(2)
-        val lastWeek = today.minusDays(7)
+        val today = parseInstantFromOpenmrsDate("2021-09-01T10:00:00.000+0000")
+
+        val todayTwoHoursLater = today.plus(2, ChronoUnit.HOURS)
+        val lastWeek = today.minus(7, ChronoUnit.DAYS)
 
         val lastWeekVisit = VisitExample.random(startDateTime = lastWeek)
         val todaysVisit = VisitExample.random(startDateTime = today)

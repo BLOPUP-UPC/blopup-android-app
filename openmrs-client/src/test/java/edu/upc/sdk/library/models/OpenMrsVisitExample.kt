@@ -13,7 +13,6 @@ import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDate
 import edu.upc.sdk.utilities.DateUtils.formatAsOpenMrsDateWithoutTime
 import edu.upc.sdk.utilities.DateUtils.formatToOpenmrsDate
 import org.joda.time.Instant
-import java.time.LocalDateTime
 import java.util.UUID
 
 
@@ -131,7 +130,7 @@ object OpenMrsVisitExample {
     fun withVitals(
         visitUuid: String = UUID.randomUUID().toString(),
         patientUuid: String = UUID.randomUUID().toString(),
-        visitStartDate: LocalDateTime = LocalDateTime.now(),
+        visitStartDate: java.time.Instant = java.time.Instant.now(),
         visitLocation: String = "Location",
         systolic: Int = 120,
         diastolic: Int = 80,

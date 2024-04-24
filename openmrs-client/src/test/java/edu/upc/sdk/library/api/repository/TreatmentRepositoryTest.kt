@@ -38,8 +38,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
 import retrofit2.Call
 import retrofit2.Response
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.UUID
 
 class TreatmentRepositoryTest {
@@ -188,7 +186,7 @@ class TreatmentRepositoryTest {
         val visit = VisitExample.random(
             id = UUID.fromString(visitWithTreatment.uuid),
             patientId = UUID.fromString(patient.uuid),
-            startDateTime = LocalDateTime.ofInstant(visitDate.toJavaInstant(), (ZoneId.of("UTC"))),
+            startDateTime = visitDate.toJavaInstant(),
         )
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
@@ -264,7 +262,7 @@ class TreatmentRepositoryTest {
             visitUuid,
             patientUuid,
             "Casa del Aleh",
-            LocalDateTime.now(),
+            java.time.Instant.now(),
             BloodPressure(120, 80, 80)
         )
         coEvery { restApi.createEncounter(any()) } returns call

@@ -26,6 +26,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Locale;
 
 import edu.upc.R;
 import edu.upc.blopup.model.Visit;
@@ -51,10 +52,10 @@ public class PatientVisitsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
     public void onBindViewHolder(@NonNull VisitViewHolder visitViewHolder, final int position) {
         final int adapterPos = visitViewHolder.getAdapterPosition();
         Visit visit = mVisits.get(adapterPos);
-        visitViewHolder.mVisitStart.setText(DateUtils.formatLocalDateTimeAsDateWithTime(visit.getStartDate()));
+        visitViewHolder.mVisitStart.setText(DateUtils.formatUsingLocale(visit.getStartDate(), Locale.getDefault()));
         if (visit.getEndDate() != null) {
             visitViewHolder.mVisitEnd.setVisibility(View.VISIBLE);
-            visitViewHolder.mVisitEnd.setText(DateUtils.formatLocalDateTimeAsDateWithTime(visit.getEndDate()));
+            visitViewHolder.mVisitEnd.setText(DateUtils.formatUsingLocale(visit.getEndDate(), Locale.getDefault()));
 
             Drawable icon = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.past_visit_dot, null);
             icon.setBounds(0, 0, icon.getIntrinsicHeight(), icon.getIntrinsicWidth());

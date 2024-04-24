@@ -11,11 +11,12 @@ import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.model.Visit
 import edu.upc.blopup.ui.ResultUiState
-import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.TreatmentRepository
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Result
+import edu.upc.sdk.utilities.DateUtils.toLocalDate
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID

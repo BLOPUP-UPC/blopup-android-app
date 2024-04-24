@@ -45,9 +45,18 @@ object DateUtils {
         return JavaLocalDateTime.parse(dateTime, JavaDateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT)).toInstant(java.time.ZoneOffset.UTC)
     }
 
+    @JvmStatic
     fun java.time.Instant.formatUsingLocale(locale: Locale): String {
         val df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale)
         return df.format(Date.from(this))
+    }
+
+    fun java.time.Instant.toLocalDate(): java.time.LocalDate {
+        return this.atZone(java.time.ZoneId.systemDefault()).toLocalDate()
+    }
+
+    fun java.time.Instant.toJodaInstant(): Instant {
+        return Instant(this.toEpochMilli())
     }
 
     @Deprecated("Use java.time instead")
@@ -298,10 +307,6 @@ object DateUtils {
 
     fun java.time.Instant.formatAsOpenMrsDate(): String {
         return java.time.format.DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT).format(this.atOffset(java.time.ZoneOffset.UTC))
-    }
-
-    fun java.time.Instant.toJodaInstant(): Instant {
-        return Instant(this.toEpochMilli())
     }
 
     fun Instant.toJavaInstant(): java.time.Instant {

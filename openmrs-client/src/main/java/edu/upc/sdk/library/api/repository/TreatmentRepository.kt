@@ -14,11 +14,11 @@ import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
 import edu.upc.sdk.utilities.DateUtils
 import edu.upc.sdk.utilities.DateUtils.parseFromOpenmrsDate
+import edu.upc.sdk.utilities.DateUtils.toJodaInstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.joda.time.Instant
 import java.time.LocalDate
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
@@ -117,7 +117,7 @@ class TreatmentRepository @Inject constructor(
 
     suspend fun fetchActiveTreatmentsAtAGivenTime(visit: Visit): OpenMRSResult<List<Treatment>> {
         val visitId = visit.id.toString()
-        val visitDate = Instant.ofEpochMilli(visit.startDate.toInstant(ZoneOffset.UTC).toEpochMilli())
+        val visitDate = visit.startDate.toJodaInstant()
 
         val result = fetchAllTreatments(visit.patientId)
 

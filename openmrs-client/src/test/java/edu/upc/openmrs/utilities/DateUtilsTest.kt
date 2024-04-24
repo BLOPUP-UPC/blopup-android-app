@@ -42,4 +42,15 @@ class DateUtilsTest {
             instant.formatUsingLocale(Locale("es", "ES"))
         )
     }
+
+    @Test
+    fun `convert instant to LocalDate`() {
+        val apiDate = "2024-04-23T07:25:03.000+0000"
+        val instant = parseInstantFromOpenmrsDate(apiDate)
+
+        assertEquals(
+            "23/4/24, 9:25",
+            instant.formatUsingLocale(Locale("es", "ES"))
+        )
+    }
 }
