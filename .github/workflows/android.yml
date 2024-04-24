@@ -50,7 +50,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Run tests
-        run: ./gradlew :openmrs-client:testDebugUnitTest
+        run: ./gradlew :openmrs-client:testDebugUnitTest -i
 
       - name: Create Test Coverage Report
         run: ./gradlew jacocoTestReport

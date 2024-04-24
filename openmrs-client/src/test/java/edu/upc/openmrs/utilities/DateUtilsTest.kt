@@ -9,6 +9,7 @@ import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromOpenmrsDate
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Locale
 
 class DateUtilsTest {
@@ -139,6 +140,6 @@ class DateUtilsTest {
         val date = LocalDate.of(2024, 4, 8)
         val expectedApiDate = "2024-04-07T22:00:00.000+0000"
 
-        assertEquals(expectedApiDate, date.formatToApiRequest())
+        assertEquals(expectedApiDate, date.formatToApiRequest(ZoneId.of("Europe/Madrid")))
     }
 }

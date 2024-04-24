@@ -60,8 +60,8 @@ object DateUtils {
         return today.minusYears(yearDiff.toLong())
     }
     @JvmStatic
-    fun LocalDate.formatToApiRequest(): String {
-        return this.atStartOfDay().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
+    fun LocalDate.formatToApiRequest(zoneId: ZoneId = ZoneId.systemDefault()): String {
+        return this.atStartOfDay().atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
     }
 
     fun LocalDate.formatToDefaultFormat(): String {

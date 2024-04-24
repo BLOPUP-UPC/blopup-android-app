@@ -16,6 +16,7 @@ package edu.upc.sdk.library.api.repository;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,7 +123,7 @@ public class PatientRepository {
         patient.setDeceased(false);
         patient.setNames(names);
 
-        patient.setBirthdate(DateUtils.formatToApiRequest(dateOfBirth));
+        patient.setBirthdate(DateUtils.formatToApiRequest(dateOfBirth, ZoneId.systemDefault()));
         patient.setBirthdateEstimated(isBirthdateEstimated);
 
         patient.setGender(gender);
