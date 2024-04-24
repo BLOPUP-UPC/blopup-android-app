@@ -25,9 +25,10 @@ import java.util.Date
 import java.util.Locale
 
 object DateUtils {
-    const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy"
-    const val OPEN_MRS_RESPONSE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    private const val DEFAULT_DATE_FORMAT = "d/M/yyyy"
+    private const val OPEN_MRS_RESPONSE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
+    // Use this method to parse DateTime from the API response
     fun parseInstantFromOpenmrsDate(dateTime: String): Instant {
         val formatter = DateTimeFormatterBuilder()
             .appendOptional(DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
@@ -36,6 +37,7 @@ object DateUtils {
         return LocalDateTime.parse(dateTime, formatter).toInstant(java.time.ZoneOffset.UTC)
     }
 
+    // Use this method to parse the LocalDate from the API response
     fun parseLocalDateFromOpenmrsDate(dateTime: String): LocalDate {
         val instant = parseInstantFromOpenmrsDate(dateTime)
         // We need to assume that the date were stored in Madrid timezone
@@ -54,10 +56,10 @@ object DateUtils {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT))
     }
 
-    fun getDateTimeFromDifference(yearDiff: Int, today: LocalDate): LocalDate {
+    fun getEstimatedBirthdate(yearDiff: Int, today: LocalDate): LocalDate {
         return today.minusYears(yearDiff.toLong())
     }
-
+    @JvmStatic
     fun LocalDate.formatToApiRequest(): String {
         return this.atStartOfDay().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
     }

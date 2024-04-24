@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -195,7 +194,7 @@ class TreatmentRepository @Inject constructor(
 
                 ObservationConcept.TREATMENT_ADHERENCE.uuid -> {
                     val adherence = observation.displayValue?.trim() == "1.0"
-                    val date = LocalDate.parse(observation.dateCreated!!, DateTimeFormatter.ofPattern(DateUtils.OPEN_MRS_RESPONSE_FORMAT))
+                    val date = DateUtils.parseLocalDateFromOpenmrsDate(observation.dateCreated!!)
                     adherenceMap[date] = adherence
                 }
             }

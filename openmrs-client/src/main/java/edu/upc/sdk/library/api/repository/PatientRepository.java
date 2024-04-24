@@ -37,6 +37,7 @@ import edu.upc.sdk.library.models.PersonAttributeType;
 import edu.upc.sdk.library.models.PersonName;
 import edu.upc.sdk.library.models.ResultType;
 import edu.upc.sdk.library.models.Results;
+import edu.upc.sdk.utilities.DateUtils;
 import edu.upc.sdk.utilities.PatientComparator;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -121,7 +122,7 @@ public class PatientRepository {
         patient.setDeceased(false);
         patient.setNames(names);
 
-        patient.setBirthdate(dateOfBirth.toString());
+        patient.setBirthdate(DateUtils.formatToApiRequest(dateOfBirth));
         patient.setBirthdateEstimated(isBirthdateEstimated);
 
         patient.setGender(gender);

@@ -2,7 +2,7 @@ package edu.upc.openmrs.utilities
 
 import edu.upc.sdk.utilities.DateUtils.formatToApiRequest
 import edu.upc.sdk.utilities.DateUtils.formatUsingLocale
-import edu.upc.sdk.utilities.DateUtils.getDateTimeFromDifference
+import edu.upc.sdk.utilities.DateUtils.getEstimatedBirthdate
 import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromDefaultFormat
 import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromOpenmrsDate
@@ -76,7 +76,7 @@ class DateUtilsTest {
 
         assertEquals(
             expectedBirthday,
-            getDateTimeFromDifference(estimatedYears, today)
+            getEstimatedBirthdate(estimatedYears, today)
         )
     }
 
@@ -109,6 +109,28 @@ class DateUtilsTest {
         assertEquals(
             expectedLocalDate,
             parseLocalDateFromOpenmrsDate(apiDate)
+        )
+    }
+
+    @Test
+    fun `format birthday as localdate from form`() {
+        val formText = "1/4/2000"
+        val expectedLocalDate = LocalDate.of(2000, 4, 1)
+
+        assertEquals(
+            expectedLocalDate,
+            parseLocalDateFromDefaultFormat(formText)
+        )
+    }
+
+    @Test
+    fun `format birthday as localdate from form 2`() {
+        val formText = "14/11/2012"
+        val expectedLocalDate = LocalDate.of(2012, 11, 14)
+
+        assertEquals(
+            expectedLocalDate,
+            parseLocalDateFromDefaultFormat(formText)
         )
     }
 

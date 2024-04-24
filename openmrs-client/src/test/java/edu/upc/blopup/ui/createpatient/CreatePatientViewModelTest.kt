@@ -61,7 +61,7 @@ class CreatePatientViewModelTest {
         val countryOfBirth = "Spain"
 
         val approximateBirthdate =
-            DateUtils.getDateTimeFromDifference(estimatedYears.toInt(), LocalDate.now())
+            DateUtils.getEstimatedBirthdate(estimatedYears.toInt(), LocalDate.now())
         val birthdate = approximateBirthdate.toString()
 
         val patient = Patient().apply {

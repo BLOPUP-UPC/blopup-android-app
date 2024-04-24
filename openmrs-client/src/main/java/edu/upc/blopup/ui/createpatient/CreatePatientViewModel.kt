@@ -46,7 +46,7 @@ class CreatePatientViewModel @Inject constructor(
         if (estimatedYears.isNotEmpty()) {
             birthdateEstimated = true
             birthdate =
-                DateUtils.getDateTimeFromDifference(estimatedYears.toInt(), LocalDate.now())
+                DateUtils.getEstimatedBirthdate(estimatedYears.toInt(), LocalDate.now())
         } else {
             birthdateEstimated = false
             birthdate = DateUtils.parseLocalDateFromDefaultFormat(dateOfBirth)
