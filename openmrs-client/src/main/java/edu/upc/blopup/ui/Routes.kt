@@ -15,4 +15,5 @@ open class Routes(val id: String) {
     object PatientDashboardScreen : Routes("PatientDashboardScreen/{${ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE}}/{${ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE}}")
     object SearchPatientScreen : Routes("Search Patient Screen")
     object ManualMeasureWeightScreen : Routes("Manual Measure Weight Screen")
+    object SettingsScreen : Routes("Settings Screen")
 }

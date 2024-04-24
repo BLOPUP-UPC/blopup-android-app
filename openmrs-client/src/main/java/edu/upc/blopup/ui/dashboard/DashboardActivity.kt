@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
+import edu.upc.blopup.settings.SettingsScreen
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.createpatient.CreatePatientScreen
 import edu.upc.blopup.ui.searchpatient.SearchPatientScreen
@@ -186,6 +187,12 @@ class DashboardActivity : ACBaseActivity() {
                                 it.arguments?.getString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE)
                                     ?: ""
                             )
+                        }
+                        composable(Routes.SettingsScreen.id) {
+                            topBarTitle = R.string.action_settings
+                            isSearchPatientScreen = false
+                            showBackButtonInMenu = false
+                            SettingsScreen()
                         }
                     }
                 }
