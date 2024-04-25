@@ -13,7 +13,6 @@
  */
 package edu.upc.sdk.utilities
 
-import java.text.DateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -21,12 +20,10 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 import java.time.format.DateTimeFormatterBuilder
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
 
 object DateUtils {
-    private const val DEFAULT_DATE_FORMAT = "d/M/yyyy"
+    private const val DATE_FORMAT = "d/M/yyyy"
+    private const val DATE_WITH_TIME_FORMAT = "dd/MM/yyyy HH:mm"
     private const val OPEN_MRS_RESPONSE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
     // Use this method to parse DateTime from the API response
@@ -48,14 +45,7 @@ object DateUtils {
     }
 
     fun parseLocalDateFromDefaultFormat(date: String): LocalDate {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT))
-    }
-
-    @JvmStatic
-    fun Instant.formatUsingLocale(locale: Locale, timeZone: TimeZone = TimeZone.getDefault()): String {
-        val df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale)
-        df.timeZone = timeZone
-        return df.format(Date.from(this))
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT))
     }
 
     fun getEstimatedBirthdate(yearDiff: Int, today: LocalDate): LocalDate {
@@ -67,7 +57,12 @@ object DateUtils {
     }
 
     fun LocalDate.formatToDefaultFormat(): String {
-        return this.format(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT))
+        return this.format(DateTimeFormatter.ofPattern(DATE_FORMAT))
+    }
+
+    @JvmStatic
+    fun Instant.formatToDateAndTime(zoneId: ZoneId = ZoneId.systemDefault()): String {
+        return this.atZone(zoneId).toLocalDateTime().format(DateTimeFormatter.ofPattern(DATE_WITH_TIME_FORMAT))
     }
 
     fun Instant.toLocalDate(): LocalDate {

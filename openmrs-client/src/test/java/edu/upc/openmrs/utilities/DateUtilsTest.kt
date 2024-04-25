@@ -1,7 +1,7 @@
 package edu.upc.openmrs.utilities
 
 import edu.upc.sdk.utilities.DateUtils.formatToApiRequest
-import edu.upc.sdk.utilities.DateUtils.formatUsingLocale
+import edu.upc.sdk.utilities.DateUtils.formatToDateAndTime
 import edu.upc.sdk.utilities.DateUtils.getEstimatedBirthdate
 import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromDefaultFormat
@@ -10,8 +10,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.Locale
-import java.util.TimeZone
 
 class DateUtilsTest {
     @Test
@@ -54,25 +52,8 @@ class DateUtilsTest {
         val instant = parseInstantFromOpenmrsDate(apiDate)
 
         assertEquals(
-            "23/4/24, 9:25",
-            instant.formatUsingLocale(
-                Locale("es", "ES"),
-                TimeZone.getTimeZone(ZoneId.of("Europe/Madrid"))
-            )
-        )
-    }
-
-    @Test
-    fun `convert instant to LocalDate`() {
-        val apiDate = "2024-04-23T07:25:03.000+0000"
-        val instant = parseInstantFromOpenmrsDate(apiDate)
-
-        assertEquals(
-            "23/4/24, 9:25",
-            instant.formatUsingLocale(
-                Locale("es", "ES"),
-                TimeZone.getTimeZone(ZoneId.of("Europe/Madrid"))
-            )
+            "23/04/2024 09:25",
+            instant.formatToDateAndTime(ZoneId.of("Europe/Madrid"))
         )
     }
 
