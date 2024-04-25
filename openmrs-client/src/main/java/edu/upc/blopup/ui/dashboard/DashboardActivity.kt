@@ -1,11 +1,13 @@
 package edu.upc.blopup.ui.dashboard
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -155,7 +157,8 @@ class DashboardActivity : ACBaseActivity() {
                             )
                         }
                         composable(
-                            Routes.PatientDashboardScreen.id, arguments = listOf(
+                            Routes.PatientDashboardScreen.id,
+                            arguments = listOf(
                                 navArgument(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE) {
                                     type = NavType.LongType
                                 },
@@ -167,7 +170,7 @@ class DashboardActivity : ACBaseActivity() {
                             isCreatePatientWithSomeInput = false
                             isSearchPatientScreen = false
                             showBackButtonInMenu = true
-                            if(navigationController.currentBackStackEntry?.destination?.route == Routes.PatientDashboardScreen.id) navigationController.popBackStack()
+                            if (navigationController.currentBackStackEntry?.destination?.route == Routes.PatientDashboardScreen.id) navigationController.popBackStack()
                             PatientDashboardScreen(
                                 { patientId, patientUuid ->
                                     startActivity(
@@ -195,11 +198,37 @@ class DashboardActivity : ACBaseActivity() {
                             topBarTitle = R.string.action_settings
                             isSearchPatientScreen = false
                             showBackButtonInMenu = true
-                            SettingsScreen ({
+                            SettingsScreen({
                                 val intent = Intent(Intent.ACTION_VIEW)
                                 intent.data = Uri.parse(getString(R.string.url_privacy_policy))
                                 startActivity(intent)
-                            }, { getBuildVersionInfo(this@DashboardActivity) })
+                            }, { getBuildVersionInfo(this@DashboardActivity) },
+                                {
+                                    val appMarketUri: Uri =
+                                        Uri.parse("market://details?id=${ApplicationConstants.PACKAGE_NAME}")
+                                    val appLinkUri: Uri =
+                                        Uri.parse("http://play.google.com/store/apps/details?id=${ApplicationConstants.PACKAGE_NAME}")
+                                    val intent = Intent(Intent.ACTION_VIEW, appMarketUri)
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        intent.addFlags(
+                                            Intent.FLAG_ACTIVITY_NO_HISTORY or
+                                                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                                                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+                                        )
+                                    }
+                                    try {
+                                        startActivity(intent)
+                                    } catch (e: ActivityNotFoundException) {
+                                        startActivity(
+                                            Intent(
+                                                Intent.ACTION_VIEW,
+                                                appLinkUri
+                                            )
+                                        )
+                                    }
+                                }
+
+                            )
                         }
                     }
                 }

@@ -44,13 +44,15 @@ import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
 fun SettingsScreen(
     onOpenPrivacyPolicy: () -> Unit,
     getAppBuildVersion: () -> String,
+    onOpenRateUs: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     SettingsPage(
         viewModel.languageListPosition,
         { viewModel.languageListPosition = it },
         getAppBuildVersion,
-        onOpenPrivacyPolicy
+        onOpenPrivacyPolicy,
+        onOpenRateUs
     )
 }
 
@@ -59,7 +61,8 @@ fun SettingsPage(
     languageListPosition: Int,
     setLanguageListPosition: (Int) -> Unit,
     getAppBuildVersion: () -> String,
-    onOpenPrivacyPolicy: () -> Unit
+    onOpenPrivacyPolicy: () -> Unit,
+    onOpenRateUs: () -> Unit
 ) {
     Column(
         Modifier
@@ -76,12 +79,12 @@ fun SettingsPage(
 
         BlopupAppVersion(getAppBuildVersion)
 
-        RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy)
+        RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy, onOpenRateUs)
     }
 }
 
 @Composable
-fun RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy: () -> Unit) {
+fun RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy: () -> Unit, onOpenRateUs: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 20.dp)) {
         Icon(
             imageVector = Icons.Filled.Favorite,
@@ -93,7 +96,7 @@ fun RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy: () -> Unit) {
             fontSize = 16.sp,
             modifier = Modifier
                 .padding(horizontal = 15.dp)
-                .clickable { }
+                .clickable { onOpenRateUs() }
         )
     }
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 20.dp)) {
@@ -199,5 +202,5 @@ fun ShowLanguagesOptions(
 @Preview
 @Composable
 fun PreviewSettingsScreen() {
-    SettingsPage(1, {}, { "1.0.0" }, {})
+    SettingsPage(1, {}, { "1.0.0" }, {}, {})
 }
