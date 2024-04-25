@@ -2,7 +2,6 @@ package edu.upc.blopup.ui.shared.components
 
 import SearchInput
 import SearchOptionIcon
-import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.upc.R
 import edu.upc.blopup.ui.location.LocationDialogScreen
-import edu.upc.openmrs.activities.settings.SettingsActivity
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +47,8 @@ fun AppToolBarWithMenu(
     isCreatePatientWithSomeInput: Boolean = false,
     isSearchPatientScreen: Boolean = false,
     searchQuery: String = "",
-    onSearchQueryChange: (String) -> Unit = {}
+    onSearchQueryChange: (String) -> Unit = {},
+    navigateToSettings: () -> Unit = {}
 ) {
     var showLoseDataDialog by remember { mutableStateOf(false) }
     var isSearchInput by remember { mutableStateOf(false) }
@@ -88,7 +87,7 @@ fun AppToolBarWithMenu(
             if (isSearchPatientScreen) {
                 SearchOptionIcon ({ isSearchInput = true }, isSearchInput) { isSearchInput = false; onSearchQueryChange("") }
             }
-            OptionsMenu(onLogout, username)
+            OptionsMenu(onLogout, username, navigateToSettings)
         }
     )
 
@@ -110,7 +109,7 @@ fun AppToolBarWithMenu(
 }
 
 @Composable
-fun OptionsMenu(onLogout: () -> Unit, username: String) {
+fun OptionsMenu(onLogout: () -> Unit, username: String, navigateToSettings: () -> Unit) {
     val context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
     val showDialog = remember { mutableStateOf(false) }
@@ -130,14 +129,7 @@ fun OptionsMenu(onLogout: () -> Unit, username: String) {
             .padding(end = 35.dp)
     ) {
         DropdownMenuItem(
-            onClick = {
-                context.startActivity(
-                    Intent(
-                        context,
-                        SettingsActivity::class.java
-                    )
-                ); showMenu = false
-            },
+            onClick = { navigateToSettings(); showMenu = false },
             text = {
                 Text(
                     text = stringResource(R.string.action_settings),

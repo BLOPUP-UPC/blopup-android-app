@@ -5,12 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,10 +29,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.blopup.settings.SettingsScreen
 import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.createpatient.CreatePatientScreen
 import edu.upc.blopup.ui.searchpatient.SearchPatientScreen
+import edu.upc.blopup.ui.settings.SettingsScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.openmrs.activities.ACBaseActivity
@@ -76,7 +76,8 @@ class DashboardActivity : ACBaseActivity() {
                             isCreatePatientWithSomeInput = isCreatePatientWithSomeInput,
                             isSearchPatientScreen = isSearchPatientScreen,
                             searchQuery = searchQuery,
-                            onSearchQueryChange = { searchQuery = it }
+                            onSearchQueryChange = { searchQuery = it },
+                            navigateToSettings = { navigationController.navigate(Routes.SettingsScreen.id) }
                         )
                     },
                     bottomBar = {
@@ -193,7 +194,11 @@ class DashboardActivity : ACBaseActivity() {
                             topBarTitle = R.string.action_settings
                             isSearchPatientScreen = false
                             showBackButtonInMenu = false
-                            SettingsScreen()
+                            SettingsScreen {
+                                val intent = Intent(Intent.ACTION_VIEW)
+                                intent.data = Uri.parse(getString(R.string.url_privacy_policy))
+                                startActivity(intent)
+                            }
                         }
                     }
                 }
@@ -228,7 +233,6 @@ fun PatientDashboardScreen(
     patientId: Long,
     patientUuid: String,
 ) {
-    Text(text = "PatientDashboardScreen")
     LaunchedEffect(true) {
         startPatientDashboardActivity(patientId, patientUuid)
     }
