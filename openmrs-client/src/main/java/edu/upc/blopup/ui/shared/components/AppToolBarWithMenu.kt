@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -110,7 +109,6 @@ fun AppToolBarWithMenu(
 
 @Composable
 fun OptionsMenu(onLogout: () -> Unit, username: String, navigateToSettings: () -> Unit) {
-    val context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
     val showDialog = remember { mutableStateOf(false) }
     val showLocationDialog = remember { mutableStateOf(false) }

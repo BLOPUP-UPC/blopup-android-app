@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -21,77 +22,118 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import edu.upc.R
+import edu.upc.openmrs.activities.settings.SettingsViewModel
+import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
 
 @Composable
-fun SettingsScreen(onOpenPrivacyPolicy: () -> Unit) {
+fun SettingsScreen(
+    onOpenPrivacyPolicy: () -> Unit,
+    getAppBuildVersion: () -> String,
+    viewModel: SettingsViewModel = hiltViewModel()
+) {
+    SettingsPage(
+        viewModel.languageListPosition,
+        { viewModel.languageListPosition = it },
+        getAppBuildVersion,
+        onOpenPrivacyPolicy
+    )
+}
+
+@Composable
+fun SettingsPage(
+    languageListPosition: Int,
+    setLanguageListPosition: (Int) -> Unit,
+    getAppBuildVersion: () -> String,
+    onOpenPrivacyPolicy: () -> Unit
+) {
     Column(
         Modifier
             .fillMaxSize()
-            .padding(16.dp)) {
+            .padding(16.dp)
+    ) {
+        LanguageSection(languageListPosition, setLanguageListPosition)
 
-        LanguageSection()
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 15.dp),
+            thickness = 1.dp,
+            color = Color.LightGray
+        )
 
-        HorizontalDivider(modifier = Modifier.padding(vertical = 15.dp), thickness = 1.dp, color = Color.LightGray)
-
-        BlopupAppVersion()
+        BlopupAppVersion(getAppBuildVersion)
 
         RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy)
-
     }
-
 }
 
 @Composable
 fun RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 20.dp)) {
-        Icon(imageVector = Icons.Filled.Favorite, contentDescription = "heart icon", tint = Color.DarkGray )
+        Icon(
+            imageVector = Icons.Filled.Favorite,
+            contentDescription = "heart icon",
+            tint = Color.DarkGray
+        )
         Text(
             text = stringResource(R.string.rate_us_string),
             fontSize = 16.sp,
-            modifier = Modifier.padding(horizontal = 15.dp).clickable {  }
+            modifier = Modifier
+                .padding(horizontal = 15.dp)
+                .clickable { }
         )
     }
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 20.dp)) {
-        Image(painter = painterResource(R.drawable.ic_security_black_24dp), contentDescription = "heart icon" )
+        Image(
+            painter = painterResource(R.drawable.ic_security_black_24dp),
+            contentDescription = "heart icon"
+        )
         Text(
             text = stringResource(R.string.settings_privacy_policy),
             fontSize = 16.sp,
-            modifier = Modifier.padding(horizontal = 16.dp).clickable {onOpenPrivacyPolicy()}
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clickable { onOpenPrivacyPolicy() }
         )
     }
 }
 
 @Composable
-fun BlopupAppVersion() {
+fun BlopupAppVersion(getAppBuildVersion: () -> String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(painter = painterResource(R.drawable.logo_blopup), contentDescription = "BlopUp Logo")
+        Image(painter = painterResource(R.drawable.logo_blopup), contentDescription = "BlopUp Logo", Modifier.size(60.dp))
         Column(Modifier.padding(horizontal = 10.dp)) {
             Text(
                 text = stringResource(R.string.app_name),
-                fontSize = 20.sp,
+                fontSize = 18.sp,
             )
             Text(
-                text = "1.9.12Build0",
+                text = getAppBuildVersion(),
                 fontSize = 16.sp,
                 color = Color.Gray
             )
         }
 
-    }}
+    }
+}
 
 @Composable
-fun LanguageSection() {
+fun LanguageSection(currentLanguagePosition: Int, setLanguagePosition: (Int) -> Unit) {
+    var showMenu by remember { mutableStateOf(false) }
+    var languageSelected by remember { mutableStateOf(LANGUAGE_LIST[currentLanguagePosition]) }
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth(),
@@ -102,7 +144,7 @@ fun LanguageSection() {
         )
         Box(
             modifier = Modifier
-                .clickable { }
+                .clickable { showMenu = true }
                 .border(
                     width = 1.5.dp,
                     shape = RoundedCornerShape(1.dp),
@@ -112,14 +154,17 @@ fun LanguageSection() {
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "English",
-                    fontSize = 16.sp
+                    text = languageSelected,
+                    fontSize = 16.sp,
                 )
                 Icon(
                     Icons.Filled.ArrowDropDown,
                     tint = Color.Black,
                     contentDescription = null,
                 )
+                ShowLanguagesOptions(showMenu, { showMenu = false }, setLanguagePosition) {
+                    languageSelected = it
+                }
             }
         }
     }
@@ -129,10 +174,9 @@ fun LanguageSection() {
 fun ShowLanguagesOptions(
     showLanguagesDialog: Boolean,
     closeDropDown: () -> Unit,
-    onLanguageSelected: (String) -> Unit,
+    setLanguage: (Int) -> Unit,
+    setLanguageSelected: (String) -> Unit,
 ) {
-    val context = LocalContext.current
-    val languagesList = context.resources.getStringArray(R.array.languages)
     DropdownMenu(
         expanded = showLanguagesDialog,
         onDismissRequest = { closeDropDown() },
@@ -140,13 +184,14 @@ fun ShowLanguagesOptions(
             .background(colorResource(R.color.white))
             .padding(5.dp)
     ) {
-        languagesList.forEach { language ->
+        LANGUAGE_LIST.forEach { language ->
             DropdownMenuItem(
                 onClick = {
-                    onLanguageSelected(language)
+                    setLanguageSelected(language)
+                    setLanguage(LANGUAGE_LIST.indexOf(language))
                     closeDropDown()
                 },
-                text = { Text(text = language, color = Color.Gray) })
+                text = { Text(text = language) })
         }
     }
 }
@@ -154,5 +199,5 @@ fun ShowLanguagesOptions(
 @Preview
 @Composable
 fun PreviewSettingsScreen() {
-    SettingsScreen {}
+    SettingsPage(1, {}, { "1.0.0" }, {})
 }
