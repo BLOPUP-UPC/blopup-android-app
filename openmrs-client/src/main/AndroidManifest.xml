@@ -42,7 +42,7 @@
             android:label="@string/title_activity_vitals"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".blopup.ui.dashboard.DashboardActivity"
+            android:name=".blopup.ui.MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".openmrs.activities.introduction.SplashActivity"
@@ -75,13 +75,13 @@
             android:configChanges="locale|orientation"
             android:label="@string/action_settings"
             android:launchMode="singleTop"
-            android:parentActivityName=".blopup.ui.dashboard.DashboardActivity">
+            android:parentActivityName=".blopup.ui.MainActivity">
         </activity>
         <activity
             android:name=".openmrs.activities.patientdashboard.PatientDashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
-            android:parentActivityName=".blopup.ui.dashboard.DashboardActivity"
+            android:parentActivityName=".blopup.ui.MainActivity"
             android:theme="@style/AppThemeOrig">
         </activity>
         <activity

@@ -37,7 +37,7 @@ import java.util.List;
 
 import edu.upc.BuildConfig;
 import edu.upc.R;
-import edu.upc.blopup.ui.dashboard.DashboardActivity;
+import edu.upc.blopup.ui.MainActivity;
 import edu.upc.databinding.FragmentLoginBinding;
 import edu.upc.openmrs.activities.ACBaseFragment;
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog;
@@ -232,7 +232,7 @@ public class LoginFragment extends ACBaseFragment<LoginContract.Presenter> imple
 
     @Override
     public void userAuthenticated() {
-        Intent intent = new Intent(mOpenMRS.getApplicationContext(), DashboardActivity.class);
+        Intent intent = new Intent(mOpenMRS.getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mOpenMRS.getApplicationContext().startActivity(intent);
         mPresenter.saveLocationsToDatabase(mLocationsList, binding.locationSpinner.getSelectedItem().toString());

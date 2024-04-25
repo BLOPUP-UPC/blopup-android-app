@@ -1,4 +1,4 @@
-package edu.upc.blopup.ui.dashboard
+package edu.upc.blopup.ui
 
 import android.Manifest
 import android.content.Context
@@ -29,8 +29,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.blopup.ui.Routes
 import edu.upc.blopup.ui.createpatient.CreatePatientScreen
+import edu.upc.blopup.ui.dashboard.DashboardScreen
 import edu.upc.blopup.ui.searchpatient.SearchPatientScreen
 import edu.upc.blopup.ui.settings.SettingsScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
-class DashboardActivity : ACBaseActivity() {
+class MainActivity : ACBaseActivity() {
 
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +70,7 @@ class DashboardActivity : ACBaseActivity() {
                                     finish()
                                 }
                             },
-                            this@DashboardActivity::logout,
+                            this@MainActivity::logout,
                             OpenmrsAndroid.getUsername(),
                             showBackButtonInMenu,
                             isCreatePatientWithSomeInput = isCreatePatientWithSomeInput,
@@ -105,7 +105,7 @@ class DashboardActivity : ACBaseActivity() {
                                 { patientId, patientUuid ->
                                     startActivity(
                                         Intent(
-                                            this@DashboardActivity,
+                                            this@MainActivity,
                                             PatientDashboardActivity::class.java
                                         ).apply {
                                             putExtra(
@@ -143,12 +143,12 @@ class DashboardActivity : ACBaseActivity() {
                                 { isCreatePatientWithSomeInput = it },
                                 { askPermissionsForLegalConsent() },
                                 { getString(it) },
-                                { country: Country -> country.getLabel(this@DashboardActivity) },
+                                { country: Country -> country.getLabel(this@MainActivity) },
                                 { selectedLanguage: String, resourceId: Int ->
                                     getTextInLanguageSelected(
                                         selectedLanguage,
                                         resourceId,
-                                        this@DashboardActivity
+                                        this@MainActivity
                                     )
                                 },
                             )
@@ -172,7 +172,7 @@ class DashboardActivity : ACBaseActivity() {
                                 { patientId, patientUuid ->
                                     startActivity(
                                         Intent(
-                                            this@DashboardActivity,
+                                            this@MainActivity,
                                             PatientDashboardActivity::class.java
                                         ).apply {
                                             putExtra(

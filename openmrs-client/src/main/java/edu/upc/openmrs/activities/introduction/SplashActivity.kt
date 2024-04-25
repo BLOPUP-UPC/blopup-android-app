@@ -16,7 +16,7 @@ package edu.upc.openmrs.activities.introduction
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import edu.upc.blopup.ui.dashboard.DashboardActivity
+import edu.upc.blopup.ui.MainActivity
 import edu.upc.databinding.ActivitySplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ class SplashActivity : edu.upc.openmrs.activities.ACBaseActivity() {
         lifecycleScope.launch {
             delay(SPLASH_TIMER)
 
-            startActivity(Intent(this@SplashActivity, DashboardActivity::class.java))
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish()
         }
     }
