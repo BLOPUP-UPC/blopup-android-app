@@ -23,7 +23,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class ChartsViewViewModel @Inject constructor(
+class BloodPressureChartViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val treatmentRepository: TreatmentRepository,
     private val visitRepository: VisitRepository

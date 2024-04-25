@@ -11,22 +11,22 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package edu.upc.openmrs.activities.visitdashboard
+package edu.upc.openmrs.activities.visit
 
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
-import edu.upc.databinding.ActivityVisitDashboardBinding
+import edu.upc.databinding.ActivityVisitBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.IS_NEW_VITALS
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.VISIT_UUID
 
 @AndroidEntryPoint
-class VisitDashboardActivity : ACBaseActivity() {
+class VisitActivity : ACBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityVisitDashboardBinding.inflate(layoutInflater)
+        val binding = ActivityVisitBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.run {
@@ -40,12 +40,12 @@ class VisitDashboardActivity : ACBaseActivity() {
         val isNewVitals:Boolean = intent.getBooleanExtra(IS_NEW_VITALS, false)
 
         // Create fragment
-        var visitDashboardFragment = supportFragmentManager.findFragmentById(R.id.visitDashboardContentFrame) as VisitDashboardFragment?
-        if (visitDashboardFragment == null) {
-            visitDashboardFragment = VisitDashboardFragment.newInstance(visitUuid!!, isNewVitals)
+        var visitFragment = supportFragmentManager.findFragmentById(R.id.visitDashboardContentFrame) as VisitFragment?
+        if (visitFragment == null) {
+            visitFragment = VisitFragment.newInstance(visitUuid!!, isNewVitals)
         }
-        if (!visitDashboardFragment.isActive) {
-            addFragmentToActivity(supportFragmentManager, visitDashboardFragment, R.id.visitDashboardContentFrame)
+        if (!visitFragment.isActive) {
+            addFragmentToActivity(supportFragmentManager, visitFragment, R.id.visitDashboardContentFrame)
         }
     }
 }

@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.visitdashboard
+package edu.upc.openmrs.activities.visit
 
 import android.graphics.Color
 import com.github.anastr.speedviewlib.SpeedView

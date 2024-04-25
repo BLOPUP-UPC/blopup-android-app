@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.visitdashboard
+package edu.upc.openmrs.activities.visit
 
 import edu.upc.blopup.model.Treatment
 

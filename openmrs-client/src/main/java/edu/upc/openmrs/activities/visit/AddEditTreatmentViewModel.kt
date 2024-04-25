@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.visitdashboard
+package edu.upc.openmrs.activities.visit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,7 @@ import edu.upc.sdk.library.models.Result
 import javax.inject.Inject
 
 @HiltViewModel
-class TreatmentViewModel @Inject constructor(
+class AddEditTreatmentViewModel @Inject constructor(
     private val treatmentRepository: TreatmentRepository,
     private val doctorRepository: DoctorRepository
 ) :

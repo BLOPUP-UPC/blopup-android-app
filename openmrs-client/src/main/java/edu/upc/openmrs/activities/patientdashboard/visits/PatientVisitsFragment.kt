@@ -27,10 +27,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.model.Visit
-import edu.upc.databinding.FragmentPatientVisitBinding
+import edu.upc.databinding.FragmentPatientVisitsBinding
 import edu.upc.openmrs.activities.BaseFragment
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
-import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
+import edu.upc.openmrs.activities.patientdashboard.PatientActivity
+import edu.upc.openmrs.activities.visit.VisitActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.Result
@@ -42,12 +42,12 @@ import java.util.UUID
 
 @AndroidEntryPoint
 class PatientVisitsFragment : BaseFragment() {
-    private var _binding: FragmentPatientVisitBinding? = null
+    private var _binding: FragmentPatientVisitsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PatientDashboardVisitsViewModel by viewModels()
+    private val viewModel: PatientVisitsViewModel by viewModels()
 
-    private lateinit var patientDashboardActivity: PatientDashboardActivity
+    private lateinit var patientActivity: PatientActivity
 
     private val patientUuid: String by lazy {
         requireArguments().getString(PATIENT_UUID_BUNDLE)!!
@@ -55,7 +55,7 @@ class PatientVisitsFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        patientDashboardActivity = context as PatientDashboardActivity
+        patientActivity = context as PatientActivity
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,7 @@ class PatientVisitsFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentPatientVisitBinding.inflate(inflater, null, false)
+        _binding = FragmentPatientVisitsBinding.inflate(inflater, null, false)
 
         setupAdapter()
         setupObserver()
@@ -132,11 +132,11 @@ class PatientVisitsFragment : BaseFragment() {
     }
 
     private fun dismissCurrentDialog() {
-        patientDashboardActivity.dismissCustomFragmentDialog()
+        patientActivity.dismissCustomFragmentDialog()
     }
 
     fun goToVisitDashboard(visitID: UUID) {
-        Intent(activity, VisitDashboardActivity::class.java).apply {
+        Intent(activity, VisitActivity::class.java).apply {
             putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, visitID.toString())
             startActivity(this)
         }

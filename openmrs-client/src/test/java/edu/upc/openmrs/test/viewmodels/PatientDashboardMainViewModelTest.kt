@@ -3,7 +3,7 @@ package edu.upc.openmrs.test.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.blopup.model.VisitExample
 import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardMainViewModel
+import edu.upc.openmrs.activities.patientdashboard.PatientViewModel
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.models.Patient
@@ -40,7 +40,7 @@ class PatientDashboardMainViewModelTest() {
     lateinit var logger: OpenMRSLogger
 
     @InjectMockKs
-    private lateinit var viewModel: PatientDashboardMainViewModel
+    private lateinit var viewModel: PatientViewModel
 
     lateinit var patient: Patient
 

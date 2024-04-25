@@ -50,7 +50,7 @@ import edu.upc.openmrs.activities.BaseFragment
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.CountryOfBirthDialogFragment
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
+import edu.upc.openmrs.activities.patientdashboard.PatientActivity
 import edu.upc.openmrs.listeners.watcher.DateOfBirthTextWatcher
 import edu.upc.openmrs.utilities.ViewUtils.getInput
 import edu.upc.openmrs.utilities.ViewUtils.isEmpty
@@ -666,7 +666,7 @@ class AddEditPatientFragment : BaseFragment() {
     private fun isLegalConsent() = viewModel.isLegalConsentValidLiveData.value == true
 
     private fun startPatientDashboardActivity(patient: Patient) {
-        Intent(requireActivity(), PatientDashboardActivity::class.java).apply {
+        Intent(requireActivity(), PatientActivity::class.java).apply {
             putExtra(PATIENT_ID_BUNDLE, patient.id)
             putExtra(PATIENT_UUID_BUNDLE, patient.uuid)
             startActivity(this)

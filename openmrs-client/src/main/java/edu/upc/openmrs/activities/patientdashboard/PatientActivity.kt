@@ -27,25 +27,26 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.blopup.ui.dashboard.ActiveVisitResultUiState
 import edu.upc.blopup.ui.takingvitals.VitalsActivity
-import edu.upc.databinding.ActivityPatientDashboardBinding
-import edu.upc.openmrs.activities.visitdashboard.VisitDashboardActivity
+import edu.upc.databinding.ActivityPatientBinding
+import edu.upc.openmrs.activities.ACBaseActivity
+import edu.upc.openmrs.activities.visit.VisitActivity
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
 import kotlinx.coroutines.launch
 import java.util.UUID
 
 @AndroidEntryPoint
-class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
-    private lateinit var binding: ActivityPatientDashboardBinding
+class PatientActivity : ACBaseActivity() {
+    private lateinit var binding: ActivityPatientBinding
 
-    private val viewModel: PatientDashboardMainViewModel by viewModels()
+    private val viewModel: PatientViewModel by viewModels()
 
     private var patientId = 0L
     private lateinit var patientUuid: UUID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPatientDashboardBinding.inflate(layoutInflater)
+        binding = ActivityPatientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         with(supportActionBar!!) {
@@ -76,7 +77,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     }
 
     private fun initViewPager() {
-        val adapter = PatientDashboardPagerAdapter(supportFragmentManager, this, patientId, patientUuid.toString())
+        val adapter = PatientPagerAdapter(supportFragmentManager, this, patientId, patientUuid.toString())
         with(binding) {
             pager.offscreenPageLimit = adapter.count - 1
             pager.adapter = adapter
@@ -128,7 +129,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
     fun endActiveVisit(visitUuid: UUID) {
         lifecycleScope.launch {
-            viewModel.endActiveVisit(visitUuid).observe(this@PatientDashboardActivity) { visitEnded ->
+            viewModel.endActiveVisit(visitUuid).observe(this@PatientActivity) { visitEnded ->
                 if (visitEnded) {
                     startVitalsMeasurement()
                 }
@@ -155,7 +156,7 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
             startActivity(
-                Intent(this, VisitDashboardActivity::class.java)
+                Intent(this, VisitActivity::class.java)
                     .putExtra(ApplicationConstants.BundleKeys.VISIT_UUID, result.data?.getStringExtra(ApplicationConstants.BundleKeys.VISIT_UUID))
                     .putExtra(ApplicationConstants.BundleKeys.IS_NEW_VITALS, true)
             )

@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package edu.upc.openmrs.activities.visitdashboard
+package edu.upc.openmrs.activities.visit
 
 import android.content.Intent
 import android.graphics.PorterDuff
@@ -34,7 +34,7 @@ import edu.upc.blopup.model.BloodPressureType
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.model.Visit
 import edu.upc.blopup.ui.ResultUiState
-import edu.upc.databinding.FragmentVisitDashboardBinding
+import edu.upc.databinding.FragmentVisitBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
@@ -54,9 +54,9 @@ import java.util.UUID
 
 
 @AndroidEntryPoint
-class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), TreatmentListener {
-    private lateinit var binding: FragmentVisitDashboardBinding
-    private val viewModel: VisitDashboardViewModel by viewModels()
+class VisitFragment : edu.upc.openmrs.activities.BaseFragment(), TreatmentListener {
+    private lateinit var binding: FragmentVisitBinding
+    private val viewModel: VisitViewModel by viewModels()
     private val logger = OpenmrsAndroid.getOpenMRSLogger()
 
     private val visitUuid: UUID by lazy {
@@ -68,7 +68,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     companion object {
-        fun newInstance(visitUuid: String, isNewVitals: Boolean) = VisitDashboardFragment().apply {
+        fun newInstance(visitUuid: String, isNewVitals: Boolean) = VisitFragment().apply {
             arguments = bundleOf(
                 Pair(VISIT_UUID, visitUuid),
                 Pair(IS_NEW_VITALS, isNewVitals)
@@ -81,7 +81,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentVisitDashboardBinding.inflate(inflater, container, false)
+        binding = FragmentVisitBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
         setupPatientNameObserver()
@@ -219,7 +219,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                 this.setOnClickListener {
                     val intent = Intent(
                         requireContext(),
-                        TreatmentActivity::class.java
+                        AddEditTreatmentActivity::class.java
                     )
                     intent.putExtra(VISIT_UUID, visitUuid.toString())
                     requireContext().startActivity(intent)
@@ -350,7 +350,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
     }
 
     private fun setActionBarTitle(name: String) {
-        (activity as VisitDashboardActivity).supportActionBar!!.apply {
+        (activity as VisitActivity).supportActionBar!!.apply {
             elevation = 0f
             title = name
             setDisplayHomeAsUpEnabled(true)
@@ -381,7 +381,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
                     edu.upc.openmrs.activities.dialog.CustomFragmentDialog.OnClickAction.DISMISS
                 leftButtonText = getString(R.string.dialog_button_cancel)
             }.let {
-                (requireActivity() as VisitDashboardActivity)
+                (requireActivity() as VisitActivity)
                     .createAndShowDialog(it, ApplicationConstants.DialogTAG.END_VISIT_DIALOG_TAG)
             }
 
@@ -396,7 +396,7 @@ class VisitDashboardFragment : edu.upc.openmrs.activities.BaseFragment(), Treatm
 
     override fun onEditClicked(treatment: Treatment) {
         val bundle = bundleOf(TREATMENT to treatment)
-        val intent = Intent(requireContext(), TreatmentActivity::class.java)
+        val intent = Intent(requireContext(), AddEditTreatmentActivity::class.java)
         intent.putExtras(bundle)
         startActivity(intent)
     }

@@ -47,7 +47,7 @@ class ChartsViewViewModelTest {
     lateinit var treatmentRepository: TreatmentRepository
 
     @InjectMockKs
-    private lateinit var viewModel: ChartsViewViewModel
+    private lateinit var viewModel: BloodPressureChartViewModel
 
 
     @OptIn(ExperimentalCoroutinesApi::class)

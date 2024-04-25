@@ -20,18 +20,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import edu.upc.R
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardPagerAdapter.PatientDashboardTabs.CHARTS_TAB_POS
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardPagerAdapter.PatientDashboardTabs.DETAILS_TAB_POS
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardPagerAdapter.PatientDashboardTabs.TAB_COUNT
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardPagerAdapter.PatientDashboardTabs.VISITS_TAB_POS
-import edu.upc.openmrs.activities.patientdashboard.charts.PatientChartsFragment
+import edu.upc.openmrs.activities.patientdashboard.PatientPagerAdapter.PatientDashboardTabs.CHARTS_TAB_POS
+import edu.upc.openmrs.activities.patientdashboard.PatientPagerAdapter.PatientDashboardTabs.DETAILS_TAB_POS
+import edu.upc.openmrs.activities.patientdashboard.PatientPagerAdapter.PatientDashboardTabs.TAB_COUNT
+import edu.upc.openmrs.activities.patientdashboard.PatientPagerAdapter.PatientDashboardTabs.VISITS_TAB_POS
+import edu.upc.openmrs.activities.patientdashboard.charts.PatientChartsListFragment
 import edu.upc.openmrs.activities.patientdashboard.details.PatientDetailsFragment
 import edu.upc.openmrs.activities.patientdashboard.visits.PatientVisitsFragment
 
-class PatientDashboardPagerAdapter(private val fm: FragmentManager,
-                                   private val context: Context,
-                                   private val mPatientId: Long,
-                                   private val mPatientUuid: String
+class PatientPagerAdapter(private val fm: FragmentManager,
+                          private val context: Context,
+                          private val mPatientId: Long,
+                          private val mPatientUuid: String
 ) : FragmentPagerAdapter(fm) {
 
     private val registeredFragments = SparseArray<Fragment>()
@@ -40,7 +40,7 @@ class PatientDashboardPagerAdapter(private val fm: FragmentManager,
         return when (i) {
             DETAILS_TAB_POS -> PatientDetailsFragment.newInstance(mPatientId.toString(), mPatientUuid)
             VISITS_TAB_POS -> PatientVisitsFragment.newInstance(mPatientId, mPatientUuid)
-            CHARTS_TAB_POS -> PatientChartsFragment.newInstance(mPatientId.toString(), mPatientUuid)
+            CHARTS_TAB_POS -> PatientChartsListFragment.newInstance(mPatientId.toString(), mPatientUuid)
             else -> throw IllegalStateException()
         }
     }

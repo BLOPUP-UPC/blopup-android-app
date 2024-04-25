@@ -34,12 +34,12 @@ import java.util.List;
 
 import edu.upc.R;
 
-public class PatientChartsRecyclerViewAdapter extends RecyclerView.Adapter<PatientChartsRecyclerViewAdapter.ViewHolder> {
+public class PatientChartsListRecyclerViewAdapter extends RecyclerView.Adapter<PatientChartsListRecyclerViewAdapter.ViewHolder> {
     private final Context mContext;
     private List<String> mVitalNameList;
     private final OnClickListener listener;
 
-    public PatientChartsRecyclerViewAdapter(Context mContext, JSONObject mObservationList, OnClickListener listener) {
+    public PatientChartsListRecyclerViewAdapter(Context mContext, JSONObject mObservationList, OnClickListener listener) {
         this.mContext = mContext;
         this.listener = listener;
         Iterator<String> keys = mObservationList.keys();
@@ -48,13 +48,13 @@ public class PatientChartsRecyclerViewAdapter extends RecyclerView.Adapter<Patie
 
     @NonNull
     @Override
-    public PatientChartsRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PatientChartsListRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.list_vital_group, parent, false);
         return new ViewHolder(view, listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PatientChartsRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PatientChartsListRecyclerViewAdapter.ViewHolder holder, int position) {
         String vitalName = mVitalNameList.get(position);
         holder.vitalName.setText(vitalName);
         holder.vitalSelector.setOnClickListener(view -> listener.showChartActivity(vitalName));

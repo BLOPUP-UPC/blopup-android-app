@@ -14,7 +14,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class PatientDashboardMainViewModel @Inject constructor(
+class PatientViewModel @Inject constructor(
     private val visitRepository: VisitRepository,
     private val openMRSLogger: OpenMRSLogger
 ) : ViewModel() {

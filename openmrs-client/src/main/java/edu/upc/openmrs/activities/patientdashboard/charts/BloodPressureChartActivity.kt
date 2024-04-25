@@ -13,7 +13,7 @@ import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import edu.upc.R
 import edu.upc.blopup.ui.ResultUiState
-import edu.upc.databinding.ActivityChartsViewBinding
+import edu.upc.databinding.ActivityBloodPressureChartBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
@@ -25,9 +25,9 @@ import edu.upc.sdk.utilities.ToastUtil
 import java.time.LocalDate
 import java.util.UUID
 
-class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValueSelectedListener {
+class BloodPressureChartActivity : ACBaseActivity(), OnChartGestureListener, OnChartValueSelectedListener {
 
-    private val viewModel: ChartsViewViewModel by viewModels()
+    private val viewModel: BloodPressureChartViewModel by viewModels()
 
     private lateinit var bloodPressureChartView: LineChart
     private lateinit var treatmentsChartView: LineChart
@@ -48,7 +48,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val mBinding = ActivityChartsViewBinding.inflate(layoutInflater)
+        val mBinding = ActivityBloodPressureChartBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
         setToolbar()
@@ -57,7 +57,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         viewModel.fetchVisitsWithTreatments(patientLocalDbId, UUID.fromString(patientUuid))
     }
 
-    private fun setUpObservers(mBinding: ActivityChartsViewBinding) {
+    private fun setUpObservers(mBinding: ActivityBloodPressureChartBinding) {
         viewModel.visitsWithTreatments.observe(this) { visitsWithTreatments ->
             when (visitsWithTreatments) {
                 is ResultUiState.Loading -> {
@@ -88,7 +88,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         }
     }
 
-    private fun showVisitsChart(mBinding: ActivityChartsViewBinding, visits: List<VisitWithAdherence>) {
+    private fun showVisitsChart(mBinding: ActivityBloodPressureChartBinding, visits: List<VisitWithAdherence>) {
         bloodPressureChartView = mBinding.bloodPressureChart
         treatmentsChartView = mBinding.treatmentsChart
         bloodPressureChartPainter = BloodPressureChart(this)
@@ -109,7 +109,7 @@ class ChartsViewActivity : ACBaseActivity(), OnChartGestureListener, OnChartValu
         bloodPressureChartPainter.setListeners(treatmentsChartView, this, this)
     }
 
-    private fun showTreatmentsChartAndSidebar(mBinding: ActivityChartsViewBinding, visits: List<VisitWithAdherence>) {
+    private fun showTreatmentsChartAndSidebar(mBinding: ActivityBloodPressureChartBinding, visits: List<VisitWithAdherence>) {
         expandableSidebarListView = mBinding.expandableListView
 
         val visitsWithAnyTreatment = visits.filter { it.adherence.isNotEmpty() }

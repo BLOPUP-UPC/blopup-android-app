@@ -3,7 +3,7 @@ package edu.upc.openmrs.test.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import edu.upc.blopup.model.Treatment
-import edu.upc.openmrs.activities.patientdashboard.details.PatientDashboardDetailsViewModel
+import edu.upc.openmrs.activities.patientdashboard.details.PatientDetailsViewModel
 import edu.upc.sdk.library.OpenMRSLogger
 import edu.upc.sdk.library.api.repository.PatientRepositoryCoroutines
 import edu.upc.sdk.library.api.repository.TreatmentRepository
@@ -48,7 +48,7 @@ class PatientDashboardDetailsViewModelTest {
 
     private lateinit var savedStateHandle: SavedStateHandle
 
-    private lateinit var viewModel: PatientDashboardDetailsViewModel
+    private lateinit var viewModel: PatientDetailsViewModel
 
     @MockK
     private lateinit var treatmentRepository: TreatmentRepository
@@ -66,7 +66,7 @@ class PatientDashboardDetailsViewModelTest {
             set(PATIENT_ID_BUNDLE, PATIENT_ID)
             set(PATIENT_UUID_BUNDLE, patientUuid.toString())
         }
-        viewModel = PatientDashboardDetailsViewModel(patientDAO, treatmentRepository, patientRepositoryCoroutines, logger, savedStateHandle)
+        viewModel = PatientDetailsViewModel(patientDAO, treatmentRepository, patientRepositoryCoroutines, logger, savedStateHandle)
         patient = Patient().apply {
             id = PATIENT_ID.toLong()
             uuid = patientUuid.toString()

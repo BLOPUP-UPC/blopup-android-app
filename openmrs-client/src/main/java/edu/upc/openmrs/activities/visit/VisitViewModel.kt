@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.visitdashboard
+package edu.upc.openmrs.activities.visit
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -24,7 +24,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class VisitDashboardViewModel @Inject constructor(
+class VisitViewModel @Inject constructor(
     private val patientDAO: PatientDAO,
     private val visitRepository: VisitRepository,
     private val treatmentRepository: TreatmentRepository,

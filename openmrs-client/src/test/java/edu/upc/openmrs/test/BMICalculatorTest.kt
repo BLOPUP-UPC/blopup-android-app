@@ -1,7 +1,7 @@
 package edu.upc.openmrs.test
 
 import edu.upc.blopup.model.VisitExample
-import edu.upc.openmrs.activities.visitdashboard.BMICalculator
+import edu.upc.openmrs.activities.visit.BMICalculator
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

@@ -27,8 +27,8 @@ import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
 import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
-import edu.upc.openmrs.activities.visitdashboard.TreatmentRecyclerViewAdapter
+import edu.upc.openmrs.activities.patientdashboard.PatientActivity
+import edu.upc.openmrs.activities.visit.TreatmentRecyclerViewAdapter
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.library.models.OperationType.PatientFetching
@@ -49,7 +49,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
     private lateinit var treatmentAdapter: TreatmentRecyclerViewAdapter
 
-    private val viewModel: PatientDashboardDetailsViewModel by viewModels()
+    private val viewModel: PatientDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -177,7 +177,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun setMenuTitle(nameString: String, identifier: String?) {
-        (activity as PatientDashboardActivity).supportActionBar?.apply {
+        (activity as PatientActivity).supportActionBar?.apply {
             title = nameString
             subtitle = "#$identifier"
         }

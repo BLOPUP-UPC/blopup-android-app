@@ -21,7 +21,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/callToDoctorBanner"
-        android:name="edu.upc.openmrs.activities.visitdashboard.CallDoctorBanner"
+        android:name="edu.upc.openmrs.activities.visit.CallDoctorBanner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"

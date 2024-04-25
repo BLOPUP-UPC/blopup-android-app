@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.visitdashboard
+package edu.upc.openmrs.activities.visit
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import edu.upc.blopup.model.Doctor
@@ -21,7 +21,7 @@ class TreatmentViewModelTest {
 
     private lateinit var mockTreatmentRepo: TreatmentRepository
     private lateinit var mockDoctorRepo: DoctorRepository
-    private lateinit var treatmentViewModel: TreatmentViewModel
+    private lateinit var addEditTreatmentViewModel: AddEditTreatmentViewModel
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -30,18 +30,18 @@ class TreatmentViewModelTest {
     fun setUp() {
         mockTreatmentRepo = mockk()
         mockDoctorRepo = mockk()
-        treatmentViewModel = TreatmentViewModel(mockTreatmentRepo, mockDoctorRepo)
+        addEditTreatmentViewModel = AddEditTreatmentViewModel(mockTreatmentRepo, mockDoctorRepo)
     }
 
     @Test
     fun `should register treatment`() {
         val treatment = TreatmentExample.activeTreatment()
-        treatmentViewModel.treatment.value = treatment
+        addEditTreatmentViewModel.treatment.value = treatment
 
         coEvery { mockTreatmentRepo.saveTreatment(treatment) } returns Unit
 
         runBlocking {
-            treatmentViewModel.registerTreatment()
+            addEditTreatmentViewModel.registerTreatment()
             coVerify { mockTreatmentRepo.saveTreatment(treatment) }
         }
     }
@@ -53,12 +53,12 @@ class TreatmentViewModelTest {
 
         runBlocking {
             runCatching {
-                treatmentViewModel.registerTreatment()
+                addEditTreatmentViewModel.registerTreatment()
             }
 
             assertEquals(
                 exception,
-                treatmentViewModel.result.value?.let { (it as Result.Error).throwable }
+                addEditTreatmentViewModel.result.value?.let { (it as Result.Error).throwable }
             )
         }
     }
@@ -66,26 +66,26 @@ class TreatmentViewModelTest {
     @Test
     fun `should update a treatment with the changes introduced by the user`() {
         val treatmentToEdit = TreatmentExample.inactiveTreatment()
-        treatmentViewModel.treatmentToEdit.value = treatmentToEdit
+        addEditTreatmentViewModel.treatmentToEdit.value = treatmentToEdit
 
         val treatment = TreatmentExample.activeTreatment()
-        treatmentViewModel.treatment.value = treatment
+        addEditTreatmentViewModel.treatment.value = treatment
 
         coEvery {
             treatment.treatmentUuid?.let {
                 mockTreatmentRepo.updateTreatment(
-                    treatmentViewModel.treatmentToEdit.value!!, treatmentViewModel.treatment.value!!
+                    addEditTreatmentViewModel.treatmentToEdit.value!!, addEditTreatmentViewModel.treatment.value!!
                 )
             }
         } returns kotlin.Result.success(true)
 
         runBlocking {
-            treatmentViewModel.updateTreatment()
+            addEditTreatmentViewModel.updateTreatment()
             coVerify {
                 treatment.treatmentUuid?.let {
                     mockTreatmentRepo.updateTreatment(
-                        treatmentViewModel.treatmentToEdit.value!!,
-                        treatmentViewModel.treatment.value!!
+                        addEditTreatmentViewModel.treatmentToEdit.value!!,
+                        addEditTreatmentViewModel.treatment.value!!
                     )
                 }
             }
@@ -102,12 +102,12 @@ class TreatmentViewModelTest {
 
         runBlocking {
             runCatching {
-                treatmentViewModel.updateTreatment()
+                addEditTreatmentViewModel.updateTreatment()
             }
 
             assertEquals(
                 exceptionMessage,
-                treatmentViewModel.result.value?.let { (it as Result.Error).throwable.message }
+                addEditTreatmentViewModel.result.value?.let { (it as Result.Error).throwable.message }
             )
         }
     }
@@ -124,8 +124,8 @@ class TreatmentViewModelTest {
         coEvery { mockDoctorRepo.getAllDoctors() } returns Result.Success(doctors)
 
         runBlocking {
-                treatmentViewModel.getAllDoctors()
+                addEditTreatmentViewModel.getAllDoctors()
         }
-        assertEquals(doctors, treatmentViewModel.doctors.value)
+        assertEquals(doctors, addEditTreatmentViewModel.doctors.value)
     }
 }

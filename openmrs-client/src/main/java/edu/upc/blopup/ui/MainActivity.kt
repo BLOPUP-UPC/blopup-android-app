@@ -37,7 +37,7 @@ import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity
+import edu.upc.openmrs.activities.patientdashboard.PatientActivity
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ToastUtil
@@ -106,7 +106,7 @@ class MainActivity : ACBaseActivity() {
                                     startActivity(
                                         Intent(
                                             this@MainActivity,
-                                            PatientDashboardActivity::class.java
+                                            PatientActivity::class.java
                                         ).apply {
                                             putExtra(
                                                 ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,
@@ -173,7 +173,7 @@ class MainActivity : ACBaseActivity() {
                                     startActivity(
                                         Intent(
                                             this@MainActivity,
-                                            PatientDashboardActivity::class.java
+                                            PatientActivity::class.java
                                         ).apply {
                                             putExtra(
                                                 ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE,

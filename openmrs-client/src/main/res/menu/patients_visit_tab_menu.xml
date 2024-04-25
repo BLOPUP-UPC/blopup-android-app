@@ -14,6 +14,6 @@
 
 <menu
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity">
+    tools:context="edu.upc.openmrs.activities.patientdashboard.PatientActivity">
 
 </menu>

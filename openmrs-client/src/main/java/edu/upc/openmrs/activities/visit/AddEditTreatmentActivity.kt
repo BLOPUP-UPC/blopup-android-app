@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.visitdashboard
+package edu.upc.openmrs.activities.visit
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -20,12 +20,12 @@ import edu.upc.blopup.model.MedicationType
 import edu.upc.blopup.model.Treatment
 import edu.upc.blopup.model.Treatment.Companion.RECOMMENDED_BY_BLOPUP
 import edu.upc.blopup.model.Treatment.Companion.RECOMMENDED_BY_OTHER
-import edu.upc.databinding.TreatmentFormBinding
+import edu.upc.databinding.ActivityAddEditTreatmentBinding
 import edu.upc.openmrs.activities.ACBaseActivity
 import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
-import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.MEDICATION_NAME
-import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.MEDICATION_TYPE
-import edu.upc.openmrs.activities.visitdashboard.TreatmentViewModel.Companion.RECOMMENDED_BY
+import edu.upc.openmrs.activities.visit.AddEditTreatmentViewModel.Companion.MEDICATION_NAME
+import edu.upc.openmrs.activities.visit.AddEditTreatmentViewModel.Companion.MEDICATION_TYPE
+import edu.upc.openmrs.activities.visit.AddEditTreatmentViewModel.Companion.RECOMMENDED_BY
 import edu.upc.openmrs.bundle.CustomDialogBundle
 import edu.upc.sdk.library.models.OperationType
 import edu.upc.sdk.library.models.Result
@@ -36,10 +36,10 @@ import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
 @AndroidEntryPoint
-class TreatmentActivity : ACBaseActivity() {
+class AddEditTreatmentActivity : ACBaseActivity() {
 
-    private lateinit var mBinding: TreatmentFormBinding
-    private val viewModel: TreatmentViewModel by viewModels()
+    private lateinit var mBinding: ActivityAddEditTreatmentBinding
+    private val viewModel: AddEditTreatmentViewModel by viewModels()
 
     private lateinit var treatmentToEdit: Treatment
 
@@ -47,7 +47,7 @@ class TreatmentActivity : ACBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = TreatmentFormBinding.inflate(layoutInflater)
+        mBinding = ActivityAddEditTreatmentBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
         intent.extras?.let { viewModel.treatment.value?.visitUuid = it.getString(VISIT_UUID) }
@@ -289,7 +289,7 @@ class TreatmentActivity : ACBaseActivity() {
             }
 
             with(viewModel.result) {
-                this.observe(this@TreatmentActivity) {
+                this.observe(this@AddEditTreatmentActivity) {
                     handleTreatmentResult(it)
                 }
             }

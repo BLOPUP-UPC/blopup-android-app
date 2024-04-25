@@ -21,7 +21,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import edu.upc.databinding.FragmentPatientChartsBinding
+import edu.upc.databinding.FragmentPatientChartsListBinding
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -30,18 +30,18 @@ import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
 import org.json.JSONObject
 
 @AndroidEntryPoint
-class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), PatientChartsRecyclerViewAdapter.OnClickListener {
-    private lateinit var binding: FragmentPatientChartsBinding
+class PatientChartsListFragment : edu.upc.openmrs.activities.BaseFragment(), PatientChartsListRecyclerViewAdapter.OnClickListener {
+    private lateinit var binding: FragmentPatientChartsListBinding
 
     private val patientId: Int by lazy {
         requireArguments().getString(PATIENT_ID_BUNDLE)!!.toInt()
     }
-    private val patientUuud: String by lazy {
+    private val patientUuid: String by lazy {
         requireArguments().getString(PATIENT_UUID_BUNDLE)!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentPatientChartsBinding.inflate(inflater, container, false)
+        binding = FragmentPatientChartsListBinding.inflate(inflater, container, false)
 
 
         setupAdapter()
@@ -55,10 +55,10 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter =
-                PatientChartsRecyclerViewAdapter(
+                PatientChartsListRecyclerViewAdapter(
                     activity,
                     JSONObject(),
-                    this@PatientChartsFragment
+                    this@PatientChartsListFragment
                 )
         }
     }
@@ -67,18 +67,18 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
         with(binding) {
             vitalEmpty.makeGone()
             vitalList.makeVisible()
-            (vitalList.adapter as PatientChartsRecyclerViewAdapter).updateList()
+            (vitalList.adapter as PatientChartsListRecyclerViewAdapter).updateList()
         }
     }
 
     override fun showChartActivity(vitalName: String) {
         Intent(
             activity,
-            ChartsViewActivity::class.java
+            BloodPressureChartActivity::class.java
         ).apply {
             val bundle = Bundle().apply {
                 putInt(PATIENT_ID_BUNDLE, patientId)
-                putString(PATIENT_UUID_BUNDLE, patientUuud)
+                putString(PATIENT_UUID_BUNDLE, patientUuid)
             }
             putExtra(ApplicationConstants.BUNDLE, bundle)
             startActivity(this)
@@ -86,8 +86,8 @@ class PatientChartsFragment : edu.upc.openmrs.activities.BaseFragment(), Patient
     }
 
     companion object {
-        fun newInstance(patientId: String, patientUuid: String): PatientChartsFragment {
-            val fragment = PatientChartsFragment()
+        fun newInstance(patientId: String, patientUuid: String): PatientChartsListFragment {
+            val fragment = PatientChartsListFragment()
             fragment.arguments = bundleOf(
                 Pair(PATIENT_ID_BUNDLE, patientId),
                 Pair(PATIENT_UUID_BUNDLE, patientUuid)

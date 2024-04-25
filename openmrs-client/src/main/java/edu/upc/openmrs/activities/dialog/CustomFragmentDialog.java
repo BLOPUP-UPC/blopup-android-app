@@ -63,8 +63,8 @@ import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment;
 import edu.upc.openmrs.activities.addeditpatient.SimilarPatientsRecyclerViewAdapter;
 import edu.upc.openmrs.activities.login.LoginActivity;
 import edu.upc.openmrs.activities.login.LoginFragment;
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
-import edu.upc.openmrs.activities.visitdashboard.VisitDashboardFragment;
+import edu.upc.openmrs.activities.patientdashboard.PatientActivity;
+import edu.upc.openmrs.activities.visit.VisitFragment;
 import edu.upc.openmrs.application.OpenMRS;
 import edu.upc.openmrs.bundle.CustomDialogBundle;
 import edu.upc.sdk.library.OpenmrsAndroid;
@@ -407,7 +407,7 @@ public class CustomFragmentDialog extends DialogFragment {
                     dismiss();
                     break;
                 case END_VISIT:
-                    ((VisitDashboardFragment) getParentFragmentManager()
+                    ((VisitFragment) getParentFragmentManager()
                             .findFragmentById(R.id.visitDashboardContentFrame))
                             .endVisit();
                     dismiss();
@@ -449,8 +449,8 @@ public class CustomFragmentDialog extends DialogFragment {
 
     private void endActiveVisit(UUID visitUuid) {
         Activity activity = getActivity();
-        if (activity instanceof PatientDashboardActivity) {
-            PatientDashboardActivity pda = ((PatientDashboardActivity) activity);
+        if (activity instanceof PatientActivity) {
+            PatientActivity pda = ((PatientActivity) activity);
             pda.endActiveVisit(visitUuid);
         }
     }

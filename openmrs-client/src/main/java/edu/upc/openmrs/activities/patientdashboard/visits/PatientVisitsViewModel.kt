@@ -11,7 +11,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class PatientDashboardVisitsViewModel @Inject constructor(
+class PatientVisitsViewModel @Inject constructor(
     private val visitRepository: VisitRepository
 ) : BaseViewModel<List<Visit>>() {
 

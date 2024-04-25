@@ -32,7 +32,7 @@ import com.google.common.base.Objects;
 import java.util.List;
 
 import edu.upc.R;
-import edu.upc.openmrs.activities.patientdashboard.PatientDashboardActivity;
+import edu.upc.openmrs.activities.patientdashboard.PatientActivity;
 import edu.upc.sdk.library.dao.PatientDAO;
 import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.utilities.ApplicationConstants;
@@ -69,7 +69,7 @@ public class SimilarPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Sim
             if (!(new PatientDAO().isUserAlreadySaved(patient.getUuid()))) {
                 downloadPatient(patient);
             }
-            Intent intent = new Intent(mContext, PatientDashboardActivity.class);
+            Intent intent = new Intent(mContext, PatientActivity.class);
             intent.putExtra(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE, Long.valueOf(getPatientId(patient)));
             mContext.startActivity(intent);
             mContext.finish();

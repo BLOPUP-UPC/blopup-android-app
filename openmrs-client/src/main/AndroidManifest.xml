@@ -60,7 +60,7 @@
             android:name="buildVersion"
             android:value="0" />
         <activity
-            android:name=".openmrs.activities.visitdashboard.TreatmentActivity"
+            android:name=".openmrs.activities.visit.AddEditTreatmentActivity"
             android:label="TreatmentActivity"
             android:theme="@style/AppTheme">
         </activity>
@@ -78,14 +78,14 @@
             android:parentActivityName=".blopup.ui.MainActivity">
         </activity>
         <activity
-            android:name=".openmrs.activities.patientdashboard.PatientDashboardActivity"
+            android:name=".openmrs.activities.patientdashboard.PatientActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
             android:parentActivityName=".blopup.ui.MainActivity"
             android:theme="@style/AppThemeOrig">
         </activity>
         <activity
-            android:name=".openmrs.activities.visitdashboard.VisitDashboardActivity"
+            android:name=".openmrs.activities.visit.VisitActivity"
             android:label="@string/visit_dashboard_label"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeOrig" />
@@ -111,9 +111,9 @@
         </service>
 
         <activity
-            android:name=".openmrs.activities.patientdashboard.charts.ChartsViewActivity"
+            android:name=".openmrs.activities.patientdashboard.charts.BloodPressureChartActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:parentActivityName=".openmrs.activities.patientdashboard.PatientDashboardActivity"
+            android:parentActivityName=".openmrs.activities.patientdashboard.PatientActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <meta-data
