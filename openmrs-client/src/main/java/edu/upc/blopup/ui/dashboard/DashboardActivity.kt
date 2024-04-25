@@ -1,15 +1,12 @@
 package edu.upc.blopup.ui.dashboard
 
 import android.Manifest
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
@@ -202,32 +199,7 @@ class DashboardActivity : ACBaseActivity() {
                                 val intent = Intent(Intent.ACTION_VIEW)
                                 intent.data = Uri.parse(getString(R.string.url_privacy_policy))
                                 startActivity(intent)
-                            }, { getBuildVersionInfo(this@DashboardActivity) },
-                                {
-                                    val appMarketUri: Uri =
-                                        Uri.parse("market://details?id=${ApplicationConstants.PACKAGE_NAME}")
-                                    val appLinkUri: Uri =
-                                        Uri.parse("http://play.google.com/store/apps/details?id=${ApplicationConstants.PACKAGE_NAME}")
-                                    val intent = Intent(Intent.ACTION_VIEW, appMarketUri)
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        intent.addFlags(
-                                            Intent.FLAG_ACTIVITY_NO_HISTORY or
-                                                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
-                                                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-                                        )
-                                    }
-                                    try {
-                                        startActivity(intent)
-                                    } catch (e: ActivityNotFoundException) {
-                                        startActivity(
-                                            Intent(
-                                                Intent.ACTION_VIEW,
-                                                appLinkUri
-                                            )
-                                        )
-                                    }
-                                }
-
+                            }
                             )
                         }
                     }
@@ -279,23 +251,5 @@ private fun getTextInLanguageSelected(
         Configuration(context.resources.configuration).apply { setLocale(requestedLocale) }
 
     return context.createConfigurationContext(config).getText(resourceId).toString()
-}
-
-private fun getBuildVersionInfo(context: Context): String {
-    var versionName = ""
-    var buildVersion = 0
-    val packageManager = context.packageManager
-    val packageName = context.packageName
-    try {
-        versionName = packageManager.getPackageInfo(packageName, 0).versionName
-        val ai = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-        buildVersion = ai.metaData.getInt("buildVersion")
-    } catch (e: PackageManager.NameNotFoundException) {
-        Log.e("Failed to load meta-data", "NameNotFound: ${e.message}")
-    } catch (e: NullPointerException) {
-        Log.e("Failed to load meta-data", "NullPointer: ${e.message}")
-    }
-
-    return versionName + context.getString(R.string.frag_settings_build) + buildVersion
 }
 

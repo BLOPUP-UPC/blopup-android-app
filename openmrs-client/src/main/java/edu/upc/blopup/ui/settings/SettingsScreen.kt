@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -29,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,16 +43,15 @@ import edu.upc.sdk.utilities.ApplicationConstants.OpenMRSlanguage.LANGUAGE_LIST
 @Composable
 fun SettingsScreen(
     onOpenPrivacyPolicy: () -> Unit,
-    getAppBuildVersion: () -> String,
-    onOpenRateUs: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     SettingsPage(
         viewModel.languageListPosition,
         { viewModel.languageListPosition = it },
-        getAppBuildVersion,
         onOpenPrivacyPolicy,
-        onOpenRateUs
+        viewModel.getBuildVersionInfo(context)
     )
 }
 
@@ -60,9 +59,8 @@ fun SettingsScreen(
 fun SettingsPage(
     languageListPosition: Int,
     setLanguageListPosition: (Int) -> Unit,
-    getAppBuildVersion: () -> String,
     onOpenPrivacyPolicy: () -> Unit,
-    onOpenRateUs: () -> Unit
+    buildAppString: String,
 ) {
     Column(
         Modifier
@@ -77,28 +75,14 @@ fun SettingsPage(
             color = Color.LightGray
         )
 
-        BlopupAppVersion(getAppBuildVersion)
+        BlopupAppVersion(buildAppString)
 
-        RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy, onOpenRateUs)
+        PrivacyPolicySection(onOpenPrivacyPolicy)
     }
 }
 
 @Composable
-fun RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy: () -> Unit, onOpenRateUs: () -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 20.dp)) {
-        Icon(
-            imageVector = Icons.Filled.Favorite,
-            contentDescription = "heart icon",
-            tint = Color.DarkGray
-        )
-        Text(
-            text = stringResource(R.string.rate_us_string),
-            fontSize = 16.sp,
-            modifier = Modifier
-                .padding(horizontal = 15.dp)
-                .clickable { onOpenRateUs() }
-        )
-    }
+fun PrivacyPolicySection(onOpenPrivacyPolicy: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 20.dp)) {
         Image(
             painter = painterResource(R.drawable.ic_security_black_24dp),
@@ -115,16 +99,20 @@ fun RateUsAndPrivacyPolicySection(onOpenPrivacyPolicy: () -> Unit, onOpenRateUs:
 }
 
 @Composable
-fun BlopupAppVersion(getAppBuildVersion: () -> String) {
+fun BlopupAppVersion(buildAppVersion: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(painter = painterResource(R.drawable.logo_blopup), contentDescription = "BlopUp Logo", Modifier.size(60.dp))
+        Image(
+            painter = painterResource(R.drawable.logo_blopup),
+            contentDescription = "BlopUp Logo",
+            Modifier.size(60.dp)
+        )
         Column(Modifier.padding(horizontal = 10.dp)) {
             Text(
                 text = stringResource(R.string.app_name),
                 fontSize = 18.sp,
             )
             Text(
-                text = getAppBuildVersion(),
+                text = buildAppVersion,
                 fontSize = 16.sp,
                 color = Color.Gray
             )
@@ -202,5 +190,5 @@ fun ShowLanguagesOptions(
 @Preview
 @Composable
 fun PreviewSettingsScreen() {
-    SettingsPage(1, {}, { "1.0.0" }, {}, {})
+    SettingsPage(1, {}, {}, "1.0.0")
 }
