@@ -15,6 +15,7 @@ package edu.upc.openmrs.activities.patientdashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -61,6 +62,17 @@ class PatientDashboardActivity : edu.upc.openmrs.activities.ACBaseActivity() {
 
         initViewPager()
         setupActionFABs()
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun initViewPager() {

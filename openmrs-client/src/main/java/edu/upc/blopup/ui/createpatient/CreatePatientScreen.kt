@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,15 +87,15 @@ fun CreatePatientForm(
     getTextInLanguageSelected: (String, Int) -> String,
 ) {
 
-    var name by remember { mutableStateOf("") }
-    var familyName by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("") }
-    var dateOfBirth by remember { mutableStateOf("") }
-    var estimatedYears by remember { mutableStateOf("") }
-    var countryOfBirth by remember { mutableStateOf("") }
-    var legalConsentFile by remember { mutableStateOf("") }
+    var name by rememberSaveable { mutableStateOf("") }
+    var familyName by rememberSaveable { mutableStateOf("") }
+    var gender by rememberSaveable { mutableStateOf("") }
+    var dateOfBirth by rememberSaveable { mutableStateOf("") }
+    var estimatedYears by rememberSaveable { mutableStateOf("") }
+    var countryOfBirth by rememberSaveable { mutableStateOf("") }
+    var legalConsentFile by rememberSaveable { mutableStateOf("") }
 
-    var isSubmitEnabled by remember { mutableStateOf(false) }
+    var isSubmitEnabled by rememberSaveable { mutableStateOf(false) }
 
     isSubmitEnabled = checkAllFieldsFilled(name, familyName, gender, dateOfBirth, estimatedYears, countryOfBirth, legalConsentFile)
 

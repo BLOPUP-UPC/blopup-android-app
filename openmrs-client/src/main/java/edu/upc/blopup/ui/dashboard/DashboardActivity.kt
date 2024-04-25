@@ -159,12 +159,13 @@ class DashboardActivity : ACBaseActivity() {
                                 },
                                 navArgument(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE) {
                                     type = NavType.StringType
-                                },
-                            )
+                                }
+                            ),
                         ) {
                             isCreatePatientWithSomeInput = false
                             isSearchPatientScreen = false
                             showBackButtonInMenu = true
+                            if(navigationController.currentBackStackEntry?.destination?.route == Routes.PatientDashboardScreen.id) navigationController.popBackStack()
                             PatientDashboardScreen(
                                 { patientId, patientUuid ->
                                     startActivity(
@@ -185,7 +186,7 @@ class DashboardActivity : ACBaseActivity() {
                                 it.arguments?.getLong(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE)
                                     ?: 0,
                                 it.arguments?.getString(ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE)
-                                    ?: ""
+                                    ?: "",
                             )
                         }
                         composable(Routes.SettingsScreen.id) {
@@ -225,12 +226,13 @@ class DashboardActivity : ACBaseActivity() {
 fun PatientDashboardScreen(
     startPatientDashboardActivity: (patientId: Long, patientUuid: String) -> Unit,
     patientId: Long,
-    patientUuid: String
+    patientUuid: String,
 ) {
-    Text("Patient $patientId $patientUuid")
+    Text(text = "PatientDashboardScreen")
     LaunchedEffect(true) {
         startPatientDashboardActivity(patientId, patientUuid)
     }
+
 }
 
 private fun getTextInLanguageSelected(
