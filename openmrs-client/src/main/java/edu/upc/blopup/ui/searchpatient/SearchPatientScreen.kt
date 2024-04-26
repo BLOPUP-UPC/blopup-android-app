@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -99,7 +100,7 @@ fun SyncedPatients(
             is ResultUiState.Error -> {
                 Text(
                     text = stringResource(R.string.operation_error),
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(16.dp).testTag("error_message"),
                     color = colorResource(R.color.allergy_orange)
                 )
             }
