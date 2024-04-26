@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.blopup.RecordingHelper
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.models.LegalConsent
 import edu.upc.sdk.utilities.ApplicationConstants
@@ -35,7 +36,7 @@ class CreatePatientViewModel @Inject constructor(
         dateOfBirth: String,
         estimatedYears: String,
         gender: String,
-        countryOfBirth: String,
+        countryOfBirth: Country,
         legalConsentFileName: String
     ) {
         _createPatientUiState.value = CreatePatientResultUiState.Loading

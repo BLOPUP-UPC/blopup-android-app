@@ -77,7 +77,7 @@ fun CreatePatientScreen(
 @Composable
 fun CreatePatientForm(
     isNameOrSurnameInvalidFormat: (String) -> Boolean,
-    createPatient: (String, String, String, String, String, String, String) -> Unit,
+    createPatient: (String, String, String, String, String, Country, String) -> Unit,
     createPatientUiState: CreatePatientResultUiState,
     navigateToPatientDashboard: (Long, String) -> Unit,
     isBirthDateValidRange: (String) -> Boolean,
@@ -92,7 +92,7 @@ fun CreatePatientForm(
     var gender by rememberSaveable { mutableStateOf("") }
     var dateOfBirth by rememberSaveable { mutableStateOf("") }
     var estimatedYears by rememberSaveable { mutableStateOf("") }
-    var countryOfBirth by rememberSaveable { mutableStateOf("") }
+    var countryOfBirth: Country? by rememberSaveable { mutableStateOf(null) }
     var legalConsentFile by rememberSaveable { mutableStateOf("") }
 
     var isSubmitEnabled by rememberSaveable { mutableStateOf(false) }
@@ -150,7 +150,7 @@ fun CreatePatientForm(
                                 dateOfBirth,
                                 estimatedYears,
                                 gender,
-                                countryOfBirth,
+                                countryOfBirth!!,
                                 legalConsentFile
                             )
                         },
@@ -168,7 +168,7 @@ fun CreatePatientForm(
                                 dateOfBirth,
                                 estimatedYears,
                                 gender,
-                                countryOfBirth,
+                                countryOfBirth!!,
                                 legalConsentFile
                             )
                         },
@@ -252,23 +252,24 @@ fun GenderSection(gender: String, setGender: (String) -> Unit) {
 
 @Composable
 fun CountryOfBirthSection(
-    countryOfBirth: String,
-    setCountryOfBirth: (String) -> Unit,
+    countryOfBirth: Country?,
+    setCountryOfBirth: (Country) -> Unit,
     getCountryLabel: (Country) -> String
 ) {
     var showCountryOfBirthDialog by remember { mutableStateOf(false) }
+    val countryText = if (countryOfBirth == null) "" else getCountryLabel(countryOfBirth)
 
     Column(Modifier.padding(vertical = 15.dp)) {
         StructureLabelText(R.string.country_of_birth_label)
 
-        CountryOfBirthField(countryOfBirth) { showCountryOfBirthDialog = true }
+        CountryOfBirthField(countryText) { showCountryOfBirthDialog = true }
 
         if (showCountryOfBirthDialog) {
             CountryOfBirthDialog(
                 onCloseDialog = { showCountryOfBirthDialog = false },
-                onCountrySelected = { selectedCountry ->
-                    setCountryOfBirth(getCountryLabel(selectedCountry))
-                }, getCountryLabel)
+                onCountrySelected = setCountryOfBirth,
+                getCountryLabel = getCountryLabel
+            )
         }
     }
 }
@@ -336,15 +337,15 @@ fun CreatePatientLoadingPreview() {
     ) { _, _ -> "" }
 }
 
-private fun checkAllFieldsFilled(name: String, familyName: String, gender: String, dateOfBirth: String, estimatedYears: String, countryOfBirth: String, legalConsentFile: String): Boolean {
+private fun checkAllFieldsFilled(name: String, familyName: String, gender: String, dateOfBirth: String, estimatedYears: String, countryOfBirth: Country?, legalConsentFile: String): Boolean {
     return name.isNotBlank() &&
             familyName.isNotBlank() &&
             gender.isNotBlank() &&
             (dateOfBirth.isNotBlank() || estimatedYears.isNotBlank()) &&
-            countryOfBirth.isNotBlank() &&
+            countryOfBirth != null &&
             legalConsentFile.isNotBlank()
 }
 
-private fun isFormWithSomeInput (name: String, familyName: String, dateOfBirth: String, estimatedYears: String, countryOfBirth: String, legalConsentFile: String) : Boolean {
-    return name.isNotEmpty() || familyName.isNotEmpty() || dateOfBirth.isNotEmpty() || estimatedYears.isNotEmpty() || countryOfBirth.isNotEmpty() || legalConsentFile.isNotEmpty()
+private fun isFormWithSomeInput (name: String, familyName: String, dateOfBirth: String, estimatedYears: String, countryOfBirth: Country?, legalConsentFile: String) : Boolean {
+    return name.isNotEmpty() || familyName.isNotEmpty() || dateOfBirth.isNotEmpty() || estimatedYears.isNotEmpty() || countryOfBirth != null || legalConsentFile.isNotEmpty()
 }

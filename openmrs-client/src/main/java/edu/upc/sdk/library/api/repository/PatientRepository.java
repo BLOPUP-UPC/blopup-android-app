@@ -23,6 +23,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country;
 import edu.upc.sdk.library.OpenmrsAndroid;
 import edu.upc.sdk.library.api.RestApi;
 import edu.upc.sdk.library.api.RestServiceBuilder;
@@ -110,7 +111,7 @@ public class PatientRepository {
         });
     }
 
-    public Observable<Patient> registerPatient(String name, String familyName, LocalDate dateOfBirth, Boolean isBirthdateEstimated, String gender, String countryOfBirth) {
+    public Observable<Patient> registerPatient(String name, String familyName, LocalDate dateOfBirth, Boolean isBirthdateEstimated, String gender, Country countryOfBirth) {
 
         PersonName personName = new PersonName();
         personName.setGivenName(name);
@@ -133,7 +134,7 @@ public class PatientRepository {
 
         PersonAttribute personAttribute = new PersonAttribute();
         personAttribute.setAttributeType(personAttributeType);
-        personAttribute.setValue(countryOfBirth);
+        personAttribute.setValue(countryOfBirth.name());
 
         ArrayList<PersonAttribute> attributes = new ArrayList<>();
         attributes.add(personAttribute);
