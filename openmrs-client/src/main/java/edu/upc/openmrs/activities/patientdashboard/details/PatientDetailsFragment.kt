@@ -25,8 +25,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientDetailsBinding
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity
-import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
+import edu.upc.openmrs.activities.editpatient.EditPatientActivity
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.patientdashboard.PatientActivity
 import edu.upc.openmrs.activities.visit.TreatmentRecyclerViewAdapter
 import edu.upc.openmrs.utilities.makeGone
@@ -171,7 +171,7 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
     }
 
     private fun startPatientUpdateActivity(patientId: Long?) {
-        val intent = Intent(requireContext(), AddEditPatientActivity::class.java)
+        val intent = Intent(requireContext(), EditPatientActivity::class.java)
             .putExtra(PATIENT_ID_BUNDLE, patientId.toString())
         startActivity(intent)
     }

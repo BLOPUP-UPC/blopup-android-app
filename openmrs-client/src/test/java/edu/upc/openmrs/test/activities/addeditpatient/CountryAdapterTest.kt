@@ -5,14 +5,13 @@ import android.content.res.Configuration
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.R
-import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
-import edu.upc.openmrs.activities.addeditpatient.countryofbirth.CountryAdapter
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country
+import edu.upc.openmrs.activities.editpatient.countryofbirth.CountryAdapter
 import junit.framework.TestCase.assertEquals
-
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
+import java.util.Locale
 
 @RunWith(AndroidJUnit4::class)
 class CountryAdapterTest {

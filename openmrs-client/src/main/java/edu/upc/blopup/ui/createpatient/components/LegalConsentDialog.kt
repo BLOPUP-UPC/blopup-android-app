@@ -43,7 +43,6 @@ import edu.upc.BuildConfig
 import edu.upc.R
 import edu.upc.blopup.AudioRecorder
 import edu.upc.blopup.ui.shared.components.SubmitButton
-import edu.upc.openmrs.activities.addeditpatient.LegalConsentDialogFragment
 import edu.upc.openmrs.utilities.FileUtils
 import edu.upc.openmrs.utilities.FileUtils.fileIsCreatedSuccessfully
 import java.util.Locale
@@ -70,12 +69,12 @@ fun LegalConsentDialog(
     val inputFileId =
         if (BuildConfig.DEBUG) FileUtils.getFileByLanguage(
             context as Activity?,
-            LegalConsentDialogFragment.TAG,
+            "legal_consent",
             "test"
         ) else
             FileUtils.getFileByLanguage(
                 context as Activity?,
-                LegalConsentDialogFragment.TAG,
+                "legal_consent",
                 languageCode
             )
 

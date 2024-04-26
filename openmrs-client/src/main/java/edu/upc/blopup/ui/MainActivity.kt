@@ -36,7 +36,7 @@ import edu.upc.blopup.ui.settings.SettingsScreen
 import edu.upc.blopup.ui.shared.components.AppBottomNavigationBar
 import edu.upc.blopup.ui.shared.components.AppToolBarWithMenu
 import edu.upc.openmrs.activities.ACBaseActivity
-import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country
 import edu.upc.openmrs.activities.patientdashboard.PatientActivity
 import edu.upc.sdk.library.OpenmrsAndroid
 import edu.upc.sdk.utilities.ApplicationConstants

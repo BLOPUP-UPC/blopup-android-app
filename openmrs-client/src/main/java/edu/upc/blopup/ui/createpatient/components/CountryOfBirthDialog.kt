@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import edu.upc.R
-import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country
 
 @Composable
 fun CountryOfBirthDialog(

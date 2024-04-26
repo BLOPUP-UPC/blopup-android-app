@@ -12,7 +12,7 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 
-package edu.upc.openmrs.activities.addeditpatient;
+package edu.upc.openmrs.activities.editpatient;
 
 import android.app.Activity;
 import android.content.Intent;

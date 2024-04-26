@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.addeditpatient.countryofbirth
+package edu.upc.openmrs.activities.editpatient.countryofbirth
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
 import edu.upc.R
-import java.util.*
+import java.util.Locale
 
 class CountryAdapter(
     context: Context,

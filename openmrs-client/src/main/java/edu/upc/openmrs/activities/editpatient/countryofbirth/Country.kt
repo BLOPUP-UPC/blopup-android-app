@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.addeditpatient.countryofbirth
+package edu.upc.openmrs.activities.editpatient.countryofbirth
 
 import android.content.Context
 import edu.upc.R

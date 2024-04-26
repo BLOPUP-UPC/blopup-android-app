@@ -41,7 +41,7 @@ import edu.upc.blopup.ui.createpatient.components.DateOfBirthSection
 import edu.upc.blopup.ui.createpatient.components.LegalConsentSection
 import edu.upc.blopup.ui.shared.components.LoadingSpinner
 import edu.upc.blopup.ui.shared.components.SubmitButton
-import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country
 import edu.upc.sdk.utilities.ToastUtil
 
 @Composable

@@ -58,9 +58,9 @@ import java.util.UUID;
 
 import edu.upc.R;
 import edu.upc.openmrs.activities.ACBaseActivity;
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientActivity;
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment;
-import edu.upc.openmrs.activities.addeditpatient.SimilarPatientsRecyclerViewAdapter;
+import edu.upc.openmrs.activities.editpatient.EditPatientActivity;
+import edu.upc.openmrs.activities.editpatient.EditPatientFragment;
+import edu.upc.openmrs.activities.editpatient.SimilarPatientsRecyclerViewAdapter;
 import edu.upc.openmrs.activities.login.LoginActivity;
 import edu.upc.openmrs.activities.login.LoginFragment;
 import edu.upc.openmrs.activities.patientdashboard.PatientActivity;
@@ -80,7 +80,7 @@ public class CustomFragmentDialog extends DialogFragment {
 
     public enum OnClickAction {
         SET_URL, SHOW_URL_DIALOG, DISMISS_URL_DIALOG, DISMISS, LOGOUT, FINISH, INTERNET, UNAUTHORIZED, END_VISIT, FINISH_ACTIVITY,
-        LOGIN, REGISTER_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER, END_VITALS, END_VISIT_START_NEW_VISIT
+        LOGIN, EDIT_PATIENT, CANCEL_REGISTERING, DELETE_PATIENT, MULTI_DELETE_PATIENT, SELECT_LOCATION, DELETE_PROVIDER, END_VITALS, END_VISIT_START_NEW_VISIT
     }
 
     protected LayoutInflater mInflater;
@@ -412,14 +412,14 @@ public class CustomFragmentDialog extends DialogFragment {
                             .endVisit();
                     dismiss();
                     break;
-                case REGISTER_PATIENT:
-                    ((AddEditPatientFragment) getParentFragmentManager()
+                case EDIT_PATIENT:
+                    ((EditPatientFragment) getParentFragmentManager()
                             .findFragmentById(R.id.patientInfoContentFrame))
-                            .registerPatient();
+                            .editPatient();
                     dismiss();
                     break;
                 case CANCEL_REGISTERING:
-                    ((AddEditPatientActivity) getActivity()).finish();
+                    ((EditPatientActivity) getActivity()).finish();
                     dismiss();
                     break;
                 case SELECT_LOCATION:

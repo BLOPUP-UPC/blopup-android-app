@@ -3,18 +3,14 @@ package edu.upc.openmrs.test.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
-import edu.upc.blopup.RecordingHelper
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientViewModel
+import edu.upc.openmrs.activities.editpatient.EditPatientViewModel
 import edu.upc.openmrs.test.ACUnitTestBaseRx
 import edu.upc.sdk.library.api.repository.PatientRepository
-import edu.upc.sdk.library.api.repository.RecordingRepository
 import edu.upc.sdk.library.dao.PatientDAO
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAddress
 import edu.upc.sdk.library.models.PersonName
-import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType.PatientUpdateSuccess
-import edu.upc.sdk.library.models.ResultType.RecordingSuccess
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -29,8 +25,6 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
 import rx.Observable
 
 @RunWith(JUnit4::class)
@@ -49,18 +43,12 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     lateinit var savedStateHandle: SavedStateHandle
 
     @Mock
-    lateinit var recordingHelper: RecordingHelper
-
-    @Mock
-    lateinit var recordingRepository: RecordingRepository
-
-    @Mock
     private lateinit var pairValidationObserver: Observer<Pair<Boolean, Int?>>
 
     @Mock
     private lateinit var booleanValidationObserver: Observer<Boolean>
 
-    private lateinit var viewModel: AddEditPatientViewModel
+    private lateinit var viewModel: EditPatientViewModel
 
     @Before
     override fun setUp() {
@@ -71,10 +59,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `resetPatient should clear all states and patient related data`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
         updatePatientData(0L, viewModel.patient)
@@ -83,7 +70,6 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
         with(viewModel) {
             // ViewModel state holding
-            assertFalse(isUpdatePatient)
             assertNull(dateHolder)
         }
         with(viewModel.patient) {
@@ -100,35 +86,11 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    fun `confirmPatient should create new patient when no patient id passed`() {
-
-        viewModel = AddEditPatientViewModel(
-            patientDAO,
-            patientRepository,
-            recordingHelper,
-            savedStateHandle
-        )
-
-        viewModel.patient = createPatient(1, "1000A")
-
-        `when`(patientRepository.registerPatient(any())).thenReturn(
-            Observable.just(
-                Patient()
-            )
-        )
-
-        viewModel.confirmPatient()
-
-        assert(viewModel.result.value is Result.Success)
-    }
-
-    @Test
     fun `confirmPatient should update existing patient when its id is passed`() {
         savedStateHandle.apply { set(PATIENT_ID_BUNDLE, "1L") }
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
         `when`(patientRepository.updatePatient(any())).thenReturn(
@@ -145,82 +107,19 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     }
 
     @Test
-    fun fetchSimilarPatients() {
-        viewModel = AddEditPatientViewModel(
-            patientDAO,
-            patientRepository,
-            recordingHelper,
-            savedStateHandle
-        )
-        with(viewModel) {
-            val similarPatients = listOf(createPatient(1L), createPatient(2L), createPatient(3L))
-            `when`(patientRepository.fetchSimilarPatients(any())).thenReturn(
-                Observable.just(
-                    similarPatients
-                )
-            )
-
-            fetchSimilarPatients()
-
-            assertIterableEquals(similarPatients, similarPatientsLiveData.value)
-        }
-    }
-
-    @Test
     fun fetchCausesOfDeath() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
-    }
-
-    @Test
-    fun `should save legal consent recording when new patient is added (with toggle on)`() {
-        val patient = createPatient(1, "10009X3")
-
-        viewModel = AddEditPatientViewModel(
-            patientDAO,
-            patientRepository,
-            recordingHelper,
-            savedStateHandle
-        )
-        `when`(patientRepository.registerPatient(any())).thenReturn(Observable.just(patient))
-        `when`(recordingRepository.saveRecording(any())).thenReturn(Observable.just(RecordingSuccess))
-
-        viewModel.confirmPatient()
-
-        verify(recordingHelper, times(0)).saveLegalConsent(any())
-    }
-
-    @Test
-    fun `should not save legal consent recording when updating existing patient`() {
-        savedStateHandle = SavedStateHandle().apply { set(PATIENT_ID_BUNDLE, "patientId") }
-        viewModel = AddEditPatientViewModel(
-            patientDAO,
-            patientRepository,
-            recordingHelper,
-            savedStateHandle
-        )
-
-        `when`(patientRepository.updatePatient(any())).thenReturn(
-            Observable.just(
-                PatientUpdateSuccess
-            )
-        )
-
-        viewModel.confirmPatient()
-
-        verify(recordingHelper, times(0)).saveLegalConsent(any())
     }
 
     @Test
     fun `when name is valid, the isNameValidLiveData is true`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -232,10 +131,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
     }
     @Test
     fun `when name is null, the isNameValidLiveData is false`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -249,10 +147,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when name is invalid, the isNameValidLiveData is false`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -266,10 +163,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when last name is valid, the isNameValidLiveData is true`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -282,10 +178,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when last name is null, the isNameValidLiveData is false`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -299,10 +194,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when last name is invalid, the isNameValidLiveData is false`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -316,10 +210,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when country of birth is valid, then is true`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -332,10 +225,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when country of birth is the default option, then is false`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -348,10 +240,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when gender is selected, then it is true`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -364,10 +255,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when gender is not selected, then it is false`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -380,10 +270,9 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
 
     @Test
     fun `when all fields are completed, then everything is valid`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -392,24 +281,21 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel.isGenderValidLiveData.observeForever(booleanValidationObserver)
         viewModel.isCountryOfBirthValidLiveData.observeForever(booleanValidationObserver)
         viewModel.isBirthDateValidLiveData.observeForever(pairValidationObserver)
-        viewModel.isLegalConsentValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateFirstName("Pilar")
         viewModel.validateSurname("Alonso")
         viewModel.validateGender(true)
         viewModel.validateCountryOfBirth("Argentina")
         viewModel.validateBirthDate("01/01/2020")
-        viewModel.validateLegalConsent(true)
 
         assertEquals(viewModel.isPatientValidLiveData.value, true)
     }
 
     @Test
     fun `when all fields are not completed, then patient is not valid`() {
-        viewModel = AddEditPatientViewModel(
+        viewModel = EditPatientViewModel(
             patientDAO,
             patientRepository,
-            recordingHelper,
             savedStateHandle
         )
 
@@ -418,14 +304,12 @@ class AddEditPatientViewModelTest : ACUnitTestBaseRx() {
         viewModel.isGenderValidLiveData.observeForever(booleanValidationObserver)
         viewModel.isCountryOfBirthValidLiveData.observeForever(booleanValidationObserver)
         viewModel.isBirthDateValidLiveData.observeForever(pairValidationObserver)
-        viewModel.isLegalConsentValidLiveData.observeForever(booleanValidationObserver)
 
         viewModel.validateFirstName("*")
         viewModel.validateSurname(null)
         viewModel.validateGender(true)
         viewModel.validateCountryOfBirth("Argentina")
         viewModel.validateBirthDate("01/01/2020")
-        viewModel.validateLegalConsent(true)
 
         assertEquals(viewModel.isPatientValidLiveData.value, false)
     }

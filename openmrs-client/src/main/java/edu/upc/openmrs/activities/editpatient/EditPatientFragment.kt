@@ -11,16 +11,10 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package edu.upc.openmrs.activities.addeditpatient
+package edu.upc.openmrs.activities.editpatient
 
-import android.Manifest.permission.RECORD_AUDIO
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Paint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -31,15 +25,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.LinearLayout.LayoutParams
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -47,41 +36,33 @@ import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.databinding.FragmentPatientInfoBinding
 import edu.upc.openmrs.activities.BaseFragment
-import edu.upc.openmrs.activities.addeditpatient.countryofbirth.Country
-import edu.upc.openmrs.activities.addeditpatient.countryofbirth.CountryOfBirthDialogFragment
-import edu.upc.openmrs.activities.dialog.CustomFragmentDialog
-import edu.upc.openmrs.activities.patientdashboard.PatientActivity
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country
+import edu.upc.openmrs.activities.editpatient.countryofbirth.CountryOfBirthDialogFragment
 import edu.upc.openmrs.listeners.watcher.DateOfBirthTextWatcher
 import edu.upc.openmrs.utilities.ViewUtils.getInput
 import edu.upc.openmrs.utilities.ViewUtils.isEmpty
 import edu.upc.openmrs.utilities.makeGone
 import edu.upc.openmrs.utilities.makeVisible
 import edu.upc.openmrs.utilities.observeOnce
-import edu.upc.sdk.library.models.OperationType.PatientRegistering
-import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAttribute.Companion.NATIONALITY_ATTRIBUTE_UUID
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
-import edu.upc.sdk.utilities.ApplicationConstants
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromOpenmrsDate
 import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil
-import java.net.UnknownHostException
 import java.util.Calendar
 
 
 @AndroidEntryPoint
-class AddEditPatientFragment : BaseFragment() {
-    private var legalConsentDialog: LegalConsentDialogFragment? = null
+class EditPatientFragment : BaseFragment() {
     private var countryOfBirthDialogFragment: CountryOfBirthDialogFragment? = null
     private var patientCountry: Country? = null
     private var _binding: FragmentPatientInfoBinding? = null
     private val binding get() = _binding!!
 
-    val viewModel: AddEditPatientViewModel by viewModels()
+    val viewModel: EditPatientViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -102,8 +83,6 @@ class AddEditPatientFragment : BaseFragment() {
         setCountrySpinner()
 
         fillFormFields()
-
-        askPermissions()
 
         return rootView
     }
@@ -133,36 +112,6 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     private fun setupObservers() {
-        viewModel.result.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Result.Loading -> {
-                    showLoading()
-                    hideSoftKeys()
-                }
-
-                is Result.Success -> if (result.operationType == PatientRegistering) {
-                    startPatientDashboardActivity(result.data)
-                    finishActivity()
-                }
-
-                is Result.Error -> if (result.operationType == PatientRegistering) {
-                    hideLoading()
-                    if (result.throwable.cause is UnknownHostException)
-                        ToastUtil.error(getString(R.string.no_internet_connection))
-                    else
-                        ToastUtil.error(getString(R.string.register_patient_error))
-                }
-
-                else -> throw IllegalStateException()
-            }
-        }
-
-        viewModel.similarPatientsLiveData.observe(viewLifecycleOwner) { similarPatients ->
-            hideLoading()
-            if (similarPatients.isEmpty()) registerPatient()
-            else showSimilarPatientsDialog(similarPatients, viewModel.patient)
-        }
-
         viewModel.isNameValidLiveData.observe(viewLifecycleOwner) { isValid ->
             binding.textInputLayoutFirstName.isErrorEnabled = isValid.first
             binding.textInputLayoutFirstName.error = isValid.second?.let { getString(it) }
@@ -199,24 +148,6 @@ class AddEditPatientFragment : BaseFragment() {
             binding.textInputLayoutYear.error = isValid.second?.let { getString(it) }
         }
 
-        viewModel.isLegalConsentValidLiveData.observe(viewLifecycleOwner) { isValid ->
-            if (isValid) {
-                binding.languageSpinner.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.admission_spinner, null)
-                binding.recordConsentSaved.makeVisible()
-                binding.recordLegalConsent.text =
-                    context?.getString(R.string.record_again_legal_consent)
-                ToastUtil.showShortToast(
-                    requireContext(),
-                    ToastUtil.ToastType.SUCCESS,
-                    R.string.recording_success
-                )
-            } else {
-                binding.languageSpinner.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.admission_spinner_error, null)
-            }
-        }
-
         viewModel.isPatientValidLiveData.observe(viewLifecycleOwner) { isValid ->
             if (isValid) {
                 binding.submitButton.isEnabled = true
@@ -238,11 +169,7 @@ class AddEditPatientFragment : BaseFragment() {
         }
     }
 
-    private fun findSimilarPatients() {
-        viewModel.fetchSimilarPatients()
-    }
-
-    fun registerPatient() {
+    fun editPatient() {
         viewModel.confirmPatient()
     }
 
@@ -280,8 +207,6 @@ class AddEditPatientFragment : BaseFragment() {
     }
 
     private fun fillFormFields() {
-        if (!viewModel.isUpdatePatient) return
-
         validateFieldsForUpdatePatient()
 
         with(viewModel.patient) {
@@ -319,7 +244,6 @@ class AddEditPatientFragment : BaseFragment() {
                 binding.countryOfBirth.text = patientCountry?.getLabel(requireContext())
             }
 
-            binding.linearLayoutConsent.makeGone()
             addBottomMargin()
         }
     }
@@ -339,7 +263,6 @@ class AddEditPatientFragment : BaseFragment() {
             viewModel.validateCountryOfBirth(binding.countryOfBirth.text.toString())
             viewModel.validateBirthDate(getInput(binding.dobEditText))
             viewModel.validateGender(true)
-            viewModel.validateLegalConsent(true)
     }
 
     private fun isCountryOfBirthValid() = with(binding) {
@@ -412,55 +335,7 @@ class AddEditPatientFragment : BaseFragment() {
         })
     }
 
-
-    private fun showSimilarPatientsDialog(patients: List<Patient>, patient: Patient) {
-        edu.upc.openmrs.bundle.CustomDialogBundle().apply {
-            titleViewMessage = getString(R.string.similar_patients_dialog_title)
-            rightButtonText = getString(R.string.dialog_button_register_new)
-            rightButtonAction =
-                CustomFragmentDialog.OnClickAction.REGISTER_PATIENT
-            leftButtonText = getString(R.string.dialog_button_cancel)
-            leftButtonAction =
-                CustomFragmentDialog.OnClickAction.DISMISS
-            patientsList = patients
-            newPatient = patient
-        }.let {
-            (requireActivity() as AddEditPatientActivity)
-                .createAndShowDialog(it, ApplicationConstants.DialogTAG.SIMILAR_PATIENTS_TAG)
-        }
-    }
-
-
     private fun setupViewsListeners() = with(binding) {
-
-        makeRecordLegalConsentUnderlined()
-
-        setLanguagesOptionsInSpinner()
-
-        languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                // Enable the submit button if a valid language (not the first item) is selected
-                if (position != 0) {
-                    recordLegalConsent.isEnabled = true
-                    recordLegalConsent.setTextColor(resources.getColor(R.color.color_accent, null))
-                } else {
-                    recordLegalConsent.isEnabled = false
-                    recordLegalConsent.setTextColor(resources.getColor(R.color.dark_grey_6x, null))
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        recordLegalConsent.setOnClickListener {
-            val selectedLanguage = languageSpinner.selectedItem.toString()
-            showLegalConsent(selectedLanguage)
-        }
 
         submitButton.setOnClickListener {
             submitAction()
@@ -510,95 +385,6 @@ class AddEditPatientFragment : BaseFragment() {
         }
     }
 
-    private fun FragmentPatientInfoBinding.makeRecordLegalConsentUnderlined() {
-        recordLegalConsent.paintFlags = recordLegalConsent.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-    }
-
-    private fun setLanguagesOptionsInSpinner() {
-        val spinner = _binding!!.languageSpinner
-        val languagesArray = resources.getStringArray(R.array.languages)
-
-        val languagesAdapter =
-            ArrayAdapter<Any?>(requireContext(), R.layout.spinner_list, languagesArray)
-        languagesAdapter.setDropDownViewResource(R.layout.spinner_list)
-
-        spinner.adapter = languagesAdapter
-    }
-
-    private fun showLegalConsent(language: String) {
-
-        if (isMicrophonePresent()) {
-            legalConsentDialog = LegalConsentDialogFragment.newInstance(language)
-            legalConsentDialog?.show(childFragmentManager, LegalConsentDialogFragment.TAG)
-            childFragmentManager.findFragmentById(R.id.linearLayout_consent)?.onStart()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "Microphone Not Detected",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
-    private fun askPermissions() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                WRITE_EXTERNAL_STORAGE
-            )
-            != PackageManager.PERMISSION_GRANTED
-            ||
-            ActivityCompat.checkSelfPermission(requireContext(), RECORD_AUDIO)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO), REQUEST_AUDIO_PERMISSION_CODE
-            )
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        // this method is called when user will
-        // grant the permission for audio recording.
-        when (requestCode) {
-            REQUEST_AUDIO_PERMISSION_CODE -> if (grantResults.isNotEmpty()) {
-                val permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                val permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED
-                if (permissionToRecord && permissionToStore) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Permission Granted",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Permission Denied",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        }
-    }
-
-    private fun isMicrophonePresent(): Boolean {
-        return requireActivity().packageManager
-            .hasSystemFeature(PackageManager.FEATURE_MICROPHONE)
-    }
-
-    private fun showLoading() {
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
-        binding.transpScreenScreen.makeVisible()
-        binding.progressBar.makeVisible()
-    }
-
     private fun hideLoading() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         binding.transpScreenScreen.makeGone()
@@ -622,11 +408,6 @@ class AddEditPatientFragment : BaseFragment() {
                 )
             }
 
-        // New patient registering
-        if (!isUpdatePatient) {
-            findSimilarPatients()
-            return
-        }
         updatePatient()
     }
 
@@ -639,52 +420,28 @@ class AddEditPatientFragment : BaseFragment() {
         dobError.text = ""
         gendererror.makeGone()
         countryOfBirthError.makeGone()
-        recordConsentError.makeGone()
         textInputLayoutFirstName.error = ""
         textInputLayoutSurname.error = ""
         viewModel.resetPatient()
     }
 
-    private fun hideSoftKeys() {
-        requireActivity().let {
-            val view = it.currentFocus ?: View(it)
-            val inputMethodManager =
-                it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
-
     fun isAnyFieldNotEmpty(): Boolean = with(binding) {
         return !isEmpty(firstName) || !isEmpty(surname) ||
-                !isEmpty(dobEditText) || !isEmpty(estimatedYear) ||
-                isLegalConsent() || isNationality()
+                !isEmpty(dobEditText) || !isEmpty(estimatedYear) || isNationality()
     }
 
     private fun isNationality() =
         binding.countryOfBirth.text != context?.getString(R.string.country_of_birth_default)
-
-    private fun isLegalConsent() = viewModel.isLegalConsentValidLiveData.value == true
-
-    private fun startPatientDashboardActivity(patient: Patient) {
-        Intent(requireActivity(), PatientActivity::class.java).apply {
-            putExtra(PATIENT_ID_BUNDLE, patient.id)
-            putExtra(PATIENT_UUID_BUNDLE, patient.uuid)
-            startActivity(this)
-        }
-    }
 
     private fun finishActivity() = requireActivity().finish()
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.submit_done_menu, menu)
-        if (viewModel.isUpdatePatient) {
-            // Remove reset button when updating a patient
             menu.findItem(R.id.actionReset).run {
                 isVisible = false
                 isEnabled = false
             }
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -693,7 +450,7 @@ class AddEditPatientFragment : BaseFragment() {
             R.id.actionReset -> AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.dialog_title_reset_patient)
                 .setMessage(R.string.reset_dialog_message)
-                .setPositiveButton(R.string.dialog_button_ok) { dialogInterface: DialogInterface?, i: Int -> resetAction() }
+                .setPositiveButton(R.string.dialog_button_ok) { dialogInterface: DialogInterface?, _: Int -> resetAction() }
                 .setNegativeButton(R.string.dialog_button_cancel, null)
                 .show()
 
@@ -709,10 +466,8 @@ class AddEditPatientFragment : BaseFragment() {
 
     companion object {
         fun newInstance(patientID: String?) =
-            AddEditPatientFragment().apply {
+            EditPatientFragment().apply {
                 arguments = bundleOf(Pair(PATIENT_ID_BUNDLE, patientID))
             }
-
-        private const val REQUEST_AUDIO_PERMISSION_CODE = 200
     }
 }

@@ -1,16 +1,13 @@
-package edu.upc.openmrs.activities.addeditpatient
+package edu.upc.openmrs.activities.editpatient
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.upc.R
-import edu.upc.blopup.RecordingHelper
 import edu.upc.openmrs.activities.BaseViewModel
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.dao.PatientDAO
-import edu.upc.sdk.library.models.LegalConsent
-import edu.upc.sdk.library.models.OperationType.PatientRegistering
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonAttribute
 import edu.upc.sdk.library.models.PersonAttribute.Companion.NATIONALITY_ATTRIBUTE_UUID
@@ -26,15 +23,11 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditPatientViewModel @Inject constructor(
+class EditPatientViewModel @Inject constructor(
     patientDAO: PatientDAO,
     private val patientRepository: PatientRepository,
-    private val recordingHelper: RecordingHelper,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<Patient>() {
-
-    private val _similarPatientsLiveData = MutableLiveData<List<Patient>>()
-    val similarPatientsLiveData: LiveData<List<Patient>> get() = _similarPatientsLiveData
 
     private val _patientUpdateLiveData = MutableLiveData<ResultType>()
     val patientUpdateLiveData: LiveData<ResultType> get() = _patientUpdateLiveData
@@ -53,28 +46,22 @@ class AddEditPatientViewModel @Inject constructor(
     private val _isGenderValidLiveData = MutableLiveData(false)
     val isGenderValidLiveData: LiveData<Boolean> get() = _isGenderValidLiveData
 
-    private val _isBirthDateValidLiveData = MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
+    private val _isBirthDateValidLiveData =
+        MutableLiveData<Pair<Boolean, Int?>>(Pair(false, R.string.empty_value))
     val isBirthDateValidLiveData: LiveData<Pair<Boolean, Int?>> get() = _isBirthDateValidLiveData
-
-    private val _isLegalConsentValidLiveData = MutableLiveData(false)
-    val isLegalConsentValidLiveData: LiveData<Boolean> get() = _isLegalConsentValidLiveData
 
     private val _isPatientValidLiveData = MutableLiveData(false)
     val isPatientValidLiveData: LiveData<Boolean> get() = _isPatientValidLiveData
 
-    var isUpdatePatient = false
-        private set
     lateinit var patient: Patient
 
     var dateHolder: LocalDate? = null
-    var legalConsentFileName: String? = null
 
     init {
         // Initialize patient state
         val patientId: String? = savedStateHandle[PATIENT_ID_BUNDLE]
         val foundPatient = patientDAO.findPatientByID(patientId)
         if (foundPatient != null) {
-            isUpdatePatient = true
             patient = foundPatient
         } else {
             resetPatient()
@@ -82,17 +69,21 @@ class AddEditPatientViewModel @Inject constructor(
     }
 
     fun resetPatient() {
-        isUpdatePatient = false
         dateHolder = null
         patient = Patient()
     }
 
     fun confirmPatient() {
-        if (isUpdatePatient) updatePatient()
-        else {
-            registerPatient()
-        }
-
+        setLoading()
+        addSubscription(patientRepository.updatePatient(patient)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { resultType ->
+                    _patientUpdateLiveData.value = resultType
+                },
+                { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
+            )
+        )
     }
 
     fun setPatientData(
@@ -113,7 +104,8 @@ class AddEditPatientViewModel @Inject constructor(
             if (estimatedYear.isNotEmpty()) {
                 birthdateEstimated = true
                 birthdate =
-                    DateUtils.getEstimatedBirthdate(estimatedYear.toInt(), LocalDate.now()).toString()
+                    DateUtils.getEstimatedBirthdate(estimatedYear.toInt(), LocalDate.now())
+                        .toString()
             } else {
                 birthdateEstimated = false
                 birthdate = dateHolder.toString()
@@ -130,49 +122,6 @@ class AddEditPatientViewModel @Inject constructor(
                     }
                 })
         }
-    }
-
-
-    fun fetchSimilarPatients() {
-        setLoading()
-        addSubscription(patientRepository.fetchSimilarPatients(patient)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { _similarPatientsLiveData.value = it }
-        )
-    }
-
-    private fun registerPatient() {
-        setLoading()
-        addSubscription(
-            patientRepository.registerPatient(patient)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        setContent(it, PatientRegistering)
-                        recordingHelper.saveLegalConsent(LegalConsent().apply {
-                            val patientIdentifier = patient.identifier.identifier
-                            if (patientIdentifier != null) {
-                                this.patientIdentifier = patientIdentifier
-                                this.filePath = legalConsentFileName
-                            }
-                        })
-                    },
-                    { setError(it, PatientRegistering) },
-                )
-        )
-    }
-
-    private fun updatePatient() {
-        setLoading()
-        addSubscription(patientRepository.updatePatient(patient)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { resultType ->
-                    _patientUpdateLiveData.value = resultType
-                },
-                { _patientUpdateLiveData.value = ResultType.PatientUpdateError }
-            )
-        )
     }
 
     fun validateFirstName(input: String?) {
@@ -218,18 +167,12 @@ class AddEditPatientViewModel @Inject constructor(
         isEverythingValid()
     }
 
-    fun validateLegalConsent(input: Boolean?) {
-        _isLegalConsentValidLiveData.value = input == true
-        isEverythingValid()
-    }
-
     private fun isEverythingValid() {
         _isPatientValidLiveData.value =
             _isNameValidLiveData.value?.first == true &&
                     _isSurnameValidLiveData.value?.first == true &&
                     _isCountryOfBirthValidLiveData.value == true &&
                     _isGenderValidLiveData.value == true &&
-                    _isBirthDateValidLiveData.value?.first == true &&
-                    _isLegalConsentValidLiveData.value == true
+                    _isBirthDateValidLiveData.value?.first == true
     }
 }

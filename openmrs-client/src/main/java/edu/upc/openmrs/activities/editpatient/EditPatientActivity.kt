@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package edu.upc.openmrs.activities.addeditpatient
+package edu.upc.openmrs.activities.editpatient
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -19,44 +19,39 @@ import androidx.appcompat.app.AlertDialog
 import dagger.hilt.android.AndroidEntryPoint
 import edu.upc.R
 import edu.upc.openmrs.activities.ACBaseActivity
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment.Companion.newInstance
+import edu.upc.openmrs.activities.editpatient.EditPatientFragment.Companion.newInstance
 import edu.upc.sdk.utilities.ApplicationConstants
 
 @AndroidEntryPoint
-class AddEditPatientActivity : ACBaseActivity() {
-    private var addEditPatientFragment: AddEditPatientFragment? = null
+class EditPatientActivity : ACBaseActivity() {
+    private var editPatientFragment: EditPatientFragment? = null
     private var alertDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_patient_info)
 
-        supportActionBar?.run {
-            elevation = 0f
-            setTitle(R.string.action_register_patient)
-        }
-
         // Get and send patient id to the fragment (in case of updating a patient)
         val patientBundle = savedInstanceState ?: intent.extras
         val patientID = patientBundle?.getString(ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE)
 
         // Create fragment
-        addEditPatientFragment =
-            supportFragmentManager.findFragmentById(R.id.patientInfoContentFrame) as AddEditPatientFragment?
-        addEditPatientFragment = addEditPatientFragment ?: newInstance(patientID)
+        editPatientFragment =
+            supportFragmentManager.findFragmentById(R.id.patientInfoContentFrame) as EditPatientFragment?
+        editPatientFragment = editPatientFragment ?: newInstance(patientID)
 
-        if (!addEditPatientFragment!!.isActive) {
+        if (!editPatientFragment!!.isActive) {
             addFragmentToActivity(
                 supportFragmentManager,
-                addEditPatientFragment!!,
+                editPatientFragment!!,
                 R.id.patientInfoContentFrame
             )
         }
     }
 
     override fun onBackPressed() {
-        if (addEditPatientFragment!!.isAnyFieldNotEmpty()) showInfoLostDialog()
-        else if (!addEditPatientFragment!!.isLoading()) super.onBackPressed()
+        if (editPatientFragment!!.isAnyFieldNotEmpty()) showInfoLostDialog()
+        else if (!editPatientFragment!!.isLoading()) super.onBackPressed()
     }
 
     /**

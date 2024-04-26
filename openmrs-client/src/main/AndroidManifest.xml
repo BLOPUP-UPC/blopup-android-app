@@ -90,10 +90,10 @@
             android:launchMode="singleTop"
             android:theme="@style/AppThemeOrig" />
         <activity
-            android:name=".openmrs.activities.addeditpatient.AddEditPatientActivity"
+            android:name=".openmrs.activities.editpatient.EditPatientActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/action_register_patient"
-            android:parentActivityName=".openmrs.activities.addeditpatient.AddEditPatientActivity"
+            android:parentActivityName=".openmrs.activities.editpatient.EditPatientActivity"
             android:theme="@style/AppThemeOrig"
             android:windowSoftInputMode="adjustPan">
         </activity>

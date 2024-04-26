@@ -1,4 +1,4 @@
-package edu.upc.openmrs.activities.addeditpatient.countryofbirth
+package edu.upc.openmrs.activities.editpatient.countryofbirth
 
 import android.os.Bundle
 import android.text.Editable
@@ -11,7 +11,7 @@ import android.widget.ListView
 import androidx.fragment.app.DialogFragment
 import edu.upc.R
 import edu.upc.databinding.DialogSearchCountryOfBirthBinding
-import edu.upc.openmrs.activities.addeditpatient.AddEditPatientFragment
+import edu.upc.openmrs.activities.editpatient.EditPatientFragment
 
 
 class CountryOfBirthDialogFragment : DialogFragment() {
@@ -65,7 +65,7 @@ class CountryOfBirthDialogFragment : DialogFragment() {
                 val selectedCountry = adapter.getItem(position)
 
                 val parentFragment = parentFragment
-                if (parentFragment is AddEditPatientFragment) {
+                if (parentFragment is EditPatientFragment) {
                     parentFragment.onCountrySelected(selectedCountry)
                 }
                 dialog?.dismiss()
