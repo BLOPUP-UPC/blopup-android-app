@@ -32,10 +32,10 @@ class DateUtilsTest {
 
     @Test
     fun `format Instant to API format`() {
-        val apiDate = "2024-04-23T07:25:03.638+0000"
+        val apiDate = "2024-04-23T07:25:03.638Z"
         val instant = parseInstantFromOpenmrsDate(apiDate)
 
-        assertEquals("2024-04-23T07:25:03.638Z", instant.toString())
+        assertEquals("2024-04-23T07:25:03.638+0000", instant.formatToApiRequest())
     }
 
     @Test
@@ -43,7 +43,7 @@ class DateUtilsTest {
         val apiDate = "2024-04-23T07:25:03.000+0000"
         val instant = parseInstantFromOpenmrsDate(apiDate)
 
-        assertEquals("2024-04-23T07:25:03Z", instant.toString())
+        assertEquals("2024-04-23T07:25:03.000+0000", instant.formatToApiRequest())
     }
 
     @Test

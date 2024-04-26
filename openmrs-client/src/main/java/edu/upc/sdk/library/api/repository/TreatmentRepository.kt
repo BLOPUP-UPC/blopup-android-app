@@ -12,8 +12,9 @@ import edu.upc.sdk.library.models.EncounterProviderCreate
 import edu.upc.sdk.library.models.Encountercreate
 import edu.upc.sdk.library.models.Obscreate
 import edu.upc.sdk.library.models.Observation
-import edu.upc.sdk.utilities.DateUtils
+import edu.upc.sdk.utilities.DateUtils.formatToApiRequest
 import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
+import edu.upc.sdk.utilities.DateUtils.toLocalDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Instant
@@ -65,7 +66,7 @@ class TreatmentRepository @Inject constructor(
         return try {
             val observation = getObservationByUuid(treatment.observationStatusUuid!!)
 
-            val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
+            val value = mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate?.formatToApiRequest())
 
             withContext(Dispatchers.IO) {
                 val response = restApi.updateObservation(observation?.uuid, value).execute()
@@ -155,7 +156,7 @@ class TreatmentRepository @Inject constructor(
         val doctor = encounter.encounterProviders.find { it.encounterRole?.uuid == ENCOUNTER_DOCTOR_ROLE_UUID }?.provider.let {
             it?.uuid?.let { doctorUuid ->
                 it.person?.display?.let { doctorName ->
-                    it.attributes?.find { it.attributeType?.uuid == DoctorRepository.REGISTRATION_NUMBER_UUID }?.value?.let { doctorRegistrationNumber ->
+                    it.attributes.find { it.attributeType?.uuid == DoctorRepository.REGISTRATION_NUMBER_UUID }?.value?.let { doctorRegistrationNumber ->
                         Doctor(doctorUuid, doctorName, doctorRegistrationNumber)
                     }
                 }
@@ -194,7 +195,7 @@ class TreatmentRepository @Inject constructor(
 
                 ObservationConcept.TREATMENT_ADHERENCE.uuid -> {
                     val adherence = observation.displayValue?.trim() == "1.0"
-                    val date = DateUtils.parseLocalDateFromOpenmrsDate(observation.dateCreated!!)
+                    val date = parseInstantFromOpenmrsDate(observation.dateCreated!!).toLocalDate()
                     adherenceMap[date] = adherence
                 }
             }
@@ -276,7 +277,7 @@ class TreatmentRepository @Inject constructor(
         Obscreate().apply {
             concept = ObservationConcept.MEDICATION_TYPE.uuid
             person = patientUuid
-            obsDatetime = Instant.now().toString()
+            obsDatetime = Instant.now().formatToApiRequest()
             groupMembers = treatment.medicationType.map {
                 observation(
                     ObservationConcept.MEDICATION_TYPE.uuid,
@@ -290,7 +291,7 @@ class TreatmentRepository @Inject constructor(
         Obscreate().apply {
             this.concept = concept
             this.value = value
-            obsDatetime = Instant.now().toString()
+            obsDatetime = Instant.now().formatToApiRequest()
             person = patientId
         }
 

@@ -14,6 +14,7 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.VisitType
 import edu.upc.sdk.library.models.typeConverters.VisitConverter
 import edu.upc.sdk.utilities.ApplicationConstants.FACILITY_VISIT_TYPE_UUID
+import edu.upc.sdk.utilities.DateUtils.formatToApiRequest
 import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,7 +48,7 @@ class VisitRepository @Inject constructor(
     }
 
     suspend fun endVisit(visitId: UUID): Boolean = withContext(Dispatchers.IO) {
-        val endVisitDateTime = Instant.now().toString()
+        val endVisitDateTime = Instant.now().formatToApiRequest()
         val visitWithEndDate = OpenMRSVisit().apply {
             stopDatetime = endVisitDateTime
         }
@@ -63,11 +64,10 @@ class VisitRepository @Inject constructor(
     }
 
     suspend fun startVisit(patient: Patient, bloodPressure: BloodPressure, heightCm: Int?, weightKg: Float?): Result<Visit> = withContext(Dispatchers.IO) {
-        // Visit start time should be a bit before the encounter creation ¯\_(ツ)_/¯
-        val now = Instant.now().minusSeconds(50)
+        val now = Instant.now()
         val location = OpenmrsAndroid.getLocation()
         val openMRSVisit = OpenMRSVisit().apply {
-            startDatetime = now.toString()
+            startDatetime = now.formatToApiRequest()
             this.patient = patient
             this.location = locationDAO.findLocationByName(location)
             visitType = VisitType("FACILITY", FACILITY_VISIT_TYPE_UUID)
@@ -85,7 +85,7 @@ class VisitRepository @Inject constructor(
                 UUID.fromString(visitFromServer.uuid),
                 UUID.fromString(patient.uuid),
                 location,
-                visitFromServer.startDatetime.let { parseInstantFromOpenmrsDate(it) },
+                parseInstantFromOpenmrsDate(visitFromServer.startDatetime),
                 bloodPressure,
                 heightCm,
                 weightKg
@@ -96,7 +96,7 @@ class VisitRepository @Inject constructor(
     }
 
     private suspend fun addVisitEncounter(visit: Visit): Result<Visit> {
-        val now = Instant.now().toString()
+        val now = Instant.now().formatToApiRequest()
         val encounterCreate = Encountercreate().apply {
             this.visit = visit.id.toString()
             this.patient = visit.patientId.toString()

@@ -18,6 +18,7 @@ import edu.upc.sdk.library.models.OpenMrsVisitExample
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.Results
 import edu.upc.sdk.library.models.TreatmentExample
+import edu.upc.sdk.utilities.DateUtils.formatToApiRequest
 import edu.upc.sdk.utilities.DateUtils.parseInstantFromOpenmrsDate
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -317,13 +318,15 @@ class TreatmentRepositoryTest {
     @Test
     fun `should update the observation as inactive`() {
         val treatment = TreatmentExample.activeTreatment()
+        treatment.inactiveDate = Instant.now()
+        treatment.isActive = false
+
         val observation = Observation().apply {
             concept = ConceptEntity().apply { uuid = ObservationConcept.ACTIVE.uuid }
-            displayValue = " 0"
+            displayValue = " 1"
             display = "Active:$displayValue"
             uuid = UUID.randomUUID().toString()
-            dateCreated = treatment.creationDate.toString()
-            obsDatetime = treatment.inactiveDate.toString()
+            dateCreated = treatment.creationDate.formatToApiRequest()
         }
 
         coEvery { restApi.getObservationByUuid(treatment.observationStatusUuid!!) } returns createCall(
@@ -332,7 +335,7 @@ class TreatmentRepositoryTest {
         coEvery {
             restApi.updateObservation(
                 observation.uuid,
-                mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
+                mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate!!.formatToApiRequest())
             )
         } returns mockk(relaxed = true)
 
@@ -345,7 +348,7 @@ class TreatmentRepositoryTest {
         coVerify {
             restApi.updateObservation(
                 observation.uuid,
-                mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate.toString())
+                mapOf("value" to 0, "obsDatetime" to treatment.inactiveDate!!.formatToApiRequest())
             )
         }
     }

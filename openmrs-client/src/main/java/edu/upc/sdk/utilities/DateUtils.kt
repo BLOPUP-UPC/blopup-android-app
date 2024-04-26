@@ -52,6 +52,12 @@ object DateUtils {
     fun getEstimatedBirthdate(yearDiff: Int, today: LocalDate): LocalDate {
         return today.minusYears(yearDiff.toLong())
     }
+
+    @JvmStatic
+    fun Instant.formatToApiRequest(): String {
+        return this.atZone(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
+    }
+
     @JvmStatic
     fun LocalDate.formatToApiRequest(zoneId: ZoneId = ZoneId.systemDefault()): String {
         return this.atStartOfDay().atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern(OPEN_MRS_RESPONSE_FORMAT))
