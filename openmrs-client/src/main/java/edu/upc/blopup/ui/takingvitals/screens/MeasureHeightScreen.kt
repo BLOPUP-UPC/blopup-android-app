@@ -28,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.upc.R
-import edu.upc.blopup.ui.ResultUiState
 import edu.upc.blopup.ui.shared.components.SubmitButton
 import edu.upc.blopup.ui.takingvitals.components.LatestHeightResultUiState
 

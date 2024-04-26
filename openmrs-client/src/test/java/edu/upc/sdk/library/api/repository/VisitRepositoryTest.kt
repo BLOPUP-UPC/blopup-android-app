@@ -99,8 +99,8 @@ class VisitRepositoryTest {
 
     @Test
     fun `should get all visits by uuid`() = runTest {
-        val visit1 = VisitExample.random();
-        val visit2 = VisitExample.random(patientId = visit1.patientId);
+        val visit1 = VisitExample.random()
+        val visit2 = VisitExample.random(patientId = visit1.patientId)
 
         val openMRSVisit1 = OpenMRSVisitExample.withVitals(
             visit1.id.toString(),
@@ -415,7 +415,7 @@ class VisitRepositoryTest {
 
     @Test
     fun `should return the visit if active`() = runTest {
-        val activeVisit = VisitExample.random();
+        val activeVisit = VisitExample.random()
 
         val openMRSVisit = OpenMRSVisitExample.withVitals(
             activeVisit.id.toString(),
@@ -444,8 +444,8 @@ class VisitRepositoryTest {
 
     @Test
     fun `should return the last active visit last if more than one exists`() = runTest {
-        val activeVisit = VisitExample.random();
-        val activeVisit2 = VisitExample.random(patientId = activeVisit.patientId);
+        val activeVisit = VisitExample.random()
+        val activeVisit2 = VisitExample.random(patientId = activeVisit.patientId)
 
         val openMRSVisit = OpenMRSVisitExample.withVitals(
             activeVisit.id.toString(),

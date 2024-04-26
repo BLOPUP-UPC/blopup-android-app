@@ -52,9 +52,6 @@
     <string name="update_patient_error" tools:ignore="MissingTranslation">Patient %s cannot be updated due to server error</string>
     <string name="select_language" tools:ignore="MissingTranslation">Select language</string>
 
-    <!-- SimilarPatients dialog -->
-    <string name="similar_patients_dialog_title" tools:ignore="MissingTranslation">Similar patients found</string>
-
     <!-- Logout dialog -->
     <string name="logout_dialog_title" tools:ignore="MissingTranslation">Logging Out</string>
     <string name="logout_dialog_message" tools:ignore="MissingTranslation">Are you sure you want to logout?</string>
@@ -82,7 +79,6 @@
     <!-- Buttons -->
     <string name="dialog_button_cancel" tools:ignore="MissingTranslation">Cancel</string>
     <string name="dialog_button_ok" translatable="false">OK</string>
-    <string name="dialog_button_register_new" tools:ignore="MissingTranslation">Register new</string>
     <string name="dialog_button_select_location" tools:ignore="MissingTranslation">Select Location</string>
 
     <!-- FindPatients activity -->
@@ -136,10 +132,6 @@
     <string name="gender_hint" tools:ignore="MissingTranslation">gender:</string>
     <string name="birthdate_hint" tools:ignore="MissingTranslation">birthdate:</string>
     <string name="address_hint" tools:ignore="MissingTranslation">address:</string>
-    <string name="unable_to_login" tools:ignore="MissingTranslation">Unable to login?</string>
-
-    <!--Matching Patient Activity-->
-    <string name="registration_core_info" tools:ignore="MissingTranslation">To use faster and more accurate similar patient resolution, upgrade the Registration Core Module to 1.7 or higher</string>
 
     <!--ChartsView Activity-->
     <string name="charts_view_toolbar_title" tools:ignore="MissingTranslation">Charts View</string>
@@ -169,26 +161,10 @@
 
     <string name="location_successfully_updated" tools:ignore="MissingTranslation">Location Updated Successfully</string>
     <string name="rate_us_string" tools:ignore="MissingTranslation">Rate us</string>
-    <string name="frag_settings_build" tools:ignore="MissingTranslation">Build:</string>
 
     <!--fragment_provider_relationship-->
     <string name="language" tools:ignore="MissingTranslation">Language</string>
 
-    <!-- introduction Activity -->
-    <string name="intro_welcome" tools:ignore="MissingTranslation">Welcome</string>
-    <string name="intro_register" tools:ignore="MissingTranslation">Register Patients</string>
-    <string name="intro_find" tools:ignore="MissingTranslation">Find Patients</string>
-    <string name="intro_monitor" tools:ignore="MissingTranslation">Monitor Visits</string>
-    <string name="intro_contact_us" tools:ignore="MissingTranslation">Contact Us</string>
-    <string name="intro_location" tools:ignore="MissingTranslation">Location</string>
-
-    <string name="intro_info_desc" tools:ignore="MissingTranslation">Blopup is considered a research app and any user should not rely on the application for medical purposes.</string>
-    <string name="intro_welcome_desc" tools:ignore="MissingTranslation">The global OpenMRS community works together to build the world\'s leading open source electronic medical record system.</string>
-    <string name="intro_register_desc" tools:ignore="MissingTranslation">Register new patients to our server.</string>
-    <string name="intro_find_desc" tools:ignore="MissingTranslation">You can find and monitor those patients.</string>
-    <string name="intro_monitor_desc" tools:ignore="MissingTranslation">We help you monitor patient visits too.</string>
-    <string name="intro_contact_desc" tools:ignore="MissingTranslation">Send us any problem or suggestion.</string>
-    <string name="intro_location_desc" tools:ignore="MissingTranslation">You can change your location at a simple click.</string>
     <string name="get_started_with_our_user_guide" tools:ignore="MissingTranslation">Get started with our user guide</string>
 
     <!--AuthenticateCheck service-->
@@ -244,7 +220,6 @@
     <string name="visit_cancel" tools:ignore="MissingTranslation">The visit has been cancelled</string>
     <string name="record_legal_consent_u" tools:ignore="MissingTranslation"><u>Record legal consent</u></string>
     <string name="record_legal_consent" tools:ignore="MissingTranslation">Record legal consent</string>
-    <string name="recording_has_been_saved" tools:ignore="MissingTranslation">recording has been saved</string>
     <string name="height_range" tools:ignore="MissingTranslation">Height should be between 50–280 cm</string>
     <string name="weight_range" tools:ignore="MissingTranslation">Weight should be between 30–280 kg</string>
     <string name="pause" tools:ignore="MissingTranslation">Pause</string>
@@ -372,6 +347,6 @@
     <string name="checked_icon_green" translatable="false">checked icon green</string>
     <string name="grey_arrow_to_do_dropdown" translatable="false">grey arrow to do dropdown</string>
     <string name="doctor_info" translatable="false">%1$s - Nº Coleg. %2$s</string>
-    <string name="error_fetching_location" translatable="false">Error updating current location. Please, try again later.</string>
+    <string name="error_fetching_location" tools:ignore="MissingTranslation">Error updating current location. Please, try again later.</string>
     />
 </resources>

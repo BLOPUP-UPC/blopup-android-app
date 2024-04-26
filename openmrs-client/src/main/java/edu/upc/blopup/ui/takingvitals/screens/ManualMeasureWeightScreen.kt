@@ -111,5 +111,5 @@ fun ManualWeightInstructions(modifier: Modifier) {
 @Preview(showSystemUi = true)
 @Composable
 fun ManualMeasureWeightScreenDataPreview() {
-    ManualMeasureWeightScreen({})
+    ManualMeasureWeightScreen {}
 }

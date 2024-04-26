@@ -171,5 +171,5 @@ fun PreviewSearchPatientScreen() {
 @Preview
 @Composable
 fun PreviewSearchPatientErrorScreen() {
-    SyncedPatients(ResultUiState.Error, {})
+    SyncedPatients(ResultUiState.Error) {}
 }

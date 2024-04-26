@@ -42,7 +42,7 @@ class BloodPressureChartViewModel @Inject constructor(
                 is Result.Success -> {
                     val adherenceByVisitId = adherenceByDate(treatments.data)
                     val visitsWithAdherence = visits
-                        .sortedBy() { it.startDate }
+                        .sortedBy { it.startDate }
                         .reversed()
                         .distinctBy { it.startDate.toLocalDate() }
                         .map { visit ->

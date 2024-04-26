@@ -59,7 +59,7 @@ fun AppToolBarWithMenu(
         ),
         title = {
             if(isSearchInput && isSearchPatientScreen) {
-                SearchInput(searchQuery, { onSearchQueryChange(it) } )
+                SearchInput(searchQuery) { onSearchQueryChange(it) }
             } else {
                 Text(title)
             }

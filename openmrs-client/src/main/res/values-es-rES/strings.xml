@@ -29,7 +29,6 @@
     <string name="update_patient_success">El paciente %s se ha actualizado</string>
     <string name="update_patient_error">El paciente %s no se ha actualizado por un error en el servidor</string>
     <string name="select_language">Selecione el idioma</string>
-    <string name="similar_patients_dialog_title">Fueron encontrados pacientes similares</string>
     <string name="logout_dialog_title">Cerrando Sesión</string>
     <string name="logout_dialog_message">¿Confirmas que quieres cerrar la sesión?</string>
     <string name="logout_dialog_button">Cerrar sesión</string>
@@ -44,7 +43,6 @@
     <string name="error_fetching_locations">Error cargando las ubicaciones</string>
     <string name="reset_dialog_message">Toda la información ingresada del paciente será eliminada</string>
     <string name="dialog_button_cancel">Cancelar</string>
-    <string name="dialog_button_register_new">Registro nuevo</string>
     <string name="dialog_button_select_location">Seleccionar Ubicación</string>
     <string name="action_synced_patients">Sincronizar Pacientes</string>
     <string name="dashboard_search_icon_label">Buscar Pacientes</string>
@@ -79,7 +77,6 @@
     <string name="login_button">Iniciar sesión</string>
     <string name="login_location_select">Ubicación de la sesión</string>
     <string name="fname_invalid_error">El campo no puede contener símbolos.</string>
-    <string name="frag_settings_build">Crear:</string>
     <string name="authenticate_service_error_message">Error en el servicio de verificación de autenticación</string>
     <string name="authenticate_check_service_error_response_message">Error en la respuesta del servicio de verificación de autenticación</string>
     <string name="gender_hint">género:</string>
@@ -140,7 +137,6 @@
     <string name="visit_cancel">La visita ha sido cancelada</string>
     <string name="record_legal_consent_u"><u>Grabar consentimiento</u></string>
     <string name="record_legal_consent">Grabar consentimiento</string>
-    <string name="recording_has_been_saved">La grabación se ha guardado</string>
     <string name="height_range">La altura debe ser entre 50–280 cm</string>
     <string name="weight_range">El peso debe estar entre 30–280 kg</string>
     <string name="pause">Pausar</string>
