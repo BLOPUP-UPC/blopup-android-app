@@ -125,8 +125,8 @@ fun LegalConsentDialog(
                 }
             } else {
                 Text(
-                    text = if (isResumed) stringResource(R.string.resume).uppercase() else stringResource(
-                        R.string.pause
+                    text = if (isResumed) stringResource(R.string.pause).uppercase() else stringResource(
+                        R.string.resume
                     ).uppercase(),
                     color = colorResource(R.color.allergy_orange),
                     fontWeight = FontWeight.Bold,
