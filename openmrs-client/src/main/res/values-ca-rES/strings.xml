@@ -90,7 +90,6 @@
     <string name="action_submit">Registrar</string>
     <string name="action_reset">Reiniciar</string>
     <string name="location_successfully_updated">Ubicació actualitzada correctament</string>
-    <string name="rate_us_string">Puntua\'ns</string>
     <string name="language">Idioma</string>
     <string name="get_started_with_our_user_guide">Començar amb la nostra guia d\'usuari</string>
     <string name="authenticate_check_service_error_response_message">Error a la resposta del servei de verificació d\'autenticació</string>

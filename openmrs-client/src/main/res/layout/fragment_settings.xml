@@ -1,16 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ The contents of this file are subject to the OpenMRS Public License
-  ~ Version 1.0 (the "License"); you may not use this file except in
-  ~ compliance with the License. You may obtain a copy of the License at
-  ~ http://license.openmrs.org
-  ~
-  ~ Software distributed under the License is distributed on an "AS IS"
-  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-  ~ License for the specific language governing rights and limitations
-  ~ under the License.
-  ~
-  ~ Copyright (C) OpenMRS, LLC.  All Rights Reserved.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -66,36 +54,6 @@
             app:layout_constraintTop_toBottomOf="@+id/app_name_textView" />
 
         <LinearLayout
-            android:id="@+id/rate_us_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_icon">
-
-            <ImageView
-                android:layout_width="@dimen/settings_icon_size"
-                android:layout_height="@dimen/settings_icon_size"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                app:srcCompat="@drawable/ic_favorite_black_24dp"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="@string/rate_us_string"
-                android:textColor="?android:attr/textColorPrimary" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/privacy_policy_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,7 +64,7 @@
             android:padding="16dp"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rate_us_layout">
+            app:layout_constraintTop_toBottomOf="@+id/app_icon">
 
             <ImageView
                 android:layout_width="@dimen/settings_icon_size"

@@ -160,7 +160,6 @@
     <string name="action_reset" tools:ignore="MissingTranslation">Reset</string>
 
     <string name="location_successfully_updated" tools:ignore="MissingTranslation">Location Updated Successfully</string>
-    <string name="rate_us_string" tools:ignore="MissingTranslation">Rate us</string>
 
     <!--fragment_provider_relationship-->
     <string name="language" tools:ignore="MissingTranslation">Language</string>

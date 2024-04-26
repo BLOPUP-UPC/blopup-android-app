@@ -13,10 +13,8 @@
  */
 package edu.upc.openmrs.activities.settings
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +46,6 @@ class SettingsFragment :  BaseFragment() {
 
         addBuildVersionInfo()
         addPrivacyPolicyInfo()
-        rateUs()
         setupLanguageSpinner()
 
         return binding.root
@@ -76,25 +73,6 @@ class SettingsFragment :  BaseFragment() {
             Intent(Intent.ACTION_VIEW)
                 .setData(Uri.parse(getString(R.string.url_privacy_policy)))
                 .let { startActivity(it) }
-        }
-    }
-
-    private fun rateUs() {
-        binding.rateUsLayout.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, viewModel.appMarketUri)
-            // Ignore Play Store back stack, on back press will take us back to our app
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                intent.addFlags(
-                    Intent.FLAG_ACTIVITY_NO_HISTORY or
-                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
-                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-                )
-            }
-            try {
-                startActivity(intent)
-            } catch (e: ActivityNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW, viewModel.appLinkUri))
-            }
         }
     }
 

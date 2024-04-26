@@ -92,7 +92,6 @@
     <string name="visit_fetching_error">Error combinando la visita</string>
     <string name="visit_ending_error">Error al finalizar la visita</string>
     <string name="settings_privacy_policy">Política de privacidad</string>
-    <string name="rate_us_string">Calificanos</string>
     <string name="action_reset">Reiniciar</string>
     <string name="dialog_title_reset_patient">¿Restablecer datos del paciente?</string>
     <string name="toast_with_black_background">Toast con fondo negro.</string>
