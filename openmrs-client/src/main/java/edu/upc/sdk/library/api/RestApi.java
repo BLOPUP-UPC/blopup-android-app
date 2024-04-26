@@ -24,7 +24,6 @@ import edu.upc.sdk.library.models.LegalConsentRequest;
 import edu.upc.sdk.library.models.Obscreate;
 import edu.upc.sdk.library.models.Observation;
 import edu.upc.sdk.library.models.OpenMRSVisit;
-import edu.upc.sdk.library.models.Patient;
 import edu.upc.sdk.library.models.PatientDto;
 import edu.upc.sdk.library.models.PatientDtoUpdate;
 import edu.upc.sdk.library.models.Provider;
@@ -108,17 +107,6 @@ public interface RestApi {
      */
     @POST("patient")
     Call<PatientDto> createPatient(@Body PatientDto patientDto);
-
-    /**
-     * Gets patients.
-     *
-     * @param searchQuery    the search query
-     * @param representation the representation
-     * @return the patients
-     */
-    @GET("patient")
-    Call<Results<Patient>> getPatients(@Query("q") String searchQuery,
-                                       @Query("v") String representation);
 
     /**
      * Gets patients.

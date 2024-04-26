@@ -17,9 +17,11 @@ import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.RegisterPatientRequirements.MAX_PATIENT_AGE
 import edu.upc.sdk.utilities.DateUtils
+import edu.upc.sdk.utilities.DateUtils.formatToApiRequest
 import edu.upc.sdk.utilities.StringUtils
 import rx.android.schedulers.AndroidSchedulers
 import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -89,7 +91,7 @@ class EditPatientViewModel @Inject constructor(
     fun setPatientData(
         firstName: String,
         lastName: String,
-        dobEditText: String,
+        dateOfBirth: LocalDate?,
         estimatedYear: String,
         gender: String,
         country: String
@@ -104,11 +106,10 @@ class EditPatientViewModel @Inject constructor(
             if (estimatedYear.isNotEmpty()) {
                 birthdateEstimated = true
                 birthdate =
-                    DateUtils.getEstimatedBirthdate(estimatedYear.toInt(), LocalDate.now())
-                        .toString()
+                    DateUtils.getEstimatedBirthdate(estimatedYear.toInt(), LocalDate.now()).formatToApiRequest(ZoneId.of("UTC"))
             } else {
                 birthdateEstimated = false
-                birthdate = dateHolder.toString()
+                birthdate = dateOfBirth?.formatToApiRequest(ZoneId.of("UTC"))
             }
 
             this.gender = gender

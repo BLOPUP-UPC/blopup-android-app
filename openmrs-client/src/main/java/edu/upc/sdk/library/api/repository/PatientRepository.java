@@ -123,7 +123,7 @@ public class PatientRepository {
         patient.setDeceased(false);
         patient.setNames(names);
 
-        patient.setBirthdate(DateUtils.formatToApiRequest(dateOfBirth, ZoneId.systemDefault()));
+        patient.setBirthdate(DateUtils.formatToApiRequest(dateOfBirth, ZoneId.of("UTC")));
         patient.setBirthdateEstimated(isBirthdateEstimated);
 
         patient.setGender(gender);

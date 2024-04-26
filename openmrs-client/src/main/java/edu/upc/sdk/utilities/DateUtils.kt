@@ -22,7 +22,8 @@ import java.time.format.DateTimeFormatter.ISO_DATE_TIME
 import java.time.format.DateTimeFormatterBuilder
 
 object DateUtils {
-    private const val DATE_FORMAT = "d/M/yyyy"
+    private const val PARSE_DATE_FORMAT = "d/M/yyyy"
+    private const val DATE_FORMAT = "dd/MM/yyyy"
     private const val DATE_WITH_TIME_FORMAT = "dd/MM/yyyy HH:mm"
     private const val OPEN_MRS_RESPONSE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
@@ -45,7 +46,7 @@ object DateUtils {
     }
 
     fun parseLocalDateFromDefaultFormat(date: String): LocalDate {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT))
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern(PARSE_DATE_FORMAT))
     }
 
     fun getEstimatedBirthdate(yearDiff: Int, today: LocalDate): LocalDate {
@@ -65,7 +66,7 @@ object DateUtils {
         return this.atZone(zoneId).toLocalDateTime().format(DateTimeFormatter.ofPattern(DATE_WITH_TIME_FORMAT))
     }
 
-    fun Instant.toLocalDate(): LocalDate {
-        return this.atZone(ZoneId.systemDefault()).toLocalDate()
+    fun Instant.toLocalDate(zoneId: ZoneId = ZoneId.systemDefault()): LocalDate {
+        return this.atZone(zoneId).toLocalDate()
     }
 }

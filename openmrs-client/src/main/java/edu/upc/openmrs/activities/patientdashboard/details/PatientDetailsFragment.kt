@@ -38,7 +38,6 @@ import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_UUID_BUNDLE
 import edu.upc.sdk.utilities.DateUtils.formatToDefaultFormat
-import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromOpenmrsDate
 import edu.upc.sdk.utilities.ToastUtil.error
 import kotlinx.coroutines.launch
 
@@ -155,8 +154,8 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
             }
 
             patientDetailsName.text = patient.name.nameString
-            patient.birthdate?.let {
-                patientDetailsBirthDate.text = parseLocalDateFromOpenmrsDate(it).formatToDefaultFormat()
+            patient.birthdateLocalDate?.let {
+                patientDetailsBirthDate.text = it.formatToDefaultFormat()
             }
             patient.attributes?.forEach { attribute ->
                 val countryOfBirthValue = attribute.value?.uppercase()

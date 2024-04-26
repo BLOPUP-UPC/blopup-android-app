@@ -42,8 +42,8 @@ import java.time.Instant
 fun DateOfBirthSection(
     dateOfBirth: String,
     estimatedYears: String,
-    onDateOfBirth: (String) -> Unit,
-    onEstimatedYears: (String) -> Unit,
+    setDateOfBirth: (String) -> Unit,
+    setEstimatedYears: (String) -> Unit,
     isBirthDateValidRange: (String) -> Boolean
 ) {
     val datePickerState = rememberDatePickerState()
@@ -53,7 +53,7 @@ fun DateOfBirthSection(
 
 
     Column(Modifier.padding(vertical = 15.dp)) {
-        val date = datePickerState .selectedDateMillis
+        val date = datePickerState.selectedDateMillis
         if (date != null) {
             formattedDateOfBirth = Instant.ofEpochMilli(date).toLocalDate().formatToDefaultFormat()
         }
@@ -97,9 +97,9 @@ fun DateOfBirthSection(
             value = estimatedYears,
             isError = (dateOfBirth.isEmpty() && estimatedYears.isEmpty()) || birthdateError,
             onValueChange = {
-                onEstimatedYears(it)
+                setEstimatedYears(it)
                 birthdateError = isBirthDateValidRange(it)
-                onDateOfBirth("")
+                setDateOfBirth("")
             },
             label = { Text(text = stringResource(R.string.estyr), fontSize = 16.sp) },
             colors = OutlinedTextFieldDefaults.colors(
@@ -122,7 +122,7 @@ fun DateOfBirthSection(
             DatePickerDialog(onDismissRequest = { showDatePickerDialog = false },
                 confirmButton = {
                     Button(onClick = {
-                        onDateOfBirth(formattedDateOfBirth); showDatePickerDialog = false; onEstimatedYears("")
+                        setDateOfBirth(formattedDateOfBirth); showDatePickerDialog = false; setEstimatedYears("")
                     }) {
                         Text(text = stringResource(R.string.ok))
                     }

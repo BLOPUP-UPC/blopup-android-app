@@ -146,7 +146,7 @@ fun PatientCard(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
                 )
-                Text(text = parseLocalDateFromOpenmrsDate(patient.birthdate).formatToDefaultFormat(), color = Color.Gray, fontSize = 16.sp)
+                Text(text = patient.birthdateLocalDate.formatToDefaultFormat(), color = Color.Gray, fontSize = 16.sp)
             }
 
         }

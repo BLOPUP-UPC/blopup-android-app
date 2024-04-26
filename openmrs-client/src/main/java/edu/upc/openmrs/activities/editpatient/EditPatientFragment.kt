@@ -48,7 +48,8 @@ import edu.upc.sdk.library.models.PersonAttribute.Companion.NATIONALITY_ATTRIBUT
 import edu.upc.sdk.library.models.Result
 import edu.upc.sdk.library.models.ResultType
 import edu.upc.sdk.utilities.ApplicationConstants.BundleKeys.PATIENT_ID_BUNDLE
-import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromOpenmrsDate
+import edu.upc.sdk.utilities.DateUtils.formatToDefaultFormat
+import edu.upc.sdk.utilities.DateUtils.parseLocalDateFromDefaultFormat
 import edu.upc.sdk.utilities.StringUtils.notEmpty
 import edu.upc.sdk.utilities.StringUtils.notNull
 import edu.upc.sdk.utilities.ToastUtil
@@ -217,8 +218,8 @@ class EditPatientFragment : BaseFragment() {
             binding.surname.setText(name.familyName)
 
             if (notNull(birthdate) || notEmpty(birthdate)) {
-                viewModel.dateHolder = parseLocalDateFromOpenmrsDate(birthdate)
-                binding.dobEditText.setText(viewModel.dateHolder.toString())
+                viewModel.dateHolder = birthdateLocalDate
+                binding.dobEditText.setText(birthdateLocalDate.formatToDefaultFormat())
             }
             when (gender) {
                 "M" -> {
@@ -401,7 +402,7 @@ class EditPatientFragment : BaseFragment() {
                 viewModel.setPatientData(
                     firstName.text.toString(),
                     surname.text.toString(),
-                    dobEditText.text.toString(),
+                    if (dobEditText.text.isNotEmpty()) parseLocalDateFromDefaultFormat(dobEditText.text.toString()) else null,
                     estimatedYear.text.toString(),
                     selectedGender,
                     patientCountry!!.name

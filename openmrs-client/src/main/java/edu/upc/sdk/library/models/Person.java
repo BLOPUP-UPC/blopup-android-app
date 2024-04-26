@@ -22,12 +22,14 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.upc.sdk.library.models.typeConverters.PersonAddressConverter;
 import edu.upc.sdk.library.models.typeConverters.PersonAttributeConverter;
 import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
+import edu.upc.sdk.utilities.DateUtils;
 
 /**
  * The type Person.
@@ -163,6 +165,10 @@ public class Person extends Resource implements Serializable {
      */
     public String getBirthdate() {
         return birthdate;
+    }
+
+    public LocalDate getBirthdateLocalDate() {
+        return DateUtils.INSTANCE.parseLocalDateFromOpenmrsDate(birthdate);
     }
 
     /**

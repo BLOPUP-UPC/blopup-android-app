@@ -19,9 +19,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import edu.upc.sdk.library.models.typeConverters.PersonNameConverter;
 import edu.upc.sdk.utilities.StringUtils;
@@ -244,45 +242,6 @@ public class Patient extends Person implements Serializable {
         this.encounters = encounters;
     }
 
-    /**
-     * Add encounters.
-     *
-     * @param encid the encid
-     */
-    public void addEncounters(Long encid) {
-        this.encounters += encid + ",";
-    }
-
-    /**
-     * To map map.
-     *
-     * @return the map
-     */
-    public Map<String, String> toMap() {
-        Map<String, String> map = new HashMap<>();
-        puToMapIfNotNull(map, "givenname", getName().getGivenName());
-        puToMapIfNotNull(map, "familyname", getName().getFamilyName());
-        puToMapIfNotNull(map, "gender", getGender());
-        puToMapIfNotNull(map, "birthdate", getBirthdate());
-        puToMapIfNotNull(map, "address1", getAddress().getAddress1());
-        puToMapIfNotNull(map, "address2", getAddress().getAddress2());
-        puToMapIfNotNull(map, "city", getAddress().getCityVillage());
-        puToMapIfNotNull(map, "state", getAddress().getStateProvince());
-        puToMapIfNotNull(map, "postalcode", getAddress().getPostalCode());
-        puToMapIfNotNull(map, "country", getAddress().getCountry());
-        return map;
-    }
-
-    private void puToMapIfNotNull(Map<String, String> map, String key, String value) {
-        if (StringUtils.notNull(value)) {
-            map.put(key, value);
-        }
-    }
-
-    public List<PersonName> getContactNames() {
-        return contactNames;
-    }
-
     public PersonName getContact() {
         if (!contactNames.isEmpty()) {
             return contactNames.get(0);
@@ -291,15 +250,8 @@ public class Patient extends Person implements Serializable {
         }
     }
 
-    public void setContactNames(List<PersonName> contactNames) {
-        this.contactNames = contactNames;
-    }
-
     public String getContactPhoneNumber() {
         return contactPhoneNumber;
     }
 
-    public void setContactPhoneNumber(String contactPhoneNumber) {
-        this.contactPhoneNumber = contactPhoneNumber;
-    }
 }
