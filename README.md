@@ -35,15 +35,15 @@ The files migrating up to now are in the `ui` package, under Main Activity (Dash
 Other sections of the app still utilize traditional XML-based layouts.
 
 ### Android Architecture
-
-## Connect to local OpenMRS
 The BlopUp Android app follows the Model-View-ViewModel (MVVM) architecture pattern, which promotes separation of concerns and maintainability:
 1) Model: Represents the data and business logic of the application. It encapsulates the data sources, such as databases or network requests, and provides an interface for accessing and manipulating the data.
 2) View: Represents the user interface (UI) components of the application. It is responsible for displaying data to the user and capturing user interactions. In MVVM, the view is passive and delegates UI-related logic to the ViewModel.
 3) ViewModel: Acts as a mediator between the view and the model. It contains the presentation logic and exposes data to the view through observable LiveData or StateFlows. ViewModels survive configuration changes and are responsible for handling user interactions, business logic, and data manipulation.
 
-While the project primarily adheres to the MVVM architecture, you may encounter legacy code that utilizes the Presenter pattern. 
+While the project primarily adheres to the MVVM architecture, you may encounter legacy code that utilizes the Presenter pattern.
 Presenters were commonly used in Android development before the widespread adoption of MVVM.
+
+## Connect to local OpenMRS
 
 Use http://10.0.2.2/openmrs as the server url
 
