@@ -37,7 +37,7 @@ class VisitRepository @Inject constructor(
     }
 
     suspend fun getVisitsByPatientUuid(patientId: UUID): List<Visit> = withContext(Dispatchers.IO) {
-        val result = restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)").execute()
+        val result = restApi.findVisitsByPatientUUID(patientId.toString(), VISIT_API_REPRESENTATION).execute()
 
         if (result.isSuccessful) {
             val visits = result.body()?.results
@@ -202,5 +202,15 @@ class VisitRepository @Inject constructor(
 
     companion object {
         const val VITALS_ENCOUNTER_TYPE = "Vitals"
+        const val VISIT_API_REPRESENTATION = "custom:(" +
+                "uuid," +
+                "patient:ref," +
+                "location:ref," +
+                "visitType:ref," +
+                "startDatetime," +
+                "stopDatetime," +
+                "encounters:custom:(" +
+                    "encounterType:custom:(display)," +
+                    "obs:custom:(uuid,concept:custom:(uuid),display,value)))"
     }
 }

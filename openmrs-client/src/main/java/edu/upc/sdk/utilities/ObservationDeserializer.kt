@@ -33,6 +33,11 @@ class ObservationDeserializer : JsonDeserializer<Observation> {
         val observation = Observation()
         observation.uuid = jsonObject[UUID_KEY].asString
         observation.display = jsonObject[DISPLAY_KEY].asString
+
+        if(jsonObject.has(VALUE_KEY) && !jsonObject[VALUE_KEY].isJsonNull && jsonObject[VALUE_KEY].asString != null) {
+            observation.value = jsonObject[VALUE_KEY].asString
+        }
+
         val conceptJson = jsonObject["concept"]
         if(conceptJson != null && jsonObject.has("obsDatetime") && jsonObject["obsDatetime"].asString != null) {
             observation.obsDatetime = jsonObject["obsDatetime"].asString

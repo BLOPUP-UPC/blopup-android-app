@@ -82,6 +82,12 @@ class Observation : Resource(), Serializable {
 
     override var id: Long? = null
     var encounterID: Long? = null
+
+
+    @SerializedName("value")
+    @Expose
+    var value: String? = null
+
     var displayValue: String? = null
         get() {
             if (field == null && display?.contains(":") == true) {

@@ -5,6 +5,7 @@ import edu.upc.sdk.library.api.ObservationConcept
 import edu.upc.sdk.library.api.repository.DoctorRepository.Companion.REGISTRATION_NUMBER_UUID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.ENCOUNTER_DOCTOR_ROLE_UUID
 import edu.upc.sdk.library.api.repository.TreatmentRepository.Companion.TREATMENT_ENCOUNTER_TYPE
+import edu.upc.sdk.library.api.repository.VisitRepository
 import edu.upc.sdk.library.api.repository.VisitRepository.Companion.VITALS_ENCOUNTER_TYPE
 import edu.upc.sdk.library.databases.entities.ConceptEntity
 import edu.upc.sdk.library.databases.entities.LocationEntity
@@ -149,31 +150,51 @@ object OpenMrsVisitExample {
                     encounterType = EncounterType(VITALS_ENCOUNTER_TYPE)
                     observations = listOf(
                         Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = VisitRepository.VitalsConceptType.SYSTOLIC_FIELD_CONCEPT
+                            }
                             display = "Systolic blood pressure: $systolic"
                             displayValue = systolic.toString()
+                            value = systolic.toString()
                         },
                         Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = VisitRepository.VitalsConceptType.DIASTOLIC_FIELD_CONCEPT
+                            }
                             display = "Diastolic blood pressure: $diastolic"
                             displayValue = diastolic.toString()
+                            value = diastolic.toString()
                         },
                         Observation().apply {
+                            concept = ConceptEntity().apply {
+                                uuid = VisitRepository.VitalsConceptType.HEART_RATE_FIELD_CONCEPT
+                            }
                             display = "Pulse: $pulse"
                             displayValue = pulse.toString()
+                            value = pulse.toString()
                         }
                     )
                     weight?.let {
                         observations = observations.plus(
                             Observation().apply {
+                                concept = ConceptEntity().apply {
+                                    uuid = VisitRepository.VitalsConceptType.WEIGHT_FIELD_CONCEPT
+                                }
                                 display = "Weight (kg): $weight"
                                 displayValue = weight.toString()
+                                value = weight.toString()
                             }
                         )
                     }
                     height?.let {
                         observations = observations.plus(
                             Observation().apply {
+                                concept = ConceptEntity().apply {
+                                    uuid = VisitRepository.VitalsConceptType.HEIGHT_FIELD_CONCEPT
+                                }
                                 display = "Height (cm): $height"
                                 displayValue = height.toString()
+                                value = height.toString()
                             }
                         )
                     }

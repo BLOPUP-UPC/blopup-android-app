@@ -10,6 +10,8 @@
 
 package edu.upc.sdk.library.api;
 
+import static edu.upc.sdk.library.api.repository.VisitRepository.VISIT_API_REPRESENTATION;
+
 import androidx.annotation.Keep;
 
 import java.util.Map;
@@ -215,7 +217,7 @@ public interface RestApi {
      * @param patientUUID the patient uuid
      * @return the call
      */
-    @GET("visit?v=full&includeInactive=false")
+    @GET("visit?v=" + VISIT_API_REPRESENTATION + "&includeInactive=false")
     Call<Results<OpenMRSVisit>> findActiveVisitsByPatientUUID(@Query("patient") String patientUUID);
 
     /**
@@ -233,7 +235,7 @@ public interface RestApi {
      * @param uuid the uuid of the visit
      * @return a visit
      */
-    @GET("visit/{uuid}?v=full")
+    @GET("visit/{uuid}?v=" + VISIT_API_REPRESENTATION)
     Call<OpenMRSVisit> getVisitByUuid(@Path("uuid") String uuid);
 
     /**

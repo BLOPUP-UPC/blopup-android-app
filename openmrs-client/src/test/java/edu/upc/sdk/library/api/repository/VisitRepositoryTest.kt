@@ -130,7 +130,7 @@ class VisitRepositoryTest {
         })
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(visit1.patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(visit1.patientId.toString(), EXPECTED_VISIT_API_REPRESENTATION) } returns call
         coEvery { call.execute() } returns response
 
         val result = visitRepository.getVisitsByPatientUuid(visit1.patientId)
@@ -146,7 +146,7 @@ class VisitRepositoryTest {
         })
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), EXPECTED_VISIT_API_REPRESENTATION) } returns call
         coEvery { call.execute() } returns response
 
         val result = visitRepository.getVisitsByPatientUuid(patientId)
@@ -159,7 +159,7 @@ class VisitRepositoryTest {
         val patientId = UUID.randomUUID()
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), EXPECTED_VISIT_API_REPRESENTATION) } returns call
         every { call.execute() } returns Response.error(500, mockk<ResponseBody>("Generic error"))
 
         visitRepository.getVisitsByPatientUuid(patientId)
@@ -492,7 +492,7 @@ class VisitRepositoryTest {
         })
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), EXPECTED_VISIT_API_REPRESENTATION) } returns call
         coEvery { call.execute() } returns response
 
         assertNull(visitRepository.getLatestVisitWithHeight(patientId))
@@ -512,7 +512,7 @@ class VisitRepositoryTest {
         })
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(openMRSVisit1.patient.uuid, "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(openMRSVisit1.patient.uuid, EXPECTED_VISIT_API_REPRESENTATION) } returns call
         coEvery { call.execute() } returns response
 
         assertNull(visitRepository.getLatestVisitWithHeight(UUID.fromString(openMRSVisit1.patient.uuid)))
@@ -534,10 +534,14 @@ class VisitRepositoryTest {
         })
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
-        coEvery { restApi.findVisitsByPatientUUID(openMRSVisit1.patient.uuid, "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:full)") } returns call
+        coEvery { restApi.findVisitsByPatientUUID(openMRSVisit1.patient.uuid, EXPECTED_VISIT_API_REPRESENTATION) } returns call
         coEvery { call.execute() } returns response
 
         val visit = visitRepository.getLatestVisitWithHeight(UUID.fromString(openMRSVisit1.patient.uuid))
         assertEquals(visit?.heightCm, 190)
+    }
+
+    companion object {
+        const val EXPECTED_VISIT_API_REPRESENTATION = "custom:(uuid,patient:ref,location:ref,visitType:ref,startDatetime,stopDatetime,encounters:custom:(encounterType:custom:(display),obs:custom:(uuid,concept:custom:(uuid),display,value)))"
     }
 }
