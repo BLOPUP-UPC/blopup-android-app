@@ -231,5 +231,6 @@
     <string name="data_received_successfully">Dades rebudes amb èxit.</string>
     <string name="waiting_for_data">Esperant rebre dades…</string>
     <string name="error_fetching_location">Error actualitzant la ubicació. Si us plau, intenteu-ho més tard.</string>
+    <string name="click_here_to_insert_weight_manually">Feu clic aquí per inserir el pes manualment</string>
 
 </resources>

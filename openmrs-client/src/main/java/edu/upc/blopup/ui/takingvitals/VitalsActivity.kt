@@ -83,7 +83,8 @@ class VitalsActivity : ACBaseActivity() {
                             },
                             this@VitalsActivity::logout,
                             OpenmrsAndroid.getUsername(),
-                            isDataScreen = isDataScreen)
+                            isDataScreen = isDataScreen
+                        )
                     },
                 ) { innerPadding ->
 
@@ -135,10 +136,11 @@ class VitalsActivity : ACBaseActivity() {
                             topBarTitle = R.string.weight_data
                             isDataScreen = false
 
-                            MeasureWeightScreen {
+                            MeasureWeightScreen({
                                 viewModel.receiveWeightData()
                                 navigationController.navigate(Routes.WeightDataScreen.id)
                             }
+                            ) { navigationController.navigate(Routes.ManualMeasureWeightScreen.id) }
                         }
                         composable(Routes.WeightDataScreen.id) {
                             topBarTitle = R.string.weight_data

@@ -347,5 +347,6 @@
     <string name="grey_arrow_to_do_dropdown" translatable="false">grey arrow to do dropdown</string>
     <string name="doctor_info" translatable="false">%1$s - Nº Coleg. %2$s</string>
     <string name="error_fetching_location" tools:ignore="MissingTranslation">Error updating current location. Please, try again later.</string>
+    <string name="click_here_to_insert_weight_manually" tools:ignore="MissingTranslation">Click here to insert weight manually</string>
     />
 </resources>
