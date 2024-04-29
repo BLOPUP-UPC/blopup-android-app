@@ -39,6 +39,12 @@ appId: ${APP_ID}
         text: "⋮"
         index: 0
 - tapOn: "Edit"
+- tapOn: "Recommended \n today"
+- tapOn:
+    id: "edu.upc.debug:id/doctors_name_dropdown"
+- tapOn:
+    text: "Jake Smith - Nº Coleg. 0989264778"
+    index: 1
 - tapOn: "Medication name"
 - eraseText
 - inputText: "Metronidazol"
