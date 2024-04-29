@@ -6,11 +6,6 @@ tags:
 - runFlow:
     when:
       visible:
-        id: "${APP_ID}:id/description"
-    file: "subflows/InitialTour.yaml"
-- runFlow:
-    when:
-      visible:
         id: "${APP_ID}:id/loginUsernameField"
     file: "subflows/Login.yaml"
 - runFlow: "subflows/CreatePatient.yaml"

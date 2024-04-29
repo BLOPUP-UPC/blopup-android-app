@@ -1,5 +1,0 @@
-appId: ${APP_ID}
----
-- tapOn:
-    id: "SKIP"
-    retryTapIfNoChange: true

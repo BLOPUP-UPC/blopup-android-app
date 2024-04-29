@@ -124,17 +124,19 @@ fun LegalConsentDialog(
                     )
                 }
             } else {
-                Text(
-                    text = if (isResumed) stringResource(R.string.pause).uppercase() else stringResource(
-                        R.string.resume
-                    ).uppercase(),
-                    color = colorResource(R.color.allergy_orange),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    modifier = Modifier
-                        .padding(vertical = 15.dp, horizontal = 20.dp)
-                        .clickable { audioRecorder.playPauseAudio(); isResumed = !isResumed }
-                )
+                if (isAudioBeingPlayed) {
+                    Text(
+                        text = if (isResumed) stringResource(R.string.pause).uppercase() else stringResource(
+                            R.string.resume
+                        ).uppercase(),
+                        color = colorResource(R.color.allergy_orange),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        modifier = Modifier
+                            .padding(vertical = 15.dp, horizontal = 20.dp)
+                            .clickable { audioRecorder.playPauseAudio(); isResumed = audioRecorder.isPlaying() }
+                    )
+                }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
