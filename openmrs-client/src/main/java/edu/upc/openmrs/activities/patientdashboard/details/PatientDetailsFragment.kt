@@ -59,7 +59,6 @@ class PatientDetailsFragment : edu.upc.openmrs.activities.BaseFragment() {
 
         setUpActiveTreatmentsAdapter()
         setupObservers()
-        fetchPatientDetails()
 
         return binding.root
     }
