@@ -3,6 +3,7 @@ package edu.upc.blopup.ui.createpatient
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import edu.upc.blopup.RecordingHelper
+import edu.upc.openmrs.activities.editpatient.countryofbirth.Country
 import edu.upc.sdk.library.api.repository.PatientRepository
 import edu.upc.sdk.library.models.Patient
 import edu.upc.sdk.library.models.PersonName
@@ -58,7 +59,7 @@ class CreatePatientViewModelTest {
         val dateOfBirth = ""
         val estimatedYears = "33"
         val gender = "M"
-        val countryOfBirth = "Spain"
+        val countryOfBirth = Country.SPAIN
 
         val approximateBirthdate =
             DateUtils.getEstimatedBirthdate(estimatedYears.toInt(), LocalDate.now())
@@ -121,7 +122,7 @@ class CreatePatientViewModelTest {
             "",
             "33",
             "M",
-            "Spain",
+            Country.SPAIN,
             "file.mp3")
 
         val result = viewModel.createPatientUiState.drop(1).first()
