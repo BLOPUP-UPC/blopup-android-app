@@ -4,7 +4,6 @@ tags:
 ---
 - launchApp
 - runFlow:
-- runFlow:
     when:
       visible:
         id: "${APP_ID}:id/loginUsernameField"
