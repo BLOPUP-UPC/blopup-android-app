@@ -22,6 +22,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.CoreMatchers.instanceOf
@@ -160,7 +161,8 @@ class VisitRepositoryTest {
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
         coEvery { restApi.findVisitsByPatientUUID(patientId.toString(), EXPECTED_VISIT_API_REPRESENTATION) } returns call
-        every { call.execute() } returns Response.error(500, mockk<ResponseBody>("Generic error"))
+        every { call.execute() } returns Response.error(500, "{\"error\":[\"Generic error\"]}"
+            .toResponseBody("application/json".toMediaTypeOrNull()))
 
         visitRepository.getVisitsByPatientUuid(patientId)
     }
@@ -291,7 +293,9 @@ class VisitRepositoryTest {
         val call = mockk<Call<OpenMRSVisit>>(relaxed = true)
         every { locationDAO.findLocationByName(any()) } returns LocationEntity("La casa de Ale")
         every { restApi.startVisit(any()) } returns call
-        every { call.execute() } returns Response.error(500, mockk<ResponseBody>("Generic error"))
+
+        every { call.execute() } returns Response.error(500, "{\"error\":[\"Generic error\"]}"
+            .toResponseBody("application/json".toMediaTypeOrNull()))
 
         runBlocking {
             val result = visitRepository.startVisit(patient, visit.bloodPressure, visit.heightCm, visit.weightKg)
@@ -367,7 +371,8 @@ class VisitRepositoryTest {
 
         val callCreateEncounter = mockk<Call<Encounter>>(relaxed = true)
         every { restApi.createEncounter(any()) } returns callCreateEncounter
-        every { callCreateEncounter.execute() } returns Response.error(500, mockk<ResponseBody>())
+        every { callCreateEncounter.execute() } returns Response.error(500, "{\"error\":[\"Generic error\"]}"
+            .toResponseBody("application/json".toMediaTypeOrNull()))
 
         val callDeleteVisit = mockk<Call<ResponseBody>>(relaxed = true)
         every { restApi.deleteVisit(visit.id.toString()) } returns callDeleteVisit
@@ -392,7 +397,8 @@ class VisitRepositoryTest {
 
         val call = mockk<Call<Results<OpenMRSVisit>>>(relaxed = true)
         coEvery { restApi.findActiveVisitsByPatientUUID(patientUuid.toString()) } returns call
-        coEvery { call.execute() } returns Response.error(500, mockk<ResponseBody>())
+        coEvery { call.execute() } returns Response.error(500, "{\"error\":[\"Generic error\"]}"
+            .toResponseBody("application/json".toMediaTypeOrNull()))
 
         visitRepository.getActiveVisit(patientUuid)
     }

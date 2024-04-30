@@ -23,6 +23,7 @@ import java.util.List;
 import edu.upc.sdk.library.models.Results;
 import okhttp3.Headers;
 import okhttp3.Request;
+import okio.Timeout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,6 +78,11 @@ public class MockSuccessResponse<T> implements Call<T>{
 
     @Override
     public Request request() {
+        return null;
+    }
+
+    @Override
+    public Timeout timeout() {
         return null;
     }
 }

@@ -32,6 +32,7 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.Timeout
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -442,6 +443,9 @@ class TreatmentRepositoryTest {
         override fun clone(): Call<T> = TODO()
         override fun isCanceled() = TODO()
         override fun request(): Request = TODO()
+        override fun timeout(): Timeout { TODO()
+        }
+
         override fun cancel() = TODO()
         override fun execute(): Response<T> = response
     }
