@@ -217,7 +217,7 @@ dependencies {
 
     // Networking and Processing
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofitConverter}"
+    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
     implementation "com.google.code.gson:gson:${versions.gson}"
 
     //Navigation Component
@@ -255,7 +255,6 @@ dependencies {
     // Third Party UI Libraries
     implementation "com.github.PhilJay:MPAndroidChart:${versions.MPAndroidChart}"
     implementation "org.mindrot:jbcrypt:${versions.jbcrypt}"
-    implementation "joda-time:joda-time:${versions.jodaTime}"
     implementation "commons-codec:commons-codec:${versions.codec}"
     implementation "org.jdeferred:jdeferred-android-aar:${versions.jdeferred}"
     implementation "com.github.anastr:speedviewlib:1.6.0"

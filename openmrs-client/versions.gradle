@@ -12,8 +12,7 @@ versions.constraintlayout = '2.1.4'
 versions.fragment = "1.6.2"
 versions.activity = "1.8.2"
 
-versions.retrofit = '2.3.0'
-versions.retrofitConverter = '2.1.0'
+versions.retrofit = '2.11.0'
 versions.gson = '2.10'
 
 versions.rxjava = '2.2.6'
@@ -33,10 +32,7 @@ versions.countryCodePicker = '2.4.0'
 versions.codec = '1.16.0'
 versions.jdeferred = '1.2.6'
 versions.legacySupport = '1.0.0'
-versions.jodaTime = '2.10.6'
 versions.permissionsdispatcher = '4.8.0'
-
-versions.placesAPI = '3.3.0'
 
 versions.navfragment = '2.7.7'
 versions.navui = '2.7.7'
